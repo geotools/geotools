@@ -287,7 +287,9 @@ public class LineMBLayer extends MBLayer {
      */
     public Displacement lineTranslateDisplacement() {
         return parse.displacement(
-                paint, "line-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+                paint,
+                "line-translate",
+                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -538,24 +540,26 @@ public class LineMBLayer extends MBLayer {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         List<Symbolizer> symbolizers = new ArrayList<>();
         org.geotools.styling.Stroke stroke =
-                sf.stroke(
-                        lineColor(),
-                        lineOpacity(),
-                        lineWidth(),
-                        lineJoin(),
-                        lineCap(),
-                        null,
-                        null); // last "offset" is really "dash offset"
+                (Stroke)
+                        sf.stroke(
+                                lineColor(),
+                                lineOpacity(),
+                                lineWidth(),
+                                lineJoin(),
+                                lineCap(),
+                                null,
+                                null); // last "offset" is really "dash offset"
 
         stroke.setDashArray(scaleByWidth(lineDasharray(), lineWidth()));
         LineSymbolizer ls =
-                sf.lineSymbolizer(
-                        getId(),
-                        null,
-                        sf.description(Text.text("line"), null),
-                        Units.PIXEL,
-                        stroke,
-                        lineOffset());
+                (LineSymbolizer)
+                        sf.lineSymbolizer(
+                                getId(),
+                                null,
+                                sf.description(Text.text("line"), null),
+                                Units.PIXEL,
+                                stroke,
+                                lineOffset());
 
         if (hasLinePattern()) {
             ExternalGraphic eg =
@@ -576,21 +580,23 @@ public class LineMBLayer extends MBLayer {
                             ff.divide(ff.add(lineGapWidth(), lineWidth()), ff.literal(2)));
 
             ls =
-                    sf.lineSymbolizer(
-                            getId(),
-                            null,
-                            sf.description(Text.text("line"), null),
-                            Units.PIXEL,
-                            stroke,
-                            topOffset);
+                    (LineSymbolizer)
+                            sf.lineSymbolizer(
+                                    getId(),
+                                    null,
+                                    sf.description(Text.text("line"), null),
+                                    Units.PIXEL,
+                                    stroke,
+                                    topOffset);
             LineSymbolizer bottomLine =
-                    sf.lineSymbolizer(
-                            getId(),
-                            null,
-                            sf.description(Text.text("line"), null),
-                            Units.PIXEL,
-                            stroke,
-                            bottomOffset);
+                    (LineSymbolizer)
+                            sf.lineSymbolizer(
+                                    getId(),
+                                    null,
+                                    sf.description(Text.text("line"), null),
+                                    Units.PIXEL,
+                                    stroke,
+                                    bottomOffset);
             symbolizers.add(bottomLine);
         }
         symbolizers.add(ls);
@@ -599,26 +605,28 @@ public class LineMBLayer extends MBLayer {
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
 
         Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        symbolizers,
-                        filter.filter());
+                (Rule)
+                        sf.rule(
+                                getId(),
+                                null,
+                                null,
+                                0.0,
+                                Double.POSITIVE_INFINITY,
+                                symbolizers,
+                                filter.filter());
         rules.add(rule);
 
         return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null,
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        rules));
+                (FeatureTypeStyle)
+                        sf.featureTypeStyle(
+                                getId(),
+                                sf.description(
+                                        Text.text("MBStyle " + getId()),
+                                        Text.text("Generated for " + getSourceLayer())),
+                                null,
+                                Collections.emptySet(),
+                                filter.semanticTypeIdentifiers(),
+                                rules));
     }
 
     private List<Expression> scaleByWidth(List<Expression> dasharray, Expression lineWidth) {

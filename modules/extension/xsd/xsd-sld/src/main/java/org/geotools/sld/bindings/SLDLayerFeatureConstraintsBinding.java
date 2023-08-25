@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.styling.LayerFeatureConstraints;
+import org.geotools.api.style.LayerFeatureConstraints;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;

@@ -19,9 +19,9 @@ package org.geotools.ysld.encode;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.styling.*;
-import org.geotools.api.style.ColorMapEntry;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
 
@@ -80,13 +80,13 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         protected void encode(ColorMap colorMap) {
             push("color-map");
             switch (colorMap.getType()) {
-                case ColorMapImpl.TYPE_INTERVALS:
+                case ColorMap.TYPE_INTERVALS:
                     put("type", "intervals");
                     break;
-                case ColorMapImpl.TYPE_RAMP:
+                case ColorMap.TYPE_RAMP:
                     put("type", "ramp");
                     break;
-                case ColorMapImpl.TYPE_VALUES:
+                case ColorMap.TYPE_VALUES:
                     put("type", "values");
                     break;
             }

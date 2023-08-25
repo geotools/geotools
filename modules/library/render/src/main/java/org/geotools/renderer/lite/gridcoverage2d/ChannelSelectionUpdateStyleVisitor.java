@@ -46,7 +46,7 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
     @Override
     protected ChannelSelection copy(ChannelSelection channelSelection) {
         if (channels.length != 3) {
-            return sf.createChannelSelection(channels[0]);
+            return (ChannelSelection) sf.createChannelSelection(channels[0]);
         } else {
             return sf.createChannelSelection(channels);
         }

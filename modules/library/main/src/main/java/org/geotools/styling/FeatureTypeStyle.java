@@ -33,8 +33,7 @@ import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 
 /**
- /**
- * How to style a feature type. This is introduced as a convenient package that can be used
+ * /** How to style a feature type. This is introduced as a convenient package that can be used
  * independently for feature types, for example in GML Default Styling. The "layer" concept is
  * discarded inside of this element and all processing is relative to feature types. The
  * FeatureTypeName is allowed to be optional, but only one feature type may be in context and it
@@ -69,8 +68,6 @@ import org.geotools.util.Utilities;
  *
  * @version $Id$
  * @author James Macgill, CCG
- *
- *
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
@@ -152,8 +149,8 @@ public class FeatureTypeStyle implements Cloneable, org.geotools.api.style.Featu
      */
     public static final String VENDOR_OPTION_INCLUSION = "inclusion";
     /** This option influences how multiple rules matching the same feature are evaluated */
-
     private List<Rule> rules = new ArrayList<>();
+
     private Set<SemanticType> semantics = new LinkedHashSet<>();
     private Id featureInstances = null;
     private Set<Name> featureTypeNames = new LinkedHashSet<>();
@@ -228,11 +225,6 @@ public class FeatureTypeStyle implements Cloneable, org.geotools.api.style.Featu
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

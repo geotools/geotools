@@ -18,6 +18,7 @@ package org.geotools.brewer.styling.builder;
 
 import java.awt.Color;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.styling.ConstantFill;
 import org.geotools.styling.Fill;
 import org.geotools.util.Converters;
 
@@ -107,8 +108,8 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
     @Override
     public FillBuilder reset() {
         unset = false;
-        color = Fill.DEFAULT.getColor();
-        opacity = Fill.DEFAULT.getOpacity();
+        color = ConstantFill.DEFAULT.getColor();
+        opacity = ConstantFill.DEFAULT.getOpacity();
         graphic.unset();
         return this;
     }

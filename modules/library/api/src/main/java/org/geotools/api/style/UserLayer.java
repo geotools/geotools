@@ -16,9 +16,7 @@
  */
 package org.geotools.api.style;
 
-import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-
 
 /**
  * A UserLayer allows a user-defined layer to be built from WFS and WCS data.
@@ -51,11 +49,10 @@ public interface UserLayer extends StyledLayer {
 
     public SimpleFeatureType getInlineFeatureType();
 
-
     public FeatureTypeConstraint[] getLayerFeatureConstraints();
-
-
 
     /** Used to navigate a Style/SLD. */
     void accept(StyleVisitor visitor);
+
+    Style[] getUserStyles();
 }

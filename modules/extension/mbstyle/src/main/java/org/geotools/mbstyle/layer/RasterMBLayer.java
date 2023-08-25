@@ -225,47 +225,51 @@ public class RasterMBLayer extends MBLayer {
      */
     @Override
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
-        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
+        ContrastEnhancement ce =
+                (ContrastEnhancement) sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NONE);
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
         RasterSymbolizer symbolizer =
-                sf.rasterSymbolizer(
-                        getId(),
-                        null,
-                        sf.description(Text.text("raster"), null),
-                        Units.PIXEL,
-                        opacity(),
-                        null,
-                        null,
-                        null,
-                        ce,
-                        null,
-                        null);
+                (RasterSymbolizer)
+                        sf.rasterSymbolizer(
+                                getId(),
+                                null,
+                                sf.description(Text.text("raster"), null),
+                                Units.PIXEL,
+                                opacity(),
+                                null,
+                                null,
+                                null,
+                                ce,
+                                null,
+                                null);
 
         List<Rule> rules = new ArrayList<>();
         MBFilter filter = getFilter();
         org.geotools.styling.Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.MAX_VALUE,
-                        Arrays.asList(symbolizer),
-                        filter.filter());
+                (org.geotools.styling.Rule)
+                        sf.rule(
+                                getId(),
+                                null,
+                                null,
+                                0.0,
+                                Double.MAX_VALUE,
+                                Arrays.asList(symbolizer),
+                                filter.filter());
         rules.add(rule);
 
         return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null,
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        rules));
+                (FeatureTypeStyle)
+                        sf.featureTypeStyle(
+                                getId(),
+                                sf.description(
+                                        Text.text("MBStyle " + getId()),
+                                        Text.text("Generated for " + getSourceLayer())),
+                                null,
+                                Collections.emptySet(),
+                                filter.semanticTypeIdentifiers(),
+                                rules));
     }
 
     /**

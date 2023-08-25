@@ -32,7 +32,8 @@ import org.geotools.util.factory.GeoTools;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class PointPlacement implements  Cloneable, org.geotools.api.style.PointPlacement, LabelPlacement {
+public class PointPlacement
+        implements Cloneable, org.geotools.api.style.PointPlacement, LabelPlacement {
     public static final AnchorPoint DEFAULT_ANCHOR_POINT =
             new AnchorPoint() {
                 private void cannotModifyConstant() {
@@ -50,17 +51,6 @@ public class PointPlacement implements  Cloneable, org.geotools.api.style.PointP
                     cannotModifyConstant();
                 }
 
-
-                public void accept(StyleVisitor visitor) {
-                    cannotModifyConstant();
-                }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object data) {
-                    cannotModifyConstant();
-                    return null;
-                }
-
                 @Override
                 public Expression getAnchorPointX() {
                     return ConstantExpression.constant(0.0);
@@ -74,7 +64,6 @@ public class PointPlacement implements  Cloneable, org.geotools.api.style.PointP
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(PointPlacement.class);
-
 
     private AnchorPoint anchorPoint = new AnchorPoint();
     private Displacement displacement = new Displacement();
@@ -155,11 +144,6 @@ public class PointPlacement implements  Cloneable, org.geotools.api.style.PointP
      */
     public void setRotation(Expression rotation) {
         this.rotation = rotation;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

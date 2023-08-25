@@ -32,6 +32,9 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.io.IOException;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
@@ -40,13 +43,10 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.sld.v1_1.SLDConfiguration;
 import org.geotools.styling.DefaultResourceLocator;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.NamedStyle;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xsd.Parser;
@@ -273,10 +273,10 @@ public abstract class RendererBaseTest {
 
                 if (sld.getStyledLayers()[i] instanceof NamedLayer) {
                     NamedLayer layer = (NamedLayer) sld.getStyledLayers()[i];
-                    styles = layer.getStyles();
+                    styles = (Style[]) layer.getStyles();
                 } else if (sld.getStyledLayers()[i] instanceof UserLayer) {
                     UserLayer layer = (UserLayer) sld.getStyledLayers()[i];
-                    styles = layer.getUserStyles();
+                    styles = (Style[]) layer.getUserStyles();
                 }
 
                 if (styles != null) {

@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -81,7 +81,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     double goodnessOfFit = 0;
 
-    PolygonAlignOptions polygonAlign = org.geotools.api.style.TextSymbolizer.PolygonAlignOptions.NONE;
+    PolygonAlignOptions polygonAlign =
+            org.geotools.api.style.TextSymbolizer.PolygonAlignOptions.NONE;
 
     GraphicResize graphicsResize = GraphicResize.NONE;
 
@@ -410,7 +411,9 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     public TextSymbolizer.GraphicPlacement getGraphicPlacement() {
-        return graphicPlacement == null ? org.geotools.api.style.TextSymbolizer.GraphicPlacement.LABEL : graphicPlacement;
+        return graphicPlacement == null
+                ? org.geotools.api.style.TextSymbolizer.GraphicPlacement.LABEL
+                : graphicPlacement;
     }
 
     public void setGraphicPlacement(TextSymbolizer.GraphicPlacement graphicPlacement) {

@@ -50,6 +50,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.renderer.VendorOptionParser;
@@ -490,7 +491,7 @@ public class SLDStyleFactory {
         }
         float anchorPointX = 0.5f;
         float anchorPointY = 0.5f;
-        AnchorPoint anchorPoint = sldGraphic.getAnchorPoint();
+        AnchorPoint anchorPoint = (AnchorPoint) sldGraphic.getAnchorPoint();
         if (anchorPoint != null) {
             anchorPointX = evalToFloat(anchorPoint.getAnchorPointX(), feature, 0.5f);
             anchorPointY = evalToFloat(anchorPoint.getAnchorPointY(), feature, 0.5f);
@@ -718,8 +719,8 @@ public class SLDStyleFactory {
             }
 
             // rotation
-            if ((symbolizer instanceof TextSymbolizer2)
-                    && (((TextSymbolizer2) symbolizer).getGraphic() != null)) {
+            if ((symbolizer instanceof TextSymbolizer)
+                    && (((TextSymbolizer) symbolizer).getGraphic() != null)) {
                 // don't rotate labels that are being placed on shields.
                 rotation = 0.0;
             } else {
@@ -759,8 +760,8 @@ public class SLDStyleFactory {
         }
 
         Graphic graphicShield = null;
-        if (symbolizer instanceof TextSymbolizer2) {
-            graphicShield = ((TextSymbolizer2) symbolizer).getGraphic();
+        if (symbolizer instanceof TextSymbolizer) {
+            graphicShield = ((TextSymbolizer) symbolizer).getGraphic();
             if (graphicShield != null) {
                 Style2D shieldStyle =
                         createPointStyle(feature, symbolizer, graphicShield, scaleRange, true);
@@ -863,7 +864,9 @@ public class SLDStyleFactory {
         // check vendor options
         boolean kerning =
                 voParser.getBooleanOption(
-                        symbolizer, org.geotools.api.style.TextSymbolizer.KERNING_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_KERNING);
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.KERNING_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_KERNING);
         if (kerning) {
             javaFont = applyKerning(javaFont);
         }

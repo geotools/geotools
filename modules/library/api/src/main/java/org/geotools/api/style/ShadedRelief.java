@@ -49,12 +49,5 @@ public interface ShadedRelief {
      */
     public Expression getReliefFactor();
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
     void accept(StyleVisitor visitor);
 }

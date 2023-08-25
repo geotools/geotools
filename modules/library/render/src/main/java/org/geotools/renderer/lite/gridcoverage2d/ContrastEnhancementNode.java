@@ -41,6 +41,7 @@ import javax.media.jai.ROI;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -57,7 +58,6 @@ import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.HistogramContrastMethodStrategy;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
@@ -116,7 +116,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ContrastEnhancement)
      */
     @Override
-    public void visit(final ContrastEnhancement ce) {
+    public void visit(final org.geotools.api.style.ContrastEnhancement ce) {
         // /////////////////////////////////////////////////////////////////////
         //
         // Do nothing if we don't have a valid ContrastEnhancement element. This

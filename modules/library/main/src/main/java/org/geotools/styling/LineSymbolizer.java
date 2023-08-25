@@ -30,7 +30,10 @@ import org.geotools.api.util.Cloneable;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class LineSymbolizer extends AbstractSymbolizer implements  Cloneable, org.geotools.api.style.LineSymbolizer, org.geotools.api.style.Symbolizer {
+public class LineSymbolizer extends AbstractSymbolizer
+        implements Cloneable,
+                org.geotools.api.style.LineSymbolizer,
+                org.geotools.api.style.Symbolizer {
 
     private Expression offset;
 
@@ -80,16 +83,6 @@ public class LineSymbolizer extends AbstractSymbolizer implements  Cloneable, or
             return;
         }
         this.stroke = Stroke.cast(stroke);
-    }
-
-    /**
-     * Accepts a StyleVisitor to perform some operation on this LineSymbolizer.
-     *
-     * @param visitor The visitor to accept.
-     */
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

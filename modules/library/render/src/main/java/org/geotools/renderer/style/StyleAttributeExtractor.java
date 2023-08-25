@@ -23,42 +23,16 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.*;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.api.style.ImageOutline;
-import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Stroke;
-import org.geotools.api.style.StyledLayer;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.styling.Symbol;
-import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.api.style.UserLayer;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
@@ -104,15 +78,13 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         return defaultGeometryUsed;
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Style) */
     @Override
-    public void visit(org.geotools.styling.Style style) {
+    public void visit(org.geotools.api.style.Style style) {
         style.featureTypeStyles().forEach(ft -> ft.accept(this));
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Rule) */
     @Override
-    public void visit(Rule rule) {
+    public void visit(org.geotools.api.style.Rule rule) {
         Filter filter = rule.getFilter();
 
         if (filter != null) {
@@ -122,17 +94,15 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         rule.symbolizers().forEach(s -> s.accept(this));
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle) */
     @Override
-    public void visit(FeatureTypeStyle fts) {
-        for (Rule rule : fts.rules()) {
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
+        for (org.geotools.api.style.Rule rule : fts.rules()) {
             rule.accept(this);
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.Fill) */
     @Override
-    public void visit(Fill fill) {
+    public void visit(org.geotools.api.style.Fill fill) {
         if (fill.getColor() != null) {
             fill.getColor().accept(this, null);
         }
@@ -148,41 +118,42 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.Stroke) */
     @Override
-    public void visit(Stroke stroke) {
-        if (stroke.getColor() != null) {
-            stroke.getColor().accept(this, null);
+    public void visit(org.geotools.api.style.Stroke stroke) {
+        Stroke input = (Stroke) stroke;
+        if (input.getColor() != null) {
+            input.getColor().accept(this, null);
         }
 
-        if (stroke.getDashOffset() != null) {
-            stroke.getDashOffset().accept(this, null);
+        if (input.getDashOffset() != null) {
+            input.getDashOffset().accept(this, null);
         }
 
-        if (stroke.getGraphicFill() != null) {
-            stroke.getGraphicFill().accept(this);
+        if (input.getGraphicFill() != null) {
+            input.getGraphicFill().accept(this);
         }
 
-        if (stroke.getGraphicStroke() != null) {
-            stroke.getGraphicStroke().accept(this);
+        if (input.getGraphicStroke() != null) {
+            input.getGraphicStroke().accept(this);
         }
 
-        if (stroke.getLineCap() != null) {
-            stroke.getLineCap().accept(this, null);
+        if (input.getLineCap() != null) {
+            input.getLineCap().accept(this, null);
         }
 
-        if (stroke.getLineJoin() != null) {
-            stroke.getLineJoin().accept(this, null);
+        if (input.getLineJoin() != null) {
+            input.getLineJoin().accept(this, null);
         }
 
-        if (stroke.getOpacity() != null) {
-            stroke.getOpacity().accept(this, null);
+        if (input.getOpacity() != null) {
+            input.getOpacity().accept(this, null);
         }
 
-        if (stroke.getWidth() != null) {
-            stroke.getWidth().accept(this, null);
+        if (input.getWidth() != null) {
+            input.getWidth().accept(this, null);
         }
 
-        if (stroke.dashArray() != null) {
-            for (Expression expression : stroke.dashArray()) {
+        if (input.dashArray() != null) {
+            for (Expression expression : input.dashArray()) {
                 expression.accept(this, null);
             }
         }
@@ -190,127 +161,129 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.Symbolizer) */
     @Override
-    public void visit(Symbolizer sym) {
+    public void visit(org.geotools.api.style.Symbolizer sym) {
         if (sym instanceof PointSymbolizer) {
-            visit((PointSymbolizer) sym);
+            visit((org.geotools.api.style.PointSymbolizer) sym);
         }
 
         if (sym instanceof LineSymbolizer) {
-            visit((LineSymbolizer) sym);
+            visit((org.geotools.api.style.LineSymbolizer) sym);
         }
 
         if (sym instanceof PolygonSymbolizer) {
-            visit((PolygonSymbolizer) sym);
+            visit((org.geotools.api.style.PolygonSymbolizer) sym);
         }
 
         if (sym instanceof TextSymbolizer) {
-            visit((TextSymbolizer) sym);
+            visit((org.geotools.api.style.TextSymbolizer) sym);
         }
 
         if (sym instanceof RasterSymbolizer) {
-            visit((RasterSymbolizer) sym);
+            visit((org.geotools.api.style.RasterSymbolizer) sym);
         }
     }
 
     @Override
-    public void visit(RasterSymbolizer rs) {
+    public void visit(org.geotools.api.style.RasterSymbolizer rs) {
+        RasterSymbolizer input = (RasterSymbolizer) rs;
         if (symbolizerGeometriesVisitEnabled) {
-            if (rs.getGeometry() != null) {
-                rs.getGeometry().accept(this, null);
+            if (input.getGeometry() != null) {
+                input.getGeometry().accept(this, null);
             }
         }
 
-        if (rs.getImageOutline() != null) {
-            rs.getImageOutline().accept(this);
+        if (input.getImageOutline() != null) {
+            input.getImageOutline().accept(this);
         }
 
-        if (rs.getOpacity() != null) {
-            rs.getOpacity().accept(this, null);
+        if (input.getOpacity() != null) {
+            input.getOpacity().accept(this, null);
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.PointSymbolizer) */
     @Override
-    public void visit(PointSymbolizer ps) {
+    public void visit(org.geotools.api.style.PointSymbolizer ps) {
+        PointSymbolizer input = (PointSymbolizer) ps;
         if (symbolizerGeometriesVisitEnabled) {
-            if (ps.getGeometry() != null) {
-                ps.getGeometry().accept(this, null);
+            if (input.getGeometry() != null) {
+                input.getGeometry().accept(this, null);
             } else {
                 this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
             }
         }
 
-        if (ps.getGraphic() != null) {
-            ps.getGraphic().accept(this);
+        if (input.getGraphic() != null) {
+            input.getGraphic().accept(this);
         }
     }
 
     /** @see StyleVisitor#visit(org.geotools.styling.LineSymbolizer) */
     @Override
-    public void visit(LineSymbolizer line) {
+    public void visit(org.geotools.api.style.LineSymbolizer line) {
+        LineSymbolizer input = (LineSymbolizer) line;
         if (symbolizerGeometriesVisitEnabled) {
-            if (line.getGeometry() != null) {
-                line.getGeometry().accept(this, null);
+            if (input.getGeometry() != null) {
+                input.getGeometry().accept(this, null);
             } else {
                 this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
             }
         }
 
-        if (line.getPerpendicularOffset() != null) {
-            line.getPerpendicularOffset().accept(this, null);
+        if (input.getPerpendicularOffset() != null) {
+            input.getPerpendicularOffset().accept(this, null);
         }
 
-        if (line.getStroke() != null) {
-            line.getStroke().accept(this);
+        if (input.getStroke() != null) {
+            input.getStroke().accept(this);
         }
     }
 
-    /** @see StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer) */
     @Override
-    public void visit(PolygonSymbolizer poly) {
+    public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
+        PolygonSymbolizer input = (PolygonSymbolizer) poly;
         if (symbolizerGeometriesVisitEnabled) {
-            if (poly.getGeometry() != null) {
-                poly.getGeometry().accept(this, null);
+            if (input.getGeometry() != null) {
+                input.getGeometry().accept(this, null);
             } else {
                 this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
             }
         }
 
-        if (poly.getStroke() != null) {
-            poly.getStroke().accept(this);
+        if (input.getStroke() != null) {
+            input.getStroke().accept(this);
         }
 
-        if (poly.getFill() != null) {
-            poly.getFill().accept(this);
+        if (input.getFill() != null) {
+            input.getFill().accept(this);
         }
     }
 
     /** @see StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
     @Override
-    public void visit(TextSymbolizer text) {
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
+        TextSymbolizer input = (TextSymbolizer) text;
         if (symbolizerGeometriesVisitEnabled) {
-            if (text.getGeometry() != null) {
-                text.getGeometry().accept(this, null);
+            if (input.getGeometry() != null) {
+                input.getGeometry().accept(this, null);
             } else {
                 this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
             }
         }
 
-        if (text instanceof TextSymbolizer2) {
-            if (((TextSymbolizer2) text).getGraphic() != null)
-                ((TextSymbolizer2) text).getGraphic().accept(this);
+        if (input.getGraphic() != null) {
+            input.getGraphic().accept(this);
         }
 
-        if (text.getFill() != null) {
-            text.getFill().accept(this);
+        if (input.getFill() != null) {
+            input.getFill().accept(this);
         }
 
-        if (text.getHalo() != null) {
-            text.getHalo().accept(this);
+        if (input.getHalo() != null) {
+            input.getHalo().accept(this);
         }
 
-        if (text.fonts() != null) {
-            for (Font font : text.fonts()) {
+        if (input.fonts() != null) {
+            for (Font font : input.fonts()) {
                 if (font.getFamily() != null) {
                     for (Expression list : font.getFamily()) {
                         list.accept(this, null);
@@ -330,26 +303,26 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
             }
         }
 
-        if (text.getHalo() != null) {
-            text.getHalo().accept(this);
+        if (input.getHalo() != null) {
+            input.getHalo().accept(this);
         }
 
-        if (text.getLabel() != null) {
-            text.getLabel().accept(this, null);
+        if (input.getLabel() != null) {
+            input.getLabel().accept(this, null);
         }
 
-        if (text.getLabelPlacement() != null) {
-            text.getLabelPlacement().accept(this);
+        if (input.getLabelPlacement() != null) {
+            input.getLabelPlacement().accept(this);
         }
 
-        if (text.getPriority() != null) {
-            text.getPriority().accept(this, null);
+        if (input.getPriority() != null) {
+            input.getPriority().accept(this, null);
         }
     }
 
     /** @see StyleVisitor#visit(org.geotools.styling.Graphic) */
     @Override
-    public void visit(Graphic gr) {
+    public void visit(org.geotools.api.style.Graphic gr) {
         for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
             if (symbol instanceof Symbol) {
                 ((Symbol) symbol).accept(this);
@@ -377,7 +350,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.Mark) */
     @Override
-    public void visit(Mark mark) {
+    public void visit(org.geotools.api.style.Mark mark) {
         if (mark.getFill() != null) {
             mark.getFill().accept(this);
         }
@@ -403,7 +376,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.ExternalGraphic) */
     @Override
-    public void visit(ExternalGraphic exgr) {
+    public void visit(org.geotools.api.style.ExternalGraphic exgr) {
         // add dynamic support for ExternalGrapic format attribute
         visitCqlExpression(exgr.getFormat());
 
@@ -417,7 +390,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.PointPlacement) */
     @Override
-    public void visit(PointPlacement pp) {
+    public void visit(org.geotools.api.style.PointPlacement pp) {
         if (pp.getAnchorPoint() != null) {
             pp.getAnchorPoint().accept(this);
         }
@@ -433,7 +406,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.AnchorPoint) */
     @Override
-    public void visit(AnchorPoint ap) {
+    public void visit(org.geotools.api.style.AnchorPoint ap) {
         if (ap.getAnchorPointX() != null) {
             ap.getAnchorPointX().accept(this, null);
         }
@@ -445,7 +418,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.Displacement) */
     @Override
-    public void visit(Displacement dis) {
+    public void visit(org.geotools.api.style.Displacement dis) {
         if (dis.getDisplacementX() != null) {
             dis.getDisplacementX().accept(this, null);
         }
@@ -457,7 +430,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.LinePlacement) */
     @Override
-    public void visit(LinePlacement lp) {
+    public void visit(org.geotools.api.style.LinePlacement lp) {
         if (lp.getPerpendicularOffset() != null) {
             lp.getPerpendicularOffset().accept(this, null);
         }
@@ -465,7 +438,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
 
     /** @see StyleVisitor#visit(org.geotools.styling.Halo) */
     @Override
-    public void visit(Halo halo) {
+    public void visit(org.geotools.api.style.Halo halo) {
         if (halo.getFill() != null) {
             halo.getFill().accept(this);
         }
@@ -476,7 +449,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     @Override
-    public void visit(StyledLayerDescriptor sld) {
+    public void visit(org.geotools.api.style.StyledLayerDescriptor sld) {
         StyledLayer[] layers = sld.getStyledLayers();
 
         for (StyledLayer layer : layers) {
@@ -489,8 +462,8 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     @Override
-    public void visit(NamedLayer layer) {
-        org.geotools.styling.Style[] styles = layer.getStyles();
+    public void visit(org.geotools.api.style.NamedLayer layer) {
+        org.geotools.styling.Style[] styles = (org.geotools.styling.Style[]) layer.getStyles();
 
         for (org.geotools.styling.Style style : styles) {
             style.accept(this);
@@ -498,8 +471,8 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     @Override
-    public void visit(UserLayer layer) {
-        org.geotools.styling.Style[] styles = layer.getUserStyles();
+    public void visit(org.geotools.api.style.UserLayer layer) {
+        org.geotools.styling.Style[] styles = (org.geotools.styling.Style[]) layer.getUserStyles();
 
         for (org.geotools.styling.Style style : styles) {
             style.accept(this);
@@ -507,12 +480,12 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     @Override
-    public void visit(FeatureTypeConstraint ftc) {
+    public void visit(org.geotools.api.style.FeatureTypeConstraint ftc) {
         ftc.accept(this);
     }
 
     @Override
-    public void visit(ColorMap map) {
+    public void visit(org.geotools.api.style.ColorMap map) {
         ColorMapEntry[] entries = map.getColorMapEntries();
 
         for (ColorMapEntry entry : entries) {
@@ -521,37 +494,37 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     }
 
     @Override
-    public void visit(ColorMapEntry entry) {
+    public void visit(org.geotools.api.style.ColorMapEntry entry) {
         entry.accept(this);
     }
 
     @Override
-    public void visit(ContrastEnhancement contrastEnhancement) {
+    public void visit(org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
         contrastEnhancement.accept(this);
     }
 
     @Override
-    public void visit(ImageOutline outline) {
+    public void visit(org.geotools.api.style.ImageOutline outline) {
         outline.getSymbolizer().accept(this);
     }
 
     @Override
-    public void visit(ChannelSelection cs) {
+    public void visit(org.geotools.api.style.ChannelSelection cs) {
         cs.accept(this);
     }
 
     @Override
-    public void visit(OverlapBehavior ob) {
-        ob.accept(this);
+    public void visit(org.geotools.api.style.OverlapBehavior ob) {
+        OverlapBehavior.cast(ob).accept(this);
     }
 
     @Override
-    public void visit(SelectedChannelType sct) {
+    public void visit(org.geotools.api.style.SelectedChannelType sct) {
         sct.accept(this);
     }
 
     @Override
-    public void visit(ShadedRelief sr) {
+    public void visit(org.geotools.api.style.ShadedRelief sr) {
         sr.accept(this);
     }
 }

@@ -49,6 +49,8 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.ContrastMethodStrategy;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -63,8 +65,6 @@ import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.styling.*;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
@@ -188,7 +188,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeGray = new SelectedChannelType();
         final ContrastEnhancement cntEnh = new ContrastEnhancement();
 
@@ -274,7 +274,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_2 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_2 = new ChannelSelectionImpl();
+        final ChannelSelection chSel_2 = new ChannelSelection();
         final SelectedChannelType chTypeGray_2 = new SelectedChannelType();
         final ContrastEnhancement cntEnh_2 = new ContrastEnhancement();
 
@@ -364,7 +364,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_3 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_3 = new ChannelSelectionImpl();
+        final ChannelSelection chSel_3 = new ChannelSelection();
         final SelectedChannelType chTypeGray_3 = new SelectedChannelType();
         final ContrastEnhancement cntEnh_3 = new ContrastEnhancement();
 
@@ -463,7 +463,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_4 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_4 = new ChannelSelectionImpl();
+        final ChannelSelection chSel_4 = new ChannelSelection();
         final SelectedChannelType chTypeGray_4 = new SelectedChannelType();
         final ContrastEnhancement cntEnh_4 = new ContrastEnhancement();
         final ContrastMethodStrategy method_4 = new NormalizeContrastMethodStrategy();
@@ -526,7 +526,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_4f = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_4f = new ChannelSelectionImpl();
+        final ChannelSelection chSel_4f = new ChannelSelection();
         final SelectedChannelType chTypeGray_4f = new SelectedChannelType();
         final ContrastEnhancement cntEnh_4f = new ContrastEnhancement();
 
@@ -649,7 +649,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_5 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_5 = new ChannelSelectionImpl();
+        final ChannelSelection chSel_5 = new ChannelSelection();
         final SelectedChannelType chTypeGray_5 = new SelectedChannelType();
         final ContrastEnhancement cntEnh_5 = new ContrastEnhancement();
 
@@ -712,7 +712,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_5f = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_5f = new ChannelSelectionImpl();
+        final ChannelSelection chSel_5f = new ChannelSelection();
         final SelectedChannelType chTypeGray_5f = new SelectedChannelType();
         final ContrastEnhancement cntEnh_5f = new ContrastEnhancement();
 
@@ -781,7 +781,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_5g = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_5g = new ChannelSelectionImpl();
+        final ChannelSelection chSel_5g = new ChannelSelection();
         final SelectedChannelType chTypeGray_5g = new SelectedChannelType();
         final ContrastEnhancement cntEnh_5g = new ContrastEnhancement();
 
@@ -854,7 +854,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_5c = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_5c = new ChannelSelectionImpl();
+        final ChannelSelection chSel_5c = new ChannelSelection();
         final SelectedChannelType chTypeGray_5c = new SelectedChannelType();
         final ContrastEnhancement cntEnh_5c = new ContrastEnhancement();
 
@@ -922,7 +922,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_6 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_6 = new ChannelSelectionImpl();
+        final ChannelSelection chSel_6 = new ChannelSelection();
         final SelectedChannelType chTypeGray_6 = new SelectedChannelType();
         final ContrastEnhancement cntEnh_6 = new ContrastEnhancement();
 
@@ -985,7 +985,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_7 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_7 = new ChannelSelectionImpl();
+        final ChannelSelection chSel_7 = new ChannelSelection();
         final SelectedChannelType chTypeGray_7 = new SelectedChannelType();
         final ContrastEnhancement cntEnh_7 = new ContrastEnhancement();
         final AbstractContrastMethodStrategy method_7 = new NormalizeContrastMethodStrategy();
@@ -1052,7 +1052,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_7f = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_7f = new ChannelSelectionImpl();
+        final ChannelSelection chSel_7f = new ChannelSelection();
         final SelectedChannelType chTypeGray_7f = new SelectedChannelType();
         final ContrastEnhancement cntEnh_7f = new ContrastEnhancement();
         final AbstractContrastMethodStrategy method_7f = new NormalizeContrastMethodStrategy();
@@ -1122,7 +1122,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         RasterSymbolizerHelper rsh_StyleBuilder = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_7g = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel_7g = new ChannelSelectionImpl();
+        final ChannelSelection chSel_7g = new ChannelSelection();
         final SelectedChannelType chTypeGray_7g = new SelectedChannelType();
         final ContrastEnhancement cntEnh_7g = new ContrastEnhancement();
         final AbstractContrastMethodStrategy method_7g = new NormalizeContrastMethodStrategy();
@@ -1230,7 +1230,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeGray = new SelectedChannelType();
         final ContrastEnhancement cntEnh = new ContrastEnhancement();
         cntEnh.setMethod(ContrastMethod.LOGARITHMIC);
@@ -1286,7 +1286,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
         // build the RasterSymbolizer
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
-        final Style style = nl.getUserStyles()[0];
+        final Style style = (Style) nl.getUserStyles()[0];
         final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         final Rule rule = fts.rules().get(0);
         final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
@@ -1324,7 +1324,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeGray = new SelectedChannelType();
         final ContrastEnhancement cntEnh = new ContrastEnhancement();
 
@@ -1354,7 +1354,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, 40),
                             new Color(0, 0, 255, 125)
                         },
-                        ColorMapImpl.TYPE_RAMP);
+                        ColorMap.TYPE_RAMP);
 
         rsb_1.setColorMap(cm);
 
@@ -1435,7 +1435,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeRed = new SelectedChannelType();
         final SelectedChannelType chTypeBlue = new SelectedChannelType();
         final SelectedChannelType chTypeGreen = new SelectedChannelType();
@@ -1549,7 +1549,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeRed = new SelectedChannelType();
         final SelectedChannelType chTypeBlue = new SelectedChannelType();
         final SelectedChannelType chTypeGreen = new SelectedChannelType();
@@ -1576,7 +1576,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
     private static RasterSymbolizer extractRasterSymbolizer(StyledLayerDescriptor sld) {
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
-        final Style style = nl.getUserStyles()[0];
+        final Style style = (Style) nl.getUserStyles()[0];
         final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         final Rule rule = fts.rules().get(0);
         final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);
@@ -1638,7 +1638,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeRed = new SelectedChannelType();
         final SelectedChannelType chTypeBlue = new SelectedChannelType();
         final SelectedChannelType chTypeGreen = new SelectedChannelType();
@@ -1768,7 +1768,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeGray = new SelectedChannelType();
         final ContrastEnhancement cntEnh = new ContrastEnhancement();
 
@@ -1796,7 +1796,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, 40),
                             new Color(0, 0, 255, 125)
                         },
-                        ColorMapImpl.TYPE_RAMP);
+                        ColorMap.TYPE_RAMP);
 
         rsb_1.setColorMap(cm);
 
@@ -1876,7 +1876,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeGray = new SelectedChannelType();
         final ContrastEnhancement cntEnh = new ContrastEnhancement();
 
@@ -2116,7 +2116,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, (int) (255 * 0.8)),
                             new Color(0, 0, 255, (int) (255 * 0.2))
                         },
-                        ColorMapImpl.TYPE_RAMP);
+                        ColorMap.TYPE_RAMP);
         cm.setExtendedColors(true);
         rs.setColorMap(cm);
 
@@ -2248,7 +2248,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         rsh = new RasterSymbolizerHelper(gc, null);
 
         final RasterSymbolizer rsb_1 = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeGray = new SelectedChannelType();
         chTypeGray.setChannelName("1");
         chSel.setGrayChannel(chTypeGray);
@@ -2267,7 +2267,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, 40),
                             new Color(0, 0, 255, 125)
                         },
-                        ColorMapImpl.TYPE_RAMP);
+                        ColorMap.TYPE_RAMP);
 
         rsb_1.setColorMap(cm);
 
@@ -2478,7 +2478,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
         StyleBuilder sldBuilder = new StyleBuilder();
         RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeRed = new SelectedChannelType();
         final SelectedChannelType chTypeBlue = new SelectedChannelType();
         final SelectedChannelType chTypeGreen = new SelectedChannelType();

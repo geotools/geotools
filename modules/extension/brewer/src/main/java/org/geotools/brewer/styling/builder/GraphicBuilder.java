@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Symbol;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
-import org.geotools.styling.Symbol;
 
 public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.Graphic> {
     List<Builder<? extends Symbol>> symbols = new ArrayList<>();

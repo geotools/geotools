@@ -33,11 +33,7 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 
@@ -212,7 +208,9 @@ public class FillMBLayer extends MBLayer {
      */
     public Displacement fillTranslateDisplacement() {
         return parse.displacement(
-                paint, "fill-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+                paint,
+                "fill-translate",
+                (org.geotools.styling.Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -269,14 +267,15 @@ public class FillMBLayer extends MBLayer {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         // use factory to avoid defaults values
         org.geotools.styling.Stroke stroke =
-                sf.stroke(
-                        fillOutlineColor(),
-                        fillOpacity(),
-                        ff.literal(1),
-                        ff.literal("miter"),
-                        ff.literal("butt"),
-                        null,
-                        null);
+                (Stroke)
+                        sf.stroke(
+                                fillOutlineColor(),
+                                fillOpacity(),
+                                ff.literal(1),
+                                ff.literal("miter"),
+                                ff.literal("butt"),
+                                null,
+                                null);
 
         // from fill pattern or fill color
         Fill fill;
@@ -305,44 +304,47 @@ public class FillMBLayer extends MBLayer {
                             null,
                             fillTranslateDisplacement());
             stroke.setOpacity(ff.literal(0));
-            fill = sf.fill(gf, null, null);
+            fill = (Fill) sf.fill(gf, null, null);
         } else {
-            fill = sf.fill(null, fillColor(), fillOpacity());
+            fill = (Fill) sf.fill(null, fillColor(), fillOpacity());
         }
 
         PolygonSymbolizer symbolizer =
-                sf.polygonSymbolizer(
-                        getId(),
-                        ff.property((String) null),
-                        sf.description(Text.text("fill"), null),
-                        Units.PIXEL,
-                        stroke,
-                        fill,
-                        fillTranslateDisplacement(),
-                        ff.literal(0));
+                (PolygonSymbolizer)
+                        sf.polygonSymbolizer(
+                                getId(),
+                                ff.property((String) null),
+                                sf.description(Text.text("fill"), null),
+                                Units.PIXEL,
+                                stroke,
+                                fill,
+                                fillTranslateDisplacement(),
+                                ff.literal(0));
 
         MBFilter filter = getFilter();
 
         Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        Arrays.asList(symbolizer),
-                        filter.filter());
+                (Rule)
+                        sf.rule(
+                                getId(),
+                                null,
+                                null,
+                                0.0,
+                                Double.POSITIVE_INFINITY,
+                                Arrays.asList(symbolizer),
+                                filter.filter());
 
         return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(),
-                        Arrays.asList(rule)));
+                (FeatureTypeStyle)
+                        sf.featureTypeStyle(
+                                getId(),
+                                sf.description(
+                                        Text.text("MBStyle " + getId()),
+                                        Text.text("Generated for " + getSourceLayer())),
+                                null, // (unused)
+                                Collections.emptySet(),
+                                filter.semanticTypeIdentifiers(),
+                                Arrays.asList(rule)));
     }
 
     /**

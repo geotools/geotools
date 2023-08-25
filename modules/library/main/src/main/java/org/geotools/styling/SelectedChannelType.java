@@ -23,7 +23,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 
 /** Default implementation of SelectedChannelType. */
-public class SelectedChannelType implements  org.geotools.api.style.SelectedChannelType {
+public class SelectedChannelType implements org.geotools.api.style.SelectedChannelType {
     private FilterFactory filterFactory;
 
     // private Expression contrastEnhancement;
@@ -84,11 +84,6 @@ public class SelectedChannelType implements  org.geotools.api.style.SelectedChan
         enhancement.setGammaValue(filterFactory.literal(1.0));
 
         return enhancement;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

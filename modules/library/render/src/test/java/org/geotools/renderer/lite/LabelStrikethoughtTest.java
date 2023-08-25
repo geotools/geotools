@@ -18,7 +18,6 @@ package org.geotools.renderer.lite;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.styling.Style;

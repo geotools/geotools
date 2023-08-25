@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,37 +16,46 @@
  */
 package org.geotools.styling;
 
+import java.util.Arrays;
 import org.geotools.api.style.FeatureTypeConstraint;
 
-/**
- * LayerFeatureConstraints define what features and feature types are referenced in a layer.
- *
- * <p>
- *
- * <pre>
- *         <code>
- *  &lt;xsd:element name="LayerFeatureConstraints"&gt;
- *      &lt;xsd:annotation&gt;
- *          &lt;xsd:documentation&gt;         LayerFeatureConstraints define what
- *              features &amp; feature types are         referenced in a
- *              layer.       &lt;/xsd:documentation&gt;
- *      &lt;/xsd:annotation&gt;
- *      &lt;xsd:complexType&gt;
- *          &lt;xsd:sequence&gt;
- *              &lt;xsd:element ref="sld:FeatureTypeConstraint" maxOccurs="unbounded"/&gt;
- *          &lt;/xsd:sequence&gt;
- *      &lt;/xsd:complexType&gt;
- *  &lt;/xsd:element&gt;
- *
- *          </code>
- *         </pre>
- *
- * @author Justin Deoliveira, The Open Planning Project
- */
-public interface LayerFeatureConstraints {
-    /** @return The feature type constraints. */
-    FeatureTypeConstraint[] getFeatureTypeConstraints();
+public class LayerFeatureConstraints implements org.geotools.api.style.LayerFeatureConstraints {
 
-    /** @param constraints The new feature type constraints. */
-    void setFeatureTypeConstraints(FeatureTypeConstraint... constraints);
+    private FeatureTypeConstraint[] constraints;
+
+    @Override
+    public FeatureTypeConstraint[] getFeatureTypeConstraints() {
+        return constraints;
+    }
+
+    @Override
+    public void setFeatureTypeConstraints(FeatureTypeConstraint[] constraints) {
+        this.constraints = constraints;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof LayerFeatureConstraints) {
+            LayerFeatureConstraints other = (LayerFeatureConstraints) obj;
+            return Arrays.equals(constraints, other.constraints);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (constraints != null) {
+            result = (PRIME * result) + Arrays.hashCode(constraints);
+        }
+
+        return result;
+    }
 }

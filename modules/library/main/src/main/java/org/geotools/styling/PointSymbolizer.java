@@ -18,7 +18,6 @@ package org.geotools.styling;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.SimpleInternationalString;
@@ -31,7 +30,8 @@ import org.geotools.util.SimpleInternationalString;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class PointSymbolizer extends AbstractSymbolizer implements  Cloneable, org.geotools.api.style.PointSymbolizer, Symbolizer {
+public class PointSymbolizer extends AbstractSymbolizer
+        implements Cloneable, org.geotools.api.style.PointSymbolizer, Symbolizer {
 
     /**
      * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can
@@ -39,6 +39,7 @@ public class PointSymbolizer extends AbstractSymbolizer implements  Cloneable, o
      * painted.
      */
     public static final String FALLBACK_ON_DEFAULT_MARK = "fallbackOnDefaultMark";
+
     private Graphic graphic = new Graphic();
 
     /** Creates a new instance of DefaultPointSymbolizer */
@@ -79,16 +80,6 @@ public class PointSymbolizer extends AbstractSymbolizer implements  Cloneable, o
             return;
         }
         this.graphic = Graphic.cast(graphic);
-    }
-
-    /**
-     * Accept a StyleVisitor to perform an operation on this symbolizer.
-     *
-     * @param visitor The StyleVisitor to accept.
-     */
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

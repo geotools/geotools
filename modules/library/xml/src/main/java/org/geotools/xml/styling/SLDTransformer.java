@@ -42,6 +42,9 @@ import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.style.*;
 import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.OtherText;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -50,32 +53,22 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.*;
-import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
+import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
-import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.UserLayer;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.xml.filter.FilterTransformer;
 import org.geotools.xml.transform.TransformerBase;
@@ -210,6 +203,7 @@ public class SLDTransformer extends TransformerBase {
         FilterTransformer.FilterTranslator filterTranslator;
 
         private boolean exportDefaultValues = false;
+        private Style[] styles;
 
         /** Translates into the default of prefix "sld" for "http://www.opengis.net/sld". */
         public SLDTranslator(ContentHandler handler) {
@@ -364,7 +358,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(PointPlacement pp) {
+        public void visit(org.geotools.api.style.PointPlacement pp) {
             start("LabelPlacement");
             start("PointPlacement");
 
@@ -380,7 +374,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Stroke stroke) {
+        public void visit(org.geotools.api.style.Stroke stroke) {
             start("Stroke");
 
             if (stroke.getGraphicFill() != null) {
@@ -402,7 +396,7 @@ public class SLDTransformer extends TransformerBase {
             encodeCssParam("stroke-width", stroke.getWidth(), 1.0);
             encodeCssParam("stroke-dashoffset", stroke.getDashOffset(), 0.0);
 
-            encodeStrokeDasharray(stroke.dashArray());
+            encodeStrokeDasharray(((Stroke) stroke).dashArray());
 
             end("Stroke");
         }
@@ -437,7 +431,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(LinePlacement lp) {
+        public void visit(org.geotools.api.style.LinePlacement lp) {
             start("LabelPlacement");
             start("LinePlacement");
             element("PerpendicularOffset", lp.getPerpendicularOffset());
@@ -446,7 +440,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(AnchorPoint ap) {
+        public void visit(org.geotools.api.style.AnchorPoint ap) {
             start("AnchorPoint");
             element("AnchorPointX", ap.getAnchorPointX());
             element("AnchorPointY", ap.getAnchorPointY());
@@ -454,7 +448,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(TextSymbolizer text) {
+        public void visit(org.geotools.api.style.TextSymbolizer text) {
             if (text == null) {
                 return;
             }
@@ -467,7 +461,7 @@ public class SLDTransformer extends TransformerBase {
 
             start("TextSymbolizer", atts);
 
-            encodeGeometryExpression(text.getGeometry());
+            encodeGeometryExpression(((TextSymbolizer) text).getGeometry());
 
             if (text.getLabel() != null) {
                 start("Label");
@@ -475,8 +469,9 @@ public class SLDTransformer extends TransformerBase {
                 end("Label");
             }
 
-            if ((text.fonts() != null) && (!text.fonts().isEmpty())) {
-                List<Font> fonts = text.fonts();
+            if ((((TextSymbolizer) text).fonts() != null)
+                    && (!((TextSymbolizer) text).fonts().isEmpty())) {
+                List<Font> fonts = ((TextSymbolizer) text).fonts();
                 if (areFontsUniform(fonts)) {
                     // go for standard encoding, SLD 1.0 does not allow more than one
                     // Font item in a TextSymbolizer
@@ -516,26 +511,23 @@ public class SLDTransformer extends TransformerBase {
                 text.getFill().accept(this);
             }
 
-            if (text instanceof TextSymbolizer2) {
-                TextSymbolizer2 text2 = (TextSymbolizer2) text;
-                if (text2.getGraphic() != null) visit(text2.getGraphic());
-                if (text2.getSnippet() != null) element("Snippet", text2.getSnippet());
-                if (text2.getFeatureDescription() != null)
-                    element("FeatureDescription", text2.getFeatureDescription());
-                OtherText otherText = text2.getOtherText();
-                if (otherText != null) {
-                    AttributesImpl otherTextAtts = new AttributesImpl();
-                    otherTextAtts.addAttribute("", "target", "target", "", otherText.getTarget());
-                    element("OtherText", otherText.getText(), null, otherTextAtts);
-                }
+            if (text.getGraphic() != null) visit(text.getGraphic());
+            if (text.getSnippet() != null) element("Snippet", text.getSnippet());
+            if (text.getFeatureDescription() != null)
+                element("FeatureDescription", text.getFeatureDescription());
+            OtherText otherText = text.getOtherText();
+            if (otherText != null) {
+                AttributesImpl otherTextAtts = new AttributesImpl();
+                otherTextAtts.addAttribute("", "target", "target", "", otherText.getTarget());
+                element("OtherText", otherText.getText(), null, otherTextAtts);
             }
 
             if (text.getPriority() != null) {
                 element("Priority", text.getPriority());
             }
 
-            if (text.getOptions() != null) {
-                encodeVendorOptions(text.getOptions());
+            if (((TextSymbolizer) text).getOptions() != null) {
+                encodeVendorOptions(((TextSymbolizer) text).getOptions());
             }
 
             end("TextSymbolizer");
@@ -585,7 +577,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(RasterSymbolizer raster) {
+        public void visit(org.geotools.api.style.RasterSymbolizer raster) {
             if (raster == null) {
                 return;
             }
@@ -598,12 +590,12 @@ public class SLDTransformer extends TransformerBase {
 
             start("RasterSymbolizer", atts);
 
-            encodeGeometryExpression(raster.getGeometry());
+            encodeGeometryExpression(((RasterSymbolizer) raster).getGeometry());
 
             element("Opacity", raster.getOpacity(), 1.0);
 
             if (raster.getChannelSelection() != null) {
-                final ChannelSelection cs = raster.getChannelSelection();
+                final ChannelSelection cs = (ChannelSelection) raster.getChannelSelection();
                 if (cs.getGrayChannel() != null) {
                     start("ChannelSelection");
                     SelectedChannelType gray = cs.getGrayChannel();
@@ -654,7 +646,7 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
 
-            ColorMap colorMap = raster.getColorMap();
+            ColorMap colorMap = (ColorMap) raster.getColorMap();
             if (colorMap != null
                     && colorMap.getColorMapEntries() != null
                     && colorMap.getColorMapEntries().length > 0) {
@@ -675,19 +667,19 @@ public class SLDTransformer extends TransformerBase {
                 end("ImageOutline");
             }
 
-            encodeVendorOptions(raster.getOptions());
+            encodeVendorOptions(((RasterSymbolizer) raster).getOptions());
 
             end("RasterSymbolizer");
         }
 
         @Override
-        public void visit(ColorMap colorMap) {
+        public void visit(org.geotools.api.style.ColorMap colorMap) {
             // The type of the ColorMap is stored in an attribute "type" and may store
             // string-values: "ramp", "intervals" or "values".
             AttributesImpl atts = new AttributesImpl();
             String typeString;
-            if (colorMap.getType() == ColorMapImpl.TYPE_INTERVALS) typeString = "intervals";
-            else if (colorMap.getType() == ColorMapImpl.TYPE_VALUES) typeString = "values";
+            if (colorMap.getType() == ColorMap.TYPE_INTERVALS) typeString = "intervals";
+            else if (colorMap.getType() == ColorMap.TYPE_VALUES) typeString = "values";
             else typeString = "ramp"; // Also the default in the parser
             if (!"ramp".equals(typeString)) {
                 atts.addAttribute("", "type", "type", "", typeString);
@@ -706,7 +698,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(ColorMapEntry colorEntry) {
+        public void visit(org.geotools.api.style.ColorMapEntry colorEntry) {
             if (colorEntry != null) {
                 AttributesImpl atts = new AttributesImpl();
                 atts.addAttribute(
@@ -731,7 +723,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Symbolizer sym) {
+        public void visit(org.geotools.api.style.Symbolizer sym) {
             try {
                 contentHandler.startElement("", "!--", "!--", NULL_ATTS);
                 chars("Unidentified Symbolizer " + sym.getClass());
@@ -742,7 +734,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(PolygonSymbolizer poly) {
+        public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
 
             // adds the uom attribute according to the OGC SE specification
             AttributesImpl atts = new AttributesImpl();
@@ -751,7 +743,7 @@ public class SLDTransformer extends TransformerBase {
                 atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
 
             start("PolygonSymbolizer", atts);
-            encodeGeometryExpression(poly.getGeometry());
+            encodeGeometryExpression(((PolygonSymbolizer) poly).getGeometry());
 
             if (poly.getFill() != null) {
                 poly.getFill().accept(this);
@@ -761,14 +753,14 @@ public class SLDTransformer extends TransformerBase {
                 poly.getStroke().accept(this);
             }
 
-            if (poly.getOptions() != null) {
-                encodeVendorOptions(poly.getOptions());
+            if (((PolygonSymbolizer) poly).getOptions() != null) {
+                encodeVendorOptions(((PolygonSymbolizer) poly).getOptions());
             }
             end("PolygonSymbolizer");
         }
 
         @Override
-        public void visit(ExternalGraphic exgr) {
+        public void visit(org.geotools.api.style.ExternalGraphic exgr) {
             start("ExternalGraphic");
 
             if (exgr.getURI() != null) {
@@ -786,31 +778,31 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(LineSymbolizer line) {
+        public void visit(org.geotools.api.style.LineSymbolizer line) {
 
             // adds the uom attribute according to the OGC SE specification
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = line.getUnitOfMeasure();
             if (uom != null)
                 atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
-
+            LineSymbolizer input = (LineSymbolizer) line;
             start("LineSymbolizer", atts);
-            encodeGeometryExpression(line.getGeometry());
+            encodeGeometryExpression(input.getGeometry());
 
             if (line.getStroke() != null) {
-                line.getStroke().accept(this);
+                input.getStroke().accept(this);
             }
-            if (line.getOptions() != null) {
-                encodeVendorOptions(line.getOptions());
+            if (input.getOptions() != null) {
+                encodeVendorOptions(input.getOptions());
             }
             if (line.getPerpendicularOffset() != null) {
-                element("PerpendicularOffset", line.getPerpendicularOffset());
+                element("PerpendicularOffset", input.getPerpendicularOffset());
             }
             end("LineSymbolizer");
         }
 
         @Override
-        public void visit(Fill fill) {
+        public void visit(org.geotools.api.style.Fill fill) {
             start("Fill");
 
             if (fill.getGraphicFill() != null) {
@@ -825,7 +817,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Rule rule) {
+        public void visit(org.geotools.api.style.Rule rule) {
             start("Rule");
             if (rule.getName() != null) element("Name", rule.getName());
             if (rule.getDescription() != null && rule.getDescription().getTitle() != null)
@@ -858,7 +850,7 @@ public class SLDTransformer extends TransformerBase {
                 element("MaxScaleDenominator", rule.getMaxScaleDenominator() + "");
             }
 
-            for (Symbolizer symbolizer : rule.symbolizers()) {
+            for (org.geotools.api.style.Symbolizer symbolizer : rule.symbolizers()) {
                 symbolizer.accept(this);
             }
 
@@ -870,7 +862,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Mark mark) {
+        public void visit(org.geotools.api.style.Mark mark) {
             start("Mark");
             if (mark.getWellKnownName() != null
                     && (!"square".equals(mark.getWellKnownName().evaluate(null))
@@ -890,8 +882,8 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(PointSymbolizer ps) {
-
+        public void visit(org.geotools.api.style.PointSymbolizer ps) {
+            PointSymbolizer input = (PointSymbolizer) ps;
             // adds the uom attribute according to the OGC SE specification
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = ps.getUnitOfMeasure();
@@ -900,18 +892,18 @@ public class SLDTransformer extends TransformerBase {
 
             start("PointSymbolizer", atts);
 
-            encodeGeometryExpression(ps.getGeometry());
+            encodeGeometryExpression(input.getGeometry());
 
-            ps.getGraphic().accept(this);
+            input.getGraphic().accept(this);
 
-            if (ps.getOptions() != null) {
-                encodeVendorOptions(ps.getOptions());
+            if (input.getOptions() != null) {
+                encodeVendorOptions(input.getOptions());
             }
             end("PointSymbolizer");
         }
 
         @Override
-        public void visit(Halo halo) {
+        public void visit(org.geotools.api.style.Halo halo) {
             start("Halo");
             if (halo.getRadius() != null) {
                 encodeValue("Radius", null, halo.getRadius(), null);
@@ -923,7 +915,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Graphic gr) {
+        public void visit(org.geotools.api.style.Graphic gr) {
             start("Graphic");
 
             for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
@@ -948,7 +940,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(StyledLayerDescriptor sld) {
+        public void visit(org.geotools.api.style.StyledLayerDescriptor sld) {
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute("", "version", "version", "", "1.0.0");
             start("StyledLayerDescriptor", atts);
@@ -963,7 +955,7 @@ public class SLDTransformer extends TransformerBase {
                 element("Abstract", sld.getAbstract()); // optional
             }
 
-            StyledLayer[] layers = sld.getStyledLayers();
+            org.geotools.api.style.StyledLayer[] layers = sld.getStyledLayers();
 
             for (StyledLayer layer : layers) {
                 if (layer instanceof NamedLayer) {
@@ -980,22 +972,22 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(NamedLayer layer) {
+        public void visit(org.geotools.api.style.NamedLayer layer) {
             start("NamedLayer");
             element("Name", layer.getName());
 
-            FeatureTypeConstraint[] lfc = layer.getLayerFeatureConstraints();
+            org.geotools.api.style.FeatureTypeConstraint[] lfc = layer.getLayerFeatureConstraints();
             if ((lfc != null) && lfc.length > 0) {
                 start("LayerFeatureConstraints"); // optional
-                for (FeatureTypeConstraint featureTypeConstraint : lfc) {
+                for (org.geotools.api.style.FeatureTypeConstraint featureTypeConstraint : lfc) {
                     visit(featureTypeConstraint);
                 }
                 end("LayerFeatureConstraints");
             }
 
-            Style[] styles = layer.getStyles();
+            org.geotools.api.style.Style[] styles = layer.getStyles();
 
-            for (Style style : styles) {
+            for (org.geotools.api.style.Style style : styles) {
                 visit(style);
             }
 
@@ -1003,24 +995,24 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(UserLayer layer) {
+        public void visit(org.geotools.api.style.UserLayer layer) {
             start("UserLayer");
 
             if ((layer.getName() != null) && (layer.getName().length() > 0)) {
                 element("Name", layer.getName()); // optional
             }
 
-            DataStore inlineFDS = layer.getInlineFeatureDatastore();
+            DataStore inlineFDS = ((UserLayer) layer).getInlineFeatureDatastore();
             if (inlineFDS != null) {
                 visitInlineFeatureType(inlineFDS, layer.getInlineFeatureType());
             } else if (layer.getRemoteOWS() != null) {
-                visit(layer.getRemoteOWS());
+                visit((org.geotools.api.style.NamedLayer) layer.getRemoteOWS());
             }
 
             start("LayerFeatureConstraints"); // required
-            FeatureTypeConstraint[] lfc = layer.getLayerFeatureConstraints();
+            org.geotools.api.style.FeatureTypeConstraint[] lfc = layer.getLayerFeatureConstraints();
             if ((lfc != null) && lfc.length > 0) {
-                for (FeatureTypeConstraint featureTypeConstraint : lfc) {
+                for (org.geotools.api.style.FeatureTypeConstraint featureTypeConstraint : lfc) {
                     visit(featureTypeConstraint);
                 }
             } else { // create an empty FeatureTypeConstraint, since it is required
@@ -1029,9 +1021,9 @@ public class SLDTransformer extends TransformerBase {
             }
             end("LayerFeatureConstraints");
 
-            Style[] styles = layer.getUserStyles();
+            org.geotools.api.style.Style[] styles = layer.getUserStyles();
 
-            for (Style style : styles) {
+            for (org.geotools.api.style.Style style : styles) {
                 visit(style);
             }
 
@@ -1118,7 +1110,7 @@ public class SLDTransformer extends TransformerBase {
             end("InlineFeature");
         }
 
-        public void visit(RemoteOWS remoteOWS) {
+        public void visit(org.geotools.api.style.RemoteOWS remoteOWS) {
             start("RemoteOWS");
             element("Service", remoteOWS.getService());
             element("OnlineResource", remoteOWS.getOnlineResource());
@@ -1126,16 +1118,16 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(FeatureTypeConstraint ftc) {
+        public void visit(org.geotools.api.style.FeatureTypeConstraint ftc) {
             start("FeatureTypeConstraint");
 
             if (ftc != null) {
                 element("FeatureTypeName", ftc.getFeatureTypeName());
                 visit(ftc.getFilter());
 
-                Extent[] extent = ftc.getExtents();
+                org.geotools.api.style.Extent[] extent = ftc.getExtents();
 
-                for (Extent value : extent) {
+                for (org.geotools.api.style.Extent value : extent) {
                     visit(value);
                 }
             }
@@ -1143,7 +1135,7 @@ public class SLDTransformer extends TransformerBase {
             end("FeatureTypeConstraint");
         }
 
-        public void visit(Extent extent) {
+        public void visit(org.geotools.api.style.Extent extent) {
             start("Extent");
             element("Name", extent.getName());
             element("Value", extent.getValue());
@@ -1161,7 +1153,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Style style) {
+        public void visit(org.geotools.api.style.Style style) {
             if (style instanceof NamedStyle) {
                 start("NamedStyle");
                 element("Name", style.getName());
@@ -1177,7 +1169,7 @@ public class SLDTransformer extends TransformerBase {
                 }
                 if (style.getDescription() != null && style.getDescription().getAbstract() != null)
                     element("Abstract", style.getDescription().getAbstract());
-                Fill background = style.getBackground();
+                Fill background = (Fill) style.getBackground();
                 if (background != null) {
                     start("Background");
 
@@ -1191,7 +1183,8 @@ public class SLDTransformer extends TransformerBase {
                     encodeCssParam("fill-opacity", background.getOpacity(), 1.0);
                     end("Background");
                 }
-                for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
+                for (org.geotools.api.style.FeatureTypeStyle featureTypeStyle :
+                        style.featureTypeStyles()) {
                     visit(featureTypeStyle);
                 }
                 end("UserStyle");
@@ -1199,7 +1192,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(FeatureTypeStyle fts) {
+        public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
             start("FeatureTypeStyle");
 
             if ((fts.getName() != null) && (fts.getName().length() > 0)) {
@@ -1227,7 +1220,7 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
 
-            for (Rule rule : fts.rules()) {
+            for (org.geotools.api.style.Rule rule : fts.rules()) {
                 rule.accept(this);
             }
 
@@ -1237,7 +1230,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(Displacement dis) {
+        public void visit(org.geotools.api.style.Displacement dis) {
             if (dis == null) {
                 return;
             }
@@ -1343,7 +1336,8 @@ public class SLDTransformer extends TransformerBase {
             end("VendorOption");
         }
 
-        public void encode(Style[] styles) {
+        public void encodeStyles(Style[] styles) {
+            this.styles = styles;
             try {
                 contentHandler.startDocument();
 
@@ -1363,7 +1357,7 @@ public class SLDTransformer extends TransformerBase {
             }
         }
 
-        public void encode(StyledLayerDescriptor sld) {
+        public void encodeStyles(StyledLayerDescriptor sld) {
             try {
                 contentHandler.startDocument();
                 sld.accept(this);
@@ -1376,9 +1370,9 @@ public class SLDTransformer extends TransformerBase {
         @Override
         public void encode(Object o) throws IllegalArgumentException {
             if (o instanceof StyledLayerDescriptor) {
-                encode((StyledLayerDescriptor) o);
+                encodeStyles((StyledLayerDescriptor) o);
             } else if (o instanceof Style[]) {
-                encode((Style[]) o);
+                encodeStyles((Style[]) o);
             } else {
                 Class<?> c = o.getClass();
 
@@ -1395,7 +1389,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(ContrastEnhancement ce) {
+        public void visit(org.geotools.api.style.ContrastEnhancement ce) {
             if (ce == null) return;
 
             start("ContrastEnhancement");
@@ -1425,7 +1419,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(ImageOutline outline) {
+        public void visit(org.geotools.api.style.ImageOutline outline) {
             if (outline == null) return;
             start("ImageOutline");
             outline.getSymbolizer().accept(this);
@@ -1433,35 +1427,35 @@ public class SLDTransformer extends TransformerBase {
         }
 
         @Override
-        public void visit(ChannelSelection cs) {
+        public void visit(org.geotools.api.style.ChannelSelection cs) {
             if (cs == null) return;
             start("ChannelSelection");
-            SelectedChannelType[] sct = cs.getRGBChannels();
+            SelectedChannelType[] sct = (SelectedChannelType[]) cs.getRGBChannels();
             if (sct == null && cs.getGrayChannel() != null) {
-                sct = new SelectedChannelType[] {cs.getGrayChannel()};
+                sct = new SelectedChannelType[] {(SelectedChannelType) cs.getGrayChannel()};
             }
             for (int i = 0; sct != null && i < sct.length; i++) visit(sct[i]);
             end("ChannelSelection");
         }
 
         @Override
-        public void visit(OverlapBehavior ob) {
+        public void visit(org.geotools.api.style.OverlapBehavior ob) {
             start("OverlapBehavior");
-            final String pn = (String) ob.getValue();
+            final String pn = (String) ob.name();
             start(pn);
             end(pn);
             end("OverlapBehavior");
         }
 
         @Override
-        public void visit(SelectedChannelType sct) {
+        public void visit(org.geotools.api.style.SelectedChannelType sct) {
             element("SourceChannelName", sct.getChannelName());
-            final ContrastEnhancement ce = sct.getContrastEnhancement();
+            final ContrastEnhancement ce = (ContrastEnhancement) sct.getContrastEnhancement();
             if (ce != null) ce.accept(this);
         }
 
         @Override
-        public void visit(ShadedRelief sr) {
+        public void visit(org.geotools.api.style.ShadedRelief sr) {
             start("ShadedRelief");
             // brightnessonly
             if (sr.isBrightnessOnly()) element("BrightnessOnly", "true");

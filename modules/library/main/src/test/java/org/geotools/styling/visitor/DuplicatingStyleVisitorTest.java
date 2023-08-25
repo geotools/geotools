@@ -31,16 +31,13 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.OverlapBehavior;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.AnchorPoint;
-import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.ExternalGraphic;
@@ -50,7 +47,6 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
-import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
@@ -67,7 +63,6 @@ import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.junit.Assert;
 import org.junit.Before;
@@ -303,7 +298,7 @@ public class DuplicatingStyleVisitorTest {
     }
 
     @Test
-    public void testTextSymbolizer() {
+    public void testTextSymbolizer2() {
         TextSymbolizer textSymb = sf.createTextSymbolizer();
         Expression offset = ff.literal(10);
         textSymb.setLabelPlacement(sf.createLinePlacement(offset));
@@ -508,11 +503,10 @@ public class DuplicatingStyleVisitorTest {
     public void testGraphic() {
         Graphic graphic = sf.getDefaultGraphic();
         graphic.graphicalSymbols().add(sf.getDefaultMark());
-
+        assertEquals(2, graphic.graphicalSymbols().size());
         Graphic clone = visitor.copy(graphic);
         assertCopy(graphic, clone);
-        assertEqualsContract(clone, graphic);
-        assertEquals(clone.graphicalSymbols().size(), graphic.graphicalSymbols().size());
+        assertEqualsContract(graphic, clone);
 
         Graphic notEq = sf.getDefaultGraphic();
         assertEqualsContract(clone, notEq, graphic);
@@ -566,10 +560,21 @@ public class DuplicatingStyleVisitorTest {
     }
 
     @Test
-    public void testMark() {
+    public void testCircleMark() {
         Mark mark = sf.getCircleMark();
         Mark clone = visitor.copy(mark);
         assertCopy(mark, clone);
+        assertEqualsContract(mark, clone);
+        Mark notEq = sf.getStarMark();
+        assertEqualsContract(clone, notEq, mark);
+    }
+
+    @Test
+    public void testSquareMark() {
+        Mark mark = sf.getSquareMark();
+        Mark clone = visitor.copy(mark);
+        assertCopy(mark, clone);
+        assertEqualsContract(mark, clone);
 
         Mark notEq = sf.getStarMark();
         assertEqualsContract(clone, notEq, mark);
@@ -596,7 +601,7 @@ public class DuplicatingStyleVisitorTest {
         Fill fill = sf.getDefaultFill();
         Fill clone = visitor.copy(fill);
         assertCopy(fill, clone);
-
+        assertEqualsContract(fill, clone);
         Fill notEq = sf.createFill(ff.literal("#FF0000"));
         assertEqualsContract(clone, notEq, fill);
     }
@@ -604,9 +609,9 @@ public class DuplicatingStyleVisitorTest {
     @Test
     public void testStroke() {
         Stroke stroke = sf.getDefaultStroke();
-        Stroke clone = visitor.copy(stroke);
+        Stroke clone = (Stroke) visitor.copy(stroke);
         assertCopy(stroke, clone);
-
+        assertEqualsContract(stroke, clone);
         Stroke notEq = sf.createStroke(ff.literal("#FF0000"), ff.literal(10));
         assertEqualsContract(clone, notEq, stroke);
 
@@ -810,13 +815,13 @@ public class DuplicatingStyleVisitorTest {
     }
 
     /**
-     * Test that {@link TextSymbolizer2} is correctly duplicated.
+     * Test that {@link TextSymbolizer} is correctly duplicated.
      *
      * @author Stefan Tzeggai, June 29th 2010
      */
     @Test
-    public void testTextSymbolizer2() {
-        TextSymbolizer2 symb = (TextSymbolizer2) sf.createTextSymbolizer();
+    public void testTextSymbolizer() {
+        TextSymbolizer symb = (TextSymbolizer) sf.createTextSymbolizer();
 
         // Create a Graphic with two recognizable values
         Graphic gr = new Graphic(ff);
@@ -833,35 +838,35 @@ public class DuplicatingStyleVisitorTest {
         symb.setOtherText(otherText);
 
         // copy it
-        TextSymbolizer2 copy = (TextSymbolizer2) visitor.copy(symb);
+        TextSymbolizer copy = (TextSymbolizer) visitor.copy(symb);
 
         // compare it
         assertEquals(
-                "Graphic of TextSymbolizer2 has not been correctly duplicated",
+                "Graphic of TextSymbolizer has not been correctly duplicated",
                 gr,
                 copy.getGraphic());
         assertEquals(
-                "Graphic of TextSymbolizer2 has not been correctly duplicated",
+                "Graphic of TextSymbolizer has not been correctly duplicated",
                 gr.getOpacity(),
                 copy.getGraphic().getOpacity());
         assertEquals(
-                "Graphic of TextSymbolizer2 has not been correctly duplicated",
+                "Graphic of TextSymbolizer has not been correctly duplicated",
                 gr.getSize(),
                 copy.getGraphic().getSize());
         assertEquals(
-                "Snippet of TextSymbolizer2 has not been correctly duplicated",
+                "Snippet of TextSymbolizer has not been correctly duplicated",
                 snippet,
                 copy.getSnippet());
         assertEquals(
-                "FeatureDescription of TextSymbolizer2 has not been correctly duplicated",
+                "FeatureDescription of TextSymbolizer has not been correctly duplicated",
                 fD,
                 copy.getFeatureDescription());
         assertEquals(
-                "OtherText of TextSymbolizer2 has not been correctly duplicated",
+                "OtherText of TextSymbolizer has not been correctly duplicated",
                 otherText.getTarget(),
                 copy.getOtherText().getTarget());
         assertEquals(
-                "OtherText of TextSymbolizer2 has not been correctly duplicated",
+                "OtherText of TextSymbolizer has not been correctly duplicated",
                 otherText.getText(),
                 copy.getOtherText().getText());
     }

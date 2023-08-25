@@ -26,6 +26,8 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -40,13 +42,10 @@ import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.source.MBSource;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -358,7 +357,7 @@ public class MBStyle {
      * @return StyledLayerDescriptor
      */
     public StyledLayerDescriptor transform() {
-        StyleFactory sf = parse.getStyleFactory();
+        StyleFactory sf = (StyleFactory) parse.getStyleFactory();
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
         List<MBLayer> layers = layers();
@@ -367,7 +366,7 @@ public class MBStyle {
         }
 
         // TODO: Just track last NamedLayer
-        NamedLayer currentNamedLayer = null;
+        org.geotools.styling.NamedLayer currentNamedLayer = null;
         String currentName = null;
         BackgroundMBLayer background = null;
         for (MBLayer layer : layers) {
@@ -451,7 +450,7 @@ public class MBStyle {
             FilterFactory ff = parse.getFilterFactory();
             if (sld.getStyledLayers().length > 0) {
                 NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-                Style firstStyle = layer.getStyles()[0];
+                Style firstStyle = (Style) layer.getStyles()[0];
                 firstStyle.setBackground(background.getFill(this));
             } else {
                 // odd situation, the only spec is a background layer? build a fake SLD layer then
@@ -472,7 +471,7 @@ public class MBStyle {
             FilterFactory ff) {
         // Background does not use a source; construct a user later with a world extent
         // inline feature so that we still have a valid SLD.
-        UserLayer userLayer = sf.createUserLayer();
+        org.geotools.styling.UserLayer userLayer = sf.createUserLayer();
         Style style = sf.createStyle();
 
         final SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();

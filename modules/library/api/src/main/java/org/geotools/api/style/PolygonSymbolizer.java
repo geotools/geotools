@@ -53,12 +53,4 @@ public interface PolygonSymbolizer extends Symbolizer {
      * @return Expression
      */
     Expression getPerpendicularOffset();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

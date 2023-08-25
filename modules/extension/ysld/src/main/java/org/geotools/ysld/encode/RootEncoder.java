@@ -23,11 +23,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.RemoteOWS;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
 import org.geotools.api.style.StyledLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
+import org.geotools.styling.SLD;
+import org.geotools.styling.Style;
 
 /**
  * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and
@@ -58,7 +58,7 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         put("sld-title", sld.getTitle());
         put("sld-abstract", sld.getAbstract());
 
-        Style style = SLD.defaultStyle(sld);
+        Style style = SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld);
 
         StyledLayer layer = findParentLayer(sld, style);
         encode(layer);
@@ -106,9 +106,13 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
                             public boolean test(StyledLayer styledLayer) {
                                 List<Style> styles;
                                 if (styledLayer instanceof NamedLayer)
-                                    styles = ((NamedLayer) styledLayer).styles();
+                                    styles =
+                                            ((org.geotools.styling.NamedLayer) styledLayer)
+                                                    .styles();
                                 else if (styledLayer instanceof UserLayer) {
-                                    styles = ((UserLayer) styledLayer).userStyles();
+                                    styles =
+                                            ((org.geotools.styling.UserLayer) styledLayer)
+                                                    .userStyles();
                                 } else {
                                     styles = Collections.emptyList();
                                 }

@@ -32,10 +32,11 @@ import org.geotools.util.factory.GeoTools;
  * @author Ian Turton
  * @version $Id$
  */
-public  class AnchorPoint implements org.geotools.api.style.AnchorPoint, Cloneable {
+public class AnchorPoint implements org.geotools.api.style.AnchorPoint, Cloneable {
     /** The logger for the default core module. */
     protected static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AnchorPoint.class);
+
     protected FilterFactory filterFactory;
     protected Expression anchorPointX = null;
     protected Expression anchorPointY = null;
@@ -112,17 +113,6 @@ public  class AnchorPoint implements org.geotools.api.style.AnchorPoint, Cloneab
     }
 
     /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor   the style visitor
-     * @param extraData
-     */
-    @Override
-    public Object accept(StyleVisitor visitor, Object extraData) {
-        return visitor.visit((org.geotools.api.style.AnchorPoint)this, extraData);
-    }
-
-    /**
      * Setter for property anchorPointY.
      *
      * @param anchorPointY New value of property anchorPointY.
@@ -139,10 +129,6 @@ public  class AnchorPoint implements org.geotools.api.style.AnchorPoint, Cloneab
     public void getAnchorPointY(double x) {
         this.anchorPointY = filterFactory.literal(x);
     }
-
-
-
-
 
     static AnchorPoint DEFAULT =
             new AnchorPoint() {
@@ -161,17 +147,6 @@ public  class AnchorPoint implements org.geotools.api.style.AnchorPoint, Cloneab
                 }
 
                 @Override
-                public void accept(org.geotools.api.style.StyleVisitor visitor) {
-                    cannotModifyConstant();
-                }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object data) {
-                    cannotModifyConstant();
-                    return null;
-                }
-
-                @Override
                 public Expression getAnchorPointX() {
                     return ConstantExpression.constant(0.5);
                 }
@@ -181,8 +156,32 @@ public  class AnchorPoint implements org.geotools.api.style.AnchorPoint, Cloneab
                     return ConstantExpression.constant(0.5);
                 }
             };
+    static AnchorPoint NULL =
+            new AnchorPoint() {
+                private void cannotModifyConstant() {
+                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
+                }
 
+                @Override
+                public void setAnchorPointX(Expression x) {
+                    cannotModifyConstant();
+                }
 
+                @Override
+                public void setAnchorPointY(Expression y) {
+                    cannotModifyConstant();
+                }
+
+                @Override
+                public Expression getAnchorPointX() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getAnchorPointY() {
+                    return ConstantExpression.NULL;
+                }
+            };
 
     /**
      * calls the visit method of a StyleVisitor

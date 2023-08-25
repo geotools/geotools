@@ -17,7 +17,6 @@
 package org.geotools.api.style;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.StyleVisitor;
 
 /**
  * A basic interface for objects which can hold color map entries.

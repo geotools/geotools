@@ -60,6 +60,7 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
+import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -68,8 +69,10 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
@@ -117,7 +120,7 @@ public class SLDStyleTest {
         Assert.assertTrue(style.isDefault());
 
         org.geotools.api.style.FeatureTypeStyle fts = style.featureTypeStyles().get(0);
-        Rule rule = fts.rules().get(0);
+        Rule rule = (Rule) fts.rules().get(0);
         LineSymbolizer lineSym = (LineSymbolizer) rule.symbolizers().get(0);
         Assert.assertEquals(
                 4, lineSym.getStroke().getWidth().evaluate(null, Number.class).intValue());
@@ -234,7 +237,7 @@ public class SLDStyleTest {
     private Stroke validateDashArrayStyle(StyledLayerDescriptor sld) {
         Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
-        List<org.geotools.api.style.FeatureTypeStyle> fts = style.featureTypeStyles();
+        List<FeatureTypeStyle> fts = style.featureTypeStyles();
         Assert.assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         Assert.assertEquals(1, rules.size());
@@ -254,7 +257,7 @@ public class SLDStyleTest {
     private void validateDynamicDashArrayStyle(StyledLayerDescriptor sld) {
         Assert.assertEquals(1, ((UserLayer) sld.getStyledLayers()[0]).getUserStyles().length);
         Style style = ((UserLayer) sld.getStyledLayers()[0]).getUserStyles()[0];
-        List<org.geotools.api.style.FeatureTypeStyle> fts = style.featureTypeStyles();
+        List<FeatureTypeStyle> fts = style.featureTypeStyles();
         Assert.assertEquals(1, fts.size());
         List<Rule> rules = fts.get(0).rules();
         Assert.assertEquals(1, rules.size());
@@ -340,7 +343,7 @@ public class SLDStyleTest {
                                 .get(0);
 
         Assert.assertTrue(rs.getColorMap().getExtendedColors());
-        Assert.assertEquals(rs.getColorMap().getType(), ColorMapImpl.TYPE_RAMP);
+        Assert.assertEquals(rs.getColorMap().getType(), ColorMap.TYPE_RAMP);
     }
 
     @Test
@@ -459,11 +462,11 @@ public class SLDStyleTest {
         Rule rule1 = sb.createRule(sb.createLineSymbolizer(new Color(0), 2));
         // note: symbolizers containing a fill will likely fail, as the SLD
         // transformation loses a little data (background colour?)
-        org.geotools.api.style.FeatureTypeStyle fts1 = sf.createFeatureTypeStyle(rule1);
+        FeatureTypeStyle fts1 = (FeatureTypeStyle) sf.createFeatureTypeStyle(rule1);
         fts1.semanticTypeIdentifiers().add(SemanticType.valueOf("generic:geometry"));
         style.featureTypeStyles().add(fts1);
-        layer.setUserStyles(style);
-        sld.setStyledLayers(layer);
+        layer.addUserStyle(style);
+        sld.addStyledLayer(layer);
 
         // convert it to XML
         SLDTransformer aTransformer = new SLDTransformer();
@@ -558,7 +561,7 @@ public class SLDStyleTest {
         final int expectedLayerCount = 3;
         final String[] layerNames = {"Rivers", "Roads", "Houses"};
         final String[] namedStyleNames = {"CenterLine", "CenterLine", "Outline"};
-        StyledLayer[] layers = sld.getStyledLayers();
+        org.geotools.api.style.StyledLayer[] layers = sld.getStyledLayers();
 
         Assert.assertEquals(expectedLayerCount, layers.length);
 
@@ -581,7 +584,8 @@ public class SLDStyleTest {
         for (int i = 0; i < expectedLayerCount; i++) {
             NamedLayer layer = (NamedLayer) layers[i];
             if (layer.getName().equals("Rivers")) {
-                FeatureTypeConstraint[] featureTypeConstraints = layer.getLayerFeatureConstraints();
+                org.geotools.api.style.FeatureTypeConstraint[] featureTypeConstraints =
+                        layer.getLayerFeatureConstraints();
                 final int featureTypeConstraintCount = 1;
                 Assert.assertEquals(featureTypeConstraintCount, featureTypeConstraints.length);
                 Filter filter = featureTypeConstraints[0].getFilter();
@@ -609,7 +613,7 @@ public class SLDStyleTest {
 
         final int expectedLayerCount = 4;
 
-        StyledLayer[] layers = sld.getStyledLayers();
+        org.geotools.api.style.StyledLayer[] layers = sld.getStyledLayers();
 
         Assert.assertEquals(expectedLayerCount, layers.length);
         Assert.assertTrue(layers[0] instanceof NamedLayer);
@@ -708,7 +712,7 @@ public class SLDStyleTest {
         Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
         final Rule rule = styles[0].featureTypeStyles().get(0).rules().get(0);
         Assert.assertEquals(1, rule.symbolizers().size());
-        TextSymbolizer2 ts = (TextSymbolizer2) rule.symbolizers().get(0);
+        TextSymbolizer ts = (TextSymbolizer) rule.symbolizers().get(0);
 
         // abstract == property name
         Assert.assertEquals("propertyOne", ((PropertyName) ts.getSnippet()).getPropertyName());
@@ -738,7 +742,7 @@ public class SLDStyleTest {
         assertLiteral(11, displacement.getDisplacementX());
         assertLiteral(8, displacement.getDisplacementY());
 
-        AnchorPoint anchorPoint = graphic.getAnchorPoint();
+        AnchorPoint anchorPoint = (AnchorPoint) graphic.getAnchorPoint();
         Assert.assertNotNull(displacement);
         assertLiteral(0, anchorPoint.getAnchorPointX());
         assertLiteral(1, anchorPoint.getAnchorPointY());
@@ -1026,7 +1030,7 @@ public class SLDStyleTest {
     public void testMultipleFonts() throws Exception {
         Style[] styles = getStyles("multifont.sld");
         Assert.assertEquals(1, styles.length);
-        List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
+        List<FeatureTypeStyle> featureTypeStyles = styles[0].featureTypeStyles();
         Assert.assertEquals(1, featureTypeStyles.size());
         List<Rule> rules = featureTypeStyles.get(0).rules();
         Assert.assertEquals(1, rules.size());

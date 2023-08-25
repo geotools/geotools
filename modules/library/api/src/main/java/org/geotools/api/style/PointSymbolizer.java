@@ -27,12 +27,4 @@ public interface PointSymbolizer extends Symbolizer {
      * @return The Graphic to be used when drawing a point.
      */
     Graphic getGraphic();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

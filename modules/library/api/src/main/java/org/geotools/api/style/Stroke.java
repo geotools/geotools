@@ -108,12 +108,5 @@ public interface Stroke {
      */
     Expression getDashOffset();
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
     void accept(org.geotools.api.style.StyleVisitor visitor);
 }

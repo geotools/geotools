@@ -42,12 +42,4 @@ public interface LineSymbolizer extends Symbolizer {
      * @return Expression
      */
     Expression getPerpendicularOffset();
-
-    /**
-     * Calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

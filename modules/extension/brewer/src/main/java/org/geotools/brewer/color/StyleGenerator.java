@@ -122,7 +122,7 @@ public class StyleGenerator {
             throws IllegalFilterException {
         // init nulls
         if (defaultStroke == null) {
-            defaultStroke = sb.createStroke();
+            defaultStroke = (Stroke) sb.createStroke();
         }
 
         // answer goes here

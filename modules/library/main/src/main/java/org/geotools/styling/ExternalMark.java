@@ -18,14 +18,13 @@ package org.geotools.styling;
 
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.StyleVisitor;
 
 /**
  * Default implementation of ExternalMark.
  *
  * @version $Id$
  */
-public class ExternalMark implements org.geotools.api.style.ExternalMark{
+public class ExternalMark implements org.geotools.api.style.ExternalMark {
 
     private OnLineResource onlineResource;
     private Icon inlineContent;
@@ -66,11 +65,6 @@ public class ExternalMark implements org.geotools.api.style.ExternalMark{
     @Override
     public OnLineResource getOnlineResource() {
         return onlineResource;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object extraData) {
-        return visitor.visit(this, extraData);
     }
 
     public void setInlineContent(Icon inline) {

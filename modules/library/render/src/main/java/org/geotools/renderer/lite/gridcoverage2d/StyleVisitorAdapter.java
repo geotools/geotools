@@ -16,39 +16,9 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import org.geotools.api.style.*;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.api.style.ImageOutline;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.api.style.NamedLayer;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.api.style.StyleVisitor;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.api.style.UserLayer;
 
 /**
  * Simple empty implementation for the {@link StyleVisitor} interface.
@@ -113,7 +83,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Style)
      */
     @Override
-    public void visit(Style style) {
+    public void visit(org.geotools.api.style.Style style) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Style)"));
     }
@@ -124,7 +94,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Rule)
      */
     @Override
-    public void visit(Rule rule) {
+    public void visit(org.geotools.api.style.Rule rule) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Rule)"));
     }
@@ -135,7 +105,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
      */
     @Override
-    public void visit(FeatureTypeStyle fts) {
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeStyle)"));
     }
@@ -146,7 +116,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Fill)
      */
     @Override
-    public void visit(Fill fill) {
+    public void visit(org.geotools.api.style.Fill fill) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Fill)"));
     }
@@ -157,7 +127,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Stroke)
      */
     @Override
-    public void visit(Stroke stroke) {
+    public void visit(org.geotools.api.style.Stroke stroke) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Stroke)"));
@@ -169,7 +139,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Symbolizer)
      */
     @Override
-    public void visit(Symbolizer sym) {
+    public void visit(org.geotools.api.style.Symbolizer sym) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Symbolizer)"));
     }
@@ -180,7 +150,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
      */
     @Override
-    public void visit(PointSymbolizer ps) {
+    public void visit(org.geotools.api.style.PointSymbolizer ps) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointSymbolizer)"));
     }
@@ -191,7 +161,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
      */
     @Override
-    public void visit(LineSymbolizer line) {
+    public void visit(org.geotools.api.style.LineSymbolizer line) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LineSymbolizer)"));
     }
@@ -202,7 +172,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
      */
     @Override
-    public void visit(PolygonSymbolizer poly) {
+    public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PolygonSymbolizer)"));
@@ -214,7 +184,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     @Override
-    public void visit(TextSymbolizer text) {
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(TextSymbolizer)"));
@@ -226,7 +196,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.RasterSymbolizer)
      */
     @Override
-    public void visit(RasterSymbolizer raster) {
+    public void visit(org.geotools.api.style.RasterSymbolizer raster) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(RasterSymbolizer)"));
     }
@@ -237,7 +207,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Graphic)
      */
     @Override
-    public void visit(Graphic gr) {
+    public void visit(org.geotools.api.style.Graphic gr) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Graphic)"));
     }
@@ -248,7 +218,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Mark)
      */
     @Override
-    public void visit(Mark mark) {
+    public void visit(org.geotools.api.style.Mark mark) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Mark)"));
     }
@@ -259,7 +229,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
      */
     @Override
-    public void visit(ExternalGraphic exgr) {
+    public void visit(org.geotools.api.style.ExternalGraphic exgr) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ExternalGraphic)"));
     }
@@ -270,7 +240,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.PointPlacement)
      */
     @Override
-    public void visit(PointPlacement pp) {
+    public void visit(org.geotools.api.style.PointPlacement pp) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointPlacement)"));
     }
@@ -281,7 +251,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
      */
     @Override
-    public void visit(AnchorPoint ap) {
+    public void visit(org.geotools.api.style.AnchorPoint ap) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(AnchorPoint)"));
     }
@@ -292,7 +262,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Displacement)
      */
     @Override
-    public void visit(Displacement dis) {
+    public void visit(org.geotools.api.style.Displacement dis) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Displacement)"));
     }
@@ -303,7 +273,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.LinePlacement)
      */
     @Override
-    public void visit(LinePlacement lp) {
+    public void visit(org.geotools.api.style.LinePlacement lp) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LinePlacement)"));
     }
@@ -314,7 +284,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.Halo)
      */
     @Override
-    public void visit(Halo halo) {
+    public void visit(org.geotools.api.style.Halo halo) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Halo)"));
     }
@@ -325,7 +295,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ColorMap)
      */
     @Override
-    public void visit(ColorMap colorMap) {
+    public void visit(org.geotools.api.style.ColorMap colorMap) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapTransform)"));
     }
@@ -336,7 +306,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ColorMapEntry)
      */
     @Override
-    public void visit(ColorMapEntry colorMapEntry) {
+    public void visit(org.geotools.api.style.ColorMapEntry colorMapEntry) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapEntry)"));
     }
@@ -346,7 +316,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ContrastEnhancement)
      */
     @Override
-    public void visit(ContrastEnhancement ce) {
+    public void visit(org.geotools.api.style.ContrastEnhancement ce) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ContrastEnhancement)"));
     }
@@ -356,7 +326,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ChannelSelection)
      */
     @Override
-    public void visit(ChannelSelection cs) {
+    public void visit(org.geotools.api.style.ChannelSelection cs) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ChannelSelection)"));
@@ -367,7 +337,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.SelectedChannelType)
      */
     @Override
-    public void visit(SelectedChannelType sct) {
+    public void visit(org.geotools.api.style.SelectedChannelType sct) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(SelectedChannelType)"));
@@ -378,7 +348,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.OverlapBehavior)
      */
     @Override
-    public void visit(OverlapBehavior ob) {
+    public void visit(org.geotools.api.style.OverlapBehavior ob) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(OverlapBehavior)"));
@@ -389,7 +359,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.styling.ShadedRelief)
      */
     @Override
-    public void visit(ShadedRelief sr) {
+    public void visit(org.geotools.api.style.ShadedRelief sr) {
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ShadedRelief)"));
     }
@@ -399,7 +369,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
      * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ImageOutline)
      */
     @Override
-    public void visit(ImageOutline io) {
+    public void visit(org.geotools.api.style.ImageOutline io) {
 
         throw new UnsupportedOperationException(
                 Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ImageOutline)"));

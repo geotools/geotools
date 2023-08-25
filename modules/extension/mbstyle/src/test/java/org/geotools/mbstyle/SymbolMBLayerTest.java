@@ -39,7 +39,6 @@ import org.geotools.styling.Font;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -132,7 +131,7 @@ public class SymbolMBLayerTest {
         assertEquals(0, testLayerDefault.getTextRotate().intValue());
         // Default values from FeatureTypeStyle transform
         Rule r = featureTypeDefaults.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
         PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
         assertEquals("0.0", pp.getRotation().toString());
     }
@@ -143,7 +142,7 @@ public class SymbolMBLayerTest {
         assertEquals(10, testLayer.getTextRotate().intValue());
         // Test values from FeatureTypeStyle transform
         Rule r = featureTypeTestValues.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
         PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
         assertEquals("10", pp.getRotation().toString());
     }

@@ -24,9 +24,9 @@ import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.measure.Units;
 import org.geotools.styling.*;
-import org.geotools.api.style.LabelPlacement;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
@@ -132,7 +132,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(PointSymbolizer ps) {
+    public void visit(org.geotools.api.style.PointSymbolizer ps) {
         super.visit(ps);
         PointSymbolizer copy = (PointSymbolizer) pages.peek();
 
@@ -167,7 +167,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(LineSymbolizer line) {
+    public void visit(org.geotools.api.style.LineSymbolizer line) {
         super.visit(line);
         LineSymbolizer copy = (LineSymbolizer) pages.peek();
         Unit<Length> uom = copy.getUnitOfMeasure();
@@ -178,7 +178,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(PolygonSymbolizer poly) {
+    public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
         super.visit(poly);
         PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
 
@@ -197,7 +197,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(TextSymbolizer text) {
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
         super.visit(text);
         TextSymbolizer copy = (TextSymbolizer) pages.peek();
 
@@ -233,8 +233,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             copy.getHalo().setRadius(rescale(copy.getHalo().getRadius(), uom));
         }
 
-        if (copy instanceof TextSymbolizer2) {
-            TextSymbolizer2 copy2 = (TextSymbolizer2) copy;
+        if (copy instanceof TextSymbolizer) {
+            TextSymbolizer copy2 = (TextSymbolizer) copy;
 
             rescale(copy2.getGraphic(), uom);
         }

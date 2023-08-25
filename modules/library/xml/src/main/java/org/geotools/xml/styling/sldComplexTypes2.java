@@ -24,12 +24,12 @@ import java.util.Map;
 import javax.naming.OperationNotSupportedException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.*;
 import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.api.style.LabelPlacememt;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.*;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
@@ -632,7 +632,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            org.geotools.api.style.NamedLayer sld = new NamedLayer();
+            NamedLayer sld = new NamedLayer();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2197,7 +2197,7 @@ public class sldComplexTypes2 {
         public Object getValue(
                 Element element, ElementValue[] value, Attributes attrs1, Map<String, Object> hints)
                 throws OperationNotSupportedException, SAXException {
-            org.geotools.api.style.UserLayer sld = new UserLayer();
+            UserLayer sld = new UserLayer();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {

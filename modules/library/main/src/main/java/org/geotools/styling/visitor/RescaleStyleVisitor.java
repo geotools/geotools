@@ -25,9 +25,10 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.Symbol;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
-import org.geotools.api.style.LabelPlacement;
 import org.geotools.util.Converters;
 
 /**
@@ -136,13 +137,13 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
      * <p>
      */
     @Override
-    public void visit(org.geotools.styling.Stroke stroke) {
+    public void visit(org.geotools.api.style.Stroke stroke) {
         Stroke copy = sf.getDefaultStroke();
         copy.setColor(copy(stroke.getColor()));
-        copy.setDashArray(rescaleDashArray(stroke.dashArray()));
+        copy.setDashArray(rescaleDashArray(((Stroke) stroke).dashArray()));
         copy.setDashOffset(rescale(stroke.getDashOffset()));
-        copy.setGraphicFill(copy(stroke.getGraphicFill()));
-        copy.setGraphicStroke(copy(stroke.getGraphicStroke()));
+        copy.setGraphicFill(copy(((Stroke) stroke).getGraphicFill()));
+        copy.setGraphicStroke(copy(((Stroke) stroke).getGraphicStroke()));
         copy.setLineCap(copy(stroke.getLineCap()));
         copy.setLineJoin(copy(stroke.getLineJoin()));
         copy.setOpacity(copy(stroke.getOpacity()));
@@ -152,7 +153,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /** Make graphics (such as used with PointSymbolizer) bigger */
     @Override
-    public void visit(Graphic gr) {
+    public void visit(org.geotools.api.style.Graphic gr) {
 
         Displacement displacementCopy = null;
 
@@ -180,7 +181,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
         Expression opacityCopy = copy(gr.getOpacity());
         Expression rotationCopy = copy(gr.getRotation());
-        Expression sizeCopy = rescaleGraphicSize(gr);
+        Expression sizeCopy = rescaleGraphicSize((Graphic) gr);
 
         Graphic copy = sf.createDefaultGraphic();
         copy.setDisplacement(displacementCopy);
@@ -199,7 +200,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(TextSymbolizer text) {
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
         this.defaultUnit = text.getUnitOfMeasure();
         try {
             super.visit(text);
@@ -240,19 +241,35 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
 
             // deal with the format options specified in pixels
             Map<String, String> options = copy.getOptions();
-            rescaleOption(options, org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND);
-            rescaleOption(options, org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT);
-            rescaleOption(options, org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE);
-            rescaleOption(options, org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_LABEL_REPEAT);
-            rescaleOption(options, org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
-            rescaleArrayOption(options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_LABEL_REPEAT);
+            rescaleOption(
+                    options,
+                    org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
+                    org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP);
+            rescaleArrayOption(
+                    options, org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }
     }
 
     @Override
-    public void visit(Symbolizer sym) {
+    public void visit(org.geotools.api.style.Symbolizer sym) {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
@@ -262,7 +279,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(PointSymbolizer sym) {
+    public void visit(org.geotools.api.style.PointSymbolizer sym) {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
@@ -272,7 +289,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(LineSymbolizer sym) {
+    public void visit(org.geotools.api.style.LineSymbolizer sym) {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
@@ -284,7 +301,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(PolygonSymbolizer sym) {
+    public void visit(org.geotools.api.style.PolygonSymbolizer sym) {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
@@ -297,7 +314,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(RasterSymbolizer sym) {
+    public void visit(org.geotools.api.style.RasterSymbolizer sym) {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);

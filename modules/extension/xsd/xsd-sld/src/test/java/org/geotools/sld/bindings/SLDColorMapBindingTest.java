@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
-
+import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ColorMapEntry;
 import org.junit.Test;
 

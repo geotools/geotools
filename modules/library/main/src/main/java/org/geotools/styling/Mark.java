@@ -20,6 +20,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
@@ -62,7 +63,7 @@ public class Mark implements Cloneable, org.geotools.api.style.Mark, Symbol {
 
         try {
             StyleFactory sfac = new StyleFactory();
-            fill = Fill.cast(sfac.getDefaultFill());
+            fill = sfac.DEFAULT_FILL;
             stroke = Stroke.cast(sfac.getDefaultStroke());
 
             wellKnownName = filterFactory.literal("square");
@@ -149,12 +150,16 @@ public class Mark implements Cloneable, org.geotools.api.style.Mark, Symbol {
 
     @Override
     public String toString() {
-        return wellKnownName.toString();
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
+        return "Mark{"
+                + " wellKnownName="
+                + wellKnownName
+                + ", fill="
+                + fill
+                + ", stroke="
+                + stroke
+                + ", external="
+                + external
+                + '}';
     }
 
     @Override

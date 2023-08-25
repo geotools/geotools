@@ -68,11 +68,4 @@ public interface ExternalMark {
      * @return integer
      */
     int getMarkIndex();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
 }

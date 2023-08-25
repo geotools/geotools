@@ -29,28 +29,12 @@ import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.filter.Filters;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.GraphicLegend;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
@@ -1969,7 +1953,7 @@ public class YsldParseCookbookTest {
         transform(YsldTests.sld(dir, file), writer);
 
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
-        return SLD.defaultStyle(p.parse());
+        return SLD.defaultStyle((StyledLayerDescriptor) p.parse());
     }
 
     Color color(String hex) {

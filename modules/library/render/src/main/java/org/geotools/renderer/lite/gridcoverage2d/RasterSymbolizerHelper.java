@@ -26,6 +26,8 @@ import java.util.Map;
 import javax.media.jai.ROI;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -35,9 +37,7 @@ import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.ShadedRelief;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
@@ -207,7 +207,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.RasterSymbolizer)
      */
     @Override
-    public void visit(RasterSymbolizer rs) {
+    public void visit(org.geotools.api.style.RasterSymbolizer rs) {
 
         ColorMapUtilities.ensureNonNull("RasterSymbolizer", rs);
 
@@ -235,7 +235,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         currNode.addSource(prevNode);
         prevNode = currNode;
 
-        final ChannelSelection cs = rs.getChannelSelection();
+        final ChannelSelection cs = (ChannelSelection) rs.getChannelSelection();
         csNode.visit(cs);
 
         // /////////////////////////////////////////////////////////////////////
@@ -267,7 +267,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         prevNode.addSink(currNode);
         prevNode = currNode;
 
-        final ContrastEnhancement ce = rs.getContrastEnhancement();
+        final ContrastEnhancement ce = (ContrastEnhancement) rs.getContrastEnhancement();
         ceNode.visit(ce);
 
         // /////////////////////////////////////////////////////////////////////
@@ -277,7 +277,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // /////////////////////////////////////////////////////////////////////
 
         final ShadedReliefNode srNode = new ShadedReliefNode(this.getHints());
-        final ShadedRelief sr = rs.getShadedRelief();
+        final ShadedRelief sr = (ShadedRelief) rs.getShadedRelief();
         srNode.visit(sr);
         currNode = srNode;
 

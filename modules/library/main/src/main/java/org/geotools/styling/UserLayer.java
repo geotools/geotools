@@ -19,10 +19,7 @@
 
 package org.geotools.styling;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.RemoteOWS;
@@ -63,7 +60,7 @@ import org.geotools.util.Utilities;
  *
  * @author jamesm
  */
-public abstract class UserLayer extends StyledLayer implements org.geotools.api.style.UserLayer {
+public class UserLayer extends StyledLayer implements org.geotools.api.style.UserLayer {
 
     /**
      * the (memory) datastore that will contain the inline features. The initial implementation has
@@ -91,7 +88,6 @@ public abstract class UserLayer extends StyledLayer implements org.geotools.api.
         return inlineFeatureType;
     }
 
-
     public void setInlineFeatureDatastore(DataStore store) {
         inlineFeatureDatastore = store;
     }
@@ -104,7 +100,6 @@ public abstract class UserLayer extends StyledLayer implements org.geotools.api.
         this.remoteOWS = service;
     }
 
-
     public List<FeatureTypeConstraint> layerFeatureConstraints() {
         return constraints;
     }
@@ -114,12 +109,10 @@ public abstract class UserLayer extends StyledLayer implements org.geotools.api.
         return constraints.toArray(new FeatureTypeConstraint[0]);
     }
 
-
     public void setLayerFeatureConstraints(FeatureTypeConstraint[] array) {
         this.constraints.clear();
         this.constraints.addAll(Arrays.asList(array));
     }
-
 
     public List<Style> userStyles() {
         return styles;
@@ -129,12 +122,10 @@ public abstract class UserLayer extends StyledLayer implements org.geotools.api.
         return styles.toArray(new Style[0]);
     }
 
-
     public void setUserStyles(Style[] styles) {
         this.styles.clear();
         this.styles.addAll(Arrays.asList(styles));
     }
-
 
     public void addUserStyle(Style style) {
         styles.add(style);
@@ -174,7 +165,4 @@ public abstract class UserLayer extends StyledLayer implements org.geotools.api.
         return Objects.hash(
                 inlineFeatureDatastore, inlineFeatureType, remoteOWS, styles, constraints);
     }
-
-
-    public abstract void setUserStyles(org.geotools.api.style.Style... styles);
 }

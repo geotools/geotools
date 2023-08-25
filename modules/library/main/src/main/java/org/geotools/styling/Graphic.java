@@ -19,6 +19,8 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
@@ -39,17 +41,17 @@ import org.geotools.util.factory.GeoTools;
  */
 public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
 
-
+    Logger LOGGER = Logger.getLogger(Graphic.class.getName());
     private final List<GraphicalSymbol> graphics = new ArrayList<>();
 
-    private AnchorPoint anchor;
-    private Expression gap;
-    private Expression initialGap;
+    private AnchorPoint anchor = org.geotools.styling.AnchorPoint.NULL;
+    private Expression gap = ConstantExpression.NULL;
+    private Expression initialGap = ConstantExpression.NULL;
 
-    private Expression rotation = null;
-    private Expression size = null;
+    private Expression rotation = ConstantExpression.NULL;
+    private Expression size = ConstantExpression.NULL;
     private Displacement displacement = null;
-    private Expression opacity = null;
+    private Expression opacity = ConstantExpression.NULL;
 
     /** Creates a new instance of DefaultGraphic */
     protected Graphic() {
@@ -62,11 +64,14 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
 
     public Graphic(
             FilterFactory factory, AnchorPoint anchor, Expression gap, Expression initialGap) {
-        this.anchor = org.geotools.styling.AnchorPoint.cast(anchor);
-
-        if (gap == null) this.gap = ConstantExpression.constant(0);
+        if (anchor == null) {
+            this.anchor = org.geotools.styling.AnchorPoint.NULL;
+        } else {
+            this.anchor = org.geotools.styling.AnchorPoint.cast(anchor);
+        }
+        if (gap == null) this.gap = ConstantExpression.NIL;
         else this.gap = gap;
-        if (initialGap == null) this.initialGap = ConstantExpression.constant(0);
+        if (initialGap == null) this.initialGap = ConstantExpression.NIL;
         else this.initialGap = initialGap;
     }
 
@@ -83,7 +88,6 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
     public void setAnchorPoint(org.geotools.styling.AnchorPoint anchor) {
         this.anchor = org.geotools.styling.AnchorPoint.cast(anchor);
     }
-
 
     public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
         this.anchor = org.geotools.styling.AnchorPoint.cast(anchorPoint);
@@ -156,11 +160,9 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
         this.gap = gap;
     }
 
-
     public void setDisplacement(org.geotools.api.style.Displacement offset) {
         this.displacement = Displacement.cast(offset);
     }
-
 
     public void setOpacity(Expression opacity) {
         this.opacity = opacity;
@@ -171,7 +173,6 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
      *
      * @param rotation New value of property rotation.
      */
-
     public void setRotation(Expression rotation) {
         this.rotation = rotation;
     }
@@ -181,14 +182,8 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
      *
      * @param size New value of property size.
      */
-
     public void setSize(Expression size) {
         this.size = size;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit((org.geotools.api.style.GraphicStroke) this, data);
     }
 
     @Override
@@ -227,23 +222,29 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
         final int PRIME = 1000003;
         int result = 0;
 
-        if (graphics != null) {
-            result = (PRIME * result) + graphics.hashCode();
-        }
+        LOGGER.log(Level.INFO, "Here we go into " + this);
 
-        if (rotation != null) {
+        if (rotation != null && rotation != ConstantExpression.NULL) {
             result = (PRIME * result) + rotation.hashCode();
         }
 
-        if (size != null) {
+        if (size != null && size != ConstantExpression.NULL) {
             result = (PRIME * result) + size.hashCode();
         }
 
-        if (opacity != null) {
+        if (opacity != null && opacity != ConstantExpression.NULL) {
             result = (PRIME * result) + opacity.hashCode();
         }
+        if (graphics != null && !graphics.isEmpty()) {
+            LOGGER.log(Level.INFO, "About to hashCode a list of " + graphics.size() + " Elements");
+            int code = graphics.hashCode();
+            for (GraphicalSymbol g : graphics) {
+                LOGGER.log(Level.INFO, g.toString() + "\n\t" + code);
+            }
 
-
+            result = (PRIME * result) + code;
+        }
+        LOGGER.log(Level.INFO, "Final result: " + result);
         return result;
     }
 
@@ -294,5 +295,27 @@ public class Graphic implements org.geotools.api.style.Graphic, Cloneable {
             }
             return copy;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Graphic{"
+                + "graphics="
+                + graphics
+                + ", anchor="
+                + anchor
+                + ", gap="
+                + gap
+                + ", initialGap="
+                + initialGap
+                + ", rotation="
+                + rotation
+                + ", size="
+                + size
+                + ", displacement="
+                + displacement
+                + ", opacity="
+                + opacity
+                + '}';
     }
 }

@@ -36,12 +36,4 @@ public interface GraphicStroke extends Graphic {
      * @return Expression
      */
     Expression getGap();
-
-    /**
-     * Calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

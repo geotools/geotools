@@ -44,6 +44,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.*;
 import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.GraphicLegend;
 import org.geotools.api.util.InternationalString;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
@@ -63,7 +64,6 @@ import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
-import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
@@ -79,6 +79,7 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
@@ -164,7 +165,7 @@ public class SLDParser {
 
     private static final Pattern TRAILING_WHITESPACES = Pattern.compile("\\s+$");
 
-    private FilterFactory ff;
+    private final FilterFactory ff;
 
     protected InputSource source;
 
@@ -489,7 +490,7 @@ public class SLDParser {
                 org.geotools.api.style.NamedLayer layer = parseNamedLayer(child);
                 sld.addStyledLayer(layer);
             } else if (childName.equalsIgnoreCase("UserLayer")) {
-                StyledLayer layer = parseUserLayer(child);
+                org.geotools.api.style.StyledLayer layer = parseUserLayer(child);
                 sld.addStyledLayer(layer);
             }
         }
@@ -509,7 +510,7 @@ public class SLDParser {
         return attribute == null ? null : attribute.getNodeValue();
     }
 
-    private StyledLayer parseUserLayer(Node root) {
+    private org.geotools.api.style.StyledLayer parseUserLayer(Node root) {
         org.geotools.api.style.UserLayer layer = new UserLayer();
         // LineSymbolizer symbol = factory.createLineSymbolizer();
 
@@ -529,16 +530,16 @@ public class SLDParser {
                 parseInlineFeature(child, layer);
             } else if (childName.equalsIgnoreCase("UserStyle")) {
                 Style user = parseStyle(child);
-                layer.addUserStyle(user);
+                ((org.geotools.styling.UserLayer) layer).addUserStyle(user);
             } else if (childName.equalsIgnoreCase("Name")) {
                 String layerName = getFirstChildValue(child);
-                layer.setName(layerName);
+                ((UserLayer) layer).setName(layerName);
                 if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("layer name: " + layer.getName());
             } else if (childName.equalsIgnoreCase("RemoteOWS")) {
                 org.geotools.api.style.RemoteOWS remoteOws = parseRemoteOWS(child);
-                layer.setRemoteOWS(remoteOws);
+                ((UserLayer) layer).setRemoteOWS(remoteOws);
             } else if (childName.equalsIgnoreCase("LayerFeatureConstraints")) {
-                layer.setLayerFeatureConstraints(parseLayerFeatureConstraints(child));
+                ((UserLayer) layer).setLayerFeatureConstraints(parseLayerFeatureConstraints(child));
             }
         }
 
@@ -546,7 +547,8 @@ public class SLDParser {
     }
 
     private org.geotools.api.style.FeatureTypeConstraint[] parseLayerFeatureConstraints(Node root) {
-        List<org.geotools.api.style.FeatureTypeConstraint> featureTypeConstraints = new ArrayList<>();
+        List<org.geotools.api.style.FeatureTypeConstraint> featureTypeConstraints =
+                new ArrayList<>();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -557,7 +559,8 @@ public class SLDParser {
             }
             String childName = child.getLocalName();
             if (childName.equalsIgnoreCase("FeatureTypeConstraint")) {
-                final org.geotools.api.style.FeatureTypeConstraint ftc = parseFeatureTypeConstraint(child);
+                final org.geotools.api.style.FeatureTypeConstraint ftc =
+                        parseFeatureTypeConstraint(child);
                 if (ftc != null) featureTypeConstraints.add(ftc);
             }
         }
@@ -582,7 +585,7 @@ public class SLDParser {
                 ftc.setFilter(parseFilter(child));
             }
         }
-        ftc.setExtents(new Extent[0]);
+        ftc.setExtents(new org.geotools.styling.Extent[0]);
         if (ftc.getFeatureTypeName() == null) return null;
         else return ftc;
     }
@@ -597,7 +600,7 @@ public class SLDParser {
     }
 
     protected org.geotools.api.style.RemoteOWS parseRemoteOWS(Node root) {
-        org.geotools.api.style.RemoteOWS ows = new RemoteOWS();
+        RemoteOWS ows = new RemoteOWS();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -620,9 +623,10 @@ public class SLDParser {
     /** */
     private void parseInlineFeature(Node root, org.geotools.api.style.UserLayer layer) {
         try {
+            UserLayer uLayer = (UserLayer) layer;
             SLDInlineFeatureParser inparser = new SLDInlineFeatureParser(root);
-            layer.setInlineFeatureDatastore(inparser.dataStore);
-            layer.setInlineFeatureType(inparser.featureType);
+            uLayer.setInlineFeatureDatastore(inparser.dataStore);
+            uLayer.setInlineFeatureType(inparser.featureType);
         } catch (Exception e) {
             throw (IllegalArgumentException) new IllegalArgumentException().initCause(e);
         }
@@ -654,7 +658,7 @@ public class SLDParser {
      * </pre>
      */
     private org.geotools.api.style.NamedLayer parseNamedLayer(Node root) {
-        org.geotools.api.style.NamedLayer layer = new NamedLayer();
+        NamedLayer layer = new NamedLayer();
 
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
@@ -937,7 +941,7 @@ public class SLDParser {
                 for (int k = 0; k < l; k++) {
                     Graphic graphic = parseGraphic(g.item(k));
                     if (graphic != null) {
-                        rule.setLegend(graphic);
+                        rule.setLegend((GraphicLegend) graphic);
                         break;
                     }
                 }
@@ -1181,25 +1185,24 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Graphic")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard Graphic in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2) {
-                    ((TextSymbolizer2) symbol).setGraphic(parseGraphic(child));
-                }
+
+                symbol.setGraphic(parseGraphic(child));
+
             } else if (childName.equalsIgnoreCase("Snippet")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard Abstract in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2)
-                    ((TextSymbolizer2) symbol).setSnippet(parseCssParameter(child, false));
+
+                symbol.setSnippet(parseCssParameter(child, false));
             } else if (childName.equalsIgnoreCase("FeatureDescription")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard Description in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2)
-                    ((TextSymbolizer2) symbol)
-                            .setFeatureDescription(parseCssParameter(child, false));
+
+                symbol.setFeatureDescription(parseCssParameter(child, false));
             } else if (childName.equalsIgnoreCase("OtherText")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard OtherText in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2)
-                    ((TextSymbolizer2) symbol).setOtherText(parseOtherText(child));
+
+                symbol.setOtherText(parseOtherText(child));
             } else if (childName.equalsIgnoreCase("priority")) {
                 symbol.setPriority(parseCssParameter(child));
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
@@ -1213,7 +1216,7 @@ public class SLDParser {
 
     protected org.geotools.api.style.OtherText parseOtherText(Node root) {
         // TODO: add methods to the factory to create OtherText instances
-        org.geotools.api.style.OtherText ot = new OtherText();
+        OtherText ot = new OtherText();
         final Node targetAttribute = root.getAttributes().getNamedItem("target");
         if (targetAttribute == null)
             throw new IllegalArgumentException(
@@ -1390,11 +1393,11 @@ public class SLDParser {
                 final String type = typeAtt.getNodeValue();
 
                 if ("ramp".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMapImpl.TYPE_RAMP);
+                    symbol.setType(ColorMap.TYPE_RAMP);
                 } else if ("intervals".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMapImpl.TYPE_INTERVALS);
+                    symbol.setType(ColorMap.TYPE_INTERVALS);
                 } else if ("values".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMapImpl.TYPE_VALUES);
+                    symbol.setType(ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
             }
@@ -1452,10 +1455,12 @@ public class SLDParser {
                 childName = child.getNodeName();
             } else if (childName.equalsIgnoreCase("SourceChannelName")) {
                 if (child.getFirstChild() != null) {
-                    symbol.setChannelName(parseParameterValueExpression(child, true));
+                    ((SelectedChannelType) symbol)
+                            .setChannelName(parseParameterValueExpression(child, true));
                 }
             } else if (childName.equalsIgnoreCase("ContrastEnhancement")) {
-                symbol.setContrastEnhancement(parseContrastEnhancement(child));
+                ((SelectedChannelType) symbol)
+                        .setContrastEnhancement(parseContrastEnhancement(child));
 
                 /*
                  * try { if (child.getFirstChild() != null && child.getFirstChild().getNodeType() == Node.TEXT_NODE)
@@ -1499,7 +1504,7 @@ public class SLDParser {
 
         ChannelSelection dap =
                 factory.createChannelSelection(
-                        channels.toArray(new org.geotools.api.style.SelectedChannelType[channels.size()]));
+                        channels.toArray(new SelectedChannelType[channels.size()]));
 
         return dap;
     }
@@ -1625,12 +1630,13 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
             if ("BrightnessOnly".equalsIgnoreCase(childName)) {
-                symbol.setBrightnessOnly(Boolean.parseBoolean(getFirstChildValue(child)));
+                ((ShadedRelief) symbol)
+                        .setBrightnessOnly(Boolean.parseBoolean(getFirstChildValue(child)));
             } else if ("ReliefFactor".equalsIgnoreCase(childName)) {
                 try {
                     final String reliefString = getFirstChildValue(child);
                     Expression relief = ff.literal(Double.parseDouble(reliefString));
-                    symbol.setReliefFactor(relief);
+                    ((ShadedRelief) symbol).setReliefFactor(relief);
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.WARNING))
                         LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);

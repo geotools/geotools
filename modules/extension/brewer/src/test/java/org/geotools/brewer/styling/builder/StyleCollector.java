@@ -2,39 +2,11 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.styling.AbstractStyleVisitor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.*;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.api.style.ImageOutline;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.api.style.NamedLayer;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
-import org.geotools.api.style.StyleVisitor;
-import org.geotools.api.style.StyledLayer;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.api.style.UserLayer;
 
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
@@ -49,20 +21,9 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     List<StyledLayer> layers = new ArrayList<>();
 
     @Override
-    public void visit(StyledLayerDescriptor sld) {
-        for (StyledLayer sl : sld.getStyledLayers()) {
-            if (sl instanceof UserLayer) {
-                ((UserLayer) sl).accept(this);
-            } else if (sl instanceof NamedLayer) {
-                ((NamedLayer) sl).accept(this);
-            }
-        }
-    }
-
-    @Override
     public void visit(NamedLayer layer) {
         layers.add(layer);
-        for (Style style : layer.getStyles()) {
+        for (org.geotools.api.style.Style style : layer.getStyles()) {
             style.accept(this);
         }
     }
@@ -70,7 +31,7 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     @Override
     public void visit(UserLayer layer) {
         layers.add(layer);
-        for (Style style : layer.getUserStyles()) {
+        for (org.geotools.api.style.Style style : layer.getUserStyles()) {
             style.accept(this);
         }
     }
@@ -79,98 +40,74 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     public void visit(FeatureTypeConstraint ftc) {}
 
     @Override
-    public void visit(Style style) {
-        styles.add(style);
-        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-            featureTypeStyles.add(fts);
+    public void visit(org.geotools.api.style.Style style) {
+        styles.add((Style) style);
+        for (org.geotools.api.style.FeatureTypeStyle fts : style.featureTypeStyles()) {
+            featureTypeStyles.add((FeatureTypeStyle) fts);
             fts.accept(this);
         }
     }
 
     @Override
-    public void visit(Rule rule) {
-        for (Symbolizer symbolizer : rule.symbolizers()) {
-            symbolizers.add(symbolizer);
+    public void visit(org.geotools.api.style.Rule rule) {
+        for (org.geotools.api.style.Symbolizer symbolizer : rule.symbolizers()) {
+            symbolizers.add((Symbolizer) symbolizer);
         }
     }
 
     @Override
-    public void visit(FeatureTypeStyle fts) {
-        for (Rule rule : fts.rules()) {
-            rules.add(rule);
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
+        for (org.geotools.api.style.Rule rule : fts.rules()) {
+            rules.add((Rule) rule);
             rule.accept(this);
         }
     }
 
     @Override
-    public void visit(Fill fill) {}
+    public void visit(org.geotools.api.style.Fill fill) {}
 
     @Override
-    public void visit(Stroke stroke) {}
+    public void visit(org.geotools.api.style.Stroke stroke) {}
 
     @Override
-    public void visit(Symbolizer sym) {}
+    public void visit(org.geotools.api.style.Symbolizer sym) {}
 
     @Override
-    public void visit(PointSymbolizer ps) {}
+    public void visit(org.geotools.api.style.PointSymbolizer ps) {}
 
     @Override
-    public void visit(LineSymbolizer line) {}
+    public void visit(org.geotools.api.style.LineSymbolizer line) {}
 
     @Override
-    public void visit(PolygonSymbolizer poly) {}
+    public void visit(org.geotools.api.style.PolygonSymbolizer poly) {}
 
     @Override
-    public void visit(TextSymbolizer text) {}
+    public void visit(org.geotools.api.style.TextSymbolizer text) {}
 
     @Override
-    public void visit(RasterSymbolizer raster) {}
+    public void visit(org.geotools.api.style.RasterSymbolizer raster) {}
 
     @Override
-    public void visit(Graphic gr) {}
+    public void visit(org.geotools.api.style.Graphic gr) {}
 
     @Override
-    public void visit(Mark mark) {}
+    public void visit(org.geotools.api.style.Mark mark) {}
 
     @Override
-    public void visit(ExternalGraphic exgr) {}
+    public void visit(org.geotools.api.style.PointPlacement pp) {}
 
     @Override
-    public void visit(PointPlacement pp) {}
+    public void visit(org.geotools.api.style.Halo halo) {}
 
     @Override
-    public void visit(AnchorPoint ap) {}
+    public void visit(org.geotools.api.style.ColorMap colorMap) {}
 
     @Override
-    public void visit(Displacement dis) {}
+    public void visit(org.geotools.api.style.ImageOutline outline) {}
 
     @Override
-    public void visit(LinePlacement lp) {}
+    public void visit(org.geotools.api.style.ChannelSelection cs) {}
 
     @Override
-    public void visit(Halo halo) {}
-
-    @Override
-    public void visit(ColorMap colorMap) {}
-
-    @Override
-    public void visit(ColorMapEntry colorMapEntry) {}
-
-    @Override
-    public void visit(ContrastEnhancement contrastEnhancement) {}
-
-    @Override
-    public void visit(ImageOutline outline) {}
-
-    @Override
-    public void visit(ChannelSelection cs) {}
-
-    @Override
-    public void visit(OverlapBehavior ob) {}
-
-    @Override
-    public void visit(SelectedChannelType sct) {}
-
-    @Override
-    public void visit(ShadedRelief sr) {}
+    public void visit(org.geotools.api.style.SelectedChannelType sct) {}
 }

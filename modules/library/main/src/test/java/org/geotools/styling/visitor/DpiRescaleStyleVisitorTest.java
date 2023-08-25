@@ -63,7 +63,9 @@ public class DpiRescaleStyleVisitorTest {
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, "10");
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
-        assertEquals("20.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals(
+                "20.0",
+                clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -83,7 +85,9 @@ public class DpiRescaleStyleVisitorTest {
         ts.setUnitOfMeasure(SI.METRE);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
-        assertEquals("10.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals(
+                "10.0",
+                clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -103,7 +107,9 @@ public class DpiRescaleStyleVisitorTest {
         ts.setUnitOfMeasure(USCustomary.FOOT);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
-        assertEquals("10.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals(
+                "10.0",
+                clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -127,7 +133,9 @@ public class DpiRescaleStyleVisitorTest {
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
         // this one has been rescaled
-        assertEquals("20.0", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals(
+                "20.0",
+                clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 
     @Test
@@ -149,6 +157,8 @@ public class DpiRescaleStyleVisitorTest {
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer) visitor.getCopy();
         // this one has not been rescaled
-        assertEquals("10.0m", clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
+        assertEquals(
+                "10.0m",
+                clonedTs.getOptions().get(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY));
     }
 }

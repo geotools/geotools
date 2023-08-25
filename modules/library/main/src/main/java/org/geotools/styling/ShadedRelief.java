@@ -30,7 +30,7 @@ import org.geotools.util.factory.GeoTools;
  *
  * @author iant
  */
-public class ShadedRelief implements  org.geotools.api.style.ShadedRelief {
+public class ShadedRelief implements org.geotools.api.style.ShadedRelief {
     private FilterFactory filterFactory;
     private Expression reliefFactor;
     private boolean brightness = false;
@@ -84,11 +84,6 @@ public class ShadedRelief implements  org.geotools.api.style.ShadedRelief {
      */
     public void setReliefFactor(Expression reliefFactor) {
         this.reliefFactor = reliefFactor;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

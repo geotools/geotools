@@ -22,14 +22,14 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBStyleParser;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.api.style.NamedLayer;
-import org.geotools.api.style.StyledLayer;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
 
 /**
@@ -148,7 +148,7 @@ public class MapBoxStyle {
     }
 
     private static void validateLayer(List<Exception> problems, NamedLayer layer) {
-        NamedLayer named = layer;
+        org.geotools.styling.NamedLayer named = (org.geotools.styling.NamedLayer) layer;
         if (named.styles().isEmpty()) {
             problems.add(
                     new MBFormatException(

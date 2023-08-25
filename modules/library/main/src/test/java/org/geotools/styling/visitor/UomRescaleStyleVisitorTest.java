@@ -94,8 +94,7 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            PointSymbolizer pointSymb =
-                    (PointSymbolizer) styleBuilder.createPointSymbolizer();
+            PointSymbolizer pointSymb = (PointSymbolizer) styleBuilder.createPointSymbolizer();
             pointSymb.setUnitOfMeasure(uom);
 
             FilterFactory filterFactory = new FilterFactoryImpl();
@@ -158,8 +157,7 @@ public class UomRescaleStyleVisitorTest {
 
             StyleBuilder styleBuilder = new StyleBuilder();
 
-            PolygonSymbolizer polySymb =
-                    (PolygonSymbolizer) styleBuilder.createPolygonSymbolizer();
+            PolygonSymbolizer polySymb = (PolygonSymbolizer) styleBuilder.createPolygonSymbolizer();
             polySymb.setUnitOfMeasure(uom);
 
             FilterFactory filterFactory = new FilterFactoryImpl();
@@ -263,7 +261,9 @@ public class UomRescaleStyleVisitorTest {
                     Converters.convert(options.get("maxDisplacement"), Integer.class).intValue();
             assertEquals(rescaledMaxDisplacement, expectedMaxDisplacement);
 
-            String[] splitted = options.get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY).split("\\s+");
+            String[] splitted =
+                    options.get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY)
+                            .split("\\s+");
             int rescaledGraphicMargin1 = Converters.convert(splitted[0], Integer.class).intValue();
             int rescaledGraphicMargin2 = Converters.convert(splitted[1], Integer.class).intValue();
             assertEquals(expectedGraphicMargin1, rescaledGraphicMargin1);
@@ -474,8 +474,7 @@ public class UomRescaleStyleVisitorTest {
             StyleBuilder styleBuilder = new StyleBuilder();
 
             Stroke stroke = null;
-            LineSymbolizer lineSymb =
-                    (LineSymbolizer) styleBuilder.createLineSymbolizer(stroke);
+            LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer(stroke);
             lineSymb.setUnitOfMeasure(SI.METRE);
 
             UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
@@ -604,8 +603,7 @@ public class UomRescaleStyleVisitorTest {
             Expression color = styleBuilder.colorExpression(Color.RED);
             Expression width = styleBuilder.attributeExpression("width");
             Stroke stroke = styleBuilder.createStroke(color, width);
-            LineSymbolizer lineSymb =
-                    (LineSymbolizer) styleBuilder.createLineSymbolizer(stroke);
+            LineSymbolizer lineSymb = (LineSymbolizer) styleBuilder.createLineSymbolizer(stroke);
             lineSymb.setUnitOfMeasure(uom);
 
             // rescales symbolizer
@@ -637,16 +635,18 @@ public class UomRescaleStyleVisitorTest {
         StyleBuilder sb = new StyleBuilder();
 
         // a graphic stroke
-        Stroke stroke = sb.createStroke();
-        stroke.setColor(null);
+        Stroke stroke = (Stroke) sb.createStroke();
+        stroke.setColor((String) null);
         stroke.setGraphicStroke(
-                sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(1)), null));
+                sb.createGraphic(
+                        null, sb.createMark("square", null, (Stroke) sb.createStroke(1)), null));
 
         // a graphic fill
         Fill fill = sb.createFill();
-        fill.setColor(null);
+        fill.setColor((String) null);
         fill.setGraphicFill(
-                sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(2)), null));
+                sb.createGraphic(
+                        null, sb.createMark("square", null, (Stroke) sb.createStroke(2)), null));
 
         // a polygon and line symbolizer using them
         PolygonSymbolizer ps = sb.createPolygonSymbolizer(stroke, fill);
@@ -678,7 +678,7 @@ public class UomRescaleStyleVisitorTest {
         StyleBuilder sb = new StyleBuilder();
 
         // create a circle
-        Mark circle = sb.createMark("circle", null, sb.createStroke(500));
+        Mark circle = sb.createMark("circle", null, (Stroke) sb.createStroke(500));
         Graphic g = sb.createGraphic(null, circle, null);
 
         // a point symbolizer with the specified circle
@@ -790,7 +790,8 @@ public class UomRescaleStyleVisitorTest {
             textSymb.setUnitOfMeasure(uom);
 
             // check for IntArrayOption
-            textSymb.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, null);
+            textSymb.getOptions()
+                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, null);
             // check for IntOption
             textSymb.getOptions().put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, null);
 

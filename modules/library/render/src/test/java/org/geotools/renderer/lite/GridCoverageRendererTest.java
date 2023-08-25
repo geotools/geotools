@@ -962,7 +962,7 @@ public class GridCoverageRendererTest {
                         new String[] {"1", "2", "3", "4"},
                         new double[] {0, 100, 2000, 5000},
                         new Color[] {Color.RED, Color.WHITE, Color.GREEN, Color.BLUE},
-                        ColorMapImpl.TYPE_RAMP);
+                        ColorMap.TYPE_RAMP);
         RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(colorMap, 1d);
         return rasterSymbolizer;
     }
@@ -1498,7 +1498,7 @@ public class GridCoverageRendererTest {
         StyleBuilder sldBuilder = new StyleBuilder();
 
         RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeRed = new SelectedChannelType();
         final SelectedChannelType chTypeBlue = new SelectedChannelType();
         final SelectedChannelType chTypeGreen = new SelectedChannelType();
@@ -1620,7 +1620,7 @@ public class GridCoverageRendererTest {
         StyleBuilder sldBuilder = new StyleBuilder();
 
         RasterSymbolizer symbolizer = sldBuilder.createRasterSymbolizer();
-        final ChannelSelection chSel = new ChannelSelectionImpl();
+        final ChannelSelection chSel = new ChannelSelection();
         final SelectedChannelType chTypeRed = new SelectedChannelType();
         final SelectedChannelType chTypeBlue = new SelectedChannelType();
         final SelectedChannelType chTypeGreen = new SelectedChannelType();
@@ -2523,7 +2523,7 @@ public class GridCoverageRendererTest {
                         new String[] {"a", "b"},
                         new double[] {-20, 50},
                         new Color[] {Color.RED, Color.GREEN},
-                        ColorMapImpl.TYPE_RAMP);
+                        ColorMap.TYPE_RAMP);
         RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(cm, 1d);
         return rasterSymbolizer;
     }

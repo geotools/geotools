@@ -29,7 +29,7 @@ import org.junit.Test;
  */
 public class StyleTest {
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    static StyleFactoryImpl2 sf = new StyleFactoryImpl2(ff);
+    static StyleFactory sf = new StyleFactory(ff);
 
     @Test
     public void displacement() {
@@ -43,8 +43,8 @@ public class StyleTest {
 
         assertEquals(displacement, sf.displacement(ff.literal(1.0), ff.literal(1.0)));
 
-        org.geotools.api.style.Displacement external =
-                new org.geotools.api.style.Displacement() {
+        Displacement external =
+                new Displacement() {
                     @Override
                     public Expression getDisplacementY() {
                         return ff.literal(1.0);
@@ -56,8 +56,8 @@ public class StyleTest {
                     }
 
                     @Override
-                    public Object accept(StyleVisitor visitor, Object data) {
-                        return visitor.visit(this, data);
+                    public void accept(StyleVisitor visitor) {
+                        visitor.visit(this);
                     }
                 };
         displacement = Displacement.cast(external);

@@ -20,7 +20,6 @@ package org.geotools.styling.visitor;
 import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
 
 import java.util.Map;
-
 import org.geotools.styling.*;
 
 /**
@@ -32,49 +31,50 @@ import org.geotools.styling.*;
 public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisitor {
 
     @Override
-    public void visit(FeatureTypeStyle fts) {
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
         if (canRender(fts.getOptions())) super.visit(fts);
     }
 
     @Override
-    public void visit(Rule rule) {
+    public void visit(org.geotools.api.style.Rule rule) {
         if (canRender(rule.getOptions())) super.visit(rule);
     }
 
     @Override
-    public void visit(Symbolizer sym) {
-        if (canRender(sym.getOptions())) super.visit(sym);
+    public void visit(org.geotools.api.style.Symbolizer sym) {
+        if (canRender(((Symbolizer) sym).getOptions())) super.visit(sym);
     }
 
     @Override
-    public void visit(PointSymbolizer ps) {
-        if (canRender(ps.getOptions())) super.visit(ps);
+    public void visit(org.geotools.api.style.PointSymbolizer ps) {
+        if (canRender(((PolygonSymbolizer) ps).getOptions())) super.visit(ps);
     }
 
     @Override
-    public void visit(LineSymbolizer line) {
-        if (canRender(line.getOptions())) super.visit(line);
+    public void visit(org.geotools.api.style.LineSymbolizer line) {
+
+        if (canRender(((LineSymbolizer) line).getOptions())) super.visit(line);
     }
 
     @Override
-    public void visit(PolygonSymbolizer poly) {
-        if (canRender(poly.getOptions())) super.visit(poly);
+    public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
+        if (canRender(((PolygonSymbolizer) poly).getOptions())) super.visit(poly);
     }
 
     @Override
-    public void visit(TextSymbolizer text) {
-        if (canRender(text.getOptions())) super.visit(text);
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
+        if (canRender(((TextSymbolizer) text).getOptions())) super.visit(text);
     }
 
     @Override
-    public void visit(RasterSymbolizer raster) {
-        if (canRender(raster.getOptions())) super.visit(raster);
+    public void visit(org.geotools.api.style.RasterSymbolizer raster) {
+        if (canRender(((RasterSymbolizer) raster).getOptions())) super.visit(raster);
     }
 
     @Override
-    protected Symbolizer copy(Symbolizer symbolizer) {
+    protected Symbolizer copy(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) return null;
-        if (canRender(symbolizer.getOptions())) return super.copy(symbolizer);
+        if (canRender(((Symbolizer) symbolizer).getOptions())) return super.copy(symbolizer);
         else return null;
     }
 

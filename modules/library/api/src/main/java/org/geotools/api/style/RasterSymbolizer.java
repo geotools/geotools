@@ -142,12 +142,4 @@ public interface RasterSymbolizer extends Symbolizer {
      * @return The relevent symbolizer
      */
     Symbolizer getImageOutline();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

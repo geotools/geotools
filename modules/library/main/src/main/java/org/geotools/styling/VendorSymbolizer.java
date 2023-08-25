@@ -31,13 +31,13 @@ import org.geotools.api.style.StyleVisitor;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class VendorSymbolizerImpl extends AbstractSymbolizer implements ExtensionSymbolizer {
+public class VendorSymbolizer extends AbstractSymbolizer implements ExtensionSymbolizer {
 
     private String extensionName;
     private Map<String, Expression> parameters = new HashMap<>();
 
     /** Creates a new instance of DefaultPolygonStyler */
-    protected VendorSymbolizerImpl() {}
+    protected VendorSymbolizer() {}
 
     @Override
     public int hashCode() {
@@ -53,7 +53,7 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
         if (this == obj) return true;
         if (!super.equals(obj)) return false;
         if (getClass() != obj.getClass()) return false;
-        VendorSymbolizerImpl other = (VendorSymbolizerImpl) obj;
+        VendorSymbolizer other = (VendorSymbolizer) obj;
         if (extensionName == null) {
             if (other.extensionName != null) return false;
         } else if (!extensionName.equals(other.extensionName)) return false;
@@ -63,15 +63,15 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
         return true;
     }
 
-    static VendorSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
+    static VendorSymbolizer cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
-        } else if (symbolizer instanceof VendorSymbolizerImpl) {
-            return (VendorSymbolizerImpl) symbolizer;
+        } else if (symbolizer instanceof VendorSymbolizer) {
+            return (VendorSymbolizer) symbolizer;
         } else if (symbolizer instanceof org.geotools.api.style.ExtensionSymbolizer) {
             org.geotools.api.style.ExtensionSymbolizer extensionSymbolizer =
                     (org.geotools.api.style.ExtensionSymbolizer) symbolizer;
-            VendorSymbolizerImpl copy = new VendorSymbolizerImpl();
+            VendorSymbolizer copy = new VendorSymbolizer();
             copy.setDescription(extensionSymbolizer.getDescription());
             copy.setGeometryPropertyName(extensionSymbolizer.getGeometryPropertyName());
             copy.setName(extensionSymbolizer.getName());
@@ -96,11 +96,6 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
     @Override
     public void setExtensionName(String name) {
         this.extensionName = name;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

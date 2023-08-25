@@ -20,7 +20,6 @@ package org.geotools.styling;
 import java.awt.Color;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.Fill;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.filter.ConstantExpression;
 
 /**
@@ -64,8 +63,9 @@ import org.geotools.filter.ConstantExpression;
  * @author James Macgill, CCG
  * @version $Id$
  */
-abstract class ConstantFill implements org.geotools.api.style.Fill {
-    static final Fill DEFAULT =
+public abstract class ConstantFill extends org.geotools.styling.Fill
+        implements org.geotools.api.style.Fill {
+    public static final Fill DEFAULT =
             new ConstantFill() {
                 private void cannotModifyConstant() {
                     throw new UnsupportedOperationException("Constant Fill may not be modified");
@@ -89,15 +89,9 @@ abstract class ConstantFill implements org.geotools.api.style.Fill {
                 public Graphic getGraphicFill() {
                     return ConstantGraphic.NULL;
                 }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
             };
 
-    static final Fill NULL =
+    public static final Fill NULL =
             new ConstantFill() {
                 private void cannotModifyConstant() {
                     throw new UnsupportedOperationException("Constant Stroke may not be modified");
@@ -117,16 +111,7 @@ abstract class ConstantFill implements org.geotools.api.style.Fill {
                 public Graphic getGraphicFill() {
                     return ConstantGraphic.NULL;
                 }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
-                }
             };
-
-
-
 
     private void cannotModifyConstant() {
         throw new UnsupportedOperationException("Constant Fill may not be modified");
@@ -146,16 +131,5 @@ abstract class ConstantFill implements org.geotools.api.style.Fill {
 
     public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
         cannotModifyConstant();
-    }
-
-    @Override
-    public void accept(StyleVisitor visitor) {
-        cannotModifyConstant();
-    }
-
-    @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
-        cannotModifyConstant();
-        return null;
     }
 };

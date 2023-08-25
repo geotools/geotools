@@ -104,8 +104,7 @@ public class ContrastEnhancement implements org.geotools.api.style.ContrastEnhan
         }
     }
 
-    public ContrastEnhancement(
-            FilterFactory factory, Expression gamma, ContrastMethod method) {
+    public ContrastEnhancement(FilterFactory factory, Expression gamma, ContrastMethod method) {
         this.filterFactory = factory;
         this.gamma = gamma;
         this.method = method;
@@ -127,11 +126,6 @@ public class ContrastEnhancement implements org.geotools.api.style.ContrastEnhan
     @Override
     public ContrastMethod getMethod() {
         return method;
-    }
-
-    @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
-        return visitor.visit(this, extraData);
     }
 
     @Override

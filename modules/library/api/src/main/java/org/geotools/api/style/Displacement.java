@@ -49,7 +49,5 @@ public interface Displacement {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
-
     void accept(StyleVisitor visitor);
 }

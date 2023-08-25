@@ -20,13 +20,4 @@ package org.geotools.api.style;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-public interface GraphicFill extends Graphic {
-
-    /**
-     * Calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
-}
+public interface GraphicFill extends Graphic {}

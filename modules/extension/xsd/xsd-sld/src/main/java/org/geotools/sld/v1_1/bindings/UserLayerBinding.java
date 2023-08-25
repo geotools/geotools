@@ -21,7 +21,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.UserLayer;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 
@@ -76,7 +75,8 @@ public class UserLayerBinding extends SLDUserLayerBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        UserLayer layer = (UserLayer) super.parse(instance, node, value);
+        org.geotools.styling.UserLayer layer =
+                (org.geotools.styling.UserLayer) super.parse(instance, node, value);
 
         // TODO: description
 

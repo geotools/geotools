@@ -47,11 +47,11 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
-import org.geotools.api.style.NamedLayer;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.factory.GeoTools;
@@ -82,7 +82,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 Namespace("xlink", "http://www.w3.org/1999/xlink"));
     }
 
-    static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -141,7 +141,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()).literal(0.25));
 
         // set channel selection
-        ChannelSelectionImpl csi = new ChannelSelectionImpl();
+        ChannelSelection csi = new ChannelSelection();
         // red
         SelectedChannelType redChannel = new SelectedChannelType();
         redChannel.setChannelName("1");
@@ -171,7 +171,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         // style.setAbstract("Hello World");
 
         NamedLayer layer = styleFactory.createNamedLayer();
-        layer.addStyle(style);
+        ((org.geotools.styling.NamedLayer) layer).addStyle(style);
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
         sld.addStyledLayer(layer);
@@ -331,7 +331,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         assertNotNull(style);
         org.geotools.api.style.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         TextSymbolizer textSymbolize = (TextSymbolizer) rule.symbolizers().get(0);
-        LabelPlacement labelPlacement = textSymbolize.getLabelPlacement();
+        org.geotools.api.style.LabelPlacement labelPlacement = textSymbolize.getLabelPlacement();
 
         assertNotNull(labelPlacement);
     }
@@ -951,19 +951,19 @@ public class SLDTransformerTest extends XmlTestSupport {
         ColorMap cm = sf.createColorMap();
 
         // Test type = values
-        cm.setType(ColorMapImpl.TYPE_VALUES);
+        cm.setType(ColorMap.TYPE_VALUES);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"values\""));
 
         // Test type = intervals
-        cm.setType(ColorMapImpl.TYPE_INTERVALS);
+        cm.setType(ColorMap.TYPE_INTERVALS);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"intervals\""));
 
         // Test type = ramp
-        cm.setType(ColorMapImpl.TYPE_RAMP);
+        cm.setType(ColorMap.TYPE_RAMP);
         assertEquals(
                 "parsed xml must contain attribbute type with correct value",
                 -1,
@@ -976,21 +976,21 @@ public class SLDTransformerTest extends XmlTestSupport {
         ColorMap cm = sf.createColorMap();
 
         // Test type = values, extended = true
-        cm.setType(ColorMapImpl.TYPE_VALUES);
+        cm.setType(ColorMap.TYPE_VALUES);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = intervals, extended = true
-        cm.setType(ColorMapImpl.TYPE_INTERVALS);
+        cm.setType(ColorMap.TYPE_INTERVALS);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = ramp, extended = true
-        cm.setType(ColorMapImpl.TYPE_RAMP);
+        cm.setType(ColorMap.TYPE_RAMP);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
@@ -1134,7 +1134,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         s.setDefault(true);
         StyleFactory sf = sb.getStyleFactory();
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        NamedLayer layer = sf.createNamedLayer();
+        org.geotools.styling.NamedLayer layer = sf.createNamedLayer();
         layer.setName("layerName");
         layer.addStyle(s);
         sld.addStyledLayer(layer);
@@ -1243,7 +1243,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void textTextSymbolizer2_InAndOut() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        TextSymbolizer2 ts2 = (TextSymbolizer2) sf.createTextSymbolizer();
+        TextSymbolizer ts2 = sf.createTextSymbolizer();
         // Create a Graphic with two recognizable values
         Graphic gr = new Graphic(ff);
         gr.setOpacity(ff.literal(0.77));
@@ -1273,8 +1273,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
         Style importedStyle = sldParser.readXML()[0];
-        TextSymbolizer2 copy =
-                (TextSymbolizer2)
+        TextSymbolizer copy =
+                (TextSymbolizer)
                         importedStyle
                                 .featureTypeStyles()
                                 .get(0)
@@ -2242,7 +2242,7 @@ public class SLDTransformerTest extends XmlTestSupport {
         s.setDefault(true);
         StyleFactory sf = sb.getStyleFactory();
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        NamedLayer layer = sf.createNamedLayer();
+        org.geotools.styling.NamedLayer layer = sf.createNamedLayer();
         layer.setName("layerName");
         layer.addStyle(s);
         sld.addStyledLayer(layer);
@@ -2277,8 +2277,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         StyleBuilder sb = new StyleBuilder();
         Style style = sb.createStyle(sb.createLineSymbolizer());
         Fill fill = sb.createFill();
-        fill.setColor(null);
-        fill.setOpacity(null);
+        fill.setColor((String) null);
+        fill.setOpacity((String) null);
         fill.setGraphicFill(sb.createGraphic(null, sb.createMark("square"), null));
         style.setBackground(fill);
 

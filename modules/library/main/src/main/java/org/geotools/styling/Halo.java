@@ -32,7 +32,7 @@ import org.geotools.util.factory.GeoTools;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class Halo implements  Cloneable, org.geotools.api.style.Halo {
+public class Halo implements Cloneable, org.geotools.api.style.Halo {
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(Halo.class);
@@ -121,11 +121,6 @@ public class Halo implements  Cloneable, org.geotools.api.style.Halo {
      */
     public void setRadius(Expression radius) {
         this.radius = radius;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

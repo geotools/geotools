@@ -24,5 +24,4 @@ package org.geotools.api.style;
  */
 public interface StyledLayer {
     public String getName();
-
 }

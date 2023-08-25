@@ -30,6 +30,7 @@ import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.ColorReplacement;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.util.Utilities;
@@ -38,7 +39,7 @@ import org.geotools.util.Utilities;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class ExternalGraphic implements  Symbol, Cloneable, org.geotools.api.style.ExternalGraphic {
+public class ExternalGraphic implements Symbol, Cloneable, org.geotools.api.style.ExternalGraphic {
     public static final ExternalGraphic[] EXTERNAL_GRAPHICS_EMPTY = new ExternalGraphic[0];
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
@@ -126,11 +127,6 @@ public class ExternalGraphic implements  Symbol, Cloneable, org.geotools.api.sty
         }
         this.uri = location.toString();
         this.location = location;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

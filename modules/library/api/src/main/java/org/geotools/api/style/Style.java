@@ -70,12 +70,7 @@ public interface Style {
      */
     Symbolizer getDefaultSpecification();
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
+    void accept(StyleVisitor visitor);
 
     /** The background Fill , if any, <code>null</code> otherwise */
     default Fill getBackground() {

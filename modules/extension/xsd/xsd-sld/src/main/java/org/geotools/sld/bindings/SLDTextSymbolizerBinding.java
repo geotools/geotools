@@ -19,15 +19,14 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
-import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -164,8 +163,8 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
             ts.setFill((Fill) node.getChildValue("Fill"));
         }
 
-        if (node.hasChild("Graphic") && ts instanceof TextSymbolizer2) {
-            ((TextSymbolizer2) ts).setGraphic((Graphic) node.getChildValue("Graphic"));
+        if (node.hasChild("Graphic")) {
+            ts.setGraphic((Graphic) node.getChildValue("Graphic"));
         }
 
         if (node.hasChild("Priority")) {

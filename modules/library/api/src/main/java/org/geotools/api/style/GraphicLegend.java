@@ -19,6 +19,4 @@ package org.geotools.api.style;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-public interface GraphicLegend extends Graphic {
-
-}
+public interface GraphicLegend extends Graphic {}

@@ -25,12 +25,12 @@ import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.styling.Displacement;
-import org.geotools.styling.StyleFactory2;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -75,7 +75,7 @@ public class MBObjectParser {
     final Class<?> context;
 
     final FilterFactory ff;
-    final StyleFactory2 sf;
+    final StyleFactory sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
 
     /**
@@ -85,7 +85,7 @@ public class MBObjectParser {
      */
     public MBObjectParser(Class<?> context) {
         this.context = context;
-        this.sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory();
+        this.sf = (StyleFactory) CommonFactoryFinder.getStyleFactory();
         this.ff = CommonFactoryFinder.getFilterFactory();
     }
 
@@ -97,10 +97,7 @@ public class MBObjectParser {
      */
     public MBObjectParser(Class<MBFilter> context, MBObjectParser parse) {
         this.context = context;
-        sf =
-                parse == null
-                        ? (StyleFactory2) CommonFactoryFinder.getStyleFactory()
-                        : parse.getStyleFactory();
+        sf = parse == null ? CommonFactoryFinder.getStyleFactory() : parse.getStyleFactory();
         ff = parse == null ? CommonFactoryFinder.getFilterFactory() : parse.getFilterFactory();
     }
 
@@ -115,7 +112,7 @@ public class MBObjectParser {
     }
 
     /** Shared StyleFactory */
-    public StyleFactory2 getStyleFactory() {
+    public StyleFactory getStyleFactory() {
         return sf;
     }
 
@@ -1403,7 +1400,7 @@ public class MBObjectParser {
             return fallback;
         } else if (defn instanceof JSONArray) {
             JSONArray array = (JSONArray) defn;
-            return sf.displacement(number(array, 0, 0), number(array, 1, 0));
+            return (Displacement) sf.displacement(number(array, 0, 0), number(array, 1, 0));
         } else if (defn instanceof JSONObject) {
             // Function case
             MBFunction function = new MBFunction(this, (JSONObject) defn);
@@ -1435,7 +1432,7 @@ public class MBObjectParser {
 
             Expression xFn = functionForEachDimension.get(0).numeric();
             Expression yFn = functionForEachDimension.get(1).numeric();
-            return sf.displacement(xFn, yFn);
+            return (Displacement) sf.displacement(xFn, yFn);
         } else {
             throw new MBFormatException(
                     "\""

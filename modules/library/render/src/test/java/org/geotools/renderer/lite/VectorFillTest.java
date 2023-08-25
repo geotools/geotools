@@ -214,7 +214,7 @@ public class VectorFillTest {
         final DuplicatingStyleVisitor markReplacer =
                 new DuplicatingStyleVisitor() {
                     @Override
-                    public void visit(Mark mark) {
+                    public void visit(org.geotools.api.style.Mark mark) {
                         super.visit(mark);
                         Mark copy = (Mark) pages.peek();
                         copy.setWellKnownName(ff.literal(markName));

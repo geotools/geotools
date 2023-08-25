@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorker;
@@ -30,7 +31,6 @@ import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.SelectedChannelType;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
@@ -82,7 +82,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
      * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ChannelSelection)
      */
     @Override
-    public void visit(final ChannelSelection cs) {
+    public void visit(final org.geotools.api.style.ChannelSelection cs) {
         // /////////////////////////////////////////////////////////////////////
         //
         // Ensure that the ChannelSelection is not null and that the source is
@@ -126,8 +126,8 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
         setSink(subChainSink);
 
         if (cs != null) {
-            final SelectedChannelType[] rgb = cs.getRGBChannels();
-            final SelectedChannelType gray = cs.getGrayChannel();
+            final SelectedChannelType[] rgb = (SelectedChannelType[]) cs.getRGBChannels();
+            final SelectedChannelType gray = (SelectedChannelType) cs.getGrayChannel();
             // both of them are set?
             if ((rgb != null && rgb[0] != null && rgb[1] != null && rgb[2] != null)
                     && (gray != null))

@@ -9,9 +9,8 @@
  */
 package org.geotools.api.style;
 
-import org.geotools.api.filter.expression.Expression;
-
 import java.util.Map;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
@@ -46,13 +45,6 @@ public interface ContrastEnhancement {
      * @return Expression, if <code>null</code> a value of 1.0 is assumed indicating no change
      */
     Expression getGammaValue();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
 
     /**
      * check if vendor option key is available

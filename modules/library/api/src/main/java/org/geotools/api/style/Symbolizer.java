@@ -107,5 +107,5 @@ public interface Symbolizer {
      * @param visitor the style visitor
      * @return value produced
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    void accept(StyleVisitor visitor);
 }

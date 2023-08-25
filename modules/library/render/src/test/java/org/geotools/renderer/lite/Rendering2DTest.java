@@ -31,6 +31,8 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -57,8 +59,6 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.Assert;
@@ -113,7 +113,7 @@ public class Rendering2DTest {
         SLDParser stylereader = new SLDParser(factory, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
         UserLayer layer = (UserLayer) sld.getStyledLayers()[0];
-        return layer.getUserStyles()[0];
+        return (Style) layer.getUserStyles()[0];
     }
 
     Style createTestStyle() throws IllegalFilterException {
@@ -125,12 +125,12 @@ public class Rendering2DTest {
 
         Rule rule = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
-        FeatureTypeStyle fts = sFac.createFeatureTypeStyle(rule);
+        FeatureTypeStyle fts = (FeatureTypeStyle) sFac.createFeatureTypeStyle(rule);
         fts.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule1 = sFac.createRule();
         rule.symbolizers().add(polysym(sFac));
-        FeatureTypeStyle fts1 = sFac.createFeatureTypeStyle(rule1);
+        FeatureTypeStyle fts1 = (FeatureTypeStyle) sFac.createFeatureTypeStyle(rule1);
         fts1.featureTypeNames().add(new NameImpl("polygonfeature"));
 
         Rule rule2 = sFac.createRule();

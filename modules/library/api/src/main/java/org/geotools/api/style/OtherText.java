@@ -37,5 +37,4 @@ public interface OtherText {
      * a renderer may accept something different (a number, a date)
      */
     public Expression getText();
-
 }

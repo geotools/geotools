@@ -271,7 +271,7 @@ public class MapboxSpriteTest {
         Rule rule = styleFactory.createRule();
         PointSymbolizer p = styleFactory.createPointSymbolizer(gr, null);
         rule.symbolizers().add(p);
-        FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(rule);
+        FeatureTypeStyle fts = (FeatureTypeStyle) styleFactory.createFeatureTypeStyle(rule);
         Style pointStyle = styleFactory.createStyle();
         pointStyle.featureTypeStyles().addAll(Arrays.asList(fts));
         return pointStyle;

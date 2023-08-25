@@ -17,8 +17,6 @@
 package org.geotools.api.style;
 
 import org.geotools.api.filter.Filter;
-import org.geotools.api.style.Extent;
-import org.geotools.api.style.StyleVisitor;
 
 /**
  * A FeatureTypeConstraint identifies a specific feature type and supplies filtering.

@@ -45,12 +45,4 @@ public interface PointPlacement extends LabelPlacement {
      * @return rotation of the label as a dynamic expression
      */
     Expression getRotation();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

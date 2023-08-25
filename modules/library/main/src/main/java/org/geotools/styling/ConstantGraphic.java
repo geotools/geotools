@@ -19,8 +19,8 @@ package org.geotools.styling;
 import java.util.Collections;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
-
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Symbol;
 import org.geotools.filter.ConstantExpression;
 
 /**
@@ -76,7 +76,6 @@ import org.geotools.filter.ConstantExpression;
  *
  * @task REVISIT: There are no setter methods in this interface, is this a problem?
  */
-
 class ConstantGraphic extends Graphic {
     /**
      * A default Graphic instance.
@@ -142,6 +141,10 @@ class ConstantGraphic extends Graphic {
                     return ConstantExpression.NULL;
                 }
 
+                @Override
+                public AnchorPoint getAnchorPoint() {
+                    return AnchorPoint.NULL;
+                }
             };
 
     private void cannotModifyConstant() {

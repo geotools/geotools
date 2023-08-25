@@ -43,31 +43,21 @@ import java.util.regex.Pattern;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.style.ChannelSelection;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.Graphic;
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.api.style.ColorMapEntry;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.api.style.LabelPlacememt;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
-import org.geotools.api.style.RemoteOWS;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.api.style.UserLayer;
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
@@ -94,7 +84,7 @@ public class YsldEncodeTest {
         sld.setTitle("My SLD");
         sld.setAbstract("Remote WMS user layer style definition");
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         RemoteOWS remote =
                 styleFactory.createRemoteOWS("WMS", "http://localhost:8080/geoserver/wms");
         layer.setName("MyLayer");
@@ -138,7 +128,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -170,7 +160,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -220,7 +210,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -270,7 +260,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -343,7 +333,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -416,7 +406,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -488,7 +478,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -563,7 +553,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
-        UserLayer layer = sf.createUserLayer();
+        org.geotools.styling.UserLayer layer = sf.createUserLayer();
         sld.layers().add(layer);
         Style style = sf.createStyle();
         layer.userStyles().add(style);
@@ -576,18 +566,17 @@ public class YsldEncodeTest {
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         List<GraphicalSymbol> symbols = new ArrayList<>();
         symbols.add(mark);
-        TextSymbolizer2 text =
-                (TextSymbolizer2)
-                        sf.textSymbolizer(
-                                null,
-                                ff.property("geom"),
-                                null,
-                                null,
-                                ff.property("name"),
-                                null,
-                                null,
-                                null,
-                                null);
+        TextSymbolizer text =
+                sf.textSymbolizer(
+                        null,
+                        ff.property("geom"),
+                        null,
+                        null,
+                        ff.property("name"),
+                        null,
+                        null,
+                        null,
+                        null);
         text.setGraphic(sf.graphic(symbols, null, null, null, null, null));
         rule.symbolizers().add(text);
 
@@ -613,7 +602,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
-        UserLayer layer = sf.createUserLayer();
+        org.geotools.styling.UserLayer layer = sf.createUserLayer();
         sld.layers().add(layer);
         Style style = sf.createStyle();
         layer.userStyles().add(style);
@@ -627,18 +616,17 @@ public class YsldEncodeTest {
                         sf.createAnchorPoint(ff.literal(0.75), ff.literal(0.25)),
                         sf.createDisplacement(ff.literal(10), ff.literal(15)),
                         ff.literal(90));
-        TextSymbolizer2 text =
-                (TextSymbolizer2)
-                        sf.textSymbolizer(
-                                null,
-                                ff.property("geom"),
-                                null,
-                                null,
-                                ff.property("name"),
-                                null,
-                                place,
-                                null,
-                                null);
+        TextSymbolizer text =
+                sf.textSymbolizer(
+                        null,
+                        ff.property("geom"),
+                        null,
+                        null,
+                        ff.property("name"),
+                        null,
+                        place,
+                        null,
+                        null);
         rule.symbolizers().add(text);
 
         StringWriter out = new StringWriter();
@@ -669,7 +657,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
 
-        UserLayer layer = sf.createUserLayer();
+        org.geotools.styling.UserLayer layer = sf.createUserLayer();
         sld.layers().add(layer);
         Style style = sf.createStyle();
         layer.userStyles().add(style);
@@ -680,18 +668,17 @@ public class YsldEncodeTest {
 
         LabelPlacement place = sf.createLinePlacement(ff.literal(10));
 
-        TextSymbolizer2 text =
-                (TextSymbolizer2)
-                        sf.textSymbolizer(
-                                null,
-                                ff.property("geom"),
-                                null,
-                                null,
-                                ff.property("name"),
-                                null,
-                                place,
-                                null,
-                                null);
+        TextSymbolizer text =
+                sf.textSymbolizer(
+                        null,
+                        ff.property("geom"),
+                        null,
+                        null,
+                        ff.property("name"),
+                        null,
+                        place,
+                        null,
+                        null);
         rule.symbolizers().add(text);
 
         StringWriter out = new StringWriter();
@@ -1057,7 +1044,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -1089,7 +1076,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -1121,7 +1108,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -1171,7 +1158,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -1514,7 +1501,7 @@ public class YsldEncodeTest {
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        UserLayer layer = styleFactory.createUserLayer();
+        org.geotools.styling.UserLayer layer = styleFactory.createUserLayer();
         sld.layers().add(layer);
 
         Style style = styleFactory.createStyle();
@@ -1827,10 +1814,12 @@ public class YsldEncodeTest {
         Rule rule = sf.createRule();
         rule.symbolizers().add(p);
         ExternalGraphic eg = sf.createExternalGraphic("smileyface.png", "image/png");
-        rule.setLegend(sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
+        rule.setLegend(
+                (GraphicLegend)
+                        sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
 
         StringWriter out = new StringWriter();
-        Ysld.encode(sld(sf.createFeatureTypeStyle(rule)), out);
+        Ysld.encode(sld((FeatureTypeStyle) sf.createFeatureTypeStyle(rule)), out);
         // System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
@@ -1870,7 +1859,7 @@ public class YsldEncodeTest {
 
         RasterSymbolizer symbolizer =
                 (RasterSymbolizer)
-                        ((NamedLayer) style.getStyledLayers()[0])
+                        ((org.geotools.styling.NamedLayer) style.getStyledLayers()[0])
                                 .styles()
                                 .get(0)
                                 .featureTypeStyles()
@@ -1882,7 +1871,8 @@ public class YsldEncodeTest {
 
         ColorMap colorMap = symbolizer.getColorMap();
         RasterSymbolizerEncoder.ColorMapEntryIterator iterator =
-                new RasterSymbolizerEncoder(symbolizer).new ColorMapEntryIterator(colorMap);
+                new RasterSymbolizerEncoder(symbolizer)
+                .new ColorMapEntryIterator((org.geotools.styling.ColorMap) colorMap);
         Tuple map = iterator.next();
         assertEquals("('#E20374',1.0,1,Lorem Ipsum (magenta = covered))", map.toString());
     }

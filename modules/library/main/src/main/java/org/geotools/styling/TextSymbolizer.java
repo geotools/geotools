@@ -38,7 +38,8 @@ import org.geotools.util.factory.GeoTools;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public  class TextSymbolizer extends AbstractSymbolizer implements org.geotools.api.style.TextSymbolizer, Cloneable {
+public class TextSymbolizer extends AbstractSymbolizer
+        implements org.geotools.api.style.TextSymbolizer, Cloneable {
     private List<Font> fonts = new ArrayList<>(1);
     private final FilterFactory filterFactory;
     private Fill fill;
@@ -188,16 +189,6 @@ public  class TextSymbolizer extends AbstractSymbolizer implements org.geotools.
         } else {
             this.placement = PointPlacement.cast(labelPlacement);
         }
-    }
-
-    /**
-     * Accept a StyleVisitor to perform an operation on this symbolizer.
-     *
-     * @param visitor The StyleVisitor to accept.
-     */
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override
@@ -371,7 +362,7 @@ public  class TextSymbolizer extends AbstractSymbolizer implements org.geotools.
      * @return null - no options set
      */
     @Override
-    public  Map<String, String> getOptions(){
+    public Map<String, String> getOptions() {
         return options;
     }
 }

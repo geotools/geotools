@@ -19,7 +19,7 @@ package org.geotools.styling;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.Utilities;
 
-public abstract class ImageOutline implements org.geotools.api.style.ImageOutline {
+public class ImageOutline implements org.geotools.api.style.ImageOutline {
 
     Symbolizer symbolizer;
 
@@ -27,7 +27,6 @@ public abstract class ImageOutline implements org.geotools.api.style.ImageOutlin
     public Symbolizer getSymbolizer() {
         return symbolizer;
     }
-
 
     public void setSymbolizer(Symbolizer symbolizer) {
         if (symbolizer instanceof LineSymbolizer || symbolizer instanceof PolygonSymbolizer) {
@@ -67,6 +66,4 @@ public abstract class ImageOutline implements org.geotools.api.style.ImageOutlin
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
-
-
 }

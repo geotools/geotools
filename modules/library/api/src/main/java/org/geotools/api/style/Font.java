@@ -68,13 +68,6 @@ public interface Font {
     Expression getSize();
 
     /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
-    /**
      * Enumeration of allow font-style values.
      *
      * <p>This is a way to document the constants allowable for the setStyle method

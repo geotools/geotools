@@ -16,16 +16,15 @@
  */
 package org.geotools.styling;
 
-import org.geotools.api.style.StyleVisitor;
-import org.geotools.api.util.Cloneable;
-import org.geotools.util.Utilities;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
  * Implementation of style.
@@ -33,14 +32,13 @@ import java.util.logging.Logger;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public class Style implements  Cloneable, org.geotools.api.style.Style {
+public class Style implements Cloneable, org.geotools.api.style.Style {
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Style.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Style.class);
 
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
     private Description description = new Description();
-     String name = "Default Styler";
+    String name = "Default Styler";
     private boolean defaultB = false;
     private Fill background;
 
@@ -197,11 +195,6 @@ public class Style implements  Cloneable, org.geotools.api.style.Style {
         //      }
         buf.append("]");
         return buf.toString();
-    }
-
-    @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
-        return visitor.visit(this, extraData);
     }
 
     public void setDescription(Description description) {

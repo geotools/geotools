@@ -69,7 +69,28 @@ public class OverlapBehavior extends ConstantExpression {
         super(value);
     }
 
+    public static final OverlapBehavior cast(org.geotools.api.style.OverlapBehavior ob) {
+        if (ob == null) return null;
+        OverlapBehavior copy;
+        if (ob.name().equalsIgnoreCase(OverlapBehavior.AVERAGE_RESCTRICTION)) {
+            copy = OverlapBehavior.AVERAGE;
+        }
+        if (ob.name().equalsIgnoreCase(OverlapBehavior.LATEST_ON_TOP_RESCTRICTION)) {
+            copy = OverlapBehavior.LATEST_ON_TOP;
+        }
+        if (ob.name().equalsIgnoreCase(OverlapBehavior.EARLIEST_ON_TOP_RESCTRICTION)) {
+            copy = OverlapBehavior.EARLIEST_ON_TOP;
+        }
+        if (ob.name().equalsIgnoreCase(OverlapBehavior.RANDOM_RESCTRICTION)) {
+            copy = OverlapBehavior.RANDOM;
+        } else {
+            throw new RuntimeException(
+                    "Unable to copy unexpected OverlapBehavior (" + ob.name() + ")");
+        }
+        return copy;
+    }
+
     public void accept(StyleVisitor visitor) {
-        visitor.visit(this);
+        // visitor.visit(this);
     }
 }

@@ -20,9 +20,9 @@ package org.geotools.ysld.parse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.SLD;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
 
@@ -62,7 +62,9 @@ public class YsldParsePartialsTest {
 
     void assertSLD(StyledLayerDescriptor sld) {
         assertNotNull(sld);
-        PointSymbolizer point = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+        PointSymbolizer point =
+                SLD.pointSymbolizer(
+                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
         assertNotNull(point);
         assertEquals("triangle", SLD.mark(point).getWellKnownName().evaluate(null));
     }

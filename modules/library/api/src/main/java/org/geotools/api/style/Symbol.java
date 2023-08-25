@@ -20,9 +20,7 @@
  *
  * Created on 01 August 2002, 10:46
  */
-package org.geotools.styling;
-
-import org.geotools.api.style.StyleVisitor;
+package org.geotools.api.style;
 
 /**
  * This an empty interface for styling symbol objects to implement

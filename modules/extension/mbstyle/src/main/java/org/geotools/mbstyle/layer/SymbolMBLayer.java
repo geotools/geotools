@@ -16,10 +16,10 @@
  */
 package org.geotools.mbstyle.layer;
 
+import static org.geotools.api.style.TextSymbolizer.GraphicPlacement.INDEPENDENT;
 import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.NONE;
 import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.PROPORTIONAL;
 import static org.geotools.renderer.label.LabelCacheItem.GraphicResize.STRETCH;
-import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
@@ -47,7 +47,6 @@ import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
 import org.geotools.styling.*;
-import org.geotools.api.style.LabelPlacememt;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -701,7 +700,9 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Displacement iconOffsetDisplacement() {
         return parse.displacement(
-                layout, "icon-offset", sf.displacement(ff.literal(0), ff.literal(0)));
+                layout,
+                "icon-offset",
+                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1038,12 +1039,14 @@ public class SymbolMBLayer extends MBLayer {
         }
         if (expression instanceof Literal) {
             TextAnchor anchor = TextAnchor.parse(expression.evaluate(null, String.class));
-            return sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
+            return (AnchorPoint)
+                    sf.anchorPoint(ff.literal(anchor.getX()), ff.literal(anchor.getY()));
         }
         // it's a generic expression, need to map it to values
-        return sf.anchorPoint(
-                ff.function("mbAnchor", expression, ff.literal("x")),
-                ff.function("mbAnchor", expression, ff.literal("y")));
+        return (AnchorPoint)
+                sf.anchorPoint(
+                        ff.function("mbAnchor", expression, ff.literal("x")),
+                        ff.function("mbAnchor", expression, ff.literal("y")));
     }
 
     /**
@@ -1229,7 +1232,9 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Displacement textOffsetDisplacement() {
         return parse.displacement(
-                layout, "text-offset", sf.displacement(ff.literal(0), ff.literal(0)));
+                layout,
+                "text-offset",
+                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     private boolean hasTextOffset() {
@@ -1459,7 +1464,9 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Displacement iconTranslateDisplacement() {
         return parse.displacement(
-                paint, "icon-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+                paint,
+                "icon-translate",
+                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1652,7 +1659,9 @@ public class SymbolMBLayer extends MBLayer {
      */
     public Displacement textTranslateDisplacement() {
         return parse.displacement(
-                paint, "text-translate", sf.displacement(ff.literal(0), ff.literal(0)));
+                paint,
+                "text-translate",
+                (Displacement) sf.displacement(ff.literal(0), ff.literal(0)));
     }
 
     /**
@@ -1703,7 +1712,7 @@ public class SymbolMBLayer extends MBLayer {
         StyleBuilder sb = new StyleBuilder();
         List<Symbolizer> symbolizers = new ArrayList<>();
 
-        LabelPlacement labelPlacement;
+        org.geotools.api.style.LabelPlacement labelPlacement;
         // Create point or line placement
 
         // Functions not yet supported for symbolPlacement, so try to evaluate or use default.
@@ -1769,9 +1778,9 @@ public class SymbolMBLayer extends MBLayer {
         Halo halo = null;
         if (!(haloColor instanceof Literal)
                 || (haloColor.evaluate(null, Color.class).getAlpha() > 0)) {
-            halo = sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
+            halo = (Halo) sf.halo(sf.fill(null, haloColor, null), textHaloWidth());
         }
-        Fill fill = sf.fill(null, textColor(), textOpacity());
+        Fill fill = (Fill) sf.fill(null, textColor(), textOpacity());
 
         // leverage GeoTools ability to have several distinct fonts, inherited from SLD 1.0
         List<Font> fonts = new ArrayList<>();
@@ -1819,8 +1828,8 @@ public class SymbolMBLayer extends MBLayer {
             textExpression = ff.function("StringTransform", textExpression, textTransform());
         }
 
-        TextSymbolizer2 symbolizer =
-                (TextSymbolizer2)
+        TextSymbolizer symbolizer =
+                (TextSymbolizer)
                         sf.textSymbolizer(
                                 getId(),
                                 ff.property((String) null),
@@ -1837,17 +1846,33 @@ public class SymbolMBLayer extends MBLayer {
         Number symbolSpacing =
                 MBStyleTransformer.requireLiteral(
                         symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
-        symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
+        symbolizer
+                .getOptions()
+                .put(
+                        org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY,
+                        String.valueOf(symbolSpacing));
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement
         if (labelPlacement instanceof LinePlacement) {
             // followLine will be true if line placement, it is an implied default of MBstyles.
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
+            symbolizer
+                    .getOptions()
+                    .put(
+                            org.geotools.api.style.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY,
+                            String.valueOf(textKeepUpright()));
+            symbolizer
+                    .getOptions()
+                    .put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
+            symbolizer
+                    .getOptions()
+                    .put(
+                            org.geotools.api.style.TextSymbolizer.MAX_ANGLE_DELTA_KEY,
+                            String.valueOf(getTextMaxAngle()));
             symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
+            symbolizer
+                    .getOptions()
+                    .put(org.geotools.api.style.TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
         } else if (hasTextMaxAngle()) {
             throw new MBFormatException(
                     "Property text-max-angle requires symbol-placement = line but symbol-placement = "
@@ -1874,12 +1899,20 @@ public class SymbolMBLayer extends MBLayer {
                                 iconTextFit(), String.class, "none", "icon-text-fit", getId())
                         .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, STRETCH.name());
+            symbolizer
+                    .getOptions()
+                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, STRETCH.name());
         } else if ("both".equalsIgnoreCase(textFitVal)) {
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, PROPORTIONAL.name());
+            symbolizer
+                    .getOptions()
+                    .put(
+                            org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY,
+                            PROPORTIONAL.name());
         } else {
             // Default
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, NONE.name());
+            symbolizer
+                    .getOptions()
+                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, NONE.name());
         }
 
         // Kept commented out as a reminder not to bring this back. It breaks rendering
@@ -1894,9 +1927,13 @@ public class SymbolMBLayer extends MBLayer {
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
             symbolizer
                     .getOptions()
-                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, String.valueOf(getIconTextFitPadding().get(0)));
+                    .put(
+                            org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY,
+                            String.valueOf(getIconTextFitPadding().get(0)));
         } else {
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, "0");
+            symbolizer
+                    .getOptions()
+                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, "0");
         }
 
         // text-padding default value is 2 in mapbox, will override Geoserver defaults
@@ -1924,7 +1961,11 @@ public class SymbolMBLayer extends MBLayer {
                             16.0,
                             "text-size (when text-max-width is specified)",
                             getId());
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
+            symbolizer
+                    .getOptions()
+                    .put(
+                            org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
+                            String.valueOf(textMaxWidth * textSize));
         }
 
         // If the layer has an icon image, add it to our symbolizer
@@ -1936,13 +1977,19 @@ public class SymbolMBLayer extends MBLayer {
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
                 symbolizer
                         .getOptions()
-                        .put(org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
+                        .put(
+                                org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY,
+                                String.valueOf(getIconPadding()));
             }
             // If we have an icon with a Point placement force graphic placement independ
             // of the label final position (each one gets its own anchor and displacement)
             Graphic graphic = getGraphic(transformer, styleContext);
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY, INDEPENDENT.name());
+                symbolizer
+                        .getOptions()
+                        .put(
+                                org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY,
+                                INDEPENDENT.name());
             }
             // the mapbox-gl library does not paint the graphic if the icon cannot be found
             symbolizer.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
@@ -1961,28 +2008,31 @@ public class SymbolMBLayer extends MBLayer {
         // List of opengis rules here (needed for constructor)
         List<org.geotools.api.style.Rule> rules = new ArrayList<>();
         Rule rule =
-                sf.rule(
-                        getId(),
-                        null,
-                        null,
-                        0.0,
-                        Double.POSITIVE_INFINITY,
-                        symbolizers,
-                        filter.filter());
+                (Rule)
+                        sf.rule(
+                                getId(),
+                                null,
+                                null,
+                                0.0,
+                                Double.POSITIVE_INFINITY,
+                                symbolizers,
+                                filter.filter());
 
         rules.add(rule);
 
         return Collections.singletonList(
-                sf.featureTypeStyle(
-                        getId(),
-                        sf.description(
-                                Text.text("MBStyle " + getId()),
-                                Text.text("Generated for " + getSourceLayer())),
-                        null, // (unused)
-                        Collections.emptySet(),
-                        filter.semanticTypeIdentifiers(), // we only expect this to be applied to
-                        // polygons
-                        rules));
+                (FeatureTypeStyle)
+                        sf.featureTypeStyle(
+                                getId(),
+                                sf.description(
+                                        Text.text("MBStyle " + getId()),
+                                        Text.text("Generated for " + getSourceLayer())),
+                                null, // (unused)
+                                Collections.emptySet(),
+                                filter.semanticTypeIdentifiers(), // we only expect this to be
+                                // applied to
+                                // polygons
+                                rules));
     }
 
     /**
@@ -2016,8 +2066,8 @@ public class SymbolMBLayer extends MBLayer {
                         : styleContext.getSprite().trim().toLowerCase();
         Expression iconSize = iconSize();
         if (MARK_SHEET_ALIASES.contains(spriteSheetLocation)) {
-            Fill f = sf.fill(null, iconColor(), null);
-            Stroke s = sf.stroke(iconColor(), null, null, null, null, null, null);
+            Fill f = (Fill) sf.fill(null, iconColor(), null);
+            Stroke s = (Stroke) sf.stroke(iconColor(), null, null, null, null, null, null);
             gs = sf.mark(iconExpression, f, s);
         } else {
             gs = transformer.createExternalGraphicForSprite(iconExpression, iconSize, styleContext);
@@ -2032,7 +2082,14 @@ public class SymbolMBLayer extends MBLayer {
         }
 
         Graphic g =
-                sf.graphic(Arrays.asList(gs), iconOpacity(), graphicSize, iconRotate(), null, null);
+                (Graphic)
+                        sf.graphic(
+                                Arrays.asList(gs),
+                                iconOpacity(),
+                                graphicSize,
+                                iconRotate(),
+                                null,
+                                null);
         // From the specification:
         // Offset distance of icon from its anchor. Positive values indicate right and down, while
         // negative values indicate left and up. Each component is multiplied by the value of

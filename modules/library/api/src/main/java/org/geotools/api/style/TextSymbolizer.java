@@ -221,14 +221,6 @@ public interface TextSymbolizer extends Symbolizer {
     Fill getFill();
 
     /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
-
-    /**
      * Priority -- null = use the default labeling priority Expression = an expression that
      * evaluates to a number (ie. Integer, Long, Double...) Larger = more likely to be rendered
      */

@@ -9,6 +9,7 @@
  */
 package org.geotools.api.style;
 
+import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -356,4 +357,281 @@ public interface StyleFactory {
             LabelPlacement placement,
             Halo halo,
             Fill fill);
+
+    TextSymbolizer createTextSymbolizer(
+            Fill fill,
+            Font[] fonts,
+            Halo halo,
+            Expression label,
+            LabelPlacement labelPlacement,
+            String geometryPropertyName);
+
+    ExternalGraphic createExternalGraphic(URL url, String format);
+
+    ExternalGraphic createExternalGraphic(String uri, String format);
+
+    ExternalGraphic createExternalGraphic(Icon inlineContent, String format);
+
+    AnchorPoint createAnchorPoint(Expression x, Expression y);
+
+    Displacement createDisplacement(Expression x, Expression y);
+
+    //    public  LinePlacement createLinePlacement();
+    PointSymbolizer createPointSymbolizer();
+
+    //    public  PointPlacement createPointPlacement();
+    Mark createMark(
+            Expression wellKnownName,
+            Stroke stroke,
+            Fill fill,
+            Expression size,
+            Expression rotation);
+
+    /**
+     * Convinence method for obtaining a mark of a fixed shape
+     *
+     * @return a Mark that matches the name in this method.
+     */
+    Mark getCircleMark();
+
+    /**
+     * Convinence method for obtaining a mark of a fixed shape
+     *
+     * @return a Mark that matches the name in this method.
+     */
+    Mark getXMark();
+
+    /**
+     * Convinence method for obtaining a mark of a fixed shape
+     *
+     * @return a Mark that matches the name in this method.
+     */
+    Mark getStarMark();
+
+    /**
+     * Convinence method for obtaining a mark of a fixed shape
+     *
+     * @return a Mark that matches the name in this method.
+     */
+    Mark getSquareMark();
+
+    /**
+     * Convinence method for obtaining a mark of a fixed shape
+     *
+     * @return a Mark that matches the name in this method.
+     */
+    Mark getCrossMark();
+
+    /**
+     * Convinence method for obtaining a mark of a fixed shape
+     *
+     * @return a Mark that matches the name in this method.
+     */
+    Mark getTriangleMark();
+
+    /**
+     * Creates a new extent.
+     *
+     * @param name The name of the extent.
+     * @param value The value of the extent.
+     * @return The new extent.
+     */
+    Extent createExtent(String name, String value);
+
+    /**
+     * Creates a new feature type constraint.
+     *
+     * @param featureTypeName The feature type name.
+     * @param filter The filter.
+     * @param extents The extents.
+     * @return The new feature type constaint.
+     */
+    FeatureTypeConstraint createFeatureTypeConstraint(
+            String featureTypeName, Filter filter, Extent... extents);
+
+    LayerFeatureConstraints createLayerFeatureConstraints(
+            FeatureTypeConstraint... featureTypeConstraints);
+
+    FeatureTypeStyle createFeatureTypeStyle(Rule... rules);
+
+    /**
+     * Creates a new ImageOutline.
+     *
+     * @param symbolizer A line or polygon symbolizer.
+     * @return The new image outline.
+     */
+    ImageOutline createImageOutline(Symbolizer symbolizer);
+
+    LinePlacement createLinePlacement(Expression offset);
+
+    PolygonSymbolizer createPolygonSymbolizer();
+
+    Halo createHalo(Fill fill, Expression radius);
+
+    Fill createFill(
+            Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill);
+
+    /** Create default line symbolizer */
+    LineSymbolizer createLineSymbolizer();
+
+    PointSymbolizer createPointSymbolizer(Graphic graphic, String geometryPropertyName);
+
+    Style createStyle();
+
+    org.geotools.api.style.NamedLayer createNamedStyle();
+
+    Fill createFill(Expression color, Expression opacity);
+
+    Fill createFill(Expression color);
+
+    TextSymbolizer createTextSymbolizer();
+
+    PointPlacement createPointPlacement(
+            AnchorPoint anchorPoint, Displacement displacement, Expression rotation);
+
+    /**
+     * A convienice method to make a simple stroke
+     *
+     * @param color the color of the line
+     * @param width the width of the line
+     * @return the stroke object
+     * @see org.geotools.api.style.Stroke
+     */
+    Stroke createStroke(Expression color, Expression width);
+
+    /**
+     * A convienice method to make a simple stroke
+     *
+     * @param color the color of the line
+     * @param width The width of the line
+     * @param opacity The opacity of the line
+     * @return The stroke
+     * @see org.geotools.api.style.Stroke
+     */
+    Stroke createStroke(Expression color, Expression width, Expression opacity);
+
+    /**
+     * creates a stroke
+     *
+     * @param color The color of the line
+     * @param width The width of the line
+     * @param opacity The opacity of the line
+     * @param lineJoin - the type of Line joint
+     * @param lineCap - the type of line cap
+     * @param dashArray - an array of floats describing the dashes in the line
+     * @param dashOffset - where in the dash array to start drawing from
+     * @param graphicFill - a graphic object to fill the line with
+     * @param graphicStroke - a graphic object to draw the line with
+     * @return The completed stroke.
+     * @see org.geotools.api.style.Stroke
+     */
+    Stroke createStroke(
+            Expression color,
+            Expression width,
+            Expression opacity,
+            Expression lineJoin,
+            Expression lineCap,
+            float[] dashArray,
+            Expression dashOffset,
+            Graphic graphicFill,
+            Graphic graphicStroke);
+
+    Rule createRule();
+
+    LineSymbolizer createLineSymbolizer(Stroke stroke, String geometryPropertyName);
+
+    FeatureTypeStyle createFeatureTypeStyle();
+
+    Graphic createGraphic(
+            ExternalGraphic[] externalGraphics,
+            Mark[] marks,
+            org.geotools.api.style.Symbol[] symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation);
+
+    Font createFont(
+            Expression fontFamily,
+            Expression fontStyle,
+            Expression fontWeight,
+            Expression fontSize);
+
+    Mark createMark();
+
+    PolygonSymbolizer createPolygonSymbolizer(
+            Stroke stroke, Fill fill, String geometryPropertyName);
+
+    RasterSymbolizer createRasterSymbolizer();
+
+    RasterSymbolizer createRasterSymbolizer(
+            String geometryPropertyName,
+            Expression opacity,
+            ChannelSelection channel,
+            Expression overlap,
+            ColorMap colorMap,
+            ContrastEnhancement ce,
+            ShadedRelief relief,
+            Symbolizer outline);
+
+    RasterSymbolizer getDefaultRasterSymbolizer();
+
+    ChannelSelection createChannelSelection(SelectedChannelType... channels);
+
+    ContrastEnhancement createContrastEnhancement();
+
+    ContrastEnhancement createContrastEnhancement(Expression gammaValue);
+
+    SelectedChannelType createSelectedChannelType(Expression name, ContrastEnhancement enhancement);
+
+    SelectedChannelType createSelectedChannelType(String name, ContrastEnhancement enhancement);
+
+    SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue);
+
+    ColorMap createColorMap();
+
+    ColorMapEntry createColorMapEntry();
+
+    Style getDefaultStyle();
+
+    Stroke getDefaultStroke();
+
+    Fill getDefaultFill();
+
+    Mark getDefaultMark();
+
+    PointSymbolizer getDefaultPointSymbolizer();
+
+    PolygonSymbolizer getDefaultPolygonSymbolizer();
+
+    LineSymbolizer getDefaultLineSymbolizer();
+
+    /**
+     * Creates a default Text Symbolizer, using the defaultFill, defaultFont and
+     * defaultPointPlacement, Sets the geometry attribute name to be geometry:text. No Halo is set.
+     * <b>The label is not set</b>
+     *
+     * @return A default TextSymbolizer
+     */
+    TextSymbolizer getDefaultTextSymbolizer();
+
+    Graphic createDefaultGraphic();
+
+    Graphic getDefaultGraphic();
+
+    Font getDefaultFont();
+
+    PointPlacement getDefaultPointPlacement();
+
+    org.geotools.api.style.StyledLayerDescriptor createStyledLayerDescriptor();
+
+    UserLayer createUserLayer();
+
+    NamedLayer createNamedLayer();
+
+    RemoteOWS createRemoteOWS(String service, String onlineResource);
+
+    ShadedRelief createShadedRelief(Expression reliefFactor);
+
+    /** @return a deep copy of the method */
+    ContrastMethod createContrastMethod(ContrastMethod method);
 }

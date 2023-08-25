@@ -6,11 +6,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Set;
 import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.SLD;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -30,7 +30,8 @@ public class MBFilterIntegrationTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
 
         StyledLayerDescriptor sld = mbStyle.transform();
-        FeatureTypeStyle[] ftss = SLD.featureTypeStyles(sld);
+        FeatureTypeStyle[] ftss =
+                SLD.featureTypeStyles((org.geotools.styling.StyledLayerDescriptor) sld);
 
         assertEquals(3, ftss.length);
 

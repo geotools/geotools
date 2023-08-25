@@ -16,8 +16,6 @@
  */
 package org.geotools.api.style;
 
-import org.geotools.api.style.StyleVisitor;
-
 import java.util.List;
 
 /**

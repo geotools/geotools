@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.StyleVisitor;
@@ -33,7 +35,7 @@ public class Fill implements Cloneable, org.geotools.api.style.Fill {
     private Expression color = null;
     private Expression opacity = null;
     private Graphic graphicFill = null;
-
+    private static final Logger LOGGER = Logger.getLogger(Fill.class.getName());
     /** Creates a new instance of DefaultFill */
     protected Fill() {
         this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
@@ -41,6 +43,9 @@ public class Fill implements Cloneable, org.geotools.api.style.Fill {
 
     public Fill(FilterFactory factory) {
         filterFactory = factory;
+        color = filterFactory.literal("#808080");
+        opacity = filterFactory.literal(1.0);
+        graphicFill = new ConstantGraphic();
     }
 
     public void setFilterFactory(FilterFactory factory) {
@@ -140,11 +145,6 @@ public class Fill implements Cloneable, org.geotools.api.style.Fill {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
-    }
-
-    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -177,6 +177,7 @@ public class Fill implements Cloneable, org.geotools.api.style.Fill {
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
+        LOGGER.log(Level.INFO, "Entering Fill hashCode");
         if (color != null) {
             result = PRIME * result + color.hashCode();
         }
@@ -227,5 +228,17 @@ public class Fill implements Cloneable, org.geotools.api.style.Fill {
             copy.opacity = fill.getOpacity();
             return copy;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Fill{"
+                + " color="
+                + color
+                + ", opacity="
+                + opacity
+                + ", graphicFill="
+                + graphicFill
+                + '}';
     }
 }

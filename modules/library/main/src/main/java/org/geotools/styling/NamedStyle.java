@@ -16,18 +16,18 @@
  */
 package org.geotools.styling;
 
-import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.api.style.StyleVisitor;
-import org.geotools.api.util.Cloneable;
-import org.geotools.util.Utilities;
+import static org.geotools.api.annotation.Obligation.MANDATORY;
+import static org.geotools.api.annotation.Specification.ISO_19117;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19117;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
  * A NamedStyle is used to refer to a style that has a name in a WMS.
@@ -37,13 +37,13 @@ import static org.geotools.api.annotation.Specification.ISO_19117;
  *
  * @author jamesm
  */
-public class NamedStyle extends Style implements org.geotools.api.style.NamedLayer, Cloneable, org.geotools.api.style.Style {
+public class NamedStyle extends Style
+        implements org.geotools.api.style.NamedLayer, Cloneable, org.geotools.api.style.Style {
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Style.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Style.class);
     /** Style name */
-
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
+
     private Description description = new Description();
     private String name = "Default Styler";
     private boolean defaultB = false;
@@ -126,13 +126,10 @@ public class NamedStyle extends Style implements org.geotools.api.style.NamedLay
         throw new UnsupportedOperationException();
     }
 
-    /** */
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
-    }
-
-    @org.geotools.api.annotation.UML(identifier = "featurePortrayal", obligation = MANDATORY, specification = ISO_19117)
+    @org.geotools.api.annotation.UML(
+            identifier = "featurePortrayal",
+            obligation = MANDATORY,
+            specification = ISO_19117)
     public List<FeatureTypeStyle> featureTypeStyles() {
         return featureTypeStyles;
     }
@@ -143,7 +140,7 @@ public class NamedStyle extends Style implements org.geotools.api.style.NamedLay
 
     @Override
     public List<FeatureTypeConstraint> layerFeatureConstraints() {
-        return  new ArrayList<FeatureTypeConstraint>();
+        return new ArrayList<FeatureTypeConstraint>();
     }
 
     @Override
@@ -152,9 +149,7 @@ public class NamedStyle extends Style implements org.geotools.api.style.NamedLay
     }
 
     @Override
-    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints) {
-
-    }
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints) {}
 
     @Override
     public org.geotools.api.style.Style[] getStyles() {
@@ -163,7 +158,7 @@ public class NamedStyle extends Style implements org.geotools.api.style.NamedLay
 
     @Override
     public void accept(StyleVisitor visitor) {
-        visitor.visit(this);
+        visitor.visit((NamedLayer) this);
     }
 
     /**
@@ -176,11 +171,7 @@ public class NamedStyle extends Style implements org.geotools.api.style.NamedLay
     public Object clone() {
         Style clone;
 
-        try {
-            clone = (Style) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e); // this should never happen since we implement Cloneable
-        }
+        clone = (Style) super.clone();
 
         List<FeatureTypeStyle> ftsCopies = new ArrayList<>();
 
@@ -218,10 +209,10 @@ public class NamedStyle extends Style implements org.geotools.api.style.NamedLay
         if (oth instanceof Style) {
             Style other = (Style) oth;
 
-            return Utilities.equals(name, other.name)
-                    && Utilities.equals(description, other.description)
-                    && Utilities.equals(featureTypeStyles, other.featureTypeStyles)
-                    && Utilities.equals(background, other.background);
+            return Utilities.equals(name, other.getName())
+                    && Utilities.equals(description, other.getDescription())
+                    && Utilities.equals(featureTypeStyles, other.getFeatureTypeStyles())
+                    && Utilities.equals(background, other.getBackground());
         }
 
         return false;

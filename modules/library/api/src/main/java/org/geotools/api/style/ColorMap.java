@@ -34,13 +34,6 @@ public interface ColorMap {
     /** @return Interpolate or Categorize function */
     Function getFunction();
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
     ColorMapEntry[] getColorMapEntries();
 
     ColorMapEntry getColorMapEntry(int i);

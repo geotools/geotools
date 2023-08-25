@@ -18,7 +18,6 @@ package org.geotools.renderer.label;
 
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.renderer.style.TextStyle2D;
-import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;

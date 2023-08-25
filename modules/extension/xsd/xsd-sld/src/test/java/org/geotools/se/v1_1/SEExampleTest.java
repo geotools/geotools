@@ -56,7 +56,6 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.xsd.Parser;
 import org.junit.Before;
@@ -293,7 +292,7 @@ public class SEExampleTest extends SETestSupport {
         Graphic g = sym.getGraphic();
         assertEquals(15.0, g.getSize().evaluate(null, Double.class), 0d);
         assertEquals(1, g.graphicalSymbols().size());
-        AnchorPoint ap = g.getAnchorPoint();
+        AnchorPoint ap = (AnchorPoint) g.getAnchorPoint();
         assertNotNull(ap);
         assertEquals(0, ap.getAnchorPointX().evaluate(null, Double.class), 0d);
         assertEquals(1, ap.getAnchorPointY().evaluate(null, Double.class), 0d);
@@ -709,7 +708,7 @@ public class SEExampleTest extends SETestSupport {
 
     @Test
     public void testParseTextSymbolizerWithGraphic() throws Exception {
-        TextSymbolizer2 sym = (TextSymbolizer2) parse("example-textsymbolizer-graphic.xml");
+        TextSymbolizer sym = (TextSymbolizer) parse("example-textsymbolizer-graphic.xml");
         Graphic graphic = sym.getGraphic();
         assertNotNull(graphic);
         assertNotNull(graphic.graphicalSymbols());

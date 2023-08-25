@@ -16,9 +16,8 @@
  */
 package org.geotools.api.style;
 
-import org.geotools.api.filter.expression.Expression;
-
 import java.util.Map;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * This interface defines the strategy that a ContrastEnhancement will use to execute the

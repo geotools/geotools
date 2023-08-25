@@ -123,13 +123,6 @@ public interface FeatureTypeStyle {
     Expression getTransformation();
 
     /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
-    /**
      * Sets the eventual transformation to be applied before rendering the data (should be an
      * expression taking a feature collection or a grid coverage as an input and returns a feature
      * collection or a grid coverage as an output)

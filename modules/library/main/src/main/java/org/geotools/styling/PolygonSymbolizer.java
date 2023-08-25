@@ -31,10 +31,11 @@ import org.geotools.api.util.Cloneable;
  * @version $Id$
  */
 public class PolygonSymbolizer extends AbstractSymbolizer
-        implements  Cloneable, org.geotools.api.style.PolygonSymbolizer, Symbolizer {
+        implements Cloneable, org.geotools.api.style.PolygonSymbolizer, Symbolizer {
 
     /** Pixels between each graphic of a polygon fill */
     public static final String GRAPHIC_MARGIN_KEY = "graphic-margin";
+
     private Expression offset;
     private Displacement disp;
 
@@ -121,16 +122,6 @@ public class PolygonSymbolizer extends AbstractSymbolizer
             return;
         }
         this.stroke = Stroke.cast(stroke);
-    }
-
-    /**
-     * Accepts a StyleVisitor to perform some operation on this LineSymbolizer.
-     *
-     * @param visitor The visitor to accept.
-     */
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

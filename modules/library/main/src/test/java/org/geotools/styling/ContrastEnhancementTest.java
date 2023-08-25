@@ -42,8 +42,7 @@ public class ContrastEnhancementTest {
         double expected = 1.5;
         contrastEnhancement.setGammaValue(filterFactory.literal(expected));
         double actual =
-                ((Double) ((Literal) contrastEnhancement.getGammaValue()).getValue())
-                        .doubleValue();
+                ((Double) ((Literal) contrastEnhancement.getGammaValue()).getValue()).doubleValue();
         Assert.assertEquals(expected, actual, 0.1);
     }
 

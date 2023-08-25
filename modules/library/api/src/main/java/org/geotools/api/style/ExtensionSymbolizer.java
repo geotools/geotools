@@ -37,12 +37,4 @@ public interface ExtensionSymbolizer extends Symbolizer {
      * @return map of all expressions.
      */
     Map<String, Expression> getParameters();
-
-    /**
-     * Calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

@@ -34,13 +34,15 @@ import org.geotools.util.factory.GeoTools;
  * @author Johann Sorel (Geomatys)
  */
 public class RasterSymbolizer extends AbstractSymbolizer
-        implements  Cloneable, org.geotools.api.style.RasterSymbolizer, Symbolizer {
+        implements Cloneable,
+                org.geotools.api.style.RasterSymbolizer,
+                org.geotools.api.style.Symbolizer {
 
     private OverlapBehavior behavior;
 
     // TODO: make container ready
     private FilterFactory filterFactory;
-    private ChannelSelection channelSelection = new ChannelSelectionImpl();
+    private ChannelSelection channelSelection = new ChannelSelection();
     private ColorMap colorMap = new ColorMap();
     private ContrastEnhancement contrastEnhancement = new ContrastEnhancement();
     private ShadedRelief shadedRelief;
@@ -270,7 +272,7 @@ public class RasterSymbolizer extends AbstractSymbolizer
         if (this.channelSelection == channel) {
             return;
         }
-        this.channelSelection = ChannelSelectionImpl.cast(channel);
+        this.channelSelection = ChannelSelection.cast(channel);
     }
 
     /**
@@ -347,7 +349,7 @@ public class RasterSymbolizer extends AbstractSymbolizer
             if (this.symbolizer == symbolizer) {
                 return;
             }
-            this.symbolizer = StyleFactoryImpl2.cast(symbolizer);
+            this.symbolizer = (Symbolizer) symbolizer;
         } else {
             throw new IllegalArgumentException(
                     "Only a line or polygon symbolizer may be used to outline a raster");
@@ -406,11 +408,6 @@ public class RasterSymbolizer extends AbstractSymbolizer
             return;
         }
         this.shadedRelief = ShadedRelief.cast(shadedRelief);
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

@@ -126,14 +126,6 @@ public class SLD {
                 DuplicatingStyleVisitor update =
                         new DuplicatingStyleVisitor() {
 
-                            @Override
-                            public void visit(LineSymbolizer line) {
-                                String name = line.getGeometryPropertyName();
-                                Stroke stroke = update(line.getStroke());
-                                LineSymbolizer copy = sf.createLineSymbolizer(stroke, name);
-                                pages.push(copy);
-                            }
-
                             Stroke update(Stroke stroke) {
                                 Expression color = ff.literal(colour);
                                 Expression width = copy(stroke.getWidth());
@@ -572,7 +564,9 @@ public class SLD {
 
                 Stroke stroke = mark.getStroke();
                 if (stroke == null) {
-                    stroke = sf.createStroke(ff.literal(Color.BLACK), ConstantStroke.DEFAULT.getWidth());
+                    stroke =
+                            sf.createStroke(
+                                    ff.literal(Color.BLACK), ConstantStroke.DEFAULT.getWidth());
                     mark.setStroke(stroke);
                 }
 
@@ -830,16 +824,17 @@ public class SLD {
                 DuplicatingStyleVisitor update =
                         new DuplicatingStyleVisitor() {
                             @Override
-                            public void visit(RasterSymbolizer raster) {
+                            public void visit(org.geotools.api.style.RasterSymbolizer raster) {
+                                RasterSymbolizer input = (RasterSymbolizer) raster;
 
                                 ChannelSelection channelSelection =
-                                        copy(raster.getChannelSelection());
-                                ColorMap colorMap = copy(raster.getColorMap());
-                                ContrastEnhancement ce = copy(raster.getContrastEnhancement());
-                                String geometryProperty = raster.getGeometryPropertyName();
-                                Symbolizer outline = copy(raster.getImageOutline());
-                                Expression overlap = copy(raster.getOverlap());
-                                ShadedRelief shadedRelief = copy(raster.getShadedRelief());
+                                        copy(input.getChannelSelection());
+                                ColorMap colorMap = (ColorMap) copy(input.getColorMap());
+                                ContrastEnhancement ce = copy(input.getContrastEnhancement());
+                                String geometryProperty = input.getGeometryPropertyName();
+                                Symbolizer outline = copy(input.getImageOutline());
+                                Expression overlap = copy(input.getOverlap());
+                                ShadedRelief shadedRelief = copy(input.getShadedRelief());
 
                                 Expression newOpacity = ff.literal(opacity);
 
@@ -893,16 +888,16 @@ public class SLD {
                         new DuplicatingStyleVisitor() {
 
                             @Override
-                            public void visit(RasterSymbolizer raster) {
-
+                            public void visit(org.geotools.api.style.RasterSymbolizer raster) {
+                                RasterSymbolizer input = (RasterSymbolizer) raster;
                                 ChannelSelection channelSelection = createChannelSelection();
 
-                                ColorMap colorMap = copy(raster.getColorMap());
-                                ContrastEnhancement ce = copy(raster.getContrastEnhancement());
-                                String geometryProperty = raster.getGeometryPropertyName();
-                                Symbolizer outline = copy(raster.getImageOutline());
-                                Expression overlap = copy(raster.getOverlap());
-                                ShadedRelief shadedRelief = copy(raster.getShadedRelief());
+                                ColorMap colorMap = (ColorMap) copy(input.getColorMap());
+                                ContrastEnhancement ce = copy(input.getContrastEnhancement());
+                                String geometryProperty = input.getGeometryPropertyName();
+                                Symbolizer outline = copy(input.getImageOutline());
+                                Expression overlap = copy(input.getOverlap());
+                                ShadedRelief shadedRelief = copy(input.getShadedRelief());
 
                                 Expression opacity = copy(raster.getOpacity());
 
@@ -927,7 +922,7 @@ public class SLD {
                                 if (rgb != null) {
                                     return sf.createChannelSelection(rgb);
                                 } else {
-                                    return sf.createChannelSelection(gray);
+                                    return (ChannelSelection) sf.createChannelSelection(gray);
                                 }
                             }
                         };
@@ -1046,12 +1041,12 @@ public class SLD {
      */
     public static double opacity(Fill fill) {
         if (fill == null) {
-            fill = Fill.DEFAULT;
+            fill = (Fill) ConstantFill.DEFAULT;
         }
 
         Expression opacityExp = fill.getOpacity();
         if (opacityExp == null) {
-            opacityExp = Fill.DEFAULT.getOpacity();
+            opacityExp = ConstantFill.DEFAULT.getOpacity();
         }
 
         return Filters.asDouble(opacityExp);
@@ -1525,7 +1520,7 @@ public class SLD {
      * @return an array of Styles
      */
     public static Style[] styles(StyledLayerDescriptor sld) {
-        StyledLayer[] layers = sld.getStyledLayers();
+        StyledLayer[] layers = (StyledLayer[]) sld.getStyledLayers();
         List<Style> styles = new ArrayList<>();
 
         for (StyledLayer styledLayer : layers) {
@@ -1906,7 +1901,7 @@ public class SLD {
      */
     public static Style createPolygonStyle(Color outlineColor, Color fillColor, float opacity) {
         Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(1.0f));
-        Fill fill = Fill.NULL;
+        Fill fill = (Fill) ConstantFill.NULL;
         if (fillColor != null) {
             fill = sf.createFill(ff.literal(fillColor), ff.literal(opacity));
         }
@@ -1928,7 +1923,7 @@ public class SLD {
     public static Style createPolygonStyle(
             Color outlineColor, Color fillColor, float opacity, String labelField, Font labelFont) {
         Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(1.0f));
-        Fill fill = Fill.NULL;
+        Fill fill = (Fill) ConstantFill.NULL;
         if (fillColor != null) {
             fill = sf.createFill(ff.literal(fillColor), ff.literal(opacity));
         }
@@ -2042,7 +2037,7 @@ public class SLD {
             Font labelFont) {
 
         Stroke stroke = sf.createStroke(ff.literal(lineColor), ff.literal(1.0f));
-        Fill fill = Fill.NULL;
+        Fill fill = (Fill) ConstantFill.NULL;
         if (fillColor != null) {
             fill = sf.createFill(ff.literal(fillColor), ff.literal(opacity));
         }
@@ -2098,7 +2093,7 @@ public class SLD {
             rule.symbolizers().add(sym);
         }
 
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle(rule);
+        FeatureTypeStyle fts = (FeatureTypeStyle) sf.createFeatureTypeStyle(rule);
 
         Style style = sf.createStyle();
         style.featureTypeStyles().add(fts);

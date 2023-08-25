@@ -33,7 +33,8 @@ import org.geotools.util.factory.GeoTools;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class LinePlacement implements Cloneable, org.geotools.api.style.LinePlacement, LabelPlacement {
+public class LinePlacement
+        implements Cloneable, org.geotools.api.style.LinePlacement, LabelPlacement {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(LinePlacement.class);
@@ -131,11 +132,6 @@ public class LinePlacement implements Cloneable, org.geotools.api.style.LinePlac
     @Override
     public boolean isGeneralizeLine() {
         return generalized;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

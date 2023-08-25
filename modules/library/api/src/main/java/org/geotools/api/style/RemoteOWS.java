@@ -47,5 +47,4 @@ public interface RemoteOWS {
     String getService();
 
     String getOnlineResource();
-
 }

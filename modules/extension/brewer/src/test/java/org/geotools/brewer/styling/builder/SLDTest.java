@@ -6,10 +6,10 @@ import static org.junit.Assert.assertTrue;
 import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.NamedLayer;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.PointSymbolizer;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
+import org.geotools.styling.NamedStyle;
+import org.geotools.styling.PointSymbolizer;
 import org.junit.Test;
 
 public class SLDTest extends AbstractStyleTest {

@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.measure.Unit;
@@ -33,7 +34,7 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     protected Unit<Length> unitOfMeasure;
 
-    protected Map<String, String> options;
+    protected Map<String, String> options = new HashMap<>();
 
     protected AbstractSymbolizer() {}
 

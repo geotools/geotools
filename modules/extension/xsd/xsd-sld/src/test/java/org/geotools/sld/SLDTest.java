@@ -25,19 +25,19 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.api.style.UserLayer;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
 import org.junit.Ignore;
@@ -60,7 +60,7 @@ public class SLDTest {
         assertEquals("OCEANSEA_1M:Foundation", layer.getName());
         assertEquals(1, layer.getStyles().length);
 
-        Style style = layer.getStyles()[0];
+        Style style = (Style) layer.getStyles()[0];
         assertEquals("GEOSYM", style.getName());
         assertTrue(style.isDefault());
         assertEquals(1, style.featureTypeStyles().size());
@@ -143,7 +143,7 @@ public class SLDTest {
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor) parser.parse(IOUtils.toInputStream(sldText, "UTF-8"));
 
-        Style s = ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
+        Style s = (Style) ((UserLayer) (sld.layers().get(0))).getUserStyles()[0];
         TextSymbolizer symbolizer =
                 (TextSymbolizer) (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
         Font font = symbolizer.fonts().get(0);
@@ -163,7 +163,7 @@ public class SLDTest {
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor)
                         parser.parse(getClass().getResourceAsStream("backgroundSolid.sld"));
-        Style style = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
         Fill fill = style.getBackground();
         assertNotNull(fill);
         assertEquals(Color.RED, fill.getColor().evaluate(null, Color.class));
@@ -181,7 +181,7 @@ public class SLDTest {
         StyledLayerDescriptor sld =
                 (StyledLayerDescriptor)
                         parser.parse(getClass().getResourceAsStream("backgroundGraphicFill.sld"));
-        Style style = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
         Fill fill = style.getBackground();
         assertNotNull(fill);
         Graphic graphic = fill.getGraphicFill();

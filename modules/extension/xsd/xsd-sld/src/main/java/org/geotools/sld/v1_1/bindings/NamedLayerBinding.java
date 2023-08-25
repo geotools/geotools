@@ -16,8 +16,8 @@
  */
 package org.geotools.sld.v1_1.bindings;
 
-import org.geotools.sld.bindings.SLDNamedLayerBinding;
 import org.geotools.api.style.NamedLayer;
+import org.geotools.sld.bindings.SLDNamedLayerBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

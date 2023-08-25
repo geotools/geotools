@@ -85,8 +85,7 @@ public class SLDMarkBindingTest extends SLDTestSupport {
         return new SLDConfiguration() {
             @Override
             protected void configureContext(MutablePicoContainer container) {
-                container.registerComponentImplementation(
-                        StyleFactory.class, StyleFactory.class);
+                container.registerComponentImplementation(StyleFactory.class, StyleFactory.class);
 
                 container.registerComponentInstance(
                         ResourceLocator.class,

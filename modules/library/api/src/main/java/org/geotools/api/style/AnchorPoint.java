@@ -24,8 +24,6 @@ import org.geotools.api.filter.expression.Expression;
  */
 public interface AnchorPoint {
 
-
-
     /**
      * get the x coordinate of the anchor point
      *
@@ -39,13 +37,6 @@ public interface AnchorPoint {
      * @return the expression which represents the Y coordinate
      */
     Expression getAnchorPointY();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
 
     /**
      * calls the visit method of a StyleVisitor

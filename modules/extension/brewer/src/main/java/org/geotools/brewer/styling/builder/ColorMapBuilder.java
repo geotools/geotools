@@ -19,13 +19,12 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ColorMapImpl;
+import org.geotools.styling.ColorMap;
 
 public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
 
-    int type = ColorMapImpl.TYPE_RAMP;
+    int type = ColorMap.TYPE_RAMP;
 
     boolean extended = false;
 
@@ -85,7 +84,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
 
     @Override
     public ColorMapBuilder reset() {
-        type = ColorMapImpl.TYPE_RAMP;
+        type = ColorMap.TYPE_RAMP;
         extended = false;
         entries = new ArrayList<>();
         unset = false;

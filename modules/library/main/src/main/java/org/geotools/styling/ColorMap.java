@@ -75,11 +75,6 @@ public class ColorMap implements org.geotools.api.style.ColorMap {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
-    }
-
-    @Override
     public boolean getExtendedColors() {
         return extendedColors;
     }

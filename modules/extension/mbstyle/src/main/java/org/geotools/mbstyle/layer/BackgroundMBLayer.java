@@ -153,9 +153,9 @@ public class BackgroundMBLayer extends MBLayer {
                     transformer.createExternalGraphicForSprite(backgroundPattern(), styleContext);
             GraphicFill gf =
                     sf.graphicFill(Arrays.asList(eg), backgroundOpacity(), null, null, null, null);
-            return sf.fill(gf, backgroundColor(), backgroundOpacity());
+            return (Fill) sf.fill(gf, backgroundColor(), backgroundOpacity());
         } else {
-            return sf.fill(null, backgroundColor(), backgroundOpacity());
+            return (Fill) sf.fill(null, backgroundColor(), backgroundOpacity());
         }
     }
 

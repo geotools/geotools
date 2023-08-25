@@ -28,14 +28,7 @@ import org.geotools.api.filter.expression.Add;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.geotools.test.TestData;
 import org.junit.Test;
 
@@ -70,7 +63,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testSimpleStroke() {
-        Style style = sb.createStyle(sb.createLineSymbolizer(sb.createStroke(10.0)));
+        Style style = sb.createStyle(sb.createLineSymbolizer((Stroke) sb.createStroke(10.0)));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         assertEquals(10, rbe.getBuffer());
@@ -126,7 +119,7 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testNonIntegerStroke() {
-        Style style = sb.createStyle(sb.createLineSymbolizer(sb.createStroke(10.8)));
+        Style style = sb.createStyle(sb.createLineSymbolizer((Stroke) sb.createStroke(10.8)));
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(style);
         assertEquals(11, rbe.getBuffer());
@@ -135,8 +128,8 @@ public class RenderingBufferExtractorTest {
 
     @Test
     public void testMultiSymbolizers() {
-        Symbolizer ls = sb.createLineSymbolizer(sb.createStroke(10.8));
-        Symbolizer ps = sb.createPolygonSymbolizer(sb.createStroke(12), sb.createFill());
+        Symbolizer ls = sb.createLineSymbolizer((Stroke) sb.createStroke(10.8));
+        Symbolizer ps = sb.createPolygonSymbolizer((Stroke) sb.createStroke(12), sb.createFill());
         Rule r = sb.createRule(ls, ps);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);
@@ -150,7 +143,7 @@ public class RenderingBufferExtractorTest {
                 sb.createLineSymbolizer(
                         sb.createStroke(
                                 sb.colorExpression(Color.BLACK), sb.attributeExpression("gimbo")));
-        Symbolizer ps = sb.createPolygonSymbolizer(sb.createStroke(12), sb.createFill());
+        Symbolizer ps = sb.createPolygonSymbolizer((Stroke) sb.createStroke(12), sb.createFill());
         Rule r = sb.createRule(ls, ps);
         MetaBufferEstimator rbe = new MetaBufferEstimator();
         rbe.visit(r);

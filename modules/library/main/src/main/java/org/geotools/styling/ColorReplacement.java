@@ -17,7 +17,6 @@
 package org.geotools.styling;
 
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.style.StyleVisitor;
 
 /**
  * An implementation of ColorReplacement; this is a wrapper around an implementaiton of the "Recode"
@@ -44,11 +43,6 @@ public class ColorReplacement implements org.geotools.api.style.ColorReplacement
     @Override
     public Function getRecoding() {
         return function;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object extraData) {
-        return visitor.visit(this, extraData);
     }
 
     public void setRecoding(Function function) {

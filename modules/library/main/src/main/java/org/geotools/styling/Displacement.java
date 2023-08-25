@@ -31,7 +31,7 @@ import org.geotools.util.factory.GeoTools;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class Displacement implements  Cloneable, org.geotools.api.style.Displacement {
+public class Displacement implements Cloneable, org.geotools.api.style.Displacement {
     /** Default Displacement instance. */
     public static final Displacement DEFAULT =
             new ConstantDisplacement() {
@@ -47,12 +47,6 @@ public class Displacement implements  Cloneable, org.geotools.api.style.Displace
                 @Override
                 public Expression getDisplacementY() {
                     return ConstantExpression.ZERO;
-                }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
                 }
             };
     /** Null Displacement instance. */
@@ -70,12 +64,6 @@ public class Displacement implements  Cloneable, org.geotools.api.style.Displace
                 @Override
                 public Expression getDisplacementY() {
                     return ConstantExpression.NULL;
-                }
-
-                @Override
-                public Object accept(StyleVisitor visitor, Object extraData) {
-                    cannotModifyConstant();
-                    return null;
                 }
             };
     /** The logger for the default core module. */
@@ -169,11 +157,6 @@ public class Displacement implements  Cloneable, org.geotools.api.style.Displace
     @Override
     public Expression getDisplacementY() {
         return displacementY;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

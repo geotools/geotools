@@ -699,14 +699,7 @@ public class StreamingRendererTest {
         StyleFactory sf = new StyleFactory();
         Rule bboxRule =
                 sf.createRule(
-                        new Symbolizer[0],
-                        new Description(),
-                        null,
-                        "bbox",
-                        bbox,
-                        false,
-                        1e12,
-                        0);
+                        new Symbolizer[0], new Description(), null, "bbox", bbox, false, 1e12, 0);
         style.featureTypeStyles().get(0).rules().add(bboxRule);
 
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);

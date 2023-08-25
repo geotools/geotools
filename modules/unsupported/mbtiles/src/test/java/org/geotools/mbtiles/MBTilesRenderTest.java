@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.net.URL;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -43,10 +45,8 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.util.URLs;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.AfterClass;
@@ -74,7 +74,7 @@ public class MBTilesRenderTest {
         URL styleResource = MBTilesRenderTest.class.getResource("generic.sld");
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
-        Style style = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
 
         MapContent mc = new MapContent();
         File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
@@ -110,7 +110,7 @@ public class MBTilesRenderTest {
         URL styleResource = MBTilesRenderTest.class.getResource("generic.sld");
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
-        Style style = ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        Style style = (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
 
         MapContent mc = new MapContent();
         File file = URLs.urlToFile(getClass().getResource("madagascar.mbtiles"));
@@ -229,7 +229,7 @@ public class MBTilesRenderTest {
         URL styleResource = MBTilesRenderTest.class.getResource(fileName);
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = new SLDParser(styleFactory, styleResource).parseSLD();
-        return ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
+        return (Style) ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0];
     }
 
     private BufferedImage getImage(

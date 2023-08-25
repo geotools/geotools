@@ -16,8 +16,6 @@
  */
 package org.geotools.api.style;
 
-import org.geotools.api.style.StyleVisitor;
-
 import java.util.List;
 
 /**
@@ -53,12 +51,9 @@ public interface NamedLayer extends StyledLayer {
 
     public FeatureTypeConstraint[] getLayerFeatureConstraints();
 
-    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);
-;
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);;
 
     public Style[] getStyles();
-
-
 
     /** Used to navigate a Style/SLD. */
     void accept(StyleVisitor visitor);

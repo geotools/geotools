@@ -40,14 +40,14 @@ class PerpendicularOffsetVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(LinePlacement lp) {
+    public void visit(org.geotools.api.style.LinePlacement lp) {
         super.visit(lp);
         LinePlacement copy = (LinePlacement) pages.peek();
         copy.setPerpendicularOffset(ff.literal(distance));
     }
 
     @Override
-    public void visit(TextSymbolizer text) {
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
         super.visit(text);
         TextSymbolizer ts = (TextSymbolizer) pages.peek();
 

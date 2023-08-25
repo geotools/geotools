@@ -409,7 +409,7 @@ class ZGroupLayer extends Layer {
             DuplicatingStyleVisitor cleaner =
                     new DuplicatingStyleVisitor() {
                         @Override
-                        public void visit(FeatureTypeStyle fts) {
+                        public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
                             super.visit(fts);
                             FeatureTypeStyle copy = (FeatureTypeStyle) pages.peek();
                             copy.getOptions().remove(FeatureTypeStyle.COMPOSITE);

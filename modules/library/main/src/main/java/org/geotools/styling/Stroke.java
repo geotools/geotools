@@ -23,7 +23,6 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
@@ -159,6 +158,7 @@ public class Stroke implements org.geotools.api.style.Stroke, Cloneable {
                     return ConstantGraphic.NULL;
                 }
             };
+
     private FilterFactory filterFactory;
     private Expression color;
     private List<Expression> dashArray;
@@ -515,11 +515,6 @@ public class Stroke implements org.geotools.api.style.Stroke, Cloneable {
 
     public java.awt.Color getColor(SimpleFeature feature) {
         return java.awt.Color.decode((String) this.getColor().evaluate(feature));
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     @Override

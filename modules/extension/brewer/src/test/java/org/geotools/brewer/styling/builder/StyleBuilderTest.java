@@ -14,13 +14,12 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.Halo;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.*;
-import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -34,7 +33,7 @@ public class StyleBuilderTest {
         sld.setName("example");
         sld.setAbstract("Example Style Layer Descriptor");
 
-        UserLayer layer = sf.createUserLayer();
+        org.geotools.styling.UserLayer layer = sf.createUserLayer();
         layer.setName("layer");
 
         FeatureTypeConstraint constraint =

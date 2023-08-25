@@ -40,6 +40,8 @@ import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
@@ -54,8 +56,6 @@ import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
@@ -308,7 +308,7 @@ public class TransparencyStyledTest {
 
     private static RasterSymbolizer extractRasterSymbolizer(StyledLayerDescriptor sld) {
         final UserLayer nl = (UserLayer) sld.getStyledLayers()[0];
-        final Style style = nl.getUserStyles()[0];
+        final Style style = (Style) nl.getUserStyles()[0];
         final FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         final Rule rule = fts.rules().get(0);
         final RasterSymbolizer rs_1 = (RasterSymbolizer) rule.symbolizers().get(0);

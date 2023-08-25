@@ -17,78 +17,142 @@
 package org.geotools.styling;
 
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.util.Utilities;
 
 /**
- * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
- * raster source (such as a multi-band satellite-imagery source). It is defined as:
- *
- * <PRE>
- * &lt;xs:element name="ChannelSelection"&gt;
- * &lt;xs:complexType&gt;
- *     &lt;xs:choice&gt;
- *       &lt;xs:sequence&gt;
- *         &lt;xs:element ref="sld:RedChannel"/&gt;
- *         &lt;xs:element ref="sld:GreenChannel"/&gt;
- *         &lt;xs:element ref="sld:BlueChannel"/&gt;
- *       &lt;/xs:sequence&gt;
- *       &lt;xs:element ref="sld:GrayChannel"/&gt;
- *     &lt;/xs:choice&gt;
- *   &lt;/xs:complexType&gt;
- * &lt;/xs:element&gt;
- * &lt;xs:element name="RedChannel" type="sld:SelectedChannelType"/&gt;
- * &lt;xs:element name="GreenChannel" type="sld:SelectedChannelType"/&gt;
- * &lt;xs:element name="BlueChannel" type="sld:SelectedChannelType"/&gt;
- * &lt;xs:element name="GrayChannel" type="sld:SelectedChannelType"/&gt;
- * </PRE>
- *
- * Either a channel may be selected to display in each of red, green, and blue, or a single channel
- * may be selected to display in grayscale. (The spelling ?gray? is used since it seems to be more
- * common on the Web than ?grey? by a ratio of about 3:1.) Contrast enhancement may be applied to
- * each channel in isolation. Channels are identified by a system and data-dependent character
- * identifier. Commonly, channels will be labelled as ?1?, ?2?, etc.
+ * ChannelSelectionImpl
  *
  * @author iant
  */
-public interface ChannelSelection extends org.geotools.api.style.ChannelSelection {
-    /**
-     * Set the RGB channels to be used
-     *
-     * @param red the red channel
-     * @param green the green channel
-     * @param blue the blue channel
-     */
-    void setRGBChannels(
-            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
+public class ChannelSelection implements org.geotools.api.style.ChannelSelection {
+    private SelectedChannelType gray;
+    private SelectedChannelType red;
+    private SelectedChannelType blue;
+    private SelectedChannelType green;
+
+    @Override
+    public SelectedChannelType getGrayChannel() {
+        return gray;
+    }
 
     /**
-     * Set the RGB channels to be used
+     * Retrieves the RGB channel that were selected.
      *
-     * @param channels array of channels in RGB order
-     */
-    void setRGBChannels(SelectedChannelType... channels);
-
-    /**
-     * get the RGB channels to be used
+     * <p><strong> Note that in case there is no RGB selection the returned {@link
+     * SelectedChannelType} array will contain null elements.
      *
-     * @return array of channels in RGB order
+     * @return {@link SelectedChannelType} array that contains the {@link SelectedChannelType}
+     *     elements for the RGB channels.
      */
     @Override
-    SelectedChannelType[] getRGBChannels();
+    public SelectedChannelType[] getRGBChannels() {
+        if (red == null && green == null && blue == null) {
+            return null;
+        }
+        return new SelectedChannelType[] {red, green, blue};
+    }
 
-    /**
-     * Set the gray channel to be used
-     *
-     * @param gray the gray channel
-     */
-    void setGrayChannel(SelectedChannelType gray);
+    public void setGrayChannel(SelectedChannelType gray) {
+        this.gray = gray;
+    }
 
-    /**
-     * Get the gray channel to be used
-     *
-     * @return the gray channel
-     */
+    public void setGrayChannel(org.geotools.api.style.SelectedChannelType gray) {
+        this.gray = new SelectedChannelType(gray);
+    }
+
+    public void setRGBChannels(SelectedChannelType[] channels) {
+        if (channels == null) {
+            red = null;
+            green = null;
+            blue = null;
+        } else {
+            if (channels.length != 3) {
+                throw new IllegalArgumentException(
+                        "Three channels are required in setRGBChannels, got " + channels.length);
+            }
+            red = channels[0];
+            green = channels[1];
+            blue = channels[2];
+        }
+    }
+
+    public void setRGBChannels(
+            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
+        this.red = red;
+        this.green = green;
+        this.blue = blue;
+    }
+
+    public void setRGBChannels(
+            org.geotools.api.style.SelectedChannelType red,
+            org.geotools.api.style.SelectedChannelType green,
+            org.geotools.api.style.SelectedChannelType blue) {
+        this.red = new SelectedChannelType(red);
+        this.green = new SelectedChannelType(green);
+        this.blue = new SelectedChannelType(blue);
+    }
+
     @Override
-    SelectedChannelType getGrayChannel();
+    public void accept(StyleVisitor visitor) {
+        visitor.visit(this);
+    }
 
-    void accept(StyleVisitor visitor);
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
+
+        if (gray != null) {
+            result = (PRIME * result) + gray.hashCode();
+        }
+
+        if (red != null) {
+            result = (PRIME * result) + red.hashCode();
+        }
+
+        if (blue != null) {
+            result = (PRIME * result) + blue.hashCode();
+        }
+
+        if (green != null) {
+            result = (PRIME * result) + green.hashCode();
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof ChannelSelection) {
+            ChannelSelection other = (ChannelSelection) obj;
+
+            return Utilities.equals(gray, other.gray)
+                    && Utilities.equals(red, other.red)
+                    && Utilities.equals(blue, other.blue)
+                    && Utilities.equals(green, other.green);
+        }
+
+        return false;
+    }
+
+    static ChannelSelection cast(org.geotools.api.style.ChannelSelection channel) {
+        if (channel == null) {
+            return null;
+        } else if (channel instanceof ChannelSelection) {
+            return (ChannelSelection) channel;
+        } else {
+            ChannelSelection copy = new ChannelSelection();
+            if (channel.getGrayChannel() != null) {
+                copy.setGrayChannel(channel.getGrayChannel());
+            } else {
+                org.geotools.api.style.SelectedChannelType[] rgb = channel.getRGBChannels();
+                copy.setRGBChannels(rgb[0], rgb[1], rgb[2]);
+            }
+            return copy;
+        }
+    }
 }

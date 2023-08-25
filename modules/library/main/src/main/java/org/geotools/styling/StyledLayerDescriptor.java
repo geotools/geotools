@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-
 import org.geotools.api.style.StyleVisitor;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
 import org.geotools.util.Utilities;
 
@@ -51,10 +49,10 @@ import org.geotools.util.Utilities;
  *       throw unsupported exceptions when functionality is removed from a specification.
  * </ul>
  */
-public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
+public class StyledLayerDescriptor implements org.geotools.api.style.StyledLayerDescriptor {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptorImpl.class);
+            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptor.class);
 
     /** Holds value of property name. */
     private String name;
@@ -79,7 +77,7 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
                 UserLayer userLayer = (UserLayer) layer;
 
                 // descend into the styles
-                Style[] styles = userLayer.getUserStyles();
+                Style[] styles = (Style[]) userLayer.getUserStyles();
 
                 for (Style style : styles) {
                     // return the first style that claims to be the default
@@ -190,8 +188,8 @@ public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
             return true;
         }
 
-        if (oth instanceof StyledLayerDescriptorImpl) {
-            StyledLayerDescriptorImpl other = (StyledLayerDescriptorImpl) oth;
+        if (oth instanceof StyledLayerDescriptor) {
+            StyledLayerDescriptor other = (StyledLayerDescriptor) oth;
 
             return (Utilities.equals(abstractStr, other.abstractStr)
                     && Utilities.equals(layers, other.layers)

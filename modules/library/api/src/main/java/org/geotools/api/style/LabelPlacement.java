@@ -20,15 +20,6 @@ package org.geotools.api.style;
  * @since GeoAPI 2.2
  */
 public interface LabelPlacement {
-    /**
-     * Calls the visit method of a StyleVisitor.
-     *
-     * <p>Please note that LabelPalcement is not intended to be used as is; the StyleVisitor visit
-     * method must traverse an instance of LinePlacement or PointPlacement.
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
 
     void accept(StyleVisitor visitor);
 }

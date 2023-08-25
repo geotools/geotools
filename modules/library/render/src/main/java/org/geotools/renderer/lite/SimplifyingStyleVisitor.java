@@ -44,7 +44,7 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     @Override
-    public void visit(FeatureTypeStyle fts) {
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
 
         FeatureTypeStyle copy = new FeatureTypeStyle(fts);
 

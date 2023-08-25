@@ -31,6 +31,8 @@ import javax.mail.internet.ContentType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.brewer.styling.builder.NamedLayerBuilder;
 import org.geotools.brewer.styling.builder.StyleBuilder;
 import org.geotools.brewer.styling.builder.StyledLayerDescriptorBuilder;
@@ -56,10 +58,8 @@ import org.geotools.ows.wms.response.GetStylesResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
@@ -477,7 +477,8 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
 
             NamedLayer namedLayer = namedLayerBuilder.build();
 
-            for (Style style : styles) namedLayer.addStyle(style);
+            for (Style style : styles)
+                ((org.geotools.styling.NamedLayer) namedLayer).addStyle(style);
 
             StyledLayerDescriptor sld = (new StyledLayerDescriptorBuilder()).build();
             sld.addStyledLayer(namedLayer);

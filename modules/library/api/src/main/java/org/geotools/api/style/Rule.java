@@ -10,10 +10,10 @@
 package org.geotools.api.style;
 
 import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
 import static org.geotools.api.annotation.Specification.ISO_19117;
 
 import java.util.List;
+import java.util.Map;
 import org.geotools.api.annotation.UML;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.metadata.citation.OnLineResource;
@@ -113,13 +113,8 @@ public interface Rule {
     /** @return Location where this style is defined; file or server; or null if unknown */
     OnLineResource getOnlineResource();
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
     /** Used to traverse the style data structure. */
     void accept(StyleVisitor visitor);
+
+    Map<String, String> getOptions();
 }

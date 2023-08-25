@@ -17,6 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
+import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Graphic;
 
 /** Encodes a {@link Graphic} as YSLD. */
@@ -37,7 +38,7 @@ public class GraphicEncoder extends YsldEncodeHandler<Graphic> {
     protected void encode(Graphic g) {
         if (!flatten) push("graphic");
 
-        inline(new AnchorPointEncoder(g.getAnchorPoint()));
+        inline(new AnchorPointEncoder((AnchorPoint) g.getAnchorPoint()));
         inline(new DisplacementEncoder(g.getDisplacement()));
         put("gap", nullIf(g.getGap(), 0d), nullIf(g.getInitialGap(), 0d));
         put("opacity", nullIf(g.getOpacity(), 1));

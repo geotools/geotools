@@ -246,7 +246,7 @@ public class StyledShapePainterTest {
         Decimator decimator = new Decimator(transform, new Rectangle());
         Point point = new GeometryFactory().createPoint(new Coordinate(10, 10));
         LiteShape2 pointShape = new LiteShape2(point, transform, decimator, false);
-        painter.paint(g2, pointShape, legend, 1, false);
+        painter.paint(g2, pointShape, (org.geotools.api.style.GraphicLegend) legend, 1, false);
         // check it is correctly painted
         Assert.assertEquals(0, image.getRaster().getSample(0, 0, 0));
         Assert.assertEquals(64, image.getRaster().getSample(0, 0, 1));
@@ -263,7 +263,7 @@ public class StyledShapePainterTest {
         // check with a scaling factor
         image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) image.getGraphics();
-        painter.paint(g2, pointShape, legend, 2, false);
+        painter.paint(g2, pointShape, (org.geotools.api.style.GraphicLegend) legend, 2, false);
         Assert.assertEquals(255, image.getRaster().getSample(0, 0, 0));
         Assert.assertEquals(255, image.getRaster().getSample(0, 0, 1));
         Assert.assertEquals(192, image.getRaster().getSample(0, 0, 2));

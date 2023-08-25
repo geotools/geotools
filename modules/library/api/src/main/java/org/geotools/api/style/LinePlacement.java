@@ -65,12 +65,4 @@ public interface LinePlacement extends LabelPlacement {
      * @return boolean
      */
     boolean isGeneralizeLine();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

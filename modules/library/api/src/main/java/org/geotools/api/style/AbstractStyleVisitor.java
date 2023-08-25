@@ -14,9 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
-
-import org.geotools.api.style.*;
+package org.geotools.api.style;
 
 /**
  * A basic implementation of the StyleVisitor interface.
@@ -38,58 +36,61 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(NamedLayer layer) {
-        for (Style s : layer.getStyles()) {
+    public void visit(org.geotools.api.style.NamedLayer layer) {
+        for (org.geotools.api.style.Style s : layer.getStyles()) {
             s.accept(this);
         }
-        for (FeatureTypeConstraint ftc : layer.getLayerFeatureConstraints()) {
+        for (org.geotools.api.style.FeatureTypeConstraint ftc :
+                layer.getLayerFeatureConstraints()) {
             ftc.accept(this);
         }
     }
 
-    @Override
     public void visit(UserLayer layer) {
         for (Style s : layer.getUserStyles()) {
             s.accept(this);
         }
-        for (FeatureTypeConstraint ftc : layer.getLayerFeatureConstraints()) {
+        for (org.geotools.api.style.FeatureTypeConstraint ftc :
+                layer.getLayerFeatureConstraints()) {
             ftc.accept(this);
         }
     }
 
     @Override
-    public void visit(FeatureTypeConstraint ftc) {}
+    public void visit(org.geotools.api.style.FeatureTypeConstraint ftc) {
+        ftc.accept(this);
+    }
 
     @Override
-    public void visit(Style style) {
-        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+    public void visit(org.geotools.api.style.Style style) {
+        for (org.geotools.api.style.FeatureTypeStyle fts : style.featureTypeStyles()) {
             fts.accept(this);
         }
     }
 
     @Override
-    public void visit(Rule rule) {
-        for (Symbolizer sym : rule.symbolizers()) {
+    public void visit(org.geotools.api.style.Rule rule) {
+        for (org.geotools.api.style.Symbolizer sym : rule.symbolizers()) {
             sym.accept(this);
         }
     }
 
     @Override
-    public void visit(FeatureTypeStyle fts) {
-        for (Rule r : fts.rules()) {
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
+        for (org.geotools.api.style.Rule r : fts.rules()) {
             r.accept(this);
         }
     }
 
     @Override
-    public void visit(Fill fill) {
+    public void visit(org.geotools.api.style.Fill fill) {
         if (fill.getGraphicFill() != null) {
             fill.getGraphicFill().accept(this);
         }
     }
 
     @Override
-    public void visit(Stroke stroke) {
+    public void visit(org.geotools.api.style.Stroke stroke) {
         if (stroke.getGraphicFill() != null) {
             stroke.getGraphicFill().accept(this);
         }
@@ -99,7 +100,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(Symbolizer sym) {
+    public void visit(org.geotools.api.style.Symbolizer sym) {
         if (sym instanceof RasterSymbolizer) {
             visit((RasterSymbolizer) sym);
         } else if (sym instanceof LineSymbolizer) {
@@ -116,7 +117,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(PointSymbolizer ps) {
+    public void visit(org.geotools.api.style.PointSymbolizer ps) {
         if (ps.getDescription() != null) {
             ps.getDescription().accept(this);
         }
@@ -126,7 +127,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(LineSymbolizer line) {
+    public void visit(org.geotools.api.style.LineSymbolizer line) {
         if (line.getDescription() != null) {
             line.getDescription().accept(this);
         }
@@ -136,7 +137,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(PolygonSymbolizer poly) {
+    public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
         if (poly.getDescription() != null) {
             poly.getDescription().accept(this);
         }
@@ -152,7 +153,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(TextSymbolizer text) {
+    public void visit(org.geotools.api.style.TextSymbolizer text) {
         if (text.getDescription() != null) {
             text.getDescription().accept(this);
         }
@@ -168,7 +169,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(RasterSymbolizer raster) {
+    public void visit(org.geotools.api.style.RasterSymbolizer raster) {
         if (raster.getChannelSelection() != null) {
             raster.getChannelSelection().accept(this);
         }
@@ -191,7 +192,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(Graphic gr) {
+    public void visit(org.geotools.api.style.Graphic gr) {
         if (gr.getAnchorPoint() != null) {
             gr.getAnchorPoint().accept(this);
         }
@@ -208,7 +209,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(Mark mark) {
+    public void visit(org.geotools.api.style.Mark mark) {
         //        if (mark.getExternalMark() != null) {
         //            mark.getExternalMark().accept(this, null);
         //        }
@@ -221,7 +222,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(ExternalGraphic exgr) {
+    public void visit(org.geotools.api.style.ExternalGraphic exgr) {
         // for (org.geotools.api.style.ColorReplacement cr : exgr.getColorReplacements()) {
         // cr.accept(visitor, extraData)
         // }

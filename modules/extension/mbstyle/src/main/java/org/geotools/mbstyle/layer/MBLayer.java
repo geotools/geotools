@@ -22,13 +22,13 @@ import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -56,7 +56,7 @@ public abstract class MBLayer {
     protected final FilterFactory ff;
 
     /** Shared style factory */
-    protected final StyleFactory2 sf;
+    protected final StyleFactory sf;
 
     /** JSON layer being wrapped. */
     protected final JSONObject json;

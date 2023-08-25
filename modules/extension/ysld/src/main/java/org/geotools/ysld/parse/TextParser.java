@@ -28,7 +28,6 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -66,9 +65,8 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
                 new GraphicParser(factory) {
                     @Override
                     protected void graphic(Graphic g) {
-                        if (sym instanceof TextSymbolizer2) {
-                            ((TextSymbolizer2) sym).setGraphic(g);
-                        }
+
+                        ((TextSymbolizer) sym).setGraphic(g);
                     }
                 });
     }

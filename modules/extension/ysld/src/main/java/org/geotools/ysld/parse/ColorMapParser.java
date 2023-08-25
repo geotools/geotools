@@ -18,7 +18,7 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.api.style.ColorMapEntry;
-import org.geotools.styling.ColorMapImpl;
+import org.geotools.styling.ColorMap;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
@@ -42,11 +42,11 @@ public abstract class ColorMapParser extends YsldParseHandler {
         if (map.has("type")) {
             String value = map.str("type");
             if ("ramp".equals(value)) {
-                colorMap.setType(ColorMapImpl.TYPE_RAMP);
+                colorMap.setType(ColorMap.TYPE_RAMP);
             } else if ("intervals".equals(value)) {
-                colorMap.setType(ColorMapImpl.TYPE_INTERVALS);
+                colorMap.setType(ColorMap.TYPE_INTERVALS);
             } else if ("values".equals(value)) {
-                colorMap.setType(ColorMapImpl.TYPE_VALUES);
+                colorMap.setType(ColorMap.TYPE_VALUES);
             } else {
                 LOG.warning("Unknown color map type: " + value);
             }

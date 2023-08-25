@@ -37,7 +37,7 @@ import org.geotools.util.Utilities;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class Rule implements  Cloneable, org.geotools.api.style.Rule {
+public class Rule implements Cloneable, org.geotools.api.style.Rule {
     private List<Symbolizer> symbolizers = new ArrayList<>();
 
     private GraphicLegend legend;
@@ -201,11 +201,6 @@ public class Rule implements  Cloneable, org.geotools.api.style.Rule {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
-    }
-
-    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
@@ -228,8 +223,7 @@ public class Rule implements  Cloneable, org.geotools.api.style.Rule {
             } else {
                 DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor();
                 clone.filter =
-                        (Filter)
-                                filter.accept(visitor, CommonFactoryFinder.getFilterFactory(null));
+                        (Filter) filter.accept(visitor, CommonFactoryFinder.getFilterFactory(null));
             }
             clone.hasElseFilter = hasElseFilter;
             clone.legend = legend;

@@ -195,7 +195,7 @@ public class Drawer {
         if (Polygon.class.isAssignableFrom(type) || MultiPolygon.class.isAssignableFrom(type)) {
             syms[0] =
                     builder.createPolygonSymbolizer(
-                            builder.createStroke(baseColor, 2),
+                            (org.geotools.styling.Stroke) builder.createStroke(baseColor, 2),
                             builder.createFill(baseColor, useTransparency ? .6 : 1.0));
         }
         return syms;

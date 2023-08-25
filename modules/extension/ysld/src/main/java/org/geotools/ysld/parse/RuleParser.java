@@ -18,6 +18,7 @@
 package org.geotools.ysld.parse;
 
 import javax.annotation.Nullable;
+import org.geotools.api.style.GraphicLegend;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.styling.FeatureTypeStyle;
@@ -64,7 +65,7 @@ public class RuleParser extends YsldParseHandler {
                     new GraphicParser(factory) {
                         @Override
                         protected void graphic(Graphic g) {
-                            rule.setLegend(g);
+                            rule.setLegend((GraphicLegend) g);
                         }
                     });
 

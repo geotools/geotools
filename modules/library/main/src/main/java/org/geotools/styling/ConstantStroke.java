@@ -72,15 +72,13 @@ import org.geotools.api.filter.expression.Expression;
  * @version $Id$
  * @author James Macgill
  */
-
-abstract class ConstantStroke extends Stroke {
+public abstract class ConstantStroke extends Stroke {
     /**
      * Default Stroke capturing the defaults indicated by the standard.
      *
      * <p>For some attributes the standard does not define a default, so a reasonable value is
      * supplied.
      */
-
     private void cannotModifyConstant() {
         throw new UnsupportedOperationException("Constant Stroke may not be modified");
     }
@@ -128,12 +126,6 @@ abstract class ConstantStroke extends Stroke {
     @Override
     public void accept(org.geotools.api.style.StyleVisitor visitor) {
         cannotModifyConstant();
-    }
-
-    @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object data) {
-        cannotModifyConstant();
-        return null;
     }
 
     /**

@@ -20,7 +20,7 @@ import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
 
-public class Description implements  org.geotools.api.style.Description {
+public class Description implements org.geotools.api.style.Description {
     private InternationalString title;
 
     private InternationalString description;

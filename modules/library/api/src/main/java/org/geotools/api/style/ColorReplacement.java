@@ -34,11 +34,4 @@ public interface ColorReplacement {
      * arbitrary type. The comparisons are performed checking for identical values.
      */
     Function getRecoding();
-
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
 }

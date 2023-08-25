@@ -25,8 +25,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ColorMapImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
@@ -114,7 +114,7 @@ public class GradientColorMapGenerator {
                 intervals = false;
             }
         }
-        ColorMap colorMap = new ColorMapImpl();
+        ColorMap colorMap = new ColorMap();
 
         // Adding transparent color entry before the min
         final double offset = 0 /* intervals ? 0 : 1E-2 */;
@@ -124,12 +124,12 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(startEntry);
 
         if (intervals) {
-            colorMap.setType(ColorMapImpl.TYPE_INTERVALS);
+            colorMap.setType(ColorMap.TYPE_INTERVALS);
             for (int i = 1; i < numEntries - 1; i += 2) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
         } else {
-            colorMap.setType(ColorMapImpl.TYPE_RAMP);
+            colorMap.setType(ColorMap.TYPE_RAMP);
             for (int i = 0; i < numEntries - 1; i++) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
@@ -137,7 +137,8 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(entries[numEntries - 1].getColorMapEntry(max));
 
         // Adding transparent color entry after the max
-        org.geotools.api.style.ColorMapEntry endEntry = entries[numEntries - 1].getColorMapEntry(max + offset);
+        org.geotools.api.style.ColorMapEntry endEntry =
+                entries[numEntries - 1].getColorMapEntry(max + offset);
         fillColorInEntry(endEntry, afterColor);
         colorMap.addColorMapEntry(endEntry);
 

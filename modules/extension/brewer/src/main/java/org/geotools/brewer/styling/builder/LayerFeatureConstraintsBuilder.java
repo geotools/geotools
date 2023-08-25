@@ -16,10 +16,10 @@
  */
 package org.geotools.brewer.styling.builder;
 
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.LayerFeatureConstraints;
 import org.geotools.brewer.styling.filter.expression.ChildExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.api.style.FeatureTypeConstraint;
-import org.geotools.styling.LayerFeatureConstraints;
 import org.geotools.styling.StyleFactory;
 
 public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureConstraints> {

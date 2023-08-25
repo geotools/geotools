@@ -20,8 +20,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.se.v1_1.SE;
+import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ColorMapEntry;
+import org.geotools.se.v1_1.SE;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -115,7 +116,7 @@ public class CategorizeBinding extends AbstractComplexBinding {
 
         ColorMapEntry entry = styleFactory.createColorMapEntry();
         entry.setColor((Expression) children.get(i++).getValue());
-        map.addColorMapEntry(entry);
+        ((org.geotools.styling.ColorMap) map).addColorMapEntry(entry);
 
         while (i < children.size()) {
             entry = styleFactory.createColorMapEntry();
@@ -126,7 +127,7 @@ public class CategorizeBinding extends AbstractComplexBinding {
             }
 
             entry.setColor((Expression) children.get(i + 1).getValue());
-            map.addColorMapEntry(entry);
+            ((org.geotools.styling.ColorMap) map).addColorMapEntry(entry);
 
             i += 2;
         }

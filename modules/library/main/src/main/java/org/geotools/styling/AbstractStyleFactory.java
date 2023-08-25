@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.*;
 import javax.measure.Unit;
 import javax.swing.Icon;
-
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
@@ -34,11 +33,11 @@ import org.geotools.api.util.InternationalString;
 /** Abstract base class for implementing style factories. */
 public abstract class AbstractStyleFactory implements org.geotools.api.style.StyleFactory {
     public abstract TextSymbolizer createTextSymbolizer(
-            Fill fill,
-            Font[] fonts,
-            Halo halo,
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Font[] fonts,
+            org.geotools.api.style.Halo halo,
             Expression label,
-            LabelPlacement labelPlacement,
+            org.geotools.api.style.LabelPlacement labelPlacement,
             String geometryPropertyName);
 
     public abstract ExternalGraphic createExternalGraphic(URL url, String format);
@@ -57,8 +56,8 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
     //    public abstract PointPlacement createPointPlacement();
     public abstract Mark createMark(
             Expression wellKnownName,
-            Stroke stroke,
-            Fill fill,
+            org.geotools.api.style.Stroke stroke,
+            org.geotools.api.style.Fill fill,
             Expression size,
             Expression rotation);
 
@@ -167,7 +166,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
      * @param graphicFill - a graphic object to fill the line with
      * @param graphicStroke - a graphic object to draw the line with
      * @return The completed stroke.
-     * @see org.geotools.stroke
+     * @see org.geotools.api.style.Stroke
      */
     public abstract Stroke createStroke(
             Expression color,
@@ -215,7 +214,6 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
             ShadedRelief relief,
             Symbolizer outline);
 
-
     public abstract RasterSymbolizer getDefaultRasterSymbolizer();
 
     public abstract SelectedChannelType createSelectedChannelType(
@@ -228,9 +226,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     public abstract ColorMapEntry createColorMapEntry();
 
-
     public abstract Style getDefaultStyle();
-
 
     public abstract Stroke getDefaultStroke();
 
@@ -241,7 +237,6 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
     public abstract PointSymbolizer getDefaultPointSymbolizer();
 
     public abstract PolygonSymbolizer getDefaultPolygonSymbolizer();
-
 
     public abstract LineSymbolizer getDefaultLineSymbolizer();
 
@@ -268,6 +263,15 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
         return Collections.emptyMap();
     }
 
+    public abstract TextSymbolizer createTextSymbolizer(
+            org.geotools.api.style.Fill fill,
+            org.geotools.api.style.Font[] fonts,
+            org.geotools.api.style.Halo halo,
+            Expression label,
+            LabelPlacement labelPlacement,
+            String geometryPropertyName,
+            org.geotools.api.style.Graphic graphic);
+
     /**
      * Creates a new extent.
      *
@@ -286,10 +290,10 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
      * @return The new feature type constaint.
      */
     public abstract FeatureTypeConstraint createFeatureTypeConstraint(
-            String featureTypeName, Filter filter, Extent... extents);
+            String featureTypeName, Filter filter, org.geotools.api.style.Extent... extents);
 
     public abstract LayerFeatureConstraints createLayerFeatureConstraints(
-            FeatureTypeConstraint... featureTypeConstraints);
+            org.geotools.api.style.FeatureTypeConstraint... featureTypeConstraints);
 
     /**
      * Creates a new ImageOutline.
@@ -328,7 +332,8 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     /** */
     @Override
-    public abstract ChannelSelection channelSelection(org.geotools.api.style.SelectedChannelType gray);
+    public abstract ChannelSelection channelSelection(
+            org.geotools.api.style.SelectedChannelType gray);
 
     /** */
     @Override
@@ -367,7 +372,8 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
      * @return ColorReplacement wrapped around a Function
      */
     @Override
-    public abstract ColorReplacement colorReplacement(Expression propertyName, Expression... mapping);
+    public abstract ColorReplacement colorReplacement(
+            Expression propertyName, Expression... mapping);
 
     /** */
     @Override
@@ -376,7 +382,8 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     /** */
     @Override
-    public abstract Description description(InternationalString title, InternationalString description);
+    public abstract Description description(
+            InternationalString title, InternationalString description);
 
     /** */
     @Override
@@ -396,7 +403,8 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     /** */
     @Override
-    public abstract ExternalMark externalMark(OnLineResource resource, String format, int markIndex);
+    public abstract ExternalMark externalMark(
+            OnLineResource resource, String format, int markIndex);
 
     /** */
     @Override
@@ -412,7 +420,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
      * @param types SemanticType
      * @param rules May not be null or empty
      * @return feature type style
-     * @see SimpleFe
+     * @see org.geotools.api.feature.simple.SimpleFeature
      */
     @Override
     public abstract FeatureTypeStyle featureTypeStyle(
@@ -425,11 +433,13 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     /** */
     @Override
-    public abstract Fill fill(org.geotools.api.style.GraphicFill fill, Expression color, Expression opacity);
+    public abstract Fill fill(
+            org.geotools.api.style.GraphicFill fill, Expression color, Expression opacity);
 
     /** */
     @Override
-    public abstract Font font(List<Expression> family, Expression style, Expression weight, Expression size);
+    public abstract Font font(
+            List<Expression> family, Expression style, Expression weight, Expression size);
 
     @Override
     public abstract Graphic graphic(
@@ -440,9 +450,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
             org.geotools.api.style.AnchorPoint anchor,
             org.geotools.api.style.Displacement disp);
 
-    /**
-     *
-     */
+    /** */
     @Override
     public abstract GraphicFill graphicFill(
             List<GraphicalSymbol> symbols,
@@ -462,9 +470,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
             org.geotools.api.style.AnchorPoint anchorPoint,
             org.geotools.api.style.Displacement displacement);
 
-    /**
-     *
-     */
+    /** */
     @Override
     public abstract GraphicStroke graphicStroke(
             List<GraphicalSymbol> symbols,
@@ -711,6 +717,4 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     /** @return a deep copy of the method */
     public abstract ContrastMethod createContrastMethod(ContrastMethod method);
-
-
 }

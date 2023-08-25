@@ -20,13 +20,11 @@ package org.geotools.ysld.parse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
@@ -76,7 +74,7 @@ public class RootParser extends YsldParseHandler {
 
         if (root.has("user-name") || root.has("user-remote") || root.has("user-service")) {
             // user prefix for user layer properties
-            UserLayer layer = factory.style.createUserLayer();
+            org.geotools.styling.UserLayer layer = factory.style.createUserLayer();
             sld.layers().add(layer);
             layer.userStyles().add(style);
 
@@ -91,7 +89,7 @@ public class RootParser extends YsldParseHandler {
             }
         } else {
             // assume named layer
-            NamedLayer layer = factory.style.createNamedLayer();
+            org.geotools.styling.NamedLayer layer = factory.style.createNamedLayer();
             sld.layers().add(layer);
             layer.styles().add(style);
 

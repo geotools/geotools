@@ -141,7 +141,7 @@ public class RenderingSelectorStyleVisitorTest {
             symb3.getOptions().put(FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
         rule2.symbolizers().add(symb3);
 
-        FeatureTypeStyle fts = sf.createFeatureTypeStyle(rule);
+        FeatureTypeStyle fts = (FeatureTypeStyle) sf.createFeatureTypeStyle(rule);
         fts.rules().addAll(Arrays.asList(rule, rule2));
         style.featureTypeStyles().add(fts);
 

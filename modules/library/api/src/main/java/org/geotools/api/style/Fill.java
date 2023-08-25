@@ -59,12 +59,5 @@ public interface Fill {
      */
     Expression getOpacity();
 
-    /**
-     * calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    Object accept(StyleVisitor visitor, Object extraData);
-
     void accept(StyleVisitor visitor);
 }

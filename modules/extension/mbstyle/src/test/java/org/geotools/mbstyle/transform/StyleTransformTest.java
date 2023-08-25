@@ -37,6 +37,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
@@ -61,7 +62,6 @@ import org.geotools.mbstyle.layer.RasterMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.hamcrest.CoreMatchers;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -563,9 +563,11 @@ public class StyleTransformTest {
         // only one symbolizer
         List<Symbolizer> symbolizers = r.symbolizers();
         assertEquals(1, symbolizers.size());
-        TextSymbolizer2 ts = (TextSymbolizer2) symbolizers.get(0);
+        TextSymbolizer ts = (TextSymbolizer) symbolizers.get(0);
         assertEquals("false", ts.getOptions().get("partials"));
-        assertEquals("INDEPENDENT", ts.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
+        assertEquals(
+                "INDEPENDENT",
+                ts.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY));
         assertEquals("false", ts.getOptions().get(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK));
         assertNotNull(ts.getGraphic());
     }
@@ -636,7 +638,11 @@ public class StyleTransformTest {
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         // no way to have only partial conflict resolution atm
-        assertEquals("true", symbolizer.getOptions().get(org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY));
+        assertEquals(
+                "true",
+                symbolizer
+                        .getOptions()
+                        .get(org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -654,7 +660,11 @@ public class StyleTransformTest {
         Rule r = fts.get(0).rules().get(0);
         Symbolizer symbolizer = r.symbolizers().get(0);
         // no way to have only partial conflict resolution right now
-        assertEquals("true", symbolizer.getOptions().get(org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY));
+        assertEquals(
+                "true",
+                symbolizer
+                        .getOptions()
+                        .get(org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY));
     }
 
     @Test
@@ -670,8 +680,12 @@ public class StyleTransformTest {
         List<MBLayer> layers = mbStyle.layers("testsource");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
-        assertEquals("true", symbolizer.getOptions().get(org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY));
+        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
+        assertEquals(
+                "true",
+                symbolizer
+                        .getOptions()
+                        .get(org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY));
     }
 
     @Test

@@ -28,19 +28,19 @@ import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
-import org.geotools.api.style.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.xsd.Parser;
 import org.junit.Assert;
@@ -91,7 +91,7 @@ public class SLDExampleTest {
         Assert.assertEquals("OCEANSEA_1M:Foundation", l.getName());
 
         Assert.assertEquals(1, l.getStyles().length);
-        Style s = l.getStyles()[0];
+        Style s = (Style) l.getStyles()[0];
         Assert.assertEquals("GEOSYM", s.getName());
         assertTrue(s.isDefault());
 
@@ -201,7 +201,7 @@ public class SLDExampleTest {
         Assert.assertEquals(1, sld.getStyledLayers().length);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
         Assert.assertEquals(1, layer.getStyles().length);
-        Style style = layer.getStyles()[0];
+        Style style = (Style) layer.getStyles()[0];
         Assert.assertEquals(1, style.featureTypeStyles().size());
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
@@ -227,7 +227,7 @@ public class SLDExampleTest {
         Assert.assertEquals(1, sld.getStyledLayers().length);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
         Assert.assertEquals(1, layer.getStyles().length);
-        Style style = layer.getStyles()[0];
+        Style style = (Style) layer.getStyles()[0];
         Assert.assertEquals(1, style.featureTypeStyles().size());
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         Assert.assertEquals(1, fts.rules().size());
@@ -261,7 +261,7 @@ public class SLDExampleTest {
         String file = "../backgroundSolidSLD11.xml";
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-        Style style = layer.getStyles()[0];
+        Style style = (Style) layer.getStyles()[0];
         Fill fill = style.getBackground();
         Assert.assertNotNull(fill);
         Assert.assertEquals(Color.RED, fill.getColor().evaluate(null, Color.class));
@@ -273,7 +273,7 @@ public class SLDExampleTest {
         String file = "../backgroundGraphicSLD11.xml";
         StyledLayerDescriptor sld = (StyledLayerDescriptor) parse(file);
         NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
-        Style style = layer.getStyles()[0];
+        Style style = (Style) layer.getStyles()[0];
         Fill fill = style.getBackground();
         Assert.assertNotNull(fill);
         Graphic graphic = fill.getGraphicFill();

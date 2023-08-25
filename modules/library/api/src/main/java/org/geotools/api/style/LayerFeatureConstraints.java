@@ -17,33 +17,34 @@
 package org.geotools.api.style;
 
 /**
- * An Extent gives feature/coverage/raster/matrix dimension extent.
+ * LayerFeatureConstraints define what features and feature types are referenced in a layer.
  *
  * <p>
  *
  * <pre>
- *  <code>
- *  &lt;xsd:element name="Extent"&gt;
+ *         <code>
+ *  &lt;xsd:element name="LayerFeatureConstraints"&gt;
  *      &lt;xsd:annotation&gt;
- *          &lt;xsd:documentation&gt;         An Extent gives
- *              feature/coverage/raster/matrix dimension extent.        &lt;/xsd:documentation&gt;
+ *          &lt;xsd:documentation&gt;         LayerFeatureConstraints define what
+ *              features &amp; feature types are         referenced in a
+ *              layer.       &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
  *      &lt;xsd:complexType&gt;
  *          &lt;xsd:sequence&gt;
- *              &lt;xsd:element ref="sld:Name"/&gt;
- *              &lt;xsd:element ref="sld:Value"/&gt;
+ *              &lt;xsd:element ref="sld:FeatureTypeConstraint" maxOccurs="unbounded"/&gt;
  *          &lt;/xsd:sequence&gt;
  *      &lt;/xsd:complexType&gt;
  *  &lt;/xsd:element&gt;
- *  </code>
- *  </pre>
+ *
+ *          </code>
+ *         </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
-public interface Extent {
-    /** @return The name of the extent. */
-    String getName();
+public interface LayerFeatureConstraints {
+    /** @return The feature type constraints. */
+    FeatureTypeConstraint[] getFeatureTypeConstraints();
 
-    /** @return The value of the exent. */
-    String getValue();
+    /** @param constraints The new feature type constraints. */
+    void setFeatureTypeConstraints(FeatureTypeConstraint... constraints);
 }

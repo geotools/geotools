@@ -131,7 +131,7 @@ public class RescaleStyleVisitorTest {
 
     @Test
     public void testDynamicStroke() throws Exception {
-        Stroke original = sb.createStroke(Color.RED, 2);
+        Stroke original = (Stroke) sb.createStroke(Color.RED, 2);
         original.setDashArray(Arrays.asList(ff.literal("5 10")));
 
         original.accept(visitor);
@@ -151,8 +151,12 @@ public class RescaleStyleVisitorTest {
 
         ts.accept(visitor);
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
-        assertEquals("20", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY));
-        assertEquals("20 40", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
+        assertEquals(
+                "20",
+                clone.getOptions().get(org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY));
+        assertEquals(
+                "20 40",
+                clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
 
     @Test
@@ -162,7 +166,9 @@ public class RescaleStyleVisitorTest {
 
         ts.accept(visitor);
         TextSymbolizer clone = (TextSymbolizer) visitor.getCopy();
-        assertEquals("20", clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
+        assertEquals(
+                "20",
+                clone.getOptions().get(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY));
     }
 
     @Test
@@ -171,10 +177,11 @@ public class RescaleStyleVisitorTest {
         StyleBuilder sb = new StyleBuilder();
 
         // a graphic stroke
-        Stroke stroke = sb.createStroke();
-        stroke.setColor(null);
+        Stroke stroke = (Stroke) sb.createStroke();
+        stroke.setColor((String) null);
         Graphic graphic =
-                sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(1)), null);
+                sb.createGraphic(
+                        null, sb.createMark("square", null, (Stroke) sb.createStroke(1)), null);
         double expectedAnchorPointX = 0.25;
         double expectedAnchorPointY = 0.75;
         graphic.setAnchorPoint(sb.createAnchorPoint(expectedAnchorPointX, expectedAnchorPointY));
@@ -182,9 +189,10 @@ public class RescaleStyleVisitorTest {
 
         // a graphic fill
         Fill fill = sb.createFill();
-        fill.setColor(null);
+        fill.setColor((String) null);
         fill.setGraphicFill(
-                sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(2)), null));
+                sb.createGraphic(
+                        null, sb.createMark("square", null, (Stroke) sb.createStroke(2)), null));
 
         // a polygon and line symbolizer using them
         PolygonSymbolizer ps = sb.createPolygonSymbolizer(stroke, fill);
@@ -197,7 +205,8 @@ public class RescaleStyleVisitorTest {
         rm = (Mark) rps.getFill().getGraphicFill().graphicalSymbols().get(0);
         assertEquals(4.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
 
-        AnchorPoint actualAnchorPoint = rps.getStroke().getGraphicStroke().getAnchorPoint();
+        AnchorPoint actualAnchorPoint =
+                (AnchorPoint) rps.getStroke().getGraphicStroke().getAnchorPoint();
         assertNotNull(actualAnchorPoint);
         assertEquals(
                 expectedAnchorPointX,
@@ -269,12 +278,14 @@ public class RescaleStyleVisitorTest {
 
         // a graphic fill
         Fill fill = sb.createFill();
-        fill.setColor(null);
+        fill.setColor((String) null);
         fill.setGraphicFill(
-                sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(2)), null));
+                sb.createGraphic(
+                        null, sb.createMark("square", null, (Stroke) sb.createStroke(2)), null));
 
         // a polygon and line symbolizer using them
-        PolygonSymbolizer polygonSymbolizer = sb.createPolygonSymbolizer(sb.createStroke(), fill);
+        PolygonSymbolizer polygonSymbolizer =
+                sb.createPolygonSymbolizer((Stroke) sb.createStroke(), fill);
         polygonSymbolizer.getOptions().put(PolygonSymbolizer.GRAPHIC_MARGIN_KEY, "1 2 3 4");
 
         // rescale it

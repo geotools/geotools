@@ -37,6 +37,7 @@ import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -46,7 +47,6 @@ import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.ShadedRelief;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 import si.uom.SI;
@@ -89,7 +89,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
     }
 
     @Override
-    public void visit(final ShadedRelief sr) {
+    public void visit(final org.geotools.api.style.ShadedRelief sr) {
         // /////////////////////////////////////////////////////////////////////
         //
         // Do nothing if we don't have a valid ShadedRelief element.

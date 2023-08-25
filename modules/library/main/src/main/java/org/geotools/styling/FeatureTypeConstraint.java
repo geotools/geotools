@@ -22,7 +22,8 @@ import org.geotools.api.style.Extent;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.Utilities;
 
-public class FeatureTypeConstraint implements org.geotools.api.style.FeatureTypeConstraint, Cloneable {
+public class FeatureTypeConstraint
+        implements org.geotools.api.style.FeatureTypeConstraint, Cloneable {
     /** the feature type name */
     String featureTypeName;
 

@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
@@ -34,7 +35,6 @@ import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -61,7 +61,7 @@ public class MBStyleTransformer {
         defaultFonts.add("Open Sans Regular");
         defaultFonts.add("Arial Unicode MS Regular");
         ff = parse.getFilterFactory();
-        sf = parse.getStyleFactory();
+        sf = (StyleFactory) parse.getStyleFactory();
         sb = new StyleBuilder();
     }
 

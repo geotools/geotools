@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
 import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.Utilities;
@@ -59,12 +58,9 @@ public class NamedLayer extends StyledLayer implements org.geotools.api.style.Na
         return styles.toArray(new Style[0]);
     }
 
-
-
     public List<Style> styles() {
         return styles;
     }
-
 
     public void addStyle(Style sl) {
         styles.add(sl);

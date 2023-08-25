@@ -19,9 +19,8 @@ package org.geotools.renderer.lite;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.util.Map;
+import org.geotools.api.style.AbstractStyleVisitor;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.AbstractStyleVisitor;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Symbolizer;
 
 /**
@@ -36,18 +35,18 @@ class AlphaCompositeVisitor extends AbstractStyleVisitor {
     boolean alphaComposite = false;
 
     @Override
-    public void visit(FeatureTypeStyle fts) {
+    public void visit(org.geotools.api.style.FeatureTypeStyle fts) {
         super.visit(fts);
         Map<String, String> options = fts.getOptions();
         checkAlphaComposite(options);
     }
 
     @Override
-    public void visit(Symbolizer sym) {
+    public void visit(org.geotools.api.style.Symbolizer sym) {
         // no need to drill down futher
         // super.visit(sym);
 
-        checkAlphaComposite(sym.getOptions());
+        checkAlphaComposite(((Symbolizer) sym).getOptions());
     }
 
     private void checkAlphaComposite(Map<String, String> options) {

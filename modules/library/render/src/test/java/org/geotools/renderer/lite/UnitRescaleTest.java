@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory2;
 import org.geotools.styling.UomOgcMapping;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,26 +34,26 @@ import org.junit.Test;
 
 public class UnitRescaleTest {
 
-    private StyleFactory2 sf;
+    private StyleFactory sf;
     private FilterFactory ff;
 
     @Before
     public void setUp() throws Exception {
-        sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
+        sf = CommonFactoryFinder.getStyleFactory(null);
         ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
     @Test
     public void testUOMEncodingLineSymbolizer() throws Exception {
-        LineSymbolizer lineSymbolizer = sf.createLineSymbolizer();
+        LineSymbolizer lineSymbolizer = (LineSymbolizer) sf.createLineSymbolizer();
         lineSymbolizer.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
         lineSymbolizer.setStroke(sf.createStroke(ff.literal("#0000FF"), ff.literal("3")));
 
-        Rule rule = sf.createRule();
+        Rule rule = (Rule) sf.createRule();
         rule.symbolizers().add(lineSymbolizer);
 
         Rule[] rules = {rule};
-        FeatureTypeStyle featureTypeStyle = sf.createFeatureTypeStyle(rules);
+        FeatureTypeStyle featureTypeStyle = (FeatureTypeStyle) sf.createFeatureTypeStyle(rules);
 
         List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
         featureTypeStyles.add(featureTypeStyle);

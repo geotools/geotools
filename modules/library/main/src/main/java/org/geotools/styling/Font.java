@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 
@@ -34,7 +33,7 @@ import org.geotools.util.Utilities;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class Font implements  Cloneable, org.geotools.api.style.Font {
+public class Font implements Cloneable, org.geotools.api.style.Font {
     /** The logger for the default core module. */
 
     // private static final Logger LOGGER =
@@ -165,11 +164,6 @@ public class Font implements  Cloneable, org.geotools.api.style.Font {
             throw new RuntimeException("Error creating default", ife);
         }
         return font;
-    }
-
-    @Override
-    public Object accept(StyleVisitor visitor, Object data) {
-        return visitor.visit(this, data);
     }
 
     static Font cast(org.geotools.api.style.Font font) {

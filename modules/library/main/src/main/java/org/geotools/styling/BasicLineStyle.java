@@ -16,18 +16,17 @@
  */
 package org.geotools.styling;
 
-import org.geotools.api.style.StyleVisitor;
-import org.geotools.api.util.Cloneable;
-import org.geotools.util.Utilities;
+import static org.geotools.api.annotation.Obligation.MANDATORY;
+import static org.geotools.api.annotation.Specification.ISO_19117;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
-
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19117;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.Cloneable;
+import org.geotools.util.Utilities;
 
 /**
  * A style object is quite hard to set up, involving fills, strokes, symbolizers and rules.
@@ -35,10 +34,11 @@ import static org.geotools.api.annotation.Specification.ISO_19117;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public abstract class BasicLineStyle extends Style implements Cloneable, org.geotools.api.style.Style {
+public abstract class BasicLineStyle extends Style
+        implements Cloneable, org.geotools.api.style.Style {
     /** The logger for the default core module. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Style.class);
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Style.class);
+
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
     private Description description = new Description();
     private String name = "Default Styler";
@@ -77,7 +77,10 @@ public abstract class BasicLineStyle extends Style implements Cloneable, org.geo
     }
 
     @Override
-    @org.geotools.api.annotation.UML(identifier = "featurePortrayal", obligation = MANDATORY, specification = ISO_19117)
+    @org.geotools.api.annotation.UML(
+            identifier = "featurePortrayal",
+            obligation = MANDATORY,
+            specification = ISO_19117)
     public List<FeatureTypeStyle> featureTypeStyles() {
         return featureTypeStyles;
     }
@@ -118,11 +121,7 @@ public abstract class BasicLineStyle extends Style implements Cloneable, org.geo
     public Object clone() {
         Style clone;
 
-        try {
-            clone = (Style) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e); // this should never happen since we implement Cloneable
-        }
+        clone = (Style) super.clone();
 
         List<FeatureTypeStyle> ftsCopies = new ArrayList<>();
 
@@ -169,11 +168,6 @@ public abstract class BasicLineStyle extends Style implements Cloneable, org.geo
         return false;
     }
 
-    @Override
-    public Object accept(StyleVisitor visitor, Object extraData) {
-        return visitor.visit(this, extraData);
-    }
-
     public void setDescription(org.geotools.api.style.Description description) {
         if (description == super.getBackground()) {
             this.description = new Description();
@@ -185,6 +179,4 @@ public abstract class BasicLineStyle extends Style implements Cloneable, org.geo
     public void setBackground(Fill background) {
         this.background = background;
     }
-
-
 }

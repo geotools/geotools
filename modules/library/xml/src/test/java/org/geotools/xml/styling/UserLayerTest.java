@@ -27,6 +27,10 @@ import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -36,16 +40,12 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.ExternalGraphic;
-import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.api.style.StyledLayer;
-import org.geotools.api.style.StyledLayerDescriptor;
-import org.geotools.api.style.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
@@ -149,7 +149,7 @@ public class UserLayerTest {
         // create and populate the layer --------------------------------------
         final StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
-        final UserLayer layer = sf.createUserLayer();
+        final org.geotools.styling.UserLayer layer = sf.createUserLayer();
         layer.setName(LAYER_NAME);
         layer.setInlineFeatureType(schema);
         layer.setInlineFeatureDatastore(ds);

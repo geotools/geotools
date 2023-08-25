@@ -16,8 +16,9 @@
  */
 package org.geotools.util.factory;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
+import javax.swing.*;
+import org.geotools.api.style.*;
 
 /**
  * Base interface for Geotools factories (i.e. service discovery).
@@ -123,6 +124,4 @@ public interface Factory {
     default Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
-
-
 }

@@ -35,7 +35,6 @@ import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
@@ -195,7 +194,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
     }
 
     @Override
-    public void visit(SelectedChannelType sct) {
+    public void visit(org.geotools.api.style.SelectedChannelType sct) {
         // /////////////////////////////////////////////////////////////////////
         //
         // If a SelectedChannelType was provided, let's try to parse it.

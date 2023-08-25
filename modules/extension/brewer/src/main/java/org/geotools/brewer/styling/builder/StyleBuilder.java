@@ -20,11 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.StyleImpl;
 import org.geotools.util.SimpleInternationalString;
 
-public class StyleBuilder extends AbstractStyleBuilder<StyleImpl> {
+public class StyleBuilder extends AbstractStyleBuilder<Style> {
     List<FeatureTypeStyleBuilder> fts = new ArrayList<>();
 
     String name;
@@ -124,7 +125,7 @@ public class StyleBuilder extends AbstractStyleBuilder<StyleImpl> {
     }
 
     @Override
-    public StyleBuilder reset(StyleImpl style) {
+    public StyleBuilder reset(Style style) {
         if (style == null) {
             return unset();
         }

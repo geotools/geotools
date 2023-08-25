@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Spatial reference system using geographic identifier, a reference to a feature with a known
  * spatial location. Spatial reference systems using geographic identifiers are not based on
@@ -23,5 +19,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "RS_SpatialReferenceSystemUsingGeographicIdentifier", specification = ISO_19111)
 public interface SpatialReferenceSystemUsingGeographicIdentifier extends ReferenceSystem {}

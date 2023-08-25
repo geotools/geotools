@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.cs.EllipsoidalCS;
 
 /**
@@ -37,10 +33,8 @@ import org.geotools.api.referencing.cs.EllipsoidalCS;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_GeographicCRS", specification = ISO_19111)
 public interface GeographicCRS extends GeodeticCRS {
     /** Returns the coordinate system, which must be ellipsoidal. */
     @Override
-    @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     EllipsoidalCS getCoordinateSystem();
 }

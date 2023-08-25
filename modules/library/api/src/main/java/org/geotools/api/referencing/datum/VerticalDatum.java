@@ -9,11 +9,6 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A textual description and/or a set of parameters identifying a particular reference level surface
  * used as a zero-height surface. The description includes its position with respect to the Earth
@@ -27,13 +22,11 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CD_VerticalDatum", specification = ISO_19111)
 public interface VerticalDatum extends Datum {
     /**
      * The type of this vertical datum. Default is "geoidal".
      *
      * @return The type of this vertical datum.
      */
-    @UML(identifier = "vertDatumType", obligation = MANDATORY, specification = ISO_19111)
     VerticalDatumType getVerticalDatumType();
 }

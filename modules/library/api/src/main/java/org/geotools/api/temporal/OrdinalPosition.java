@@ -9,10 +9,6 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A data type that shall be used for identifying temporal position within an ordinal temporal
  * reference system.
@@ -20,13 +16,11 @@ import org.geotools.api.annotation.UML;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_OrdinalPosition", specification = ISO_19108)
 public interface OrdinalPosition extends TemporalPosition {
     /**
      * Provides a reference to the ordinal era in which the instant occurs.
      *
      * @todo The method name doesn't match the return type.
      */
-    @UML(identifier = "ordinalPosition", specification = ISO_19108)
     OrdinalEra getOrdinalPosition();
 }

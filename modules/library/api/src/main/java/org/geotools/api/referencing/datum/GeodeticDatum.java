@@ -9,11 +9,6 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Defines the location and precise orientation in 3-dimensional space of a defined ellipsoid (or
  * sphere) that approximates the shape of the earth. Used also for Cartesian coordinate system
@@ -26,14 +21,12 @@ import org.geotools.api.annotation.UML;
  * @see Ellipsoid
  * @see PrimeMeridian
  */
-@UML(identifier = "CD_GeodeticDatum", specification = ISO_19111)
 public interface GeodeticDatum extends Datum {
     /**
      * Returns the ellipsoid.
      *
      * @return The ellipsoid.
      */
-    @UML(identifier = "usesEllipsoid", obligation = MANDATORY, specification = ISO_19111)
     Ellipsoid getEllipsoid();
 
     /**
@@ -41,6 +34,5 @@ public interface GeodeticDatum extends Datum {
      *
      * @return The prime meridian.
      */
-    @UML(identifier = "usesPrimeMeridian", obligation = MANDATORY, specification = ISO_19111)
     PrimeMeridian getPrimeMeridian();
 }

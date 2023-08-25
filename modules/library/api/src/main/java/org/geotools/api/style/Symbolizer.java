@@ -9,11 +9,8 @@
  */
 package org.geotools.api.style;
 
-import static org.geotools.api.annotation.Specification.ISO_19117;
-
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.filter.expression.Expression;
 
 /**
@@ -39,7 +36,6 @@ import org.geotools.api.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@UML(identifier = "PF_PortrayalSpecification", specification = ISO_19117)
 public interface Symbolizer {
 
     /**

@@ -9,9 +9,6 @@
  */
 package org.geotools.api.parameter;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.Cloneable;
 
 /**
@@ -24,7 +21,6 @@ import org.geotools.api.util.Cloneable;
  * @since GeoAPI 1.0
  * @see GeneralParameterDescriptor
  */
-@UML(identifier = "CC_GeneralParameterValue", specification = ISO_19111)
 public interface GeneralParameterValue extends Cloneable {
     /**
      * Returns the abstract definition of this parameter or group of parameters.

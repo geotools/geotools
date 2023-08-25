@@ -9,12 +9,7 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Obligation.FORBIDDEN;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -25,14 +20,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CD_TemporalDatum", specification = ISO_19111)
 public interface TemporalDatum extends Datum {
     /**
      * The date and time origin of this temporal datum.
      *
      * @return The date and time origin of this temporal datum.
      */
-    @UML(identifier = "origin", obligation = MANDATORY, specification = ISO_19111)
     Date getOrigin();
 
     /**
@@ -42,7 +35,6 @@ public interface TemporalDatum extends Datum {
      * @return Always {@code null}.
      */
     @Override
-    @UML(identifier = "anchorPoint", obligation = FORBIDDEN, specification = ISO_19111)
     InternationalString getAnchorPoint();
 
     /**
@@ -52,6 +44,5 @@ public interface TemporalDatum extends Datum {
      * @return Always {@code null}.
      */
     @Override
-    @UML(identifier = "realizationEpoch", obligation = FORBIDDEN, specification = ISO_19111)
     Date getRealizationEpoch();
 }

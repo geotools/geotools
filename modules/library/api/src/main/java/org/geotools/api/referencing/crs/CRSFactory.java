@@ -9,10 +9,7 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
 import java.util.Map;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.ObjectFactory;
 import org.geotools.api.referencing.cs.AffineCS;
@@ -54,7 +51,6 @@ import org.geotools.api.referencing.operation.OperationMethod;
  * @see org.geotools.api.referencing.cs.CSFactory
  * @see org.geotools.api.referencing.datum.DatumFactory
  */
-@UML(identifier = "CS_CoordinateSystemFactory", specification = OGC_01009)
 public interface CRSFactory extends ObjectFactory {
     /**
      * Creates a compound coordinate reference system from an ordered list of {@code
@@ -66,7 +62,6 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createCompoundCoordinateSystem", specification = OGC_01009)
     CompoundCRS createCompoundCRS(Map<String, ?> properties, CoordinateReferenceSystem... elements)
             throws FactoryException;
 
@@ -80,7 +75,6 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createLocalCoordinateSystem", specification = OGC_01009)
     EngineeringCRS createEngineeringCRS(
             Map<String, ?> properties, EngineeringDatum datum, CoordinateSystem cs)
             throws FactoryException;
@@ -121,7 +115,6 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createVerticalCoordinateSystem", specification = OGC_01009)
     VerticalCRS createVerticalCRS(Map<String, ?> properties, VerticalDatum datum, VerticalCS cs)
             throws FactoryException;
 
@@ -164,7 +157,6 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given properties.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createGeographicCoordinateSystem", specification = OGC_01009)
     GeographicCRS createGeographicCRS(
             Map<String, ?> properties, GeodeticDatum datum, EllipsoidalCS cs)
             throws FactoryException;
@@ -203,7 +195,6 @@ public interface CRSFactory extends ObjectFactory {
      * @see MathTransformFactory#createBaseToDerived
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "createFittedCoordinateSystem", specification = OGC_01009)
     DerivedCRS createDerivedCRS(
             Map<String, ?> properties,
             CoordinateReferenceSystem baseCRS,
@@ -253,7 +244,6 @@ public interface CRSFactory extends ObjectFactory {
      * @see MathTransformFactory#createBaseToDerived
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "createProjectedCoordinateSystem", specification = OGC_01009)
     ProjectedCRS createProjectedCRS(
             Map<String, ?> properties,
             GeographicCRS baseCRS,
@@ -268,7 +258,6 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given XML.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createFromXML", specification = OGC_01009)
     CoordinateReferenceSystem createFromXML(String xml) throws FactoryException;
 
     /**
@@ -280,6 +269,5 @@ public interface CRSFactory extends ObjectFactory {
      * @return The coordinate reference system for the given WKT.
      * @throws FactoryException if the object creation failed.
      */
-    @UML(identifier = "createFromWKT", specification = OGC_01009)
     CoordinateReferenceSystem createFromWKT(String wkt) throws FactoryException;
 }

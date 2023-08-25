@@ -33,7 +33,6 @@ import org.geotools.api.referencing.datum.ImageDatum;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_ImageCRS", specification = ISO_19111)
 public interface ImageCRS extends SingleCRS {
     /** Returns the cartesian coordinate system. */
     @Override
@@ -45,6 +44,5 @@ public interface ImageCRS extends SingleCRS {
 
     /** Returns the datum, which must be an image one. */
     @Override
-    @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     ImageDatum getDatum();
 }

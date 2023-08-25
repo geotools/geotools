@@ -9,10 +9,6 @@
  */
 package org.geotools.api.parameter;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Thrown when an invalid value was given to a {@linkplain ParameterValue parameter}.
  *
@@ -23,7 +19,6 @@ import org.geotools.api.annotation.UML;
  * @see ParameterValue#setValue(double)
  * @see ParameterValue#setValue(Object)
  */
-@UML(identifier = "GC_InvalidParameterValue", specification = ISO_19111)
 public class InvalidParameterValueException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 3814037056147642789L;

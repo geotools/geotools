@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.cs;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A 1-, 2-, or 3-dimensional coordinate system. Gives the position of points relative to orthogonal
  * straight axes in the 2- and 3-dimensional cases. In the 1-dimensional case, it contains a single
@@ -35,5 +31,4 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 1.0
  * @see AffineCS
  */
-@UML(identifier = "CS_CartesianCS", specification = ISO_19111)
 public interface CartesianCS extends AffineCS {}

@@ -10,7 +10,6 @@
 package org.geotools.api.referencing.datum;
 
 import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
 import static org.geotools.api.annotation.Specification.ISO_19111;
 import static org.geotools.api.annotation.Specification.OGC_01009;
 
@@ -56,7 +55,6 @@ import org.geotools.api.referencing.IdentifiedObject;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CD_Ellipsoid", specification = ISO_19111)
 public interface Ellipsoid extends IdentifiedObject {
     /**
      * Returns the linear unit of the {@linkplain #getSemiMajorAxis semi-major} and {@linkplain
@@ -64,7 +62,6 @@ public interface Ellipsoid extends IdentifiedObject {
      *
      * @return The axis linear unit.
      */
-    @UML(identifier = "getAxisUnit", specification = OGC_01009)
     Unit<Length> getAxisUnit();
 
     /**
@@ -74,7 +71,6 @@ public interface Ellipsoid extends IdentifiedObject {
      * @return Length of semi-major axis.
      * @unitof Length
      */
-    @UML(identifier = "semiMajorAxis", obligation = MANDATORY, specification = ISO_19111)
     double getSemiMajorAxis();
 
     /**

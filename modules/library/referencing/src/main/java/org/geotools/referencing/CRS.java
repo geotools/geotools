@@ -36,7 +36,6 @@ import javax.swing.event.ChangeListener;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.citation.Citation;
-import org.geotools.api.metadata.extent.BoundingPolygon;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.metadata.extent.GeographicExtent;
@@ -102,7 +101,6 @@ import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.locationtech.jts.geom.Polygon;
 
 /**
  * Simple utility class for making use of the {@linkplain CoordinateReferenceSystem coordinate
@@ -579,10 +577,8 @@ public final class CRS {
      * if unknown.
      *
      * <p>This method fetchs the {@linkplain CoordinateReferenceSystem#getDomainOfValidity domain of
-     * validity} associated with the given CRS. Only {@linkplain GeographicExtent geographic
-     * extents} of kind {@linkplain BoundingPolygon bounding polygon} are taken in account. If none
-     * are found, then the {@linkplain #getGeographicBoundingBox geographic bounding boxes} are used
-     * as a fallback.
+     * validity} associated with the given CRS. {@linkplain #getGeographicBoundingBox geographic
+     * bounding boxes} are used as a fallback.
      *
      * <p>The returned envelope is expressed in terms of the specified CRS.
      *
@@ -595,79 +591,50 @@ public final class CRS {
     public static Envelope getEnvelope(final CoordinateReferenceSystem crs) {
         Envelope envelope = null;
         GeneralEnvelope merged = null;
-        if (crs != null) {
-            final Extent domainOfValidity = crs.getDomainOfValidity();
-            if (domainOfValidity != null) {
-                for (final GeographicExtent extent : domainOfValidity.getGeographicElements()) {
-                    if (Boolean.FALSE.equals(extent.getInclusion())) {
-                        continue;
-                    }
-                    if (extent instanceof BoundingPolygon) {
-                        for (final Polygon geometry : ((BoundingPolygon) extent).getPolygons()) {
-                            final org.locationtech.jts.geom.Envelope env =
-                                    geometry.getEnvelopeInternal();
-                            if (env != null) {
-                                if (envelope == null) {
-                                    envelope =
-                                            new GeneralEnvelope(
-                                                    new double[] {env.getMinX(), env.getMinY()},
-                                                    new double[] {env.getMinY(), env.getMaxY()});
-                                } else {
-                                    if (merged == null) {
-                                        envelope = merged = new GeneralEnvelope(envelope);
-                                    }
-                                    merged.add(envelope);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+
         /*
-         * If no envelope was found, uses the geographic bounding box as a fallback. We will need to transform it from WGS84 to the supplied CRS. This
+         * Use the geographic bounding box. We will need to transform it from WGS84 to the supplied CRS. This
          * step was not required in the previous block because the later selected only envelopes in the right CRS.
          */
-        if (envelope == null) {
-            final GeographicBoundingBox bounds = getGeographicBoundingBox(crs);
-            if (bounds != null && !Boolean.FALSE.equals(bounds.getInclusion())) {
-                envelope =
-                        merged =
-                                new GeneralEnvelope(
-                                        new double[] {
-                                            bounds.getWestBoundLongitude(),
-                                            bounds.getSouthBoundLatitude()
-                                        },
-                                        new double[] {
-                                            bounds.getEastBoundLongitude(),
-                                            bounds.getNorthBoundLatitude()
-                                        });
+        final GeographicBoundingBox bounds = getGeographicBoundingBox(crs);
+        if (bounds != null && !Boolean.FALSE.equals(bounds.getInclusion())) {
+            envelope =
+                    merged =
+                            new GeneralEnvelope(
+                                    new double[] {
+                                        bounds.getWestBoundLongitude(),
+                                        bounds.getSouthBoundLatitude()
+                                    },
+                                    new double[] {
+                                        bounds.getEastBoundLongitude(),
+                                        bounds.getNorthBoundLatitude()
+                                    });
+            /*
+             * We do not assign WGS84 inconditionnaly to the geographic bounding box, because it is not defined to be on a particular datum; it is
+             * only approximative bounds. We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS 84 only if we found none.
+             */
+            final SingleCRS targetCRS = getHorizontalCRS(crs);
+            final GeographicCRS sourceCRS = CRSUtilities.getStandardGeographicCRS2D(targetCRS);
+            merged.setCoordinateReferenceSystem(sourceCRS);
+            try {
+                envelope = transform(envelope, targetCRS);
+            } catch (TransformException exception) {
                 /*
-                 * We do not assign WGS84 inconditionnaly to the geographic bounding box, because it is not defined to be on a particular datum; it is
-                 * only approximative bounds. We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS 84 only if we found none.
+                 * The envelope is probably outside the range of validity for this CRS. It should not occurs, since the envelope is supposed to
+                 * describe the CRS area of validity. Logs a warning and returns null, since it is a legal return value according this method
+                 * contract.
                  */
-                final SingleCRS targetCRS = getHorizontalCRS(crs);
-                final GeographicCRS sourceCRS = CRSUtilities.getStandardGeographicCRS2D(targetCRS);
-                merged.setCoordinateReferenceSystem(sourceCRS);
-                try {
-                    envelope = transform(envelope, targetCRS);
-                } catch (TransformException exception) {
-                    /*
-                     * The envelope is probably outside the range of validity for this CRS. It should not occurs, since the envelope is supposed to
-                     * describe the CRS area of validity. Logs a warning and returns null, since it is a legal return value according this method
-                     * contract.
-                     */
-                    envelope = null;
-                    unexpectedException("getEnvelope", exception);
-                }
-                /*
-                 * If transform(...) created a new envelope, its CRS is already targetCRS so it doesn't matter if 'merged' is not anymore the right
-                 * instance. If 'transform' returned the envelope unchanged, the 'merged' reference still valid and we want to ensure that it have the
-                 * user-supplied CRS.
-                 */
-                merged.setCoordinateReferenceSystem(targetCRS);
+                envelope = null;
+                unexpectedException("getEnvelope", exception);
             }
+            /*
+             * If transform(...) created a new envelope, its CRS is already targetCRS so it doesn't matter if 'merged' is not anymore the right
+             * instance. If 'transform' returned the envelope unchanged, the 'merged' reference still valid and we want to ensure that it have the
+             * user-supplied CRS.
+             */
+            merged.setCoordinateReferenceSystem(targetCRS);
         }
+
         return envelope;
     }
 

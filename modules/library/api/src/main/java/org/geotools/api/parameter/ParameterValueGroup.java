@@ -9,11 +9,7 @@
  */
 package org.geotools.api.parameter;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.Identifier;
 
 /**
@@ -30,7 +26,6 @@ import org.geotools.api.metadata.Identifier;
  * @see ParameterDescriptorGroup
  * @see ParameterValue
  */
-@UML(identifier = "CC_ParameterValueGroup", specification = ISO_19111)
 public interface ParameterValueGroup extends GeneralParameterValue {
     /**
      * The abstract definition of this group of parameters.
@@ -43,7 +38,6 @@ public interface ParameterValueGroup extends GeneralParameterValue {
      *     javax.media.jai.ParameterList#getParameterListDescriptor ParameterList}.
      */
     @Override
-    @UML(identifier = "valuesOfGroup", obligation = MANDATORY, specification = ISO_19111)
     ParameterDescriptorGroup getDescriptor();
 
     /**
@@ -65,7 +59,6 @@ public interface ParameterValueGroup extends GeneralParameterValue {
      *
      * @return The values in this group.
      */
-    @UML(identifier = "includesValue", obligation = MANDATORY, specification = ISO_19111)
     List<GeneralParameterValue> values();
 
     /**

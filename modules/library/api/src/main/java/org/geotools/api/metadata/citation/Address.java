@@ -9,11 +9,7 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.util.Collection;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -23,7 +19,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CI_Address", specification = ISO_19115)
 public interface Address {
     /**
      * Address line for the location (as described in ISO 11180, Annex A). Returns an empty
@@ -31,7 +26,6 @@ public interface Address {
      *
      * @return Address line for the location.
      */
-    @UML(identifier = "deliveryPoint", obligation = OPTIONAL, specification = ISO_19115)
     Collection<String> getDeliveryPoints();
 
     /**
@@ -39,7 +33,6 @@ public interface Address {
      *
      * @return The city of the location, or {@code null}.
      */
-    @UML(identifier = "city", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getCity();
 
     /**
@@ -47,7 +40,6 @@ public interface Address {
      *
      * @return State, province of the location, or {@code null}.
      */
-    @UML(identifier = "administrativeArea", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getAdministrativeArea();
 
     /**
@@ -55,7 +47,6 @@ public interface Address {
      *
      * @return ZIP or other postal code, or {@code null}.
      */
-    @UML(identifier = "postalCode", obligation = OPTIONAL, specification = ISO_19115)
     String getPostalCode();
 
     /**
@@ -63,7 +54,6 @@ public interface Address {
      *
      * @return Country of the physical address, or {@code null}.
      */
-    @UML(identifier = "country", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getCountry();
 
     /**
@@ -72,6 +62,5 @@ public interface Address {
      *
      * @return Address of the electronic mailbox of the responsible organization or individual.
      */
-    @UML(identifier = "electronicMailAddress", obligation = OPTIONAL, specification = ISO_19115)
     Collection<String> getElectronicMailAddresses();
 }

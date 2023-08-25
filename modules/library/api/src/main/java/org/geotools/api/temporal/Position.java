@@ -9,12 +9,8 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import java.sql.Time;
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -25,7 +21,6 @@ import org.geotools.api.util.InternationalString;
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
  */
-@UML(identifier = "TM_Position", specification = ISO_19108)
 public interface Position {
     /**
      * {@linkplain TemporalPosition} and its subtypes shall be used for describing temporal
@@ -34,7 +29,6 @@ public interface Position {
      *
      * @return TemporalPosition
      */
-    @UML(identifier = "anyOther", obligation = OPTIONAL, specification = ISO_19108)
     TemporalPosition anyOther();
 
     /**
@@ -43,7 +37,6 @@ public interface Position {
      *
      * @return {@linkplain InternationalString}
      */
-    @UML(identifier = "date8601", obligation = OPTIONAL, specification = ISO_19108)
     Date getDate();
 
     /**
@@ -52,7 +45,6 @@ public interface Position {
      *
      * @return {@linkplain InternationalString}
      */
-    @UML(identifier = "time8601", obligation = OPTIONAL, specification = ISO_19108)
     Time getTime();
 
     /**
@@ -61,6 +53,5 @@ public interface Position {
      *
      * @return {@linkplain InternationalString}
      */
-    @UML(identifier = "dateTime8601", obligation = OPTIONAL, specification = ISO_19108)
     InternationalString getDateTime();
 }

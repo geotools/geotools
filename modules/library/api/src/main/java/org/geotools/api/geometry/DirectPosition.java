@@ -35,7 +35,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "DirectPosition", specification = ISO_19107)
 public interface DirectPosition {
     /**
      * The coordinate reference system in which the coordinate is given. May be {@code null} if this
@@ -58,7 +57,6 @@ public interface DirectPosition {
      *
      * @return The dimensionality of this position.
      */
-    @UML(identifier = "dimension", obligation = MANDATORY, specification = ISO_19107)
     int getDimension();
 
     /**
@@ -109,7 +107,6 @@ public interface DirectPosition {
      * @return A copy of the coordinates. Changes in the returned array will not be reflected back
      *     in this {@code DirectPosition} object.
      */
-    @UML(identifier = "coordinate", obligation = MANDATORY, specification = ISO_19107)
     double[] getCoordinate();
 
     /**

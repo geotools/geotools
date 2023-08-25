@@ -21,10 +21,6 @@ package org.geotools.api.filter.capability;
 
 // Annotations
 
-import static org.geotools.api.annotation.Specification.UNSPECIFIED;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Capabilities used to convey supported scalar operators.
  *
@@ -69,7 +65,6 @@ public interface ScalarCapabilities {
      *    minOccurs="0" maxOccurs="1"/>
      * </pre>
      */
-    @UML(identifier = "comparisonOperators", specification = UNSPECIFIED)
     ComparisonOperators getComparisonOperators();
 
     /**
@@ -82,6 +77,5 @@ public interface ScalarCapabilities {
      *     minOccurs="0" maxOccurs="1"/>
      * </pre>
      */
-    @UML(identifier = "arithmeticOperators", specification = UNSPECIFIED)
     ArithmeticOperators getArithmeticOperators();
 }

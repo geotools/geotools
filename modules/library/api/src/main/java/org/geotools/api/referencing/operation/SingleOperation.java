@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A single (not {@linkplain ConcatenatedOperation concatenated}) coordinate operation.
  *
@@ -21,5 +17,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CC_SingleOperation", specification = ISO_19111)
 public interface SingleOperation extends CoordinateOperation {}

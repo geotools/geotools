@@ -9,12 +9,9 @@
  */
 package org.geotools.api.style;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19117;
 
 import java.util.List;
 import java.util.Map;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.metadata.citation.OnLineResource;
 
@@ -31,7 +28,6 @@ import org.geotools.api.metadata.citation.OnLineResource;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@UML(identifier = "PF_PortrayalRule", specification = ISO_19117)
 public interface Rule {
 
     /**
@@ -41,7 +37,6 @@ public interface Rule {
      *
      * @return a name for this rule.
      */
-    @UML(identifier = "ruleName", obligation = MANDATORY, specification = ISO_19117)
     String getName();
 
     /**
@@ -107,7 +102,6 @@ public interface Rule {
      *
      * @return the list of Symbolizer
      */
-    @UML(identifier = "portrayAction", obligation = MANDATORY, specification = ISO_19117)
     List<? extends Symbolizer> symbolizers();
 
     /** @return Location where this style is defined; file or server; or null if unknown */

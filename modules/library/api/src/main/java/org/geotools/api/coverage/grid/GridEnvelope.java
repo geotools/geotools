@@ -9,11 +9,7 @@
  */
 package org.geotools.api.coverage.grid;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19123;
-
 import java.awt.Rectangle;
-import org.geotools.api.annotation.UML;
 
 /**
  * Provides the {@linkplain GridCoordinates grid coordinate} values for the diametrically opposed
@@ -32,7 +28,6 @@ import org.geotools.api.annotation.UML;
  * @since GeoAPI 2.1
  * @see org.geotools.api.geometry.Envelope
  */
-@UML(identifier = "CV_GridEnvelope", specification = ISO_19123)
 public interface GridEnvelope {
     /**
      * Returns the number of dimensions. It must be equals to the number of dimensions of
@@ -48,7 +43,6 @@ public interface GridEnvelope {
      *
      * @return The minimal coordinate values for all grid points, inclusive.
      */
-    @UML(identifier = "low", obligation = MANDATORY, specification = ISO_19123)
     GridCoordinates getLow();
 
     /**
@@ -56,7 +50,6 @@ public interface GridEnvelope {
      *
      * @return The maximal coordinate values for all grid points, <strong>inclusive</strong>.
      */
-    @UML(identifier = "high", obligation = MANDATORY, specification = ISO_19123)
     GridCoordinates getHigh();
 
     /**

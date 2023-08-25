@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.cs;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A one-dimensional coordinate system that consists of the points that lie on the single axis
  * described. The associated ordinate is the distance from the specified origin to the point along
@@ -30,5 +26,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CS_LinearCS", specification = ISO_19111)
 public interface LinearCS extends CoordinateSystem {}

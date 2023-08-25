@@ -20,7 +20,6 @@
 package org.geotools.metadata.iso.extent;
 
 import java.util.Collection;
-import org.geotools.api.metadata.extent.BoundingPolygon;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.metadata.extent.GeographicExtent;
@@ -143,9 +142,6 @@ public class ExtentImpl extends MetadataEntity implements Extent {
                 final GeographicBoundingBox bounds;
                 if (element instanceof GeographicBoundingBox) {
                     bounds = (GeographicBoundingBox) element;
-                } else if (element instanceof BoundingPolygon) {
-                    // TODO: iterates through all polygons and invoke Polygon.getEnvelope();
-                    continue;
                 } else {
                     continue;
                 }

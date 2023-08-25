@@ -9,11 +9,7 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 
 /**
  * A coordinate reference system describing the position of points through two or more independent
@@ -54,13 +50,11 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_CompoundCRS", specification = ISO_19111)
 public interface CompoundCRS extends CoordinateReferenceSystem {
     /**
      * The ordered list of coordinate reference systems.
      *
      * @return The ordered list of coordinate reference systems.
      */
-    @UML(identifier = "includesCRS", obligation = MANDATORY, specification = ISO_19111)
     List<CoordinateReferenceSystem> getCoordinateReferenceSystems();
 }

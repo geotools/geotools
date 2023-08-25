@@ -25,7 +25,6 @@ import org.geotools.api.referencing.IdentifiedObject;
  * @since GeoAPI 2.0
  * @see GeneralParameterValue
  */
-@UML(identifier = "CC_GeneralOperationParameter", specification = ISO_19111)
 public interface GeneralParameterDescriptor extends IdentifiedObject {
     /**
      * Creates a new instance of {@linkplain GeneralParameterValue parameter value or group}
@@ -44,7 +43,6 @@ public interface GeneralParameterDescriptor extends IdentifiedObject {
      * @return The minimum occurence.
      * @see #getMaximumOccurs
      */
-    @UML(identifier = "minimumOccurs", obligation = OPTIONAL, specification = ISO_19111)
     int getMinimumOccurs();
 
     /**

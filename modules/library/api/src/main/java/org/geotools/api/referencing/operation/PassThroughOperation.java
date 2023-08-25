@@ -9,11 +9,6 @@
  */
 package org.geotools.api.referencing.operation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A pass-through operation specifies that a subset of a coordinate tuple is subject to a specific
  * coordinate operation.
@@ -23,14 +18,12 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CC_PassThroughOperation", specification = ISO_19111)
 public interface PassThroughOperation extends SingleOperation {
     /**
      * Returns the operation to apply on the subset of a coordinate tuple.
      *
      * @return The operation to apply on the subset of a coordinate tuple.
      */
-    @UML(identifier = "usesOperation", obligation = MANDATORY, specification = ISO_19111)
     Operation getOperation();
 
     /**
@@ -39,6 +32,5 @@ public interface PassThroughOperation extends SingleOperation {
      *
      * @return The modified coordinates.
      */
-    @UML(identifier = "modifiedCoordinate", obligation = MANDATORY, specification = ISO_19111)
     int[] getModifiedCoordinates();
 }

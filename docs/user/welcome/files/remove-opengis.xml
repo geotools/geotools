@@ -1,170 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="remove-opengis" default="update">
-
-    <property name="project.dir" location="."/>
-    
-    <target name="starting-up"
-        description="Update project in current directory to remove org.opengis package use">
-        <echo>Update to GeoTools 30.x series</echo>
-        <echo/>
-        <echo>UPDATE STARTING: ${project.dir}</echo>
-    </target>
-
-    <target name="_filterFactory"
-            description="FilterFactory2 and FilterFactory merge">
-        <echo/>
-        <echo message="Refactor FilterFactory2 --> FilerFactory" />
-        <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-          <!-- This adds more method overloads in FilterFactory, so code that compiled
-               before with "null" as  argument might need an explicit cast now -->
-          <replacefilter>
-            <replacetoken>FilterFactory2</replacetoken>
-            <replacevalue>FilterFactory</replacevalue>
-          </replacefilter>
-        </replace>
-        
-        <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java">
-            <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes"/>
-        </fileset>
-        <echo message="Files containing org.opengis.filter.FilterFactory: ${toString:filterFactory.files}" />
-        <echo level="warning">  check: FilterFactory and Collecions use of contains((String) null)</echo>
-        <echo level="warning">  check: FilterFactory and Collection use of equals((String) null)</echo>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.property\(null\)"/>
-            <substitution expression=".property((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.beyond\(null\)"/>
-            <substitution expression=".beyond((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.contains\(null\)"/>
-            <substitution expression=".contains((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.crosses\(null\)"/>
-            <substitution expression=".crosses((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.disjoint\(null\)"/>
-            <substitution expression=".disjoint((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.intersects\(null\)"/>
-            <substitution expression=".intersects((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.overlaps\(null\)"/>
-            <substitution expression=".overlaps((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.equals\(null\)"/>
-            <substitution expression=".equals((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.dwithin\(null\)"/>
-            <substitution expression=".dwithin((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.touches\(null\)"/>
-            <substitution expression=".touches((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.overlaps\(null\)"/>
-            <substitution expression=".overlaps((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.touches\(null\)"/>
-            <substitution expression=".touches((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-        <replaceregexp byline="true" flags="g">
-            <regexp pattern="\.within\(null\)"/>
-            <substitution expression=".within((String) null)"/>
-            <fileset refid="filterFactory.files"/>
-        </replaceregexp>
-
-    </target>
-
-    <!-- the following tasks run after _opengis above to reflect api refactoring -->
-    <target name="_bounds"
-            description="Bounds and Position API cleanup">
-        <echo/>
-        <echo message="Refactor Position to DirectPosition" />
-        <echo message="  and removing org.opengis.geometry.coordinates.Position)" />
-        
-        <fileset id="position.files" dir="${project.dir}" includes="**/*.java">
-            <contains text="import org.opengis.geometry.coordinate.Position;" casesensitive="yes"/>
-        </fileset>
-        <echo message="Files containing Position: ${toString:position.files}" />
-        <replaceregexp byline="true">
-            <fileset refid="position.files"/>
-            <regexp pattern="(\s)Position"/>
-            <substitution expression="\1DirectPosition"/>
-        </replaceregexp>
-        <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-            <replacefilter>
-                <replacetoken>org.opengis.geometry.coordinate.Position</replacetoken>
-                <replacevalue>org.opengis.geometry.DirectPosition</replacevalue>
-            </replacefilter>
-        </replace>
-    </target>
-    
-    <target name="_opengis"
-        description="Package change from org.opengis classes to org.geotools.api">
-
-        <echo/>
-        <echo message="Refactor org.opengis to org.geotools.api" />
-        <!-- bulk replace * imports, may require more than one * import -->
-        <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-          <replacefilter>
-            <replacetoken>org.opengis.</replacetoken>
-            <replacevalue>org.geotools.api.</replacevalue>
-          </replacefilter>
-        </replace>
-        <!-- Service INF -->
-        <move todir="." verbose="true">
-            <fileset dir=".">
-                <include name="**/META-INF/services/org.opengis.*"/>
-                <exclude name="**/target/*"/>
-            </fileset>
-            <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2"/>
-        </move>
-    </target>
-
-    <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis"
-        description="Update project in current directory to remove org.opengis package use">
-        
-        <echo>UPDATE COMPLETED: ${project.dir}</echo>
-        <echo/>
-        <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>
-        <echo>Your project has been refactored to change org.opengis to org.geotools.api</echo>
-        <echo/>
-        <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
-    </target>
-    
+  <!-- Use this property to run script on your project location -->
+  <property name="project.dir" location="." />
+  <!-- macros -->
+  <macrodef name="refactor">
+    <attribute name="package1" />
+    <attribute name="class1" />
+    <attribute name="package2" />
+    <attribute name="class2" />
+    <sequential>
+      <fileset id="@{class1}.files" dir="${project.dir}" includes="**/*.java">
+        <contains text="import @{package1}.@{class1};" casesensitive="yes" />
+      </fileset>
+      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
+      <replaceregexp byline="true">
+        <fileset refid="@{class1}.files" />
+        <regexp pattern="(\s)@{class1}(\W)" />
+        <substitution expression="\1@{class2}\2" />
+      </replaceregexp>
+      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+        <replacefilter>
+          <replacetoken>(\s)@{package1}\.@{class1}(\W)</replacetoken>
+          <replacevalue>\1@{package2}.@{class2}\2</replacevalue>
+        </replacefilter>
+      </replace>
+    </sequential>
+  </macrodef>
+  <macrodef name="remove">
+    <attribute name="package" />
+    <attribute name="class" />
+    <attribute name="removed" default="// removed" />
+    <sequential>
+      <fileset id="@{class}.files" dir="${project.dir}" includes="**/*.java">
+        <contains text="import @{package}\.@{class};" casesensitive="yes" />
+      </fileset>
+      <echo message="Refactor @{package}.@{class} -&gt; removed" />
+      <replaceregexp byline="true">
+        <fileset refid="@{class}.files" />
+        <regexp pattern="^import @{class}\.@{class};$" />
+        <substitution expression="// import @{class}.@{class};@{removed}" />
+      </replaceregexp>
+      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+        <replacefilter>
+          <replacetoken>(\s)@{package1}@{class1}(\W)</replacetoken>
+          <replacevalue>\1@{package2}@{class2}\2</replacevalue>
+        </replacefilter>
+      </replace>
+    </sequential>
+  </macrodef>
+  <target name="starting-up" description="Update project in current directory to remove org.opengis package use">
+    <echo>Update to GeoTools 30.x series</echo>
+    <echo />
+    <echo>UPDATE STARTING: ${project.dir}</echo>
+  </target>
+  <target name="_filterFactory" description="FilterFactory2 and FilterFactory merge">
+    <echo />
+    <echo message="Files containing org.opengis.filter.FilterFactory2:" />
+    <fileset id="FilterFactory2.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.opengis.filter.FilterFactory2" casesensitive="yes" />
+    </fileset>
+    <echo message="Refactor FilterFactory2 --&gt; FilerFactory" />
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="(\W)FilterFactory2(\W)" />
+      <substitution expression="\1FilterFactory\2" />
+      <fileset refid="FilterFactory2.files" />
+    </replaceregexp>
+    <echo message="CommonFactoryFinder.getFilterFactory()" />
+    <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replacefilter>
+        <replacetoken>.getFilterFactory2(</replacetoken>
+        <replacevalue>.getFilterFactory(</replacevalue>
+      </replacefilter>
+    </replace>
+    <echo message="Files containing org.opengis.filter.FilterFactory:" />
+    <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes" />
+    </fileset>
+    <echo>FilterFactory.property(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.property\(null\)" />
+      <substitution expression=".property((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.beyond(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.beyond\(null\)" />
+      <substitution expression=".beyond((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.contains(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.contains\(null\)" />
+      <substitution expression=".contains((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo level="warning">check: Collecions.contains((String) null) use for possible conflicts</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.crosses\(null\)" />
+      <substitution expression=".crosses((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.disjoint(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.disjoint\(null\)" />
+      <substitution expression=".disjoint((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.intersects(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.intersects\(null\)" />
+      <substitution expression=".intersects((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.overlaps(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.overlaps\(null\)" />
+      <substitution expression=".overlaps((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.equals(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.equals\(null\)" />
+      <substitution expression=".equals((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo level="warning">check: Object.equals((String) null) use for possible conflict</echo>
+    <echo>FilterFactory.dwithin(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.dwithin\(null\)" />
+      <substitution expression=".dwithin((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.touches(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.touches\(null\)" />
+      <substitution expression=".touches((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.overlaps(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.overlaps\(null\)" />
+      <substitution expression=".overlaps((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.touches(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.touches\(null\)" />
+      <substitution expression=".touches((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+    <echo>FilterFactory.within(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.within\(null\)" />
+      <substitution expression=".within((String) null)" />
+      <fileset refid="filterFactory.files" />
+    </replaceregexp>
+  </target>
+  <!-- the following tasks run after _opengis above to reflect api refactoring -->
+  <target name="_bounds" description="Bounds and Position API cleanup">
+    <echo />
+    <echo message="Refactor Position to DirectPosition" />
+    <echo message="and removing org.opengis.geometry.coordinates.Position)" />
+    <!-- you cann use refid="Position.files" fileset after refactor -->
+    <refactor package1="org.opengis.geometry.coordinate" class1="Position" package2="org.opengis.geometry" class2="DirectPosition" />
+    <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;" />
+  </target>
+  <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
+    <echo />
+    <echo message="Refactor org.opengis to org.geotools.api" />
+    <!-- bulk replace * imports, may require more than one * import -->
+    <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replacefilter>
+        <replacetoken>org.opengis.</replacetoken>
+        <replacevalue>org.geotools.api.</replacevalue>
+      </replacefilter>
+    </replace>
+    <!-- Service INF -->
+    <move todir="." verbose="true">
+      <fileset dir=".">
+        <include name="**/META-INF/services/org.opengis.*" />
+        <exclude name="**/target/*" />
+      </fileset>
+      <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2" />
+    </move>
+  </target>
+  <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis" description="Update project in current directory to remove org.opengis package use">
+    <echo>UPDATE COMPLETED: ${project.dir}</echo>
+    <echo />
+    <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>
+    <echo>Your project has been refactored to change org.opengis to org.geotools.api</echo>
+    <echo />
+    <echo>You may have unsued imports to clean up, but we believe your project will compile!</echo>
+  </target>
 </project>

@@ -21,10 +21,6 @@ package org.geotools.api.filter.capability;
 
 // Annotations
 
-import static org.geotools.api.annotation.Specification.UNSPECIFIED;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * FilterCapabilitiesBean used to represent
  * <code>Filter<code> expressions according to the
@@ -46,19 +42,15 @@ public interface FilterCapabilities {
     public String VERSION_200 = "2.0.0";
 
     /** */
-    @UML(identifier = "scalarCapabilities", specification = UNSPECIFIED)
     ScalarCapabilities getScalarCapabilities();
 
     /** */
-    @UML(identifier = "spatialCapabilities", specification = UNSPECIFIED)
     SpatialCapabilities getSpatialCapabilities();
 
     /** */
-    @UML(identifier = "idCapabilities", specification = UNSPECIFIED)
     IdCapabilities getIdCapabilities();
 
     /** */
-    @UML(identifier = "temporalCapabilities", specification = UNSPECIFIED)
     TemporalCapabilities getTemporalCapabilities();
 
     /** Returns the version. */

@@ -9,10 +9,7 @@
  */
 package org.geotools.api.geometry.coordinate;
 
-import static org.geotools.api.annotation.Specification.ISO_19107;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
@@ -37,7 +34,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @author Martin Desruisseaux (IRD)
  * @see PositionArchive
  */
-@UML(identifier = "GM_PointArray", specification = ISO_19107)
 public interface PointArrayArchive extends List<PositionArchive> {
     /**
      * Returns the dimensionality of the coordinates in this array. It should be equals to the

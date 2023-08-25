@@ -9,15 +9,10 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Base interface for temporal object.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_Object", specification = ISO_19108)
 public interface TemporalObject {}

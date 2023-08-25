@@ -9,11 +9,7 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import java.util.Date;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -24,20 +20,17 @@ import org.geotools.api.util.InternationalString;
  * @author Alexander Petkov
  * @todo Retrofit in {@link org.geotools.api.referencing.cs.TimeCS}.
  */
-@UML(identifier = "TM_CoordinateSystem", specification = ISO_19108)
 public interface TemporalCoordinateSystem extends TemporalReferenceSystem {
     /**
      * Position of the origin of the scale on which the temporal coordinate system is based
      * expressed as a date in the Gregorian calendar and time of day in UTC.
      */
-    @UML(identifier = "origin", obligation = MANDATORY, specification = ISO_19108)
     Date getOrigin();
 
     /**
      * Identifies the base interval for this temporal coordinate system as a unit of measure
      * specified by ISO 31-1, or a multiple of one of those units, as specified by ISO 1000.
      */
-    @UML(identifier = "interval", obligation = MANDATORY, specification = ISO_19108)
     InternationalString getInterval();
 
     /**
@@ -45,13 +38,11 @@ public interface TemporalCoordinateSystem extends TemporalReferenceSystem {
      * coordinate system and returns the equivalent {@linkplain DateAndTime date and time} in the
      * Gregorian Calendar and UTC
      */
-    @UML(identifier = "transformCoord", obligation = MANDATORY, specification = ISO_19108)
     Date transformCoord(TemporalCoordinate coordinates);
 
     /**
      * Transforms a {@linkplain DateAndTime date and time} in the Gregorian Calendar and UTC to an
      * equivalent {@linkplain TemporalCoordinate coordinate} within this temporal coordinate system.
      */
-    @UML(identifier = "transformDateTime", obligation = MANDATORY, specification = ISO_19108)
     TemporalCoordinate transformDateTime(Date datetime);
 }

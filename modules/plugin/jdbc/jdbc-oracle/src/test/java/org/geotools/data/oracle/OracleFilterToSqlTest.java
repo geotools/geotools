@@ -250,6 +250,28 @@ public class OracleFilterToSqlTest {
                 encoded);
     }
 
+    @Test
+    public void testFunctionJsonPointer() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonPointer",
+                        ff.property("operations"),
+                        ff.literal("/operations/parameters"));
+        String encoded = encoder.encodeToString(function);
+        assertEquals("JSON_VALUE(operations, '$.operations.parameters')", encoded);
+    }
+
+    @Test
+    public void testFunctionJsonPointerWithArray() throws Exception {
+        Function function =
+                ff.function(
+                        "jsonPointer",
+                        ff.property("operations"),
+                        ff.literal("/operations/parameters/0"));
+        String encoded = encoder.encodeToString(function);
+        assertEquals("JSON_VALUE(operations, '$.operations.parameters[0]')", encoded);
+    }
+
     // THIS ONE WON'T PASS RIGHT NOW, BUT WE NEED TO PUT A TEST LIKE THIS
     // SOMEHWERE
     // THAT IS, SOMETHING CHECKING THAT TYPED FIDS GET CONVERTED INTO THE PROPER

@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;

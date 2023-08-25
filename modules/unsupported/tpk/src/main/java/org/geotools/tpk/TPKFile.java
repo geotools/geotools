@@ -136,10 +136,7 @@ public class TPKFile {
      * @param imageFormat -- the image format being used
      */
     public TPKFile(
-            File theFile,
-            Map<Long, TPKZoomLevel> zoomLevelMap,
-            Bounds bounds,
-            String imageFormat) {
+            File theFile, Map<Long, TPKZoomLevel> zoomLevelMap, Bounds bounds, String imageFormat) {
         openTPK(theFile);
         this.imageFormat = imageFormat;
         this.bounds = bounds;

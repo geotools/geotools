@@ -1017,12 +1017,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                     coverageName, image, crs, raster2Model, bands, null, properties);
         }
         return coverageFactory.create(
-                coverageName,
-                image,
-                new GeneralBounds(originalEnvelope),
-                bands,
-                null,
-                properties);
+                coverageName, image, new GeneralBounds(originalEnvelope), bands, null, properties);
     }
 
     private CoordinateReferenceSystem getCRS(Object source) {

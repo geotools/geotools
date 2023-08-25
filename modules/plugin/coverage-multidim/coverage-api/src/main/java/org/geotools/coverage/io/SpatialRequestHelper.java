@@ -329,8 +329,7 @@ public class SpatialRequestHelper {
                     requestedBBox =
                             new ReferencedEnvelope(
                                     CRS.transform(
-                                            tempTransform,
-                                            new GeneralBounds(requestedRasterArea)));
+                                            tempTransform, new GeneralBounds(requestedRasterArea)));
 
                 } catch (MismatchedDimensionException | TransformException e) {
                     throw new DataSourceException("Unable to inspect request CRS", e);
@@ -386,8 +385,7 @@ public class SpatialRequestHelper {
                 destinationRasterArea =
                         new GeneralGridEnvelope(
                                         CRS.transform(
-                                                requestedWorldToGrid,
-                                                new GeneralBounds(cropBBox)),
+                                                requestedWorldToGrid, new GeneralBounds(cropBBox)),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();

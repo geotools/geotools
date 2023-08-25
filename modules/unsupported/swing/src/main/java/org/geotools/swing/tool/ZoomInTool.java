@@ -24,8 +24,8 @@ import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.locale.LocaleUtils;
 

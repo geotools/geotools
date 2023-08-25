@@ -2260,8 +2260,7 @@ public class ImageMosaicReaderTest {
             final ParameterValue<GridGeometry2D> ggp =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
-            GridGeometry2D gg =
-                    new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Bounds) env);
+            GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Bounds) env);
             ggp.setValue(gg);
 
             // Setting transparency
@@ -4683,8 +4682,7 @@ public class ImageMosaicReaderTest {
         bkg.setValue(new double[] {-9999.0});
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
-        GridGeometry2D gg2D =
-                new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         gg.setValue(gg2D);
         coverage = reader.read(new GeneralParameterValue[] {bkg, gg, useJai, tileSize});
         assertNull(coverage);
@@ -4786,8 +4784,7 @@ public class ImageMosaicReaderTest {
         bkg.setValue(new double[] {-9999.0});
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
-        GridGeometry2D gg2D =
-                new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         gg.setValue(gg2D);
         coverage = reader.read(new GeneralParameterValue[] {bkg, gg, useJai, tileSize});
         assertNull(coverage);

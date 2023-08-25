@@ -20,8 +20,8 @@ package org.geotools.swing.tool;
 import java.awt.Cursor;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.swing.JMapPane;
 import org.geotools.swing.event.MapMouseEvent;
 

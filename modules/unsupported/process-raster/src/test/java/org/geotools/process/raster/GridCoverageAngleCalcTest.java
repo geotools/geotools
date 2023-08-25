@@ -49,8 +49,7 @@ public class GridCoverageAngleCalcTest {
         Position2D position =
                 new Position2D(crs, 2626.018310546785 * 1000, -1118.3695068359375 * 1000);
         Assert.assertEquals(16.0573598047079d, angleCalc.getConvergenceAngle(position), TOLERANCE);
-        position =
-                new Position2D(crs, -1201.9818115234375 * 1000, -1172.3695068359375 * 1000);
+        position = new Position2D(crs, -1201.9818115234375 * 1000, -1172.3695068359375 * 1000);
         Assert.assertEquals(
                 -7.461565880473206d, angleCalc.getConvergenceAngle(position), TOLERANCE);
     }

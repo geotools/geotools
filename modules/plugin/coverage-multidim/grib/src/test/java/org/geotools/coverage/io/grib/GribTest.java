@@ -45,8 +45,8 @@ import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -267,8 +267,7 @@ public class GribTest extends Assert {
             newEnvelope.setCoordinateReferenceSystem(
                     reader.getCoordinateReferenceSystem(coverageName));
             newEnvelope.add(
-                    new Position2D(
-                            newEnvelope.getMinimum(0) - 10, newEnvelope.getMinimum(1) - 10));
+                    new Position2D(newEnvelope.getMinimum(0) - 10, newEnvelope.getMinimum(1) - 10));
 
             // Selecting the same gridRange
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);

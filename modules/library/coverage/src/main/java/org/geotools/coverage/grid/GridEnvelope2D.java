@@ -107,11 +107,11 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * point values are rounded toward the nearest integers.
      *
      * <p><b>Note about rounding mode</b><br>
-     * It would have been possible to round the {@linkplain Bounds#getMinimum minimal value}
-     * toward {@linkplain Math#floor floor} and the {@linkplain Bounds#getMaximum maximal value}
-     * toward {@linkplain Math#ceil ceil} in order to make sure that the grid envelope encompass
-     * fully the envelope - like what Java2D does when converting {@link java.awt.geom.Rectangle2D}
-     * to {@link Rectangle}). But this approach may increase by 1 or 2 units the image {@linkplain
+     * It would have been possible to round the {@linkplain Bounds#getMinimum minimal value} toward
+     * {@linkplain Math#floor floor} and the {@linkplain Bounds#getMaximum maximal value} toward
+     * {@linkplain Math#ceil ceil} in order to make sure that the grid envelope encompass fully the
+     * envelope - like what Java2D does when converting {@link java.awt.geom.Rectangle2D} to {@link
+     * Rectangle}). But this approach may increase by 1 or 2 units the image {@linkplain
      * RenderedImage#getWidth width} or {@linkplain RenderedImage#getHeight height}. For example the
      * range {@code [-0.25 ... 99.75]} (which is exactly 101 units wide) would be casted to {@code
      * [-1 ... 100]}, which is 102 units wide. This leads to unexpected results when using grid

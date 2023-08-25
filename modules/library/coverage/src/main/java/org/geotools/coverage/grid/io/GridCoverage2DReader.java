@@ -132,8 +132,8 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * Return the original {@link GeneralBounds} for the default coverage served by the underlying
      * store.
      *
-     * @return the original {@link GeneralBounds} for the default coverage served by the
-     *     underlying store.
+     * @return the original {@link GeneralBounds} for the default coverage served by the underlying
+     *     store.
      */
     GeneralBounds getOriginalEnvelope();
 

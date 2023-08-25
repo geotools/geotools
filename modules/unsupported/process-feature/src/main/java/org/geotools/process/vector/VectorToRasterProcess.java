@@ -199,7 +199,7 @@ public class VectorToRasterProcess implements VectorProcess {
                             description = "Bounding box of the area to rasterize",
                             min = 0,
                             max = 1)
-            Bounds bounds,
+                    Bounds bounds,
             ProgressListener progressListener) {
 
         Expression attributeExpr = null;

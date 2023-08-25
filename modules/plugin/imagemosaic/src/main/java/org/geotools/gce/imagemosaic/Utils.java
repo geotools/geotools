@@ -2482,8 +2482,7 @@ public class Utils {
         return JTS.toGeometry(sourceEnvelope);
     }
 
-    private static Bounds getCRSEnvelope(
-            CoordinateReferenceSystem targetCRS)
+    private static Bounds getCRSEnvelope(CoordinateReferenceSystem targetCRS)
             throws FactoryException, NoSuchAuthorityCodeException {
         if (targetCRS.getDomainOfValidity() == null) {
             Integer code = CRS.lookupEpsgCode(targetCRS, true);

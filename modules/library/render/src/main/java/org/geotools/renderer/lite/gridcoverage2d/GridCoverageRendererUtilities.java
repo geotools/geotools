@@ -567,8 +567,7 @@ public final class GridCoverageRendererUtilities {
                 // NO REPROJECTION
                 renderingEnvelopeInCoverageCRS = new GeneralBounds(destinationEnvelope);
             }
-            final GeneralBounds cropEnvelope =
-                    new GeneralBounds(renderingEnvelopeInCoverageCRS);
+            final GeneralBounds cropEnvelope = new GeneralBounds(renderingEnvelopeInCoverageCRS);
             cropEnvelope.intersect(coverageEnvelope);
             if (cropEnvelope.isEmpty() || cropEnvelope.isNull()) {
                 if (LOGGER.isLoggable(Level.INFO)) {

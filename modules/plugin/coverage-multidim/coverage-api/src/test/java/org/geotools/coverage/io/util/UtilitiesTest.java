@@ -149,8 +149,7 @@ public class UtilitiesTest extends Assert {
         envelope.setEnvelope(0, 0, 10, 10);
 
         GeneralBounds wgs84 = new GeneralBounds(Utilities.getEnvelopeAsWGS84(envelope, true));
-        GeneralBounds wgs84_2 =
-                new GeneralBounds(Utilities.getEnvelopeAsWGS84(envelope, false));
+        GeneralBounds wgs84_2 = new GeneralBounds(Utilities.getEnvelopeAsWGS84(envelope, false));
 
         // Ensure the 2 envelope contain the initial one
         assertFalse(wgs84.isEmpty());

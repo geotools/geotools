@@ -185,8 +185,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -238,8 +237,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -323,8 +321,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -362,8 +359,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -415,8 +411,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -463,8 +458,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "test_ushort.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -528,8 +522,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -599,8 +592,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -649,8 +641,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -714,8 +705,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -783,8 +773,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -856,8 +845,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 source,
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("band")},
                                 null,
                                 null);
@@ -922,8 +910,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -983,8 +970,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "test_ushort.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -1052,8 +1038,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -1122,8 +1107,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -1550,8 +1534,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 image2,
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 null,
                                 null,
                                 properties);
@@ -2010,8 +1993,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",
@@ -2055,8 +2037,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 PlanarImage.wrapRenderedImage(image),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",
@@ -2102,8 +2083,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",

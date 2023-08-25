@@ -74,8 +74,7 @@ public class ReadResolutionCalculator {
             double[] fullResolution)
             throws FactoryException {
         Utilities.ensureNonNull("gridGeometry", requestedGridGeometry);
-        this.requestedBBox =
-                new ReferencedEnvelope((Bounds) requestedGridGeometry.getEnvelope2D());
+        this.requestedBBox = new ReferencedEnvelope((Bounds) requestedGridGeometry.getEnvelope2D());
         this.requestedRasterArea = requestedGridGeometry.getGridRange2D().getBounds();
         this.requestedGridToWorld = (AffineTransform) requestedGridGeometry.getGridToCRS2D();
         this.fullResolution = fullResolution;

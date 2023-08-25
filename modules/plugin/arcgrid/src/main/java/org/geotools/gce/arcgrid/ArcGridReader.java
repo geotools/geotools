@@ -363,9 +363,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * @throws java.io.IOException
      */
     private GridCoverage2D createCoverage(
-            GeneralBounds requestedEnvelope,
-            Rectangle requestedDim,
-            OverviewPolicy overviewPolicy)
+            GeneralBounds requestedEnvelope, Rectangle requestedDim, OverviewPolicy overviewPolicy)
             throws IOException {
 
         if (!closeMe) {

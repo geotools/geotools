@@ -375,9 +375,7 @@ public class Operations {
      * @since 2.5
      */
     public Coverage resample(
-            final GridCoverage source,
-            final Bounds envelope,
-            final Interpolation interpolationType)
+            final GridCoverage source, final Bounds envelope, final Interpolation interpolationType)
             throws CoverageProcessingException {
         final GridGeometry gridGeometry;
         try {

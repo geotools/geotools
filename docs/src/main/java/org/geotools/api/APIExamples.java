@@ -222,8 +222,7 @@ public class APIExamples {
                 env; // can hold both regular ReferencedEnvelope as well as ReferencedEnvelope3D
         ReferencedEnvelope original = null; // can be instance of ReferencedEnvelope3D;
         CoordinateReferenceSystem crs = null; // can be 2D or 3D
-        Bounds opengis_env =
-                null; // can be instance of ReferencedEnvelope(3D)
+        Bounds opengis_env = null; // can be instance of ReferencedEnvelope(3D)
         org.locationtech.jts.geom.Envelope jts_env =
                 null; // can be instance of ReferencedEnvelope(3D)
         BoundingBox bbox = null; // can be instance of ReferencedEnvelope(3D)

@@ -72,8 +72,8 @@ import org.geotools.util.factory.Hints;
  * </ul>
  *
  * <p>The {@linkplain CoordinateReferenceSystem coordinate reference system} is inferred from the
- * supplied {@linkplain Bounds envelope} or {@linkplain GridGeometry2D grid geometry} parameters.
- * If those parameters do not have CRS information, then this factory fallback on a {@linkplain
+ * supplied {@linkplain Bounds envelope} or {@linkplain GridGeometry2D grid geometry} parameters. If
+ * those parameters do not have CRS information, then this factory fallback on a {@linkplain
  * #getDefaultCRS default CRS}.
  *
  * <p>Every {@code create} methods will ultimately delegate their work to a master {@link

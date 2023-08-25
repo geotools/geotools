@@ -702,8 +702,7 @@ public final class WorldImageReader extends AbstractGridCoverage2DReader
         }
 
         // building up envelope of this coverage
-        originalEnvelope =
-                new GeneralBounds(new double[] {xMin, yMin}, new double[] {xMax, yMax});
+        originalEnvelope = new GeneralBounds(new double[] {xMin, yMin}, new double[] {xMax, yMax});
         originalEnvelope.setCoordinateReferenceSystem(crs);
     }
 

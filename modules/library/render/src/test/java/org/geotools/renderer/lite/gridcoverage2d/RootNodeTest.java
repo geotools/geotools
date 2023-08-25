@@ -50,8 +50,7 @@ public class RootNodeTest {
                                 "name",
                                 PlanarImage.wrapRenderedImage(
                                         RasterSymbolizerTest.getSynthetic(Double.NaN)),
-                                new GeneralBounds(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",

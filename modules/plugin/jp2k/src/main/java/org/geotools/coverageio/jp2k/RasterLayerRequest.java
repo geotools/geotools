@@ -566,8 +566,7 @@ class RasterLayerRequest {
                 destinationRasterArea =
                         new GeneralGridEnvelope(
                                         CRS.transform(
-                                                requestedWorldToGrid,
-                                                new GeneralBounds(cropBBox)),
+                                                requestedWorldToGrid, new GeneralBounds(cropBBox)),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();

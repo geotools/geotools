@@ -252,8 +252,7 @@ public class DefaultClassesTest {
 
         // Evaluation of the same position
         Position2D pos =
-                new Position2D(
-                        cov.getEnvelope2D().getCenterX(), cov.getEnvelope2D().getCenterY());
+                new Position2D(cov.getEnvelope2D().getCenterX(), cov.getEnvelope2D().getCenterY());
 
         assertArrayEquals(response.evaluate(pos, new byte[1]), cov.evaluate(pos, new byte[1]));
     }

@@ -35,10 +35,10 @@ import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -294,9 +294,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     public void testCanonicalFromOrthogonal() throws Exception {
         Envelope2D bbox = new Envelope2D(DefaultGeographicCRS.WGS84, 150, 40, 10, 10);
         GridGeometry2D gg =
-                new GridGeometry2D(
-                        new GridEnvelope2D(1000, 1000, 100, 100),
-                        (Bounds) bbox);
+                new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100), (Bounds) bbox);
 
         GridGeometry2D canonical = gg.toCanonical();
         assertEquivalentCanonical(gg, canonical);

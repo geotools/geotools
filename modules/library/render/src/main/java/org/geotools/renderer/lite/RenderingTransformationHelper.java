@@ -196,8 +196,7 @@ public abstract class RenderingTransformationHelper {
                         // grid geometry
                         // has at least one pixel
 
-                        Bounds worldEnvelope =
-                                gridGeometry.getEnvelope();
+                        Bounds worldEnvelope = gridGeometry.getEnvelope();
                         GeneralBounds transformed =
                                 CRS.transform(atOriginal.inverse(), worldEnvelope);
                         int minx = (int) Math.floor(transformed.getMinimum(0));

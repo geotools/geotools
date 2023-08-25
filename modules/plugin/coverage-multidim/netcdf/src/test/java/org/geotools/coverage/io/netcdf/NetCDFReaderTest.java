@@ -75,8 +75,8 @@ import org.geotools.data.FileResourceInfo;
 import org.geotools.data.ResourceInfo;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
@@ -129,13 +129,11 @@ public class NetCDFReaderTest extends Assert {
             assertEquals("LAI", description.toString());
 
             byte[] byteValue =
-                    grid.evaluate(
-                            new Position2D(DefaultGeographicCRS.WGS84, 12, 70), new byte[1]);
+                    grid.evaluate(new Position2D(DefaultGeographicCRS.WGS84, 12, 70), new byte[1]);
             assertEquals(20, byteValue[0]);
 
             byteValue =
-                    grid.evaluate(
-                            new Position2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
+                    grid.evaluate(new Position2D(DefaultGeographicCRS.WGS84, 23, 40), new byte[1]);
             assertEquals(90, byteValue[0]);
 
         } finally {

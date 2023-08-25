@@ -27,8 +27,8 @@ import org.geotools.data.vpf.ifc.FileConstants;
 import org.geotools.data.vpf.ifc.VPFHeader;
 import org.geotools.data.vpf.ifc.VPFRow;
 import org.geotools.data.vpf.util.DataUtils;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
 
 /**
  * VPFInputStream.java Created: Mon Feb 24 22:39:57 2003

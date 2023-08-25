@@ -316,8 +316,7 @@ public class StreamingRendererTest {
 
         // mocking a GridCoverageReader to wrap the testing coverage
         GridCoverage2DReader gridCoverageReader = Mockito.mock(GridCoverage2DReader.class);
-        Mockito.when(gridCoverageReader.getOriginalEnvelope())
-                .thenReturn(new GeneralBounds(reWgs));
+        Mockito.when(gridCoverageReader.getOriginalEnvelope()).thenReturn(new GeneralBounds(reWgs));
         Mockito.when(gridCoverageReader.getCoordinateReferenceSystem()).thenReturn(WGS84);
         Mockito.when(gridCoverageReader.read(Mockito.any(GeneralParameterValue[].class)))
                 .thenReturn(coverage);

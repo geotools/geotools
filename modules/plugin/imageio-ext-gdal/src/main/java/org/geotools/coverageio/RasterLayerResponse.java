@@ -416,12 +416,7 @@ class RasterLayerResponse {
         }
 
         return coverageFactory.create(
-                coverageName,
-                image,
-                new GeneralBounds(coverageEnvelope),
-                bands,
-                null,
-                properties);
+                coverageName, image, new GeneralBounds(coverageEnvelope), bands, null, properties);
     }
 
     /**

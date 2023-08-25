@@ -397,8 +397,7 @@ public class Crop extends Operation2D {
         // Check the intersection and, if needed, do the crop operation.
         //
         // //
-        final GeneralBounds intersectionEnvelope =
-                new GeneralBounds((Bounds) destinationEnvelope);
+        final GeneralBounds intersectionEnvelope = new GeneralBounds((Bounds) destinationEnvelope);
         intersectionEnvelope.setCoordinateReferenceSystem(source.getCoordinateReferenceSystem());
         // intersect the envelopes
         intersectionEnvelope.intersect(sourceEnvelope);
@@ -547,8 +546,7 @@ public class Crop extends Operation2D {
                             JTS.getEnvelope2D(
                                     intersection.getEnvelopeInternal(),
                                     cropEnvelope.getCoordinateReferenceSystem());
-                    GeneralBounds ge =
-                            new GeneralBounds((Bounds) e2d);
+                    GeneralBounds ge = new GeneralBounds((Bounds) e2d);
                     cropEnvelope.setEnvelope(ge);
                 } catch (TopologyException e) {
                     // in case the intersection fail, accept using intersection(cropEnvelope,

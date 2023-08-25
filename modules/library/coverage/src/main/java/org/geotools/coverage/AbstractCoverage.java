@@ -65,8 +65,8 @@ import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.Record;
 import org.geotools.api.util.RecordType;
-import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -521,8 +521,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * coverage. By default, all ordinates are initialized to 0. Subclasses should set the
          * desired values in their constructor if needed.
          */
-        protected final GeneralPosition coordinate =
-                new GeneralPosition(getDimension());
+        protected final GeneralPosition coordinate = new GeneralPosition(getDimension());
 
         /**
          * Constructs a renderable image.

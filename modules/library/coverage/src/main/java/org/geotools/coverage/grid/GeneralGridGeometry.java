@@ -54,8 +54,8 @@ import org.geotools.util.logging.Logging;
  *       usually inferred from the {@linkplain RenderedImage rendered image} size.
  *   <li>An optional "grid to CRS" {@linkplain MathTransform transform}, which may be inferred from
  *       the grid range and the envelope.
- *   <li>An optional {@linkplain Bounds envelope}, which may be inferred from the grid range and
- *       the "grid to CRS" transform.
+ *   <li>An optional {@linkplain Bounds envelope}, which may be inferred from the grid range and the
+ *       "grid to CRS" transform.
  *   <li>An optional {@linkplain CoordinateReferenceSystem coordinate reference system} to be given
  *       to the envelope.
  * </ul>
@@ -397,8 +397,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
                                 Math.min(
                                         XAffineTransform.getScaleX0(transform),
                                         XAffineTransform.getScaleY0(transform));
-                        final GeneralBounds tempEnvelope =
-                                CRS.transform(tr, toEnvelope(gridRange));
+                        final GeneralBounds tempEnvelope = CRS.transform(tr, toEnvelope(gridRange));
                         tempEnvelope.setCoordinateReferenceSystem(
                                 envelope.getCoordinateReferenceSystem());
                         if (LOGGER.isLoggable(Level.FINE)

@@ -38,9 +38,9 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.Position2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -493,9 +493,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 gridRange instanceof GridEnvelope2D
                         ? (GridEnvelope2D) gridRange
                         : new GridEnvelope2D(gridRange),
-                userRange instanceof Bounds
-                        ? (Bounds) userRange
-                        : new Envelope2D(null, userRange));
+                userRange instanceof Bounds ? (Bounds) userRange : new Envelope2D(null, userRange));
     }
 
     /**
@@ -641,9 +639,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * two dimensions, then a new one is created using only the coordinates at ({@link
      * #axisDimensionX}, {@link #axisDimensionY}) index.
      *
-     * <p>The {@link Bounds#getCoordinateReferenceSystem coordinate reference system} of the
-     * source envelope is ignored. The coordinate reference system of the target envelope will be
-     * {@link #getCoordinateReferenceSystem2D} or {@code null}.
+     * <p>The {@link Bounds#getCoordinateReferenceSystem coordinate reference system} of the source
+     * envelope is ignored. The coordinate reference system of the target envelope will be {@link
+     * #getCoordinateReferenceSystem2D} or {@code null}.
      *
      * @param envelope The envelope to reduce, or {@code null}. This envelope will not be modified.
      * @return An envelope with exactly 2 dimensions, or {@code null} if {@code envelope} was null.
@@ -1035,8 +1033,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
         if (getGridRange2D().contains(point)) {
             Point2D trPoint = getGridToCRS2D().transform(point, null);
-            return new Position2D(
-                    getCoordinateReferenceSystem2D(), trPoint.getX(), trPoint.getY());
+            return new Position2D(getCoordinateReferenceSystem2D(), trPoint.getX(), trPoint.getY());
 
         } else {
             throw new IllegalArgumentException(

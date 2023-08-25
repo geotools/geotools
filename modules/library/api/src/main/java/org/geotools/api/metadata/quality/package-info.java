@@ -9,10 +9,10 @@
  */
 
 /**
- * {@linkplain org.geotools.api.metadata.quality.DataQuality Data quality} and {@linkplain
- * org.geotools.api.metadata.quality.PositionalAccuracy positional accuracy}. The following is
- * adapted from <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">OpenGIS&reg;
- * Spatial Referencing by Coordinates (Topic 2)</A> specification.
+ * {@linkplain org.geotools.api.metadata.quality.PositionalAccuracy positional accuracy}. The
+ * following is adapted from <A
+ * HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">OpenGIS&reg; Spatial Referencing
+ * by Coordinates (Topic 2)</A> specification.
  *
  * <P ALIGN="justify">The parameters that define a coordinate reference system are chosen rather
  * than measured to satisfy the degrees-of-freedom problem in the changeover from observation to

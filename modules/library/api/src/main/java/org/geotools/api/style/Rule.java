@@ -9,7 +9,6 @@
  */
 package org.geotools.api.style;
 
-
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.Filter;

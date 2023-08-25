@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml3.GML;
@@ -39,7 +39,7 @@ public class DirectPositionTypeBindingTest extends GML3TestSupport {
         GML3MockData.element(GML.pos, document, document);
         document.getDocumentElement().appendChild(document.createTextNode("1.0"));
 
-        DirectPosition pos = (DirectPosition) parse();
+        Position pos = (Position) parse();
 
         assertNotNull(pos);
         assertTrue(pos instanceof DirectPosition1D);
@@ -52,7 +52,7 @@ public class DirectPositionTypeBindingTest extends GML3TestSupport {
         GML3MockData.element(GML.pos, document, document);
         document.getDocumentElement().appendChild(document.createTextNode("1.0 2.0"));
 
-        DirectPosition pos = (DirectPosition) parse();
+        Position pos = (Position) parse();
 
         assertNotNull(pos);
         assertTrue(pos instanceof DirectPosition2D);

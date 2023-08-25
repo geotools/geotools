@@ -9,19 +9,19 @@
  */
 package org.geotools.api.coverage;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 
 /**
  * The base class for exceptions thrown when a quantity can't be evaluated. This exception is
  * usually invoked by a <code>
- * Coverage.{@linkplain Coverage#evaluate(DirectPosition, double[]) evaluate}(&hellip;)</code>
- * method, for example when a point is outside the coverage.
+ * Coverage.{@linkplain Coverage#evaluate(Position, double[]) evaluate}(&hellip;)</code> method, for
+ * example when a point is outside the coverage.
  *
  * @author Martin Desruisseaux (IRD)
  * @author Alexander Petkov
  * @since GeoAPI 1.0
- * @see Coverage#evaluate(DirectPosition, byte[])
- * @see Coverage#evaluate(DirectPosition, double[])
+ * @see Coverage#evaluate(Position, byte[])
+ * @see Coverage#evaluate(Position, double[])
  */
 public class CannotEvaluateException extends RuntimeException {
     /** Serial number for interoperability with different versions. */

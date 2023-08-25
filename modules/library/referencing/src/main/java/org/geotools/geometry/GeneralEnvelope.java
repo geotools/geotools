@@ -21,10 +21,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -47,8 +47,8 @@ import org.geotools.util.Utilities;
 
 /**
  * A minimum bounding box or rectangle. Regardless of dimension, an {@code Envelope} can be
- * represented without ambiguity as two {@linkplain DirectPosition direct positions} (coordinate
- * points). To encode an {@code Envelope}, it is sufficient to encode these two points.
+ * represented without ambiguity as two {@linkplain Position direct positions} (coordinate points).
+ * To encode an {@code Envelope}, it is sufficient to encode these two points.
  *
  * <p>This particular implementation of {@code Envelope} is said "General" because it uses
  * coordinates of an arbitrary dimension.
@@ -497,7 +497,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The lower corner.
      */
     @Override
-    public DirectPosition getLowerCorner() {
+    public Position getLowerCorner() {
         final int dim = ordinates.length / 2;
         final GeneralDirectPosition position = new GeneralDirectPosition(dim);
         System.arraycopy(ordinates, 0, position.ordinates, 0, dim);
@@ -512,7 +512,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The upper corner.
      */
     @Override
-    public DirectPosition getUpperCorner() {
+    public Position getUpperCorner() {
         final int dim = ordinates.length / 2;
         final GeneralDirectPosition position = new GeneralDirectPosition(dim);
         System.arraycopy(ordinates, dim, position.ordinates, 0, dim);
@@ -527,7 +527,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @return The median coordinates.
      * @since 2.5
      */
-    public DirectPosition getMedian() {
+    public Position getMedian() {
         final GeneralDirectPosition position = new GeneralDirectPosition(ordinates.length / 2);
         for (int i = position.ordinates.length; --i >= 0; ) {
             position.ordinates[i] = getMedian(i);
@@ -833,7 +833,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @throws MismatchedDimensionException if the specified point doesn't have the expected
      *     dimension.
      */
-    public void add(final DirectPosition position) throws MismatchedDimensionException {
+    public void add(final Position position) throws MismatchedDimensionException {
         ensureNonNull("position", position);
         final int dim = ordinates.length / 2;
         AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), dim);
@@ -884,7 +884,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      * @throws MismatchedDimensionException if the specified point doesn't have the expected
      *     dimension.
      */
-    public boolean contains(final DirectPosition position) throws MismatchedDimensionException {
+    public boolean contains(final Position position) throws MismatchedDimensionException {
         ensureNonNull("position", position);
         final int dim = ordinates.length / 2;
         AbstractDirectPosition.ensureDimensionMatch("point", position.getDimension(), dim);

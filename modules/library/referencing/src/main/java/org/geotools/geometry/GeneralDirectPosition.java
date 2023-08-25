@@ -19,8 +19,8 @@ package org.geotools.geometry;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -138,7 +138,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @param point The position to copy.
      * @since 2.2
      */
-    public GeneralDirectPosition(final DirectPosition point) {
+    public GeneralDirectPosition(final Position point) {
         ordinates = point.getCoordinate(); // Should already be cloned.
         crs = point.getCoordinateReferenceSystem();
     }
@@ -224,8 +224,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      * @since 2.2
      */
-    public final void setLocation(final DirectPosition position)
-            throws MismatchedDimensionException {
+    public final void setLocation(final Position position) throws MismatchedDimensionException {
         ensureDimensionMatch("position", position.getDimension(), ordinates.length);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         for (int i = 0; i < ordinates.length; i++) {
@@ -235,7 +234,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
 
     /**
      * Set this coordinate to the specified direct position. This method is identical to {@link
-     * #setLocation(DirectPosition)}, but is slightly faster in the special case of an {@code
+     * #setLocation(Position)}, but is slightly faster in the special case of an {@code
      * GeneralDirectPosition} implementation.
      *
      * @param position The new position for this point.

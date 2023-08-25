@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -34,7 +34,7 @@ import org.geotools.referencing.CRS;
  * Builds a RubberSheet transformation from a set of control points, defined as a List of
  * {@linkplain org.geotools.referencing.operation.builder.MappedPosition MappedPosition} objects,
  * and a quadrilateral delimiting the outer area of interest, defined as a List of four {@linkplain
- * org.geotools.api.geometry.DirectPosition DirectPosition} objects.
+ * Position DirectPosition} objects.
  *
  * <p>An explanation of the RubberSheet transformation algorithm can be seen <a href
  * ="http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.
@@ -60,7 +60,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
      *     org.geotools.referencing.operation.builder.MappedPosition MappedPosition}
      * @param vertices A List with four points defining the quadrilateral in the region of interest.
      */
-    public RubberSheetBuilder(List<MappedPosition> vectors, List<DirectPosition> vertices)
+    public RubberSheetBuilder(List<MappedPosition> vectors, List<Position> vertices)
             throws IllegalArgumentException, MismatchedDimensionException,
                     MismatchedReferenceSystemException, TriangulationException {
 
@@ -73,7 +73,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         }
 
         // Get the DirectPositions (In Java 1.4 we fail hard on this cast.)
-        DirectPosition[] ddpp = new DirectPosition[4];
+        Position[] ddpp = new Position[4];
         for (int i = 0; i < vertices.size(); i++) {
             ddpp[i] = vertices.get(i);
         }
@@ -97,9 +97,9 @@ public class RubberSheetBuilder extends MathTransformBuilder {
         // Check the vectors are inside the vertices.
         //  This is a quick check by envelope, can be more rigorous when we move
         //  to n dimensional operations.
-        DirectPosition[] dpa = this.getSourcePoints();
+        Position[] dpa = this.getSourcePoints();
         GeneralEnvelope srcextnt = new GeneralEnvelope(2);
-        for (DirectPosition directPosition : dpa) {
+        for (Position directPosition : dpa) {
             srcextnt.add(directPosition);
         }
         GeneralEnvelope vtxextnt = new GeneralEnvelope(2);

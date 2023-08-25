@@ -44,8 +44,8 @@ import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.metadata.extent.GeographicExtent;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -168,15 +168,13 @@ public class NetCDFReaderTest extends Assert {
             assertNotNull(grid);
             float[] value =
                     grid.evaluate(
-                            (DirectPosition)
-                                    new DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45),
+                            (Position) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45),
                             new float[1]);
             assertEquals(47.63341f, value[0], 0.00001);
 
             value =
                     grid.evaluate(
-                            (DirectPosition)
-                                    new DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45.125),
+                            (Position) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5, 45.125),
                             new float[1]);
             assertEquals(52.7991f, value[0], 0.000001);
 
@@ -210,8 +208,7 @@ public class NetCDFReaderTest extends Assert {
 
         float[] result =
                 coverage.evaluate(
-                        (DirectPosition)
-                                new DirectPosition2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
+                        (Position) new DirectPosition2D(DefaultGeographicCRS.WGS84, 5.0, 45.0),
                         new float[1]);
 
         assertEquals(1.615991, result[0], 1e-6f);

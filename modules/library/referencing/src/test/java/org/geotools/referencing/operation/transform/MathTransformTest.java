@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.Random;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -76,7 +76,7 @@ public final class MathTransformTest {
         factory = new DefaultMathTransformFactory();
     }
 
-    /** Tests a transformation on a {@link DirectPosition} object. */
+    /** Tests a transformation on a {@link Position} object. */
     @Test
     public void testDirectPositionTransform() throws FactoryException, TransformException {
         CoordinateReferenceSystem crs =
@@ -85,7 +85,7 @@ public final class MathTransformTest {
                 ReferencingFactoryFinder.getCoordinateOperationFactory(null)
                         .createOperation(DefaultGeographicCRS.WGS84, crs)
                         .getMathTransform();
-        DirectPosition position = new GeneralDirectPosition(-123, 55);
+        Position position = new GeneralDirectPosition(-123, 55);
         position = t.transform(position, position);
         position = t.inverse().transform(position, position);
         assertEquals(-123, position.getOrdinate(0), 1E-6);

@@ -18,8 +18,8 @@ package org.geotools.geometry;
 
 import java.io.Serializable;
 import java.util.Objects;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 
@@ -68,7 +68,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      *
      * @param point The position to copy.
      */
-    public DirectPosition1D(final DirectPosition point) {
+    public DirectPosition1D(final Position point) {
         setLocation(point);
     }
 
@@ -158,7 +158,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public void setLocation(final DirectPosition position) throws MismatchedDimensionException {
+    public void setLocation(final Position position) throws MismatchedDimensionException {
         AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 1);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         ordinate = position.getOrdinate(0);

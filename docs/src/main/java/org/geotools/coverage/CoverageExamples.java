@@ -14,8 +14,8 @@ package org.geotools.coverage;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -82,7 +82,7 @@ public class CoverageExamples {
         GridCoverage2D coverage = reader.read(null);
 
         // direct access
-        DirectPosition position = new DirectPosition2D(crs, x, y);
+        Position position = new DirectPosition2D(crs, x, y);
 
         double[] sample = (double[]) coverage.evaluate(position); // assume double
 

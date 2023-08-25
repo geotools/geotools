@@ -27,7 +27,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.List;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -323,7 +323,7 @@ public class JTSTest extends JTSTestBase {
     @Test
     public void toDirectPosition() {
         Coordinate c = new Coordinate(40, 40);
-        DirectPosition wrapper = JTS.toDirectPosition(c, DefaultGeographicCRS.WGS84);
+        Position wrapper = JTS.toDirectPosition(c, DefaultGeographicCRS.WGS84);
 
         GeneralDirectPosition expected = new GeneralDirectPosition(DefaultGeographicCRS.WGS84);
         expected.setOrdinate(0, 40);

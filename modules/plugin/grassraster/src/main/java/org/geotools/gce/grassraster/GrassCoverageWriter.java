@@ -23,8 +23,8 @@ import java.io.IOException;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.util.ProgressListener;
@@ -114,9 +114,9 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
                 }
             }
             if (requestedEnvelope != null && dim != null) {
-                DirectPosition lowerCorner = requestedEnvelope.getLowerCorner();
+                Position lowerCorner = requestedEnvelope.getLowerCorner();
                 double[] westSouth = lowerCorner.getCoordinate();
-                DirectPosition upperCorner = requestedEnvelope.getUpperCorner();
+                Position upperCorner = requestedEnvelope.getUpperCorner();
                 double[] eastNorth = upperCorner.getCoordinate();
                 writeRegion =
                         new JGrassRegion(

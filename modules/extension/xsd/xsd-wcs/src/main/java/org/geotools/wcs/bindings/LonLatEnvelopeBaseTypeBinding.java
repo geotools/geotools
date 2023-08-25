@@ -21,7 +21,7 @@ package org.geotools.wcs.bindings;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CompoundCRS;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
@@ -178,7 +178,7 @@ public class LonLatEnvelopeBaseTypeBinding extends AbstractComplexBinding {
             }
 
             if (spatialCRS != null) {
-                List<DirectPosition> envelopePositions = new LinkedList<>();
+                List<Position> envelopePositions = new LinkedList<>();
 
                 GeneralDirectPosition lowerCorner =
                         new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());

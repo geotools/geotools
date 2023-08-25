@@ -71,7 +71,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.api.filter.sort.SortOrder;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -304,7 +304,7 @@ public class NetCDFMosaicReaderTest {
             time.setValue(Arrays.asList(parseTimeStamp(t2)));
             GridCoverage2D coverage2 = reader.read(params);
 
-            DirectPosition center = reader.getOriginalEnvelope().getMedian();
+            Position center = reader.getOriginalEnvelope().getMedian();
             float[] v1 = (float[]) coverage1.evaluate(center);
             float[] v2 = (float[]) coverage2.evaluate(center);
             assertNotEquals(v1[0], v2[0], 0f);

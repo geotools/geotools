@@ -12,7 +12,7 @@
 package org.geotools.api;
 
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.geometry.jts.JTS;
@@ -45,8 +45,8 @@ public class APIExamples {
         CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
 
         // Direct access to internal upper and lower positions
-        DirectPosition lower = envelope.getLowerCorner();
-        DirectPosition upper = envelope.getUpperCorner();
+        Position lower = envelope.getLowerCorner();
+        Position upper = envelope.getUpperCorner();
 
         // expand to include 15, 30
         upper.setOrdinate(0, Math.max(upper.getOrdinate(0), 15));
@@ -77,8 +77,8 @@ public class APIExamples {
         CoordinateReferenceSystem crs = bbox.getCoordinateReferenceSystem();
 
         // Direct access to internal upper and lower positions
-        DirectPosition lower = bbox.getLowerCorner();
-        DirectPosition upper = bbox.getUpperCorner();
+        Position lower = bbox.getLowerCorner();
+        Position upper = bbox.getUpperCorner();
 
         // expand to include 15, 30
         bbox.include(15, 30);
@@ -156,8 +156,8 @@ public class APIExamples {
         int dimension = envelope.getDimension();
 
         // Direct access to internal upper and lower positions
-        DirectPosition lower = envelope.getLowerCorner();
-        DirectPosition upper = envelope.getUpperCorner();
+        Position lower = envelope.getLowerCorner();
+        Position upper = envelope.getUpperCorner();
 
         // expand to include 15, 30
         envelope.include(15, 30);
@@ -198,8 +198,8 @@ public class APIExamples {
         int dimension = envelope.getDimension();
 
         // Direct access to internal upper and lower positions
-        DirectPosition lower = envelope.getLowerCorner();
-        DirectPosition upper = envelope.getUpperCorner();
+        Position lower = envelope.getLowerCorner();
+        Position upper = envelope.getUpperCorner();
 
         // expand to include 15, 30, 40
         envelope.include(15, 30, 40);

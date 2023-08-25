@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.geometry.DirectPosition2D;
 
 /**
@@ -47,7 +47,7 @@ class Circle {
      * @param center of the circle.
      * @param radius of the circle.
      */
-    protected Circle(DirectPosition center, double radius) {
+    protected Circle(Position center, double radius) {
         this.center = new DirectPosition2D(center);
         this.radius = radius;
     }
@@ -57,7 +57,7 @@ class Circle {
      *
      * @param center coordinates
      */
-    protected void setCenter(DirectPosition center) {
+    protected void setCenter(Position center) {
         this.center = new DirectPosition2D(center);
     }
 
@@ -75,7 +75,7 @@ class Circle {
      *
      * @return center coordinates
      */
-    protected DirectPosition getCenter() {
+    protected Position getCenter() {
         return center;
     }
 
@@ -115,7 +115,7 @@ class Circle {
      * @param p - the point to be tested
      * @return True if the circle contais p, False if not.
      */
-    protected boolean contains(DirectPosition p) {
+    protected boolean contains(Position p) {
         if (center.distance(new DirectPosition2D(p)) < (this.radius - tolerance)) {
             return true;
         } else {

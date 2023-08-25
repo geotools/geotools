@@ -17,8 +17,8 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
@@ -293,7 +293,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
 
     /** Gets the derivative of this transform at a point. */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         final int nSkipped = firstAffectedOrdinate + numTrailingOrdinates;
         final int transDim = subTransform.getSourceDimensions();
         final int pointDim = point.getDimension();

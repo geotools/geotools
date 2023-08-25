@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
@@ -89,8 +89,8 @@ public final class BursaWolfTransformBuilderTest {
         double R = 6370000;
         Random random = new Random(143477662);
 
-        DirectPosition ptSrc;
-        DirectPosition ptDst;
+        Position ptSrc;
+        Position ptDst;
         List<MappedPosition> vectors = new ArrayList<>();
 
         BursaWolfParameters bwp = new BursaWolfParameters(null);

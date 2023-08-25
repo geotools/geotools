@@ -16,8 +16,8 @@
  */
 package org.geotools.renderer.crs;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
@@ -48,7 +48,7 @@ class GeographicOffsetWrapper implements MathTransform {
     }
 
     @Override
-    public DirectPosition transform(DirectPosition ptSrc, DirectPosition ptDst)
+    public Position transform(Position ptSrc, Position ptDst)
             throws MismatchedDimensionException, TransformException {
         return delegate.transform(ptSrc, ptDst);
     }
@@ -200,7 +200,7 @@ class GeographicOffsetWrapper implements MathTransform {
     }
 
     @Override
-    public Matrix derivative(DirectPosition point)
+    public Matrix derivative(Position point)
             throws MismatchedDimensionException, TransformException {
         return delegate.derivative(point);
     }

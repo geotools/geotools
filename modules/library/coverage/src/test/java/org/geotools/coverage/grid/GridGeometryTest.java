@@ -28,7 +28,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -165,7 +165,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         GridEnvelope2D gridBounds = gg.getGridRange2D();
         GridCoordinates2D gridExp = new GridCoordinates2D();
 
-        DirectPosition worldPoint = worldBounds.getLowerCorner();
+        Position worldPoint = worldBounds.getLowerCorner();
         GridCoordinates2D gridCalc = gg.worldToGrid(worldPoint);
         gridExp.setLocation(0, gridBounds.height - 1);
         assertEquals(gridExp, gridCalc);

@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
@@ -42,7 +42,7 @@ import org.geotools.util.Utilities;
  * this implementation; in Java2D too, the visual axis orientation depend on the {@linkplain
  * java.awt.Graphics2D#getTransform affine transform in the graphics context}.
  *
- * <p>The rational for avoiding axis orientation restriction is that other {@link DirectPosition}
+ * <p>The rational for avoiding axis orientation restriction is that other {@link Position}
  * implementation do not have such restriction, and it would be hard to generalize (what to do with
  * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH_EAST North-East} direction?).
  *
@@ -54,9 +54,9 @@ import org.geotools.util.Utilities;
  *
  * <strong>Do not mix instances of this class with ordinary {@link Point2D} instances in a {@link
  * java.util.HashSet} or as {@link java.util.HashMap} keys.</strong> It is not possible to meet both
- * {@link Point2D#hashCode} and {@link DirectPosition#hashCode} contract, and this class choose to
+ * {@link Point2D#hashCode} and {@link Position#hashCode} contract, and this class choose to
  * implements the later. Concequently, <strong>{@link #hashCode} is inconsistent with {@link
- * Point2D#equals}</strong> (but is consistent with {@link DirectPosition#equals}).
+ * Point2D#equals}</strong> (but is consistent with {@link Position#equals}).
  *
  * <p>In other words, it is safe to add instances of {@code DirectPosition2D} in a {@code
  * HashSet<DirectPosition>}, but it is unsafe to add them in a {@code HashSet<Point2D>}. Collections
@@ -72,8 +72,7 @@ import org.geotools.util.Utilities;
  * @see GeneralDirectPosition
  * @see java.awt.geom.Point2D
  */
-public class DirectPosition2D extends Point2D.Double
-        implements DirectPosition, Serializable, Cloneable {
+public class DirectPosition2D extends Point2D.Double implements Position, Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 835130287438466996L;
 
@@ -134,8 +133,8 @@ public class DirectPosition2D extends Point2D.Double
      */
     public DirectPosition2D(final Point2D point) {
         super(point.getX(), point.getY());
-        if (point instanceof DirectPosition) {
-            setCoordinateReferenceSystem(((DirectPosition) point).getCoordinateReferenceSystem());
+        if (point instanceof Position) {
+            setCoordinateReferenceSystem(((Position) point).getCoordinateReferenceSystem());
         }
     }
 
@@ -144,18 +143,17 @@ public class DirectPosition2D extends Point2D.Double
      *
      * @param point The point to copy.
      */
-    public DirectPosition2D(final DirectPosition point) {
+    public DirectPosition2D(final Position point) {
         setLocation(point);
     }
 
     /**
-     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
-     * position}.
+     * Returns always {@code this}, the direct position for this {@linkplain Position position}.
      *
      * @since 2.5
      */
     @Override
-    public DirectPosition getDirectPosition() {
+    public Position getDirectPosition() {
         return this;
     }
 
@@ -253,7 +251,7 @@ public class DirectPosition2D extends Point2D.Double
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public void setLocation(final DirectPosition position) throws MismatchedDimensionException {
+    public void setLocation(final Position position) throws MismatchedDimensionException {
         AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 2);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         x = position.getOrdinate(0);
@@ -283,7 +281,7 @@ public class DirectPosition2D extends Point2D.Double
 
     /**
      * Returns a hash value for this coordinate. This method implements the {@link
-     * DirectPosition#hashCode} contract, not the {@link Point2D#hashCode} contract.
+     * Position#hashCode} contract, not the {@link Point2D#hashCode} contract.
      *
      * @return A hash code value for this position.
      */
@@ -294,9 +292,9 @@ public class DirectPosition2D extends Point2D.Double
 
     /**
      * Compares this point with the specified object for equality. If the given object implements
-     * the {@link DirectPosition} interface, then the comparaison is performed as specified in its
-     * {@link DirectPosition#equals} contract. Otherwise the comparaison is performed as specified
-     * in {@link Point2D#equals}.
+     * the {@link Position} interface, then the comparaison is performed as specified in its {@link
+     * Position#equals} contract. Otherwise the comparaison is performed as specified in {@link
+     * Point2D#equals}.
      *
      * @param object The object to compare with this position.
      * @return {@code true} if the given object is equals to this position.
@@ -307,8 +305,8 @@ public class DirectPosition2D extends Point2D.Double
          * If the other object implements the DirectPosition interface, performs
          * the comparaison as specified in DirectPosition.equals(Object) contract.
          */
-        if (object instanceof DirectPosition) {
-            final DirectPosition other = (DirectPosition) object;
+        if (object instanceof Position) {
+            final Position other = (Position) object;
             if (other.getDimension() == 2
                     && Utilities.equals(other.getOrdinate(0), x)
                     && Utilities.equals(other.getOrdinate(1), y)

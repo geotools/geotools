@@ -19,7 +19,7 @@ package org.geotools.referencing.factory.epsg.hsql;
 import java.util.Set;
 import javax.sql.DataSource;
 import org.geotools.TestData;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.ReferenceIdentifier;
@@ -69,7 +69,7 @@ public class HsqlDialectEpsgFactoryTest {
 
         // reproject
         MathTransform transform = CRS.findMathTransform(crs1, crs2, true);
-        DirectPosition pos = new DirectPosition2D(48.417, 123.35);
+        Position pos = new DirectPosition2D(48.417, 123.35);
         transform.transform(pos, null);
     }
 

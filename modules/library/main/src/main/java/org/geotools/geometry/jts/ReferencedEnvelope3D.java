@@ -18,16 +18,16 @@ package org.geotools.geometry.jts;
 
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.Position3D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
@@ -308,7 +308,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     }
 
     @Override
-    public void expandToInclude(DirectPosition pt) {
+    public void expandToInclude(Position pt) {
         double x = pt.getOrdinate(0);
         double y = pt.getOrdinate(1);
         double z = pt.getDimension() >= 3 ? pt.getOrdinate(2) : Double.NaN;
@@ -525,7 +525,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                 }
 
                 @Override
-                public boolean contains(DirectPosition pos) {
+                public boolean contains(Position pos) {
                     return true;
                 }
 
@@ -838,8 +838,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * points within the {@code Envelope}.
      */
     @Override
-    public DirectPosition getLowerCorner() {
-        return new DirectPosition3D(crs, getMinX(), getMinY(), getMinZ());
+    public Position getLowerCorner() {
+        return new Position3D(crs, getMinX(), getMinY(), getMinZ());
     }
 
     /**
@@ -847,8 +847,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * points within the {@code Envelope}.
      */
     @Override
-    public DirectPosition getUpperCorner() {
-        return new DirectPosition3D(crs, getMaxX(), getMaxY(), getMaxZ());
+    public Position getUpperCorner() {
+        return new Position3D(crs, getMaxX(), getMaxY(), getMaxZ());
     }
 
     /** Returns {@code true} if lengths along all dimension are zero. */
@@ -859,7 +859,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 
     /** Returns {@code true} if the provided location is contained by this bounding box. */
     @Override
-    public boolean contains(DirectPosition pos) {
+    public boolean contains(Position pos) {
         ensureCompatibleReferenceSystem(pos);
         return contains(pos.getOrdinate(0), pos.getOrdinate(1), pos.getOrdinate(2));
     }

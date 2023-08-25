@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -215,7 +215,7 @@ public class OperationFactoryTest {
                                 + "  AXIS[\"x\", EAST], "
                                 + "  AXIS[\"y\", NORTH]]");
 
-        DirectPosition position =
+        Position position =
                 new DirectPosition2D(requestedCRS, -886885.0962724264, 4468200.416916506);
         final TransformedDirectPosition arbitraryToInternal =
                 new TransformedDirectPosition(
@@ -224,8 +224,7 @@ public class OperationFactoryTest {
                         new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
         arbitraryToInternal.transform(position);
 
-        DirectPosition expected =
-                new DirectPosition2D(targetCRS, 214741.10238960697, 26957.60506898933);
+        Position expected = new DirectPosition2D(targetCRS, 214741.10238960697, 26957.60506898933);
 
         // geoserver vecmath: TransformedDirectPosition[214741.10238960697, 26957.60506898933]
         // geoserver ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
@@ -465,10 +464,9 @@ public class OperationFactoryTest {
         assertTrue(crsTransform.toString().contains("PARAMETER[\"dx\", -175.0]"));
         assertTrue(crsTransform.toString().contains("PARAMETER[\"dy\", -23.0]"));
         assertTrue(crsTransform.toString().contains("PARAMETER[\"dz\", -303.0]"));
-        DirectPosition input = new DirectPosition2D(sourceCRS, 790615.026, 9316007.421);
-        DirectPosition expected =
-                new DirectPosition2D(targetCRS, 790691.8117871293, 9315700.848637346);
-        DirectPosition output = new DirectPosition2D();
+        Position input = new DirectPosition2D(sourceCRS, 790615.026, 9316007.421);
+        Position expected = new DirectPosition2D(targetCRS, 790691.8117871293, 9315700.848637346);
+        Position output = new DirectPosition2D();
         crsTransform.transform(input, output);
         assertPointsEqual(expected, output);
 
@@ -542,7 +540,7 @@ public class OperationFactoryTest {
      * @param expected
      * @param output
      */
-    private void assertPointsEqual(DirectPosition expected, DirectPosition output) {
+    private void assertPointsEqual(Position expected, Position output) {
         Assert.assertEquals(expected.getOrdinate(0), output.getOrdinate(0), 1e-6);
         Assert.assertEquals(expected.getOrdinate(1), output.getOrdinate(1), 1e-6);
     }

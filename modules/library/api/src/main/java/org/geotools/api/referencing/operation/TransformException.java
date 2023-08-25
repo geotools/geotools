@@ -9,15 +9,15 @@
  */
 package org.geotools.api.referencing.operation;
 
-import org.geotools.api.geometry.DirectPosition; // For javadoc
+import org.geotools.api.geometry.Position; // For javadoc
 
 /**
  * Common superclass for a number of transformation-related exceptions. {@code TransformException}
  * are thrown by {@link MathTransform} when a coordinate transformation can't be {@linkplain
  * MathTransform#inverse inverted} ({@link NoninvertibleTransformException}), when the {@linkplain
  * MathTransform#derivative derivative} can't be computed or when a coordinate can't be {@linkplain
- * MathTransform#transform(DirectPosition,DirectPosition) transformed}. It is also thrown when
- * {@link CoordinateOperationFactory} fails to find a path between two {@linkplain
+ * MathTransform#transform(Position, Position) transformed}. It is also thrown when {@link
+ * CoordinateOperationFactory} fails to find a path between two {@linkplain
  * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference systems}.
  *
  * @author Martin Desruisseaux (IRD)

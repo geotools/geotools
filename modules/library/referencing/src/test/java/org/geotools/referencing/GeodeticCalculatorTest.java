@@ -32,7 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import javax.measure.MetricPrefix;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.operation.TransformException;
@@ -160,7 +160,7 @@ public final class GeodeticCalculatorTest {
         assertEquals(x, point.getY(), 1E-5);
 
         calculator.setDirection(10, 100);
-        DirectPosition position = calculator.getDestinationPosition();
+        Position position = calculator.getDestinationPosition();
         point = calculator.getDestinationGeographicPoint();
         assertEquals(point.getX(), position.getOrdinate(1), 1E-5);
         assertEquals(point.getY(), position.getOrdinate(0), 1E-5);

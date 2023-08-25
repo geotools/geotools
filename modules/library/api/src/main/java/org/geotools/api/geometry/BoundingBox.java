@@ -141,7 +141,7 @@ public interface BoundingBox extends Envelope {
      * @param location The direct position to test for inclusion.
      * @return {@code true} if the given position is inside this bounds.
      */
-    boolean contains(DirectPosition location);
+    boolean contains(Position location);
 
     /**
      * Returns {@code true} if the provided location is contained by this bounding box. Note that

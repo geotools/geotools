@@ -28,7 +28,7 @@ import java.net.URL;
 import java.util.Iterator;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -237,8 +237,8 @@ public final class ECWTest extends GDALTestCase {
         LOGGER.info(gc.toString());
         forceDataLoading(gc);
 
-        DirectPosition pointInGreenland = new DirectPosition2D(-43.3, 75.9);
-        DirectPosition pointInAfrica = new DirectPosition2D(20, 0);
+        Position pointInGreenland = new DirectPosition2D(-43.3, 75.9);
+        Position pointInAfrica = new DirectPosition2D(20, 0);
         byte[] pixel = new byte[4];
 
         // Assert point in Greenland is masked out

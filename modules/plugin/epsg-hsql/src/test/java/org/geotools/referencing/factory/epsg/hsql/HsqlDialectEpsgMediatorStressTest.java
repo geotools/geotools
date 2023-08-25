@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.geotools.TestData;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -346,7 +346,7 @@ public class HsqlDialectEpsgMediatorStressTest {
 
                     // reproject
                     MathTransform transform = CRS.findMathTransform(crs1, crs2, true);
-                    DirectPosition pos = new DirectPosition2D(48.417, 123.35);
+                    Position pos = new DirectPosition2D(48.417, 123.35);
                     try {
                         transform.transform(pos, null);
                     } catch (Exception e) {

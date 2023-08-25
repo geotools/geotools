@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import javax.media.jai.PropertySource;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.geometry.DirectPosition2D;
@@ -205,7 +205,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @since 2.5
      */
     protected String formatEvaluateError(final Point2D point, final boolean outside) {
-        return formatEvaluateError((DirectPosition) new DirectPosition2D(point), outside);
+        return formatEvaluateError((Position) new DirectPosition2D(point), outside);
     }
 
     /**
@@ -218,7 +218,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @return An error message.
      * @since 2.5
      */
-    protected String formatEvaluateError(final DirectPosition point, final boolean outside) {
+    protected String formatEvaluateError(final Position point, final boolean outside) {
         final Locale locale = getLocale();
         return Errors.getResources(locale)
                 .getString(
@@ -234,7 +234,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @return The coordinate point as a string, without '(' or ')' characters.
      */
     static String toString(final Point2D point, final Locale locale) {
-        return toString((DirectPosition) new DirectPosition2D(point), locale);
+        return toString((Position) new DirectPosition2D(point), locale);
     }
 
     /**
@@ -244,7 +244,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @param locale The locale for formatting numbers.
      * @return The coordinate point as a string, without '(' or ')' characters.
      */
-    static String toString(final DirectPosition point, final Locale locale) {
+    static String toString(final Position point, final Locale locale) {
         final StringBuffer buffer = new StringBuffer();
         final FieldPosition dummy = new FieldPosition(0);
         final NumberFormat format = NumberFormat.getNumberInstance(locale);

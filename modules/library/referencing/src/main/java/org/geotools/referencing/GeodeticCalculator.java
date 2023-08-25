@@ -31,7 +31,7 @@ import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import net.sf.geographiclib.GeodesicLine;
 import net.sf.geographiclib.GeodesicMask;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CompoundCRS;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
@@ -423,7 +423,7 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.3
      */
-    public void setStartingPosition(DirectPosition position) throws TransformException {
+    public void setStartingPosition(Position position) throws TransformException {
         if (userToGeodetic != null) {
             userToGeodetic.transform(position);
             position = userToGeodetic;
@@ -452,8 +452,8 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed to user coordinates.
      * @since 2.3
      */
-    public DirectPosition getStartingPosition() throws TransformException {
-        DirectPosition position = userToGeodetic;
+    public Position getStartingPosition() throws TransformException {
+        Position position = userToGeodetic;
         if (position == null) {
             position = new DirectPosition2D();
         }
@@ -513,7 +513,7 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.2
      */
-    public void setDestinationPosition(DirectPosition position) throws TransformException {
+    public void setDestinationPosition(Position position) throws TransformException {
         if (userToGeodetic != null) {
             userToGeodetic.transform(position);
             position = userToGeodetic;
@@ -550,11 +550,11 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed to user coordinates.
      * @since 2.2
      */
-    public DirectPosition getDestinationPosition() throws TransformException {
+    public Position getDestinationPosition() throws TransformException {
         if (!destinationValid) {
             computeDestinationPoint();
         }
-        DirectPosition position = userToGeodetic;
+        Position position = userToGeodetic;
         if (position == null) {
             position = new DirectPosition2D();
         }

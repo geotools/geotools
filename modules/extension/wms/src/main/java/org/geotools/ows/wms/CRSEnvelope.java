@@ -16,8 +16,8 @@
  */
 package org.geotools.ows.wms;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.GeneralDirectPosition;
@@ -231,12 +231,12 @@ public class CRSEnvelope implements Envelope {
     }
 
     @Override
-    public DirectPosition getUpperCorner() {
+    public Position getUpperCorner() {
         return new GeneralDirectPosition(getMaxX(), getMaxY());
     }
 
     @Override
-    public DirectPosition getLowerCorner() {
+    public Position getLowerCorner() {
         return new GeneralDirectPosition(getMinX(), getMinY());
     }
 

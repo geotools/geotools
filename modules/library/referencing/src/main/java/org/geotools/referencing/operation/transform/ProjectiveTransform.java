@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.ejml.MatrixDimensionException;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -385,7 +385,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      */
     @Override
     public Matrix derivative(final Point2D point) {
-        return derivative((DirectPosition) null);
+        return derivative((Position) null);
     }
 
     /**
@@ -393,7 +393,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      * the same everywhere.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) {
+    public Matrix derivative(final Position point) {
         final GeneralMatrix matrix = getGeneralMatrix();
         matrix.setSize(numRow - 1, numCol - 1);
         return matrix;

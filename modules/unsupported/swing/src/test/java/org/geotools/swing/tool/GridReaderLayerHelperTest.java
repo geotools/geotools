@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.Random;
 import javax.media.jai.TiledImage;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -117,12 +117,12 @@ public class GridReaderLayerHelperTest {
         assertEquals(0, info.getNumFeatures());
     }
 
-    private int[] getValues(DirectPosition pos) throws Exception {
+    private int[] getValues(Position pos) throws Exception {
         if (worldToGridTransform == null) {
             worldToGridTransform = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();
         }
 
-        DirectPosition gridPos = worldToGridTransform.transform(pos, null);
+        Position gridPos = worldToGridTransform.transform(pos, null);
         int x = (int) gridPos.getOrdinate(0);
         int y = (int) gridPos.getOrdinate(1);
 

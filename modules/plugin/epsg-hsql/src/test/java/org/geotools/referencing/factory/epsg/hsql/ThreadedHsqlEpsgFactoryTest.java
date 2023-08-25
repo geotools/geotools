@@ -26,7 +26,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Set;
 import org.apache.commons.io.FileUtils;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.ReferenceIdentifier;
@@ -112,7 +112,7 @@ public class ThreadedHsqlEpsgFactoryTest {
 
         // reproject
         MathTransform transform = CRS.findMathTransform(crs1, crs2, true);
-        DirectPosition pos = new DirectPosition2D(48.417, 123.35);
+        Position pos = new DirectPosition2D(48.417, 123.35);
         transform.transform(pos, null);
     }
 

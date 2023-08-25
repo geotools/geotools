@@ -57,8 +57,8 @@ import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystem;
@@ -279,7 +279,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @since 2.3
      */
     @Override
-    public Set<Record> evaluate(final DirectPosition p, final Collection<String> list) {
+    public Set<Record> evaluate(final Position p, final Collection<String> list) {
         throw unsupported();
     }
 
@@ -303,7 +303,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     constraint if appropriate.
      */
     @Override
-    public boolean[] evaluate(final DirectPosition coord, boolean[] dest)
+    public boolean[] evaluate(final Position coord, boolean[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -340,7 +340,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     if appropriate.
      */
     @Override
-    public byte[] evaluate(final DirectPosition coord, byte[] dest)
+    public byte[] evaluate(final Position coord, byte[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -377,7 +377,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     if appropriate.
      */
     @Override
-    public int[] evaluate(final DirectPosition coord, int[] dest)
+    public int[] evaluate(final Position coord, int[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -414,7 +414,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     if appropriate.
      */
     @Override
-    public float[] evaluate(final DirectPosition coord, float[] dest)
+    public float[] evaluate(final Position coord, float[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -451,7 +451,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     constraint if appropriate.
      */
     @Override
-    public double[] evaluate(final DirectPosition coord, double[] dest)
+    public double[] evaluate(final Position coord, double[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -892,7 +892,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * automatically invoked at rendering time for populating an image tile, providing that the
          * rendered image is created using the "{@link ImageFunctionDescriptor ImageFunction}"
          * operator and the image type is {@code double}. The default implementation invokes {@link
-         * AbstractCoverage#evaluate(DirectPosition,double[])} recursively.
+         * AbstractCoverage#evaluate(Position,double[])} recursively.
          */
         @Override
         public void getElements(

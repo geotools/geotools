@@ -9,8 +9,8 @@
  */
 package org.geotools.api.referencing.operation;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 
 /**
  * Transforms multi-dimensional coordinate points. This interface transforms coordinate value for a
@@ -54,10 +54,10 @@ public interface MathTransform {
 
     /**
      * Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. If {@code
-     * ptDst} is {@code null}, a new {@link DirectPosition} object is allocated and then the result
-     * of the transformation is stored in this object. In either case, {@code ptDst}, which contains
-     * the transformed point, is returned for convenience. If {@code ptSrc} and {@code ptDst} are
-     * the same object, the input point is correctly overwritten with the transformed point.
+     * ptDst} is {@code null}, a new {@link Position} object is allocated and then the result of the
+     * transformation is stored in this object. In either case, {@code ptDst}, which contains the
+     * transformed point, is returned for convenience. If {@code ptSrc} and {@code ptDst} are the
+     * same object, the input point is correctly overwritten with the transformed point.
      *
      * @param ptSrc the specified coordinate point to be transformed.
      * @param ptDst the specified coordinate point that stores the result of transforming {@code
@@ -68,7 +68,7 @@ public interface MathTransform {
      *     expected dimension.
      * @throws TransformException if the point can't be transformed.
      */
-    DirectPosition transform(DirectPosition ptSrc, DirectPosition ptDst)
+    Position transform(Position ptSrc, Position ptDst)
             throws MismatchedDimensionException, TransformException;
 
     /**
@@ -205,8 +205,7 @@ public interface MathTransform {
      * @throws MismatchedDimensionException if {@code point} doesn't have the expected dimension.
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
-    Matrix derivative(final DirectPosition point)
-            throws MismatchedDimensionException, TransformException;
+    Matrix derivative(final Position point) throws MismatchedDimensionException, TransformException;
 
     /**
      * Creates the inverse transform of this object. The target of the inverse transform is the

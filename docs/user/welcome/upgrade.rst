@@ -95,7 +95,9 @@ boxes have been revised as part of their refactor to **org.geotools.api**.
 OpenGIS                                          GeoTools API
 ===============================================  ===============================================================
 org.opengis.geometry.coordinates.Position        org.geotools.api.geometry.Position
+org.opengis.geometry.coordinates.PointArray      (removed)
 org.opengis.geometry.DirectPosition              org.geotools.api.geometry.Position
+org.opengis.geometry.DirectPosition3D            org.geotools.api.geometry.Position3D
 org.opengis.geometry.Envelope                    org.geotools.api.geometry.Bounds
 org.opengis.geometry.GeneralEnvelope             org.geotools.api.geometry.Bounds
 org.opengis.geometry.AbstractEnvelope            org.geotools.api.geometry.Bounds

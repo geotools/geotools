@@ -18,7 +18,7 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -140,7 +140,7 @@ public class IdentityTransform extends AbstractMathTransform
      * is the same everywhere.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) {
+    public Matrix derivative(final Position point) {
         return MatrixFactory.create(dimension);
     }
 
@@ -151,7 +151,7 @@ public class IdentityTransform extends AbstractMathTransform
      * @since 2.2
      */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, final DirectPosition ptDst) {
+    public Position transform(final Position ptSrc, final Position ptDst) {
         if (ptSrc.getDimension() == dimension) {
             if (ptDst == null) {
                 return new GeneralDirectPosition(ptSrc);

@@ -16,8 +16,8 @@
  */
 package org.geotools.geometry.jts.coordinatesequence;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
@@ -82,7 +82,7 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
         return sequence;
     }
 
-    private class FlyWeightDirectPosition implements DirectPosition {
+    private class FlyWeightDirectPosition implements Position {
         PackedCoordinateSequence sequence;
         int offset = 0;
         private int dimension;
@@ -145,14 +145,14 @@ public class InPlaceCoordinateSequenceTransformer implements CoordinateSequenceT
             throw new UnsupportedOperationException();
         }
 
-        /** @see DirectPosition */
-        public DirectPosition getPosition() {
+        /** @see Position */
+        public Position getPosition() {
             return this;
         }
 
-        /** @see DirectPosition */
+        /** @see Position */
         @Override
-        public DirectPosition getDirectPosition() {
+        public Position getDirectPosition() {
             return this;
         }
     }

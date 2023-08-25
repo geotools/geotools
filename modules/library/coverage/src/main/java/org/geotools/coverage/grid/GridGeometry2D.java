@@ -27,9 +27,9 @@ import java.util.Objects;
 import org.geotools.api.coverage.CannotEvaluateException;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -925,7 +925,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws TransformException if the transformation failed.
      * @since 2.6
      */
-    public final GridCoordinates2D worldToGrid(final DirectPosition point)
+    public final GridCoordinates2D worldToGrid(final Position point)
             throws InvalidGridGeometryException, TransformException {
 
         final double TOL = 1.0E-6;
@@ -1031,8 +1031,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws IllegalArgumentException if the point lies outside the coverage
      * @since 2.6
      */
-    public final DirectPosition gridToWorld(final GridCoordinates2D point)
-            throws TransformException {
+    public final Position gridToWorld(final GridCoordinates2D point) throws TransformException {
 
         if (getGridRange2D().contains(point)) {
             Point2D trPoint = getGridToCRS2D().transform(point, null);
@@ -1089,7 +1088,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws CannotEvaluateException if a reprojection was required and failed.
      * @throws MismatchedDimensionException if the point doesn't have the expected dimension.
      */
-    Point2D toPoint2D(final DirectPosition point)
+    Point2D toPoint2D(final Position point)
             throws CannotEvaluateException, MismatchedDimensionException {
         /*
          * If the point contains a CRS, transforms the point on the fly

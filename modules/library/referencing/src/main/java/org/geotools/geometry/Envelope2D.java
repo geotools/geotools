@@ -18,10 +18,10 @@ package org.geotools.geometry;
 
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.operation.TransformException;
@@ -203,7 +203,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      *     for J2SE 1.5.
      */
     @Override
-    public DirectPosition getLowerCorner() {
+    public Position getLowerCorner() {
         return new DirectPosition2D(crs, getMinX(), getMinY());
     }
 
@@ -216,7 +216,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
      *     for J2SE 1.5.
      */
     @Override
-    public DirectPosition getUpperCorner() {
+    public Position getUpperCorner() {
         return new DirectPosition2D(crs, getMaxX(), getMaxY());
     }
 
@@ -487,7 +487,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     }
 
     @Override
-    public boolean contains(DirectPosition location) {
+    public boolean contains(Position location) {
         ensureCompatibleReferenceSystem(location);
         if (isEmpty()) {
             return false;
@@ -525,7 +525,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
         }
     }
 
-    private void ensureCompatibleReferenceSystem(DirectPosition location) {
+    private void ensureCompatibleReferenceSystem(Position location) {
         if (crs != null) {
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {

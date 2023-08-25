@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -126,7 +126,7 @@ public final class MathTransformBuilderTest {
     public void testRubberBuilder() throws FactoryException, TransformException {
         List<MappedPosition> pts = generateCoords(20, 8324);
         CoordinateReferenceSystem crs = DefaultEngineeringCRS.CARTESIAN_2D;
-        List<DirectPosition> dpl = new ArrayList<>();
+        List<Position> dpl = new ArrayList<>();
         dpl.add(new DirectPosition2D(crs, 1000, 0));
         dpl.add(new DirectPosition2D(crs, 0, 0));
         dpl.add(new DirectPosition2D(crs, 0, 1000));

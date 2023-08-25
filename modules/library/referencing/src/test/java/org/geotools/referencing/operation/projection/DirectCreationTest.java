@@ -21,7 +21,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -86,7 +86,7 @@ public final class DirectCreationTest {
      *     extra dimensions.
      */
     private static void assertPositionEquals(
-            final DirectPosition expected, final DirectPosition actual, final double[] tolerance) {
+            final Position expected, final Position actual, final double[] tolerance) {
         final int dimension = actual.getDimension();
         final int lastToleranceIndex = tolerance.length - 1;
         assertEquals(
@@ -106,8 +106,7 @@ public final class DirectCreationTest {
      * Helper method to test transform from a source to a target point. Coordinate points are (x,y)
      * or (long, lat)
      */
-    private static void doTransform(
-            DirectPosition source, DirectPosition target, MathTransform transform)
+    private static void doTransform(Position source, Position target, MathTransform transform)
             throws TransformException {
         doTransform(source, target, transform, TOL_M);
     }
@@ -117,12 +116,9 @@ public final class DirectCreationTest {
      * or (long, lat)
      */
     private static void doTransform(
-            DirectPosition source,
-            DirectPosition target,
-            MathTransform transform,
-            final double[] tolerance)
+            Position source, Position target, MathTransform transform, final double[] tolerance)
             throws TransformException {
-        DirectPosition calculated = transform.transform(source, null);
+        Position calculated = transform.transform(source, null);
         assertPositionEquals(target, calculated, tolerance);
 
         // The inverse

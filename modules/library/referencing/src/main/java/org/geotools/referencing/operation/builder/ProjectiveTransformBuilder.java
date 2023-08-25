@@ -17,9 +17,9 @@
 package org.geotools.referencing.operation.builder;
 
 import java.util.List;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.cs.CartesianCS;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -133,8 +133,8 @@ public class ProjectiveTransformBuilder extends MathTransformBuilder {
 
     /** Fills A matrix for m = (A<sup>T</sup>PA)<sup>-1</sup> A<sup>T</sup>Px' equation */
     protected void fillAMatrix() {
-        final DirectPosition[] sourcePoints = getSourcePoints();
-        final DirectPosition[] targetPoints = getTargetPoints();
+        final Position[] sourcePoints = getSourcePoints();
+        final Position[] targetPoints = getTargetPoints();
         A = new GeneralMatrix(2 * sourcePoints.length, 8);
 
         int numRow = 2 * sourcePoints.length;

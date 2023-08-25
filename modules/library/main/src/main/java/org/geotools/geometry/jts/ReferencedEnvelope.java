@@ -18,9 +18,9 @@ package org.geotools.geometry.jts;
 
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.CoordinateSystem;
@@ -76,7 +76,7 @@ public class ReferencedEnvelope extends Envelope
                 }
 
                 @Override
-                public boolean contains(DirectPosition pos) {
+                public boolean contains(Position pos) {
                     return true;
                 }
 
@@ -348,7 +348,7 @@ public class ReferencedEnvelope extends Envelope
      *
      * @throws MismatchedReferenceSystemException if the CRS are incompatible.
      */
-    protected void ensureCompatibleReferenceSystem(DirectPosition location) {
+    protected void ensureCompatibleReferenceSystem(Position location) {
         if (crs != null) {
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
@@ -439,7 +439,7 @@ public class ReferencedEnvelope extends Envelope
      * points within the {@code Envelope}.
      */
     @Override
-    public DirectPosition getLowerCorner() {
+    public Position getLowerCorner() {
         return new DirectPosition2D(crs, getMinX(), getMinY());
     }
 
@@ -448,7 +448,7 @@ public class ReferencedEnvelope extends Envelope
      * points within the {@code Envelope}.
      */
     @Override
-    public DirectPosition getUpperCorner() {
+    public Position getUpperCorner() {
         return new DirectPosition2D(crs, getMaxX(), getMaxY());
     }
 
@@ -468,7 +468,7 @@ public class ReferencedEnvelope extends Envelope
      * @since 2.4
      */
     @Override
-    public boolean contains(DirectPosition pos) {
+    public boolean contains(Position pos) {
         ensureCompatibleReferenceSystem(pos);
         return super.contains(pos.getOrdinate(0), pos.getOrdinate(1));
     }
@@ -521,7 +521,7 @@ public class ReferencedEnvelope extends Envelope
         expandToInclude(ReferencedEnvelope.reference(bbox));
     }
     /** Expand to include the provided DirectPosition */
-    public void expandToInclude(DirectPosition pt) {
+    public void expandToInclude(Position pt) {
         Coordinate coordinate = new Coordinate(pt.getOrdinate(0), pt.getOrdinate(1));
         expandToInclude(coordinate);
     }

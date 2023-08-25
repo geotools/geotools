@@ -20,7 +20,7 @@ import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
 import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -77,8 +77,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         InfoToolResult result = new InfoToolResult();
 
         if (isValid()) {
-            DirectPosition trPos =
-                    InfoToolHelperUtils.getTransformed(pos, getContentToLayerTransform());
+            Position trPos = InfoToolHelperUtils.getTransformed(pos, getContentToLayerTransform());
 
             if (cachedCoverage == null || !cachedCoverage.getEnvelope2D().contains(trPos)) {
                 if (!renewCachedCoverage(trPos)) {
@@ -105,7 +104,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         return result;
     }
 
-    private boolean renewCachedCoverage(DirectPosition centrePos) {
+    private boolean renewCachedCoverage(Position centrePos) {
         final Rectangle queryRect = createQueryGridEnvelope(centrePos);
         if (queryRect.isEmpty()) {
             return false;
@@ -133,7 +132,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
     }
 
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE") // I just can't figure it out...
-    private Rectangle createQueryGridEnvelope(DirectPosition pos) {
+    private Rectangle createQueryGridEnvelope(Position pos) {
         final GridCoverage2DReader reader = sourceRef.get();
         if (reader == null) {
             throw new NullPointerException("Source refererence returned a null reader");
@@ -142,7 +141,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             MathTransform worldToGridTransform =
                     reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER).inverse();
 
-            DirectPosition midPos = worldToGridTransform.transform(pos, null);
+            Position midPos = worldToGridTransform.transform(pos, null);
             int x = (int) midPos.getOrdinate(0);
             int y = (int) midPos.getOrdinate(1);
             int halfWidth = CACHED_RASTER_WIDTH / 2;

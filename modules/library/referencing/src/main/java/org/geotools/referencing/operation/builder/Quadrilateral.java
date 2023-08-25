@@ -19,7 +19,7 @@ package org.geotools.referencing.operation.builder;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 
 /**
  * A simple four-sided polygon.
@@ -30,16 +30,16 @@ import org.geotools.api.geometry.DirectPosition;
  */
 class Quadrilateral extends Polygon {
     /** The first vertex. */
-    public DirectPosition p0;
+    public Position p0;
 
     /** The second vertex. */
-    public DirectPosition p1;
+    public Position p1;
 
     /** The third vertex */
-    public DirectPosition p2;
+    public Position p2;
 
     /** the fourth vetrex */
-    public DirectPosition p3;
+    public Position p3;
 
     /**
      * Creates a Quadrilateral.
@@ -49,8 +49,7 @@ class Quadrilateral extends Polygon {
      * @param p2 another vertex
      * @param p3 another vertex
      */
-    public Quadrilateral(
-            DirectPosition p0, DirectPosition p1, DirectPosition p2, DirectPosition p3) {
+    public Quadrilateral(Position p0, Position p1, Position p2, Position p3) {
         super(p0, p1, p2, p3, p0);
         this.p0 = p0;
         this.p1 = p1;

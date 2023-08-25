@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -63,7 +63,7 @@ public class EarthGravitationalModelTest {
                 ReferencingFactoryFinder.getMathTransformFactory(null);
         final ParameterValueGroup p = mtFactory.getDefaultParameters("Earth gravitational model");
         final MathTransform mt = mtFactory.createParameterizedTransform(p);
-        DirectPosition pos = new GeneralDirectPosition(new double[] {45, 45, 1000});
+        Position pos = new GeneralDirectPosition(new double[] {45, 45, 1000});
         pos = mt.transform(pos, pos);
         Assert.assertEquals(45.000, pos.getOrdinate(0), 0.001);
         Assert.assertEquals(45.000, pos.getOrdinate(1), 0.001);

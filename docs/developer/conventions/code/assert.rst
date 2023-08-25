@@ -11,7 +11,7 @@ Pre-conditions (like argument checks in private methods) are typically easy targ
 
 * Example 1: After a map projection in the referencing module, an assertion performs the inverse map projection and checks the result with the original point (post-condition).
 
-* Example 2: In DirectPosition.equals(Object) implementations, if the result is true, then the assertion ensures that hashCode() are identical as required by the Object contract.
+* Example 2: In ``Position.equals(Object)`` implementations, if the result is ``true``, then the assertion ensures that ``hashCode()`` are identical as required by the Object contract.
 
 Use Assert to check Parameters on Private methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

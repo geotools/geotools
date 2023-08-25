@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -270,7 +270,7 @@ public final class JTS {
             double dy = scaleY * t;
 
             GeneralDirectPosition left = new GeneralDirectPosition(xmin, ymin + dy);
-            DirectPosition pt = transformTo3D(left, transform1, transform2);
+            Position pt = transformTo3D(left, transform1, transform2);
             targetEnvelope.expandToInclude(pt);
 
             GeneralDirectPosition top = new GeneralDirectPosition(xmin + dx, ymax);
@@ -341,7 +341,7 @@ public final class JTS {
 
                 GeneralDirectPosition left = new GeneralDirectPosition(xmin, ymin + dy, z);
 
-                DirectPosition pt = transformTo2D(left, transform1, transform2);
+                Position pt = transformTo2D(left, transform1, transform2);
                 targetEnvelope.expandToInclude(pt);
 
                 GeneralDirectPosition top = new GeneralDirectPosition(xmin + dx, ymax, z);
@@ -373,19 +373,19 @@ public final class JTS {
      * @param transformFromWGS84_3D From WGS84_3D to target CRS
      * @return Position in target CRS as calculated by transform2
      */
-    private static DirectPosition transformTo3D(
+    private static Position transformTo3D(
             GeneralDirectPosition srcPosition,
             MathTransform transformToWGS84,
             MathTransform transformFromWGS84_3D)
             throws TransformException {
-        DirectPosition world2D = transformToWGS84.transform(srcPosition, null);
+        Position world2D = transformToWGS84.transform(srcPosition, null);
 
-        DirectPosition world3D = new GeneralDirectPosition(DefaultGeographicCRS.WGS84_3D);
+        Position world3D = new GeneralDirectPosition(DefaultGeographicCRS.WGS84_3D);
         world3D.setOrdinate(0, world2D.getOrdinate(0));
         world3D.setOrdinate(1, world2D.getOrdinate(1));
         world3D.setOrdinate(2, 0.0); // 0 elliposial height is assumed
 
-        DirectPosition targetPosition = transformFromWGS84_3D.transform(world3D, null);
+        Position targetPosition = transformFromWGS84_3D.transform(world3D, null);
         return targetPosition;
     }
 
@@ -398,7 +398,7 @@ public final class JTS {
      * @param transformFromWGS84 From WGS84 to target CRS
      * @return Position in target CRS as calculated by transform2
      */
-    private static DirectPosition transformTo2D(
+    private static Position transformTo2D(
             GeneralDirectPosition srcPosition,
             MathTransform transformToWGS84_3D,
             MathTransform transformFromWGS84)
@@ -407,13 +407,13 @@ public final class JTS {
             srcPosition.setOrdinate(
                     2, 0.0); // lazy add 3rd ordinate if not provided to prevent failure
         }
-        DirectPosition world3D = transformToWGS84_3D.transform(srcPosition, null);
+        Position world3D = transformToWGS84_3D.transform(srcPosition, null);
 
-        DirectPosition world2D = new GeneralDirectPosition(DefaultGeographicCRS.WGS84);
+        Position world2D = new GeneralDirectPosition(DefaultGeographicCRS.WGS84);
         world2D.setOrdinate(0, world3D.getOrdinate(0));
         world2D.setOrdinate(1, world3D.getOrdinate(1));
 
-        DirectPosition targetPosition = transformFromWGS84.transform(world2D, null);
+        Position targetPosition = transformFromWGS84.transform(world2D, null);
         return targetPosition;
     }
 
@@ -635,7 +635,7 @@ public final class JTS {
      *
      * @return DirectPosition
      */
-    public static DirectPosition toDirectPosition(
+    public static Position toDirectPosition(
             final Coordinate point, final CoordinateReferenceSystem crs) {
         // GeneralDirectPosition directPosition = new GeneralDirectPosition(crs);
         // copy( point, directPosition.ordinates );
@@ -867,7 +867,7 @@ public final class JTS {
      *
      * @return Point
      */
-    public static Point toGeometry(DirectPosition position) {
+    public static Point toGeometry(Position position) {
         return toGeometry(position, null);
     }
 
@@ -877,7 +877,7 @@ public final class JTS {
      * @param factory Optional GeometryFactory
      * @return Point
      */
-    public static Point toGeometry(DirectPosition position, GeometryFactory factory) {
+    public static Point toGeometry(Position position, GeometryFactory factory) {
         if (factory == null) {
             factory = new GeometryFactory();
         }

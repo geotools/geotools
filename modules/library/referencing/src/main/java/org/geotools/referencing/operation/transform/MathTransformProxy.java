@@ -20,8 +20,8 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
@@ -78,7 +78,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
      * @throws TransformException if the point can't be transformed.
      */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, final DirectPosition ptDst)
+    public Position transform(final Position ptSrc, final Position ptDst)
             throws MismatchedDimensionException, TransformException {
         return transform.transform(ptSrc, ptDst);
     }
@@ -143,7 +143,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
 
     /** Gets the derivative of this transform at a point. */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         return transform.derivative(point);
     }
 

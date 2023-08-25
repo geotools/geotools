@@ -178,4 +178,4 @@ GeoTools coverage module also provides some utility code.
 SpatioTemporalCoverage
 ^^^^^^^^^^^^^^^^^^^^^^
 
-This is a wrapper around another coverage which allows us to call the .evaluate(..) method with coordinate and time values rather than forcing us to create the appropriate DirectPosition argument.
+This is a wrapper around another coverage which allows us to call the .evaluate(..) method with coordinate and time values rather than forcing us to create the appropriate ``Position`` argument.

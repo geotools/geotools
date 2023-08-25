@@ -22,8 +22,8 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 
@@ -136,7 +136,7 @@ public final class GeneralEnvelopeTest {
     }
 
     /** Compares the specified corners. */
-    private static void assertPositionEquals(final DirectPosition p1, final DirectPosition p2) {
+    private static void assertPositionEquals(final Position p1, final Position p2) {
         assertNotSame(p1, p2);
         assertEquals(p1, p2);
         assertEquals(p1.hashCode(), p2.hashCode());

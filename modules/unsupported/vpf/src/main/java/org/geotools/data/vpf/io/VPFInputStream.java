@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.LinkedList;
 import java.util.List;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.ifc.DataTypesDefinition;
 import org.geotools.data.vpf.ifc.FileConstants;
@@ -478,8 +478,8 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         return new TripletId(tripletData);
     }
 
-    protected DirectPosition[] readCoord3DFloat(int instancesCount) throws IOException {
-        DirectPosition[] result = new DirectPosition[instancesCount];
+    protected Position[] readCoord3DFloat(int instancesCount) throws IOException {
+        Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
             result[inx] = new GeneralDirectPosition(readFloat(), readFloat(), readFloat());
@@ -488,8 +488,8 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         return result;
     }
 
-    protected DirectPosition[] readCoord2DFloat(int instancesCount) throws IOException {
-        DirectPosition[] result = new DirectPosition[instancesCount];
+    protected Position[] readCoord2DFloat(int instancesCount) throws IOException {
+        Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
             result[inx] = new DirectPosition2D(readFloat(), readFloat());
@@ -498,8 +498,8 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         return result;
     }
 
-    protected DirectPosition[] readCoord2DDouble(int instancesCount) throws IOException {
-        DirectPosition[] result = new DirectPosition[instancesCount];
+    protected Position[] readCoord2DDouble(int instancesCount) throws IOException {
+        Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
             result[inx] = new DirectPosition2D(readDouble(), readDouble());
@@ -508,8 +508,8 @@ public abstract class VPFInputStream implements FileConstants, DataTypesDefiniti
         return result;
     }
 
-    protected DirectPosition[] readCoord3DDouble(int instancesCount) throws IOException {
-        DirectPosition[] result = new DirectPosition[instancesCount];
+    protected Position[] readCoord3DDouble(int instancesCount) throws IOException {
+        Position[] result = new Position[instancesCount];
 
         for (int inx = 0; inx < instancesCount; inx++) {
             result[inx] = new GeneralDirectPosition(readDouble(), readDouble(), readDouble());

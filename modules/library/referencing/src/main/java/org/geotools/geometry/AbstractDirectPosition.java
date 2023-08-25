@@ -16,8 +16,8 @@
  */
 package org.geotools.geometry;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -25,9 +25,8 @@ import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 
 /**
- * Base class for {@linkplain DirectPosition direct position} implementations. This base class
- * provides default implementations for {@link #toString}, {@link #equals} and {@link #hashCode}
- * methods.
+ * Base class for {@linkplain Position direct position} implementations. This base class provides
+ * default implementations for {@link #toString}, {@link #equals} and {@link #hashCode} methods.
  *
  * <p>This class do not holds any state. The decision to implement {@link java.io.Serializable} or
  * {@link org.geotools.util.Cloneable} interfaces is left to implementors.
@@ -36,18 +35,17 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public abstract class AbstractDirectPosition implements DirectPosition {
+public abstract class AbstractDirectPosition implements Position {
     /** Constructs a direct position. */
     protected AbstractDirectPosition() {}
 
     /**
-     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
-     * position}.
+     * Returns always {@code this}, the direct position for this {@linkplain Position position}.
      *
      * @since 2.5
      */
     @Override
-    public DirectPosition getDirectPosition() {
+    public Position getDirectPosition() {
         return this;
     }
 
@@ -58,7 +56,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
      * @param position The new position.
      * @since 2.5
      */
-    public void setPosition(final DirectPosition position) {
+    public void setPosition(final Position position) {
         final int dimension = getDimension();
         if (position != null) {
             ensureDimensionMatch("position", position.getDimension(), dimension);
@@ -141,7 +139,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
     }
 
     /** Formats the specified position. */
-    static String toString(final DirectPosition position) {
+    static String toString(final Position position) {
         final StringBuilder buffer =
                 new StringBuilder(Classes.getShortClassName(position)).append('[');
         final int dimension = position.getDimension();
@@ -165,7 +163,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
     }
 
     /** Returns a hash value for the given coordinate. */
-    static int hashCode(final DirectPosition position) {
+    static int hashCode(final Position position) {
         final int dimension = position.getDimension();
         int code = 1;
         for (int i = 0; i < dimension; i++) {
@@ -180,8 +178,8 @@ public abstract class AbstractDirectPosition implements DirectPosition {
     }
 
     /**
-     * Returns {@code true} if the specified object is also a {@linkplain DirectPosition direct
-     * position} with equals {@linkplain #getCoordinate coordinate} and {@linkplain
+     * Returns {@code true} if the specified object is also a {@linkplain Position direct position}
+     * with equals {@linkplain #getCoordinate coordinate} and {@linkplain
      * #getCoordinateReferenceSystem CRS}.
      *
      * @param object The object to compare with this position.
@@ -189,8 +187,8 @@ public abstract class AbstractDirectPosition implements DirectPosition {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object instanceof DirectPosition) {
-            final DirectPosition that = (DirectPosition) object;
+        if (object instanceof Position) {
+            final Position that = (Position) object;
             final int dimension = getDimension();
             if (dimension == that.getDimension()) {
                 for (int i = 0; i < dimension; i++) {

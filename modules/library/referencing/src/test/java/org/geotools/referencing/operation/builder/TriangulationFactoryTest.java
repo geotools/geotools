@@ -20,7 +20,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 import java.util.Random;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.geometry.DirectPosition2D;
 import org.junit.Test;
 
@@ -28,27 +28,27 @@ public final class TriangulationFactoryTest {
     /** Test (@link TringulationFactory). */
     @Test
     public void testTringulationFactory() {
-        DirectPosition sp1 = new DirectPosition2D(10, 10);
-        DirectPosition tp1 = new DirectPosition2D(10, 10);
+        Position sp1 = new DirectPosition2D(10, 10);
+        Position tp1 = new DirectPosition2D(10, 10);
 
-        DirectPosition sp2 = new DirectPosition2D(20, 10);
-        DirectPosition tp2 = new DirectPosition2D(20, 10);
+        Position sp2 = new DirectPosition2D(20, 10);
+        Position tp2 = new DirectPosition2D(20, 10);
 
-        DirectPosition sp3 = new DirectPosition2D(20, 20);
-        DirectPosition tp3 = new DirectPosition2D(20, 20);
+        Position sp3 = new DirectPosition2D(20, 20);
+        Position tp3 = new DirectPosition2D(20, 20);
 
-        DirectPosition sp4 = new DirectPosition2D(10, 20);
-        DirectPosition tp4 = new DirectPosition2D(10, 20);
+        Position sp4 = new DirectPosition2D(10, 20);
+        Position tp4 = new DirectPosition2D(10, 20);
 
-        DirectPosition sp5 = new DirectPosition2D(14, 16);
-        DirectPosition tp5 = new DirectPosition2D(14, 16);
+        Position sp5 = new DirectPosition2D(14, 16);
+        Position tp5 = new DirectPosition2D(14, 16);
 
         ExtendedPosition mtp1 = new ExtendedPosition(sp1, tp1);
         ExtendedPosition mtp2 = new ExtendedPosition(sp2, tp2);
         ExtendedPosition mtp3 = new ExtendedPosition(sp3, tp3);
         ExtendedPosition mtp4 = new ExtendedPosition(sp4, tp4);
         ExtendedPosition mtp5 = new ExtendedPosition(sp5, tp5);
-        DirectPosition[] vertices = new DirectPosition[1];
+        Position[] vertices = new Position[1];
         vertices[0] = mtp5;
 
         Quadrilateral quad = new Quadrilateral(mtp1, mtp2, mtp3, mtp4);
@@ -74,7 +74,7 @@ public final class TriangulationFactoryTest {
 
         // number of points
         int number = 5;
-        DirectPosition[] vertices = new DirectPosition[number];
+        Position[] vertices = new Position[number];
 
         for (int i = 0; i < number; i++) {
             double x = leftDown.x + (randomCoord.nextDouble() * (rightDown.x - leftDown.x));

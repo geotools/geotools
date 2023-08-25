@@ -43,8 +43,8 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 import org.geotools.TestData;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -429,7 +429,7 @@ public final class ResampleTest extends GridProcessingTestBase {
 
         // verify we're good
         int[] pixel = new int[3];
-        coverage.evaluate((DirectPosition) new DirectPosition2D(4, 6), pixel);
+        coverage.evaluate((Position) new DirectPosition2D(4, 6), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(255, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -449,7 +449,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
         // before the fix the pixel would have been black
-        flipped.evaluate((DirectPosition) new DirectPosition2D(6, 4), pixel);
+        flipped.evaluate((Position) new DirectPosition2D(6, 4), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(255, pixel[1]);
         assertEquals(0, pixel[2]);

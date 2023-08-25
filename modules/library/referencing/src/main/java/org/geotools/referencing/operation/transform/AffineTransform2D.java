@@ -20,8 +20,8 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.prefs.Preferences;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
@@ -108,7 +108,7 @@ public class AffineTransform2D extends XAffineTransform
 
     /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst) {
+    public Position transform(final Position ptSrc, Position ptDst) {
         if (ptDst == null) {
             ptDst = new GeneralDirectPosition(2);
         } else {
@@ -158,7 +158,7 @@ public class AffineTransform2D extends XAffineTransform
      * the same everywhere.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) {
+    public Matrix derivative(final Position point) {
         return derivative((Point2D) null);
     }
 

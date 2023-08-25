@@ -33,7 +33,7 @@ import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.Parameter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -269,7 +269,7 @@ public class FilterExamples {
         MathTransform transform =
                 CRS.findMathTransform(worldPosition.getCoordinateReferenceSystem(), crs, true);
 
-        DirectPosition dataPosition = transform.transform(worldPosition, null);
+        Position dataPosition = transform.transform(worldPosition, null);
 
         Point point = JTS.toGeometry(dataPosition);
 

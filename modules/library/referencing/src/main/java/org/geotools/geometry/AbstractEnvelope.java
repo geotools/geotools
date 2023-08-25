@@ -16,9 +16,9 @@
  */
 package org.geotools.geometry;
 
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -49,8 +49,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * @throws MismatchedReferenceSystemException if the two positions don't use the same CRS.
      */
     static CoordinateReferenceSystem getCoordinateReferenceSystem(
-            final DirectPosition minDP, final DirectPosition maxDP)
-            throws MismatchedReferenceSystemException {
+            final Position minDP, final Position maxDP) throws MismatchedReferenceSystemException {
         final CoordinateReferenceSystem crs1 = minDP.getCoordinateReferenceSystem();
         final CoordinateReferenceSystem crs2 = maxDP.getCoordinateReferenceSystem();
         if (crs1 == null) {
@@ -72,7 +71,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * @return The lower corner.
      */
     @Override
-    public DirectPosition getLowerCorner() {
+    public Position getLowerCorner() {
         return new LowerCorner();
     }
 
@@ -84,7 +83,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * @return The upper corner.
      */
     @Override
-    public DirectPosition getUpperCorner() {
+    public Position getUpperCorner() {
         return new UpperCorner();
     }
 

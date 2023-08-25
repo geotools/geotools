@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
@@ -32,7 +32,7 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Niels Charlier
  */
-public class DirectPosition3D implements DirectPosition, Serializable, Cloneable {
+public class Position3D implements Position, Serializable, Cloneable {
 
     public double x, y, z;
 
@@ -45,14 +45,14 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
     /**
      * Constructs a position initialized to (0,0,0) with a {@code null} coordinate reference system.
      */
-    public DirectPosition3D() {}
+    public Position3D() {}
 
     /**
      * Constructs a position with the specified coordinate reference system.
      *
      * @param crs The coordinate reference system, or {@code null}.
      */
-    public DirectPosition3D(final CoordinateReferenceSystem crs) {
+    public Position3D(final CoordinateReferenceSystem crs) {
         setCoordinateReferenceSystem(crs);
     }
 
@@ -63,7 +63,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @param y The <var>y</var> value.
      * @param z The <var>z</var> value.
      */
-    public DirectPosition3D(final double x, final double y, final double z) {
+    public Position3D(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -77,7 +77,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @param y The <var>y</var> value.
      * @param z The <var>z</var> value.
      */
-    public DirectPosition3D(
+    public Position3D(
             final CoordinateReferenceSystem crs, final double x, final double y, final double z) {
         this(x, y, z);
         setCoordinateReferenceSystem(crs);
@@ -87,16 +87,13 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      *
      * @param point The point to copy.
      */
-    public DirectPosition3D(final DirectPosition point) {
+    public Position3D(final Position point) {
         setLocation(point);
     }
 
-    /**
-     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
-     * position}.
-     */
+    /** Returns always {@code this}, the direct position for this {@linkplain Position position}. */
     @Override
-    public DirectPosition getDirectPosition() {
+    public Position getDirectPosition() {
         return this;
     }
 
@@ -198,7 +195,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public void setLocation(final DirectPosition position) throws MismatchedDimensionException {
+    public void setLocation(final Position position) throws MismatchedDimensionException {
         AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 3);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         x = position.getOrdinate(0);
@@ -214,7 +211,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
 
     /**
      * Returns a hash value for this coordinate. This method implements the {@link
-     * DirectPosition#hashCode} contract.
+     * Position#hashCode} contract.
      *
      * @return A hash code value for this position.
      */
@@ -225,8 +222,8 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
 
     /**
      * Compares this point with the specified object for equality. If the given object implements
-     * the {@link DirectPosition} interface, then the comparison is performed as specified in its
-     * {@link DirectPosition#equals} contract.
+     * the {@link Position} interface, then the comparison is performed as specified in its {@link
+     * Position#equals} contract.
      *
      * @param object The object to compare with this position.
      * @return {@code true} if the given object is equals to this position.
@@ -237,8 +234,8 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
          * If the other object implements the DirectPosition interface, performs
          * the comparaison as specified in DirectPosition.equals(Object) contract.
          */
-        if (object instanceof DirectPosition) {
-            final DirectPosition other = (DirectPosition) object;
+        if (object instanceof Position) {
+            final Position other = (Position) object;
             if (other.getDimension() == 3
                     && Utilities.equals(other.getOrdinate(0), x)
                     && Utilities.equals(other.getOrdinate(1), y)
@@ -258,8 +255,8 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @return A clone of this position.
      */
     @Override
-    public DirectPosition3D clone() {
-        return new DirectPosition3D(this);
+    public Position3D clone() {
+        return new Position3D(this);
     }
 
     /**

@@ -17,7 +17,7 @@
  */
 package org.geotools.process.raster;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -177,7 +177,7 @@ final class GridConvergenceAngleCalc {
         // except move "up" 1 unit along the "up" axis.
         //
 
-        DirectPosition2D endingPosition = new DirectPosition2D((DirectPosition) position);
+        DirectPosition2D endingPosition = new DirectPosition2D((Position) position);
         endingPosition.setOrdinate(upAxisDimension, position.getOrdinate(upAxisDimension) + 1);
         geoCalc.setDestinationPosition(endingPosition);
 

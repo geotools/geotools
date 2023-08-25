@@ -25,7 +25,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -60,7 +60,7 @@ public class ToDirectPositionFunction implements Function {
     public static final FunctionName NAME =
             new FunctionNameImpl(
                     "toDirectPosition",
-                    FunctionNameImpl.parameter("return", DirectPosition.class),
+                    FunctionNameImpl.parameter("return", Position.class),
                     FunctionNameImpl.parameter("parameter", Object.class, 1, 4));
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -103,7 +103,7 @@ public class ToDirectPositionFunction implements Function {
 
     @Override
     public Object evaluate(Object object) {
-        return evaluate(object, DirectPosition.class);
+        return evaluate(object, Position.class);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class ToDirectPositionFunction implements Function {
         Expression param1 = parameters.get(0);
         CoordinateReferenceSystem crs = null;
 
-        DirectPosition geom;
+        Position geom;
         if (param1.equals(SRS_NAME)) {
             // must be followed by srsName expression, and at least 1 point
             if (parameters.size() < 3 || parameters.size() > 4) {

@@ -18,7 +18,7 @@ package org.geotools.referencing.operation.builder;
 
 import java.util.HashMap;
 import java.util.List;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.geometry.DirectPosition2D;
 
 /**
@@ -116,7 +116,7 @@ class MapTriangulationFactory {
      *     quad.
      */
     protected MappedPosition generateCoordFromNearestOne(
-            DirectPosition x, List<MappedPosition> vertices) {
+            Position x, List<MappedPosition> vertices) {
         MappedPosition nearestOne = nearestMappedCoordinate(x, vertices);
 
         double dstX =
@@ -127,7 +127,7 @@ class MapTriangulationFactory {
                 x.getCoordinate()[1]
                         + (nearestOne.getTarget().getCoordinate()[1]
                                 - nearestOne.getSource().getCoordinate()[1]);
-        DirectPosition dst =
+        Position dst =
                 new DirectPosition2D(
                         nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
 
@@ -141,8 +141,7 @@ class MapTriangulationFactory {
      * @param vertices the List of MappedCoordinates.
      * @return the MappedPosition to the x Coordinate.
      */
-    protected MappedPosition nearestMappedCoordinate(
-            DirectPosition dp, List<MappedPosition> vertices) {
+    protected MappedPosition nearestMappedCoordinate(Position dp, List<MappedPosition> vertices) {
         DirectPosition2D x = new DirectPosition2D(dp);
 
         // Assert.isTrue(vectors.size() > 0);

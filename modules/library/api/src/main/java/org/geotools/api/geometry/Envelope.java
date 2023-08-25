@@ -49,7 +49,7 @@ public interface Envelope {
      *
      * @return The lower corner.
      */
-    DirectPosition getLowerCorner();
+    Position getLowerCorner();
 
     /**
      * A coordinate position consisting of all the maximal ordinates for each dimension for all
@@ -57,16 +57,16 @@ public interface Envelope {
      *
      * @return The upper corner.
      */
-    DirectPosition getUpperCorner();
+    Position getUpperCorner();
 
     /**
      * Returns the minimal ordinate along the specified dimension. This is a shortcut for the
-     * following without the cost of creating a temporary {@link DirectPosition} object:
+     * following without the cost of creating a temporary {@link Position} object:
      *
      * <blockquote>
      *
      * <code>
-     * {@linkplain #getLowerCorner}.{@linkplain DirectPosition#getOrdinate getOrdinate}(dimension)
+     * {@linkplain #getLowerCorner}.{@linkplain Position#getOrdinate getOrdinate}(dimension)
      * </code>
      *
      * </blockquote>
@@ -83,12 +83,12 @@ public interface Envelope {
 
     /**
      * Returns the maximal ordinate along the specified dimension. This is a shortcut for the
-     * following without the cost of creating a temporary {@link DirectPosition} object:
+     * following without the cost of creating a temporary {@link Position} object:
      *
      * <blockquote>
      *
      * <code>
-     * {@linkplain #getUpperCorner}.{@linkplain DirectPosition#getOrdinate getOrdinate}(dimension)
+     * {@linkplain #getUpperCorner}.{@linkplain Position#getOrdinate getOrdinate}(dimension)
      * </code>
      *
      * </blockquote>

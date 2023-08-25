@@ -48,7 +48,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.TileCache;
 import org.geotools.TestData;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -254,7 +254,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
@@ -380,7 +380,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
@@ -438,7 +438,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
@@ -509,7 +509,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertEquals(initialRes, finalRes, TOLERANCE);
 
         // Check that on the Upper Right pixel of the image there are nodata
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
@@ -597,7 +597,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
@@ -666,7 +666,7 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
@@ -757,7 +757,7 @@ public class MosaicTest extends GridProcessingTestBase {
         double finalRes = calculateResolution(mosaic);
 
         // Check that on the center of the image there is valid data
-        DirectPosition point =
+        Position point =
                 new DirectPosition2D(
                         mosaic.getCoordinateReferenceSystem(),
                         expected.getCenterX(),
@@ -839,8 +839,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Ensure that no black lines are present on the border between the input images
         // Check that on the center of the image there is valid data
-        DirectPosition point =
-                new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540, -84);
+        Position point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540, -84);
         double nodata = 0;
         double result = ((byte[]) mosaic.evaluate(point))[0];
         Assert.assertNotEquals(nodata, result, TOLERANCE);

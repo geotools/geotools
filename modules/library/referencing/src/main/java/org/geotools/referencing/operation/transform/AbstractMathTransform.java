@@ -26,8 +26,8 @@ import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.Identifier;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -189,8 +189,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * implementation delegates to {@link #transform(double[],int,double[],int,int)}.
      */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst)
-            throws TransformException {
+    public Position transform(final Position ptSrc, Position ptDst) throws TransformException {
         int dimPoint = ptSrc.getDimension();
         final int dimSource = getSourceDimensions();
         final int dimTarget = getTargetDimensions();
@@ -508,7 +507,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
     /**
      * Gets the derivative of this transform at a point. The default implementation always throw an
      * exception. Subclasses that implement the {@link MathTransform2D} interface should override
-     * this method. Other subclasses should override {@link #derivative(DirectPosition)} instead.
+     * this method. Other subclasses should override {@link #derivative(Position)} instead.
      *
      * @param point The coordinate point where to evaluate the derivative.
      * @return The derivative at the specified point as a 2&times;2 matrix.
@@ -545,7 +544,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         final int dimSource = getSourceDimensions();
         if (point == null) {
             if (dimSource == 2) {
@@ -630,8 +629,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      *
      * @param object The object to compare with this transform.
      * @return {@code true} if the given object is a transform of the same class and if, given
-     *     identical source position, the {@linkplain #transform(DirectPosition,DirectPosition)
-     *     transformed} position would be the equals.
+     *     identical source position, the {@linkplain #transform(Position, Position) transformed}
+     *     position would be the equals.
      */
     @Override
     public boolean equals(final Object object) {
@@ -887,7 +886,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
          * inverse of the matrix returned by the enclosing math transform.
          */
         @Override
-        public Matrix derivative(final DirectPosition point) throws TransformException {
+        public Matrix derivative(final Position point) throws TransformException {
             return invert(AbstractMathTransform.this.derivative(this.transform(point, null)));
         }
 

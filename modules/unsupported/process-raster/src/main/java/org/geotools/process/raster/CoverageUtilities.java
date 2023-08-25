@@ -26,9 +26,9 @@ import java.util.List;
 import javax.media.jai.ROI;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -372,9 +372,9 @@ public class CoverageUtilities {
 
         Envelope envelope = gridCoverage.getEnvelope();
 
-        DirectPosition lowerCorner = envelope.getLowerCorner();
+        Position lowerCorner = envelope.getLowerCorner();
         double[] westSouth = lowerCorner.getCoordinate();
-        DirectPosition upperCorner = envelope.getUpperCorner();
+        Position upperCorner = envelope.getUpperCorner();
         double[] eastNorth = upperCorner.getCoordinate();
 
         GridGeometry2D gridGeometry = gridCoverage.getGridGeometry();

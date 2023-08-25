@@ -24,8 +24,8 @@
  * <H3>Domain of a coverage</H3>
  *
  * <P ALIGN="justify">A coverage domain is a set of geometric objects described in terms of
- * {@linkplain org.geotools.api.geometry.DirectPosition direct positions}. It may be extended to all
- * of the direct positions within the convex hull of that set of geometric objects. The direct
+ * {@linkplain org.geotools.api.geometry.Position direct positions}. It may be extended to all of
+ * the direct positions within the convex hull of that set of geometric objects. The direct
  * positions are associated with a spatial or temporal {@linkplain
  * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}. Commonly
  * used domains include point sets, grids, collections of closed rectangles, and other collections

@@ -24,8 +24,8 @@ import static org.junit.Assert.fail;
 
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -165,7 +165,7 @@ public class Envelope2DTest {
         DirectPosition2D positionOutsideAustralia = new DirectPosition2D(crs, 30, 170);
 
         try {
-            testContains = australia.contains((DirectPosition) positionOutsideAustralia);
+            testContains = australia.contains((Position) positionOutsideAustralia);
             // expected
             assertFalse(testContains);
         } catch (MismatchedReferenceSystemException t) {
@@ -173,7 +173,7 @@ public class Envelope2DTest {
         }
 
         try {
-            testContains = australia.contains((DirectPosition) positionInAustralia);
+            testContains = australia.contains((Position) positionInAustralia);
             // expected
             assertTrue(testContains);
         } catch (MismatchedReferenceSystemException t) {

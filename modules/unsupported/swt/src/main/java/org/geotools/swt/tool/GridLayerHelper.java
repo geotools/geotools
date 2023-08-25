@@ -28,7 +28,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.swt.utils.Utils;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 
 /**
@@ -96,7 +96,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
         if (isValid()) {
             GridCoverage2D cov = covRef.get();
             ReferencedEnvelope env = new ReferencedEnvelope(cov.getEnvelope2D());
-            DirectPosition trPos = getTransformed(pos);
+            Position trPos = getTransformed(pos);
             if (env.contains(trPos)) {
                 Object objArray = cov.evaluate(trPos);
                 Number[] bandValues = asNumberArray(objArray);
@@ -118,7 +118,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
     }
 
     /**
-     * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(DirectPosition)} into an
+     * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(Position)} into an
      * array of {@code Numbers}.
      *
      * @param objArray an Object representing a primitive array
@@ -165,7 +165,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * @param pos query position in {@code MapContext} coordinates
      * @return query position in data ({@code MapLayer}) coordinates
      */
-    private DirectPosition getTransformed(DirectPosition2D pos) {
+    private Position getTransformed(DirectPosition2D pos) {
         if (isTransformRequired()) {
             MathTransform tr = getTransform();
             if (tr == null) {

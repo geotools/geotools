@@ -26,8 +26,8 @@ import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringTokenizer;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
@@ -129,7 +129,7 @@ public class Console extends AbstractConsole {
     private CoordinateReferenceSystem sourceCRS, targetCRS;
 
     /** Source and target coordinate points, or {@code null} if not yet determined. */
-    private DirectPosition sourcePosition, targetPosition;
+    private Position sourcePosition, targetPosition;
 
     /** The math transform, or {@code null} if not yet determined. */
     private MathTransform transform;
@@ -459,8 +459,8 @@ public class Console extends AbstractConsole {
     @SuppressWarnings("PMD.CloseResource")
     private void printPts() throws FactoryException, TransformException, IOException {
         update();
-        DirectPosition transformedSource = null;
-        DirectPosition transformedTarget = null;
+        Position transformedSource = null;
+        Position transformedTarget = null;
         String targetException = null;
         if (transform != null) {
             if (sourcePosition != null) {
@@ -518,7 +518,7 @@ public class Console extends AbstractConsole {
      * @param point The point to print, or {@code null} if none.
      * @throws IOException if an error occured while writting to the output stream.
      */
-    private void print(final DirectPosition point, final TableWriter table) throws IOException {
+    private void print(final Position point, final TableWriter table) throws IOException {
         if (point != null) {
             table.nextColumn();
             table.write("  (");
@@ -537,8 +537,8 @@ public class Console extends AbstractConsole {
     /** Print the distance between two points using the specified CRS. */
     private void printDistance(
             final CoordinateReferenceSystem crs,
-            final DirectPosition position1,
-            final DirectPosition position2,
+            final Position position1,
+            final Position position2,
             final TableWriter table)
             throws IOException {
         if (position1 == null) {
@@ -590,7 +590,7 @@ public class Console extends AbstractConsole {
      *     expected dimension.
      */
     protected void test() throws TransformException, MismatchedDimensionException {
-        final DirectPosition transformedSource = transform.transform(sourcePosition, null);
+        final Position transformedSource = transform.transform(sourcePosition, null);
         final int sourceDim = transformedSource.getDimension();
         final int targetDim = targetPosition.getDimension();
         if (sourceDim != targetDim) {

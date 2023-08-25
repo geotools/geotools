@@ -21,10 +21,10 @@ import static org.geotools.referencing.CRS.findMathTransform;
 import static org.geotools.referencing.CRS.getMapProjection;
 
 import java.util.logging.Level;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -261,8 +261,8 @@ class EnvelopeReprojector {
          * transformed envelope will be expanded to the full (-180 to 180) range. This is quite
          * large, but at least it is correct (while the envelope without expansion is not).
          */
-        DirectPosition sourcePt = null;
-        DirectPosition targetPt = null;
+        Position sourcePt = null;
+        Position targetPt = null;
         final int dimension = targetCS.getDimension();
         for (int i = 0; i < dimension; i++) {
             final CoordinateSystemAxis axis = targetCS.getAxis(i);
@@ -340,9 +340,9 @@ class EnvelopeReprojector {
             if (CRS.equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LONGITUDE, axis)) {
                 double minLon = envelope.getMinimum(i);
                 double maxLon = envelope.getMaximum(i);
-                DirectPosition lower = generalEnvelope.getLowerCorner();
-                DirectPosition upper = generalEnvelope.getUpperCorner();
-                DirectPosition dest = new DirectPosition2D();
+                Position lower = generalEnvelope.getLowerCorner();
+                Position upper = generalEnvelope.getUpperCorner();
+                Position dest = new DirectPosition2D();
                 // world spanning longitude? add points around the globe quadrants then
                 if ((maxLon - minLon) >= 360) {
                     for (int lon = -180; lon <= 180; lon += 90) {
@@ -392,7 +392,7 @@ class EnvelopeReprojector {
             if (isPole(origin, sourceCRS)) {
                 if (generalEnvelope.contains(origin)) {
                     if (targetCRS instanceof GeographicCRS) {
-                        DirectPosition lowerCorner = transformed.getLowerCorner();
+                        Position lowerCorner = transformed.getLowerCorner();
                         if (CRS.getAxisOrder(targetCRS) == AxisOrder.NORTH_EAST) {
                             lowerCorner.setOrdinate(1, -180);
                             transformed.add(lowerCorner);
@@ -409,8 +409,8 @@ class EnvelopeReprojector {
                         // sense for the target projection. We do a 1deg sampling as a compromise
                         // between
                         // speed and accuracy
-                        DirectPosition lc = transformed.getLowerCorner();
-                        DirectPosition uc = transformed.getUpperCorner();
+                        Position lc = transformed.getLowerCorner();
+                        Position uc = transformed.getUpperCorner();
                         for (int j = -180; j < 180; j++) {
                             expandEnvelopeByLongitude(j, lc, transformed, targetCRS);
                             expandEnvelopeByLongitude(j, uc, transformed, targetCRS);
@@ -421,22 +421,22 @@ class EnvelopeReprojector {
                     // in the tranformation points
                     if (generalEnvelope.getMinimum(0) < originX
                             && generalEnvelope.getMaximum(0) > originX) {
-                        DirectPosition lc = generalEnvelope.getLowerCorner();
+                        Position lc = generalEnvelope.getLowerCorner();
                         lc.setOrdinate(0, originX);
                         mt.transform(lc, lc);
                         transformed.add(lc);
-                        DirectPosition uc = generalEnvelope.getUpperCorner();
+                        Position uc = generalEnvelope.getUpperCorner();
                         uc.setOrdinate(0, originX);
                         mt.transform(uc, uc);
                         transformed.add(uc);
                     }
                     if (generalEnvelope.getMinimum(1) < originY
                             && generalEnvelope.getMaximum(1) > originY) {
-                        DirectPosition lc = generalEnvelope.getLowerCorner();
+                        Position lc = generalEnvelope.getLowerCorner();
                         lc.setOrdinate(1, originY);
                         mt.transform(lc, lc);
                         transformed.add(lc);
-                        DirectPosition uc = generalEnvelope.getUpperCorner();
+                        Position uc = generalEnvelope.getUpperCorner();
                         uc.setOrdinate(1, originY);
                         mt.transform(uc, uc);
                         transformed.add(uc);
@@ -463,8 +463,8 @@ class EnvelopeReprojector {
         if (sourceCRS != null) {
             final CoordinateSystem cs = sourceCRS.getCoordinateSystem();
             if (cs != null) { // Should never be null, but check as a paranoiac safety.
-                DirectPosition sourcePt = null;
-                DirectPosition targetPt = null;
+                Position sourcePt = null;
+                Position targetPt = null;
                 final int dimension = cs.getDimension();
                 for (int i = 0; i < dimension; i++) {
                     final CoordinateSystemAxis axis = cs.getAxis(i);
@@ -518,7 +518,7 @@ class EnvelopeReprojector {
             lon = minLon + delta * i / 2;
         }
         geoToTarget.transform(points, 0, points, 0, numPoints);
-        DirectPosition dp = new DirectPosition2D();
+        Position dp = new DirectPosition2D();
         for (int i = 0; i < points.length; ) {
             dp.setOrdinate(0, points[i++]);
             dp.setOrdinate(1, points[i++]);
@@ -530,9 +530,9 @@ class EnvelopeReprojector {
             MathTransform mt,
             GeneralEnvelope transformed,
             int axis,
-            DirectPosition lower,
-            DirectPosition upper,
-            DirectPosition dest,
+            Position lower,
+            Position upper,
+            Position dest,
             double ordinate)
             throws TransformException {
         lower.setOrdinate(axis, ordinate);
@@ -555,8 +555,8 @@ class EnvelopeReprojector {
         return generalEnvelope;
     }
 
-    private static boolean isPole(DirectPosition point, CoordinateReferenceSystem crs) {
-        DirectPosition result = new DirectPosition2D();
+    private static boolean isPole(Position point, CoordinateReferenceSystem crs) {
+        Position result = new DirectPosition2D();
         GeographicCRS geographic;
         try {
             ProjectedCRS projectedCRS = CRS.getProjectedCRS(crs);
@@ -586,7 +586,7 @@ class EnvelopeReprojector {
 
     private static void expandEnvelopeByLongitude(
             double longitude,
-            DirectPosition input,
+            Position input,
             GeneralEnvelope transformed,
             CoordinateReferenceSystem sourceCRS) {
         try {

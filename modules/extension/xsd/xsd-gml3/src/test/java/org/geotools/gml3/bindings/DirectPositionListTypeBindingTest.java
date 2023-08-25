@@ -20,10 +20,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.DirectPosition3D;
+import org.geotools.geometry.Position3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
@@ -40,7 +40,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         document.getDocumentElement().setAttribute("count", "2");
         document.getDocumentElement().appendChild(document.createTextNode("1.0 2.0 "));
 
-        DirectPosition[] dps = (DirectPosition[]) parse();
+        Position[] dps = (Position[]) parse();
         assertNotNull(dps);
 
         assertEquals(2, dps.length);
@@ -58,7 +58,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         document.getDocumentElement().setAttribute("count", "1");
         document.getDocumentElement().appendChild(document.createTextNode("1.0 2.0 "));
 
-        DirectPosition[] dps = (DirectPosition[]) parse();
+        Position[] dps = (Position[]) parse();
         assertNotNull(dps);
 
         assertEquals(1, dps.length);
@@ -75,11 +75,11 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
 
         document.getDocumentElement().appendChild(document.createTextNode("1.0 2.0 1.0 3 4 5"));
 
-        DirectPosition[] dps = (DirectPosition[]) parse();
+        Position[] dps = (Position[]) parse();
         assertNotNull(dps);
 
         assertEquals(2, dps.length);
-        assertTrue(dps[0] instanceof DirectPosition3D);
+        assertTrue(dps[0] instanceof Position3D);
 
         assertEquals(1d, dps[0].getOrdinate(0), 0d);
         assertEquals(2d, dps[0].getOrdinate(1), 0d);

@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -424,8 +424,8 @@ public class MapInfoFileReader {
                     double d3 = Double.parseDouble(matcherPoint.group(3));
                     double d4 = Double.parseDouble(matcherPoint.group(4));
 
-                    DirectPosition p1 = new DirectPosition2D(null, d1, d2);
-                    DirectPosition p2 = new DirectPosition2D(null, d3, d4);
+                    Position p1 = new DirectPosition2D(null, d1, d2);
+                    Position p2 = new DirectPosition2D(null, d3, d4);
 
                     controlPoints.add(new MappedPosition(p2, p1));
                 } else {

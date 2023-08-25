@@ -44,69 +44,43 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
     @Override
     public void visit(org.geotools.api.style.Symbolizer sym) {
 
-        if (sym instanceof PointSymbolizer) {
-            if (canRender(((PointSymbolizerImpl) sym).getOptions())) super.visit(sym);
-        } else if (sym instanceof LineSymbolizer) {
-            if (canRender(((LineSymbolizerImpl) sym).getOptions())) super.visit(sym);
-        }
-        if (sym instanceof PolygonSymbolizer) {
-            if (canRender(((PolygonSymbolizerImpl) sym).getOptions())) super.visit(sym);
-        }
-        if (sym instanceof TextSymbolizer) {
-            if (canRender(((TextSymbolizerImpl) sym).getOptions())) super.visit(sym);
-        }
-        if (sym instanceof RasterSymbolizer) {
-            if (canRender(((RasterSymbolizerImpl) sym).getOptions())) super.visit(sym);
-        } else {
-            throw new IllegalStateException("Can't visit " + sym);
-        }
+
+            if (canRender(sym.getOptions())) super.visit(sym);
+
     }
 
     @Override
     public void visit(org.geotools.api.style.PointSymbolizer ps) {
-        if (canRender(((PolygonSymbolizerImpl) ps).getOptions())) super.visit(ps);
+        if (canRender(ps.getOptions())) super.visit(ps);
     }
 
     @Override
     public void visit(org.geotools.api.style.LineSymbolizer line) {
 
-        if (canRender(((LineSymbolizerImpl) line).getOptions())) super.visit(line);
+        if (canRender(line.getOptions())) super.visit(line);
     }
 
     @Override
     public void visit(org.geotools.api.style.PolygonSymbolizer poly) {
-        if (canRender(((PolygonSymbolizerImpl) poly).getOptions())) super.visit(poly);
+        if (canRender(poly.getOptions())) super.visit(poly);
     }
 
     @Override
     public void visit(org.geotools.api.style.TextSymbolizer text) {
-        if (canRender(((TextSymbolizerImpl) text).getOptions())) super.visit(text);
+        if (canRender(text.getOptions())) super.visit(text);
     }
 
     @Override
     public void visit(org.geotools.api.style.RasterSymbolizer raster) {
-        if (canRender(((RasterSymbolizerImpl) raster).getOptions())) super.visit(raster);
+        if (canRender(raster.getOptions())) super.visit(raster);
     }
 
     @Override
     protected Symbolizer copy(org.geotools.api.style.Symbolizer sym) {
         if (sym == null) return null;
-        if (sym instanceof PointSymbolizer) {
-            if (canRender(((PointSymbolizerImpl) sym).getOptions())) return super.copy(sym);
-        } else if (sym instanceof LineSymbolizer) {
-            if (canRender(((LineSymbolizerImpl) sym).getOptions())) return super.copy(sym);
-        }
-        if (sym instanceof PolygonSymbolizer) {
-            if (canRender(((PolygonSymbolizerImpl) sym).getOptions())) return super.copy(sym);
-        }
-        if (sym instanceof TextSymbolizer) {
-            if (canRender(((TextSymbolizerImpl) sym).getOptions())) return super.copy(sym);
-        }
-        if (sym instanceof RasterSymbolizer) {
-            if (canRender(((RasterSymbolizerImpl) sym).getOptions())) return super.copy(sym);
-        } else {
-            throw new IllegalStateException("Can't copy " + sym);
-        }
+
+        if (canRender(sym.getOptions())) return super.copy(sym);
+
 
         return null;
     }

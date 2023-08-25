@@ -484,7 +484,11 @@ public class StyleFactory extends AbstractStyleFactory
     @Override
     public PolygonSymbolizer createPolygonSymbolizer(
             Stroke stroke, Fill fill, String geometryPropertyName) {
-        return null;
+        PolygonSymbolizerImpl poly = createPolygonSymbolizer();
+        poly.setFill(fill);
+        poly.setStroke(stroke);
+        poly.setGeometryPropertyName(geometryPropertyName);
+        return  poly;
     }
 
     @Override

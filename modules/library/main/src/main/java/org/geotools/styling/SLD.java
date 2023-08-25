@@ -119,7 +119,7 @@ public class SLD {
         }
         for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
             for (int i = 0; i < featureTypeStyle.rules().size(); i++) {
-                RuleImpl rule = (RuleImpl) featureTypeStyle.rules().get(i);
+                Rule rule =  featureTypeStyle.rules().get(i);
                 DuplicatingStyleVisitor update =
                         new DuplicatingStyleVisitor() {
 
@@ -147,7 +147,7 @@ public class SLD {
                             }
                         };
                 rule.accept(update);
-                Rule updatedRule = (Rule) update.getCopy();
+                RuleImpl updatedRule = (RuleImpl) update.getCopy();
                 featureTypeStyle.rules().set(i, updatedRule);
             }
         }

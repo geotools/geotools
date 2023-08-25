@@ -101,7 +101,14 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
     public void setAnchorPointX(double x) {
         this.anchorPointX = filterFactory.literal(x);
     }
-
+    /**
+     * Define the anchor point.
+     *
+     * @param y Literal value of property anchorPointX
+     */
+    public void setAnchorPointY(double y) {
+        this.anchorPointX = filterFactory.literal(y);
+    }
     /**
      * Getter for property anchorPointY.
      *

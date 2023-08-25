@@ -102,7 +102,7 @@ public interface Rule {
      *
      * @return the list of Symbolizer
      */
-    List<? extends Symbolizer> symbolizers();
+    List<Symbolizer> symbolizers();
 
     /** @return Location where this style is defined; file or server; or null if unknown */
     OnLineResource getOnlineResource();

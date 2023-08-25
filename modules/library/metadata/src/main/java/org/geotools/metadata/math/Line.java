@@ -37,7 +37,6 @@ import org.geotools.api.util.Cloneable;
  * @author Martin Desruisseaux (PMO, IRD)
  * @see Point2D
  * @see Line2D
- * @see Plane
  */
 public class Line implements Cloneable, Serializable {
     /** Serial number for compatibility with different versions. */

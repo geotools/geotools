@@ -46,13 +46,6 @@ public interface Citation {
     Collection<? extends InternationalString> getAlternateTitles();
 
     /**
-     * Reference date for the cited resource.
-     *
-     * @return The reference date.
-     */
-    Collection<? extends CitationDate> getDates();
-
-    /**
      * Version of the cited resource.
      *
      * @return The version, or {@code null} if none.
@@ -88,14 +81,6 @@ public interface Citation {
      * @return The presentation mode, or an empty collection if none.
      */
     Collection<PresentationForm> getPresentationForm();
-
-    /**
-     * Information about the series, or aggregate dataset, of which the dataset is a part. Returns
-     * {@code null} if none.
-     *
-     * @return The series of which the dataset is a part, or {@code null} if none.
-     */
-    Series getSeries();
 
     /**
      * Other information required to complete the citation that is not recorded elsewhere. Returns

@@ -23,9 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 import javax.measure.Unit;
 import org.geotools.api.metadata.quality.QuantitativeResult;
+import org.geotools.api.metadata.quality.Result;
 import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.Record;
 import org.geotools.api.util.RecordType;
+import org.geotools.metadata.iso.MetadataEntity;
 
 /**
  * Information about the value (or set of values) obtained from applying a data quality measure.
@@ -35,7 +37,7 @@ import org.geotools.api.util.RecordType;
  * @author Touraïvane
  * @since 2.1
  */
-public class QuantitativeResultImpl extends ResultImpl implements QuantitativeResult {
+public class QuantitativeResultImpl extends MetadataEntity implements QuantitativeResult, Result {
     /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = 1230713599561236060L;
 

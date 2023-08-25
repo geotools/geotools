@@ -52,6 +52,8 @@ import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.oracle.sdo.GeometryConverter;
 import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.data.oracle.sdo.TT;
+import org.geotools.filter.visitor.JsonPointerFilterSplittingVisitor;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
@@ -72,6 +74,14 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.util.GenericName;
 
 /**
  * Abstract dialect implementation for Oracle. Subclasses differ on the way used to parse and encode
@@ -1490,6 +1500,21 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         Double maxy = ((Number) yInfo[2]).doubleValue();
         returnArray.free();
         return new Envelope(minx, maxx, miny, maxy);
+    }
+
+    @Override
+    public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
+
+        PostPreProcessFilterSplittingVisitor splitter =
+                new JsonPointerFilterSplittingVisitor(
+                        dataStore.getFilterCapabilities(), schema, null);
+        filter.accept(splitter, null);
+
+        Filter[] split = new Filter[2];
+        split[0] = splitter.getFilterPre();
+        split[1] = splitter.getFilterPost();
+
+        return split;
     }
 
     @Override

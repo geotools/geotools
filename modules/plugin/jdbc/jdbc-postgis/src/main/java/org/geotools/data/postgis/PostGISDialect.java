@@ -48,10 +48,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.function.JsonPointerFunction;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.filter.visitor.JsonPointerFilterSplittingVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
@@ -83,6 +80,12 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.postgresql.jdbc.PgConnection;
 
 public class PostGISDialect extends BasicSQLDialect {
@@ -1622,30 +1625,8 @@ public class PostGISDialect extends BasicSQLDialect {
     public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
 
         PostPreProcessFilterSplittingVisitor splitter =
-                new PostPreProcessFilterSplittingVisitor(
-                        dataStore.getFilterCapabilities(), schema, null) {
-
-                    @Override
-                    public Object visit(Function expression, Object notUsed) {
-                        if (expression instanceof JsonPointerFunction) {
-                            // takes the json pointer param to check if
-                            // can be encoded
-                            Expression param = expression.getParameters().get(1);
-                            if (!(param instanceof Literal)) {
-                                expression = constantParameterToLiteral(expression, param, 1);
-                            }
-                        }
-                        return super.visit(expression, notUsed);
-                    }
-
-                    @Override
-                    protected boolean supports(Object value) {
-                        if (value instanceof JsonPointerFunction) {
-                            Expression param = ((Function) value).getParameters().get(1);
-                            return param instanceof Literal;
-                        } else return super.supports(value);
-                    }
-                };
+                new JsonPointerFilterSplittingVisitor(
+                        dataStore.getFilterCapabilities(), schema, null);
         filter.accept(splitter, null);
 
         Filter[] split = new Filter[2];

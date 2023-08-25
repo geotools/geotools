@@ -9,13 +9,8 @@
  */
 package org.geotools.api.referencing;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import java.util.Collection;
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
 
@@ -37,7 +32,6 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier = "IO_IdentifiedObject", specification = ISO_19111)
 public interface IdentifiedObject {
     /**
      * Key for the <code>{@value}</code> property to be given to the {@linkplain ObjectFactory
@@ -80,7 +74,6 @@ public interface IdentifiedObject {
      *
      * @return The primary name.
      */
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19111)
     ReferenceIdentifier getName();
 
     /**
@@ -88,7 +81,6 @@ public interface IdentifiedObject {
      *
      * @return The aliases, or an empty collection if there is none.
      */
-    @UML(identifier = "alias", obligation = OPTIONAL, specification = ISO_19111)
     Collection<GenericName> getAlias();
 
     /**
@@ -97,7 +89,6 @@ public interface IdentifiedObject {
      *
      * @return This object identifiers, or an empty set if there is none.
      */
-    @UML(identifier = "identifier", obligation = OPTIONAL, specification = ISO_19111)
     Set<ReferenceIdentifier> getIdentifiers();
 
     /**
@@ -105,7 +96,6 @@ public interface IdentifiedObject {
      *
      * @return The remarks, or {@code null} if none.
      */
-    @UML(identifier = "remarks", obligation = OPTIONAL, specification = ISO_19111)
     InternationalString getRemarks();
 
     /**

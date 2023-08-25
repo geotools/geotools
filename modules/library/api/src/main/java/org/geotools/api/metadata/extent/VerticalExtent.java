@@ -9,10 +9,6 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.crs.VerticalCRS;
 
 /**
@@ -23,14 +19,12 @@ import org.geotools.api.referencing.crs.VerticalCRS;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_VerticalExtent", specification = ISO_19115)
 public interface VerticalExtent {
     /**
      * Returns the lowest vertical extent contained in the dataset.
      *
      * @return Double mandatory for valid content, may be null for an invalid document.
      */
-    @UML(identifier = "minimumValue", obligation = MANDATORY, specification = ISO_19115)
     Double getMinimumValue();
 
     /**
@@ -38,7 +32,6 @@ public interface VerticalExtent {
      *
      * @return Double mandatory for valid content, may be null for an invalid document.
      */
-    @UML(identifier = "maximumValue", obligation = MANDATORY, specification = ISO_19115)
     Double getMaximumValue();
 
     /**
@@ -60,6 +53,5 @@ public interface VerticalExtent {
      * @return The vertical CRS.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "verticalCRS", obligation = MANDATORY, specification = ISO_19115)
     VerticalCRS getVerticalCRS();
 }

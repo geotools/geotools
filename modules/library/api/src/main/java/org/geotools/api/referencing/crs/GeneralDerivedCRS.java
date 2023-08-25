@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.operation.Conversion;
 
 /**
@@ -25,14 +21,12 @@ import org.geotools.api.referencing.operation.Conversion;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "SC_GeneralDerivedCRS", specification = ISO_19111)
 public interface GeneralDerivedCRS extends SingleCRS {
     /**
      * Returns the base coordinate reference system.
      *
      * @return The base coordinate reference system.
      */
-    @UML(identifier = "baseCRS", obligation = MANDATORY, specification = ISO_19111)
     CoordinateReferenceSystem getBaseCRS();
 
     /**
@@ -45,6 +39,5 @@ public interface GeneralDerivedCRS extends SingleCRS {
      *     01-009, this new interface specifies a method name which contains the {@code FromBase}
      *     words.
      */
-    @UML(identifier = "definedByConversion", obligation = MANDATORY, specification = ISO_19111)
     Conversion getConversionFromBase();
 }

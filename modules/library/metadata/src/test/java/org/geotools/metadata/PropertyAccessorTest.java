@@ -59,7 +59,7 @@ public final class PropertyAccessorTest {
                 "No dummy interface expected.",
                 PropertyAccessor.getType(citation.getClass(), "org.geotools.api.dummy"));
         PropertyAccessor accessor = createPropertyAccessor(citation);
-        assertTrue("Count of 'get' methods.", accessor.count() >= 13);
+        assertTrue("Count of 'get' methods.", accessor.count() >= 11);
     }
 
     /** Tests the {@code indexOf} and {code name} methods. */

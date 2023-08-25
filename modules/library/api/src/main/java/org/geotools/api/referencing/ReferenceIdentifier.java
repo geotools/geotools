@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.Identifier;
 
 /**
@@ -22,7 +18,6 @@ import org.geotools.api.metadata.Identifier;
  * @author Ely Conn (Leica Geosystems Geospatial Imaging, LLC)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "RS_Identifier", specification = ISO_19115)
 public interface ReferenceIdentifier extends Identifier {
     /**
      * Key for the <code>{@value}</code> property to be given to the {@linkplain
@@ -47,7 +42,6 @@ public interface ReferenceIdentifier extends Identifier {
      *
      * @return The identifier code space.
      */
-    @UML(identifier = "codeSpace", obligation = OPTIONAL, specification = ISO_19115)
     String getCodeSpace();
 
     /**
@@ -57,6 +51,5 @@ public interface ReferenceIdentifier extends Identifier {
      * @return The version for the namespace (for example the version of the underlying EPSG
      *     database).
      */
-    @UML(identifier = "version", obligation = OPTIONAL, specification = ISO_19115)
     String getVersion();
 }

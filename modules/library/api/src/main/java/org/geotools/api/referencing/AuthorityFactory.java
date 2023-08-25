@@ -9,10 +9,7 @@
  */
 package org.geotools.api.referencing;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.util.InternationalString;
 
@@ -28,14 +25,12 @@ import org.geotools.api.util.InternationalString;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CS_CoordinateSystemAuthorityFactory", specification = OGC_01009)
 public interface AuthorityFactory extends Factory {
     /**
      * Returns the organization or party responsible for definition and maintenance of the database.
      *
      * @return The organization reponsible for definition of the database.
      */
-    @UML(identifier = "getAuthority", specification = OGC_01009)
     Citation getAuthority();
 
     /**
@@ -78,7 +73,6 @@ public interface AuthorityFactory extends Factory {
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
-    @UML(identifier = "descriptionText", specification = OGC_01009)
     InternationalString getDescriptionText(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 

@@ -9,10 +9,7 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
 import javax.measure.Unit;
-import org.geotools.api.annotation.UML;
 
 /**
  * A data type for intervals of time which supports the expression of duration in terms of a
@@ -22,18 +19,14 @@ import org.geotools.api.annotation.UML;
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
  */
-@UML(identifier = "TM_IntervalLength", specification = ISO_19108)
 public interface IntervalLength extends Duration {
     /** The unit of measure used to express the length of the interval. */
-    @UML(identifier = "unit", specification = ISO_19108)
     Unit getUnit();
 
     /** A positive integer that is the base of the mulitplier of the unit. */
-    @UML(identifier = "radix", specification = ISO_19108)
     int getRadix();
 
     /** The exponent of the base. */
-    @UML(identifier = "factor", specification = ISO_19108)
     int getFactor();
 
     /**
@@ -41,6 +34,5 @@ public interface IntervalLength extends Duration {
      * radix}<sup>(-{@linkplain #getFactor factor})</sup> of the {@linkplain #getUnit specified
      * unit}.
      */
-    @UML(identifier = "value", specification = ISO_19108)
     int getValue();
 }

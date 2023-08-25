@@ -9,18 +9,12 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Used for describing temporal positions referenced to other temporal reference systems.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_TemporalPosition", specification = ISO_19108)
 public interface TemporalPosition {
     /**
      * This attribute provides the only value for temporal position unless a subtype of {@code
@@ -30,6 +24,5 @@ public interface TemporalPosition {
      *
      * @todo Method name doesn't match the return type.
      */
-    @UML(identifier = "indeterminatePosition", obligation = OPTIONAL, specification = ISO_19108)
     IndeterminateValue getIndeterminatePosition();
 }

@@ -9,10 +9,6 @@
  */
 package org.geotools.api.coverage.processing;
 
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Throws if an operation name given to {@link GridCoverageProcessor} is not a know operation.
  *
@@ -33,7 +29,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "GP_OperationNotFound", specification = OGC_01004)
 public class OperationNotFoundException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8654574655958181935L;

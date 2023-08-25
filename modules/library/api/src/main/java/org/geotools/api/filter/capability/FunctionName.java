@@ -21,10 +21,7 @@ package org.geotools.api.filter.capability;
 
 // Annotations
 
-import static org.geotools.api.annotation.Specification.UNSPECIFIED;
-
 import java.util.List;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.parameter.Parameter;
 
@@ -76,7 +73,6 @@ public interface FunctionName extends Operator {
      *
      * <p>This value is derived from {@link #getArguments()}
      */
-    @UML(identifier = "argumentCount", specification = UNSPECIFIED)
     int getArgumentCount();
 
     /**

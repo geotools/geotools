@@ -9,12 +9,7 @@
  */
 package org.geotools.api.metadata.citation;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
 import java.net.URI;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
 
 /**
@@ -26,7 +21,6 @@ import org.geotools.api.util.InternationalString;
  * @author Cory Horner (Refractions Research)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CI_OnlineResource", specification = ISO_19115)
 public interface OnLineResource {
     /**
      * Location (address) for on-line access using a Uniform Resource Locator address or similar
@@ -35,7 +29,6 @@ public interface OnLineResource {
      * @return Location for on-line access using a Uniform Resource Locator address or similar
      *     scheme.
      */
-    @UML(identifier = "linkage", obligation = MANDATORY, specification = ISO_19115)
     URI getLinkage();
 
     /**
@@ -43,7 +36,6 @@ public interface OnLineResource {
      *
      * @return Connection protocol to be used, or {@code null}.
      */
-    @UML(identifier = "protocol", obligation = OPTIONAL, specification = ISO_19115)
     String getProtocol();
 
     /**
@@ -52,7 +44,6 @@ public interface OnLineResource {
      *
      * @return Application profile that can be used with the online resource, or {@code null}.
      */
-    @UML(identifier = "applicationProfile", obligation = OPTIONAL, specification = ISO_19115)
     String getApplicationProfile();
 
     /**
@@ -61,7 +52,6 @@ public interface OnLineResource {
      * @return Name of the online resource, or {@code null}.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "name", obligation = OPTIONAL, specification = ISO_19115)
     String getName();
 
     /**
@@ -69,7 +59,6 @@ public interface OnLineResource {
      *
      * @return Text description of what the online resource is/does, or {@code null}.
      */
-    @UML(identifier = "description", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getDescription();
 
     /**
@@ -77,6 +66,5 @@ public interface OnLineResource {
      *
      * @return Function performed by the online resource, or {@code null}.
      */
-    @UML(identifier = "function", obligation = OPTIONAL, specification = ISO_19115)
     OnLineFunction getFunction();
 }

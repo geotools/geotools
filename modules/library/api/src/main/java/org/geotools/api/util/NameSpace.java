@@ -9,11 +9,6 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * A domain in which {@linkplain GenericName names} given by character strings are defined.
  *
@@ -21,7 +16,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "NameSpace", specification = ISO_19103)
 public interface NameSpace {
     /**
      * Indicates whether this namespace is a "top level" namespace. Global, or top-level namespaces
@@ -31,7 +25,6 @@ public interface NameSpace {
      *
      * @return {@code true} if this namespace has no parent.
      */
-    @UML(identifier = "isGlobal", obligation = MANDATORY, specification = ISO_19103)
     boolean isGlobal();
 
     /**
@@ -43,6 +36,5 @@ public interface NameSpace {
      *
      * @return The identifier of this namespace.
      */
-    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19103)
     GenericName name();
 }

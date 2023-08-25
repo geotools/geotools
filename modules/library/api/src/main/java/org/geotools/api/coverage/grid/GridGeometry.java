@@ -9,10 +9,6 @@
  */
 package org.geotools.api.coverage.grid;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.OGC_01004;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 
@@ -25,7 +21,6 @@ import org.geotools.api.referencing.operation.MathTransform;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CV_GridGeometry", specification = OGC_01004)
 public interface GridGeometry {
     /**
      * The valid coordinate range of a grid coverage. The lowest valid grid coordinate is often (but
@@ -34,7 +29,6 @@ public interface GridGeometry {
      *
      * @return The valid coordinate range of a grid coverage.
      */
-    @UML(identifier = "gridRange", obligation = MANDATORY, specification = OGC_01004)
     GridEnvelope getGridRange();
 
     /**
@@ -48,6 +42,5 @@ public interface GridGeometry {
      *     coordinates}.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "gridToCoordinateSystem", obligation = MANDATORY, specification = OGC_01004)
     MathTransform getGridToCRS();
 }

@@ -9,14 +9,9 @@
  */
 package org.geotools.api.style;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19117;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
@@ -32,7 +27,6 @@ import org.geotools.api.metadata.citation.OnLineResource;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-@UML(identifier = "PF_FeaturePortrayal", specification = ISO_19117)
 public interface FeatureTypeStyle {
 
     /**
@@ -61,7 +55,6 @@ public interface FeatureTypeStyle {
      *
      * @return Collection<String>
      */
-    @UML(identifier = "definedForInst", obligation = OPTIONAL, specification = ISO_19117)
     Id getFeatureInstanceIDs();
 
     /**
@@ -73,7 +66,6 @@ public interface FeatureTypeStyle {
      *
      * @return the name of the feature type that this style is meant to act upon.
      */
-    @UML(identifier = "definedFor", obligation = OPTIONAL, specification = ISO_19117)
     Set<Name> featureTypeNames();
 
     /**
@@ -101,7 +93,6 @@ public interface FeatureTypeStyle {
      *
      * @return the list of rules. can not be null but can be empty.
      */
-    @UML(identifier = "portrayalRule", obligation = MANDATORY, specification = ISO_19117)
     List<? extends Rule> rules();
 
     /**

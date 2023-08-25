@@ -9,13 +9,8 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.IdentifiedObject;
 
 /**
@@ -28,7 +23,6 @@ import org.geotools.api.referencing.IdentifiedObject;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CD_PrimeMeridian", specification = ISO_19111)
 public interface PrimeMeridian extends IdentifiedObject {
     /**
      * Longitude of the prime meridian measured from the Greenwich meridian, positive eastward. The
@@ -37,7 +31,6 @@ public interface PrimeMeridian extends IdentifiedObject {
      *
      * @return The prime meridian Greenwich longitude, in {@linkplain #getAngularUnit angular unit}.
      */
-    @UML(identifier = "greenwichLongitude", obligation = CONDITIONAL, specification = ISO_19111)
     double getGreenwichLongitude();
 
     /**
@@ -45,6 +38,5 @@ public interface PrimeMeridian extends IdentifiedObject {
      *
      * @return The angular unit of greenwich longitude.
      */
-    @UML(identifier = "getAngularUnit", specification = OGC_01009)
     Unit<Angle> getAngularUnit();
 }

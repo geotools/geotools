@@ -9,13 +9,8 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
 import java.util.Map;
 import java.util.Set;
-import org.geotools.api.annotation.UML;
 
 /**
  * The type definition of a {@linkplain Record record}. A {@code RecordType} defines dynamically
@@ -38,7 +33,6 @@ import org.geotools.api.annotation.UML;
  * @see Record
  * @see RecordSchema
  */
-@UML(identifier = "RecordType", specification = ISO_19103)
 public interface RecordType {
     /**
      * Returns the name that identifies this record type. If this {@code RecordType} is contained in
@@ -56,11 +50,9 @@ public interface RecordType {
      *
      * This method can be think as the equivalent of the Java {@link Class#getName()} method.
      */
-    @UML(identifier = "typeName", obligation = MANDATORY, specification = ISO_19103)
     TypeName getTypeName();
 
     /** Returns the schema that contains this record type. */
-    @UML(identifier = "container", obligation = OPTIONAL, specification = ISO_19103)
     RecordSchema getContainer();
 
     /**
@@ -69,7 +61,6 @@ public interface RecordType {
      *
      * @see Record#getAttributes
      */
-    @UML(identifier = "attributeTypes", obligation = MANDATORY, specification = ISO_19103)
     Map<MemberName, TypeName> getAttributeTypes();
 
     /**
@@ -97,7 +88,6 @@ public interface RecordType {
      * @todo Does it make sense given that {@link MemberName#getAttributeType} already provides this
      *     information?
      */
-    @UML(identifier = "locate", obligation = MANDATORY, specification = ISO_19103)
     TypeName locate(MemberName name);
 
     /**

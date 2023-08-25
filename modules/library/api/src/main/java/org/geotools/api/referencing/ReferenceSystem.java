@@ -9,11 +9,6 @@
  */
 package org.geotools.api.referencing;
 
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.metadata.extent.Extent;
 import org.geotools.api.util.InternationalString;
 
@@ -31,7 +26,6 @@ import org.geotools.api.util.InternationalString;
  * @since GeoAPI 1.0
  * @see org.geotools.api.referencing.crs.CoordinateReferenceSystem
  */
-@UML(identifier = "RS_ReferenceSystem", specification = ISO_19115)
 public interface ReferenceSystem extends IdentifiedObject {
     /**
      * Key for the <code>{@value}</code> property to be given to the {@linkplain ObjectFactory
@@ -58,7 +52,6 @@ public interface ReferenceSystem extends IdentifiedObject {
      * @return The reference system valid domain, or {@code null} if not available.
      * @since GeoAPI 2.1
      */
-    @UML(identifier = "domainOfValidity", obligation = OPTIONAL, specification = ISO_19111)
     Extent getDomainOfValidity();
 
     /**
@@ -67,6 +60,5 @@ public interface ReferenceSystem extends IdentifiedObject {
      *
      * @return The domain of usage, or {@code null} if none.
      */
-    @UML(identifier = "SC_CRS.scope", obligation = OPTIONAL, specification = ISO_19111)
     InternationalString getScope();
 }

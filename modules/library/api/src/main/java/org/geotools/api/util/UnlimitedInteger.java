@@ -9,10 +9,6 @@
  */
 package org.geotools.api.util;
 
-import static org.geotools.api.annotation.Specification.ISO_19103;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * An {@linkplain Integer integer} with associated infinite flag. This implementation uses {@link
  * Integer#MAX_VALUE} as a sentinel value for positive infinity. This approach is consistent with
@@ -23,7 +19,6 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "UnlimitedInteger", specification = ISO_19103)
 public final class UnlimitedInteger extends Number implements Comparable<UnlimitedInteger> {
     /** For compatibility with different versions. */
     private static final long serialVersionUID = 4748246369364771836L;

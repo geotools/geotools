@@ -9,15 +9,10 @@
  */
 package org.geotools.api.temporal;
 
-import static org.geotools.api.annotation.Specification.ISO_19108;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * An abstract class with two subclasses for representing a temporal instant and a temporal period.
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  */
-@UML(identifier = "TM_GeometricPrimitive", specification = ISO_19108)
 public interface TemporalGeometricPrimitive extends TemporalPrimitive, Separation {}

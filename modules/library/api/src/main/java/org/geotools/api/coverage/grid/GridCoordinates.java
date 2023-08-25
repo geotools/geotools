@@ -9,10 +9,6 @@
  */
 package org.geotools.api.coverage.grid;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19123;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.util.Cloneable;
 
 /**
@@ -25,7 +21,6 @@ import org.geotools.api.util.Cloneable;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  */
-@UML(identifier = "CV_GridCoordinates", specification = ISO_19123)
 public interface GridCoordinates extends Cloneable {
     /**
      * Returns the number of dimensions. This method is equivalent to <code>
@@ -44,7 +39,6 @@ public interface GridCoordinates extends Cloneable {
      * @return A copy of the coordinates. Changes in the returned array will not be reflected back
      *     in this {@code GridCoordinates} object.
      */
-    @UML(identifier = "coordValues", obligation = MANDATORY, specification = ISO_19123)
     int[] getCoordinateValues();
 
     /**

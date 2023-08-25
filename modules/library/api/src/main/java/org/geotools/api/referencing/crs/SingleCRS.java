@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.crs;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.referencing.datum.Datum;
 
@@ -40,7 +36,6 @@ import org.geotools.api.referencing.datum.Datum;
  * @see org.geotools.api.referencing.cs.CoordinateSystem
  * @see org.geotools.api.referencing.datum.Datum
  */
-@UML(identifier = "SC_SingleCRS", specification = ISO_19111)
 public interface SingleCRS extends CoordinateReferenceSystem {
     /**
      * Returns the coordinate system.
@@ -48,7 +43,6 @@ public interface SingleCRS extends CoordinateReferenceSystem {
      * @rename Expanded the "CS" abbreviation into "CoordinateSystem".
      */
     @Override
-    @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     CoordinateSystem getCoordinateSystem();
 
     /**
@@ -56,6 +50,5 @@ public interface SingleCRS extends CoordinateReferenceSystem {
      *
      * @return The datum.
      */
-    @UML(identifier = "usesDatum", obligation = MANDATORY, specification = ISO_19111)
     Datum getDatum();
 }

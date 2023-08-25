@@ -9,11 +9,6 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Defines the origin of an image coordinate reference system. An image datum is used in a local
  * context only. For an image datum, the anchor point is usually either the centre of the image or
@@ -24,13 +19,11 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CD_ImageDatum", specification = ISO_19111)
 public interface ImageDatum extends Datum {
     /**
      * Specification of the way the image grid is associated with the image data attributes.
      *
      * @return The way image grid is associated with image data attributes.
      */
-    @UML(identifier = "pixelInCell", obligation = MANDATORY, specification = ISO_19111)
     PixelInCell getPixelInCell();
 }

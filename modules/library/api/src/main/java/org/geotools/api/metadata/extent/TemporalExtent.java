@@ -9,11 +9,6 @@
  */
 package org.geotools.api.metadata.extent;
 
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Specification.ISO_19108;
-import static org.geotools.api.annotation.Specification.ISO_19115;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.temporal.TemporalPrimitive;
 
 /**
@@ -23,13 +18,11 @@ import org.geotools.api.temporal.TemporalPrimitive;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "EX_TemporalExtent", specification = ISO_19115)
 public interface TemporalExtent {
     /**
      * Returns the date and time for the content of the dataset.
      *
      * @return The date and time for the content.
      */
-    @UML(identifier = "extent", obligation = MANDATORY, specification = ISO_19108)
     TemporalPrimitive getExtent();
 }

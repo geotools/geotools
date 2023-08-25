@@ -9,13 +9,7 @@
  */
 package org.geotools.api.referencing.cs;
 
-import static org.geotools.api.annotation.Obligation.CONDITIONAL;
-import static org.geotools.api.annotation.Obligation.MANDATORY;
-import static org.geotools.api.annotation.Obligation.OPTIONAL;
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
 import javax.measure.Unit;
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.IdentifiedObject;
 
 /**
@@ -29,7 +23,6 @@ import org.geotools.api.referencing.IdentifiedObject;
  * @see CoordinateSystem
  * @see Unit
  */
-@UML(identifier = "CS_CoordinateSystemAxis", specification = ISO_19111)
 public interface CoordinateSystemAxis extends IdentifiedObject {
     /**
      * The abbreviation used for this coordinate system axes. This abbreviation is also used to
@@ -37,7 +30,6 @@ public interface CoordinateSystemAxis extends IdentifiedObject {
      *
      * @return The coordinate system axis abbreviation.
      */
-    @UML(identifier = "axisAbbrev", obligation = MANDATORY, specification = ISO_19111)
     String getAbbreviation();
 
     /**
@@ -56,7 +48,6 @@ public interface CoordinateSystemAxis extends IdentifiedObject {
      *
      * @return The coordinate system axis direction.
      */
-    @UML(identifier = "axisDirection", obligation = MANDATORY, specification = ISO_19111)
     AxisDirection getDirection();
 
     /**
@@ -66,7 +57,6 @@ public interface CoordinateSystemAxis extends IdentifiedObject {
      *
      * @return The minimum value, or {@link Double#NEGATIVE_INFINITY} if none.
      */
-    @UML(identifier = "minimumValue", obligation = OPTIONAL, specification = ISO_19111)
     double getMinimumValue();
 
     /**
@@ -76,7 +66,6 @@ public interface CoordinateSystemAxis extends IdentifiedObject {
      *
      * @return The maximum value, or {@link Double#POSITIVE_INFINITY} if none.
      */
-    @UML(identifier = "maximumValue", obligation = OPTIONAL, specification = ISO_19111)
     double getMaximumValue();
 
     /**
@@ -88,7 +77,6 @@ public interface CoordinateSystemAxis extends IdentifiedObject {
      *
      * @return The range meaning, or {@code null} in none.
      */
-    @UML(identifier = "rangeMeaning", obligation = CONDITIONAL, specification = ISO_19111)
     RangeMeaning getRangeMeaning();
 
     /**
@@ -98,6 +86,5 @@ public interface CoordinateSystemAxis extends IdentifiedObject {
      *
      * @return The coordinate system axis unit.
      */
-    @UML(identifier = "axisUnitID", obligation = MANDATORY, specification = ISO_19111)
     Unit<?> getUnit();
 }

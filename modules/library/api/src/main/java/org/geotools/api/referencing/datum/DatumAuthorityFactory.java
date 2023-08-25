@@ -9,9 +9,6 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Specification.OGC_01009;
-
-import org.geotools.api.annotation.UML;
 import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -29,7 +26,6 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException;
  * @see org.geotools.api.referencing.cs.CSAuthorityFactory
  * @see org.geotools.api.referencing.crs.CRSAuthorityFactory
  */
-@UML(identifier = "CS_CoordinateSystemAuthorityFactory", specification = OGC_01009)
 public interface DatumAuthorityFactory extends AuthorityFactory {
     /**
      * Returns an arbitrary {@linkplain Datum datum} from a code. If the datum type is know at
@@ -80,7 +76,6 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createVerticalCRS
      */
-    @UML(identifier = "createVerticalDatum", specification = OGC_01009)
     VerticalDatum createVerticalDatum(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -108,7 +103,6 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createGeographicCRS
      * @see org.geotools.api.referencing.crs.CRSAuthorityFactory#createProjectedCRS
      */
-    @UML(identifier = "createHorizontalDatum", specification = OGC_01009)
     GeodeticDatum createGeodeticDatum(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 
@@ -121,7 +115,6 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see #createGeodeticDatum
      */
-    @UML(identifier = "createEllipsoid", specification = OGC_01009)
     Ellipsoid createEllipsoid(String code) throws NoSuchAuthorityCodeException, FactoryException;
 
     /**
@@ -133,7 +126,6 @@ public interface DatumAuthorityFactory extends AuthorityFactory {
      * @throws FactoryException if the object creation failed for some other reason.
      * @see #createGeodeticDatum
      */
-    @UML(identifier = "createPrimeMeridian", specification = OGC_01009)
     PrimeMeridian createPrimeMeridian(String code)
             throws NoSuchAuthorityCodeException, FactoryException;
 }

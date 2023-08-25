@@ -20,24 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.api.metadata.MetaData;
 import org.geotools.api.metadata.citation.CitationFactory;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.metadata.content.CoverageContentType;
-import org.geotools.api.metadata.content.ImagingCondition;
 import org.geotools.api.metadata.extent.VerticalExtent;
-import org.geotools.api.metadata.identification.AggregateInformation;
-import org.geotools.api.metadata.identification.RepresentativeFraction;
-import org.geotools.api.metadata.maintenance.ScopeDescription;
 import org.geotools.api.util.CodeList;
-import org.geotools.metadata.iso.MetaDataImpl;
 import org.geotools.util.CheckedCollection;
 import org.geotools.util.Classes;
 import org.junit.Test;
@@ -47,8 +39,6 @@ import org.junit.Test;
  *
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
- * @todo Current implementation relies on {@link MetaData} dependencies. This is probably not
- *     enough; we should provide an explicit list of metadata interface.
  */
 public final class ISOTest {
 
@@ -67,104 +57,31 @@ public final class ISOTest {
      * list should not contains any {@link CodeList}.
      */
     private static final Class<?>[] TEST = {
-        org.geotools.api.metadata.ApplicationSchemaInformation.class,
-        org.geotools.api.metadata.ExtendedElementInformation.class,
-        org.geotools.api.metadata.FeatureTypeList.class,
         org.geotools.api.metadata.Identifier.class,
-        org.geotools.api.metadata.MetaData.class,
-        org.geotools.api.metadata.MetadataExtensionInformation.class,
-        org.geotools.api.metadata.PortrayalCatalogueReference.class,
-        org.geotools.api.metadata.SpatialAttributeSupplement.class,
         org.geotools.api.metadata.citation.Address.class,
         org.geotools.api.metadata.citation.Citation.class,
-        org.geotools.api.metadata.citation.CitationDate.class,
         org.geotools.api.metadata.citation.CitationFactory.class,
         org.geotools.api.metadata.citation.Contact.class,
         org.geotools.api.metadata.citation.OnLineResource.class,
         org.geotools.api.metadata.citation.ResponsibleParty.class,
-        org.geotools.api.metadata.citation.Series.class,
         org.geotools.api.metadata.citation.Telephone.class,
-        org.geotools.api.metadata.constraint.Constraints.class,
-        org.geotools.api.metadata.constraint.LegalConstraints.class,
-        org.geotools.api.metadata.constraint.SecurityConstraints.class,
-        org.geotools.api.metadata.content.Band.class,
-        org.geotools.api.metadata.content.ContentInformation.class,
-        org.geotools.api.metadata.content.CoverageDescription.class,
-        org.geotools.api.metadata.content.FeatureCatalogueDescription.class,
-        org.geotools.api.metadata.content.ImageDescription.class,
-        org.geotools.api.metadata.content.RangeDimension.class,
-        org.geotools.api.metadata.distribution.DigitalTransferOptions.class,
-        org.geotools.api.metadata.distribution.Distribution.class,
-        org.geotools.api.metadata.distribution.Distributor.class,
-        org.geotools.api.metadata.distribution.Format.class,
-        org.geotools.api.metadata.distribution.Medium.class,
-        org.geotools.api.metadata.distribution.StandardOrderProcess.class,
-        org.geotools.api.metadata.extent.BoundingPolygon.class,
         org.geotools.api.metadata.extent.Extent.class,
         org.geotools.api.metadata.extent.GeographicBoundingBox.class,
-        org.geotools.api.metadata.extent.GeographicDescription.class,
         org.geotools.api.metadata.extent.GeographicExtent.class,
-        org.geotools.api.metadata.extent.SpatialTemporalExtent.class,
         org.geotools.api.metadata.extent.TemporalExtent.class,
         org.geotools.api.metadata.extent.VerticalExtent.class,
-        org.geotools.api.metadata.identification.AggregateInformation.class,
-        org.geotools.api.metadata.identification.BrowseGraphic.class,
-        org.geotools.api.metadata.identification.DataIdentification.class,
-        org.geotools.api.metadata.identification.Identification.class,
-        org.geotools.api.metadata.identification.Keywords.class,
-        org.geotools.api.metadata.identification.RepresentativeFraction.class,
-        org.geotools.api.metadata.identification.Resolution.class,
-        org.geotools.api.metadata.identification.ServiceIdentification.class,
-        org.geotools.api.metadata.identification.Usage.class,
-        org.geotools.api.metadata.lineage.Lineage.class,
-        org.geotools.api.metadata.lineage.ProcessStep.class,
-        org.geotools.api.metadata.lineage.Source.class,
-        org.geotools.api.metadata.maintenance.MaintenanceInformation.class,
-        org.geotools.api.metadata.maintenance.ScopeDescription.class,
         org.geotools.api.metadata.quality.AbsoluteExternalPositionalAccuracy.class,
-        org.geotools.api.metadata.quality.AccuracyOfATimeMeasurement.class,
-        org.geotools.api.metadata.quality.Completeness.class,
-        org.geotools.api.metadata.quality.CompletenessCommission.class,
-        org.geotools.api.metadata.quality.CompletenessOmission.class,
-        org.geotools.api.metadata.quality.ConceptualConsistency.class,
         org.geotools.api.metadata.quality.ConformanceResult.class,
-        org.geotools.api.metadata.quality.DataQuality.class,
-        org.geotools.api.metadata.quality.DomainConsistency.class,
         org.geotools.api.metadata.quality.Element.class,
-        org.geotools.api.metadata.quality.FormatConsistency.class,
-        org.geotools.api.metadata.quality.GriddedDataPositionalAccuracy.class,
-        org.geotools.api.metadata.quality.LogicalConsistency.class,
-        org.geotools.api.metadata.quality.NonQuantitativeAttributeAccuracy.class,
         org.geotools.api.metadata.quality.PositionalAccuracy.class,
-        org.geotools.api.metadata.quality.QuantitativeAttributeAccuracy.class,
         org.geotools.api.metadata.quality.QuantitativeResult.class,
-        org.geotools.api.metadata.quality.RelativeInternalPositionalAccuracy.class,
-        org.geotools.api.metadata.quality.Result.class,
-        org.geotools.api.metadata.quality.Scope.class,
-        org.geotools.api.metadata.quality.TemporalAccuracy.class,
-        org.geotools.api.metadata.quality.TemporalConsistency.class,
-        org.geotools.api.metadata.quality.TemporalValidity.class,
-        org.geotools.api.metadata.quality.ThematicAccuracy.class,
-        org.geotools.api.metadata.quality.ThematicClassificationCorrectness.class,
-        org.geotools.api.metadata.quality.TopologicalConsistency.class,
-        org.geotools.api.metadata.spatial.Dimension.class,
-        org.geotools.api.metadata.spatial.GeometricObjects.class,
-        org.geotools.api.metadata.spatial.Georectified.class,
-        org.geotools.api.metadata.spatial.Georeferenceable.class,
-        org.geotools.api.metadata.spatial.GridSpatialRepresentation.class,
-        org.geotools.api.metadata.spatial.SpatialRepresentation.class,
-        org.geotools.api.metadata.spatial.VectorSpatialRepresentation.class
+        org.geotools.api.metadata.quality.Result.class
     };
 
     /** GeoAPI interfaces that are know to be unimplemented at this stage. */
     private static final Class<?>[] UNIMPLEMENTED = {
-        AggregateInformation.class,
-        CoverageContentType.class,
-        ImagingCondition.class,
         CitationFactory.class, // SHOULD THIS INTERFACE REALLY EXISTS IN GEOAPI?
-        RepresentativeFraction.class, // Implemented on top of 'Number'.
         VerticalExtent.class, // Inconsistent 'verticalCRS' type in GeoAPI interface.
-        ScopeDescription.class, // Only partially implemented (no references to Features).
         OnLineResource.class // No 'setProtocol' method.
     };
 
@@ -176,11 +93,10 @@ public final class ISOTest {
         }
     }
 
-    /** Tests all dependencies starting from the {@link MetaDataImpl} class. */
+    /** Tests all dependencies. */
     @Test
     public void testDependencies() {
         assertNull(getImplementation(Number.class));
-        assertSame(MetaDataImpl.class, getImplementation(MetaData.class));
         final Set<Class<?>> done = new HashSet<>();
         for (final Class<?> type : TEST) {
             final Class<?> impl = getImplementation(type);

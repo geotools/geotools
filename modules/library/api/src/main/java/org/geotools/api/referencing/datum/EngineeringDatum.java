@@ -9,10 +9,6 @@
  */
 package org.geotools.api.referencing.datum;
 
-import static org.geotools.api.annotation.Specification.ISO_19111;
-
-import org.geotools.api.annotation.UML;
-
 /**
  * Defines the origin of an engineering coordinate reference system. An engineering datum is used in
  * a region around that origin. This origin can be fixed with respect to the earth (such as a
@@ -24,5 +20,4 @@ import org.geotools.api.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-@UML(identifier = "CD_EngineeringDatum", specification = ISO_19111)
 public interface EngineeringDatum extends Datum {}

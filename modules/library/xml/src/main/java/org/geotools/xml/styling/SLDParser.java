@@ -78,7 +78,7 @@ import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.ShadedReliefImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleImpl;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.StyledLayerDescriptorImpl;
 import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.styling.UserLayerImpl;
 import org.geotools.util.Base64;
@@ -442,14 +442,15 @@ public class SLDParser {
         return nodes;
     }
 
-    public StyledLayerDescriptor parseSLD() {
+    public StyledLayerDescriptorImpl parseSLD() {
         try {
             dom = newDocumentBuilder(true).parse(source);
             // for our next trick do something with the dom.
 
             // NodeList nodes = findElements(dom, "StyledLayerDescriptor");
 
-            StyledLayerDescriptor sld = parseDescriptor(dom.getDocumentElement()); // should only be
+            StyledLayerDescriptorImpl sld =
+                    parseDescriptor(dom.getDocumentElement()); // should only be
             // one per file
             return sld;
 
@@ -460,8 +461,8 @@ public class SLDParser {
         }
     }
 
-    public StyledLayerDescriptor parseDescriptor(Node root) {
-        StyledLayerDescriptor sld = factory.createStyledLayerDescriptor();
+    public StyledLayerDescriptorImpl parseDescriptor(Node root) {
+        StyledLayerDescriptorImpl sld = factory.createStyledLayerDescriptor();
         // StyledLayer layer = null;
         // LineSymbolizer symbol = factory.createLineSymbolizer();
 

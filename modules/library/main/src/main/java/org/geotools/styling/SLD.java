@@ -119,7 +119,7 @@ public class SLD {
         }
         for (FeatureTypeStyle featureTypeStyle : style.featureTypeStyles()) {
             for (int i = 0; i < featureTypeStyle.rules().size(); i++) {
-                Rule rule =  featureTypeStyle.rules().get(i);
+                Rule rule = featureTypeStyle.rules().get(i);
                 DuplicatingStyleVisitor update =
                         new DuplicatingStyleVisitor() {
 
@@ -1527,7 +1527,7 @@ public class SLD {
      * @param sld the StyledLayerDescriptor object
      * @return an array of Styles
      */
-    public static StyleImpl[] styles(StyledLayerDescriptor sld) {
+    public static StyleImpl[] styles(StyledLayerDescriptorImpl sld) {
         StyledLayerImpl[] layers = (StyledLayerImpl[]) sld.getStyledLayers();
         List<StyleImpl> styles = new ArrayList<>();
 
@@ -1551,7 +1551,7 @@ public class SLD {
      * @param sld the StyledLayerDescriptor object
      * @return an array of FeatureTypeStyles
      */
-    public static FeatureTypeStyleImpl[] featureTypeStyles(StyledLayerDescriptor sld) {
+    public static FeatureTypeStyleImpl[] featureTypeStyles(StyledLayerDescriptorImpl sld) {
         StyleImpl[] style = styles(sld);
         List<FeatureTypeStyle> fts = new ArrayList<>();
         for (StyleImpl value : style) {
@@ -1569,7 +1569,7 @@ public class SLD {
      * @return a FeatureTypeStyle or null if there was no match
      */
     public static FeatureTypeStyleImpl featureTypeStyle(
-            StyledLayerDescriptor sld, SimpleFeatureType type) {
+            StyledLayerDescriptorImpl sld, SimpleFeatureType type) {
         // alternatively, we could use a StyleVisitor here
         StyleImpl[] styles = styles(sld);
         for (StyleImpl style : styles) {
@@ -1589,7 +1589,7 @@ public class SLD {
      * @return the default style; or the first style if no default is defined; or {@code null} if
      *     there are no styles
      */
-    public static StyleImpl defaultStyle(StyledLayerDescriptor sld) {
+    public static StyleImpl defaultStyle(StyledLayerDescriptorImpl sld) {
         StyleImpl[] style = styles(sld);
         for (StyleImpl value : style) {
             if (value.isDefault()) {

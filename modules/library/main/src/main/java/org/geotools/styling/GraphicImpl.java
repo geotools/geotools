@@ -300,21 +300,27 @@ public class GraphicImpl implements org.geotools.api.style.Graphic, Cloneable {
     @Override
     public String toString() {
         return "Graphic{"
-
                 + " anchor="
-                + anchor+"\n\t"
+                + anchor
+                + "\n\t"
                 + ", gap="
-                + gap+"\n\t"
+                + gap
+                + "\n\t"
                 + ", initialGap="
-                + initialGap+"\n\t"
+                + initialGap
+                + "\n\t"
                 + ", rotation="
-                + rotation+"\n\t"
+                + rotation
+                + "\n\t"
                 + ", size="
-                + size+"\n\t"
+                + size
+                + "\n\t"
                 + ", displacement="
-                + displacement+"\n\t"
+                + displacement
+                + "\n\t"
                 + ", opacity="
-                + opacity+"\n\t"
+                + opacity
+                + "\n\t"
                 + ", graphics="
                 + graphics
                 + '}';

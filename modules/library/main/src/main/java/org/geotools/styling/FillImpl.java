@@ -234,11 +234,14 @@ public class FillImpl implements Cloneable, org.geotools.api.style.Fill {
     public String toString() {
         return "Fill{"
                 + " color="
-                + color+"\n\t"
+                + color
+                + "\n\t"
                 + ", opacity="
-                + opacity+"\n\t"
+                + opacity
+                + "\n\t"
                 + ", graphicFill="
-                + graphicFill+"\n\t"
+                + graphicFill
+                + "\n\t"
                 + '}';
     }
 }

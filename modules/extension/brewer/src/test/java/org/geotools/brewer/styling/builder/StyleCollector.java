@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.style.*;
 import org.geotools.api.style.Symbolizer;
+import org.geotools.styling.AbstractStyleVisitor;
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.StyleImpl;

@@ -411,10 +411,9 @@ public class DuplicatingStyleVisitorTest {
 
         AnchorPointImpl clone = (AnchorPointImpl) visitor.getCopy();
         assertCopy(anchorPoint, clone);
-        assertEqualsContract(anchorPoint,clone);
+        assertEqualsContract(anchorPoint, clone);
         AnchorPointImpl other = sf.createAnchorPoint(ff.literal(3), ff.literal(4));
         assertEqualsContract(clone, other, anchorPoint);
-
     }
 
     @Test

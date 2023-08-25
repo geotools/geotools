@@ -488,7 +488,7 @@ public class StyleFactory extends AbstractStyleFactory
         poly.setFill(fill);
         poly.setStroke(stroke);
         poly.setGeometryPropertyName(geometryPropertyName);
-        return  poly;
+        return poly;
     }
 
     @Override
@@ -895,8 +895,8 @@ public class StyleFactory extends AbstractStyleFactory
     }
 
     @Override
-    public StyledLayerDescriptor createStyledLayerDescriptor() {
-        return new StyledLayerDescriptor();
+    public StyledLayerDescriptorImpl createStyledLayerDescriptor() {
+        return new StyledLayerDescriptorImpl();
     }
 
     @Override

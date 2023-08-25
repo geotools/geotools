@@ -68,7 +68,7 @@ import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleImpl;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.StyledLayerDescriptorImpl;
 import org.geotools.styling.TextSymbolizerImpl;
 import org.geotools.styling.UserLayerImpl;
 import org.geotools.test.TestData;
@@ -99,7 +99,7 @@ public class SLDStyleImplTest {
         // java.net.URL surl = new java.net.URL(base + "/test-sld.xml");
         java.net.URL surl = TestData.getResource(this, "test-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
         Assert.assertEquals("My Layer", sld.getName());
         Assert.assertEquals("A layer by me", sld.getTitle());
         Assert.assertEquals("this is a sample layer", sld.getAbstract());
@@ -129,7 +129,7 @@ public class SLDStyleImplTest {
     public void testSLDParser() throws Exception {
         java.net.URL surl = TestData.getResource(this, "example-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         // convert back to xml again
         SLDTransformer aTransformer = new SLDTransformer();
@@ -145,7 +145,7 @@ public class SLDStyleImplTest {
     public void testSLDParserWithLocalizedTitle() throws Exception {
         java.net.URL surl = TestData.getResource(this, "example-localized-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         // convert back to xml again
         SLDTransformer aTransformer = new SLDTransformer();
@@ -175,7 +175,7 @@ public class SLDStyleImplTest {
         // before GEOT-3042 this would simply fail with an NPE
         java.net.URL surl = TestData.getResource(this, "test-empty-elements.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         Assert.assertEquals(1, ((UserLayerImpl) sld.getStyledLayers()[0]).getUserStyles().length);
         StyleImpl style = ((UserLayerImpl) sld.getStyledLayers()[0]).getUserStyles()[0];
@@ -190,7 +190,7 @@ public class SLDStyleImplTest {
         // plain text in dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray1.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         StrokeImpl stroke = validateDashArrayStyle(sld);
         assertArrayEquals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray(), 0f);
@@ -201,7 +201,7 @@ public class SLDStyleImplTest {
         // using ogc:Literal in dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray2.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         StrokeImpl stroke = validateDashArrayStyle(sld);
         assertArrayEquals(new float[] {2.0f, 1.0f, 4.0f, 1.0f}, stroke.getDashArray(), 0f);
@@ -212,7 +212,7 @@ public class SLDStyleImplTest {
         // using expressions in the dasharray
         java.net.URL surl = TestData.getResource(this, "dasharray3.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         List<Expression> expressions = validateDashArrayStyle(sld).dashArray();
 
@@ -227,12 +227,12 @@ public class SLDStyleImplTest {
     public void testDashArray3_dynamic() throws Exception {
         java.net.URL surl = TestData.getResource(this, "dasharray3_dynamic.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         validateDynamicDashArrayStyle(sld);
     }
 
-    private StrokeImpl validateDashArrayStyle(StyledLayerDescriptor sld) {
+    private StrokeImpl validateDashArrayStyle(StyledLayerDescriptorImpl sld) {
         Assert.assertEquals(1, ((UserLayerImpl) sld.getStyledLayers()[0]).getUserStyles().length);
         StyleImpl style = ((UserLayerImpl) sld.getStyledLayers()[0]).getUserStyles()[0];
         List<FeatureTypeStyle> fts = style.featureTypeStyles();
@@ -252,7 +252,7 @@ public class SLDStyleImplTest {
         return stroke;
     }
 
-    private void validateDynamicDashArrayStyle(StyledLayerDescriptor sld) {
+    private void validateDynamicDashArrayStyle(StyledLayerDescriptorImpl sld) {
         Assert.assertEquals(1, ((UserLayerImpl) sld.getStyledLayers()[0]).getUserStyles().length);
         StyleImpl style = ((UserLayerImpl) sld.getStyledLayers()[0]).getUserStyles()[0];
         List<FeatureTypeStyle> fts = style.featureTypeStyles();
@@ -273,7 +273,7 @@ public class SLDStyleImplTest {
     public void testSLDParserWithWhitespaceIsTrimmed() throws Exception {
         java.net.URL surl = TestData.getResource(this, "whitespace.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         TextSymbolizerImpl ts =
                 (TextSymbolizerImpl)
@@ -297,7 +297,7 @@ public class SLDStyleImplTest {
     public void testSLDParserWithhMixedContent() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContent.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         List<Symbolizer> symbolizers =
                 (List<Symbolizer>)
@@ -327,7 +327,7 @@ public class SLDStyleImplTest {
     public void testSLDExtendedColorMap() throws Exception {
         java.net.URL surl = TestData.getResource(this, "colormap.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         RasterSymbolizerImpl rs =
                 (RasterSymbolizerImpl)
@@ -349,7 +349,7 @@ public class SLDStyleImplTest {
     public void testSLDParserWithhMixedContentCDATA() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContentWithCDATA.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         TextSymbolizerImpl text =
                 (TextSymbolizerImpl)
@@ -373,7 +373,7 @@ public class SLDStyleImplTest {
     public void testSLDParserWithhMixedContentCDATASpaces() throws Exception {
         java.net.URL surl = TestData.getResource(this, "mixedContentWithCDATASpaces.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         TextSymbolizerImpl text =
                 (TextSymbolizerImpl)
@@ -397,7 +397,7 @@ public class SLDStyleImplTest {
     public void testSLDParserWithFuncConcatenateCDATASpaces() throws Exception {
         java.net.URL surl = TestData.getResource(this, "funcConcatenateWithCDATASpaces.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         TextSymbolizerImpl text =
                 (TextSymbolizerImpl)
@@ -423,7 +423,7 @@ public class SLDStyleImplTest {
     public void testStrokeCssParameter() throws Exception {
         java.net.URL surl = TestData.getResource(this, "strokeParam.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         PolygonSymbolizerImpl ps =
                 (PolygonSymbolizerImpl)
@@ -449,7 +449,7 @@ public class SLDStyleImplTest {
     @Test
     public void testSLDTransformer() throws Exception {
         // create an SLD
-        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        StyledLayerDescriptorImpl sld = sf.createStyledLayerDescriptor();
         sld.setName("SLD Name");
         sld.setTitle("SLD Title");
         UserLayerImpl layer = sf.createUserLayer();
@@ -477,7 +477,7 @@ public class SLDStyleImplTest {
 
         SLDParser stylereader = new SLDParser(sf, is);
 
-        StyledLayerDescriptor sld2 = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld2 = stylereader.parseSLD();
         // UNCOMMENT FOR DEBUGGING
         //        assertEquals(SLD.rules(SLD.styles(sld)[0]).length,
         // SLD.rules(SLD.styles(sld2)[0]).length);
@@ -511,7 +511,7 @@ public class SLDStyleImplTest {
     @Test
     public void testSLDTransformerIndentation() throws Exception {
         // create a simple object
-        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+        StyledLayerDescriptorImpl sld = sf.createStyledLayerDescriptor();
         NamedLayerImpl nl = sf.createNamedLayer();
         nl.setName("named_layer_1");
         sld.addStyledLayer(nl);
@@ -532,7 +532,7 @@ public class SLDStyleImplTest {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         SLDParser stylereader = new SLDParser(factory, surl);
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         Assert.assertEquals(1, sld.getStyledLayers().length);
         org.geotools.api.style.FeatureTypeStyle[] fts = SLD.featureTypeStyles(sld);
@@ -556,7 +556,7 @@ public class SLDStyleImplTest {
         java.net.URL surl = TestData.getResource(this, "namedLayers.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         final int expectedLayerCount = 3;
         final String[] layerNames = {"Rivers", "Roads", "Houses"};
@@ -609,7 +609,7 @@ public class SLDStyleImplTest {
         java.net.URL surl = TestData.getResource(this, "mixedLayerTypes.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
-        StyledLayerDescriptor sld = stylereader.parseSLD();
+        StyledLayerDescriptorImpl sld = stylereader.parseSLD();
 
         final int expectedLayerCount = 4;
 

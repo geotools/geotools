@@ -23,7 +23,7 @@
         <regexp pattern="(\(\s*)@{class1}(\s*\))" />
         <substitution expression="(@{class2})" />
       </replaceregexp>
-      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replace dir="${project.dir}" includes="**/*.java">
         <replacefilter>
           <replacetoken>(\s)@{package1}\.@{class1}(\W)</replacetoken>
           <replacevalue>\1@{package2}.@{class2}\2</replacevalue>
@@ -45,7 +45,7 @@
         <regexp pattern="^import @{class}\.@{class};$" />
         <substitution expression="// import @{class}.@{class};@{removed}" />
       </replaceregexp>
-      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replace dir="${project.dir}" includes="**/*.java">
         <replacefilter>
           <replacetoken>(\s)@{package1}@{class1}(\W)</replacetoken>
           <replacevalue>\1@{package2}@{class2}\2</replacevalue>
@@ -191,7 +191,6 @@
     <fileset id="org.geotools.styling.files" dir="${project.dir}" includes="**/*.java">
       <contains text="import org.geotools.styling." casesensitive="yes" />
     </fileset>
-    <refactor package1="${sp}" package2="${dp}" class1="StyleFactory2" class2="StyleFactory"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="AnchorPoint"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ChannelSelection"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ColorMap"/>
@@ -202,6 +201,7 @@
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ExternalGraphic"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ExternalMark"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="FeatureTypeStyle"/>
+   <moveClass srcPackage="${sp}" dstPackage="${dp}" class="FeatureTypeConstraint"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Font"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Halo"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="LabelPlacement"/>
@@ -209,20 +209,31 @@
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="LineSymbolizer"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Mark"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="NamedStyle"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="NamedLayer"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="PointPlacement"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="PointSymbolizer"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="PolygonSymbolizer"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="RasterSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="RemoteOWS"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Rule"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="SelectedChannelType"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ShadedRelief"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Stroke"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Style"/>
-    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyleVisitor"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyledLayer"/>
+   <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyledLayerDescriptor"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Symbolizer"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="TextSymbolizer"/>
     <moveClass srcPackage="${sp}" dstPackage="${dp}" class="TextSymbolizer2"/>
-  </target>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="UserLayer"/>
+    <refactor package1="${sp}" package2="${dp}" class1="StyleFactory2" class2="StyleFactory"/>
+   <!-- Temporary hack while we wait for the data access API to move to gt-api -->
+    <replaceregexp flags="g">
+      <fileset refid="org.geotools.styling.files"/>
+      <regexp pattern="(\w+)\.getInlineFeatureDatastore\(\)" />
+      <substitution expression="(DataStore) \1.getInlineFeatureDatastore()" />
+    </replaceregexp>
+ </target>
   <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
     <echo />
     <echo message="Refactor org.opengis to org.geotools.api" />
@@ -242,7 +253,7 @@
       <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2" />
     </move>
   </target>
-  <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_bounds,_styling,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo>UPDATE COMPLETED: ${project.dir}</echo>
     <echo />
     <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

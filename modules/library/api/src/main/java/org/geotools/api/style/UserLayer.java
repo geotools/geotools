@@ -47,6 +47,10 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 public interface UserLayer extends StyledLayer {
     public RemoteOWS getRemoteOWS();
 
+    // TODO: migrate data access API to the gt-api modulel and
+    // put back DataStore here
+    public Object getInlineFeatureDatastore();
+
     public SimpleFeatureType getInlineFeatureType();
 
     public FeatureTypeConstraint[] getLayerFeatureConstraints();

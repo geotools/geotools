@@ -316,7 +316,7 @@ public abstract class AbstractStyleFactory implements org.geotools.api.style.Sty
 
     public abstract Graphic createDefaultGraphic();
 
-    public abstract StyledLayerDescriptor createStyledLayerDescriptor();
+    public abstract StyledLayerDescriptorImpl createStyledLayerDescriptor();
 
     public abstract UserLayer createUserLayer();
 

@@ -18,11 +18,11 @@ package org.geotools.renderer.lite;
 
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.AbstractStyleVisitor;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.styling.*;
+import org.geotools.styling.AbstractStyleVisitor;
 
 /**
  * Searches for translucent symbolizers

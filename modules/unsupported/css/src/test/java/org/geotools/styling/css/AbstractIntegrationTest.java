@@ -35,7 +35,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.StyledLayerDescriptorImpl;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.geotools.xsd.Parser;
@@ -141,8 +141,8 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
 
         String expectedSld = FileUtils.readFileToString(sldFile, "UTF-8");
-        StyledLayerDescriptor expectedSLD = parseToSld(expectedSld);
-        StyledLayerDescriptor actualSLD = parseToSld(actualSld);
+        StyledLayerDescriptorImpl expectedSLD = parseToSld(expectedSld);
+        StyledLayerDescriptorImpl actualSLD = parseToSld(actualSld);
         // Document expectedDom = XMLUnit.buildControlDocument(expectedSld);
         // Document actualDom = XMLUnit.buildControlDocument(actualSld);
         // Diff diff = new Diff(expectedDom, actualDom);
@@ -174,7 +174,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
     }
 
-    StyledLayerDescriptor parseToSld(String sld) {
+    StyledLayerDescriptorImpl parseToSld(String sld) {
         SLDParser parser = new SLDParser(CommonFactoryFinder.getStyleFactory());
         parser.setInput(new StringReader(sld));
         return parser.parseSLD();
@@ -189,7 +189,7 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
 
     private void writeStyle(Style s, File sldFile)
             throws TransformerException, IOException, FileNotFoundException {
-        StyledLayerDescriptor sld = STYLE_FACTORY.createStyledLayerDescriptor();
+        StyledLayerDescriptorImpl sld = STYLE_FACTORY.createStyledLayerDescriptor();
         NamedLayer layer = STYLE_FACTORY.createNamedLayer();
         layer.addStyle((org.geotools.styling.Style) s);
         sld.layers().add(layer);

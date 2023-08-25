@@ -35,8 +35,7 @@ import org.geotools.util.Utilities;
  *
  * @author jamesm
  */
-public class NamedStyleImpl extends StyleImpl
-        implements org.geotools.api.style.NamedLayer, Cloneable, org.geotools.api.style.Style {
+public class NamedStyleImpl extends StyleImpl implements NamedStyle, Cloneable, Style {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
@@ -138,24 +137,6 @@ public class NamedStyleImpl extends StyleImpl
     }
 
     @Override
-    public List<FeatureTypeConstraint> layerFeatureConstraints() {
-        return new ArrayList<FeatureTypeConstraint>();
-    }
-
-    @Override
-    public FeatureTypeConstraint[] getLayerFeatureConstraints() {
-        return new FeatureTypeConstraint[0];
-    }
-
-    @Override
-    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints) {}
-
-    @Override
-    public org.geotools.api.style.Style[] getStyles() {
-        return new org.geotools.api.style.Style[0];
-    }
-
-    @Override
     public void accept(StyleVisitor visitor) {
         visitor.visit((NamedLayer) this);
     }
@@ -218,7 +199,7 @@ public class NamedStyleImpl extends StyleImpl
     }
 
     public void setDescription(org.geotools.api.style.Description description) {
-        if (description == super.getBackground()) {
+        if (description == super.getDescription()) {
             this.description = new DescriptionImpl();
         } else {
             this.description = DescriptionImpl.cast(description);

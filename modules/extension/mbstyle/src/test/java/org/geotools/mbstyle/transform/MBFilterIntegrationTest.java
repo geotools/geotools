@@ -11,6 +11,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.SLD;
+import org.geotools.styling.StyledLayerDescriptorImpl;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
@@ -30,8 +31,7 @@ public class MBFilterIntegrationTest {
         MBStyle mbStyle = new MBStyle(jsonObject);
 
         StyledLayerDescriptor sld = mbStyle.transform();
-        FeatureTypeStyleImpl[] ftss =
-                SLD.featureTypeStyles((org.geotools.styling.StyledLayerDescriptor) sld);
+        FeatureTypeStyleImpl[] ftss = SLD.featureTypeStyles((StyledLayerDescriptorImpl) sld);
 
         assertEquals(3, ftss.length);
 

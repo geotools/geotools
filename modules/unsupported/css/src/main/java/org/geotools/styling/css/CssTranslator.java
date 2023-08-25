@@ -74,7 +74,7 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.StyledLayerDescriptorImpl;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
@@ -2081,7 +2081,7 @@ public class CssTranslator {
         Style style = translator.translate(styleSheet);
 
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-        StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
+        StyledLayerDescriptorImpl sld = styleFactory.createStyledLayerDescriptor();
         NamedLayer layer = styleFactory.createNamedLayer();
         layer.addStyle((org.geotools.styling.Style) style);
         sld.layers().add(layer);

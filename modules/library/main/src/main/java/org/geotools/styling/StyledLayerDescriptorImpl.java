@@ -49,10 +49,10 @@ import org.geotools.util.Utilities;
  *       throw unsupported exceptions when functionality is removed from a specification.
  * </ul>
  */
-public class StyledLayerDescriptor implements org.geotools.api.style.StyledLayerDescriptor {
+public class StyledLayerDescriptorImpl implements org.geotools.api.style.StyledLayerDescriptor {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptor.class);
+            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptorImpl.class);
 
     /** Holds value of property name. */
     private String name;
@@ -188,8 +188,8 @@ public class StyledLayerDescriptor implements org.geotools.api.style.StyledLayer
             return true;
         }
 
-        if (oth instanceof StyledLayerDescriptor) {
-            StyledLayerDescriptor other = (StyledLayerDescriptor) oth;
+        if (oth instanceof StyledLayerDescriptorImpl) {
+            StyledLayerDescriptorImpl other = (StyledLayerDescriptorImpl) oth;
 
             return (Utilities.equals(abstractStr, other.abstractStr)
                     && Utilities.equals(layers, other.layers)

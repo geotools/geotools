@@ -29,6 +29,7 @@ import org.geotools.api.style.UserLayer;
 import org.geotools.styling.NamedLayerImpl;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyleImpl;
+import org.geotools.styling.StyledLayerDescriptorImpl;
 import org.geotools.styling.UserLayerImpl;
 
 /**
@@ -60,7 +61,7 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         put("sld-title", sld.getTitle());
         put("sld-abstract", sld.getAbstract());
 
-        StyleImpl style = SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld);
+        StyleImpl style = SLD.defaultStyle((StyledLayerDescriptorImpl) sld);
 
         StyledLayer layer = findParentLayer(sld, style);
         encode(layer);

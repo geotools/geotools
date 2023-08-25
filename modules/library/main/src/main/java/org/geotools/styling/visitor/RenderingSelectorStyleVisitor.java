@@ -44,9 +44,7 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
     @Override
     public void visit(org.geotools.api.style.Symbolizer sym) {
 
-
-            if (canRender(sym.getOptions())) super.visit(sym);
-
+        if (canRender(sym.getOptions())) super.visit(sym);
     }
 
     @Override
@@ -80,7 +78,6 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
         if (sym == null) return null;
 
         if (canRender(sym.getOptions())) return super.copy(sym);
-
 
         return null;
     }

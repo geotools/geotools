@@ -19,9 +19,9 @@ package org.geotools.renderer.lite;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.util.Map;
-import org.geotools.api.style.AbstractStyleVisitor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.renderer.style.SLDStyleFactory;
+import org.geotools.styling.AbstractStyleVisitor;
 
 /**
  * Checks if an AlphaComposite is used anywhere in the style. AlphaComposite is special, as it works

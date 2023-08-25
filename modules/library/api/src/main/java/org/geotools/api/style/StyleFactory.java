@@ -479,7 +479,7 @@ public interface StyleFactory {
 
     Style createStyle();
 
-    org.geotools.api.style.NamedLayer createNamedStyle();
+    NamedStyle createNamedStyle();
 
     Fill createFill(Expression color, Expression opacity);
 

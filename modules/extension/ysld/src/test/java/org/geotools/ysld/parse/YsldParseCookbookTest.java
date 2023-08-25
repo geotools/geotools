@@ -1954,7 +1954,7 @@ public class YsldParseCookbookTest {
         transform(YsldTests.sld(dir, file), writer);
 
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
-        return SLD.defaultStyle((StyledLayerDescriptor) p.parse());
+        return SLD.defaultStyle((StyledLayerDescriptorImpl) p.parse());
     }
 
     Color color(String hex) {

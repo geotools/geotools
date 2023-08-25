@@ -114,8 +114,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertEquals(Color.BLUE, SLD.color(SLD.fill(p)));
     }
 
@@ -125,8 +124,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertEquals(Color.BLUE, SLD.color(SLD.fill(p)));
     }
 
@@ -137,7 +135,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
                 (RuleImpl)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0)
                                 .rules()
@@ -159,7 +157,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
                 (RuleImpl)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0)
                                 .rules()
@@ -181,7 +179,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
                 (RuleImpl)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0)
                                 .rules()
@@ -200,7 +198,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RuleImpl r =
                 (RuleImpl)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0)
                                 .rules()
@@ -227,7 +225,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
                 (FeatureTypeStyle)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0);
 
@@ -303,7 +301,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
                 (FeatureTypeStyle)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0);
 
@@ -342,7 +340,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
                 (FeatureTypeStyle)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0);
 
@@ -374,7 +372,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
                 (FeatureTypeStyle)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0);
 
@@ -412,7 +410,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
                 (FeatureTypeStyle)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0);
 
@@ -456,7 +454,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
                 (FeatureTypeStyle)
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
+                        SLD.defaultStyle((StyledLayerDescriptorImpl) sld)
                                 .featureTypeStyles()
                                 .get(0);
 
@@ -522,9 +520,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -549,9 +545,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         Rule r = fs.rules().get(0);
 
@@ -580,9 +574,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -619,9 +611,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -656,9 +646,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -697,9 +685,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -754,9 +740,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -803,9 +787,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -852,9 +834,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -1111,9 +1091,7 @@ public class YsldParseTest {
         }
 
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         for (int i = 0; i < GOOGLE_MERCATOR_PIXEL_SIZES.length; i++) {
             scaleDenominators[i] = OGC_DPI * INCHES_PER_METRE * GOOGLE_MERCATOR_PIXEL_SIZES[i];
@@ -1176,9 +1154,7 @@ public class YsldParseTest {
 
     private void doTestForWGS84(StyledLayerDescriptor sld) throws IOException {
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
 
         assertThat(fs.rules().size(), is(21));
 
@@ -1233,9 +1209,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -1295,9 +1269,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml, Arrays.asList(finder), null);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         fs.rules().get(0).getMaxScaleDenominator();
         assertThat(
                 (Iterable<Rule>) fs.rules(),
@@ -1318,10 +1290,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PolygonSymbolizerImpl p =
                 (PolygonSymbolizerImpl)
-                        SLD.symbolizers(
-                                        SLD.defaultStyle(
-                                                (org.geotools.styling.StyledLayerDescriptor) sld))[
-                                0];
+                        SLD.symbolizers(SLD.defaultStyle((StyledLayerDescriptorImpl) sld))[0];
         assertEquals(Color.BLUE, SLD.color(SLD.fill(p)));
         assertNull(SLD.stroke(p));
 
@@ -1330,10 +1299,7 @@ public class YsldParseTest {
         sld = Ysld.parse(yaml);
         p =
                 (PolygonSymbolizerImpl)
-                        SLD.symbolizers(
-                                        SLD.defaultStyle(
-                                                (org.geotools.styling.StyledLayerDescriptor) sld))[
-                                0];
+                        SLD.symbolizers(SLD.defaultStyle((StyledLayerDescriptorImpl) sld))[0];
         assertEquals(Color.BLUE, SLD.color(SLD.stroke(p)));
         assertNull(SLD.fill(p));
     }
@@ -1380,9 +1346,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
 
         // need to use the geotools.styling interface as it provides the accessors for the entries.
@@ -1418,9 +1382,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
 
         // need to use the geotools.styling interface as it provides the accessors for the entries.
@@ -1450,9 +1412,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         RasterSymbolizer symb = (RasterSymbolizer) fs.rules().get(0).symbolizers().get(0);
 
         // need to use the geotools.styling interface as it provides the accessors for the entries.
@@ -1474,9 +1434,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         TextSymbolizerImpl symb = (TextSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression label = symb.getLabel();
@@ -1491,9 +1449,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         TextSymbolizerImpl symb = (TextSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression label = symb.getLabel();
@@ -1511,9 +1467,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         TextSymbolizerImpl symb = (TextSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression label = symb.getLabel();
@@ -1526,9 +1480,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         TextSymbolizerImpl symb = (TextSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getGeometry();
@@ -1543,9 +1495,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         TextSymbolizerImpl symb = (TextSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getGeometry();
@@ -1564,9 +1514,7 @@ public class YsldParseTest {
                         + "  fill-color: ${recode(MAPCOLOR7, 1.0, '#FFC3C3', 2.0, '#FFE3C3', 3.0, '#FFFFC3', 4.0, '#C3FFE3', 5.0, '#C3FFFF', 6.0, '#C3C3FF', 7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         PolygonSymbolizerImpl symb = (PolygonSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getFill().getColor();
@@ -1605,9 +1553,7 @@ public class YsldParseTest {
                         + "    7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         PolygonSymbolizerImpl symb = (PolygonSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getFill().getColor();
@@ -1648,9 +1594,7 @@ public class YsldParseTest {
                         + "    7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         PolygonSymbolizerImpl symb = (PolygonSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getFill().getColor();
@@ -1691,9 +1635,7 @@ public class YsldParseTest {
                         + "    7.0, '#BFC3FF')}\n";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         PolygonSymbolizerImpl symb = (PolygonSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getFill().getColor();
@@ -1724,9 +1666,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         FeatureTypeStyle fs =
-                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld)
-                        .featureTypeStyles()
-                        .get(0);
+                SLD.defaultStyle((StyledLayerDescriptorImpl) sld).featureTypeStyles().get(0);
         TextSymbolizerImpl symb = (TextSymbolizerImpl) fs.rules().get(0).symbolizers().get(0);
 
         Expression expr = symb.getGeometry();
@@ -1754,8 +1694,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), attribute("colourAttribute"));
     }
 
@@ -1766,8 +1705,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), literal(equalTo("$}\\")));
     }
 
@@ -1782,8 +1720,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
         assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
     }
@@ -1799,8 +1736,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
         assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
     }
@@ -1816,8 +1752,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
         assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
     }
@@ -1833,8 +1768,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), literal(isColor("001122")));
         assertThat(SLD.stroke(p).getColor(), literal(isColor("334455")));
     }
@@ -1849,8 +1783,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(SLD.fill(p).getColor(), literal(isColor("FFFFFF")));
     }
 
@@ -1860,8 +1793,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r =
-                SLD.rasterSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.rasterSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
         assertThat(grayChannel.getChannelName().evaluate(null, String.class), equalTo("foo"));
         assertThat(grayChannel.getContrastEnhancement(), nullContrast());
@@ -1880,8 +1812,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r =
-                SLD.rasterSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.rasterSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
         assertThat(grayChannel.getChannelName().evaluate(null, String.class), equalTo("foo"));
         assertThat(grayChannel.getContrastEnhancement().getGammaValue(), literal(equalTo("1.2")));
@@ -1920,8 +1851,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r =
-                SLD.rasterSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.rasterSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         SelectedChannelType[] rgbChannels = r.getChannelSelection().getRGBChannels();
 
@@ -1943,8 +1873,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r =
-                SLD.rasterSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.rasterSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
         assertThat(grayChannel.getChannelName().evaluate(null, String.class), equalTo("1"));
         assertThat(grayChannel.getContrastEnhancement(), nullContrast());
@@ -1957,8 +1886,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r =
-                SLD.rasterSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.rasterSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         SelectedChannelType[] rgbChannels = r.getChannelSelection().getRGBChannels();
         assertThat(rgbChannels[0].getChannelName().evaluate(null, String.class), equalTo("1"));
         assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
@@ -1980,8 +1908,7 @@ public class YsldParseTest {
                         + "            name: ${env('B1','1')}";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer raster =
-                SLD.rasterSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.rasterSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         Expression name = raster.getChannelSelection().getGrayChannel().getChannelName();
         assertEquals("1", name.evaluate(null, String.class));
         try {
@@ -2004,8 +1931,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(
                 ((Mark) p.getGraphic().graphicalSymbols().get(0)).getFill().getOpacity(),
@@ -2021,8 +1947,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl l =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(l.getPerpendicularOffset(), is(literal(5)));
         // SLD/SE 1.1 feature that may not be supported by renderer
@@ -2042,8 +1967,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(
                 p.getGraphic().getDisplacement(),
                 allOf(
@@ -2066,8 +1990,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(
                 p.getGraphic().getAnchorPoint(),
                 allOf(
@@ -2083,8 +2006,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         TextSymbolizerImpl p =
-                SLD.textSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.textSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(
                 ((PointPlacement) p.getLabelPlacement()).getDisplacement(),
                 allOf(
@@ -2099,8 +2021,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         TextSymbolizerImpl t =
-                SLD.textSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.textSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(
                 ((PointPlacement) t.getLabelPlacement()).getAnchorPoint(),
                 allOf(
@@ -2115,8 +2036,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         TextSymbolizerImpl t =
-                SLD.textSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.textSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(t.getLabelPlacement(), instanceOf(LinePlacement.class));
         assertThat(((LinePlacement) t.getLabelPlacement()).getPerpendicularOffset(), literal(4));
     }
@@ -2142,8 +2062,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         TextSymbolizerImpl p =
-                SLD.textSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.textSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(
                 p.getGraphic().getDisplacement(),
                 allOf(
@@ -2173,8 +2092,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p.getGraphic().graphicalSymbols().get(0), instanceOf(ExternalGraphicImpl.class));
         ExternalGraphicImpl eg = (ExternalGraphicImpl) p.getGraphic().graphicalSymbols().get(0);
@@ -2208,8 +2126,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml, Collections.emptyList(), locator);
 
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p.getGraphic().graphicalSymbols().get(0), instanceOf(ExternalGraphicImpl.class));
         ExternalGraphicImpl eg = (ExternalGraphicImpl) p.getGraphic().graphicalSymbols().get(0);
@@ -2229,8 +2146,7 @@ public class YsldParseTest {
 
         TextSymbolizerImpl p =
                 (TextSymbolizerImpl)
-                        SLD.textSymbolizer(
-                                SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                        SLD.textSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertNotNull(p.getPriority());
         assertTrue(p.getPriority() instanceof PropertyName);
         assertEquals("pop", ((PropertyName) p.getPriority()).getPropertyName());
@@ -2243,8 +2159,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("miter"))));
     }
 
@@ -2255,8 +2170,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("bevel"))));
     }
 
@@ -2267,8 +2181,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertThat(p, hasProperty("stroke", hasProperty("lineJoin", literal("mitre"))));
     }
 
@@ -2276,7 +2189,7 @@ public class YsldParseTest {
     public void testSuite54() throws IOException {
         try (InputStream input = YsldTests.ysld("poly", "suite-54.ysld")) {
             StyledLayerDescriptor sld = Ysld.parse(input);
-            StyleImpl style = SLD.styles((org.geotools.styling.StyledLayerDescriptor) sld)[0];
+            StyleImpl style = SLD.styles((StyledLayerDescriptorImpl) sld)[0];
             TextSymbolizerImpl text = SLD.textSymbolizer(style);
             LabelPlacement placement = text.getLabelPlacement();
 
@@ -2290,8 +2203,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        FeatureTypeStyle fts =
-                SLD.featureTypeStyles((org.geotools.styling.StyledLayerDescriptor) sld)[0];
+        FeatureTypeStyle fts = SLD.featureTypeStyles((StyledLayerDescriptorImpl) sld)[0];
 
         assertThat(fts, hasProperty("options", hasEntry("composite", "multiply")));
     }
@@ -2304,8 +2216,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("options", hasEntry("composite", "multiply")));
     }
@@ -2316,8 +2227,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        FeatureTypeStyle fts =
-                SLD.featureTypeStyles((org.geotools.styling.StyledLayerDescriptor) sld)[0];
+        FeatureTypeStyle fts = SLD.featureTypeStyles((StyledLayerDescriptorImpl) sld)[0];
 
         assertThat(fts, hasProperty("options", hasEntry("composite-base", "true")));
     }
@@ -2330,8 +2240,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("options", hasEntry("composite-base", "true")));
     }
@@ -2351,8 +2260,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("stroke", hasProperty("graphicStroke")));
         Graphic g = p.getStroke().getGraphicStroke();
@@ -2384,8 +2292,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("stroke", hasProperty("graphicFill")));
         Graphic g = p.getStroke().getGraphicFill();
@@ -2410,8 +2317,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }
@@ -2424,8 +2330,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.FOOT.getUnit())));
     }
@@ -2438,8 +2343,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.PIXEL.getUnit())));
     }
@@ -2452,8 +2356,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }
@@ -2466,8 +2369,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.FOOT.getUnit())));
     }
@@ -2480,8 +2382,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
         LineSymbolizerImpl p =
-                SLD.lineSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.lineSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
 
         assertThat(p, hasProperty("unitOfMeasure", sameInstance(UomOgcMapping.METRE.getUnit())));
     }
@@ -2503,8 +2404,7 @@ public class YsldParseTest {
                         + "            shape: circle\n"
                         + "            fill-color: '#FF0000'";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        RuleImpl rule =
-                SLD.rules(SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld))[0];
+        RuleImpl rule = SLD.rules(SLD.defaultStyle((StyledLayerDescriptorImpl) sld))[0];
         assertThat(
                 rule.getLegend().graphicalSymbols().get(0), instanceOf(ExternalGraphicImpl.class));
         ExternalGraphicImpl legend =
@@ -2512,8 +2412,7 @@ public class YsldParseTest {
         assertEquals(new URL("file:smileyface.png"), legend.getLocation());
         assertEquals("image/png", legend.getFormat());
         PointSymbolizerImpl p =
-                SLD.pointSymbolizer(
-                        SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld));
+                SLD.pointSymbolizer(SLD.defaultStyle((StyledLayerDescriptorImpl) sld));
         assertEquals("circle", SLD.wellKnownName(SLD.mark(p)));
         assertEquals(Color.RED, SLD.color(SLD.fill(p)));
     }
@@ -2533,8 +2432,7 @@ public class YsldParseTest {
     public void testRuleVendorOption() throws Exception {
         String yaml = "feature-styles:\n" + "- rules:\n" + "  - x-foo: bar";
         StyledLayerDescriptor sld = Ysld.parse(yaml);
-        RuleImpl rule =
-                SLD.rules(SLD.defaultStyle((org.geotools.styling.StyledLayerDescriptor) sld))[0];
+        RuleImpl rule = SLD.rules(SLD.defaultStyle((StyledLayerDescriptorImpl) sld))[0];
         assertThat(rule.getOptions(), hasEntry("foo", "bar"));
     }
 }

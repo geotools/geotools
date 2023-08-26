@@ -50,7 +50,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -106,7 +105,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         assertEquals(-180, envelope.getMinX(), EPS);
         assertEquals(180, envelope.getMaxX(), EPS);
         assertEquals(-90, envelope.getMinY(), EPS);
@@ -186,7 +185,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling, the geotiff reader gives us all
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         assertEquals(-180, envelope.getMinX(), EPS);
         assertEquals(180, envelope.getMaxX(), EPS);
         assertEquals(-90, envelope.getMinY(), EPS);
@@ -200,12 +199,12 @@ public class GridCoverageReaderHelperTest {
         List<GridCoverage2D> coverages = helper.readCoverages(null, handler);
         // System.out.println(coverages);
         assertEquals(2, coverages.size());
-        Envelope2D firstEnvelope = coverages.get(0).getEnvelope2D();
+        ReferencedEnvelope firstEnvelope = coverages.get(0).getEnvelope2D();
         assertEquals(169.2, firstEnvelope.getMinX(), EPS);
         assertEquals(180, firstEnvelope.getMaxX(), EPS);
         assertEquals(69.3, firstEnvelope.getMinY(), EPS);
         assertEquals(80.1, firstEnvelope.getMaxY(), EPS);
-        Envelope2D secondEnvelope = coverages.get(1).getEnvelope2D();
+        ReferencedEnvelope secondEnvelope = coverages.get(1).getEnvelope2D();
         assertEquals(-180, secondEnvelope.getMinX(), EPS);
         assertEquals(-169.2, secondEnvelope.getMaxX(), EPS);
         assertEquals(69.3, secondEnvelope.getMinY(), EPS);
@@ -227,7 +226,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling, we should get the full requested area
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         // System.out.println(envelope);
         assertTrue(envelope.getMinX() < -100);
         assertTrue(envelope.getMaxX() > 100);
@@ -260,7 +259,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling, we should get the full requested area
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         // System.out.println(envelope);
         assertTrue(envelope.getMinX() < -100);
         assertTrue(envelope.getMaxX() > 100);
@@ -453,7 +452,7 @@ public class GridCoverageReaderHelperTest {
                     helper.readCoverageInEnvelope(mapExtent, null, handler, true);
             assertEquals(1, coverages.size());
             GridCoverage2D coverage = coverages.get(0);
-            Envelope2D envelope = coverage.getEnvelope2D();
+            ReferencedEnvelope envelope = coverage.getEnvelope2D();
             final double EPS = 0.2; // this is the native resolution
             assertEquals(-180.4, envelope.getMinX(), EPS);
             assertEquals(2, envelope.getMaxX(), EPS);

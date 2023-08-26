@@ -47,8 +47,8 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.CoverageTestBase;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
@@ -158,239 +158,209 @@ public class GridCoverageTestBase extends CoverageTestBase {
         return coverage;
     }
 
-    /**
-     * An immutable list of grid coverages to be used for testing purpose. Coverages are read when a
-     * the {@code get(int)} method is invoked.
-     */
-    protected static final List<GridCoverage2D> EXAMPLES =
-            new AbstractList<GridCoverage2D>() {
-                /** The coverages returned by previous invocations. */
-                private final GridCoverage2D[] cached = new GridCoverage2D[6];
+  /**
+   * An immutable list of grid coverages to be used for testing purpose. Coverages are read when a
+   * the {@code get(int)} method is invoked.
+   */
+  protected static final List<GridCoverage2D> EXAMPLES =
+      new AbstractList<GridCoverage2D>() {
+        /** The coverages returned by previous invocations. */
+        private final GridCoverage2D[] cached = new GridCoverage2D[6];
 
-                /** Returns the number of available coverages which may be used as example. */
-                @Override
-                public int size() {
-                    return cached.length;
+        /** Returns the number of available coverages which may be used as example. */
+        @Override
+        public int size() {
+          return cached.length;
+        }
+
+        /**
+         * Returns a {@link GridCoverage} which may be used as a "real world" example.
+         *
+         * @param number The example number, from 0 inclusive to {@link #size()} exclusive.
+         * @return The "real world" grid coverage.
+         */
+        @Override
+        public synchronized GridCoverage2D get(final int number) {
+          GridCoverage2D coverage = cached[number];
+          if (coverage == null) {
+            cached[number] = coverage = load(number);
+          }
+          return coverage;
+        }
+
+        /**
+         * Loads the image at the given index. This is invoked by {@link #get} the first time a
+         * given coverage is requested.
+         */
+        private GridCoverage2D load(final int number) {
+          final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
+          final String path;
+          final Category[] categories;
+          final CoordinateReferenceSystem crs;
+          final Rectangle2D bounds;
+          final GridSampleDimension[] bands;
+          switch (number) {
+            default:
+              {
+                throw new IndexOutOfBoundsException(String.valueOf(number));
+              }
+              /* ------------------------------------------------------------
+               * Thematic           :  Sea Surface Temperature (SST) in °C
+               * Data packaging     :  Indexed 8-bits
+               * Nodata values      :  [0 .. 29] and [240 .. 255] inclusive.
+               * Conversion formula :  (°C) = (packed value)/10 + 10
+               * Geographic extent  :  (41°S, 35°E) - (5°N, 80°E)
+               * Image size         :  (450 x 460) pixels
+               *
+               * This is a raster from Earth observations using a relatively straightforward
+               * conversion formula to geophysics values (a linear transform using the usual
+               * scale and offset parameters, in this case 0.1 and 10 respectively).     The
+               * interesting part of this example is that it contains a lot of nodata values.
+               */
+            case 0:
+              {
+                path = "QL95209.png";
+                crs = DefaultGeographicCRS.WGS84;
+                categories =
+                    new Category[] {
+                      new Category("Coast line", decode("#000000"), create(0, 0)),
+                      new Category("Cloud", decode("#C3C3C3"), create(1, 9)),
+                      new Category("Unused", decode("#822382"), create(10, 29)),
+                      new Category("Sea Surface Temperature", (Color) null, create(30, 219)),
+                      new Category("Unused", decode("#A0505C"), create(220, 239)),
+                      new Category("Land", decode("#D2C8A0"), create(240, 254)),
+                      new Category("No data", decode("#FFFFFF"), create(255, 255)),
+                    };
+                bounds = new Rectangle2D.Double(35, -41, 45, 46);
+                bands =
+                    new GridSampleDimension[] {
+                      new GridSampleDimension("Measure", categories, SI.CELSIUS)
+                    };
+                break;
+              }
+              /* ------------------------------------------------------------
+               * Thematic           :  Chlorophyle-a concentration in mg/m³
+               * Data packaging     :  Indexed 8-bits
+               * Nodata values      :  0 and 255
+               * Conversion formula :  (mg/m³) = 10 ^ ((packed value)*0.015 - 1.985)
+               * Geographic extent  :  (34°N, 07°W) - (45°N, 12°E)
+               * Image size         :  (300 x 175) pixels
+               *
+               * This is a raster from Earth observations using a more complex conversion
+               * formula to geophysics values (an exponential one). The usual scale and
+               * offset parameters are not enough in this case.
+               */
+            case 1:
+              {
+                path = "CHL01195.png";
+                crs = DefaultGeographicCRS.WGS84;
+                categories =
+                    new Category[] {
+                      new Category("Land", decode("#000000"), create(255, 255)),
+                      new Category("No data", decode("#FFFFFF"), create(0, 0)),
+                      new Category("Chl-a", null, create(1, 254), true)
+                    };
+                bounds = new Rectangle2D.Double(-7, 34, 19, 11);
+
+                bands =
+                    new GridSampleDimension[] {
+                      new GridSampleDimension(
+                          "Measure", categories, MetricPrefix.MILLI(SI.GRAM).divide(SI.CUBIC_METRE))
+                    };
+                break;
+              }
+              /* ------------------------------------------------------------
+               * Thematic           :  World Digital Elevation Model (DEM)
+               * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
+               */
+            case 2:
+              {
+                path = "world_dem.gif";
+                bounds = new Rectangle2D.Double(-180, -90, 360, 180);
+                crs = DefaultGeographicCRS.WGS84;
+                bands = null;
+                break;
+              }
+              /* ------------------------------------------------------------
+               * Thematic           :  World Bathymetry (DEM)
+               * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
+               */
+            case 3:
+              {
+                path = "BATHY.png";
+                bounds = new Rectangle2D.Double(-180, -90, 360, 180);
+                crs = DefaultGeographicCRS.WGS84;
+                bands = null;
+                break;
+              }
+              /*
+               * A float coverage. Because we use only one tile with one band, the code below
+               * is pretty similar to the code we would have if we were just setting the values
+               * in a matrix.
+               */
+            case 4:
+              {
+                final int width = 500;
+                final int height = 500;
+                WritableRaster raster =
+                    RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
+                for (int y = 0; y < height; y++) {
+                  for (int x = 0; x < width; x++) {
+                    raster.setSample(x, y, 0, x + y);
+                  }
                 }
-
-                /**
-                 * Returns a {@link GridCoverage} which may be used as a "real world" example.
-                 *
-                 * @param number The example number, from 0 inclusive to {@link #size()} exclusive.
-                 * @return The "real world" grid coverage.
-                 */
-                @Override
-                public synchronized GridCoverage2D get(final int number) {
-                    GridCoverage2D coverage = cached[number];
-                    if (coverage == null) {
-                        cached[number] = coverage = load(number);
-                    }
-                    return coverage;
+                final Color[] colors = {
+                  Color.BLUE, Color.CYAN, Color.WHITE, Color.YELLOW, Color.RED
+                };
+                return factory.create(
+                    "Float coverage",
+                    raster,
+                    new ReferencedEnvelope(35, 35 + 45, -41, -41 + 46,DefaultGeographicCRS.WGS84),
+                    null,
+                    null,
+                    null,
+                    new Color[][] {colors},
+                    null);
+              }
+              /*
+               * A single band fictitious coverage with type UINT 16.
+               *
+               */
+            case 5:
+              {
+                final int width = 500;
+                final int height = 500;
+                final BufferedImage image =
+                    new BufferedImage(width, height, BufferedImage.TYPE_USHORT_GRAY);
+                final WritableRaster raster = (WritableRaster) image.getData();
+                for (int y = 0; y < height; y++) {
+                  for (int x = 0; x < width; x++) {
+                    raster.setSample(x, y, 0, (int) (1 + (x + y) * 65534.0 / 1000.0));
+                  }
                 }
-
-                /**
-                 * Loads the image at the given index. This is invoked by {@link #get} the first
-                 * time a given coverage is requested.
-                 */
-                private GridCoverage2D load(final int number) {
-                    final GridCoverageFactory factory =
-                            CoverageFactoryFinder.getGridCoverageFactory(null);
-                    final String path;
-                    final Category[] categories;
-                    final CoordinateReferenceSystem crs;
-                    final Rectangle2D bounds;
-                    final GridSampleDimension[] bands;
-                    switch (number) {
-                        default:
-                            {
-                                throw new IndexOutOfBoundsException(String.valueOf(number));
-                            }
-                            /* ------------------------------------------------------------
-                             * Thematic           :  Sea Surface Temperature (SST) in °C
-                             * Data packaging     :  Indexed 8-bits
-                             * Nodata values      :  [0 .. 29] and [240 .. 255] inclusive.
-                             * Conversion formula :  (°C) = (packed value)/10 + 10
-                             * Geographic extent  :  (41°S, 35°E) - (5°N, 80°E)
-                             * Image size         :  (450 x 460) pixels
-                             *
-                             * This is a raster from Earth observations using a relatively straightforward
-                             * conversion formula to geophysics values (a linear transform using the usual
-                             * scale and offset parameters, in this case 0.1 and 10 respectively).     The
-                             * interesting part of this example is that it contains a lot of nodata values.
-                             */
-                        case 0:
-                            {
-                                path = "QL95209.png";
-                                crs = DefaultGeographicCRS.WGS84;
-                                categories =
-                                        new Category[] {
-                                            new Category(
-                                                    "Coast line", decode("#000000"), create(0, 0)),
-                                            new Category("Cloud", decode("#C3C3C3"), create(1, 9)),
-                                            new Category(
-                                                    "Unused", decode("#822382"), create(10, 29)),
-                                            new Category(
-                                                    "Sea Surface Temperature",
-                                                    (Color) null,
-                                                    create(30, 219)),
-                                            new Category(
-                                                    "Unused", decode("#A0505C"), create(220, 239)),
-                                            new Category(
-                                                    "Land", decode("#D2C8A0"), create(240, 254)),
-                                            new Category(
-                                                    "No data", decode("#FFFFFF"), create(255, 255)),
-                                        };
-                                bounds = new Rectangle2D.Double(35, -41, 45, 46);
-                                bands =
-                                        new GridSampleDimension[] {
-                                            new GridSampleDimension(
-                                                    "Measure", categories, SI.CELSIUS)
-                                        };
-                                break;
-                            }
-                            /* ------------------------------------------------------------
-                             * Thematic           :  Chlorophyle-a concentration in mg/m³
-                             * Data packaging     :  Indexed 8-bits
-                             * Nodata values      :  0 and 255
-                             * Conversion formula :  (mg/m³) = 10 ^ ((packed value)*0.015 - 1.985)
-                             * Geographic extent  :  (34°N, 07°W) - (45°N, 12°E)
-                             * Image size         :  (300 x 175) pixels
-                             *
-                             * This is a raster from Earth observations using a more complex conversion
-                             * formula to geophysics values (an exponential one). The usual scale and
-                             * offset parameters are not enough in this case.
-                             */
-                        case 1:
-                            {
-                                path = "CHL01195.png";
-                                crs = DefaultGeographicCRS.WGS84;
-                                categories =
-                                        new Category[] {
-                                            new Category(
-                                                    "Land", decode("#000000"), create(255, 255)),
-                                            new Category(
-                                                    "No data", decode("#FFFFFF"), create(0, 0)),
-                                            new Category("Chl-a", null, create(1, 254), true)
-                                        };
-                                bounds = new Rectangle2D.Double(-7, 34, 19, 11);
-
-                                bands =
-                                        new GridSampleDimension[] {
-                                            new GridSampleDimension(
-                                                    "Measure",
-                                                    categories,
-                                                    MetricPrefix.MILLI(SI.GRAM)
-                                                            .divide(SI.CUBIC_METRE))
-                                        };
-                                break;
-                            }
-                            /* ------------------------------------------------------------
-                             * Thematic           :  World Digital Elevation Model (DEM)
-                             * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
-                             */
-                        case 2:
-                            {
-                                path = "world_dem.gif";
-                                bounds = new Rectangle2D.Double(-180, -90, 360, 180);
-                                crs = DefaultGeographicCRS.WGS84;
-                                bands = null;
-                                break;
-                            }
-                            /* ------------------------------------------------------------
-                             * Thematic           :  World Bathymetry (DEM)
-                             * Geographic extent  :  (90°S, 180°W) - (90°N, 180°E)
-                             */
-                        case 3:
-                            {
-                                path = "BATHY.png";
-                                bounds = new Rectangle2D.Double(-180, -90, 360, 180);
-                                crs = DefaultGeographicCRS.WGS84;
-                                bands = null;
-                                break;
-                            }
-                            /*
-                             * A float coverage. Because we use only one tile with one band, the code below
-                             * is pretty similar to the code we would have if we were just setting the values
-                             * in a matrix.
-                             */
-                        case 4:
-                            {
-                                final int width = 500;
-                                final int height = 500;
-                                WritableRaster raster =
-                                        RasterFactory.createBandedRaster(
-                                                DataBuffer.TYPE_FLOAT, width, height, 1, null);
-                                for (int y = 0; y < height; y++) {
-                                    for (int x = 0; x < width; x++) {
-                                        raster.setSample(x, y, 0, x + y);
-                                    }
-                                }
-                                final Color[] colors = {
-                                    Color.BLUE, Color.CYAN, Color.WHITE, Color.YELLOW, Color.RED
-                                };
-                                return factory.create(
-                                        "Float coverage",
-                                        raster,
-                                        new Envelope2D(
-                                                DefaultGeographicCRS.WGS84,
-                                                35,
-                                                -41,
-                                                35 + 45,
-                                                -41 + 46),
-                                        null,
-                                        null,
-                                        null,
-                                        new Color[][] {colors},
-                                        null);
-                            }
-                            /*
-                             * A single band fictitious coverage with type UINT 16.
-                             *
-                             */
-                        case 5:
-                            {
-                                final int width = 500;
-                                final int height = 500;
-                                final BufferedImage image =
-                                        new BufferedImage(
-                                                width, height, BufferedImage.TYPE_USHORT_GRAY);
-                                final WritableRaster raster = (WritableRaster) image.getData();
-                                for (int y = 0; y < height; y++) {
-                                    for (int x = 0; x < width; x++) {
-                                        raster.setSample(
-                                                x, y, 0, (int) (1 + (x + y) * 65534.0 / 1000.0));
-                                    }
-                                }
-                                image.setData(raster);
-                                return factory.create(
-                                        "UInt16 coverage",
-                                        image,
-                                        new Envelope2D(
-                                                DefaultGeographicCRS.WGS84,
-                                                35,
-                                                -41,
-                                                35 + 45,
-                                                -41 + 46));
-                            }
-                    }
-                    /*
-                     * Now creates the coverage from the informations selected in the above switch
-                     * statement.
-                     */
-                    final RenderedImage image;
-                    try {
-                        image =
-                                ImageIO.read(
-                                        TestData.getResource(GridCoverageTestBase.class, path));
-                    } catch (IOException e) {
-                        throw new AssertionError(e);
-                    }
-                    final String filename = new File(path).getName();
-                    final GeneralBounds envelope = new GeneralBounds(bounds);
-                    envelope.setCoordinateReferenceSystem(crs);
-                    return factory.create(filename, image, envelope, bands, null, null);
-                }
-            };
+                image.setData(raster);
+                return factory.create(
+                    "UInt16 coverage",
+                    image,
+                    ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, 35, -41, 35 + 45, -41 + 46));
+              }
+          }
+          /*
+           * Now creates the coverage from the informations selected in the above switch
+           * statement.
+           */
+          final RenderedImage image;
+          try {
+            image = ImageIO.read(TestData.getResource(GridCoverageTestBase.class, path));
+          } catch (IOException e) {
+            throw new AssertionError(e);
+          }
+          final String filename = new File(path).getName();
+          final GeneralBounds envelope = new GeneralBounds(bounds);
+          envelope.setCoordinateReferenceSystem(crs);
+          return factory.create(filename, image, envelope, bands, null, null);
+        }
+      };
 
     /**
      * Tests the serialization of the packed and geophysics views of a grid coverage.

@@ -68,7 +68,6 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.referencing.operation.SingleOperation;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.XRectangle2D;
@@ -1522,6 +1521,27 @@ public final class CRS {
     }
 
     /**
+     * Transforms an rectangular envelope using the given {@linkplain MathTransform math transform}. The
+     * transformation is only approximative. Note that the returned envelope may not have the same
+     * number of dimensions than the original envelope.
+     *
+     * <p>Note that this method can not handle the case where the envelope contains the North or
+     * South pole, or when it cross the &plusmn;180° longitude, because {@linkplain MathTransform
+     * math transforms} do not carry suffisient informations. For a more robust envelope
+     * transformation, use {@link #transform(CoordinateOperation, Bounds)} instead.
+     *
+     * @param transform The transform to use.
+     * @param rectangle Rectangle to transform, or {@code null}. This rectangle will not be modified.
+     * @return The transformed rectangle, or {@code null} if {@code rectangle} was null.
+     * @throws TransformException if a transform failed.
+     * @since 30
+     * @see #transform(CoordinateOperation, Rectangle2D, Rectangle2D)
+     */
+    public static Rectangle2D transform(final MathTransform2D transform, final Rectangle2D rectangle)
+            throws TransformException {
+        return transform(transform, rectangle, (Rectangle2D) null);
+    }
+    /**
      * Transforms a rectangular envelope using the given {@linkplain MathTransform math transform}.
      * The transformation is only approximative. Invoking this method is equivalent to invoking the
      * following:
@@ -1612,14 +1632,20 @@ public final class CRS {
         }
         // Attempt the 'equalsEpsilon' assertion only if source and destination are not same and
         // if the target envelope is Float or Double (this assertion doesn't work with integers).
-        assert (destination == envelope
-                                || !(destination instanceof Rectangle2D.Double
-                                        || destination instanceof Rectangle2D.Float))
-                        || XRectangle2D.equalsEpsilon(
-                                destination,
-                                transform(transform, new Envelope2D(null, envelope))
-                                        .toRectangle2D())
-                : destination;
+        if (destination != envelope &&  !(destination instanceof Rectangle2D.Double || destination instanceof Rectangle2D.Float)){
+            Rectangle2D check = transform(transform,
+                    new Rectangle2D.Double(envelope.getMinX(),envelope.getMinY(),envelope.getMaxX(),envelope.getMaxY())
+            );
+            assert XRectangle2D.equalsEpsilon(destination, check) : destination;
+        }
+//        assert (destination == envelope || !(destination instanceof Rectangle2D.Double || destination instanceof Rectangle2D.Float))
+//                        || XRectangle2D.equalsEpsilon(
+//                                destination,
+//                                transform(
+//                                        transform,
+//                                        new Rectangle2D.Double(envelope.getMinX(),envelope.getMinY(),envelope.getMaxX(),envelope.getMaxY())
+//                                ))
+//                : destination;
         return destination;
     }
 

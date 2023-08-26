@@ -23,7 +23,6 @@ import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -183,7 +182,7 @@ class GridGeometryReducer {
             double scaleY = Math.abs(at.getScaleY());
             double step = ((scaleX + scaleY) / 2.) / 10.;
 
-            Envelope2D envelope = reduced.getEnvelope2D();
+            ReferencedEnvelope envelope = reduced.getEnvelope2D();
             result = new GeneralBounds(envelope.getCoordinateReferenceSystem());
             result.setEnvelope(
                     envelope.getMinX() + step,

@@ -24,7 +24,6 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.gce.geotiff.GeoTiffFormat;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Arguments;
 import org.geotools.util.factory.Hints;
@@ -199,11 +198,11 @@ public class ImageTiler {
         // docs end load coverage
 
         // docs start envelope
-        Envelope2D coverageEnvelope = gridCoverage.getEnvelope2D();
-        double coverageMinX = coverageEnvelope.getBounds().getMinX();
-        double coverageMaxX = coverageEnvelope.getBounds().getMaxX();
-        double coverageMinY = coverageEnvelope.getBounds().getMinY();
-        double coverageMaxY = coverageEnvelope.getBounds().getMaxY();
+        ReferencedEnvelope coverageEnvelope = gridCoverage.getEnvelope2D();
+        double coverageMinX = coverageEnvelope.getMinX();
+        double coverageMaxX = coverageEnvelope.getMaxX();
+        double coverageMinY = coverageEnvelope.getMinY();
+        double coverageMaxY = coverageEnvelope.getMaxY();
 
         int htc =
                 this.getNumberOfHorizontalTiles() != null

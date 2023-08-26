@@ -69,7 +69,6 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.feature.NameImpl;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -412,12 +411,12 @@ public class Utilities {
      *     always need to be done
      */
     public static GeneralBounds getIntersection(
-            final Envelope2D baseEnvelope2D,
+            final ReferencedEnvelope baseEnvelope2D,
             final CoordinateReferenceSystem spatialReferenceSystem2D,
             GeneralBounds requestedEnvelope2D,
             Rectangle requestedDim,
             MathTransform2D readGridToWorld,
-            final Envelope2D wgs84BaseEnvelope2D)
+            final ReferencedEnvelope wgs84BaseEnvelope2D)
             throws TransformException, FactoryException {
 
         if (baseEnvelope2D == null
@@ -553,14 +552,14 @@ public class Utilities {
      */
     public static GeneralBounds evaluateRequestedParams(
             GridEnvelope originalGridRange,
-            Envelope2D baseEnvelope2D,
+            ReferencedEnvelope baseEnvelope2D,
             CoordinateReferenceSystem spatialReferenceSystem2D,
             MathTransform originalGridToWorld,
             GeneralBounds requestedEnvelope,
             Rectangle sourceRegion,
             Rectangle requestedDim,
             MathTransform2D readGridToWorld,
-            Envelope2D wgs84BaseEnvelope2D)
+            ReferencedEnvelope wgs84BaseEnvelope2D)
             throws DataSourceException {
 
         GeneralBounds adjustedRequestedEnvelope = new GeneralBounds(2);

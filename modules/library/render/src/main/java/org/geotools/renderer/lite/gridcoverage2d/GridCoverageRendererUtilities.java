@@ -59,7 +59,6 @@ import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -271,7 +270,7 @@ public final class GridCoverageRendererUtilities {
         // let's compute the new grid geometry
         GridGeometry2D originalGG = coverage.getGridGeometry();
         GridEnvelope gridRange = originalGG.getGridRange();
-        Envelope2D envelope = originalGG.getEnvelope2D();
+        ReferencedEnvelope envelope = originalGG.getEnvelope2D();
 
         double minx = envelope.getMinX() + tx;
         double miny = envelope.getMinY() + ty;

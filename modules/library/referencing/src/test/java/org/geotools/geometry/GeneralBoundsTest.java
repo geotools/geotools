@@ -40,7 +40,7 @@ public final class GeneralBoundsTest {
     public void testConstruction() {
         GeneralBounds empty = new GeneralBounds(DefaultGeographicCRS.WGS84);
         assertTrue(empty.isEmpty());
-        Envelope2D empty2d = new Envelope2D();
+        GeneralBounds empty2d = new GeneralBounds(DefaultGeographicCRS.WGS84);
         assertTrue(empty2d.isEmpty());
 
         GeneralBounds world = new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
@@ -61,7 +61,7 @@ public final class GeneralBoundsTest {
         assertTrue(copyNil.isNull());
         assertEquals(nil, copyNil);
 
-        Envelope2D nil2 = new Envelope2D(nil);
+        GeneralBounds nil2 = new GeneralBounds(nil);
         GeneralBounds copyNil2 = new GeneralBounds((Bounds) nil2); // expected to work
 
         assertTrue(copyNil2.isNull());

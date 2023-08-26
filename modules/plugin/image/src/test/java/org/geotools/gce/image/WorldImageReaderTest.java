@@ -42,7 +42,6 @@ import org.geotools.data.CloseableIterator;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.FileServiceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
@@ -99,7 +98,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         assertEquals(300, ge.getSpan(0), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
         GridCoverage2D gc = wiReader.read(null);
-        Envelope2D envelope = gc.getEnvelope2D();
+        ReferencedEnvelope envelope = gc.getEnvelope2D();
         assertEquals(0, envelope.getMinimum(0), 1d);
         assertEquals(0, envelope.getMinimum(1), 1d);
         assertEquals(300, envelope.getSpan(0), 1d);

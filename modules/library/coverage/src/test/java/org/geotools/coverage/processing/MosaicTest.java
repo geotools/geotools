@@ -48,6 +48,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.TileCache;
 import org.geotools.TestData;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.parameter.InvalidParameterValueException;
@@ -67,7 +68,6 @@ import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Mosaic.GridGeometryPolicy;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -234,10 +234,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(coverage2.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -257,8 +257,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Position point =
                 new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
-                        actual.getCenterX(),
-                        actual.getCenterY());
+                        actual.getMedian(0),
+                        actual.getMedian(1));
         double nodata = CoverageUtilities.getBackgroundValues(coverage1)[0];
         double result = ((int[]) mosaic.evaluate(point))[0];
         Assert.assertEquals(nodata, result, TOLERANCE);
@@ -365,10 +365,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(coverage2.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -423,10 +423,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage3.getEnvelope2D();
+        ReferencedEnvelope expected = coverage3.getEnvelope2D();
         expected.include(coverage4.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -477,11 +477,11 @@ public class MosaicTest extends GridProcessingTestBase {
         param.parameter("Sources").setValue(sources);
 
         // Initial Bounding box
-        Envelope2D startBBOX = coverage1.getEnvelope2D();
+        ReferencedEnvelope startBBOX = coverage1.getEnvelope2D();
         startBBOX.include(coverage2.getEnvelope2D());
-        Envelope2D expected = new Envelope2D(startBBOX);
+        ReferencedEnvelope expected = new ReferencedEnvelope(startBBOX);
         Point2D pt = new Point2D.Double(startBBOX.getMaxX() + 1, startBBOX.getMaxY() + 1);
-        expected.add(pt);
+        expected.expandToInclude(pt);
         // External GridGeometry
         GridGeometry2D ggStart =
                 new GridGeometry2D(
@@ -498,7 +498,7 @@ public class MosaicTest extends GridProcessingTestBase {
         // input
 
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -582,10 +582,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(resampled.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -651,10 +651,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(resampled.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -750,7 +750,7 @@ public class MosaicTest extends GridProcessingTestBase {
                         new Hints());
 
         // Ensure the mosaic Bounding box is equal to that expected
-        Envelope2D expected = new Envelope2D(reUnion);
+        ReferencedEnvelope expected = new ReferencedEnvelope(reUnion);
         assertEqualBBOX(expected, mosaic.getEnvelope2D());
 
         // Check that the final Coverage resolution is equal to that of the first coverage
@@ -831,7 +831,7 @@ public class MosaicTest extends GridProcessingTestBase {
         GridCoverage2D mosaic = mosaic(sorted, new GeneralBounds(reUnion), new Hints());
 
         // Ensure the mosaic Bounding box is equal to that expected
-        Envelope2D expected = new Envelope2D(reUnion);
+        ReferencedEnvelope expected = new ReferencedEnvelope(reUnion);
         assertEqualBBOX(expected, mosaic.getEnvelope2D());
 
         // Calculate the mosaic resolution
@@ -922,18 +922,18 @@ public class MosaicTest extends GridProcessingTestBase {
     /** Method for calculating the resolution of the input {@link GridCoverage2D} */
     private static double calculateResolution(GridCoverage2D coverage) {
         GridGeometry2D gg2D = coverage.getGridGeometry();
-        double envW = gg2D.getEnvelope2D().width;
-        double gridW = gg2D.getGridRange2D().width;
+        double envW = gg2D.getEnvelope2D().getWidth();
+        double gridW = gg2D.getGridRange2D().getWidth();
         double res = envW / gridW;
         return res;
     }
 
-    /** Method which ensures that the two {@link Envelope2D} objects are equals. */
-    private void assertEqualBBOX(Envelope2D expected, Envelope2D actual) {
-        Assert.assertEquals(expected.getX(), actual.getX(), TOLERANCE);
-        Assert.assertEquals(expected.getY(), actual.getY(), TOLERANCE);
-        Assert.assertEquals(expected.getHeight(), actual.getHeight(), TOLERANCE);
-        Assert.assertEquals(expected.getWidth(), actual.getWidth(), TOLERANCE);
+    /** Method which ensures that the two {@link BoundingBox} objects are equals. */
+    private void assertEqualBBOX(BoundingBox expected, BoundingBox actual) {
+        Assert.assertEquals(expected.getMinX(), actual.getMinX(), TOLERANCE);
+        Assert.assertEquals(expected.getMinY(), actual.getMinY(), TOLERANCE);
+        Assert.assertEquals(expected.getMaxX(), actual.getMaxX(), TOLERANCE);
+        Assert.assertEquals(expected.getMaxY(), actual.getMaxY(), TOLERANCE);
     }
 
     /** Method for cropping the input coverage with the defined envelope. */
@@ -1121,7 +1121,7 @@ public class MosaicTest extends GridProcessingTestBase {
         return GRID_COVERAGE_FACTORY.create(
                 "Test coverage",
                 pi,
-                new Envelope2D(DefaultEngineeringCRS.GENERIC_2D, x0, y0, width, height),
+                ReferencedEnvelope.envelope2D(DefaultEngineeringCRS.GENERIC_2D, x0, y0, width, height),
                 null,
                 null,
                 coverageProperties);

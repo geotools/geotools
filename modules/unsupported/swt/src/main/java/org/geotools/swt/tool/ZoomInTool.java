@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.geometry.Position2D;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swt.event.MapMouseEvent;
 import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
@@ -136,7 +136,7 @@ public class ZoomInTool extends AbstractZoomTool {
         }
 
         if (dragged) {
-            Envelope2D env = new Envelope2D();
+            ReferencedEnvelope env = new ReferencedEnvelope();
             env.setFrameFromDiagonal(startDragPos, ev.getMapPosition());
             dragged = false;
             getMapPane().setDisplayArea(env);
@@ -151,7 +151,7 @@ public class ZoomInTool extends AbstractZoomTool {
                             startDragPos.getX() - 0.5d * paneArea.width / newScale,
                             startDragPos.getY() + 0.5d * paneArea.height / newScale);
 
-            Envelope2D newMapArea = new Envelope2D();
+            ReferencedEnvelope newMapArea = new ReferencedEnvelope();
             newMapArea.setFrameFromCenter(startDragPos, corner);
             getMapPane().setDisplayArea(newMapArea);
         }

@@ -49,7 +49,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
@@ -164,7 +163,7 @@ public class RasterLayerRequest {
 
     private GeneralParameterValue[] params;
 
-    private Envelope2D requestedBounds;
+    private ReferencedEnvelope requestedBounds;
 
     private GridGeometry2D requestedGridGeometry;
 
@@ -188,7 +187,7 @@ public class RasterLayerRequest {
         return filter;
     }
 
-    public Envelope2D getRequestedBounds() {
+    public ReferencedEnvelope getRequestedBounds() {
         return requestedBounds;
     }
 

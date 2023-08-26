@@ -38,7 +38,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.AbstractPosition;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.ShapeUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -814,53 +813,52 @@ public final class JTS {
         }
     }
 
-    /**
-     * Converts a JTS 2D envelope in an {@link Envelope2D} for interoperability with the referencing
-     * package.
-     *
-     * <p>If the provided envelope is a {@link ReferencedEnvelope} we check that the provided CRS
-     * and the implicit CRS are similar.
-     *
-     * @param envelope The JTS envelope to convert.
-     * @param crs The coordinate reference system for the specified envelope.
-     * @return The GeoAPI envelope.
-     * @throws MismatchedDimensionException if a two-dimensional envelope can't be created from an
-     *     envelope with the specified CRS.
-     * @since 2.3
-     */
-    public static Envelope2D getEnvelope2D(
-            final Envelope envelope, final CoordinateReferenceSystem crs)
-            throws MismatchedDimensionException {
-        // Initial checks
-        ensureNonNull("envelope", envelope);
-        ensureNonNull("crs", crs);
-
-        if (envelope instanceof ReferencedEnvelope) {
-            final ReferencedEnvelope referenced = (ReferencedEnvelope) envelope;
-            final CoordinateReferenceSystem implicitCRS = referenced.getCoordinateReferenceSystem();
-
-            if ((crs != null) && !CRS.equalsIgnoreMetadata(crs, implicitCRS)) {
-                throw new IllegalArgumentException(
-                        Errors.format(
-                                ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2,
-                                crs.getName().getCode(),
-                                implicitCRS.getName().getCode()));
-            }
-        }
-
-        // Ensure the CRS is 2D and retrieve the new envelope
-        final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
-        if (crs2D == null)
-            throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, crs));
-
-        return new Envelope2D(
-                crs2D,
-                envelope.getMinX(),
-                envelope.getMinY(),
-                envelope.getWidth(),
-                envelope.getHeight());
-    }
+//    /**
+//     * Converts a JTS 2D envelope in an {@link Envelope2D} for interoperability with the referencing
+//     * package.
+//     *
+//     * <p>If the provided envelope is a {@link ReferencedEnvelope} we check that the provided CRS
+//     * and the implicit CRS are similar.
+//     *
+//     * @param envelope The JTS envelope to convert.
+//     * @param crs The coordinate reference system for the specified envelope.
+//     * @return The GeoAPI envelope.
+//     * @throws MismatchedDimensionException if a two-dimensional envelope can't be created from an
+//     *     envelope with the specified CRS.
+//     * @since 2.3
+//     */
+//    public static Rectangle2D getEnvelope2D(
+//            final Envelope envelope, final CoordinateReferenceSystem crs)
+//            throws MismatchedDimensionException {
+//        // Initial checks
+//        ensureNonNull("envelope", envelope);
+//        ensureNonNull("crs", crs);
+//
+//        if (envelope instanceof ReferencedEnvelope) {
+//            final ReferencedEnvelope referenced = (ReferencedEnvelope) envelope;
+//            final CoordinateReferenceSystem implicitCRS = referenced.getCoordinateReferenceSystem();
+//
+//            if ((crs != null) && !CRS.equalsIgnoreMetadata(crs, implicitCRS)) {
+//                throw new IllegalArgumentException(
+//                        Errors.format(
+//                                ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2,
+//                                crs.getName().getCode(),
+//                                implicitCRS.getName().getCode()));
+//            }
+//        }
+//
+//        // Ensure the CRS is 2D and retrieve the new envelope
+//        final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
+//        if (crs2D == null)
+//            throw new MismatchedDimensionException(
+//                    Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, crs));
+//
+//        return new Rectangle2D.Double(
+//                envelope.getMinX(),
+//                envelope.getMinY(),
+//                envelope.getWidth(),
+//                envelope.getHeight());
+//    }
 
     /**
      * Create a Point from a ISO Geometry DirectPosition.

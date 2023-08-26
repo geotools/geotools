@@ -110,7 +110,7 @@ The builder will have to wrap up the following steps.
      double soutmost  = 51.0;
      double eastmost  =  3.0;
      double northmost = 52.0;
-     Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84,
+     Envelope env = new GeneralBounds(DefaultGeographicCRS.WGS84,
                                    westmost,
                                    soutmost,
                                    eastmost-westmost, 

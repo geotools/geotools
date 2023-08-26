@@ -16,6 +16,8 @@
  */
 package org.geotools.geometry.jts;
 
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
@@ -32,9 +34,11 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.AbstractPosition;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -358,6 +362,8 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             }
         }
     }
+
+
     /** Returns the coordinate reference system associated with this envelope. */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -532,6 +538,27 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         Coordinate coordinate = new Coordinate(pt.getOrdinate(0), pt.getOrdinate(1));
         expandToInclude(coordinate);
     }
+
+    public void expandToInclude(Point2D pt){
+        this.expandToInclude(pt);
+    }
+    /** Returns the X coordinate of the center of the rectangle.
+     *
+     * Method compatibility with {@link XRectangle2D#getCenterX()}
+     */
+    public double getCenterX() {
+        return getMedian(0);
+    }
+
+    /**
+     * Returns the Y coordinate of the center of the rectangle.
+     *
+     * Method compatibility with {@link XRectangle2D#getCenterY()}
+     */
+    public double getCenterY() {
+        return getMedian(1);
+    }
+
     /** Include the provided envelope, expanding as necessary. */
     @Override
     public void expandToInclude(Envelope other) {
@@ -569,6 +596,21 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public void setBounds(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
         super.init(getJTSEnvelope(bbox));
+    }
+
+    public void setFrameFromCenter(Point2D center, Point2D corner){
+        double widthDelta = Math.abs(corner.getX() - center.getX());
+        double heightDelta = Math.abs(corner.getY() - center.getY());
+        super.init( center.getX() - widthDelta, center.getX()+widthDelta,
+                    center.getY()-heightDelta, getCenterY()+heightDelta);
+    }
+    public void setFrameFromDiagonal(Point2D lowerLeft, Point2D upperRight){
+        super.init( lowerLeft.getX(),upperRight.getX(),
+                lowerLeft.getY(),upperRight.getY());
+    }
+    /** Rectangle style x,y,width,height bounds definition */
+    public void setFrame(double x, double y, double width, double height){
+        super.init(x, x+width, y, y+height);
     }
 
     /**
@@ -738,6 +780,43 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     }
 
     /**
+     * Compare the bounds of this envelope with those of another.
+     *
+     * <p>Note: in this test:
+     *
+     * <ul>
+     *   <li>the coordinate reference systems of the envelopes are not examined
+     *   <li>only the first two dimensions of the envelopes are compared
+     *   <li>it is assumed that each dimension equates to the same axis for both envelopes
+     * </ul>
+     *
+     * @param other other envelope
+     * @param eps a small tolerance factor (e.g. 1.0e-6d) which will be scaled relative to this
+     *     envlope's width and height
+     * @return true if all bounding coordinates are equal within the set tolerance; false otherwise
+     */
+    public boolean boundsEquals2D(final Rectangle2D other, double eps) {
+        eps *= 0.5 * (getWidth() + getHeight());
+
+        double[] delta = new double[4];
+        delta[0] = getMinimum(0) - other.getMinX();
+        delta[1] = getMaximum(0) - other.getMaxX();
+        delta[2] = getMinimum(1) - other.getMinY();
+        delta[3] = getMaximum(1) - other.getMaxX();
+
+        for (double v : delta) {
+            /*
+             * As per Envelope2D#boundsEquals we use ! here to
+             * catch any NaN values
+             */
+            if (!(Math.abs(v) <= eps)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Returns {@code true} if {@code this} envelope bounds is equals to {@code that} envelope
      * bounds in two specified dimensions. The coordinate reference system is not compared, since it
      * doesn't need to have the same number of dimensions.
@@ -888,6 +967,22 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public static ReferencedEnvelope create(ReferencedEnvelope env, CoordinateReferenceSystem crs) {
         return create((Bounds) env, crs);
     }
+
+    /**
+     * Construct 2D WGS84 referenced envelope using rectangle conventions using width and height.
+     *
+     * Migration method, previously {@code Envelope2D(crs,x,y,w,h)}.
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @return ReferencedEnvelope WGS84
+     */
+    public static ReferencedEnvelope envelope2D(CoordinateReferenceSystem crs, double x, double y, double width, double height){
+        return create( new Rectangle2D.Double(x,y,width,height), crs);
+    }
+
     /**
      * Utility method to create a ReferencedEnvelope from an JTS Envelope class, supporting 2d as
      * well as 3d envelopes (returning the right class).

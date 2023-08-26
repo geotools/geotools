@@ -349,7 +349,7 @@ public class GeoTiffWriterTest extends Assert {
         assertNotNull(coverageMercator.getCoordinateReferenceSystem());
         assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), googleCRS));
         assertEquals(
-                coverage.getEnvelope2D().getFrame(), coverageMercator.getEnvelope2D().getFrame());
+                coverage.getEnvelope2D(), coverageMercator.getEnvelope2D());
         reader.dispose();
         coverage.dispose(true);
         coverage.dispose(true);

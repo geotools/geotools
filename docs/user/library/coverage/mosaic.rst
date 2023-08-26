@@ -70,7 +70,7 @@ An example data set looks something like::
     ExpandToRGB=true
     Levels=10000.0,10000.0
     LevelsNum=1
-    Envelope2D=-3637013.0,-1158091.0 1019969.0,4092819.0
+    GeneralBounds=-3637013.0,-1158091.0 1019969.0,4092819.0
     NumFiles=3
   
   Where the following are required:
@@ -91,7 +91,7 @@ An example data set looks something like::
     * You can define several levels in order to capture overview files if you have them
     
   * ``LevelsNum``: the number of levels mentioned above
-  * ``Envelope2D``: bounds in the CRS specified in the ``.prj`` file
+  * ``GeneralBounds``: bounds in the CRS specified in the ``.prj`` file
     
   * ``Format``: ``minX,minY maxX,maxY``
     

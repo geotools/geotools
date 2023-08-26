@@ -55,7 +55,6 @@ import org.geotools.coverage.processing.Operation2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.coverage.util.IntersectUtils;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -348,9 +347,7 @@ public class Crop extends Operation2D {
 
         // Setting a GeneralEnvelope from ROI if needed
         if (cropRoi != null && cropEnvelope == null) {
-            Bounds e2d =
-                    JTS.getEnvelope2D(
-                            cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
+            Bounds e2d = new ReferencedEnvelope(cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
             cropEnvelope = new GeneralBounds(e2d);
         }
 
@@ -363,15 +360,15 @@ public class Crop extends Operation2D {
         //
         // /////////////////////////////////////////////////////////////////////
         // envelope of the source coverage
-        final Envelope2D sourceEnvelope = source.getEnvelope2D();
+        final ReferencedEnvelope sourceEnvelope = source.getEnvelope2D();
         // crop envelope
-        Envelope2D destinationEnvelope = new Envelope2D(cropEnvelope);
+        ReferencedEnvelope destinationEnvelope = new ReferencedEnvelope(cropEnvelope);
         CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         CoordinateReferenceSystem destinationCRS =
                 destinationEnvelope.getCoordinateReferenceSystem();
         if (destinationCRS == null) {
             // Do not change the user provided object - clone it first.
-            final Envelope2D ge = new Envelope2D(destinationEnvelope);
+            final ReferencedEnvelope ge = new ReferencedEnvelope(destinationEnvelope);
             destinationCRS = source.getCoordinateReferenceSystem2D();
             ge.setCoordinateReferenceSystem(destinationCRS);
             destinationEnvelope = ge;
@@ -542,11 +539,11 @@ public class Crop extends Operation2D {
                     final Polygon modelSpaceROI =
                             FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
                     Geometry intersection = IntersectUtils.intersection(cropROI, modelSpaceROI);
-                    Envelope2D e2d =
-                            JTS.getEnvelope2D(
+                    ReferencedEnvelope e2d =
+                            ReferencedEnvelope.create(
                                     intersection.getEnvelopeInternal(),
                                     cropEnvelope.getCoordinateReferenceSystem());
-                    GeneralBounds ge = new GeneralBounds((Bounds) e2d);
+                    GeneralBounds ge = new GeneralBounds(e2d);
                     cropEnvelope.setEnvelope(ge);
                 } catch (TopologyException e) {
                     // in case the intersection fail, accept using intersection(cropEnvelope,

@@ -33,6 +33,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.feature.type.Name;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
@@ -239,7 +240,7 @@ public class DefaultClassesTest {
                 CRS.equalsIgnoreMetadata(
                         response.getCoordinateReferenceSystem(),
                         cov.getCoordinateReferenceSystem()));
-        assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains(cov.getEnvelope2D()));
+        assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains((BoundingBox)cov.getEnvelope2D()));
         assertEquals(response.isDataEditable(), cov.isDataEditable());
         assertSame(response.getGridGeometry(), cov.getGridGeometry());
         assertSame(response.getGridCoverage2D(), cov);

@@ -34,7 +34,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -129,8 +128,8 @@ public class StreamingRendererCompositeTest {
         BufferedImage bi =
                 ImageIO.read(CompositeTest.class.getResourceAsStream("test-data/" + imageFileName));
         GridCoverageFactory factory = new GridCoverageFactory();
-        Envelope2D envelope =
-                new Envelope2D(
+        ReferencedEnvelope envelope =
+                ReferencedEnvelope.envelope2D(
                         DefaultEngineeringCRS.GENERIC_2D, 0, 0, bi.getWidth(), bi.getHeight());
         return factory.create(imageFileName, bi, envelope);
     }

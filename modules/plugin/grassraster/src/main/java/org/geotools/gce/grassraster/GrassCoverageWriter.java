@@ -36,8 +36,8 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterWriteHandler;
 import org.geotools.gce.grassraster.format.GrassCoverageFormat;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageWriterSpi;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Coverage Writer class for writing GRASS raster maps.
@@ -76,7 +76,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
      */
     public void writeRaster(GridCoverage2D gridCoverage2D) throws IOException {
         try {
-            Envelope2D env = gridCoverage2D.getEnvelope2D();
+            ReferencedEnvelope env = gridCoverage2D.getEnvelope2D();
             GridEnvelope2D worldToGrid = gridCoverage2D.getGridGeometry().worldToGrid(env);
 
             double xRes = env.getWidth() / worldToGrid.getWidth();

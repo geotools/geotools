@@ -34,7 +34,7 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
@@ -571,7 +571,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testTransformWgs84PolarStereographic() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-180, -90);
         envelope.add(180, 0);
         Bounds transformed = CRS.transform(envelope, crs);
@@ -586,7 +586,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testTransformPolarStereographicWgs84() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3031", true);
-        Envelope2D envelope = new Envelope2D(crs);
+        GeneralBounds envelope = new GeneralBounds(crs);
         // random bbox that does include the pole
         envelope.add(-4223632.8125, -559082.03125);
         envelope.add(5053710.9375, 3347167.96875);
@@ -595,7 +595,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         assertEquals(-180d, transformed.getMinimum(0), 0d);
         assertEquals(180d, transformed.getMaximum(0), 0d);
         // another bbox
-        envelope = new Envelope2D(crs);
+        envelope = new GeneralBounds(crs);
         // random bbox that does not include the pole, but it's really just slightly off it
         envelope.add(-10718812.640513, -10006238.053703);
         envelope.add(12228504.561708, -344209.75803081);
@@ -606,7 +606,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testTransformLambertAzimuthalEqualAreaWgs84() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3574", true);
-        Envelope2D envelope = new Envelope2D(crs);
+        GeneralBounds envelope = new GeneralBounds(crs);
         // random bbox that does include the pole
         envelope.add(-3142000, -3142000);
         envelope.add(3142000, 3142000);
@@ -620,8 +620,8 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     public void testTransformLambertAzimuthalEqualAreaWgs84NonPolar() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3035", true);
         // a bbox that does _not_ include the pole
-        Envelope2D envelope = new Envelope2D(crs);
-        envelope.setFrameFromDiagonal(4029000, 2676000, 4696500, 3567700);
+        GeneralBounds envelope = new GeneralBounds(crs);
+        envelope.setEnvelope(4029000, 2676000, 4696500, 3567700);
         Bounds transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         // check we did _not_ get the whole range of longitudes
         assertEquals(5.42, transformed.getMinimum(0), 1e-2);
@@ -632,7 +632,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     public void testTransformPolarStereographicWgs84FalseOrigin() throws Exception {
         // this one has false origins at 6000000/6000000
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3032", true);
-        Envelope2D envelope = new Envelope2D(crs);
+        GeneralBounds envelope = new GeneralBounds(crs);
         envelope.add(5900000, 5900000);
         envelope.add(6100000, 6100000);
         Bounds transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
@@ -645,7 +645,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     public void testTransformPolarStereographicToOther() throws Exception {
         CoordinateReferenceSystem antarcticPs = CRS.decode("EPSG:3031", true);
         CoordinateReferenceSystem australianPs = CRS.decode("EPSG:3032", true);
-        Envelope2D envelope = new Envelope2D(antarcticPs);
+        GeneralBounds envelope = new GeneralBounds(antarcticPs);
         envelope.add(-4223632.8125, -559082.03125);
         envelope.add(5053710.9375, 3347167.96875);
         Bounds transformed = CRS.transform(envelope, australianPs);
@@ -681,7 +681,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
 
             CoordinateReferenceSystem worldVanDerGrinten = CRS.parseWKT(wkt);
 
-            Envelope2D envelope = new Envelope2D(worldVanDerGrinten);
+            GeneralBounds envelope = new GeneralBounds(worldVanDerGrinten);
             envelope.add(-39842778.796051726, -42306552.87521737);
             envelope.add(40061162.89695589, 37753756.60975308);
 
@@ -718,7 +718,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
                         + "    AUTHORITY[\"EPSG\",\"3412\"]]";
         CoordinateReferenceSystem polar = CRS.parseWKT(wkt);
 
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-180, -90);
         envelope.add(180, 0);
 
@@ -743,7 +743,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testNorthPolarStereographicLeftQuadrant() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-156, 0);
         envelope.add(-40, 48);
         Bounds transformed = CRS.transform(envelope, crs);
@@ -756,7 +756,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testNorthPolarStereographicRightQuadrant() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(40, 0);
         envelope.add(156, 48);
         Bounds transformed = CRS.transform(envelope, crs);
@@ -769,7 +769,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testNorthPolarStereographicLeftRightQuadrant() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-156, 0);
         envelope.add(156, 48);
         Bounds transformed = CRS.transform(envelope, crs);
@@ -782,7 +782,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testNorthPolarStereographicUpQuadrant() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-200, 0);
         envelope.add(-160, 48);
         Bounds transformed = CRS.transform(envelope, crs);
@@ -795,7 +795,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testNorthPolarStereographicDownQuadrant() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-20, 0);
         envelope.add(20, 48);
         Bounds transformed = CRS.transform(envelope, crs);
@@ -808,7 +808,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
     @Test
     public void testNorthPolarStereographicUpDownQuadrant() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:3995", true);
-        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        GeneralBounds envelope = new GeneralBounds(DefaultGeographicCRS.WGS84);
         envelope.add(-200, 0);
         envelope.add(20, 48);
         Bounds transformed = CRS.transform(envelope, crs);

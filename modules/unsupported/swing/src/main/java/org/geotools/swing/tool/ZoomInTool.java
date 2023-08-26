@@ -24,8 +24,8 @@ import java.awt.Toolkit;
 import java.awt.geom.Point2D;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.Position2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.locale.LocaleUtils;
 
@@ -99,7 +99,7 @@ public class ZoomInTool extends AbstractZoomTool {
                         mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
                         mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 
-        Envelope2D newMapArea = new Envelope2D();
+        ReferencedEnvelope newMapArea = new ReferencedEnvelope();
         newMapArea.setFrameFromCenter(mapPos, corner);
         getMapPane().setDisplayArea(newMapArea);
     }
@@ -135,7 +135,7 @@ public class ZoomInTool extends AbstractZoomTool {
     @Override
     public void onMouseReleased(MapMouseEvent ev) {
         if (dragged && !ev.getPoint().equals(startPosDevice)) {
-            Envelope2D env = new Envelope2D();
+            ReferencedEnvelope env = new ReferencedEnvelope();
             env.setFrameFromDiagonal(startPosWorld, ev.getWorldPos());
             dragged = false;
             getMapPane().setDisplayArea(env);

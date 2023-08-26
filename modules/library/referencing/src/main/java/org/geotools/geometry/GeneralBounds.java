@@ -156,7 +156,19 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
         this(crs.getCoordinateSystem().getDimension());
         this.crs = crs;
     }
-
+    //  GeneralBounds(geosCRS, xMin, yMin, xMax - xMin, yMax - yMin)
+    /**
+     * Constructs an empty envelope with the specified coordinate reference system. All ordinates
+     * are initialized to 0.
+     *
+     * @param crs The coordinate reference system.
+     * @since 2.2
+     */
+    public GeneralBounds(final CoordinateReferenceSystem crs, double xMin, double yMin, double width, double height) {
+        this(crs.getCoordinateSystem().getDimension());
+        this.setEnvelope(xMin,yMin,xMin+width,yMin+height);
+        this.crs = crs;
+    }
     /**
      * Converts the envelope to a general envelope, avoiding the construction of a new object in
      * case the input envelope is already a GeneralEnvelope
@@ -830,16 +842,33 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
             final CoordinateReferenceSystem crs1, final CoordinateReferenceSystem crs2) {
         return crs1 == null || crs2 == null || CRS.equalsIgnoreMetadata(crs1, crs2);
     }
-
     /**
-     * Adds a point to this envelope. The resulting envelope is the smallest envelope that contains
-     * both the original envelope and the specified point. After adding a point, a call to {@link
-     * #contains} with the added point as an argument will return {@code true}, except if one of the
-     * point's ordinates was {@link Double#NaN} (in which case the corresponding ordinate have been
+     * Adds a position to this bounds. The resulting bounds is the smallest bounds that contains
+     * both the original bounds and the specified position. After adding a position, a call to {@link
+     * #contains} with the added position as an argument will return {@code true}, except if one of the
+     * position's ordinates was {@link Double#NaN} (in which case the corresponding ordinate have been
      * ignored).
      *
-     * <p>This method assumes that the specified point uses the same CRS than this envelope. For
-     * performance reason, it will no be verified unless J2SE assertions are enabled.
+     * <p>This method assumes that the specified position uses the same CRS than this envelope. For
+     * performance reason, it will not be verified unless J2SE assertions are enabled.
+     *
+     * @param x Position first ordinate
+     @param y Position first ordinate
+     * @throws MismatchedDimensionException if the specified point doesn't have the expected
+     *     dimension.
+     */
+    public void add(double x, double y) throws MismatchedDimensionException {
+        add( new Position2D(getCoordinateReferenceSystem(),x,y));
+    }
+    /**
+     * Adds a position to this bounds. The resulting bounds is the smallest bounds that contains
+     * both the original bounds and the specified position. After adding a position, a call to {@link
+     * #contains} with the added position as an argument will return {@code true}, except if one of the
+     * position's ordinates was {@link Double#NaN} (in which case the corresponding ordinate have been
+     * ignored).
+     *
+     * <p>This method position that the specified position uses the same CRS than this envelope. For
+     * performance reason, it will not be verified unless J2SE assertions are enabled.
      *
      * @param position The point to add.
      * @throws MismatchedDimensionException if the specified point doesn't have the expected

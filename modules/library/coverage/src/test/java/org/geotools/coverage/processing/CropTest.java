@@ -51,7 +51,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.JTS;
@@ -211,7 +210,7 @@ public final class CropTest extends GridProcessingTestBase {
                             oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
                         });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
-        Envelope2D env2D = new Envelope2D(cropEnvelope);
+        ReferencedEnvelope env2D = new ReferencedEnvelope(cropEnvelope);
 
         /*
          * Do the crop without conserving the envelope.

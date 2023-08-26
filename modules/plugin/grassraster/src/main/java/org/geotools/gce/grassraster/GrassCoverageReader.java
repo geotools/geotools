@@ -57,7 +57,6 @@ import org.geotools.gce.grassraster.core.color.JGrassColorTable;
 import org.geotools.gce.grassraster.format.GrassCoverageFormat;
 import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageReaderSpi;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -297,7 +296,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
              */
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
             requestedRegionEnvelope =
-                    new Envelope2D(
+                    ReferencedEnvelope.envelope2D(
                             crs,
                             requestedWest,
                             requestedSouth,
@@ -401,7 +400,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             int ymax = (int) Math.ceil((fileNorth - requestedSouth) * scaleY - EPS);
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
             requestedRegionEnvelope =
-                    new Envelope2D(
+                    ReferencedEnvelope.envelope2D(
                             crs,
                             requestedWest,
                             requestedSouth,

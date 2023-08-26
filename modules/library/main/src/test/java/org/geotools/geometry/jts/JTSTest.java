@@ -25,6 +25,7 @@ import static org.junit.Assert.fail;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Position;
@@ -33,7 +34,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -268,19 +268,6 @@ public class JTSTest extends JTSTestBase {
             c.y = YPOINTS[i];
             assertTrue(list.contains(c));
         }
-    }
-
-    @Test
-    public void getEnvelope2D() {
-        ReferencedEnvelope refEnv =
-                new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
-
-        Envelope2D env2D = JTS.getEnvelope2D(refEnv, refEnv.getCoordinateReferenceSystem());
-
-        CRS.equalsIgnoreMetadata(
-                refEnv.getCoordinateReferenceSystem(), env2D.getCoordinateReferenceSystem());
-
-        assertTrue(env2D.boundsEquals(refEnv, 0, 1, TOL));
     }
 
     @Test

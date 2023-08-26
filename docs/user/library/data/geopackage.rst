@@ -96,7 +96,7 @@ a separate coverage.
         
         System.out.println(Arrays.asList(reader.getGridCoverageNames()));
         GeneralParameterValue[] parameters = new GeneralParameterValue[1];
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(new Rectangle(500,500)), new ReferencedEnvelope(0,180.0,-85.0,0,WGS_84));
+        GridGeometry2D gg = new GridGeometry2D(new GridGeneralBounds(new Rectangle(500,500)), new ReferencedEnvelope(0,180.0,-85.0,0,WGS_84));
         parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("World_Lakes", parameters);  
 

@@ -29,6 +29,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -101,6 +102,23 @@ public final class FeatureUtilities {
      */
     private static Polygon getPolygon(final Rectangle2D rect) {
         return getPolygon(rect, 0);
+    }
+    /**
+     * Returns the polygon surrounding the specified rectangle. Code lifted from ArcGridDataSource
+     * (temporary).
+     */
+    private static Polygon getPolygon(final BoundingBox bounds) {
+        final PrecisionModel pm = new PrecisionModel();
+        final GeometryFactory gf = new GeometryFactory(pm, 0);
+        final Coordinate[] coord = {
+                new Coordinate(bounds.getMinX(), bounds.getMinY()),
+                new Coordinate(bounds.getMaxX(), bounds.getMinY()),
+                new Coordinate(bounds.getMaxX(), bounds.getMaxY()),
+                new Coordinate(bounds.getMinX(), bounds.getMaxY()),
+                new Coordinate(bounds.getMinX(), bounds.getMinY())
+        };
+        final LinearRing ring = gf.createLinearRing(coord);
+        return new Polygon(ring, null, gf);
     }
 
     /**

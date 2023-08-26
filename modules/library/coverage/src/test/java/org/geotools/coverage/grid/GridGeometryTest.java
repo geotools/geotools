@@ -35,7 +35,6 @@ import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.Position2D;
@@ -162,7 +161,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     public void testWorldToGridPoint() throws Exception {
         GridGeometry2D gg = getRandomCoverage().getGridGeometry();
 
-        Envelope2D worldBounds = gg.getEnvelope2D();
+        ReferencedEnvelope worldBounds = gg.getEnvelope2D();
         GridEnvelope2D gridBounds = gg.getGridRange2D();
         GridCoordinates2D gridExp = new GridCoordinates2D();
 
@@ -199,7 +198,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     public void testWorldToGridEnvelope() throws Exception {
         GridGeometry2D gg = getRandomCoverage().getGridGeometry();
 
-        Envelope2D worldBounds = gg.getEnvelope2D();
+        ReferencedEnvelope worldBounds = gg.getEnvelope2D();
         GridEnvelope2D gridBounds = gg.getGridRange2D();
 
         GridEnvelope2D gridEnv = gg.worldToGrid(worldBounds);
@@ -210,8 +209,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         double cellWidthX = worldBounds.getWidth() / gridBounds.getWidth();
         double cellWidthY = worldBounds.getHeight() / gridBounds.getHeight();
 
-        Envelope2D subEnv =
-                new Envelope2D(
+        ReferencedEnvelope subEnv =
+                ReferencedEnvelope.envelope2D(
                         gg.getCoordinateReferenceSystem2D(),
                         worldBounds.getMinX() + cellWidthX * 0.6,
                         worldBounds.getMinY() + cellWidthY * 0.6,
@@ -236,7 +235,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
         GridGeometry2D gg = getRandomCoverage().getGridGeometry();
 
-        Envelope2D worldBounds = gg.getEnvelope2D();
+        ReferencedEnvelope worldBounds = gg.getEnvelope2D();
         GridEnvelope2D gridBounds = gg.getGridRange2D();
 
         double cellWidthX = worldBounds.getWidth() / gridBounds.getWidth();
@@ -261,7 +260,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
         GridGeometry2D gg = getRandomCoverage().getGridGeometry();
 
-        Envelope2D worldBounds = gg.getEnvelope2D();
+        ReferencedEnvelope worldBounds = gg.getEnvelope2D();
         GridEnvelope2D gridBounds = gg.getGridRange2D();
 
         assertTrue(worldBounds.boundsEquals(gg.gridToWorld(gridBounds), 0, 1, TOL));
@@ -274,13 +273,13 @@ public final class GridGeometryTest extends GridCoverageTestBase {
                         gridBounds.width - 2,
                         gridBounds.height - 2);
 
-        Envelope2D subEnv = gg.gridToWorld(subGrid);
+        ReferencedEnvelope subEnv = gg.gridToWorld(subGrid);
 
         double cellWidthX = worldBounds.getWidth() / gridBounds.getWidth();
         double cellWidthY = worldBounds.getHeight() / gridBounds.getHeight();
 
-        Envelope2D expectedEnv =
-                new Envelope2D(
+        ReferencedEnvelope expectedEnv =
+                ReferencedEnvelope.envelope2D(
                         gg.getCoordinateReferenceSystem2D(),
                         worldBounds.getMinX() + cellWidthX,
                         worldBounds.getMinY() + cellWidthY,
@@ -292,7 +291,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
     @Test
     public void testCanonicalFromOrthogonal() throws Exception {
-        Envelope2D bbox = new Envelope2D(DefaultGeographicCRS.WGS84, 150, 40, 10, 10);
+        ReferencedEnvelope bbox = ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, 150, 40, 10, 10);
         GridGeometry2D gg =
                 new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100), (Bounds) bbox);
 
@@ -316,8 +315,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     public void testRectangleConstructor() throws Exception {
         GridGeometry2D gg1 =
                 new GridGeometry2D(
-                        new Rectangle(100, 100),
-                        new Envelope2D(DefaultGeographicCRS.WGS84, -180, 180, -90, 90));
+                        new GridEnvelope2D( new Rectangle(100, 100)),
+                        ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, -180, 180, -90, 90));
         Assert.assertTrue(gg1.isDefined(GridGeometry2D.CRS_BITMASK));
         try {
             Assert.assertNotNull(gg1.getCoordinateReferenceSystem());
@@ -340,8 +339,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
         assertEquals(originalRange.getSpan(0), canonicalRange.getSpan(0));
         assertEquals(originalRange.getSpan(1), canonicalRange.getSpan(1));
         // check the envelope
-        Envelope2D bbox = original.getEnvelope2D();
-        Envelope2D canonicalBbox = canonical.getEnvelope2D();
+        ReferencedEnvelope bbox = original.getEnvelope2D();
+        ReferencedEnvelope canonicalBbox = canonical.getEnvelope2D();
         assertEquals(bbox.getMinX(), canonicalBbox.getMinX(), EPS);
         assertEquals(bbox.getMinY(), canonicalBbox.getMinY(), EPS);
         assertEquals(bbox.getMaxX(), canonicalBbox.getMaxX(), EPS);

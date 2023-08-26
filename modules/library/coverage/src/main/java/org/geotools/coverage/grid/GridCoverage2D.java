@@ -53,7 +53,7 @@ import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
@@ -285,7 +285,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *
      * @return The two-dimensional bounding box.
      */
-    public Envelope2D getEnvelope2D() {
+    public ReferencedEnvelope getEnvelope2D() {
         return gridGeometry.getEnvelope2D();
     }
 

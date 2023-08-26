@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -190,7 +190,7 @@ public class JGrassRegion {
      *
      * @param envelope2D the envelope2D from which to take the setting from.
      */
-    public JGrassRegion(Envelope2D envelope2D) {
+    public JGrassRegion(ReferencedEnvelope envelope2D) {
         west = envelope2D.getMinX();
         east = envelope2D.getMaxX();
         south = envelope2D.getMinY();

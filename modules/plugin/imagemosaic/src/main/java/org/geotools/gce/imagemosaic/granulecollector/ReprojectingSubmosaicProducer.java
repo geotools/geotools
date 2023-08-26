@@ -55,7 +55,6 @@ import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -97,7 +96,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             boolean dryRun) {
         super(response, dryRun);
         this.targetCRS = rasterManager.getConfiguration().getCrs();
-        Envelope2D requestedBounds = request.getRequestedBounds();
+        ReferencedEnvelope requestedBounds = request.getRequestedBounds();
         if (rasterManager.getConfiguration().getCatalogConfigurationBean().isHeterogeneousCRS()
                 && requestedBounds != null) {
             CoordinateReferenceSystem crs = requestedBounds.getCoordinateReferenceSystem();

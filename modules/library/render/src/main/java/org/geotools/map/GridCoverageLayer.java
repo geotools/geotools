@@ -21,7 +21,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
 
@@ -89,7 +88,7 @@ public class GridCoverageLayer extends RasterLayer {
     public ReferencedEnvelope getBounds() {
         if (coverage != null) {
             CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem();
-            Envelope2D bounds = coverage.getEnvelope2D();
+            ReferencedEnvelope bounds = coverage.getEnvelope2D();
             if (bounds != null) {
                 return new ReferencedEnvelope(bounds);
             } else if (crs != null) {

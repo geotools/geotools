@@ -27,6 +27,8 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.swing.Icon;
+
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -39,7 +41,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -127,7 +128,7 @@ public final class RendererUtilities {
         // Convert the JTS envelope and get the transform
         //
         // //
-        final Envelope2D genvelope = new Envelope2D(mapExtent);
+        final Bounds genvelope = new GeneralBounds(mapExtent);
 
         // //
         //

@@ -45,7 +45,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.ImagingParameters;
@@ -139,7 +138,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             //
             // //
             final CoordinateReferenceSystem crs = source.getCoordinateReferenceSystem2D();
-            final Envelope2D envelope = source.getEnvelope2D();
+            final ReferencedEnvelope envelope = source.getEnvelope2D();
 
             // /////////////////////////////////////////////////////////////////////
             //

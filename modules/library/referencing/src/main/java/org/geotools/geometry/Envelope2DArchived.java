@@ -50,7 +50,7 @@ import org.geotools.util.Utilities;
  * @see org.geotools.geometry.jts.ReferencedEnvelope
  * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
-public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bounds, Cloneable {
+public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBox, Bounds, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3319231220761419350L;
 
@@ -60,15 +60,15 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
     /**
      * Constructs an initially empty envelope with no CRS.
      * <p>
-     * Unlike a normal Envelope2D we set the width and height to -1 so we can tell
+     * Unlike a normal Envelope2DArchived we set the width and height to -1 so we can tell
      * the difference between:
      * <ul>
-     * <li>{@link Envelope2D#isEmpty() width or height is negative inclosing no area
+     * <li>{@link Envelope2DArchived#isEmpty() width or height is negative inclosing no area
      * <li>{@link #isNull() envelope as constructed, not yet filled in by user
      * </ul>
      * @since 2.5
      */
-    public Envelope2D() {
+    public Envelope2DArchived() {
         // set height and width to -1 so that an undefined envelope can be checked by isNull()
         this.width = -1;
         this.height = -1;
@@ -79,7 +79,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      *
      * @param crs The coordinate reference system, or {@code null}.
      */
-    public Envelope2D(final CoordinateReferenceSystem crs) {
+    public Envelope2DArchived(final CoordinateReferenceSystem crs) {
         this();
         setCoordinateReferenceSystem(crs);
     }
@@ -89,7 +89,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      *
      * @param envelope The envelope to copy.
      */
-    public Envelope2D(final Bounds envelope) {
+    public Envelope2DArchived(final Bounds envelope) {
         super(
                 envelope.getMinimum(0), envelope.getMinimum(1),
                 envelope.getSpan(0), envelope.getSpan(1));
@@ -109,7 +109,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      * @param crs The coordinate reference system, or {@code null}.
      * @param rect The rectangle to copy.
      */
-    public Envelope2D(final CoordinateReferenceSystem crs, final Rectangle2D rect) {
+    public Envelope2DArchived(final CoordinateReferenceSystem crs, final Rectangle2D rect) {
         super(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         setCoordinateReferenceSystem(crs);
     }
@@ -119,7 +119,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      * the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
      * AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). Those parameter names
      * simply match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations
-     * are determined by the specified CRS. See the {@linkplain Envelope2D class javadoc} for
+     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc} for
      * details.
      *
      * @param crs The coordinate reference system, or {@code null}.
@@ -128,7 +128,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      * @param width The envelope width.
      * @param height The envelope height.
      */
-    public Envelope2D(
+    public Envelope2DArchived(
             final CoordinateReferenceSystem crs,
             final double x,
             final double y,
@@ -143,7 +143,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      * the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
      * AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). Those parameter names
      * simply match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations
-     * are determined by the specified CRS. See the {@linkplain Envelope2D class javadoc} for
+     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc} for
      * details.
      *
      * <p>The {@code minDP} and {@code maxDP} arguments usually contains the minimal and maximal
@@ -155,7 +155,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      * @throws MismatchedReferenceSystemException if the two positions don't use the same CRS.
      * @since 2.4
      */
-    public Envelope2D(final Position2D minDP, final Position2D maxDP)
+    public Envelope2DArchived(final Position2D minDP, final Position2D maxDP)
             throws MismatchedReferenceSystemException {
         //  Uncomment next lines if Sun fixes RFE #4093999
         //      ensureNonNull("minDP", minDP);
@@ -329,7 +329,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof Envelope2D) ? ((Envelope2D) object).crs : null;
+                    (object instanceof Envelope2DArchived) ? ((Envelope2DArchived) object).crs : null;
             return Utilities.equals(crs, otherCRS);
         }
         return false;
@@ -455,7 +455,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
      * bounds.
      *
      * <p>Note this method conflicts with {@link Rectangle2D#intersects(Rectangle2D)} so you may
-     * need to call it via envelope2d.intersects( (Envelope2D) bounds ) in order to correctly check
+     * need to call it via envelope2d.intersects( (Envelope2DArchived) bounds ) in order to correctly check
      * that the coordinate reference systems match.
      *
      * @param bounds The bounds to test for intersection.
@@ -502,7 +502,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Bound
     public BoundingBox toBounds(CoordinateReferenceSystem targetCRS) throws TransformException {
         Bounds transformed = new GeneralBounds((BoundingBox) this);
         transformed = CRS.transform(transformed, targetCRS);
-        return new Envelope2D(transformed);
+        return new Envelope2DArchived(transformed);
     }
 
     // utility methods

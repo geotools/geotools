@@ -32,7 +32,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.operation.Extrema;
 import org.geotools.coverage.processing.operation.Histogram;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
             }
         }
         final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        final Bounds envelope = new Envelope2D(crs, 0, 0, 30, 30);
+        final Bounds envelope = ReferencedEnvelope.envelope2D(crs, 0, 0, 30, 30);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         return factory.create("My grayscale float coverage", raster, envelope);
     }
@@ -88,7 +88,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
          */
         final PrecisionModel pm = new PrecisionModel();
         final GeometryFactory gf = new GeometryFactory(pm, 0);
-        final Envelope2D envelope = sampleFloatCoverage.getEnvelope2D();
+        final ReferencedEnvelope envelope = sampleFloatCoverage.getEnvelope2D();
         final double minX = envelope.getMinX();
         final double minY = envelope.getMinY();
         final double maxX = envelope.getCenterX();
@@ -154,7 +154,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
          */
         final PrecisionModel pm = new PrecisionModel();
         final GeometryFactory gf = new GeometryFactory(pm, 0);
-        final Envelope2D envelope = sampleByteCoverage.getEnvelope2D();
+        final ReferencedEnvelope envelope = sampleByteCoverage.getEnvelope2D();
         final double minX = envelope.getMinX();
         final double maxY = envelope.getMaxY();
         final double minY = maxY - envelope.getHeight() / 16;

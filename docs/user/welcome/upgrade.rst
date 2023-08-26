@@ -1541,9 +1541,9 @@ This is shown in the code example below with the ``maxx`` variable.
 
 As far as switching over to the new classes, the equivalence are as follows:
 
-1. Replace ``GridRange2D`` with ``GridEnvelope2D``
+1. Replace ``GridRange2D`` with ``GridGeneralBounds``
 
-   Notice that now ``GridEnvelope2D`` is a Java2D ``Rectangle`` and that it is also mutable!
+   Notice that now ``GridGeneralBounds`` is a Java2D ``Rectangle`` and that it is also mutable!
 2. Replace ``GeneralGridRange`` with ``GeneralGridEnvelope``
 
 There are a few more caveats, which we are showing here below.
@@ -1579,9 +1579,9 @@ BEFORE:
         final int w = originalGridRange.getSpan(0);
         final int maxx = originalGridRange.getHigh(0)+1;
 
-        import org.geotools.coverage.grid.GridEnvelope2D;
+        import org.geotools.coverage.grid.GridGeneralBounds;
         final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
-        final GridEnvelope2D originalGridRange2D = new GridEnvelope2D(actualDim);
+        final GridGeneralBounds originalGridRange2D = new GridGeneralBounds(actualDim);
         final int w = originalGridRange2D.getSpan(0);
         final int maxx = originalGridRange2D.getHigh(0)+1;
         final Rectangle rect = (Rectangle)originalGridRange2D.clone();

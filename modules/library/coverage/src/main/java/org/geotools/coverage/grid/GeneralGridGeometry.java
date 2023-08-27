@@ -33,7 +33,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.PixelTranslation;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;

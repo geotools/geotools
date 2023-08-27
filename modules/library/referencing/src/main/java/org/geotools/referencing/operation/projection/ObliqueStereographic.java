@@ -38,7 +38,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 
@@ -206,7 +205,7 @@ public class ObliqueStereographic extends StereographicUSGS {
             }
             y = phi;
             if (--i < 0) {
-                throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                throw new ProjectionException("Transformation doesn't convergence.");
             }
         }
         // End pj_inv_gauss(...) method inlined

@@ -33,7 +33,6 @@ import java.awt.geom.Point2D;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
  * The USGS equatorial case of the {@linkplain Stereographic stereographic} projection. This is a
@@ -147,7 +146,7 @@ public class EquatorialStereographic extends StereographicUSGS {
             final double coslat = cos(y);
             double f = 1.0 + coslat * cos(x);
             if (f < EPSILON) {
-                throw new ProjectionException(ErrorKeys.VALUE_TEND_TOWARD_INFINITY);
+                throw new ProjectionException("Numerical value tend toward infinity.");
             }
             f = k0 / f; // (21-14)
             x = f * coslat * sin(x); // (21-2)

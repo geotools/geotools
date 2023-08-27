@@ -25,8 +25,6 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Locale;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Parses a line of text data. This class is mostly used for parsing lines in a matrix or a table.
@@ -522,14 +520,13 @@ public class LineFormat extends Format {
         if (count != expected) {
             final int lower = limits[Math.min(count, expected)];
             final int upper = limits[Math.min(count, expected + 1)];
-            final String  pattern =
-                    count < expected ? "The line contains only {0} columns while {1} was expected." : "The line contains {0} columns while only {1} was expected. Characters \"{2}\" seem to be extra.";
+            final String pattern =
+                    count < expected
+                            ? "The line contains only {0} columns while {1} was expected."
+                            : "The line contains {0} columns while only {1} was expected. Characters \"{2}\" seem to be extra.";
             throw new ParseException(
                     MessageFormat.format(
-                            pattern,
-                            count,
-                            expected,
-                            line.substring(lower, upper).trim()),
+                            pattern, count, expected, line.substring(lower, upper).trim()),
                     lower);
         }
     }

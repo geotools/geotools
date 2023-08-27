@@ -43,7 +43,6 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.TransformedDirectPosition;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -786,7 +785,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
         if (gridToCRS2D != null) {
             return gridToCRS2D;
         }
-        throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
+        throw new InvalidGridGeometryException(
+                "No two-dimensional transform available for this geometry.");
     }
 
     /**
@@ -824,7 +824,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public MathTransform2D getGridToCRS2D(final PixelOrientation orientation) {
         if (gridToCRS2D == null) {
-            throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
+            throw new InvalidGridGeometryException(
+                    "No two-dimensional transform available for this geometry.");
         }
         if (!PixelOrientation.UPPER_LEFT.equals(orientation)) {
             return computeGridToCRS2D(orientation);
@@ -861,7 +862,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public MathTransform2D getCRSToGrid2D(final PixelOrientation orientation) {
         if (gridToCRS2D == null) {
-            throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
+            throw new InvalidGridGeometryException(
+                    "No two-dimensional transform available for this geometry.");
         }
 
         if (!PixelOrientation.UPPER_LEFT.equals(orientation)) {
@@ -1158,7 +1160,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
                                 "Can't evaluate a value for coordinate ({0}).", arg0, exception));
             }
         }
-        throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
+        throw new InvalidGridGeometryException(
+                "No two-dimensional transform available for this geometry.");
     }
 
     /**

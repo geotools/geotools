@@ -32,7 +32,6 @@ import static java.lang.Math.sqrt;
 import java.awt.geom.Point2D;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
  * The oblique case of the {@link Orthographic} projection. Only the spherical form is given here.
@@ -78,7 +77,7 @@ public class ObliqueOrthographic extends Orthographic {
         final double coslam = cos(x);
         final double sinphi = sin(y);
         if (sinphi0 * sinphi + cosphi0 * cosphi * coslam < -EPSILON) {
-            throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+            throw new ProjectionException("Point outside hemisphere of projection..");
         }
         y = cosphi0 * sinphi - sinphi0 * cosphi * coslam;
         x = cosphi * sin(x);
@@ -101,7 +100,7 @@ public class ObliqueOrthographic extends Orthographic {
         double sinc = rho;
         if (sinc > 1.0) {
             if ((sinc - 1.0) > EPSILON) {
-                throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+                throw new ProjectionException("Point outside hemisphere of projection..");
             }
             sinc = 1.0;
         }

@@ -19,6 +19,7 @@ package org.geotools.process.raster;
 import it.geosolutions.jaiext.range.Range;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -27,12 +28,10 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.renderer.i18n.Errors;
 
 /**
  * A transparency holes-dashes filling process
@@ -60,7 +59,8 @@ public class TransparencyFillProcess implements RasterProcess {
             throws ProcessException {
 
         if (coverage == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
+            throw new ProcessException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "coverage"));
         }
         RenderedImage ri = coverage.getRenderedImage();
         boolean hasTransparency = false;

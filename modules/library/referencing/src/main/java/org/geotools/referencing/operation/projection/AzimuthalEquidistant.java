@@ -43,7 +43,6 @@ import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 
@@ -194,7 +193,7 @@ public class AzimuthalEquidistant {
                     }
                     if (abs(abs(y) - 1) < TOL) {
                         if (y < 0) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                            throw new ProjectionException("Tolerance error");
                         } else {
                             x = 0;
                             y = 0;
@@ -214,7 +213,7 @@ public class AzimuthalEquidistant {
                     coslam = -coslam;
                 case SOUTH_POLAR:
                     if (Math.abs(phi - HALF_PI) < EPS10) {
-                        throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                        throw new ProjectionException("Tolerance error");
                     }
                     y = HALF_PI + phi;
                     x = y * sin(lambda);
@@ -244,7 +243,7 @@ public class AzimuthalEquidistant {
             double c_rh = hypot(x, y);
             if (c_rh > PI) {
                 if (c_rh - EPS10 > PI) {
-                    throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                    throw new ProjectionException("Tolerance error");
                 }
                 c_rh = PI;
             } else if (c_rh < EPS10) {

@@ -34,7 +34,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import si.uom.NonSI;
@@ -116,7 +115,7 @@ public final class Gnomonic extends MapProjection {
         final double z_factor = cosPhi0 * cosPhi * cosLam + sinPhi0 * sinPhi;
 
         if (z_factor <= EPSILON) {
-            throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+            throw new ProjectionException("Point outside hemisphere of projection..");
         }
 
         final double height = (primeVert0 + delta_projected_cylindrical_z * sinPhi0) / z_factor;

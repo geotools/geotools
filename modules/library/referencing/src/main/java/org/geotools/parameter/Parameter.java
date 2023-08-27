@@ -33,8 +33,6 @@ import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.util.CodeList;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import si.uom.NonSI;
@@ -293,8 +291,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         ensureNonNull("unit", unit);
         final String expectedPattern = getUnitMessagePattern(this.unit);
         if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(expectedPattern, unit));
+            throw new IllegalArgumentException(MessageFormat.format(expectedPattern, unit));
         }
         return Units.getConverterToAny(this.unit, unit).convert(doubleValue());
     }
@@ -411,8 +408,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         ensureNonNull("unit", unit);
         final String expectedPattern = getUnitMessagePattern(this.unit);
         if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(expectedPattern, unit));
+            throw new IllegalArgumentException(MessageFormat.format(expectedPattern, unit));
         }
         UnitConverter converter = Units.getConverterToAny(this.unit, unit);
         final double[] values = doubleValueList().clone();
@@ -655,8 +651,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         }
         final String expectedPattern = getUnitMessagePattern(targetUnit);
         if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(expectedPattern, unit));
+            throw new IllegalArgumentException(MessageFormat.format(expectedPattern, unit));
         }
         final double[] converted = values.clone();
         UnitConverter converter = Units.getConverterToAny(unit, targetUnit);

@@ -35,7 +35,6 @@ import java.awt.geom.Point2D;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
  * The USGS oblique/equatorial case of the Stereographic projection. This is similar but
@@ -168,7 +167,7 @@ class StereographicUSGS extends Stereographic {
             }
             phi0 = phi;
             if (--i < 0) {
-                throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                throw new ProjectionException("Transformation doesn't convergence.");
             }
         }
         if (ptDst != null) {
@@ -245,7 +244,7 @@ class StereographicUSGS extends Stereographic {
             final double coslon = cos(x);
             double f = 1.0 + sinphi0 * sinlat + cosphi0 * coslat * coslon; // (21-4)
             if (f < EPSILON) {
-                throw new ProjectionException(ErrorKeys.VALUE_TEND_TOWARD_INFINITY);
+                throw new ProjectionException("Numerical value tend toward infinity.");
             }
             f = k0 / f;
             x = f * coslat * sin(x); // (21-2)

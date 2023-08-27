@@ -19,7 +19,6 @@ package org.geotools.referencing.operation.projection;
 import java.text.MessageFormat;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Thrown by {@link MapProjection} when a map projection failed.
@@ -35,25 +34,6 @@ public class ProjectionException extends TransformException {
 
     /** Constructs a new exception with no detail message. */
     public ProjectionException() {}
-
-    /**
-     * Constructs a new exception with the specified detail message.
-     *
-     * @param code One of the constants suitable for {@link Errors#format(int)}.
-     */
-    ProjectionException(final int code) {
-        this(Errors.getPattern(code));
-    }
-
-    /**
-     * Constructs a new exception with the specified detail message.
-     *
-     * @param code One of the constants suitable for {@link Errors#format(int)}.
-     * @param value An argument value to be formatted.
-     */
-    ProjectionException(final int code, final Object value) {
-        this(MessageFormat.format(Errors.getPattern(code), value));
-    }
 
     /**
      * Constructs a new exception with a detail message formatted for a latitude too close from a

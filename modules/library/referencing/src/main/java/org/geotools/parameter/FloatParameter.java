@@ -27,7 +27,6 @@ import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A parameter value as a floating point (double precision) number. This class provides the same
@@ -126,8 +125,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         }
         final String expectedPattern = Parameter.getUnitMessagePattern(thisUnit);
         if (!Parameter.getUnitMessagePattern(unit).equals(expectedPattern)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(expectedPattern, unit));
+            throw new IllegalArgumentException(MessageFormat.format(expectedPattern, unit));
         }
         return Units.getConverterToAny(thisUnit, unit).convert(value);
     }
@@ -253,8 +251,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         }
         String expectedPattern = Parameter.getUnitMessagePattern(thisUnit);
         if (!Parameter.getUnitMessagePattern(unit).equals(expectedPattern)) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format(expectedPattern, unit));
+            throw new IllegalArgumentException(MessageFormat.format(expectedPattern, unit));
         }
         value = Units.getConverterToAny(unit, thisUnit).convert(value);
         this.value = Parameter.ensureValidValue(descriptor, Double.valueOf(value));

@@ -39,7 +39,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import si.uom.NonSI;
@@ -226,7 +225,7 @@ public class PolarStereographic extends Stereographic {
             }
             phi0 = phi;
             if (--i < 0) {
-                throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                throw new ProjectionException("Transformation doesn't convergence.");
             }
         }
         if (ptDst != null) {
@@ -337,7 +336,7 @@ public class PolarStereographic extends Stereographic {
             final double sinlon = sin(x);
             if (southPole) {
                 if (abs(1 - sinlat) < EPSILON) {
-                    throw new ProjectionException(ErrorKeys.VALUE_TEND_TOWARD_INFINITY);
+                    throw new ProjectionException("Numerical value tend toward infinity.");
                 }
                 // (21-12)
                 final double f = k0 * coslat / (1 - sinlat); // == tan (pi/4 + phi/2)
@@ -345,7 +344,7 @@ public class PolarStereographic extends Stereographic {
                 y = f * coslon; // (21-10)
             } else {
                 if (abs(1 + sinlat) < EPSILON) {
-                    throw new ProjectionException(ErrorKeys.VALUE_TEND_TOWARD_INFINITY);
+                    throw new ProjectionException("Numerical value tend toward infinity.");
                 }
                 // (21-8)
                 final double f = k0 * coslat / (1 + sinlat); // == tan (pi/4 - phi/2)

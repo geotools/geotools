@@ -32,7 +32,6 @@ import static java.lang.Math.sqrt;
 import java.awt.geom.Point2D;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
  * The equatorial case of the {@link Orthographic} projection. This is a simplification of the
@@ -76,7 +75,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
         final double cosphi = cos(y);
         final double coslam = cos(x);
         if (cosphi * coslam < -EPSILON) {
-            throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+            throw new ProjectionException("Point outside hemisphere of projection..");
         }
         y = sin(y);
         x = cosphi * sin(x);
@@ -102,7 +101,7 @@ public class EquatorialOrthographic extends ObliqueOrthographic {
         double sinc = rho;
         if (sinc > 1.0) {
             if ((sinc - 1.0) > EPSILON) {
-                throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+                throw new ProjectionException("Point outside hemisphere of projection..");
             }
             sinc = 1.0;
         }

@@ -85,12 +85,12 @@ import org.geotools.util.Classes;
  *
  * </blockquote>
  *
+ * @author Martin Desruisseaux (PMO, IRD)
+ * @version $Id$
  * @see Angle
  * @see Latitude
  * @see Longitude
  * @since 2.0
- * @version $Id$
- * @author Martin Desruisseaux (PMO, IRD)
  */
 public class AngleFormat extends Format {
     /** Serial number for interoperability with different versions. */
@@ -1396,7 +1396,10 @@ public class AngleFormat extends Format {
             if (!Character.isWhitespace(source.charAt(index))) {
                 index = Math.max(origin, pos.getErrorIndex());
                 throw new ParseException(
-                        LoggedFormat.formatUnparsable(source, 0, index, null), index);
+                        MessageFormat.format(
+                                "Failure formatting {0}, formatting issue found at index {1}",
+                                source, index),
+                        index);
             }
         }
         return angle;

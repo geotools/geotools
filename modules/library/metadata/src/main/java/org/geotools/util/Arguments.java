@@ -29,10 +29,6 @@ import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.message.Message;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 
@@ -49,8 +45,8 @@ import org.geotools.metadata.i18n.VocabularyKeys;
  * </pre>
  *
  * </blockquote>
- * <p>
- * Then, method likes {@link #getRequiredString} or {@link #getOptionalString} can be used. If a
+ *
+ * <p>Then, method likes {@link #getRequiredString} or {@link #getOptionalString} can be used. If a
  * parameter is badly formatted or if a required parameter is not presents, then the method {@link
  * #illegalArgument} will be invoked with a message that describes the error. The default
  * implementation print the localized error message to standard output {@link #out} and exits the
@@ -62,9 +58,7 @@ import org.geotools.metadata.i18n.VocabularyKeys;
  */
 public class Arguments {
 
-    /**
-     * Command-line arguments. Elements are set to {@code null} after they have been processed.
-     */
+    /** Command-line arguments. Elements are set to {@code null} after they have been processed. */
     private final String[] arguments;
 
     /**
@@ -73,9 +67,7 @@ public class Arguments {
      */
     public final PrintWriter out;
 
-    /**
-     * Error stream to the console.
-     */
+    /** Error stream to the console. */
     public final PrintWriter err;
 
     /**
@@ -84,16 +76,14 @@ public class Arguments {
      */
     public final Locale locale;
 
-    /**
-     * The encoding, or {@code null} for the platform default.
-     */
+    /** The encoding, or {@code null} for the platform default. */
     private final String encoding;
 
     /**
      * Constructs a set of arguments.
      *
      * @param args Command line arguments. Arguments {@code "-encoding"} and {@code "-locale"} will
-     *             be automatically parsed.
+     *     be automatically parsed.
      */
     @SuppressWarnings("PMD.CloseResource") // we don't close System.out
     public Arguments(final String... args) {
@@ -154,7 +144,7 @@ public class Arguments {
      *
      * @param name The parameter name (e.g. "-encoding"). Name are case-insensitive.
      * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     * name.
+     *     name.
      */
     public String getOptionalString(final String name) {
         for (int i = 0; i < arguments.length; i++) {
@@ -189,7 +179,8 @@ public class Arguments {
                     }
                     illegalArgument(
                             new IllegalArgumentException(
-                                    MessageFormat.format("Missing value for parameter \"{0}\".", arg)));
+                                    MessageFormat.format(
+                                            "Missing value for parameter \"{0}\".", arg)));
                     return null;
                 }
             }
@@ -222,7 +213,7 @@ public class Arguments {
      *
      * @param name The parameter name. Name are case-insensitive.
      * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     * name.
+     *     name.
      */
     public Integer getOptionalInteger(final String name) {
         final String value = getOptionalString(name);
@@ -262,7 +253,7 @@ public class Arguments {
      *
      * @param name The parameter name. Name are case-insensitive.
      * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     * name.
+     *     name.
      */
     public Double getOptionalDouble(final String name) {
         final String value = getOptionalString(name);
@@ -301,7 +292,7 @@ public class Arguments {
      *
      * @param name The parameter name. Name are case-insensitive.
      * @return The parameter value, of {@code null} if there is no parameter given for the specified
-     * name.
+     *     name.
      */
     public Boolean getOptionalBoolean(final String name) {
         final String value = getOptionalString(name);
@@ -414,7 +405,8 @@ public class Arguments {
                 if (count >= max) {
                     illegalArgument(
                             new IllegalArgumentException(
-                                    MessageFormat.format("Parameter \"{0}\" was not expected.", arg)));
+                                    MessageFormat.format(
+                                            "Parameter \"{0}\" was not expected.", arg)));
                 }
                 left[count++] = arg;
             }
@@ -429,7 +421,7 @@ public class Arguments {
      * The forbidden prefix is usually {@code '-'}, the character used for options as in "{@code
      * -locale}", <cite>etc.</cite>
      *
-     * @param max             Maximum remaining arguments autorized.
+     * @param max Maximum remaining arguments autorized.
      * @param forbiddenPrefix The forbidden prefix, usually {@code '-'}.
      * @return An array of remaining arguments. Will never be longer than {@code max}.
      * @since 2.4
@@ -444,8 +436,7 @@ public class Arguments {
                     if (argument.charAt(0) == forbiddenPrefix) {
                         illegalArgument(
                                 new IllegalArgumentException(
-                                        MessageFormat.format(
-                                                "Unknown parameter: {0}", argument)));
+                                        MessageFormat.format("Unknown parameter: {0}", argument)));
                     }
                 }
             }

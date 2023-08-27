@@ -34,7 +34,6 @@ import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.CylindricalProjection;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -190,7 +189,7 @@ public class Polyconic {
                     final double sp = sin(phi);
                     final double cp = cos(phi);
                     if (abs(cp) < ITERATION_TOLERANCE)
-                        throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                        throw new ProjectionException("Transformation doesn't convergence.");
 
                     final double s2ph = sp * cp;
                     double mlp = sqrt(1. - excentricitySquared * sp * sp);
@@ -208,7 +207,8 @@ public class Polyconic {
 
                     phi += dPhi;
                 }
-                if (i > MAXIMUM_ITERATIONS) throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                if (i > MAXIMUM_ITERATIONS)
+                    throw new ProjectionException("Transformation doesn't convergence.");
                 final double c = sin(phi);
                 lam = asin(x * tan(phi) * sqrt(1. - excentricitySquared * c * c)) / sin(phi);
             }
@@ -255,7 +255,7 @@ public class Polyconic {
                     if (!(abs(dphi) > ITERATION_TOLERANCE)) break;
                     --i;
                     if (i == 0) {
-                        throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+                        throw new ProjectionException("Transformation doesn't convergence.");
                     }
                 }
                 lam = asin(x * tan(phi)) / sin(phi);

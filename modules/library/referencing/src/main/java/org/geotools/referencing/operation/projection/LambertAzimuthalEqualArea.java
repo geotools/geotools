@@ -38,7 +38,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 
@@ -259,7 +258,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                 }
         }
         if (abs(c) < EPSILON_LATITUDE) {
-            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+            throw new ProjectionException("Tolerance error");
         }
         if (ptDst != null) {
             ptDst.setLocation(x, y);
@@ -379,7 +378,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     {
                         y = 1.0 + cosphi * coslam;
                         if (y <= FINE_EPSILON) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                            throw new ProjectionException("Tolerance error");
                         }
                         y = sqrt(2.0 / y);
                         x = y * cosphi * sin(lambda);
@@ -390,7 +389,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                     {
                         y = 1.0 + sinb1 * sinphi + cosb1 * cosphi * coslam;
                         if (y <= FINE_EPSILON) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                            throw new ProjectionException("Tolerance error");
                         }
                         y = sqrt(2.0 / y);
                         x = y * cosphi * sin(lambda);
@@ -400,7 +399,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                 case NORTH_POLE:
                     {
                         if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                            throw new ProjectionException("Tolerance error");
                         }
                         y = (PI / 4) - phi * 0.5;
                         y = 2.0 * sin(y);
@@ -411,7 +410,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                 case SOUTH_POLE:
                     {
                         if (abs(phi + latitudeOfOrigin) < EPSILON_LATITUDE) {
-                            throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                            throw new ProjectionException("Tolerance error");
                         }
                         y = (PI / 4) - phi * 0.5;
                         y = 2.0 * cos(y);
@@ -446,7 +445,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
             final double rh = hypot(x, y);
             double phi = rh * 0.5;
             if (phi > 1.0) {
-                throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                throw new ProjectionException("Tolerance error");
             }
             phi = 2.0 * asin(phi);
             switch (mode) {

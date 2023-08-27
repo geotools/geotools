@@ -33,8 +33,6 @@ import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -220,7 +218,10 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      */
     protected String formatEvaluateError(final DirectPosition point, final boolean outside) {
         final Locale locale = getLocale();
-        String pattern = outside ? "Coordinate ({0}) is outside coverage.": "Can't evaluate a value for coordinate ({0}).";
+        String pattern =
+                outside
+                        ? "Coordinate ({0}) is outside coverage."
+                        : "Can't evaluate a value for coordinate ({0}).";
         return MessageFormat.format(pattern, toString(point, locale));
     }
 

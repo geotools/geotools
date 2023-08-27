@@ -31,7 +31,6 @@ import static java.lang.Math.sin;
 import java.awt.geom.Point2D;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
 
 /**
  * The polar case of the {@link Orthographic} projection. Only the spherical form is given here.
@@ -75,7 +74,7 @@ public class PolarOrthographic extends Orthographic {
     protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
             throws ProjectionException {
         if (abs(y - latitudeOfOrigin) - EPSILON > PI / 2) {
-            throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+            throw new ProjectionException("Point outside hemisphere of projection..");
         }
         double cosphi = cos(y);
         double coslam = cos(x);
@@ -103,7 +102,7 @@ public class PolarOrthographic extends Orthographic {
         double sinc = rho;
         if (sinc > 1.0) {
             if ((sinc - 1.0) > EPSILON) {
-                throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
+                throw new ProjectionException("Point outside hemisphere of projection..");
             }
             sinc = 1.0;
         }

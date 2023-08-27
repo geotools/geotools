@@ -254,7 +254,7 @@ public final class Element {
      */
     private ParseException unparsableString(final String text, final ParsePosition position) {
         final int errorIndex = position.getErrorIndex();
-        String message = LoggedFormat.formatUnparsable(text, position.getIndex(), errorIndex, null);
+        String message = String.format("Could not parse %s, error at index %d", text, errorIndex);
         message = complete(message);
         return trim("unparsableString", new ParseException(message, errorIndex));
     }

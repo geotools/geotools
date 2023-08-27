@@ -42,7 +42,6 @@ import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.operation.CylindricalProjection;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -278,7 +277,7 @@ public class TransverseMercator extends MapProjection {
             double cosphi = cos(y);
             double b = cosphi * sin(x);
             if (abs(abs(b) - 1.0) <= EPSILON) {
-                throw new ProjectionException(ErrorKeys.VALUE_TEND_TOWARD_INFINITY);
+                throw new ProjectionException("Numerical value tend toward infinity.");
             }
 
             // Using Snyder's equation for calculating y, instead of the one used in Proj4

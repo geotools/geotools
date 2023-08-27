@@ -52,7 +52,6 @@ import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.math.XMath;
 import org.geotools.referencing.NamedIdentifier;
@@ -1313,7 +1312,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 return phi;
             }
         }
-        throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+        throw new ProjectionException("Transformation doesn't convergence.");
     }
 
     /**

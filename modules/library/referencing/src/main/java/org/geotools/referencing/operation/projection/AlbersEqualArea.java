@@ -42,7 +42,6 @@ import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.ConicProjection;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.measure.Latitude;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -207,7 +206,7 @@ public class AlbersEqualArea extends MapProjection {
             if (rho > -EPSILON) {
                 rho = 0.0;
             } else {
-                throw new ProjectionException(ErrorKeys.TOLERANCE_ERROR);
+                throw new ProjectionException("Tolerance error");
             }
         }
         rho = sqrt(rho) / n;
@@ -294,7 +293,7 @@ public class AlbersEqualArea extends MapProjection {
                 return phi;
             }
         }
-        throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
+        throw new ProjectionException("Transformation doesn't convergence.");
     }
 
     /**

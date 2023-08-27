@@ -48,7 +48,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -528,7 +527,7 @@ public class ObliqueMercator extends MapProjection {
             double V = sin(B * x);
             double U = (S * singamma0 - V * cosgamma0) / (0.5 * (Q + temp));
             if (abs(abs(U) - 1.0) < EPSILON) {
-                throw new ProjectionException(ErrorKeys.INFINITE_VALUE_$1, "v");
+                throw new ProjectionException(MessageFormat.format("{0} value is infinite", "v"));
             }
             v = 0.5 * ArB * log((1.0 - U) / (1.0 + U));
             temp = cos(B * x);

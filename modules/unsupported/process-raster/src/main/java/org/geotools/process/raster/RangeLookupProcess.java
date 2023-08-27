@@ -37,12 +37,10 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ColorUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
 
@@ -98,11 +96,13 @@ public class RangeLookupProcess implements RasterProcess {
         // initial checks
         //
         if (coverage == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
+            throw new ProcessException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "coverage"));
         }
         if (classificationRanges == null) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "classificationRanges"));
+                    MessageFormat.format(
+                            "Argument \"{0}\" should not be null.", "classificationRanges"));
         }
         double nd = DEFAULT_NODATA;
         NoDataContainer noDataProperty =
@@ -117,7 +117,7 @@ public class RangeLookupProcess implements RasterProcess {
             final int ranges = classificationRanges.size();
             if (ranges != outputPixelValues.length) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH, "outputPixelValues"));
+                        MessageFormat.format("Mismatched array length.", "outputPixelValues"));
             }
         }
 
@@ -131,7 +131,7 @@ public class RangeLookupProcess implements RasterProcess {
             final int numbands = sourceImage.getSampleModel().getNumBands();
             if (band < 0 || numbands <= band) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
+                        MessageFormat.format("Illegal argument: {0}={1}", "band", band));
             }
 
             if (band == 0 && numbands > 0 || band > 0) {
@@ -173,9 +173,9 @@ public class RangeLookupProcess implements RasterProcess {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format("Illegal argument: \"{0}={1}\"",
-                                    "classification ranges size",
-                                    size));
+                            MessageFormat.format(
+                                    "Illegal argument: \"{0}={1}\"",
+                                    "classification ranges size", size));
             }
         }
         worker.setROI(org.geotools.coverage.util.CoverageUtilities.getROIProperty(coverage));

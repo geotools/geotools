@@ -173,9 +173,7 @@ public class RangeLookupProcess implements RasterProcess {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(
-                                    org.geotools.metadata.i18n.Errors.getPattern(
-                                            ErrorKeys.ILLEGAL_ARGUMENT_$2),
+                            MessageFormat.format("Illegal argument: \"{0}={1}\"",
                                     "classification ranges size",
                                     size));
             }

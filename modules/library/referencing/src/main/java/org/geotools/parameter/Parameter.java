@@ -261,14 +261,15 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @todo Provides a better way to differentiate scale units (currently AbstractUnit.ONE) and
      *     angular units. Both are dimensionless...
      */
-    static int getUnitMessageID(final Unit<?> unit) {
+    static String getUnitMessagePattern(final Unit<?> unit) {
         // Note: ONE must be tested before RADIAN.
         if (AbstractUnit.ONE.isCompatible(unit) || Units.PPM.equals(unit))
-            return ErrorKeys.NON_SCALE_UNIT_$1;
-        if (SI.METRE.isCompatible(unit)) return ErrorKeys.NON_LINEAR_UNIT_$1;
-        if (SI.SECOND.isCompatible(unit)) return ErrorKeys.NON_TEMPORAL_UNIT_$1;
-        if (SI.RADIAN.isCompatible(unit)) return ErrorKeys.NON_ANGULAR_UNIT_$1;
-        return ErrorKeys.INCOMPATIBLE_UNIT_$1;
+            return "{0}\" is not a scale unit.";
+
+        if (SI.METRE.isCompatible(unit)) return "\"{0}\" is not a linear unit.";
+        if (SI.SECOND.isCompatible(unit)) return "\"{0}\" is not a time unit.";
+        if (SI.RADIAN.isCompatible(unit)) return "Not an angular unit: \"{0}\"";
+        return "Incompatible unit: {0}";
     }
 
     /**
@@ -290,10 +291,10 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw unitlessParameter(descriptor);
         }
         ensureNonNull("unit", unit);
-        final int expectedID = getUnitMessageID(this.unit);
-        if (getUnitMessageID(unit) != expectedID) {
+        final String expectedPattern = getUnitMessagePattern(this.unit);
+        if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(expectedID), unit));
+                    MessageFormat.format(expectedPattern, unit));
         }
         return Units.getConverterToAny(this.unit, unit).convert(doubleValue());
     }
@@ -408,10 +409,10 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw unitlessParameter(descriptor);
         }
         ensureNonNull("unit", unit);
-        final int expectedID = getUnitMessageID(this.unit);
-        if (getUnitMessageID(unit) != expectedID) {
+        final String expectedPattern = getUnitMessagePattern(this.unit);
+        if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(expectedID), unit));
+                    MessageFormat.format(expectedPattern, unit));
         }
         UnitConverter converter = Units.getConverterToAny(this.unit, unit);
         final double[] values = doubleValueList().clone();
@@ -545,10 +546,10 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (targetUnit == null) {
             throw unitlessParameter(descriptor);
         }
-        final int expectedID = getUnitMessageID(targetUnit);
-        if (getUnitMessageID(unit) != expectedID) {
+        final String expectedPattern = getUnitMessagePattern(targetUnit);
+        if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(Errors.getPattern(expectedID), unit),
+                    MessageFormat.format(expectedPattern, unit),
                     descriptor.getName().getCode(),
                     value);
         }
@@ -652,10 +653,10 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (targetUnit == null) {
             throw unitlessParameter(descriptor);
         }
-        final int expectedID = getUnitMessageID(targetUnit);
-        if (getUnitMessageID(unit) != expectedID) {
+        final String expectedPattern = getUnitMessagePattern(targetUnit);
+        if (!getUnitMessagePattern(unit).equals(expectedPattern)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(expectedID), unit));
+                    MessageFormat.format(expectedPattern, unit));
         }
         final double[] converted = values.clone();
         UnitConverter converter = Units.getConverterToAny(unit, targetUnit);

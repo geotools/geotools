@@ -542,7 +542,7 @@ public final class ErrorKeys {
     /** Expected {0}={1} but got {2}. */
     public static final int TEST_FAILURE_$3 = 167;
 
-    /** Tolerance error. */
+    /** new ProjectionException("Tolerance error"). */
     public static final int TOLERANCE_ERROR = 168;
 
     /** Too many occurences of "{0}". There is already {1} of them. */

@@ -533,7 +533,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             }
         }
         assert !isDefined(CRS_BITMASK);
-        throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_CRS);
+        throw new InvalidGridGeometryException("Coordinate reference system is unspecified.");
     }
 
     /**
@@ -555,8 +555,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         assert !isDefined(ENVELOPE_BITMASK);
         throw new InvalidGridGeometryException(
                 gridToCRS == null
-                        ? ErrorKeys.UNSPECIFIED_TRANSFORM
-                        : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+                        ? "Unspecified coordinates transform."
+                        : "Unspecified image's size.");
     }
 
     /**
@@ -578,7 +578,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             return clone(gridRange);
         }
         assert !isDefined(GRID_RANGE_BITMASK);
-        throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+        throw new InvalidGridGeometryException("Unspecified image's size.");
     }
 
     /**
@@ -604,7 +604,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             return gridToCRS;
         }
         assert !isDefined(GRID_TO_CRS_BITMASK);
-        throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_TRANSFORM);
+        throw new InvalidGridGeometryException("Unspecified coordinates transform.");
     }
 
     /**
@@ -623,7 +623,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     public MathTransform getGridToCRS(final PixelInCell anchor)
             throws InvalidGridGeometryException {
         if (gridToCRS == null) {
-            throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_TRANSFORM);
+            throw new InvalidGridGeometryException("Unspecified coordinates transform.");
         }
         if (PixelInCell.CELL_CENTER.equals(anchor)) {
             return gridToCRS;

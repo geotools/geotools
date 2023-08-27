@@ -713,7 +713,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             return crs2D;
         }
         assert !isDefined(CRS_BITMASK);
-        throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_CRS);
+        throw new InvalidGridGeometryException("Coordinate reference system is unspecified.");
     }
 
     /**
@@ -742,8 +742,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
         assert !isDefined(ENVELOPE_BITMASK);
         throw new InvalidGridGeometryException(
                 gridToCRS == null
-                        ? ErrorKeys.UNSPECIFIED_TRANSFORM
-                        : ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+                        ? "Coordinate reference system is unspecified."
+                        : "Unspecified image's size.");
     }
 
     /**
@@ -766,7 +766,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                     gridRange.getSpan(gridDimensionY));
         }
         assert !isDefined(GRID_RANGE_BITMASK);
-        throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
+        throw new InvalidGridGeometryException("Unspecified image's size.");
     }
 
     /**
@@ -786,7 +786,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
         if (gridToCRS2D != null) {
             return gridToCRS2D;
         }
-        throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
+        throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
     }
 
     /**
@@ -807,7 +807,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
         if (gridFromCRS2D != null) {
             return gridFromCRS2D;
         }
-        throw new InvalidGridGeometryException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
+        throw new InvalidGridGeometryException("Transform is not invertible.");
     }
 
     /**
@@ -824,7 +824,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public MathTransform2D getGridToCRS2D(final PixelOrientation orientation) {
         if (gridToCRS2D == null) {
-            throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
+            throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
         }
         if (!PixelOrientation.UPPER_LEFT.equals(orientation)) {
             return computeGridToCRS2D(orientation);
@@ -861,14 +861,14 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public MathTransform2D getCRSToGrid2D(final PixelOrientation orientation) {
         if (gridToCRS2D == null) {
-            throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
+            throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
         }
 
         if (!PixelOrientation.UPPER_LEFT.equals(orientation)) {
             try {
                 return computeGridToCRS2D(orientation).inverse();
             } catch (NoninvertibleTransformException nte) {
-                throw new InvalidGridGeometryException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
+                throw new InvalidGridGeometryException("Transform is not invertible.");
             }
         }
 
@@ -876,7 +876,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             try {
                 crsToCorner2D = getGridToCRS2D(PixelOrientation.UPPER_LEFT).inverse();
             } catch (NoninvertibleTransformException nte) {
-                throw new InvalidGridGeometryException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
+                throw new InvalidGridGeometryException("Transform is not invertible.");
             }
         }
 
@@ -906,7 +906,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      */
     public MathTransform getGridToCRS(final PixelOrientation orientation) {
         if (gridToCRS == null) {
-            throw new InvalidGridGeometryException(ErrorKeys.UNSPECIFIED_TRANSFORM);
+            throw new InvalidGridGeometryException("Unspecified coordinates transform.");
         }
         return PixelTranslation.translate(
                 gridToCRS, PixelOrientation.CENTER, orientation, gridDimensionX, gridDimensionY);
@@ -957,7 +957,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             return gc2D;
         }
 
-        throw new InvalidGridGeometryException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
+        throw new InvalidGridGeometryException("Transform is not invertible.");
     }
 
     /**
@@ -1158,7 +1158,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                                 "Can't evaluate a value for coordinate ({0}).", arg0, exception));
             }
         }
-        throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
+        throw new InvalidGridGeometryException("No two-dimensional transform available for this geometry.");
     }
 
     /**

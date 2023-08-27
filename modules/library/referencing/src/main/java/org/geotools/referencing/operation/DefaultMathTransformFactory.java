@@ -29,6 +29,7 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -93,8 +94,8 @@ import org.geotools.util.factory.Hints;
  * coordinate systems mean, it is not necessary or desirable for a math transform object to keep
  * information on its source and target coordinate systems.
  *
- * @since 2.1
  * @author Martin Desruisseaux (IRD)
+ * @since 2.1
  */
 public class DefaultMathTransformFactory extends ReferencingFactory
         implements MathTransformFactory {
@@ -116,7 +117,9 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      */
     private transient MathTransformProvider lastProvider;
 
-    /** The operation method for the last transform created. */
+    /**
+     * The operation method for the last transform created.
+     */
     private static final ThreadLocal<OperationMethod> lastMethod = new ThreadLocal<>();
 
     /**
@@ -125,10 +128,14 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      */
     private final CanonicalSet<MathTransform> pool;
 
-    /** The service registry for finding {@link MathTransformProvider} implementations. */
+    /**
+     * The service registry for finding {@link MathTransformProvider} implementations.
+     */
     private final FactoryRegistry registry;
 
-    /** Constructs a default {@link MathTransform math transform} factory. */
+    /**
+     * Constructs a default {@link MathTransform math transform} factory.
+     */
     public DefaultMathTransformFactory() {
         this(MathTransformProvider.class);
     }
@@ -138,7 +145,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * {@linkplain MathTransformProvider transform providers} categories.
      *
      * @param categories The providers categories, as implementations of {@link
-     *     MathTransformProvider}.
+     *                   MathTransformProvider}.
      */
     private DefaultMathTransformFactory(final Class<?>... categories) {
         registry = new FactoryRegistry(Arrays.asList(categories));
@@ -164,7 +171,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * methods is implementation dependent.
      *
      * @param type <code>{@linkplain Operation}.class</code> for fetching all operation methods, or
-     *     <code>{@linkplain Projection}.class</code> for fetching only map projection methods.
+     *             <code>{@linkplain Projection}.class</code> for fetching only map projection methods.
      * @return All {@linkplain MathTransform math transform} methods available in this factory.
      * @see #getDefaultParameters
      * @see #createParameterizedTransform
@@ -178,12 +185,18 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                         HINTS));
     }
 
-    /** A filter for the set of available operations. */
+    /**
+     * A filter for the set of available operations.
+     */
     private static final class MethodFilter implements Predicate<MathTransformProvider> {
-        /** The expected type ({@code Projection.class}) for projections). */
+        /**
+         * The expected type ({@code Projection.class}) for projections).
+         */
         private final Class<? extends Operation> type;
 
-        /** Constructs a filter for the set of math operations methods. */
+        /**
+         * Constructs a filter for the set of math operations methods.
+         */
         public MethodFilter(final Class<? extends Operation> type) {
             this.type = type;
         }
@@ -221,11 +234,11 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * Returns the operation method for the specified name.
      *
      * @param name The case insensitive {@linkplain org.geotools.api.metadata.Identifier#getCode
-     *     identifier code} of the operation method to search for (e.g. {@code
-     *     "Transverse_Mercator"}).
+     *             identifier code} of the operation method to search for (e.g. {@code
+     *             "Transverse_Mercator"}).
      * @return The operation method.
      * @throws NoSuchIdentifierException if there is no operation method registered for the
-     *     specified name.
+     *                                   specified name.
      * @since 2.2
      */
     public OperationMethod getOperationMethod(String name) throws NoSuchIdentifierException {
@@ -239,11 +252,11 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * locale.
      *
      * @param method The case insensitive {@linkplain org.geotools.api.metadata.Identifier#getCode
-     *     identifier code} of the operation method to search for (e.g. {@code
-     *     "Transverse_Mercator"}).
+     *               identifier code} of the operation method to search for (e.g. {@code
+     *               "Transverse_Mercator"}).
      * @return The math transform provider.
      * @throws NoSuchIdentifierException if there is no provider registered for the specified
-     *     method.
+     *                                   method.
      */
     private MathTransformProvider getProvider(final String method)
             throws NoSuchIdentifierException {
@@ -266,9 +279,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                                 () ->
                                         new NoSuchIdentifierException(
                                                 MessageFormat.format(
-                                                        Errors.getPattern(
-                                                                ErrorKeys
-                                                                        .NO_TRANSFORM_FOR_CLASSIFICATION_$1),
+                                                        "No transform for classification \"{0}\"."
+                                                        ,
                                                         method),
                                                 method));
 
@@ -289,7 +301,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @param method The case insensitive name of the method to search for.
      * @return The default parameter values.
      * @throws NoSuchIdentifierException if there is no transform registered for the specified
-     *     method.
+     *                                   method.
      * @see #getAvailableMethods
      * @see #createParameterizedTransform
      * @see org.geotools.referencing.operation.transform.AbstractMathTransform#getParameterValues
@@ -309,13 +321,13 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * <p>The {@linkplain OperationMethod operation method} used can be obtained by a call to {@link
      * #getLastUsedMethod}.
      *
-     * @param baseCRS The source coordinate reference system.
+     * @param baseCRS    The source coordinate reference system.
      * @param parameters The parameter values for the transform.
-     * @param derivedCS the target coordinate system.
+     * @param derivedCS  the target coordinate system.
      * @return The parameterized transform.
      * @throws NoSuchIdentifierException if there is no transform registered for the method.
-     * @throws FactoryException if the object creation failed. This exception is thrown if some
-     *     required parameter has not been supplied, or has illegal value.
+     * @throws FactoryException          if the object creation failed. This exception is thrown if some
+     *                                   required parameter has not been supplied, or has illegal value.
      */
     @Override
     public MathTransform createBaseToDerived(
@@ -350,12 +362,12 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * <cite>y</cite>) axes in metres. This method inspects the coordinate systems and prepend or
      * append the unit conversions and axis switchs automatically.
      *
-     * @param baseCRS The source coordinate reference system.
+     * @param baseCRS    The source coordinate reference system.
      * @param projection The "raw" <cite>base to derived</cite> transform.
-     * @param derivedCS the target coordinate system.
+     * @param derivedCS  the target coordinate system.
      * @return The parameterized transform.
      * @throws FactoryException if the object creation failed. This exception is thrown if some
-     *     required parameter has not been supplied, or has illegal value.
+     *                          required parameter has not been supplied, or has illegal value.
      * @since 2.5
      */
     public MathTransform createBaseToDerived(
@@ -429,8 +441,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @param parameters The parameter values.
      * @return The parameterized transform.
      * @throws NoSuchIdentifierException if there is no transform registered for the method.
-     * @throws FactoryException if the object creation failed. This exception is thrown if some
-     *     required parameter has not been supplied, or has illegal value.
+     * @throws FactoryException          if the object creation failed. This exception is thrown if some
+     *                                   required parameter has not been supplied, or has illegal value.
      * @see #getDefaultParameters
      * @see #getAvailableMethods
      * @see #getLastUsedMethod
@@ -521,16 +533,15 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * values.
      *
      * @param firstAffectedOrdinate The lowest index of the affected ordinates.
-     * @param subTransform Transform to use for affected ordinates.
-     * @param numTrailingOrdinates Number of trailing ordinates to pass through. Affected ordinates
-     *     will range from {@code firstAffectedOrdinate} inclusive to {@code
-     *     dimTarget-numTrailingOrdinates} exclusive.
+     * @param subTransform          Transform to use for affected ordinates.
+     * @param numTrailingOrdinates  Number of trailing ordinates to pass through. Affected ordinates
+     *                              will range from {@code firstAffectedOrdinate} inclusive to {@code
+     *                              dimTarget-numTrailingOrdinates} exclusive.
      * @return A pass through transform with the following dimensions:<br>
-     *     <pre>
+     * <pre>
      * Source: firstAffectedOrdinate + subTransform.getSourceDimensions() + numTrailingOrdinates
      * Target: firstAffectedOrdinate + subTransform.getTargetDimensions() + numTrailingOrdinates
      *     </pre>
-     *
      * @throws FactoryException if the object creation failed.
      */
     @Override
@@ -571,7 +582,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * @param text Math transform encoded in Well-Known Text format.
      * @return The math transform (never {@code null}).
      * @throws FactoryException if the Well-Known Text can't be parsed, or if the math transform
-     *     creation failed from some other reason.
+     *                          creation failed from some other reason.
      */
     @Override
     public synchronized MathTransform createFromWKT(final String text) throws FactoryException {
@@ -621,16 +632,16 @@ public class DefaultMathTransformFactory extends ReferencingFactory
      * <p>where options are:
      *
      * <TABLE CELLPADDING='0' CELLSPACING='0'>
-     *   <TR><TD NOWRAP><CODE>-projections</CODE></TD>
-     *       <TD NOWRAP>&nbsp;List only projections</TD></TR>
-     *   <TR><TD NOWRAP><CODE>-conversions</CODE></TD>
-     *       <TD NOWRAP>&nbsp;List only conversions</TD></TR>
-     *   <TR><TD NOWRAP><CODE>-all</CODE></TD>
-     *       <TD NOWRAP>&nbsp;List the parameters for all transforms</TD></TR>
-     *   <TR><TD NOWRAP><CODE>-encoding</CODE> <VAR>&lt;code&gt;</VAR></TD>
-     *       <TD NOWRAP>&nbsp;Set the character encoding</TD></TR>
-     *   <TR><TD NOWRAP><CODE>-locale</CODE> <VAR>&lt;language&gt;</VAR></TD>
-     *       <TD NOWRAP>&nbsp;Set the language for the output (e.g. "fr" for French)</TD></TR>
+     * <TR><TD NOWRAP><CODE>-projections</CODE></TD>
+     * <TD NOWRAP>&nbsp;List only projections</TD></TR>
+     * <TR><TD NOWRAP><CODE>-conversions</CODE></TD>
+     * <TD NOWRAP>&nbsp;List only conversions</TD></TR>
+     * <TR><TD NOWRAP><CODE>-all</CODE></TD>
+     * <TD NOWRAP>&nbsp;List the parameters for all transforms</TD></TR>
+     * <TR><TD NOWRAP><CODE>-encoding</CODE> <VAR>&lt;code&gt;</VAR></TD>
+     * <TD NOWRAP>&nbsp;Set the character encoding</TD></TR>
+     * <TR><TD NOWRAP><CODE>-locale</CODE> <VAR>&lt;language&gt;</VAR></TD>
+     * <TD NOWRAP>&nbsp;Set the language for the output (e.g. "fr" for French)</TD></TR>
      * </TABLE>
      *
      * <p>and <VAR>&lt;method&gt;</VAR> is the optional name of an operation method (e.g. <CODE>

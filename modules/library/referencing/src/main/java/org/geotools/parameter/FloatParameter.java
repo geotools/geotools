@@ -124,10 +124,10 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         if (thisUnit == null) {
             throw unitlessParameter(descriptor);
         }
-        final int expectedID = Parameter.getUnitMessageID(thisUnit);
-        if (Parameter.getUnitMessageID(unit) != expectedID) {
+        final String expectedPattern = Parameter.getUnitMessagePattern(thisUnit);
+        if (!Parameter.getUnitMessagePattern(unit).equals(expectedPattern)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(expectedID), unit));
+                    MessageFormat.format(expectedPattern, unit));
         }
         return Units.getConverterToAny(thisUnit, unit).convert(value);
     }
@@ -251,10 +251,10 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         if (thisUnit == null) {
             throw unitlessParameter(descriptor);
         }
-        final int expectedID = Parameter.getUnitMessageID(thisUnit);
-        if (Parameter.getUnitMessageID(unit) != expectedID) {
+        String expectedPattern = Parameter.getUnitMessagePattern(thisUnit);
+        if (!Parameter.getUnitMessagePattern(unit).equals(expectedPattern)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(expectedID), unit));
+                    MessageFormat.format(expectedPattern, unit));
         }
         value = Units.getConverterToAny(unit, thisUnit).convert(value);
         this.value = Parameter.ensureValidValue(descriptor, Double.valueOf(value));

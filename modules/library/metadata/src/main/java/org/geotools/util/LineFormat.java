@@ -522,11 +522,11 @@ public class LineFormat extends Format {
         if (count != expected) {
             final int lower = limits[Math.min(count, expected)];
             final int upper = limits[Math.min(count, expected + 1)];
-            final int key =
-                    count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
+            final String  pattern =
+                    count < expected ? "The line contains only {0} columns while {1} was expected." : "The line contains {0} columns while only {1} was expected. Characters \"{2}\" seem to be extra.";
             throw new ParseException(
                     MessageFormat.format(
-                            Errors.getPattern(key),
+                            pattern,
                             count,
                             expected,
                             line.substring(lower, upper).trim()),

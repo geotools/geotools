@@ -17,9 +17,11 @@
 package org.geotools.coverage.processing;
 
 import it.geosolutions.jaiext.JAIExt;
+
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,6 +40,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.TileCache;
+
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
@@ -68,14 +71,16 @@ import org.geotools.util.logging.Logging;
 /**
  * Base class for {@linkplain Coverage coverage} processor implementations.
  *
- * @since 2.2
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini, GeoSolutions S.A.S.
+ * @version $Id$
+ * @since 2.2
  */
 public class CoverageProcessor {
 
-    /** The logger for coverage processing operations. */
+    /**
+     * The logger for coverage processing operations.
+     */
     public static final Logger LOGGER = Logging.getLogger(CoverageProcessor.class);
 
     /**
@@ -84,7 +89,9 @@ public class CoverageProcessor {
      */
     public static final Level OPERATION = Logging.OPERATION;
 
-    /** The comparator for ordering operation names. */
+    /**
+     * The comparator for ordering operation names.
+     */
     private static final Comparator<String> COMPARATOR =
             (name1, name2) -> name1.toLowerCase().compareTo(name2.toLowerCase());
 
@@ -92,7 +99,7 @@ public class CoverageProcessor {
      * The default coverage processor. Will be constructed only when first requested.
      *
      * @todo This is a temporary field, to be removed when a GeoAPI interfaces for coverage
-     *     processing while be redesigned along the lines of ISO 19123.
+     * processing while be redesigned along the lines of ISO 19123.
      */
     private static CoverageProcessor DEFAULT;
 
@@ -111,7 +118,9 @@ public class CoverageProcessor {
             super();
         }
 
-        /** @param hints */
+        /**
+         * @param hints
+         */
         public CacheableCoverageProcessor(RenderingHints hints) {
             super(hints);
         }
@@ -172,10 +181,14 @@ public class CoverageProcessor {
      */
     protected final Hints hints;
 
-    /** The service registry for finding {@link Operation} implementations. */
+    /**
+     * The service registry for finding {@link Operation} implementations.
+     */
     protected final FactoryRegistry registry;
 
-    /** Constructs a coverage processor. */
+    /**
+     * Constructs a coverage processor.
+     */
     public CoverageProcessor() {
         this(null);
     }
@@ -196,7 +209,7 @@ public class CoverageProcessor {
      * @param hints A set of additional rendering hints, or {@code null} if none.
      */
     public CoverageProcessor(final RenderingHints hints) {
-        registry = new FactoryRegistry(Arrays.asList(new Class<?>[] {Operation.class}));
+        registry = new FactoryRegistry(Arrays.asList(new Class<?>[]{Operation.class}));
         this.hints = new Hints();
         this.hints.put(JAI.KEY_REPLACE_INDEX_COLOR_MODEL, Boolean.FALSE);
         this.hints.put(JAI.KEY_TRANSFORM_ON_COLORMAP, Boolean.FALSE);
@@ -284,10 +297,10 @@ public class CoverageProcessor {
      * Logs a message for an operation. The message will be logged only if the source grid coverage
      * is different from the result (i.e. if the operation did some work).
      *
-     * @param source The source grid coverage.
-     * @param result The resulting grid coverage.
+     * @param source        The source grid coverage.
+     * @param result        The resulting grid coverage.
      * @param operationName the operation name.
-     * @param fromCache {@code true} if the result has been fetch from the cache.
+     * @param fromCache     {@code true} if the result has been fetch from the cache.
      */
     final void log(
             final Coverage source,
@@ -334,12 +347,16 @@ public class CoverageProcessor {
         }
     }
 
-    /** Returns the operation name for the specified parameters. */
+    /**
+     * Returns the operation name for the specified parameters.
+     */
     static String getOperationName(final ParameterValueGroup parameters) {
         return parameters.getDescriptor().getName().getCode().trim();
     }
 
-    /** Returns the coverage name in the specified locale. */
+    /**
+     * Returns the coverage name in the specified locale.
+     */
     private static String getName(final Coverage coverage, final Locale locale) {
         if (coverage instanceof AbstractCoverage) {
             final InternationalString name = ((AbstractCoverage) coverage).getName();
@@ -373,9 +390,9 @@ public class CoverageProcessor {
      * non-null, then only the specified operations are printed. Otherwise, all operations are
      * printed. The description details include operation names and lists of parameters.
      *
-     * @param out The destination stream.
+     * @param out   The destination stream.
      * @param names The operation to print, or an empty array for none, or {@code null} for all.
-     * @throws IOException if an error occured will writing to the stream.
+     * @throws IOException                if an error occured will writing to the stream.
      * @throws OperationNotFoundException if an operation named in {@code names} was not found.
      */
     public void printOperations(final Writer out, final String[] names)
@@ -443,9 +460,7 @@ public class CoverageProcessor {
         final Operation old = operations.put(name, operation);
         if (old != null && !old.equals(operation)) {
             operations.put(old.getName().trim(), old);
-            throw new IllegalStateException(
-                    Errors.getResources(getLocale())
-                            .getString(ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
+            throw new IllegalStateException(MessageFormat.format("Operation \"{0}\" is already binds in this grid processor", operation.getName()));
         }
     }
 
@@ -480,9 +495,7 @@ public class CoverageProcessor {
             if (operation != null) {
                 return operation;
             }
-            throw new OperationNotFoundException(
-                    Errors.getResources(getLocale())
-                            .getString(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+            throw new OperationNotFoundException(MessageFormat.format("No such \"{0}\" operation for this processor.", name));
         }
     }
 
@@ -491,7 +504,7 @@ public class CoverageProcessor {
      *
      * @param key The hint key (e.g. {@link Hints#JAI_INSTANCE}).
      * @return The hint value for the specified key, or {@code null} if there is no hint for the
-     *     specified key.
+     * specified key.
      */
     public final Object getRenderingHint(final RenderingHints.Key key) {
         return hints.get(key);
@@ -504,8 +517,8 @@ public class CoverageProcessor {
      * resulting coverage (except if the resulting coverage has already an interpolation).
      *
      * @param parameters Parameters required for the operation. The easiest way to construct them is
-     *     to invoke <code>operation.{@link Operation#getParameters getParameters}()</code> and to
-     *     modify the returned group.
+     *                   to invoke <code>operation.{@link Operation#getParameters getParameters}()</code> and to
+     *                   modify the returned group.
      * @return The result as a coverage.
      * @throws OperationNotFoundException if there is no operation for the parameter group name.
      */
@@ -550,8 +563,8 @@ public class CoverageProcessor {
         } catch (ClassCastException cause) {
             final OperationNotFoundException exception =
                     new OperationNotFoundException(
-                            Errors.getResources(getLocale())
-                                    .getString(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
+                            MessageFormat.format(
+                                    "No such \"{0}\" operation for this processor.", operationName));
             exception.initCause(cause);
             throw exception;
         }
@@ -570,6 +583,7 @@ public class CoverageProcessor {
         log(source, coverage, operationName, false);
         return coverage;
     }
+
     /**
      * Applies a process operation to a coverage. The default implementation checks if source
      * coverages use an interpolation, and then invokes {@link AbstractOperation#doOperation}. If
@@ -577,8 +591,8 @@ public class CoverageProcessor {
      * resulting coverage (except if the resulting coverage has already an interpolation).
      *
      * @param parameters Parameters required for the operation. The easiest way to construct them is
-     *     to invoke <code>operation.{@link Operation#getParameters getParameters}()</code> and to
-     *     modify the returned group.
+     *                   to invoke <code>operation.{@link Operation#getParameters getParameters}()</code> and to
+     *                   modify the returned group.
      * @return The result as a coverage.
      * @throws OperationNotFoundException if there is no operation for the parameter group name.
      */
@@ -627,7 +641,7 @@ public class CoverageProcessor {
      * </pre>
      *
      * </blockquote>
-     *
+     * <p>
      * The codepage number (850 in the previous example) can be fetch from the DOS command line by
      * entering the "{@code chcp}" command with no arguments.
      */

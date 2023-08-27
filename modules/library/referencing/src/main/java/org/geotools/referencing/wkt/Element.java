@@ -25,7 +25,6 @@ import java.util.LinkedList;
 import java.util.List;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
-import org.geotools.util.logging.LoggedFormat;
 
 /**
  * An element in a <cite>Well Know Text</cite> (WKT). A {@code Element} is made of {@link String},

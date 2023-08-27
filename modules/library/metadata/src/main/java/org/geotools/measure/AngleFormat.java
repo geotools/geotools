@@ -31,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.metadata.math.XMath;
 import org.geotools.util.Classes;
-import org.geotools.util.logging.LoggedFormat;
 
 /**
  * Parses and formats angles according a specified pattern. The pattern is a string containing any

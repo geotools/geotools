@@ -1,0 +1,1045 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="remove-opengis" default="errorKeys">
+
+    <property name="project.dir" location="."/>
+
+    <target name="errorKeys"
+            description="FilterFactory2 and FilterFactory merge">
+
+        <fileset id="errorKeys.files" dir="${project.dir}" includes="**/*.java">
+            <contains text="import org.geotools.metadata.i18n.Errors;" casesensitive="yes"/>
+        </fileset>
+
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3)\E"/>
+            <substitution expression="&quot;The number of image bands ({0}) differs from the number of supplied '{2}' objects ({1}).&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.RECURSIVE_CALL_$1)\E"/>
+            <substitution expression="&quot;Recursive call while creating a '{0}' object.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSPECIFIED_CRS)\E"/>
+            <substitution expression="&quot;Coordinate reference system is unspecified.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_A_GRID)\E"/>
+            <substitution expression="&quot;Points dont seem to be distributed on a regular grid.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSUPPORTED_FILE_TYPE_$2)\E"/>
+            <substitution expression="&quot;Unsupported file type: {0} or {1}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_UNIT_POWER_$2)\E"/>
+            <substitution expression="&quot;Unit \\\\&quot;{1}\\\\&quot; can't be raised to power {0}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_SET_PARAMETER_VALUE_$1)\E"/>
+            <substitution expression="&quot;Can't set a value to the parameter \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4)\E"/>
+            <substitution expression="&quot;Parameter \\\\&quot;{0}\\\\&quot; occurs {1} time, while the expected range of occurences was [{2}..{3}].&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.RANGE_OVERLAP_$4)\E"/>
+            <substitution expression="&quot;Ranges [{0}..{1}] and [{2}..{3}] overlap.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.FILE_HAS_TOO_FEW_DATA)\E"/>
+            <substitution expression="&quot;File has too few data.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ANTIPODE_LATITUDES_$2)\E"/>
+            <substitution expression="&quot;Latitudes {0} and {1} are opposite.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_DIFFERENT_THAN_ZERO_$1)\E"/>
+            <substitution expression="&quot;Value {0} is not a real, non-null number.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.RECURSIVE_CALL_$2)\E"/>
+            <substitution expression="&quot;Recursive call while creating a '{0}' object for code \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.PARSE_EXCEPTION_$2)\E"/>
+            <substitution expression="&quot;Unparsable string: \\\\&quot;{0}\\\\&quot;. Please check characters \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_CS_DIMENSION_$1)\E"/>
+            <substitution expression="&quot;Coordinate system can't have {0} dimensions.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_EQUILIBRATED_PARENTHESIS_$2)\E"/>
+            <substitution expression="&quot;Unmatched parenthesis in \\\\&quot;{0}\\\\&quot;: missing '{1}'.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_COEFFICIENT_$2)\E"/>
+            <substitution expression="&quot;Coefficient {0}={1} can't be NaN or infinity.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_UNIT)\E"/>
+            <substitution expression="&quot;Unit must be specified.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_UNIT_OPERATION_$2)\E"/>
+            <substitution expression="&quot;Multiplication or division of \\\\&quot;{0}\\\\&quot; by \\\\&quot;{1}\\\\&quot; not allowed.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.HOLE_NOT_INSIDE_POLYGON)\E"/>
+            <substitution expression="&quot;Hole is not inside polygon.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_TEMPORAL_UNIT_$1)\E"/>
+            <substitution expression="&quot;\\\\&quot;{0}\\\\&quot; is not a time unit.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_PARAMETER_$1)\E"/>
+            <substitution expression="&quot;Unknow parameter: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_TRANSFORMATION_PATH_$2)\E"/>
+            <substitution expression="&quot;No transformation available from system \\\\&quot;{0}\\\\&quot; to \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_MATRIX_SIZE)\E"/>
+            <substitution expression="&quot;Illegal matrix size.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.RGB_OUT_OF_RANGE_$1)\E"/>
+            <substitution expression="&quot;RGB value {0} is out of range.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_TRANSFORM2D_AVAILABLE)\E"/>
+            <substitution expression="&quot;No two-dimensional transform available for this geometry.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1)\E"/>
+            <substitution expression="&quot;Coordinate ({0}) is outside coverage.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.TEST_FAILURE_$3)\E"/>
+            <substitution expression="&quot;Expected {0}={1} but got {2}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DUPLICATED_VALUES_$1)\E"/>
+            <substitution expression="&quot;Duplicated values for code \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3)\E"/>
+            <substitution expression="&quot;No code \\\\&quot;{0}\\\\&quot; from authority \\\\&quot;{1}\\\\&quot; found for object of type \\\\&quot;{2}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_IMAGE_SIZE)\E"/>
+            <substitution expression="&quot;Image doesn't have the expected size.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSPECIFIED_IMAGE_SIZE)\E"/>
+            <substitution expression="&quot;Unspecified image's size.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2)\E"/>
+            <substitution expression="&quot;No object of type \\\\&quot;{0}\\\\&quot; has been found for code \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.IN_$1)\E"/>
+            <substitution expression="&quot;Error in \\\\&quot;{0}\\\\&quot;:&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.PROJECTION_CHECK_FAILED_$4)\E"/>
+            <substitution expression="&quot;The transform result may be {0} meters away from the expected position. Are you sure that the input coordinates are inside this map projection area of validity? The point is located {1} away from the central meridian and {2} away from the latitude of origin. The projection is \\\\&quot;{3}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_CARTESIAN_COORDINATE_SYSTEM_$1)\E"/>
+            <substitution expression="&quot;Coordinate system \\\\&quot;{0}\\\\&quot; is not cartesian.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_GRID_RANGE_$3)\E"/>
+            <substitution expression="&quot;Illegal grid range [{1} .. {2}] for dimension {0}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.VARIABLE_NOT_FOUND_IN_FILE_$2)\E"/>
+            <substitution expression="&quot;No variable \\\\&quot;{0}\\\\&quot; found in file \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_AFFINE_TRANSFORM)\E"/>
+            <substitution expression="&quot;The grid to coordinate system transform must be affine.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNMODIFIABLE_METADATA)\E"/>
+            <substitution expression="&quot;Unmodifiable metadata.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_ROW_LENGTH_$3)\E"/>
+            <substitution expression="&quot;Matrix row {0} has a length of {1}, while {2} was expected.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISSING_WKT_DEFINITION)\E"/>
+            <substitution expression="&quot;Missing WKT definition.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1)\E"/>
+            <substitution expression="&quot;Unexpected argument for operation \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_CONVERGENCE_$2)\E"/>
+            <substitution expression="&quot;No convergence for points {0} and {1}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_TRANSFORM_ENVELOPE)\E"/>
+            <substitution expression="&quot;Can't transform envelope.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.POINT_OUTSIDE_HEMISPHERE)\E"/>
+            <substitution expression="&quot;Point outside hemisphere of projection.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DATE_OUTSIDE_COVERAGE_$1)\E"/>
+            <substitution expression="&quot;Date {0} is outside the range of available data.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1)\E"/>
+            <substitution expression="&quot;Illegal descriptor for parameter \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_AN_INTEGER_$1)\E"/>
+            <substitution expression="&quot;Value \\\\&quot;{0}\\\\&quot; is not a valid integer.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_COMPARABLE_CLASS_$1)\E"/>
+            <substitution expression="&quot;{0} is not a comparable class.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.POINT_OUTSIDE_GRID)\E"/>
+            <substitution expression="&quot;Point is outside grid&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_READ_$1)\E"/>
+            <substitution expression="&quot;Can't read file \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY)\E"/>
+            <substitution expression="&quot;Incompatible grid geometries.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_EVALUATE_$1)\E"/>
+            <substitution expression="&quot;Can't evaluate a value for coordinate ({0}).&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_INSTRUCTION_$1)\E"/>
+            <substitution expression="&quot;Illegal instruction \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2)\E"/>
+            <substitution expression="&quot;The envelope uses an incompatible CRS: was \\\\&quot;{1}\\\\&quot; while we expected \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DISTANCE_OUT_OF_RANGE_$4)\E"/>
+            <substitution expression="&quot;The distance {0} is out of range ({1} to {2} {3})&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.OPERATION_ALREADY_BOUND_$1)\E"/>
+            <substitution expression="&quot;Operation \\\\&quot;{0}\\\\&quot; is already binds in this grid processor.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISSING_PARAMETER_$1)\E"/>
+            <substitution expression="&quot;Parameter \\\\&quot;{0}\\\\&quot; is missing.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_SCALE_UNIT_$1)\E"/>
+            <substitution expression="&quot;\\\\&quot;{0}\\\\&quot; is not a scale unit.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INFINITE_VALUE_$1)\E"/>
+            <substitution expression="&quot;{0} value is infinite&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3)\E"/>
+            <substitution expression="&quot;Value {0} is out of range [{1}..{2}].&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_INTERPOLATION_$1)\E"/>
+            <substitution expression="&quot;Interpolation \\\\&quot;{0}\\\\&quot; is unknown.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MATRIX_NOT_REGULAR)\E"/>
+            <substitution expression="&quot;All rows doesn't have the same length.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_PARAMETER_$2)\E"/>
+            <substitution expression="&quot;Parameter \\\\&quot;{0}\\\\&quot; can't have value \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.LINE_TOO_LONG_$3)\E"/>
+            <substitution expression="&quot;The line contains {0} columns while only {1} was expected. Characters \\\\&quot;{2}\\\\&quot; seem to be extra.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSUPPORTED_CRS_$1)\E"/>
+            <substitution expression="&quot;Coordinate reference system \\\\&quot;{0}\\\\&quot; is unsupported.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_DATA_SOURCE)\E"/>
+            <substitution expression="&quot;No data source found.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISSING_CHARACTER_$1)\E"/>
+            <substitution expression="&quot;Character '{0}' was expected.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BURSA_WOLF_PARAMETERS_REQUIRED)\E"/>
+            <substitution expression="&quot;Bursa wolf parameters required.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2)\E"/>
+            <substitution expression="&quot;Coordinate system of type '{0}' are incompatible with CRS of type '{1}'.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_RECTANGLE_$1)\E"/>
+            <substitution expression="&quot;Empty or invalid rectangle: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_A_NUMBER_$1)\E"/>
+            <substitution expression="&quot;Value \\\\&quot;{0}\\\\&quot; is not a valid real number.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNDEFINED_PROPERTY)\E"/>
+            <substitution expression="&quot;Undefined property.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_END_OF_STRING)\E"/>
+            <substitution expression="&quot;Unexpected end of string.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_TWO_DIMENSIONAL_$1)\E"/>
+            <substitution expression="&quot;Can't wrap a {0} dimensional object into a 2 dimensional one.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_DIMENSION_FOR_CS_$1)\E"/>
+            <substitution expression="&quot;Unexpected dimension for a \\\\&quot;{0}\\\\&quot; coordinate system.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DESTINATION_NOT_SET)\E"/>
+            <substitution expression="&quot;The destination has not been set.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.VALUE_TEND_TOWARD_INFINITY)\E"/>
+            <substitution expression="&quot;Numerical value tend toward infinity.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1)\E"/>
+            <substitution expression="&quot;Can't format object of class \\\\&quot;{1}\\\\&quot; as an angle.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_IMAGE_INPUT)\E"/>
+            <substitution expression="&quot;No input set.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ZVALUE_OUTSIDE_COVERAGE_$2)\E"/>
+            <substitution expression="&quot;Value {1} is outside the domain of coverage \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INCOMPATIBLE_COORDINATE_SYSTEM_TYPE)\E"/>
+            <substitution expression="&quot;Incompatible coordinate system type.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MALFORMED_ENVELOPE)\E"/>
+            <substitution expression="&quot;Malformed envelope&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2)\E"/>
+            <substitution expression="&quot;Unit conversion from \\\\&quot;{0}\\\\&quot; to \\\\&quot;{1}\\\\&quot; is non-linear.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INSUFFICIENT_POINTS_$2)\E"/>
+            <substitution expression="&quot;{0} points were specified, while {1} are required.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_SOURCE_AXIS_$1)\E"/>
+            <substitution expression="&quot;No source axis match {0}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MIXED_CATEGORIES)\E"/>
+            <substitution expression="&quot;Geophysics categories mixed with non-geophysics ones.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSUPPORTED_OPERATION_$1)\E"/>
+            <substitution expression="&quot;Operation \\\\&quot;{0}\\\\&quot; is unsupported.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_ENVELOPE_ORDINATE_$1)\E"/>
+            <substitution expression="&quot;Bad ordinates at dimension {0}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.TOO_MANY_OCCURENCES_$2)\E"/>
+            <substitution expression="&quot;Too many occurences of \\\\&quot;{0}\\\\&quot;. There is already {1} of them.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_IMAGE_WRITER)\E"/>
+            <substitution expression="&quot;No suitable image writer for this output.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_CONVERT_FROM_TYPE_$1)\E"/>
+            <substitution expression="&quot;Can't convert value from type '{0}'.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DISPOSED_FACTORY)\E"/>
+            <substitution expression="&quot;The factory has been disposed.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1)\E"/>
+            <substitution expression="&quot;Latitude {0} is out of range (±90°).&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1)\E"/>
+            <substitution expression="&quot;Index {0} is out of bounds.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM)\E"/>
+            <substitution expression="&quot;Illegal coordinate reference system.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1)\E"/>
+            <substitution expression="&quot;Can't reduce \\\\&quot;{0}\\\\&quot; to a two-dimensional coordinate system.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INVALID_WKT_FORMAT_$1)\E"/>
+            <substitution expression="&quot;This \\\\&quot;{0}\\\\&quot; object is too complex for WKT syntax.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_LINE_IN_FILE_$2)\E"/>
+            <substitution expression="&quot;Illegal data at line {1} in file \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INCONSISTENT_PROPERTY_$1)\E"/>
+            <substitution expression="&quot;Property \\\\&quot;{0}\\\\&quot; has a value inconsistent with other properties.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM)\E"/>
+            <substitution expression="&quot;This affine transform is unmodifiable.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_CONVERTIBLE_UNITS_$2)\E"/>
+            <substitution expression="&quot;Can't convert value from units \\\\&quot;{1}\\\\&quot; to \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_ENTRY)\E"/>
+            <substitution expression="&quot;Bad entry&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.AZIMUTH_OUT_OF_RANGE_$1)\E"/>
+            <substitution expression="&quot;Azimuth {0} is out of range (±180°).&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_COMPUTE_DERIVATIVE)\E"/>
+            <substitution expression="&quot;Can't compute derivative.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1)\E"/>
+            <substitution expression="&quot;Illegal value for argument \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2)\E"/>
+            <substitution expression="&quot;Illegal argument: \\\\&quot;{0}={1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NONINVERTIBLE_SCALING_TRANSFORM)\E"/>
+            <substitution expression="&quot;Scaling affine transform is not invertible.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_PROJECTION_TYPE)\E"/>
+            <substitution expression="&quot;Unknow projection type.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.TOLERANCE_ERROR)\E"/>
+            <substitution expression="&quot;Tolerance error.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISSING_AUTHORITY_$1)\E"/>
+            <substitution expression="&quot;No authority was defined for code \\\\&quot;{0}\\\\&quot;. Did you forget \\\\&quot;AUTHORITY:NUMBER\\\\&quot;?&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_CROP)\E"/>
+            <substitution expression="&quot;An error occurred while cropping.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_CONNECT_DATABASE_$1)\E"/>
+            <substitution expression="&quot;Failed to connect to the {0} database.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_CONVERGENCE)\E"/>
+            <substitution expression="&quot;Transformation doesn't convergence.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_LOCALE_$1)\E"/>
+            <substitution expression="&quot;Bad local: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INCOMPATIBLE_UNIT_$1)\E"/>
+            <substitution expression="&quot;Incompatible unit: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_BAND_NUMBER_$1)\E"/>
+            <substitution expression="&quot;Band number {0} is not valid.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH)\E"/>
+            <substitution expression="&quot;Mismatched array length.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.COLINEAR_AXIS_$2)\E"/>
+            <substitution expression="&quot;Axis {0} and {1} are colinear.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_AN_AFFINE_TRANSFORM)\E"/>
+            <substitution expression="&quot;Transform is not affine.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.POLYGON_CLOSED)\E"/>
+            <substitution expression="&quot;Can't add point to a closed polygon.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_REPROJECT_$1)\E"/>
+            <substitution expression="&quot;Can't reproject grid coverage \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNDEFINED_PROPERTY_$1)\E"/>
+            <substitution expression="&quot;Property \\\\&quot;{0}\\\\&quot; is not defined.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISSING_MODULE_$1)\E"/>
+            <substitution expression="&quot;This operation requires the \\\\&quot;{0}\\\\&quot; module.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_THREE_DIMENSIONAL_CS)\E"/>
+            <substitution expression="&quot;Not a 3D coordinate system.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1)\E"/>
+            <substitution expression="&quot;Unknow axis direction: \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2)\E"/>
+            <substitution expression="&quot;Class '{0}' is illegal. It must be '{1}' or a derivated class.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1)\E"/>
+            <substitution expression="&quot;Longitude {0} is out of range (±180°).&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_LINEAR_RELATION)\E"/>
+            <substitution expression="&quot;Relation is not linear.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_GET_DATASOURCE_$1)\E"/>
+            <substitution expression="&quot;Failed to get the data source for name \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_LINEAR_UNIT_$1)\E"/>
+            <substitution expression="&quot;\\\\&quot;{0}\\\\&quot; is not a linear unit.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_INTEGER_CATEGORY)\E"/>
+            <substitution expression="&quot;Some categories use non-integer sample values.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_TRANSFORM_$1)\E"/>
+            <substitution expression="&quot;Illegal transform of type \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM)\E"/>
+            <substitution expression="&quot;The coordinate reference system must be the same for all objects.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANVAS_NOT_OWNER_$1)\E"/>
+            <substitution expression="&quot;Graphic \\\\&quot;{0}\\\\&quot; is owned by an other canvas.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.GRID_LOCATIONS_UNEQUAL)\E"/>
+            <substitution expression="&quot;Latitude and Longitude grid locations are not equal&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NULL_PARAMETER_$2)\E"/>
+            <substitution expression="&quot;\\\\&quot;{0}\\\\&quot; parameter should be not null and of type \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.POLE_PROJECTION_$1)\E"/>
+            <substitution expression="&quot;Latitude {0} is too close to a pole.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_CREATE_FACTORY_$1)\E"/>
+            <substitution expression="&quot;Can't create a factory of type \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNITLESS_PARAMETER_$1)\E"/>
+            <substitution expression="&quot;Parameter \\\\&quot;{0}\\\\&quot; has no unit.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNPARSABLE_NUMBER_$1)\E"/>
+            <substitution expression="&quot;Can't parse \\\\&quot;{0}\\\\&quot; as a number.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSPECIFIED_TRANSFORM)\E"/>
+            <substitution expression="&quot;Unspecified coordinates transform.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_PARAMETER_TYPE_$2)\E"/>
+            <substitution expression="&quot;Parameter \\\\&quot;{0}\\\\&quot; can't be of type '{1}'.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_IMAGE_FORMAT_$1)\E"/>
+            <substitution expression="&quot;Image format \\\\&quot;{0}\\\\&quot; is unknown.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_KEY_$1)\E"/>
+            <substitution expression="&quot;Illegal key: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_ARRAY_LENGTH_FOR_DIMENSION_$1)\E"/>
+            <substitution expression="&quot;Illegal array length for {0} dimensional points.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NULL_FORMAT_$2)\E"/>
+            <substitution expression="&quot;Format #{0} (on {1}) is not defined.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INCONSISTENT_AXIS_ORIENTATION_$2)\E"/>
+            <substitution expression="&quot;Direction \\\\&quot;{1}\\\\&quot; is inconsistent with axis \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ODD_ARRAY_LENGTH_$1)\E"/>
+            <substitution expression="&quot;Bad array length: {0}. An even array length was expected.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSUPPORTED_DATA_TYPE)\E"/>
+            <substitution expression="&quot;Unsupported data type.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.EMPTY_ARRAY)\E"/>
+            <substitution expression="&quot;The array should contains at least one element.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_PARAMETER_NAME_$1)\E"/>
+            <substitution expression="&quot;Unknow parameter name: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DIRECTION_NOT_SET)\E"/>
+            <substitution expression="&quot;The direction has not been set.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1)\E"/>
+            <substitution expression="&quot;Illegal angle pattern: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1)\E"/>
+            <substitution expression="&quot;Grid header has unexpected length: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNMODIFIABLE_GEOMETRY)\E"/>
+            <substitution expression="&quot;Unmodifiable geometry.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_RANGE_$2)\E"/>
+            <substitution expression="&quot;Range [{0} .. {1}] is not valid.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISSING_PARAMETER_VALUE_$1)\E"/>
+            <substitution expression="&quot;Missing value for parameter \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_ANGULAR_UNIT_$1)\E"/>
+            <substitution expression="&quot;Not an angular unit: \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1)\E"/>
+            <substitution expression="&quot;This operation can't be applied to values of class '{0}'.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1)\E"/>
+            <substitution expression="&quot;Data type \\\\&quot;{0}\\\\&quot; is not supported.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM)\E"/>
+            <substitution expression="&quot;Transform is not invertible.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NULL_ATTRIBUTE_$1)\E"/>
+            <substitution expression="&quot;Attribute \\\\&quot;{0}\\\\&quot; should not be null.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.EMPTY_ENVELOPE)\E"/>
+            <substitution expression="&quot;Envelope must be at least two-dimensional and non-empty.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.DATABASE_FAILURE_$2)\E"/>
+            <substitution expression="&quot;Database failure while creating a '{0}' object for code \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_IMAGE_OUTPUT)\E"/>
+            <substitution expression="&quot;No output set.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_TRANSFORM_FOR_CLASSIFICATION_$1)\E"/>
+            <substitution expression="&quot;No transform for classification \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1)\E"/>
+            <substitution expression="&quot;Coordinate system \\\\&quot;{0}\\\\&quot; is unsupported.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.AMBIGIOUS_AXIS_LENGTH)\E"/>
+            <substitution expression="&quot;Ambiguous axis length.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_AUTHORITY_$1)\E"/>
+            <substitution expression="&quot;Authority \\\\&quot;{0}\\\\&quot; is unknown or doesn't match the supplied hints. Maybe it is defined in an unreachable JAR file?&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1)\E"/>
+            <substitution expression="&quot;File does not exist or is unreadable: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_CATEGORY_FOR_VALUE_$1)\E"/>
+            <substitution expression="&quot;No category for value {0}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NOT_GREATER_THAN_ZERO_$1)\E"/>
+            <substitution expression="&quot;Number {0} is invalid. Expected a number greater than 0.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NULL_ARGUMENT_$1)\E"/>
+            <substitution expression="&quot;Argument \\\\&quot;{0}\\\\&quot; should not be null.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.PARAMETER_NAME_CLASH_$4)\E"/>
+            <substitution expression="&quot;Name or alias for parameter \\\\&quot;{0}\\\\&quot; at index {1} conflict with name \\\\&quot;{2}\\\\&quot; at index {3}.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_CREATE_FROM_TEXT_$1)\E"/>
+            <substitution expression="&quot;Can't create object of type '{0}' from a text.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_TRANSFORM_VALID_POINTS)\E"/>
+            <substitution expression="&quot;Can't transform some points that should be valid.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNKNOW_TYPE_$1)\E"/>
+            <substitution expression="&quot;Type \\\\&quot;{0}\\\\&quot; is unknow in this context.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_TRANSFORM_RESULT)\E"/>
+            <substitution expression="&quot;Transformation doesn't produce the expected values.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.END_OF_DATA_FILE)\E"/>
+            <substitution expression="&quot;Premature end of data file&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INSEPARABLE_TRANSFORM)\E"/>
+            <substitution expression="&quot;Inseparable transform.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NEGATIVE_COLUMN_$2)\E"/>
+            <substitution expression="&quot;Column number for \\\\&quot;{0}\\\\&quot; ({1}) can't be negative.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.OPERATION_ALREADY_BOUNDS_$1)\E"/>
+            <substitution expression="&quot;Operation \\\\&quot;{0}\\\\&quot; is already bounds.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1)\E"/>
+            <substitution expression="&quot;Geotools extension required for \\\\&quot;{0}\\\\&quot; operation.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_AXIS_ORIENTATION_$2)\E"/>
+            <substitution expression="&quot;Axis can't be oriented toward {0} for coordinate system of class \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2)\E"/>
+            <substitution expression="&quot;Mismatched object dimension: {0}D and {1}D.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NULL_VALUE_IN_TABLE_$3)\E"/>
+            <substitution expression="&quot;Unexpected null value in record \\\\&quot;{0}\\\\&quot; for the column \\\\&quot;{1}\\\\&quot; in table \\\\&quot;{2}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.COVERAGE_ALREADY_BOUND_$2)\E"/>
+            <substitution expression="&quot;Coverage returned by '{0}' is already the view of coverage \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NON_PERPENDICULAR_AXIS_$2)\E"/>
+            <substitution expression="&quot;Axis directions {0} and {1} are not perpendicular.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ANGLE_OVERFLOW_$1)\E"/>
+            <substitution expression="&quot;Angle {0} is too high.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.OPERATION_NOT_FOUND_$1)\E"/>
+            <substitution expression="&quot;No such \\\\&quot;{0}\\\\&quot; operation for this processor.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.RMI_FAILURE)\E"/>
+            <substitution expression="&quot;Execution on a remote machine failed.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3)\E"/>
+            <substitution expression="&quot;Argument \\\\&quot;{0}\\\\&quot; has {1} dimensions, while {2} was expected.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.INCOMPATIBLE_ELLIPSOID_$2)\E"/>
+            <substitution expression="&quot;Projection parameter \\\\&quot;{0}\\\\&quot; is incompatible with ellipsoid \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ILLEGAL_IDENTIFIER_$1)\E"/>
+            <substitution expression="&quot;\\\\&quot;{0}\\\\&quot; is not a valid identifier.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1)\E"/>
+            <substitution expression="&quot;Can't separate CRS \\\\&quot;{0}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1)\E"/>
+            <substitution expression="&quot;No factory of kind \\\\&quot;{0}\\\\&quot; found.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2)\E"/>
+            <substitution expression="&quot;Can't concatenate transforms \\\\&quot;{0}\\\\&quot; and \\\\&quot;{1}\\\\&quot;.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.NO_IMAGE_READER)\E"/>
+            <substitution expression="&quot;No suitable image reader for this input.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1)\E"/>
+            <substitution expression="&quot;Parameter \\\\&quot;{0}\\\\&quot; was not expected.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.BAD_COORDINATE_$1)\E"/>
+            <substitution expression="&quot;Illegal coordinate: {0}&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.OUT_OF_PROJECTION_VALID_AREA_$1)\E"/>
+            <substitution expression="&quot;Possible use of \\\\&quot;{0}\\\\&quot; projection outside its valid area.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.LINE_TOO_SHORT_$2)\E"/>
+            <substitution expression="&quot;The line contains only {0} columns while {1} was expected.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED)\E"/>
+            <substitution expression="&quot;Elliptical projection not supported.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+        <replaceregexp byline="true" flags="g">
+            <regexp pattern="\QErrors.getPattern(ErrorKeys.UNPARSABLE_STRING_$2)\E"/>
+            <substitution expression="&quot;Can't parse \\\\&quot;{0}\\\\&quot; because \\\\&quot;{1}\\\\&quot; is unrecognized.&quot;"/>
+            <fileset refid="errorKeys.files"/>
+        </replaceregexp>
+    </target>
+
+</project>

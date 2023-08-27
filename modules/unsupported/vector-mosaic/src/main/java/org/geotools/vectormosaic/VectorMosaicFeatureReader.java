@@ -209,9 +209,12 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
             String attributeName = mergedType.getDescriptor(i).getLocalName();
             if (contains(query.getPropertyNames(), attributeName)) {
                 typeBuilder.add(mergedType.getDescriptor(i));
-                if (attributeName.equals(mergedType.getGeometryDescriptor().getLocalName())) {
-                    geomAdded = true;
-                }
+            }
+            if (mergedType
+                    .getDescriptor(i)
+                    .getLocalName()
+                    .equals(mergedType.getGeometryDescriptor().getLocalName())) {
+                geomAdded = true;
             }
         }
         if (geomAdded) {

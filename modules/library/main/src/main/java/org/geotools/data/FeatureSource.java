@@ -169,7 +169,7 @@ public interface FeatureSource<T extends FeatureType, F extends Feature> {
      *     or too costly to calculate.
      * @throws IOException on any errors calculating the bounds
      */
-    ReferencedEnvelope getBounds() throws IOException;
+    org.geotools.api.geom.ReferencedEnvelope getBounds() throws IOException;
 
     /**
      * Get the spatial bounds of the features that would be returned by the given {@code Query}.

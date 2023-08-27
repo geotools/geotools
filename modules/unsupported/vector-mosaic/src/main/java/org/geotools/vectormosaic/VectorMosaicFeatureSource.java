@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -184,7 +185,14 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
                 getSplitFilter(query, delegateDataStore, delegateStoreTypeName, true);
         SimpleFeatureSource delegateFeatureSource =
                 delegateDataStore.getFeatureSource(delegateStoreTypeName);
-        SimpleFeatureCollection features = delegateFeatureSource.getFeatures(splitFilterIndex);
+        Query delegateQuery = new Query(delegateStoreTypeName, splitFilterIndex);
+        if (query.getPropertyNames() != Query.ALL_NAMES) {
+            String[] filteredArray =
+                    getOnlyTypeMatchingAttributes(
+                            delegateDataStore, delegateStoreTypeName, query, true);
+            delegateQuery.setPropertyNames(filteredArray);
+        }
+        SimpleFeatureCollection features = delegateFeatureSource.getFeatures(delegateQuery);
         out = new VectorMosaicFeatureReader(features, query, this);
         if (query.getFilter() != null) {
             Filter filter = query.getFilter();
@@ -197,8 +205,35 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
                 out = new FilteringFeatureReader<>(out, filter);
             }
         }
-
         return out;
+    }
+
+    public static String[] getOnlyTypeMatchingAttributes(
+            DataStore typeStore, String typeName, Query query, boolean isDelegate)
+            throws IOException {
+        SimpleFeatureType featureType = typeStore.getSchema(typeName);
+        Set<String> attributeNames =
+                VectorMosaicFeatureSource.getAttributeNamesForType(featureType);
+        String[] filteredArray =
+                Arrays.stream(query.getPropertyNames())
+                        .filter(attributeNames::contains)
+                        .toArray(String[]::new);
+        // delegate must have the connection parameters field
+        if (isDelegate) {
+            if (!containsString(
+                    filteredArray,
+                    VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT)) {
+                List<String> list = new ArrayList<>(Arrays.asList(filteredArray));
+                list.add(VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT);
+                filteredArray = list.toArray(new String[list.size()]);
+            }
+        }
+
+        return filteredArray;
+    }
+    // Method to check if a string is present in an array
+    private static boolean containsString(String[] array, String target) {
+        return Arrays.asList(array).contains(target);
     }
 
     /**
@@ -334,7 +369,8 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         return getAttributeNamesForType(featureType);
     }
 
-    private Set<String> getAttributeNamesForType(SimpleFeatureType featureType) throws IOException {
+    public static Set<String> getAttributeNamesForType(SimpleFeatureType featureType)
+            throws IOException {
         return featureType.getAttributeDescriptors().stream()
                 .map(AttributeDescriptor::getLocalName)
                 .collect(Collectors.toSet());
@@ -349,9 +385,14 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
 
     private boolean allFilterAttributesAreInType(SimpleFeatureType featureType, Filter filter)
             throws IOException {
-        Set<String> indexAttributeNames = getAttributeNamesForType(featureType);
         String[] filterAttributeNames = DataUtilities.attributeNames(filter);
-        return indexAttributeNames.containsAll(Arrays.asList(filterAttributeNames));
+        return typeHasAllAttributeNames(filterAttributeNames, featureType);
+    }
+
+    private boolean typeHasAllAttributeNames(String[] propertyNames, SimpleFeatureType featureType)
+            throws IOException {
+        Set<String> indexAttributeNames = getAttributeNamesForType(featureType);
+        return indexAttributeNames.containsAll(Arrays.asList(propertyNames));
     }
 
     @Override
@@ -411,6 +452,11 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
                 throw new IOException("No type names found in the granule data store");
             }
         }
+    }
+
+    @Override
+    protected boolean canRetype() {
+        return true;
     }
 
     @Override

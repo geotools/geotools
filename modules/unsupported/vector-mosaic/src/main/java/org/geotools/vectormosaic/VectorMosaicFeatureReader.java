@@ -18,21 +18,21 @@ package org.geotools.vectormosaic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.util.logging.Logging;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureReader;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
 
 /** {@link DataStore} for a vector mosaic. */
 public class VectorMosaicFeatureReader implements SimpleFeatureReader {
@@ -44,8 +44,9 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
     FeatureIterator delegateIterator;
     FeatureIterator granuleIterator;
     DataStore granuleDataStore;
-    private Feature nextGranule = null;
-    SimpleFeature delegateFeature = null;
+    protected Feature nextGranule = null;
+    protected SimpleFeature delegateFeature = null;
+    protected SimpleFeature rawGranule = null;
 
     String params;
 
@@ -63,7 +64,7 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
         this.delegateCollection = delegateFeatures;
         this.query = query;
         this.source = vectorMosaicFeatureSource;
-        this.schema = source.getSchema();
+        this.schema = retype(source.getSchema(), query);
         this.delegateIterator = delegateCollection.features();
     }
 
@@ -93,11 +94,10 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
         if (nextGranule != null) {
             return true;
         }
-        SimpleFeature peekGranule = null;
         if (granuleIterator != null && delegateFeature != null) {
             while (granuleIterator.hasNext()) {
-                peekGranule = (SimpleFeature) granuleIterator.next();
-                Feature peek = mergeGranuleAndDelegate(peekGranule, delegateFeature);
+                rawGranule = (SimpleFeature) granuleIterator.next();
+                Feature peek = mergeGranuleAndDelegate(rawGranule, delegateFeature, query);
                 if (query.getFilter().evaluate(peek)) {
                     nextGranule = peek;
                     return true;
@@ -133,15 +133,22 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
             Filter granuleFilter =
                     source.getSplitFilter(
                             query, granuleDataStore, granule.getGranuleTypeName(), false);
+            Query granuleQuery = new Query(granule.getGranuleTypeName(), granuleFilter);
+            if (query.getPropertyNames() != Query.ALL_NAMES) {
+                String[] filteredArray =
+                        VectorMosaicFeatureSource.getOnlyTypeMatchingAttributes(
+                                granuleDataStore, granule.getGranuleTypeName(), query, false);
+                granuleQuery.setPropertyNames(filteredArray);
+            }
             granuleIterator =
                     granuleDataStore
                             .getFeatureSource(granule.getGranuleTypeName())
-                            .getFeatures(granuleFilter)
+                            .getFeatures(granuleQuery)
                             .features();
 
             while (granuleIterator.hasNext()) {
-                peekGranule = (SimpleFeature) granuleIterator.next();
-                Feature peek = mergeGranuleAndDelegate(peekGranule, delegateFeature);
+                rawGranule = (SimpleFeature) granuleIterator.next();
+                Feature peek = mergeGranuleAndDelegate(rawGranule, delegateFeature, query);
                 if (query.getFilter().evaluate(peek)) {
                     nextGranule = peek;
                     return true;
@@ -162,16 +169,18 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
      * @return the merged feature
      */
     private Feature mergeGranuleAndDelegate(
-            SimpleFeature peekGranule, SimpleFeature delegateFeature) {
+            SimpleFeature peekGranule, SimpleFeature delegateFeature, Query query) {
         SimpleFeatureType mergedType = getFeatureType();
         List<Object> attributes = new ArrayList<>();
         peekGranule.getType().getAttributeDescriptors().stream()
+                .filter(a -> isInRetype(a, query))
                 .forEach(
                         attributeDescriptor -> {
                             attributes.add(peekGranule.getAttribute(attributeDescriptor.getName()));
                         }); // type starts with of all granule attributes
         delegateFeature.getType().getAttributeDescriptors().stream()
                 .filter(source::isNotMandatoryIndexType)
+                .filter(a -> isInRetype(a, query))
                 .forEach(
                         attributeDescriptor -> {
                             attributes.add(
@@ -180,6 +189,55 @@ public class VectorMosaicFeatureReader implements SimpleFeatureReader {
 
         return SimpleFeatureBuilder.build(
                 mergedType, attributes, peekGranule.getIdentifier().getID());
+    }
+
+    private SimpleFeatureType retype(SimpleFeatureType mergedType, Query query) {
+        if (query == null || query.getPropertyNames() == Query.ALL_NAMES) {
+            return mergedType;
+        }
+        // Create a new SimpleFeatureTypeBuilder
+        SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
+
+        typeBuilder.setName(mergedType.getName());
+        typeBuilder.setNamespaceURI(mergedType.getName().getNamespaceURI());
+
+        boolean geomAdded = false;
+        for (int i = 0; i < mergedType.getAttributeCount(); i++) {
+            String attributeName = mergedType.getDescriptor(i).getLocalName();
+            if (contains(query.getPropertyNames(), attributeName)) {
+                typeBuilder.add(mergedType.getDescriptor(i));
+            }
+            if (mergedType
+                    .getDescriptor(i)
+                    .getLocalName()
+                    .equals(mergedType.getGeometryDescriptor().getLocalName())) {
+                geomAdded = true;
+            }
+        }
+        if (geomAdded) {
+            typeBuilder.setDefaultGeometry(mergedType.getGeometryDescriptor().getLocalName());
+            typeBuilder.setCRS(mergedType.getCoordinateReferenceSystem());
+        }
+
+        // Create the new feature type without the specified attributes
+        return typeBuilder.buildFeatureType();
+    }
+
+    private boolean contains(String[] propertyNames, String attributeName) {
+        for (String propertyName : propertyNames) {
+            if (propertyName.equals(attributeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isInRetype(AttributeDescriptor a, Query query) {
+        if (query.getPropertyNames() == Query.ALL_NAMES) {
+            return true;
+        }
+        boolean inRetype = Arrays.asList(query.getPropertyNames()).contains(a.getLocalName());
+        return inRetype;
     }
 
     @Override

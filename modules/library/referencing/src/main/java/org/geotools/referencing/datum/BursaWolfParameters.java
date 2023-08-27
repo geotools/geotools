@@ -155,7 +155,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
         for (int i = 0; i < 4; i++) {
             double difference = matrix.getElement(3, i) - (i == 3 ? 1 : 0);
             if (Math.abs(difference) > eps) {
-                throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_AFFINE_TRANSFORM));
+                throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.NON_AFFINE_TRANSFORM));
             }
         }
         dx = matrix.getElement(0, 3);

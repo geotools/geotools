@@ -23,6 +23,7 @@ import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,10 +173,7 @@ public class RangeLookupProcess implements RasterProcess {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            org.geotools.metadata.i18n.Errors.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                                    "classification ranges size",
-                                    size));
+                            MessageFormat.format(org.geotools.metadata.i18n.Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "classification ranges size", size));
             }
         }
         worker.setROI(org.geotools.coverage.util.CoverageUtilities.getROIProperty(coverage));

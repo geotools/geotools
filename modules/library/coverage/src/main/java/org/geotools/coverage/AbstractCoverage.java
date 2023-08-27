@@ -36,6 +36,7 @@ import java.awt.image.renderable.RenderableImage;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -258,7 +259,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                 type = type.getComponentType();
             }
         }
-        return Errors.format(ErrorKeys.CANT_CONVERT_FROM_TYPE_$1, type);
+        return MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONVERT_FROM_TYPE_$1), type);
     }
 
     /**
@@ -648,7 +649,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             if (!(width > 0)) { // Use '!' in order to catch NaN
                 if (!(height > 0)) {
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.UNSPECIFIED_IMAGE_SIZE));
+                            Errors.getPattern(ErrorKeys.UNSPECIFIED_IMAGE_SIZE));
                 }
                 width = (int) Math.round(height * (boundsWidth / boundsHeight));
             } else if (!(height > 0)) {
@@ -792,7 +793,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                         assert (y == gridBounds.y + gridBounds.height);
                     } catch (NoninvertibleTransformException exception) {
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "context"), exception);
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "context"), exception);
                     }
                 image = tiled;
             }

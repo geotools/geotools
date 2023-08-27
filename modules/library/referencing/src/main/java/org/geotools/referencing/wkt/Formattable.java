@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.wkt;
 
+import java.text.MessageFormat;
 import java.util.prefs.Preferences;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -166,7 +167,7 @@ public class Formattable {
             throws UnformattableObjectException {
         if (authority == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "authority"));
         }
         Formatter formatter = FORMATTER.get();
         if (formatter == null

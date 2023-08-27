@@ -17,6 +17,7 @@
 package org.geotools.parameter;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.AbstractList;
 import java.util.List;
 import java.util.RandomAccess;
@@ -146,7 +147,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
                      * the descriptor was illegal.
                      */
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1, name));
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1), name));
                 }
             }
             /*
@@ -160,7 +161,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
                 value = "(group)";
             }
             throw new InvalidParameterNameException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name);
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value), name);
         }
         final int max = type.getMaximumOccurs();
         if (max == 1) {
@@ -190,7 +191,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
             }
             if (count >= max) {
                 throw new InvalidParameterCardinalityException(
-                        Errors.format(ErrorKeys.TOO_MANY_OCCURENCES_$2, name, count), name);
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.TOO_MANY_OCCURENCES_$2), name, count), name);
             }
         }
         values.add(parameter);
@@ -226,8 +227,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
         if (count <= min) {
             final int max = type.getMaximumOccurs();
             throw new InvalidParameterCardinalityException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4, name, count - 1, min, max),
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4), name, count - 1, min, max),
                     name);
         }
         final GeneralParameterValue value = values.remove(index);

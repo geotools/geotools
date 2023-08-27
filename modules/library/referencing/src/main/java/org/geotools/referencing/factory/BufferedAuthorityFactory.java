@@ -229,7 +229,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      */
     AbstractAuthorityFactory getBackingStore() throws FactoryException {
         if (backingStore == null) {
-            throw new FactoryException(Errors.format(ErrorKeys.DISPOSED_FACTORY));
+            throw new FactoryException(Errors.getPattern(ErrorKeys.DISPOSED_FACTORY));
         }
         return backingStore;
     }

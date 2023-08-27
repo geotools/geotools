@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -107,13 +108,13 @@ public class WorldFileReader {
     public WorldFileReader(final File worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "worldfile"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "worldfile"));
         if (!worldfile.isFile() || !worldfile.canRead())
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, worldfile));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), worldfile));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "bufferSize", bufferSize));
         parseWorldFile(new BufferedReader(new FileReader(worldfile)));
     }
 
@@ -126,10 +127,10 @@ public class WorldFileReader {
      */
     public WorldFileReader(final URL worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "inFile"));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bufferSize", bufferSize));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "bufferSize", bufferSize));
         parseWorldFile(new BufferedReader(new InputStreamReader(worldfile.openStream())));
     }
 

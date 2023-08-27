@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -85,7 +86,7 @@ public class CheckedArrayList<E> extends ArrayList<E> implements CheckedCollecti
     /** Make sure that {@link #type} is non-null. */
     private void ensureNonNull() {
         if (type == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "type"));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "type"));
         }
     }
 
@@ -99,7 +100,7 @@ public class CheckedArrayList<E> extends ArrayList<E> implements CheckedCollecti
     protected void ensureValidType(final E element) throws IllegalArgumentException {
         if (element != null && !type.isInstance(element)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), element.getClass(), type));
         }
     }
 

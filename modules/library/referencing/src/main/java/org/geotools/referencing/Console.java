@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -397,7 +398,7 @@ public class Console extends AbstractConsole {
                 }
             }
         }
-        throw new ParseException(Errors.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
+        throw new ParseException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_INSTRUCTION_$1), instruction), 0);
     }
 
     /** Executes the "{@code print crs}" instruction. */
@@ -595,7 +596,7 @@ public class Console extends AbstractConsole {
         final int targetDim = targetPosition.getDimension();
         if (sourceDim != targetDim) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, targetDim));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), sourceDim, targetDim));
         }
         for (int i = 0; i < sourceDim; i++) {
             // Use '!' for catching NaN.
@@ -649,7 +650,7 @@ public class Console extends AbstractConsole {
             final Number result = numberFormat.parse(token, position);
             if (position.getIndex() != token.length()) {
                 throw new ParseException(
-                        Errors.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token),
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNPARSABLE_NUMBER_$1), token),
                         position.getErrorIndex());
             }
             values[i] = result.doubleValue();
@@ -675,7 +676,7 @@ public class Console extends AbstractConsole {
      */
     private static ParseException unexpectedArgument(final String instruction) {
         return new ParseException(
-                Errors.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction), 0);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1), instruction), 0);
     }
 
     /**

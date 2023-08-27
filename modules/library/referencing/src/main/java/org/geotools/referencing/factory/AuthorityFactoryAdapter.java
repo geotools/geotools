@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -501,7 +502,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         if (caller == null) {
             return null;
         }
-        throw new FactoryException(Errors.format(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1, caller));
+        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1), caller));
     }
 
     /**
@@ -1061,7 +1062,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      */
     private FactoryException missingFactory(final Class category, final String code) {
         return new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, category),
+                MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), category),
                 Citations.getIdentifier(getAuthority()),
                 trimAuthority(code));
     }
@@ -1075,7 +1076,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         try {
             return getAuthorityFactory(null);
         } catch (FactoryException cause) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.UNDEFINED_PROPERTY), cause);
+            throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNDEFINED_PROPERTY), cause);
         }
     }
 
@@ -1107,7 +1108,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
             f = getCoordinateOperationAuthorityFactory(code);
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "type", type));
         }
         return type.cast(f);
     }

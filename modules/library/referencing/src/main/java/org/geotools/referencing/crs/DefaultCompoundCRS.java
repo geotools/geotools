@@ -21,6 +21,7 @@ package org.geotools.referencing.crs;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -118,7 +119,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
         ensureNonNull("crs", crs);
         if (crs.length < 2) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.MISSING_PARAMETER_$1, "crs[" + crs.length + ']'));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), "crs[" + crs.length + ']'));
         }
         final CoordinateSystem[] cs = new CoordinateSystem[crs.length];
         for (int i = 0; i < crs.length; i++) {

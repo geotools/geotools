@@ -43,7 +43,7 @@ public final class CitationsTest {
 
     @Test
     public void testErrors() {
-        String message = Errors.format(ErrorKeys.BAD_ENTRY);
+        String message = Errors.getPattern(ErrorKeys.BAD_ENTRY);
         assertNotNull(message);
     }
     /**

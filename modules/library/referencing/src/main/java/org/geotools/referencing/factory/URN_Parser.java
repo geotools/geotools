@@ -23,6 +23,8 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
 
+import java.text.MessageFormat;
+
 /**
  * Split a URN into its {@link #type} and {@link #version} parts for {@link URN_AuthorityFactory}.
  * This class must be immutable in order to avoid the need for synchronization in the authority
@@ -119,6 +121,6 @@ final class URN_Parser extends URI_Parser {
             }
         }
         throw new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, type), "urn:ogc:def", type);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_IDENTIFIER_$1), type), "urn:ogc:def", type);
     }
 }

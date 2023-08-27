@@ -17,6 +17,7 @@
 package org.geotools.parameter;
 
 import java.net.URI;
+import java.text.MessageFormat;
 import javax.measure.Unit;
 import javax.media.jai.ParameterList;
 import org.geotools.api.parameter.InvalidParameterTypeException;
@@ -56,9 +57,10 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
 
     /** Returns the exception to be throws for an operation on a wrong parameter type. */
     private InvalidParameterTypeException invalidType(final ClassCastException cause) {
+        final Object arg0 = getType();
         final InvalidParameterTypeException exception =
                 new InvalidParameterTypeException(
-                        Errors.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, getType()),
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1), arg0),
                         getName(descriptor));
         exception.initCause(cause);
         return exception;

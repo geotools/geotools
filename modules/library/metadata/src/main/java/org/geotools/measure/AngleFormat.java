@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Locale;
@@ -520,7 +521,7 @@ public class AngleFormat extends Format {
                         widthDecimal = 0;
                         decimalSeparator = true;
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1), pattern));
                     }
                     if (c == upperCaseC) {
                         /*
@@ -558,8 +559,7 @@ public class AngleFormat extends Format {
                             default:
                                 {
                                     throw new IllegalArgumentException(
-                                            Errors.format(
-                                                    ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
+                                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1), pattern));
                                 }
                         }
                         int w = 1;
@@ -669,7 +669,7 @@ public class AngleFormat extends Format {
             if (minutes < 0 || minutes > 60) {
                 // Erreur d'arrondissement (parce que l'angle est trop élevé)
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ANGLE_OVERFLOW_$1), angle));
             }
             if (width2 != 0) {
                 tmp = (int) minutes; // Arrondie vers 0 même si négatif.
@@ -678,7 +678,7 @@ public class AngleFormat extends Format {
                 if (secondes < 0 || secondes > 60) {
                     // Erreur d'arrondissement (parce que l'angle est trop élevé)
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.ANGLE_OVERFLOW_$1), angle));
                 }
                 tmp = (int) (secondes / 60);
                 secondes -= 60 * tmp;
@@ -851,7 +851,7 @@ public class AngleFormat extends Format {
             return numberFormat.format(obj, toAppendTo, (pos != null) ? pos : dummy);
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1, Classes.getClass(obj)));
+                MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1), Classes.getClass(obj)));
     }
 
     /**

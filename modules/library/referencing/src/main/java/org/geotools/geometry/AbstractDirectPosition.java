@@ -24,6 +24,8 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 
+import java.text.MessageFormat;
+
 /**
  * Base class for {@linkplain DirectPosition direct position} implementations. This base class
  * provides default implementations for {@link #toString}, {@link #equals} and {@link #hashCode}
@@ -100,12 +102,9 @@ public abstract class AbstractDirectPosition implements DirectPosition {
         if (crs != null) {
             final int dimension = crs.getCoordinateSystem().getDimension();
             if (dimension != expected) {
+                final Object arg0 = crs.getName().getCode();
                 throw new MismatchedDimensionException(
-                        Errors.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                crs.getName().getCode(),
-                                dimension,
-                                expected));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), arg0, dimension, expected));
             }
         }
     }
@@ -124,8 +123,7 @@ public abstract class AbstractDirectPosition implements DirectPosition {
             throws MismatchedDimensionException {
         if (dimension != expectedDimension) {
             throw new MismatchedDimensionException(
-                    Errors.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3, name, dimension, expectedDimension));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), name, dimension, expectedDimension));
         }
     }
 

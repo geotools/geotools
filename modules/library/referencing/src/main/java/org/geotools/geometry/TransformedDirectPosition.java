@@ -32,6 +32,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 
+import java.text.MessageFormat;
+
 /**
  * A direct position capable to {@linkplain #transform transform} a point between an arbitrary CRS
  * and {@linkplain #getCoordinateReferenceSystem its own CRS}. This class caches the last transform
@@ -300,7 +302,7 @@ public class TransformedDirectPosition extends GeneralDirectPosition {
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
         }
     }
 }

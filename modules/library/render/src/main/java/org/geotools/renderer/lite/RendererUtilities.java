@@ -21,6 +21,7 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -207,7 +208,7 @@ public final class RendererUtilities {
         final CoordinateReferenceSystem crs2d = CRS.getHorizontalCRS(crs);
         if (crs2d == null)
             throw new UnsupportedOperationException(
-                    Errors.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, crs));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), crs));
 
         Envelope env = createMapEnvelope(paintArea, worldToScreen);
         return new ReferencedEnvelope(env, crs2d);
@@ -386,10 +387,9 @@ public final class RendererUtilities {
             final CoordinateReferenceSystem tempCRS =
                     CRS.getHorizontalCRS(envelope.getCoordinateReferenceSystem());
             if (tempCRS == null) {
+                final Object arg0 = envelope.getCoordinateReferenceSystem();
                 throw new TransformException(
-                        Errors.format(
-                                ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1,
-                                envelope.getCoordinateReferenceSystem()));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), arg0));
             }
             ReferencedEnvelope envelopeWGS84 = envelope.transform(DefaultGeographicCRS.WGS84, true);
             diagonalGroundDistance = geodeticDiagonalDistance(envelopeWGS84);
@@ -551,7 +551,7 @@ public final class RendererUtilities {
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(destinationCrs);
         if (crs2D == null)
             throw new TransformException(
-                    Errors.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, destinationCrs));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), destinationCrs));
         final boolean lonFirst =
                 crs2D.getCoordinateSystem()
                         .getAxis(0)

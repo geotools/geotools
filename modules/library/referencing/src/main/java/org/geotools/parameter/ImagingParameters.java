@@ -18,6 +18,7 @@ package org.geotools.parameter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -231,13 +232,9 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
                 if (i != j) {
                     final ParameterDescriptor d = (ParameterDescriptor) values[i].getDescriptor();
                     if (AbstractIdentifiedObject.nameMatches(d, name)) {
+                        final Object arg0 = d.getName().getCode();
                         throw new InvalidParameterNameException(
-                                Errors.format(
-                                        ErrorKeys.PARAMETER_NAME_CLASH_$4,
-                                        d.getName().getCode(),
-                                        j,
-                                        name,
-                                        i),
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.PARAMETER_NAME_CLASH_$4), arg0, j, name, i),
                                 name);
                     }
                 }
@@ -291,7 +288,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
             }
         }
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
     }
 
     /**
@@ -301,7 +298,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     @Override
     public List<ParameterValueGroup> groups(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
     }
 
     /**
@@ -311,7 +308,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     @Override
     public ParameterValueGroup addGroup(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
     }
 
     /** Compares the specified object with this parameter group for equality. */

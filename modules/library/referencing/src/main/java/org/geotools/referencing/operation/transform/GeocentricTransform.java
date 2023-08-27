@@ -22,6 +22,7 @@ package org.geotools.referencing.operation.transform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Objects;
 import javax.measure.Unit;
@@ -156,7 +157,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         if (!(value >= 0 && value <= max)) {
             // Use '!' in order to trap NaN
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value));
         }
     }
 

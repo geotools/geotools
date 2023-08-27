@@ -21,6 +21,7 @@ import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -185,7 +186,7 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
                         }
                     }
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.RANGE_OVERLAP_$4, args));
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.RANGE_OVERLAP_$4), (Object) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {

@@ -31,6 +31,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -242,7 +243,7 @@ public final class GridCoverageRenderer {
         this.destinationCRS = destinationCRS;
         if (this.destinationCRS == null) {
             throw new TransformException(
-                    Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), this.destinationCRS));
         }
         destinationEnvelope =
                 new GeneralEnvelope(new ReferencedEnvelope(envelope, this.destinationCRS));
@@ -923,11 +924,11 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "graphics"));
         }
         if (gridCoverage == null) {
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverage"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "gridCoverage"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))
@@ -963,11 +964,11 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "graphics"));
         }
         if (gridCoverageReader == null) {
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverageReader"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "gridCoverageReader"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))

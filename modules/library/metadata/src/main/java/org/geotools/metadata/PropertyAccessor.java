@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -200,7 +201,7 @@ final class PropertyAccessor {
             final Integer old = mapping.put(lower, index);
             if (old != null && !old.equals(index)) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.PARAMETER_NAME_CLASH_$4), name, index, lower, old));
             }
         }
     }
@@ -368,7 +369,7 @@ final class PropertyAccessor {
         if (index != null) {
             return index;
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, key));
+        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_PARAMETER_NAME_$1), key));
     }
 
     /**
@@ -489,7 +490,7 @@ final class PropertyAccessor {
         } else {
             key = String.valueOf(index);
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, key));
+        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), key));
     }
 
     /**
@@ -600,10 +601,7 @@ final class PropertyAccessor {
             if (parsed == null) {
                 final ClassCastException e =
                         new ClassCastException(
-                                Errors.format(
-                                        ErrorKeys.ILLEGAL_CLASS_$2,
-                                        argument.getClass(),
-                                        elementType));
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), argument.getClass(), elementType));
                 e.initCause(failure);
                 throw e;
             }

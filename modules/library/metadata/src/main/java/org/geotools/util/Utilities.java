@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.AbstractQueue;
 import java.util.Arrays;
 import java.util.Collections;
@@ -657,7 +658,7 @@ public final class Utilities {
     public static void ensureNonNull(final String name, final Object object)
             throws NullPointerException {
         if (object == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
         }
     }
 
@@ -672,7 +673,7 @@ public final class Utilities {
     public static void ensureArgumentNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
         }
     }
 

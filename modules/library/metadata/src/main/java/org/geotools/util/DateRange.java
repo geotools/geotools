@@ -104,7 +104,7 @@ public class DateRange extends Range<Date> {
      */
     private static UnitConverter getConverter(final Unit<Time> source) {
         if (source == null) {
-            throw new UnconvertibleException(Errors.format(ErrorKeys.NO_UNIT));
+            throw new UnconvertibleException(Errors.getPattern(ErrorKeys.NO_UNIT));
         }
         return source.getConverterTo(MILLISECOND);
     }

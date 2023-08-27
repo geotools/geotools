@@ -19,6 +19,8 @@ package org.geotools.referencing.operation.transform;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.text.MessageFormat;
+
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -86,11 +88,10 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
         this.transform1 = transform1;
         this.transform2 = transform2;
         if (!isValid()) {
+            final Object arg0 = getName(transform1);
+            final Object arg1 = getName(transform2);
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2,
-                            getName(transform1),
-                            getName(transform2)));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2), arg0, arg1));
         }
     }
 
@@ -145,13 +146,12 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
         final int dim1 = tr1.getTargetDimensions();
         final int dim2 = tr2.getSourceDimensions();
         if (dim1 != dim2) {
+            final Object arg0 = getName(tr1);
+            final Object arg1 = getName(tr2);
             throw new IllegalArgumentException(
-                    Errors.format(
-                                    ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2,
-                                    getName(tr1),
-                                    getName(tr2))
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2), arg0, arg1)
                             + ' '
-                            + Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+                            + MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), dim1, dim2));
         }
         MathTransform mt = createOptimized(tr1, tr2);
         if (mt != null) {

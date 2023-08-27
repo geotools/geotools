@@ -148,7 +148,7 @@ public class PlateCarree extends EquidistantCylindrical {
             if (isSpherical(parameters)) {
                 return new PlateCarree(parameters);
             } else {
-                throw new FactoryException(Errors.format(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED));
+                throw new FactoryException(Errors.getPattern(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED));
             }
         }
     }

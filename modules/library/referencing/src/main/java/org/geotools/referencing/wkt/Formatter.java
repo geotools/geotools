@@ -22,6 +22,7 @@ package org.geotools.referencing.wkt;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
@@ -223,11 +224,11 @@ public class Formatter {
         this.indentation = indentation;
         if (symbols == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "symbols"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "symbols"));
         }
         if (indentation < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "indentation", indentation));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "indentation", indentation));
         }
         numberFormat = (NumberFormat) symbols.numberFormat.clone();
         buffer = new StringBuffer();
@@ -764,7 +765,7 @@ public class Formatter {
      */
     public void setLinearUnit(final Unit<Length> unit) {
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_LINEAR_UNIT_$1), unit));
         }
         linearUnit = unit;
     }
@@ -787,7 +788,7 @@ public class Formatter {
      */
     public void setAngularUnit(final Unit<Angle> unit) {
         if (unit != null && (!SI.RADIAN.isCompatible(unit) || AbstractUnit.ONE.equals(unit))) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_ANGULAR_UNIT_$1), unit));
         }
         angularUnit = unit;
     }

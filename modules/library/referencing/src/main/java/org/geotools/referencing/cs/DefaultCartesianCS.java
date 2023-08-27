@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Map;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
@@ -230,10 +231,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
                 final double angle = DefaultCoordinateSystemAxis.getAngle(axis0, axis1);
                 if (Math.abs(Math.abs(angle) - 90) > DirectionAlongMeridian.EPS) {
                     throw new IllegalArgumentException(
-                            Errors.format(
-                                    ErrorKeys.NON_PERPENDICULAR_AXIS_$2,
-                                    axis0.name(),
-                                    axis1.name()));
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.NON_PERPENDICULAR_AXIS_$2), axis0.name(), axis1.name()));
                 }
             }
         }

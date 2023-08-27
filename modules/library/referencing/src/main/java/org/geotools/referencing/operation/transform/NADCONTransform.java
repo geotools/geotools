@@ -365,7 +365,7 @@ public class NADCONTransform extends AbstractMathTransform
                     break;
                 }
                 if (--i < 0) {
-                    throw new TransformException(Errors.format(ErrorKeys.NO_CONVERGENCE));
+                    throw new TransformException(Errors.getPattern(ErrorKeys.NO_CONVERGENCE));
                 }
             }
 

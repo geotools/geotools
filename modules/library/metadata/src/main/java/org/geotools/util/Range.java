@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import javax.measure.Unit;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -138,7 +139,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
     static void ensureNonNull(final String name, final Object value)
             throws IllegalArgumentException {
         if (value == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
         }
     }
 
@@ -155,7 +156,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
     private void ensureCompatible(final Class<?> type) throws IllegalArgumentException {
         if (!elementClass.isAssignableFrom(type)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, type, elementClass));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, elementClass));
         }
     }
 

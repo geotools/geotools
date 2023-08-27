@@ -17,6 +17,7 @@
 package org.geotools.process.vector;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -98,10 +99,10 @@ public class FeatureClassStats implements VectorProcess {
         // initial checks/defaults
         //
         if (features == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
+            throw new ProcessException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "features"));
         }
         if (attribute == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "attribute"));
+            throw new ProcessException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "attribute"));
         }
         PropertyDescriptor property = features.getSchema().getDescriptor(attribute);
         if (property == null) {
@@ -117,7 +118,7 @@ public class FeatureClassStats implements VectorProcess {
 
         if (classes < 1) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "classes", classes));
         }
 
         // other defaults

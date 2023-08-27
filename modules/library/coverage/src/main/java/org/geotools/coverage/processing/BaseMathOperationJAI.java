@@ -17,6 +17,8 @@
 package org.geotools.coverage.processing;
 
 import it.geosolutions.jaiext.JAIExt;
+
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -151,7 +153,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
                     || ((Collection) srcCoverages).isEmpty()
                     || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "sources"),
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "sources"),
                         "sources",
                         srcCoverages);
             }

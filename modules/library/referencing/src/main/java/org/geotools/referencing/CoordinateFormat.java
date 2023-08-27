@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -398,11 +399,7 @@ public class CoordinateFormat extends Format {
         if (crs != null) {
             if (dimension != formats.length) {
                 throw new MismatchedDimensionException(
-                        Errors.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                "point",
-                                dimension,
-                                formats.length));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), "point", dimension, formats.length));
             }
             cs = crs.getCoordinateSystem();
         } else {

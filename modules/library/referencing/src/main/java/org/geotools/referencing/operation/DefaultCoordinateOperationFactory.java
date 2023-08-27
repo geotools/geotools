@@ -1218,7 +1218,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                     identifier = ELLIPSOID_SHIFT;
                 } else {
                     throw new OperationNotFoundException(
-                            Errors.format(ErrorKeys.BURSA_WOLF_PARAMETERS_REQUIRED));
+                            Errors.getPattern(ErrorKeys.BURSA_WOLF_PARAMETERS_REQUIRED));
                 }
             }
             final Matrix normalizeSource = swapAndScaleAxis(sourceCS, STANDARD);

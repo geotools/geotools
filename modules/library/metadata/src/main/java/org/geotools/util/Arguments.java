@@ -26,6 +26,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -129,7 +130,7 @@ public class Arguments {
                 default:
                     illegalArgument(
                             new IllegalArgumentException(
-                                    Errors.format(ErrorKeys.BAD_LOCALE_$1, locale)));
+                                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_LOCALE_$1), locale)));
             }
         }
         return Locale.getDefault();

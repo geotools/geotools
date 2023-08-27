@@ -23,6 +23,7 @@ import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -206,7 +207,7 @@ public class OperationJAI extends Operation2D {
             return operation;
         }
 
-        throw new OperationNotFoundException(Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+        throw new OperationNotFoundException(MessageFormat.format(Errors.getPattern(ErrorKeys.OPERATION_NOT_FOUND_$1), name));
     }
 
     /** Ensures that the specified class is assignable to {@link RenderedImage}. */
@@ -292,7 +293,7 @@ public class OperationJAI extends Operation2D {
                     || !CRS.equalsIgnoreMetadata(
                             gridToCRS, source.getGridGeometry().getGridToCRS2D())) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY));
+                        Errors.getPattern(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY));
             }
             block.setSource(source.getRenderedImage(), i);
         }
@@ -521,8 +522,9 @@ public class OperationJAI extends Operation2D {
                         toTarget = factory.createConcatenatedTransform(toTarget, step);
                     }
                 } catch (FactoryException exception) {
+                    final Object arg0 = source.getName();
                     throw new CannotReprojectException(
-                            Errors.format(ErrorKeys.CANT_REPROJECT_$1, source.getName()),
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REPROJECT_$1), arg0),
                             exception);
                 }
             }

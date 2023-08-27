@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
@@ -279,7 +280,7 @@ public final class CRS2GeoTiffMetadataAdapter {
         // getting the linear unit
         final Unit<?> unit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_LINEAR_UNIT_$1), unit));
         }
         @SuppressWarnings("unchecked")
         Unit<Length> linearUnit = (Unit<Length>) unit;

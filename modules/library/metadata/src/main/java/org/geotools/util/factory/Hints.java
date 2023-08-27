@@ -20,6 +20,7 @@ import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1067,7 +1068,7 @@ public class Hints extends RenderingHints {
     private void fromPairs(final Object... pairs) throws IllegalArgumentException {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ODD_ARRAY_LENGTH_$1), pairs.length));
         }
         for (int i = 0; i < pairs.length; i += 2) {
             super.put(pairs[i], pairs[i + 1]);

@@ -28,6 +28,7 @@ import static org.geotools.util.Classes.wrapperToPrimitive;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.text.MessageFormat;
 import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -153,7 +154,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     public RangeSet(final Class<T> type) throws IllegalArgumentException {
         if (!Comparable.class.isAssignableFrom(type)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, type));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_COMPARABLE_CLASS_$1), type));
         }
         Class<?> elementType = ClassChanger.getTransformedClass(type); // e.g. change Date --> Long
         useClassChanger = (elementType != type);
@@ -171,9 +172,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         if (!relaxedClass.isInstance(value)) {
             throw new IllegalArgumentException(
                     value == null
-                            ? Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "value")
-                            : Errors.format(
-                                    ErrorKeys.ILLEGAL_CLASS_$2, value.getClass(), elementClass));
+                            ? MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "value")
+                            : MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), value.getClass(), elementClass));
         }
         if (useClassChanger)
             try {
@@ -185,10 +185,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
                  */
                 final ClassCastException exception =
                         new ClassCastException(
-                                Errors.format(
-                                        ErrorKeys.ILLEGAL_CLASS_$2,
-                                        value.getClass(),
-                                        elementClass));
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), value.getClass(), elementClass));
                 exception.initCause(cause);
                 throw exception;
             }
@@ -249,7 +246,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) > 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_RANGE_$2, min, max));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), min, max));
         }
         if (array == null) {
             modCount++;
@@ -465,7 +462,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) >= 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_RANGE_$2, min, max));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), min, max));
         }
         // if already empty, or range outside the current set, nothing to change
         if (array == null) {

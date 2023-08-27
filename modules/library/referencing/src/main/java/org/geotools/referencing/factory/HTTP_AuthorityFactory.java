@@ -30,6 +30,8 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.GenericName;
 import org.geotools.util.factory.Hints;
 
+import java.text.MessageFormat;
+
 /**
  * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "http://www.opengis.net/"}
  * name space. An exemple of complete URL is {@code "http://www.opengis.net/gml/srs/epsg.xml#4326"}.
@@ -156,6 +158,6 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
             }
         }
         throw new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "code", code), BASE_URL, code);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "code", code), BASE_URL, code);
     }
 }

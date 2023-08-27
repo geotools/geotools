@@ -23,6 +23,7 @@ import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -110,7 +111,7 @@ public abstract class AbstractParser extends Format {
     public void setAuthority(final Citation authority) {
         if (authority == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "authority"));
         }
         getFormatter().setAuthority(authority);
     }
@@ -301,7 +302,8 @@ public abstract class AbstractParser extends Format {
                 reportError(err, line, exception.getErrorOffset());
             }
         } catch (InvalidParameterValueException exception) {
-            err.print(Errors.format(ErrorKeys.IN_$1, exception.getParameterName()));
+            final Object arg0 = exception.getParameterName();
+            err.print(MessageFormat.format(Errors.getPattern(ErrorKeys.IN_$1), arg0));
             err.print(' ');
             err.println(exception.getLocalizedMessage());
         }
@@ -320,8 +322,7 @@ public abstract class AbstractParser extends Format {
             if (formatter.warning != null) {
                 return formatter.warning;
             }
-            return Errors.format(
-                    ErrorKeys.INVALID_WKT_FORMAT_$1, formatter.getUnformattableClass());
+            return MessageFormat.format(Errors.getPattern(ErrorKeys.INVALID_WKT_FORMAT_$1), formatter.getUnformattableClass());
         }
         return null;
     }

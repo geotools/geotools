@@ -41,6 +41,7 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -968,8 +969,7 @@ public class GranuleDescriptor {
         }
         if (rasterGranule == null && exceptionOnNullGranule) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "granuleLocation", granuleLocation));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "granuleLocation", granuleLocation));
         }
         return rasterGranule;
     }

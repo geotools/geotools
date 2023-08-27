@@ -58,7 +58,7 @@ public abstract class AbstractEnvelope implements Envelope {
         } else {
             if (crs2 != null && !crs1.equals(crs2)) {
                 throw new MismatchedReferenceSystemException(
-                        Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                        Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
             }
             return crs1;
         }

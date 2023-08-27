@@ -288,7 +288,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
         if (heightConverter == null) {
             update();
             if (heightConverter == null) {
-                throw new IllegalStateException(Errors.format(ErrorKeys.NOT_THREE_DIMENSIONAL_CS));
+                throw new IllegalStateException(Errors.getPattern(ErrorKeys.NOT_THREE_DIMENSIONAL_CS));
             }
         }
         return heightConverter.convert(coordinates[heightAxis]);

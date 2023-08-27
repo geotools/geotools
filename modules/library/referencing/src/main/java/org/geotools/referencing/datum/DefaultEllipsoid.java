@@ -17,6 +17,7 @@
 package org.geotools.referencing.datum;
 
 import java.awt.geom.Point2D;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
@@ -305,7 +306,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
             return value;
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value));
     }
 
     /**

@@ -418,7 +418,7 @@ public class TransverseMercator extends MapProjection {
             return getZone(-52.5, -3);
         }
         // unknown
-        throw new IllegalStateException(Errors.format(ErrorKeys.UNKNOW_PROJECTION_TYPE));
+        throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNKNOW_PROJECTION_TYPE));
     }
 
     /**
@@ -440,7 +440,7 @@ public class TransverseMercator extends MapProjection {
             return getCentralMedirian(-52.5, -3);
         }
         // unknown
-        throw new IllegalStateException(Errors.format(ErrorKeys.UNKNOW_PROJECTION_TYPE));
+        throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNKNOW_PROJECTION_TYPE));
     }
 
     /** Returns a hash value for this projection. */

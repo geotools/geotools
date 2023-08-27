@@ -18,6 +18,7 @@ package org.geotools.geometry;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -258,7 +259,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     public final void setLocation(final Point2D point) throws MismatchedDimensionException {
         if (ordinates.length != 2) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_TWO_DIMENSIONAL_$1), ordinates.length));
         }
         ordinates[0] = point.getX();
         ordinates[1] = point.getY();
@@ -274,7 +275,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     public Point2D toPoint2D() throws IllegalStateException {
         if (ordinates.length != 2) {
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_TWO_DIMENSIONAL_$1), ordinates.length));
         }
         return new Point2D.Double(ordinates[0], ordinates[1]);
     }

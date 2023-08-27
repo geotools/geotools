@@ -17,6 +17,8 @@
 package org.geotools.referencing.wkt;
 
 import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
+
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
@@ -78,7 +80,7 @@ public class UnformattableObjectException extends UnsupportedOperationException 
                 }
                 c = candidate;
             }
-            return Errors.format(ErrorKeys.INVALID_WKT_FORMAT_$1, c);
+            return MessageFormat.format(Errors.getPattern(ErrorKeys.INVALID_WKT_FORMAT_$1), c);
         }
         return message;
     }

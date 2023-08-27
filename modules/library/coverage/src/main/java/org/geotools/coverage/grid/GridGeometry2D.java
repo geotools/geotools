@@ -22,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
 import org.geotools.api.coverage.CannotEvaluateException;
@@ -589,7 +590,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             }
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE), cause);
+                Errors.getPattern(ErrorKeys.NO_TRANSFORM2D_AVAILABLE), cause);
     }
 
     /**
@@ -608,7 +609,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 return gridToCRS2D.inverse();
             } catch (NoninvertibleTransformException exception) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS2D)),
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_TRANSFORM_$1), Classes.getClass(gridToCRS2D)),
                         exception);
             }
     }
@@ -630,8 +631,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
         try {
             crs = reduce(crs);
         } catch (FactoryException exception) {
+            final Object arg1 = crs.getName();
             throw new InvalidGridGeometryException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "crs", crs.getName()), exception);
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "crs", arg1), exception);
         }
         return crs;
     }
@@ -991,10 +993,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             CoordinateReferenceSystem targetCRS = getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
                 throw new IllegalArgumentException(
-                        Errors.format(
-                                ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2,
-                                sourceCRS,
-                                targetCRS));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2), sourceCRS, targetCRS));
             }
         }
 
@@ -1041,7 +1040,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, point));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1), point));
         }
     }
 
@@ -1077,7 +1076,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, gridEnv));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1), gridEnv));
         }
     }
 
@@ -1104,10 +1103,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 try {
                     arbitraryToInternal.transform(point);
                 } catch (TransformException exception) {
+                    final Object arg0 = AbstractGridCoverage.toString(point, Locale.getDefault());
                     throw new CannotEvaluateException(
-                            Errors.format(
-                                    ErrorKeys.CANT_EVALUATE_$1,
-                                    AbstractGridCoverage.toString(point, Locale.getDefault())),
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_EVALUATE_$1), arg0),
                             exception);
                 }
                 return arbitraryToInternal.toPoint2D();
@@ -1123,8 +1121,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
          * CRS. Here this is modified to just check that the point is at least 2D - mbedward
          */
         if (point.getDimension() < 2) {
+            final Object arg0 = point.getDimension();
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, point.getDimension(), 2));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), arg0, 2));
         }
 
         if (point instanceof Point2D) {
@@ -1149,11 +1148,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
             try {
                 return gridFromCRS2D.transform(point, null);
             } catch (TransformException exception) {
+                final Object arg0 = AbstractGridCoverage.toString(point, Locale.getDefault());
                 throw new CannotEvaluateException(
-                        Errors.format(
-                                ErrorKeys.CANT_EVALUATE_$1,
-                                AbstractGridCoverage.toString(point, Locale.getDefault()),
-                                exception));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_EVALUATE_$1), arg0, exception));
             }
         }
         throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
@@ -1242,7 +1239,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 label = Integer.valueOf(i);
             }
             if (range.getLow(i) != min || range.getSpan(i) != length) {
-                return Errors.format(ErrorKeys.BAD_GRID_RANGE_$3, label, min, min + length);
+                return MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_GRID_RANGE_$3), label, min, min + length);
             }
         }
         return null;

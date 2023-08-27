@@ -83,7 +83,7 @@ public class XAffineTransform extends AffineTransform {
      */
     protected void checkPermission() throws UnsupportedOperationException {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM));
+                Errors.getPattern(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM));
     }
 
     /** Checks for {@linkplain #checkPermission permission} before translating this transform. */

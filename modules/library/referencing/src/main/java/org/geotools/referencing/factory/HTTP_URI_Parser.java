@@ -22,6 +22,8 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
 
+import java.text.MessageFormat;
+
 /**
  * Split an HTTP URI into its parts for {@link HTTP_URI_AuthorityFactory}. Must be immutable so
  * synchronisation is not needed in the authority factory.
@@ -87,6 +89,6 @@ final class HTTP_URI_Parser extends URI_Parser {
             }
         }
         throw new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, uriText), AUTHORITY, uriText);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), uriText), AUTHORITY, uriText);
     }
 }

@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -1417,7 +1418,7 @@ public class SLDParser {
                 } else if ("values".equalsIgnoreCase(type)) {
                     symbol.setType(ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
+                    LOGGER.fine(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "ColorMapType", type));
             }
 
             // parsing extended colors
@@ -1430,7 +1431,7 @@ public class SLDParser {
                 } else if ("false".equalsIgnoreCase(type)) {
                     symbol.setExtendedColors(false);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Extended", type));
+                    LOGGER.fine(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "Extended", type));
             }
         }
 

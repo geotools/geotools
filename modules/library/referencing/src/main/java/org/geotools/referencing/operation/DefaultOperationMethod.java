@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -221,7 +222,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
             throws IllegalArgumentException {
         if (value < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value));
         }
     }
 
@@ -400,7 +401,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
                 }
             }
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), name, actual, expected));
         }
     }
 }

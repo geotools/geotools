@@ -18,6 +18,7 @@ package org.geotools.util.logging;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.logging.Level;
@@ -354,8 +355,7 @@ public final class Logging {
             }
             if (!LoggerFactory.class.isAssignableFrom(factoryClass)) {
                 throw new IllegalArgumentException(
-                        Errors.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2, factoryClass, LoggerFactory.class));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), factoryClass, LoggerFactory.class));
             }
             try {
                 final Method method = factoryClass.getMethod("getInstance", (Class[]) null);
@@ -378,7 +378,7 @@ public final class Logging {
                     throw factoryNotFound(className, (NoClassDefFoundError) cause);
                 }
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, className, cause));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CREATE_FACTORY_$1), className, cause));
             }
         }
         setLoggerFactory(factory);
@@ -389,7 +389,7 @@ public final class Logging {
      */
     private static ClassNotFoundException factoryNotFound(String name, NoClassDefFoundError error) {
         return new ClassNotFoundException(
-                Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, name), error);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), name), error);
     }
 
     /**

@@ -18,6 +18,7 @@ package org.geotools.factory;
 
 // J2SE dependencies
 
+import java.text.MessageFormat;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.metadata.citation.CitationFactory;
@@ -91,7 +92,8 @@ public class BasicFactories {
      * @param type The factory type requested by the users.
      */
     private static String unsupportedFactory(final Class type) {
-        return Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, Classes.getShortName(type));
+        final Object arg0 = Classes.getShortName(type);
+        return MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), arg0);
     }
 
     /**

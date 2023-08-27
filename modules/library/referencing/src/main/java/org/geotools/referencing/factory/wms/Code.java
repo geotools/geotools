@@ -22,6 +22,8 @@ import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
+import java.text.MessageFormat;
+
 /**
  * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code
  * AUTO:code,unit,lon0,lat0} where {@code AUTO} is optional.
@@ -125,7 +127,7 @@ final class Code {
             final Class type, final String code) {
         final String authority = "AUTO";
         return new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type),
+                MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3), code, authority, type),
                 authority,
                 code);
     }

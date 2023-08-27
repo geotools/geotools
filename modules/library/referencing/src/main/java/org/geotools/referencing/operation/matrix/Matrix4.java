@@ -78,7 +78,7 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
     public Matrix4(final Matrix matrix) {
         super(SIZE);
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
         for (int j = 0; j < SIZE; j++) {
             for (int i = 0; i < SIZE; i++) {

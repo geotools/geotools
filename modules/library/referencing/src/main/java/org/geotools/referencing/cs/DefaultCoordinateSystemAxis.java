@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale; // For javadoc
@@ -720,7 +721,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("rangeMeaning", rangeMeaning);
         if (!(minimum < maximum)) { // Use '!' for catching NaN
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), minimum, maximum));
         }
     }
 
@@ -966,7 +967,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             return candidate;
         }
         throw new NoSuchElementException(
-                Errors.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
+                MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1), direction));
     }
 
     /**
@@ -1183,7 +1184,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     maximum,
                     rangeMeaning);
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
+        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.INCOMPATIBLE_UNIT_$1), newUnit));
     }
 
     /**

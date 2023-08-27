@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
@@ -164,7 +165,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
             URL url = getDefinitionsURL();
             if (url == null) {
                 throw new FactoryNotFoundException(
-                        Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), FILENAME));
             }
             final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
@@ -179,7 +180,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
             return new PropertyCoordinateOperationAuthorityFactory(
                     factories, this.getAuthority(), url);
         } catch (IOException exception) {
-            throw new FactoryException(Errors.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_READ_$1), FILENAME), exception);
         }
     }
 

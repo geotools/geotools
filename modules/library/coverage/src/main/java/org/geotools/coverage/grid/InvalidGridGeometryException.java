@@ -40,7 +40,7 @@ public class InvalidGridGeometryException extends IllegalStateException {
      * public because the GeoTools I18N framework is not a commited one.
      */
     InvalidGridGeometryException(final int code) {
-        super(Errors.format(code));
+        super(Errors.getPattern(code));
     }
 
     /** Constructs an exception with the specified detail message. */

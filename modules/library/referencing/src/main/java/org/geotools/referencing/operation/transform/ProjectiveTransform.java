@@ -483,7 +483,7 @@ public class ProjectiveTransform extends AbstractMathTransform
                         | IllegalArgumentException
                         | MatrixDimensionException exception) {
                     throw new NoninvertibleTransformException(
-                            Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
+                            Errors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
                 }
                 inverse = createInverse(matrix);
                 inverse.inverse = this;

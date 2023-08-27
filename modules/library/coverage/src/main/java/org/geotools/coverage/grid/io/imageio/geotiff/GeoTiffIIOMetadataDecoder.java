@@ -55,6 +55,7 @@ package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +128,7 @@ public final class GeoTiffIIOMetadataDecoder {
     public GeoTiffIIOMetadataDecoder(final IIOMetadata imageMetadata) {
         if (imageMetadata == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "imageMetadata"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "imageMetadata"));
         }
         iioMetadata = imageMetadata;
         // getting the image metadata root node.

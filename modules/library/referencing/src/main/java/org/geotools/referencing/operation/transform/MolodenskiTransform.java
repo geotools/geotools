@@ -26,6 +26,7 @@ import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -761,7 +762,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
                 default:
                     {
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dim", dim));
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dim", dim));
                     }
             }
             final double a = doubleValue(SRC_SEMI_MAJOR, values);

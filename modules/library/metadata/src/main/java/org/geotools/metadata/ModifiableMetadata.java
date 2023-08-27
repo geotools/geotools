@@ -279,7 +279,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      */
     protected void checkWritePermission() throws UnmodifiableMetadataException {
         if (!isModifiable()) {
-            throw new UnmodifiableMetadataException(Errors.format(ErrorKeys.UNMODIFIABLE_METADATA));
+            throw new UnmodifiableMetadataException(Errors.getPattern(ErrorKeys.UNMODIFIABLE_METADATA));
         }
         unmodifiable = null;
     }

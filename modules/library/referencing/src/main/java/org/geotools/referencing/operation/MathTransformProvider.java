@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
@@ -238,7 +239,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
     protected static Map<String, Object> toMap(final ReferenceIdentifier... identifiers) {
         ensureNonNull("identifiers", identifiers);
         if (identifiers.length == 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.EMPTY_ARRAY));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.EMPTY_ARRAY));
         }
         int idCount = 0;
         int aliasCount = 0;
@@ -331,7 +332,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                     continue;
                 } else {
                     throw new InvalidParameterNameException(
-                            Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), name), name);
                 }
             }
             /*
@@ -344,7 +345,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             } catch (ParameterNotFoundException cause) {
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), name), name);
                 exception.initCause(cause);
                 throw exception;
             }
@@ -358,7 +359,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                 target.setValue((double[]) v, unit);
             } else {
                 throw new InvalidParameterValueException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, v), name, v);
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, v), name, v);
             }
         }
     }

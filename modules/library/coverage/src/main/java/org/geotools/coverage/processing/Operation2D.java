@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.parameter.InvalidParameterValueException;
@@ -111,7 +112,7 @@ public abstract class Operation2D extends AbstractOperation {
         Utilities.ensureNonNull("sourceNames", sourceNames);
         Utilities.ensureNonNull("sources", sources);
         if (sources.length != sourceNames.length) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
         }
         for (int i = 0; i < sourceNames.length; i++) {
             Object candidate = parameters.parameter(sourceNames[i]).getValue();
@@ -121,10 +122,7 @@ public abstract class Operation2D extends AbstractOperation {
             }
             if (!(candidate instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
-                        Errors.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2,
-                                Classes.getClass(candidate),
-                                GridCoverage2D.class),
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), Classes.getClass(candidate), GridCoverage2D.class),
                         sourceNames[i],
                         candidate);
             }

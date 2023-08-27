@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -503,9 +504,9 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final String message;
         if (authority == null) {
             authority = Vocabulary.format(VocabularyKeys.UNKNOWN);
-            message = Errors.format(ErrorKeys.MISSING_AUTHORITY_$1, code);
+            message = MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_AUTHORITY_$1), code);
         } else {
-            message = Errors.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
+            message = MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_AUTHORITY_$1), authority);
         }
         final NoSuchAuthorityCodeException exception =
                 new NoSuchAuthorityCodeException(message, authority, code);

@@ -21,6 +21,7 @@ package org.geotools.referencing.factory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -192,7 +193,7 @@ abstract class AuthorityFactoryProxy {
             }
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, type, IdentifiedObject.class));
+                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, IdentifiedObject.class));
     }
 
     /** Returns the type of the objects to be created by this proxy instance. */
@@ -277,7 +278,7 @@ abstract class AuthorityFactoryProxy {
                     return;
                 }
             }
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
         }
 
         /** {@inheritDoc} */

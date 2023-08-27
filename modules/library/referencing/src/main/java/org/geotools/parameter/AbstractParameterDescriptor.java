@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.text.MessageFormat;
 import java.util.Map;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
@@ -73,7 +74,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
         this.minimumOccurs = minimumOccurs;
         if (minimumOccurs < 0 || maximumOccurs < minimumOccurs) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimumOccurs, maximumOccurs));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), minimumOccurs, maximumOccurs));
         }
     }
 

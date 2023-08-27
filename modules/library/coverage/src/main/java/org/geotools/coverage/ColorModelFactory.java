@@ -21,6 +21,7 @@ import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Map;
 import org.geotools.image.util.ColorUtilities;
@@ -100,7 +101,7 @@ final class ColorModelFactory {
         this.type = type;
         if (visibleBand < 0 || visibleBand >= numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, visibleBand));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_BAND_NUMBER_$1), visibleBand));
         }
     }
 

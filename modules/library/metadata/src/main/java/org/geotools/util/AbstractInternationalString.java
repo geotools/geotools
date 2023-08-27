@@ -19,6 +19,7 @@
  */
 package org.geotools.util;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -66,7 +67,7 @@ public abstract class AbstractInternationalString implements InternationalString
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
         }
     }
 

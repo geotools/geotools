@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.transform;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.text.MessageFormat;
 import java.util.prefs.Preferences;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -115,7 +116,7 @@ public class AffineTransform2D extends XAffineTransform
             final int dimension = ptDst.getDimension();
             if (dimension != 2) {
                 throw new MismatchedDimensionException(
-                        Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), "ptDst", dimension, 2));
             }
         }
         final double[] array = ptSrc.getCoordinate();

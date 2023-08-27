@@ -20,6 +20,8 @@ import org.geotools.api.util.ProgressListener;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
+import java.text.MessageFormat;
+
 /**
  * Base class for GridCoverageProgressAdapter implementations to reporto progress about I/O
  * operations with GridCoverages.
@@ -41,10 +43,10 @@ public abstract class BaseGridCoverageProgressAdapter {
     protected BaseGridCoverageProgressAdapter(ProgressListener monitor, int numImages) {
         if (numImages <= 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numImages", numImages));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "numImages", numImages));
         this.numImages = numImages;
         if (monitor == null)
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "monitor"));
+            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "monitor"));
         this.monitor = monitor;
         init();
     }

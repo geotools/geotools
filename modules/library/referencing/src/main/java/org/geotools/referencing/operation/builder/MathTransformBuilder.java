@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.builder;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -232,7 +233,7 @@ public abstract class MathTransformBuilder {
         transform = null;
         final boolean add = positions.isEmpty();
         if (!add && points.length != positions.size()) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
         }
         final int dimension = getDimension();
         for (int i = 0; i < points.length; i++) {
@@ -447,7 +448,7 @@ public abstract class MathTransformBuilder {
                     cs = DefaultCartesianCS.GENERIC_3D;
                     break;
                 default:
-                    throw new FactoryException(Errors.format(ErrorKeys.UNSPECIFIED_CRS));
+                    throw new FactoryException(Errors.getPattern(ErrorKeys.UNSPECIFIED_CRS));
             }
         }
         return crsFactory.createEngineeringCRS(
@@ -546,7 +547,7 @@ public abstract class MathTransformBuilder {
              */
             if (!previousCRS.equals(candidate)) {
                 throw new MismatchedReferenceSystemException(
-                        Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                        Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
             }
         }
         return previousCRS;
@@ -578,8 +579,7 @@ public abstract class MathTransformBuilder {
         final int necessaryNumber = getMinimumPointCount();
         if (points.length < necessaryNumber) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.INSUFFICIENT_POINTS_$2, points.length, necessaryNumber));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.INSUFFICIENT_POINTS_$2), points.length, necessaryNumber));
         }
         CoordinateReferenceSystem crs = null;
         final int dimension = getDimension();
@@ -588,19 +588,16 @@ public abstract class MathTransformBuilder {
             final int pointDim = point.getDimension();
             if (pointDim != dimension) {
                 throw new MismatchedDimensionException(
-                        Errors.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                label + '[' + i + ']',
-                                pointDim,
-                                dimension));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), label + '[' + i + ']', pointDim, dimension));
             }
             crs = getCoordinateReferenceSystem(point, crs);
         }
         if (crs != null) {
             final CoordinateSystem cs = crs.getCoordinateSystem();
             if (!getCoordinateSystemType().isAssignableFrom(cs.getClass())) {
+                final Object arg0 = cs.getName();
                 throw new MismatchedReferenceSystemException(
-                        Errors.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, cs.getName()));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1), arg0));
             }
         }
         return crs;
@@ -641,7 +638,7 @@ public abstract class MathTransformBuilder {
             try {
                 error = mp.getError(mt, buffer);
             } catch (TransformException e) {
-                throw new FactoryException(Errors.format(ErrorKeys.CANT_TRANSFORM_VALID_POINTS), e);
+                throw new FactoryException(Errors.getPattern(ErrorKeys.CANT_TRANSFORM_VALID_POINTS), e);
             }
             stats.add(error);
         }

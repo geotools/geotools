@@ -1,5 +1,7 @@
 package org.geotools.metadata;
 
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 
@@ -7,22 +9,37 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class InternationalizationReplacements {
 
     public static void main(String[] args) {
-        Vocabulary vocabulary = Vocabulary.getResources(Locale.ENGLISH);
-        Map<String, String> vocabularyKeys = Arrays.stream(VocabularyKeys.class.getFields())
+        Errors errors = Errors.getResources(Locale.ENGLISH);
+        Map<String, String> errorProperties = Arrays.stream(ErrorKeys.class.getFields())
                 .filter(f -> int.class.equals(f.getType()))
                 .filter(f -> Modifier.isStatic(f.getModifiers()))
-                .collect(Collectors.toMap(f -> "VocabularyKeys." + f.getName(), f -> {
+                .collect(Collectors.toMap(f -> "ErrorKeys." + f.getName(), f -> {
                     try {
-                        return vocabulary.getString(f.getInt(null));
+                        return errors.getString(f.getInt(null));
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 }));
-        vocabularyKeys.forEach((k, v) -> System.out.println(k + " = " + v));
+        errorProperties.forEach((k, v) -> System.out.println(
+                "        <replaceregexp byline=\"true\" flags=\"g\">\n" +
+                        "            <regexp pattern=\"" + cleanKey(k) + "\"/>\n" +
+                        "            <substitution expression=\"&quot;" + cleanValue(v) + "&quot;\"/>\n" +
+                        "            <fileset refid=\"errorKeys.files\"/>\n" +
+                        "        </replaceregexp>"
+        ));
+    }
+
+    private static String cleanKey(String k) {
+        return Pattern.quote("Errors.getPattern("  + k + ")");
+    }
+
+    private static String cleanValue(String v) {
+        return v.replace("''", "'").replace("\"", "\\\\\\\\&quot;");
     }
 }

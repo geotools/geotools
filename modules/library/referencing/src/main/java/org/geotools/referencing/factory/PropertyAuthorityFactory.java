@@ -39,7 +39,6 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Symbols;
 import org.geotools.util.DerivedSet;
 import org.geotools.util.NameFactory;
@@ -152,7 +151,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);
         ensureNonNull("authorities", authorities);
         if (authorities.length == 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.EMPTY_ARRAY));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.EMPTY_ARRAY));
         }
         this.authorities = authorities.clone();
         authority = authorities[0];

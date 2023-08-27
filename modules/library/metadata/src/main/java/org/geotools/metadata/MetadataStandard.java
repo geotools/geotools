@@ -16,6 +16,7 @@
  */
 package org.geotools.metadata;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.tree.DefaultTreeModel;
@@ -118,7 +119,7 @@ public final class MetadataStandard {
         final PropertyAccessor accessor = getAccessorOptional(implementation);
         if (accessor == null) {
             throw new ClassCastException(
-                    Errors.format(ErrorKeys.UNKNOW_TYPE_$1, implementation.getName()));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), implementation.getName()));
         }
         return accessor;
     }
@@ -245,10 +246,10 @@ public final class MetadataStandard {
         if (!accessor.type.isInstance(source)) {
             ensureNonNull("source", source);
             throw new ClassCastException(
-                    Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, source.getClass(), accessor.type));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), source.getClass(), accessor.type));
         }
         if (!accessor.shallowCopy(source, target, skipNulls)) {
-            throw new UnmodifiableMetadataException(Errors.format(ErrorKeys.UNMODIFIABLE_METADATA));
+            throw new UnmodifiableMetadataException(Errors.getPattern(ErrorKeys.UNMODIFIABLE_METADATA));
         }
     }
 
@@ -321,7 +322,7 @@ public final class MetadataStandard {
     /** Ensures that the specified argument is non-null. */
     private static void ensureNonNull(final String name, final Object value) {
         if (value == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
         }
     }
 }

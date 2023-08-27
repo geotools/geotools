@@ -17,6 +17,7 @@
 package org.geotools.referencing.wkt;
 
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Iterator;
@@ -272,8 +273,7 @@ public final class Element {
                 "missingCharacter",
                 new ParseException(
                         complete(
-                                Errors.format(
-                                        ErrorKeys.MISSING_CHARACTER_$1, Character.valueOf(c))),
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_CHARACTER_$1), Character.valueOf(c))),
                         position));
     }
 
@@ -290,7 +290,7 @@ public final class Element {
         return trim(
                 "missingParameter",
                 new ParseException(
-                        complete(Errors.format(ErrorKeys.MISSING_PARAMETER_$1, key)), error));
+                        complete(MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), key)), error));
     }
 
     /**
@@ -301,7 +301,7 @@ public final class Element {
      */
     private String complete(String message) {
         if (keyword != null) {
-            message = Errors.format(ErrorKeys.IN_$1, keyword) + ' ' + message;
+            message = MessageFormat.format(Errors.getPattern(ErrorKeys.IN_$1), keyword) + ' ' + message;
         }
         return message;
     }
@@ -377,7 +377,7 @@ public final class Element {
                 final Number number = (Number) object;
                 if (number instanceof Float || number instanceof Double) {
                     throw new ParseException(
-                            complete(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, number)),
+                            complete(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), key, number)),
                             offset);
                 }
                 return number.intValue();
@@ -520,7 +520,7 @@ public final class Element {
     public void close() throws ParseException {
         if (list != null && !list.isEmpty()) {
             throw new ParseException(
-                    complete(Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, list.get(0))),
+                    complete(MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), list.get(0))),
                     offset + keyword.length());
         }
     }

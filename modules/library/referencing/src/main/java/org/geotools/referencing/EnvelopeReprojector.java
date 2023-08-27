@@ -84,7 +84,7 @@ class EnvelopeReprojector {
             final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
             if (crs != null && !CRS.equalsIgnoreMetadata(crs, sourceCRS)) {
                 throw new MismatchedReferenceSystemException(
-                        Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                        Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
             }
         }
         MathTransform mt = operation.getMathTransform();

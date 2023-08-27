@@ -26,6 +26,8 @@ import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.text.MessageFormat;
+
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.Identifier;
@@ -148,7 +150,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     private static String constructMessage(
             final String argument, final int dimension, final int expected) {
-        return Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, argument, dimension, expected);
+        return MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), argument, dimension, expected);
     }
 
     /**
@@ -521,7 +523,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (dimSource != 2) {
             throw new MismatchedDimensionException(constructMessage("point", 2, dimSource));
         }
-        throw new TransformException(Errors.format(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
+        throw new TransformException(Errors.getPattern(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
     }
 
     /**
@@ -567,7 +569,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
                 return new Matrix1(((MathTransform1D) this).derivative(point.getOrdinate(0)));
             }
         }
-        throw new TransformException(Errors.format(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
+        throw new TransformException(Errors.getPattern(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
     }
 
     /**
@@ -580,7 +582,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (isIdentity()) {
             return this;
         }
-        throw new NoninvertibleTransformException(Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+        throw new NoninvertibleTransformException(Errors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM));
     }
 
     /**
@@ -676,7 +678,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name), name, object);
         }
     }
 
@@ -809,7 +811,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         } catch (SingularMatrixException exception) {
             NoninvertibleTransformException e =
                     new NoninvertibleTransformException(
-                            Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+                            Errors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM));
             e.initCause(exception);
             throw e;
         }

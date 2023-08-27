@@ -22,6 +22,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.text.MessageFormat;
 import javax.measure.Unit;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.SampleDimensionType;
@@ -92,19 +93,11 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = image.getSampleModel().getNumBands();
         if (src != null && src.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            src.length,
-                            "SampleDimension"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, src.length, "SampleDimension"));
         }
         if (dst.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            dst.length,
-                            "SampleDimension"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, dst.length, "SampleDimension"));
         }
         /*
          * Now, we know that the number of bands and the array length are consistent.
@@ -134,7 +127,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
         if (count == numBands) {
             return true;
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.MIXED_CATEGORIES));
+        throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MIXED_CATEGORIES));
     }
 
     /**
@@ -199,21 +192,15 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = dst.length;
         if (min != null && min.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, min.length, "min[i]"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, min.length, "min[i]"));
         }
         if (max != null && max.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, max.length, "max[i]"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, max.length, "max[i]"));
         }
         if (colors != null && colors.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
-                            numBands,
-                            colors.length,
-                            "colors[i]"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, colors.length, "colors[i]"));
         }
         /*
          * Arguments are know to be valids. We now need to compute two ranges:

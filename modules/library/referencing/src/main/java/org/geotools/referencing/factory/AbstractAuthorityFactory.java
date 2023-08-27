@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Set;
 import javax.measure.Unit;
@@ -904,7 +905,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
             final Class type, final String code) {
         final InternationalString authority = getAuthority().getTitle();
         return new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type),
+                MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3), code, authority, type),
                 authority.toString(),
                 code);
     }

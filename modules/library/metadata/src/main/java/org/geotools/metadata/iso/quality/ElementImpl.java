@@ -202,7 +202,7 @@ public class ElementImpl extends MetadataEntity implements Element {
                 date2 = it.next().getTime();
                 if (it.hasNext()) {
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+                            Errors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
                 }
             }
         }

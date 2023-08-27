@@ -21,6 +21,7 @@ package org.geotools.referencing;
 
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -548,7 +549,7 @@ public class AbstractIdentifiedObject extends Formattable
         } catch (ClassCastException exception) {
             InvalidParameterValueException e =
                     new InvalidParameterValueException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value), key, value);
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), key, value), key, value);
             e.initCause(exception);
             throw e;
         }
@@ -1095,7 +1096,7 @@ public class AbstractIdentifiedObject extends Formattable
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name), name, object);
         }
     }
 
@@ -1112,7 +1113,7 @@ public class AbstractIdentifiedObject extends Formattable
             throws InvalidParameterValueException {
         if (array[index] == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name + '[' + index + ']'),
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name + '[' + index + ']'),
                     name,
                     array);
         }
@@ -1127,7 +1128,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     protected static void ensureTimeUnit(final Unit<?> unit) throws IllegalArgumentException {
         if (!SI.SECOND.isCompatible(unit)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_TEMPORAL_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_TEMPORAL_UNIT_$1), unit));
         }
     }
 
@@ -1140,7 +1141,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     protected static void ensureLinearUnit(final Unit<?> unit) throws IllegalArgumentException {
         if (!SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_LINEAR_UNIT_$1), unit));
         }
     }
 
@@ -1153,7 +1154,7 @@ public class AbstractIdentifiedObject extends Formattable
      */
     protected static void ensureAngularUnit(final Unit<?> unit) throws IllegalArgumentException {
         if (!SI.RADIAN.isCompatible(unit) && !AbstractUnit.ONE.equals(unit)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_ANGULAR_UNIT_$1), unit));
         }
     }
 }

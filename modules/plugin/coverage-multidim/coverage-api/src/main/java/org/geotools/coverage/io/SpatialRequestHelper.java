@@ -18,6 +18,7 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -518,10 +519,11 @@ public class SpatialRequestHelper {
                 }
             } else
                 // should not happen
+            {
+                final Object arg0 = requestedGridToWorld.toString();
                 throw new UnsupportedOperationException(
-                        Errors.format(
-                                ErrorKeys.UNSUPPORTED_OPERATION_$1,
-                                requestedGridToWorld.toString()));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_OPERATION_$1), arg0));
+            }
 
             // leave
             return;

@@ -17,6 +17,8 @@
 package org.geotools.geometry;
 
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
+
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.Envelope;
@@ -98,7 +100,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
         final int dimension = envelope.getDimension();
         if (dimension != 2) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, dimension));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_TWO_DIMENSIONAL_$1), dimension));
         }
         setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
     }
@@ -223,7 +225,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
     /** Creates an exception for an index out of bounds. */
     private static IndexOutOfBoundsException indexOutOfBounds(final int dimension) {
         return new IndexOutOfBoundsException(
-                Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension));
+                MessageFormat.format(Errors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1), dimension));
     }
 
     /**
@@ -519,7 +521,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
                     throw new MismatchedReferenceSystemException(
-                            Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                            Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
                 }
             }
         }
@@ -531,7 +533,7 @@ public class Envelope2D extends Rectangle2D.Double implements BoundingBox, Envel
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
                     throw new MismatchedReferenceSystemException(
-                            Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                            Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
                 }
             }
         }

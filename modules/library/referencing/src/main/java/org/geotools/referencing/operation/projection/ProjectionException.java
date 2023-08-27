@@ -21,6 +21,8 @@ import org.geotools.measure.Latitude;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
+import java.text.MessageFormat;
+
 /**
  * Thrown by {@link MapProjection} when a map projection failed.
  *
@@ -42,7 +44,7 @@ public class ProjectionException extends TransformException {
      * @param code One of the constants suitable for {@link Errors#format(int)}.
      */
     ProjectionException(final int code) {
-        this(Errors.format(code));
+        this(Errors.getPattern(code));
     }
 
     /**
@@ -52,7 +54,7 @@ public class ProjectionException extends TransformException {
      * @param value An argument value to be formatted.
      */
     ProjectionException(final int code, final Object value) {
-        this(Errors.format(code, value));
+        this(MessageFormat.format(Errors.getPattern(code), value));
     }
 
     /**
@@ -60,7 +62,8 @@ public class ProjectionException extends TransformException {
      * pole.
      */
     ProjectionException(final double latitude) {
-        this(Errors.format(ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
+        final Object arg0 = new Latitude(Math.toDegrees(latitude));
+        this(MessageFormat.format(Errors.getPattern(ErrorKeys.POLE_PROJECTION_$1), arg0));
     }
 
     /** Constructs a new exception with the specified detail message. */

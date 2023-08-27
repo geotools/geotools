@@ -22,6 +22,8 @@ import static org.geotools.util.ClassChanger.getWidestClass;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
+import java.text.MessageFormat;
+
 /**
  * A range of numbers. {@linkplain #union Union} and {@linkplain #intersect intersection} are
  * computed as usual, except that widening conversions will be applied as needed.
@@ -363,7 +365,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     private static void ensureNumberClass(final Class<?> type) throws IllegalArgumentException {
         if (!Number.class.isAssignableFrom(type)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, type, Number.class));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, Number.class));
         }
     }
 
@@ -438,7 +440,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     public boolean contains(final Number value) throws IllegalArgumentException {
         if (value != null && !(value instanceof Comparable)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NOT_COMPARABLE_CLASS_$1, value.getClass()));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_COMPARABLE_CLASS_$1), value.getClass()));
         }
         return contains((Comparable<?>) value);
     }

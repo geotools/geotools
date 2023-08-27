@@ -16,6 +16,7 @@
  */
 package org.geotools.util.factory;
 
+import java.text.MessageFormat;
 import java.util.function.Predicate;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -42,7 +43,7 @@ public class RecursiveSearchException extends FactoryRegistryException {
 
     /** Creates a new exception with a default message determined from the specified category. */
     public RecursiveSearchException(final Class<?> category) {
-        super(Errors.format(ErrorKeys.RECURSIVE_CALL_$1, category));
+        super(MessageFormat.format(Errors.getPattern(ErrorKeys.RECURSIVE_CALL_$1), category));
     }
 
     /** Creates a new exception with the specified detail message. */

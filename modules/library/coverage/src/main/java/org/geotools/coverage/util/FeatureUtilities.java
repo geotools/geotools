@@ -18,6 +18,7 @@ package org.geotools.coverage.util;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.api.coverage.grid.GridCoverage;
@@ -184,11 +185,11 @@ public final class FeatureUtilities {
         final Rectangle2D rect = gridCoverageReader.getOriginalEnvelope().toRectangle2D();
         final CoordinateReferenceSystem sourceCrs =
                 CRS.getHorizontalCRS(gridCoverageReader.getCoordinateReferenceSystem());
-        if (sourceCrs == null)
+        if (sourceCrs == null) {
+            final Object arg0 = gridCoverageReader.getCoordinateReferenceSystem();
             throw new UnsupportedOperationException(
-                    Errors.format(
-                            ErrorKeys.CANT_SEPARATE_CRS_$1,
-                            gridCoverageReader.getCoordinateReferenceSystem()));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), arg0));
+        }
 
         final Coordinate[] coord = new Coordinate[5];
         coord[0] = new Coordinate(rect.getMinX(), rect.getMinY());

@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Collections;
@@ -203,10 +204,10 @@ public class Preprocessor extends Format {
             if (type.isAssignableFrom(actualType)) {
                 return value;
             }
-            throw new FactoryException(Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, actualType, type));
+            throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), actualType, type));
         }
         throw new NoSuchIdentifierException(
-                Errors.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2, type, text), text);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2), type, text), text);
     }
 
     /**
@@ -328,11 +329,11 @@ public class Preprocessor extends Format {
      */
     public void addDefinition(final String name, String value) throws ParseException {
         if (value == null || value.trim().length() == 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.MISSING_WKT_DEFINITION));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISSING_WKT_DEFINITION));
         }
         if (!isIdentifier(name)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, name));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_IDENTIFIER_$1), name));
         }
         value = substitute(value);
         final Definition newDef = new Definition(value, forwardParse(value));

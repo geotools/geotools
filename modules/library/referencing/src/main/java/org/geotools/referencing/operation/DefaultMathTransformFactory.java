@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -264,10 +265,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                         .orElseThrow(
                                 () ->
                                         new NoSuchIdentifierException(
-                                                Errors.format(
-                                                        ErrorKeys
-                                                                .NO_TRANSFORM_FOR_CLASSIFICATION_$1,
-                                                        method),
+                                                MessageFormat.format(Errors.getPattern(ErrorKeys
+                                                        .NO_TRANSFORM_FOR_CLASSIFICATION_$1), method),
                                                 method));
 
         return lastProvider = provider;

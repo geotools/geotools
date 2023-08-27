@@ -17,6 +17,7 @@
 package org.geotools.referencing.wkt;
 
 import java.net.URI;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import org.geotools.api.parameter.ParameterValue;
@@ -134,7 +135,7 @@ public class MathTransformParser extends AbstractParser {
             if ("PASSTHROUGH_MT".equals(keyword)) return parsePassThroughMT(element);
         }
         if (required) {
-            throw element.parseFailed(null, Errors.format(ErrorKeys.UNKNOW_TYPE_$1, key));
+            throw element.parseFailed(null, MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), key));
         }
         return null;
     }

@@ -17,6 +17,8 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
+
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
@@ -62,7 +64,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
      */
     public AffineTransform2D(final Matrix matrix) {
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
         for (int i = 0; i < SIZE; i++) {
             checkLastRow(i, matrix.getElement(SIZE - 1, i));
@@ -150,11 +152,11 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
             default:
                 {
                     throw new IndexOutOfBoundsException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
+                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "column", column));
                 }
         }
         throw new IndexOutOfBoundsException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
+                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "row", row));
     }
 
     /**
@@ -168,11 +170,11 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
     public void setElement(final int row, final int column, final double value) {
         if (row < 0 || row >= SIZE) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "row", row));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "row", row));
         }
         if (column < 0 || column >= SIZE) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "column", column));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "column", column));
         }
         if (row == SIZE - 1) {
             checkLastRow(column, value);
@@ -194,10 +196,7 @@ public class AffineTransform2D extends AffineTransform implements Matrix {
             throws IllegalArgumentException {
         if (value != (column == SIZE - 1 ? 1 : 0)) {
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                            "matrix[" + (SIZE - 1) + ',' + column + ']',
-                            value));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "matrix[" + (SIZE - 1) + ',' + column + ']', value));
         }
     }
 

@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.text.MessageFormat;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 import org.geotools.api.referencing.FactoryException;
@@ -128,10 +129,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
                 return loadTextGrid(latGridURL, longGridURL);
             } else {
                 throw new FactoryException(
-                        Errors.format(
-                                ErrorKeys.UNSUPPORTED_FILE_TYPE_$2,
-                                latGridName.substring(latGridName.lastIndexOf('.') + 1),
-                                longGridName.substring(longGridName.lastIndexOf('.') + 1)));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_FILE_TYPE_$2), latGridName.substring(latGridName.lastIndexOf('.') + 1), longGridName.substring(longGridName.lastIndexOf('.') + 1)));
                 // Note: the +1 above hide the dot, but also make sure that the code is
                 // valid even if the path do not contains '.' at all (-1 + 1 == 0).
             }
@@ -208,7 +206,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
                     || (ymin != longBuffer.getFloat())
                     || (dy != longBuffer.getFloat())
                     || (angle != longBuffer.getFloat())) {
-                throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
+                throw new FactoryException(Errors.getPattern(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
             }
 
             // //////////////////////
@@ -259,7 +257,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         ByteBuffer buf = ByteBuffer.allocate(numBytes);
 
         if (fill(buf, channel) == -1) {
-            throw new EOFException(Errors.format(ErrorKeys.END_OF_DATA_FILE));
+            throw new EOFException(Errors.getPattern(ErrorKeys.END_OF_DATA_FILE));
         }
 
         buf.flip();
@@ -309,7 +307,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             File file = URLs.urlToFile(url);
 
             if (!file.exists() || !file.canRead()) {
-                throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
+                throw new IOException(MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), file));
             }
 
             FileInputStream in = new FileInputStream(file);
@@ -360,10 +358,9 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             latSt = new StringTokenizer(latLine, " ");
 
             if (latSt.countTokens() != 8) {
+                final Object arg0 = String.valueOf(latSt.countTokens());
                 throw new FactoryException(
-                        Errors.format(
-                                ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
-                                String.valueOf(latSt.countTokens())));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1), arg0));
             }
 
             int nc = Integer.parseInt(latSt.nextToken());
@@ -388,10 +385,9 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             longSt = new StringTokenizer(longLine, " ");
 
             if (longSt.countTokens() != 8) {
+                final Object arg0 = String.valueOf(longSt.countTokens());
                 throw new FactoryException(
-                        Errors.format(
-                                ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1,
-                                String.valueOf(longSt.countTokens())));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.HEADER_UNEXPECTED_LENGTH_$1), arg0));
             }
 
             // check that latitude grid header is the same as for latitude grid
@@ -403,7 +399,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
                     || (ymin != Float.parseFloat(longSt.nextToken()))
                     || (dy != Float.parseFloat(longSt.nextToken()))
                     || (angle != Float.parseFloat(longSt.nextToken()))) {
-                throw new FactoryException(Errors.format(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
+                throw new FactoryException(Errors.getPattern(ErrorKeys.GRID_LOCATIONS_UNEQUAL));
             }
 
             // //////////////////////

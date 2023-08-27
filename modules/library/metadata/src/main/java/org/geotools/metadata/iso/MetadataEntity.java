@@ -17,6 +17,8 @@
 package org.geotools.metadata.iso;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
+
 import org.geotools.metadata.InvalidMetadataException;
 import org.geotools.metadata.MetadataStandard;
 import org.geotools.metadata.ModifiableMetadata;
@@ -77,7 +79,7 @@ public class MetadataEntity extends ModifiableMetadata implements Serializable {
     protected static void ensureNonNull(final String name, final Object object)
             throws InvalidMetadataException {
         if (object == null) {
-            throw new InvalidMetadataException(Errors.format(ErrorKeys.NULL_ATTRIBUTE_$1, name));
+            throw new InvalidMetadataException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ATTRIBUTE_$1), name));
         }
     }
 }

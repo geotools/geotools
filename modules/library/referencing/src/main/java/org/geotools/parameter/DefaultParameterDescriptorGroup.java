@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -155,13 +156,9 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             for (int j = 0; j < parameters.length; j++) {
                 if (i != j) {
                     if (nameMatches(parameters[j], name)) {
+                        final Object arg0 = parameters[j].getName().getCode();
                         throw new InvalidParameterNameException(
-                                Errors.format(
-                                        ErrorKeys.PARAMETER_NAME_CLASH_$4,
-                                        parameters[j].getName().getCode(),
-                                        j,
-                                        name,
-                                        i),
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.PARAMETER_NAME_CLASH_$4), arg0, j, name, i),
                                 name);
                     }
                 }
@@ -282,7 +279,7 @@ public class DefaultParameterDescriptorGroup extends AbstractParameterDescriptor
             parameters = subgroups.remove(0).descriptors();
         }
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
     }
 
     /**

@@ -38,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -234,7 +235,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         //
         if (input == null) {
             final IOException ex =
-                    new IOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "input"));
+                    new IOException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "input"));
             throw new DataSourceException(ex);
         }
         this.source = input;

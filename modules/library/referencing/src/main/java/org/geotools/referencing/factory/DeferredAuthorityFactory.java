@@ -119,7 +119,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
                 if (backingStore == null) {
                     backingStore = createBackingStore();
                     if (backingStore == null) {
-                        throw new FactoryNotFoundException(Errors.format(ErrorKeys.NO_DATA_SOURCE));
+                        throw new FactoryNotFoundException(Errors.getPattern(ErrorKeys.NO_DATA_SOURCE));
                     }
                     completeHints();
                 }

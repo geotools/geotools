@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.StringTokenizer;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -233,12 +234,10 @@ public final class EarthGravitationalModel extends VerticalTransform {
                          *   - NumberFormatException       if a number can't be parsed.
                          *   - IndexOutOfBoundsException   if 'n' or 'm' values are illegal.
                          */
+                        final Object arg1 = in.getLineNumber();
                         final IOException exception =
                                 new IOException(
-                                        Errors.format(
-                                                ErrorKeys.BAD_LINE_IN_FILE_$2,
-                                                filename,
-                                                in.getLineNumber()));
+                                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_LINE_IN_FILE_$2), filename, arg1));
                         exception.initCause(
                                 cause); // TODO: Inline when we will be allowed to target Java 6.
                         throw exception;
@@ -434,7 +433,7 @@ public final class EarthGravitationalModel extends VerticalTransform {
             try {
                 mt.load(filename);
             } catch (IOException e) {
-                throw new FactoryException(Errors.format(ErrorKeys.CANT_READ_$1, filename), e);
+                throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_READ_$1), filename), e);
             }
             return mt;
         }

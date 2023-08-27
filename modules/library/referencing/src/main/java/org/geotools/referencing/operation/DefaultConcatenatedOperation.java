@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -192,10 +193,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                 expand(cops.toArray(new CoordinateOperation[cops.size()]), target, factory, false);
             } else {
                 throw new IllegalArgumentException(
-                        Errors.format(
-                                ErrorKeys.ILLEGAL_CLASS_$2,
-                                Classes.getClass(op),
-                                SingleOperation.class));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), Classes.getClass(op), SingleOperation.class));
             }
             /*
              * Check the CRS dimensions.
@@ -208,7 +206,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                     final int dim2 = next.getCoordinateSystem().getDimension();
                     if (dim1 != dim2) {
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+                                MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), dim1, dim2));
                     }
                 }
             }
@@ -230,7 +228,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final int size = target.size();
             if (size <= 1) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.MISSING_PARAMETER_$1, "operations[" + size + ']'));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), "operations[" + size + ']'));
             }
         }
         return transform;

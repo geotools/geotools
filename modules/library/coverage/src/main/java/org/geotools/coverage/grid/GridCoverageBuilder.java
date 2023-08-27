@@ -23,6 +23,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +170,7 @@ public class GridCoverageBuilder {
                 envelope = wrap(CRS.transform(envelope, crs));
             } catch (TransformException exception) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+                        Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
             }
         coverage = null;
     }
@@ -186,7 +187,7 @@ public class GridCoverageBuilder {
             crs = CRS.decode(code, true);
         } catch (FactoryException exception) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+                    Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
         }
         setCoordinateReferenceSystem(crs);
     }
@@ -226,7 +227,7 @@ public class GridCoverageBuilder {
                 envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
             } catch (TransformException exception) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+                        Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
             }
         this.envelope = new GeneralEnvelope(envelope);
         coverage = null;
@@ -448,7 +449,7 @@ public class GridCoverageBuilder {
             if (old != null) {
                 nodata.put(key, old);
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "value", key));
             }
             sampleDimension = null;
         }

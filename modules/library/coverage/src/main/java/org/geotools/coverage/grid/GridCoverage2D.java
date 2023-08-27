@@ -242,7 +242,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
         if (dimension <= Math.max(gridGeometry.axisDimensionX, gridGeometry.axisDimensionY)
                 || !(gridGeometry.envelope.getSpan(gridGeometry.axisDimensionX) > 0)
                 || !(gridGeometry.envelope.getSpan(gridGeometry.axisDimensionY) > 0)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.EMPTY_ENVELOPE));
+            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.EMPTY_ENVELOPE));
         }
     }
 

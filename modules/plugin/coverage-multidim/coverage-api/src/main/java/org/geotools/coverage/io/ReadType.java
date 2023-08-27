@@ -21,6 +21,7 @@ import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
@@ -171,7 +172,7 @@ public enum ReadType {
                 final Hints hints,
                 final boolean closeElements) {
             throw new UnsupportedOperationException(
-                    Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "read"));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_OPERATION_$1), "read"));
         }
     };
 

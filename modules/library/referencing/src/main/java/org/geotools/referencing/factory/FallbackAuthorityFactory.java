@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -137,7 +138,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         ensureNonNull("type", type);
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
-            throw new FactoryNotFoundException(Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
+            throw new FactoryNotFoundException(MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), type));
         }
         return type.cast(create(false, interfaceMask(type), factories.iterator()));
     }
@@ -160,7 +161,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
             throw new FactoryNotFoundException(
-                    Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, AuthorityFactory.class));
+                    MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), AuthorityFactory.class));
         }
         return create(false, interfaceMask(factories), factories.iterator());
     }

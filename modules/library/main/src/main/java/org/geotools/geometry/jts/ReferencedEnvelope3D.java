@@ -34,6 +34,8 @@ import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
+import java.text.MessageFormat;
+
 /**
  * A 3D envelope associated with a {@linkplain CoordinateReferenceSystem coordinate reference
  * system}. In addition, this JTS envelope also implements the GeoAPI {@linkplain
@@ -1032,12 +1034,11 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
             if (lenient) {
                 return JTS.transformTo2D(this, targetCRS, lenient, numPointsForTransformation);
             } else {
+                final Object arg0 = crs.getName().getCode();
+                final Object arg1 = Integer.valueOf(getDimension());
+                final Object arg2 = Integer.valueOf(targetCRS.getCoordinateSystem().getDimension());
                 throw new MismatchedDimensionException(
-                        Errors.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                crs.getName().getCode(),
-                                Integer.valueOf(getDimension()),
-                                Integer.valueOf(targetCRS.getCoordinateSystem().getDimension())));
+                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), arg0, arg1, arg2));
             }
         }
         // Gets a first estimation using an algorithm capable to take singularity in account

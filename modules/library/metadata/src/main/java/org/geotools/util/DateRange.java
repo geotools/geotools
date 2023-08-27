@@ -22,8 +22,6 @@ import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Time;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import si.uom.SI;
 
 /**
@@ -104,7 +102,7 @@ public class DateRange extends Range<Date> {
      */
     private static UnitConverter getConverter(final Unit<Time> source) {
         if (source == null) {
-            throw new UnconvertibleException(Errors.getPattern(ErrorKeys.NO_UNIT));
+            throw new UnconvertibleException("Unit must be specified.");
         }
         return source.getConverterTo(MILLISECOND);
     }

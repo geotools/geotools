@@ -49,8 +49,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.ExpressionDOMParser;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
@@ -1418,7 +1416,9 @@ public class SLDParser {
                 } else if ("values".equalsIgnoreCase(type)) {
                     symbol.setType(ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "ColorMapType", type));
+                    LOGGER.fine(
+                            MessageFormat.format(
+                                    "Illegal argument: \"{0}={1}\".", "ColorMapType", type));
             }
 
             // parsing extended colors
@@ -1431,7 +1431,9 @@ public class SLDParser {
                 } else if ("false".equalsIgnoreCase(type)) {
                     symbol.setExtendedColors(false);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "Extended", type));
+                    LOGGER.fine(
+                            MessageFormat.format(
+                                    "Illegal argument: \"{0}={1}\".", "Extended", type));
             }
         }
 

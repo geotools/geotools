@@ -31,8 +31,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
@@ -93,11 +91,15 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = image.getSampleModel().getNumBands();
         if (src != null && src.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, src.length, "SampleDimension"));
+                    MessageFormat.format(
+                            "The number of image bands ({0}) differs from the number of supplied '{2}' objects ({1}).",
+                            numBands, src.length, "SampleDimension"));
         }
         if (dst.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, dst.length, "SampleDimension"));
+                    MessageFormat.format(
+                            "The number of image bands ({0}) differs from the number of supplied '{2}' objects ({1}).",
+                            numBands, dst.length, "SampleDimension"));
         }
         /*
          * Now, we know that the number of bands and the array length are consistent.
@@ -127,7 +129,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
         if (count == numBands) {
             return true;
         }
-        throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MIXED_CATEGORIES));
+        throw new IllegalArgumentException("Geophysics categories mixed with non-geophysics ones.");
     }
 
     /**
@@ -192,15 +194,21 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = dst.length;
         if (min != null && min.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, min.length, "min[i]"));
+                    MessageFormat.format(
+                            "The number of image bands ({0}) differs from the number of supplied '{2}' objects ({1}).",
+                            numBands, min.length, "min[i]"));
         }
         if (max != null && max.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, max.length, "max[i]"));
+                    MessageFormat.format(
+                            "The number of image bands ({0}) differs from the number of supplied '{2}' objects ({1}).",
+                            numBands, max.length, "max[i]"));
         }
         if (colors != null && colors.length != numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3), numBands, colors.length, "colors[i]"));
+                    MessageFormat.format(
+                            "The number of image bands ({0}) differs from the number of supplied '{2}' objects ({1}).",
+                            numBands, colors.length, "colors[i]"));
         }
         /*
          * Arguments are know to be valids. We now need to compute two ranges:

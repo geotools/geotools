@@ -28,8 +28,6 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 
@@ -108,13 +106,14 @@ public class WorldFileReader {
     public WorldFileReader(final File worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "worldfile"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "worldfile"));
         if (!worldfile.isFile() || !worldfile.canRead())
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), worldfile));
+                    MessageFormat.format("File does not exist or is unreadable: {0}", worldfile));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "bufferSize", bufferSize));
+                    MessageFormat.format(
+                            "Illegal argument: \"{0}={1}\".", "bufferSize", bufferSize));
         parseWorldFile(new BufferedReader(new FileReader(worldfile)));
     }
 
@@ -127,10 +126,12 @@ public class WorldFileReader {
      */
     public WorldFileReader(final URL worldfile, final int bufferSize) throws IOException {
         if (worldfile == null)
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "inFile"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "inFile"));
         if (bufferSize <= 0)
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "bufferSize", bufferSize));
+                    MessageFormat.format(
+                            "Illegal argument: \"{0}={1}\".", "bufferSize", bufferSize));
         parseWorldFile(new BufferedReader(new InputStreamReader(worldfile.openStream())));
     }
 

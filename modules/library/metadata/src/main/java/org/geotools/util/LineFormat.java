@@ -141,7 +141,8 @@ public class LineFormat extends Format {
         this.format = new Format[] {format};
         if (format == null) {
             final Integer one = 1;
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_FORMAT_$2), one, one));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Format #{0} (on {1}) is not defined.", one, one));
         }
     }
 
@@ -163,7 +164,8 @@ public class LineFormat extends Format {
         for (int i = 0; i < format.length; i++) {
             if (format[i] == null) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_FORMAT_$2), i + 1, format.length));
+                        MessageFormat.format(
+                                "Format #{0} (on {1}) is not defined.", i + 1, format.length));
             }
         }
     }
@@ -233,7 +235,10 @@ public class LineFormat extends Format {
                 int end = error;
                 while (end < upper && !Character.isWhitespace(line.charAt(end))) end++;
                 throw new ParseException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.PARSE_EXCEPTION_$2), line.substring(lower, end).trim(), line.substring(error, Math.min(error + 1, end))),
+                        MessageFormat.format(
+                                "Unparsable string: \"{0}\". Please check characters \"{1}\".",
+                                line.substring(lower, end).trim(),
+                                line.substring(error, Math.min(error + 1, end))),
                         error);
             }
             /*
@@ -289,7 +294,8 @@ public class LineFormat extends Format {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         if (value == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "value"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "value"));
         }
         if (index == count) {
             if (index == data.length) {
@@ -341,7 +347,8 @@ public class LineFormat extends Format {
         }
         ParseException exception =
                 new ParseException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNPARSABLE_NUMBER_$1), data[index]), limits[index]);
+                        MessageFormat.format("Can't parse \"{0}\" as a number.", data[index]),
+                        limits[index]);
         if (error != null) {
             exception.initCause(error);
         }
@@ -515,11 +522,14 @@ public class LineFormat extends Format {
         if (count != expected) {
             final int lower = limits[Math.min(count, expected)];
             final int upper = limits[Math.min(count, expected + 1)];
-            final int key = count < expected
-                    ? ErrorKeys.LINE_TOO_SHORT_$2
-                    : ErrorKeys.LINE_TOO_LONG_$3;
+            final int key =
+                    count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
             throw new ParseException(
-                    MessageFormat.format(Errors.getPattern(key), count, expected, line.substring(lower, upper).trim()),
+                    MessageFormat.format(
+                            Errors.getPattern(key),
+                            count,
+                            expected,
+                            line.substring(lower, upper).trim()),
                     lower);
         }
     }
@@ -532,7 +542,9 @@ public class LineFormat extends Format {
      */
     private ParseException notAnInteger(final int i) {
         return new ParseException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_AN_INTEGER_$1), line.substring(limits[i], limits[i + 1])),
+                MessageFormat.format(
+                        "Value \"{0}\" is not a valid integer.",
+                        line.substring(limits[i], limits[i + 1])),
                 limits[i]);
     }
 

@@ -43,8 +43,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -208,7 +206,8 @@ public final class RendererUtilities {
         final CoordinateReferenceSystem crs2d = CRS.getHorizontalCRS(crs);
         if (crs2d == null)
             throw new UnsupportedOperationException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), crs));
+                    MessageFormat.format(
+                            "Can't reduce \"{0}\" to a two-dimensional coordinate system.", crs));
 
         Envelope env = createMapEnvelope(paintArea, worldToScreen);
         return new ReferencedEnvelope(env, crs2d);
@@ -389,7 +388,9 @@ public final class RendererUtilities {
             if (tempCRS == null) {
                 final Object arg0 = envelope.getCoordinateReferenceSystem();
                 throw new TransformException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), arg0));
+                        MessageFormat.format(
+                                "Can't reduce \"{0}\" to a two-dimensional coordinate system.",
+                                arg0));
             }
             ReferencedEnvelope envelopeWGS84 = envelope.transform(DefaultGeographicCRS.WGS84, true);
             diagonalGroundDistance = geodeticDiagonalDistance(envelopeWGS84);
@@ -551,7 +552,9 @@ public final class RendererUtilities {
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(destinationCrs);
         if (crs2D == null)
             throw new TransformException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), destinationCrs));
+                    MessageFormat.format(
+                            "Can't reduce \"{0}\" to a two-dimensional coordinate system.",
+                            destinationCrs));
         final boolean lonFirst =
                 crs2D.getCoordinateSystem()
                         .getAxis(0)

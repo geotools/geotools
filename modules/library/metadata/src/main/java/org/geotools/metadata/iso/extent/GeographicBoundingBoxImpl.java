@@ -30,8 +30,6 @@ import java.util.Locale;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 
 /**
@@ -377,7 +375,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
         final Boolean inc2 = box.getInclusion();
         ensureNonNull("inclusion", inc2);
         if (inc1.booleanValue() != inc2.booleanValue()) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "box"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Illegal value for argument \"{0}\".", "box"));
         }
         final double xmin = box.getWestBoundLongitude();
         final double xmax = box.getEastBoundLongitude();
@@ -501,7 +500,9 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
                     .getMethod(name, arguments);
         } catch (ClassNotFoundException exception) {
             throw new UnsupportedOperationException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_MODULE_$1), "referencing"), exception);
+                    MessageFormat.format(
+                            "This operation requires the \"{0}\" module.", "referencing"),
+                    exception);
         } catch (NoSuchMethodException exception) {
             // Should never happen if we didn't broke our BoundingBoxes helper class.
             throw new AssertionError(exception);

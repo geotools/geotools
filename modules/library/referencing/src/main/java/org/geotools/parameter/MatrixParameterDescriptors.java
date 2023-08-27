@@ -28,8 +28,6 @@ import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.Matrix;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.util.UnmodifiableArrayList;
@@ -167,7 +165,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
             throws IndexOutOfBoundsException {
         if (index < 0 || index >= upper) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, index));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", name, index));
         }
     }
 
@@ -390,7 +388,8 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
                 }
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), name), name);
+                                MessageFormat.format("Parameter \"{0}\" was not expected.", name),
+                                name);
                 if (cause != null) {
                     exception.initCause(cause);
                 }

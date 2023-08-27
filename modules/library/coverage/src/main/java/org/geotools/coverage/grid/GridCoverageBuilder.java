@@ -39,8 +39,6 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.NumberRange;
@@ -170,7 +168,7 @@ public class GridCoverageBuilder {
                 envelope = wrap(CRS.transform(envelope, crs));
             } catch (TransformException exception) {
                 throw new IllegalArgumentException(
-                        Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+                        "Illegal coordinate reference system.", exception);
             }
         coverage = null;
     }
@@ -186,8 +184,7 @@ public class GridCoverageBuilder {
         try {
             crs = CRS.decode(code, true);
         } catch (FactoryException exception) {
-            throw new IllegalArgumentException(
-                    Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+            throw new IllegalArgumentException("Illegal coordinate reference system.", exception);
         }
         setCoordinateReferenceSystem(crs);
     }
@@ -227,7 +224,7 @@ public class GridCoverageBuilder {
                 envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
             } catch (TransformException exception) {
                 throw new IllegalArgumentException(
-                        Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+                        "Illegal coordinate reference system.", exception);
             }
         this.envelope = new GeneralEnvelope(envelope);
         coverage = null;
@@ -449,7 +446,7 @@ public class GridCoverageBuilder {
             if (old != null) {
                 nodata.put(key, old);
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "value", key));
+                        MessageFormat.format("Illegal argument: \"{0}={1}\".", "value", key));
             }
             sampleDimension = null;
         }

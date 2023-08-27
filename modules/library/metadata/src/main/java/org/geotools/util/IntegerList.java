@@ -22,8 +22,6 @@ import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.RandomAccess;
 import org.geotools.api.util.Cloneable;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A list of unsigned integer values. This class packs the values in the minimal amount of bits
@@ -93,11 +91,15 @@ public class IntegerList extends AbstractList<Integer>
     public IntegerList(final int initialCapacity, int maximalValue, final boolean fill) {
         if (initialCapacity <= 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_GREATER_THAN_ZERO_$1), initialCapacity));
+                    MessageFormat.format(
+                            "Number {0} is invalid. Expected a number greater than 0.",
+                            initialCapacity));
         }
         if (maximalValue <= 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_GREATER_THAN_ZERO_$1), maximalValue));
+                    MessageFormat.format(
+                            "Number {0} is invalid. Expected a number greater than 0.",
+                            maximalValue));
         }
         int bitCount = 0;
         do {
@@ -185,7 +187,7 @@ public class IntegerList extends AbstractList<Integer>
     public void fill(int value) {
         if (value < 0 || value > mask) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3), value, 0, mask));
+                    MessageFormat.format("Value {0} is out of range [{1}..{2}].", value, 0, mask));
         }
         final long p;
         if (value == 0) {
@@ -246,7 +248,7 @@ public class IntegerList extends AbstractList<Integer>
     public void addInteger(final int value) throws IllegalArgumentException {
         if (value < 0 || value > mask) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3), value, 0, mask));
+                    MessageFormat.format("Value {0} is out of range [{1}..{2}].", value, 0, mask));
         }
         final int length = length(++size);
         if (length > values.length) {
@@ -277,7 +279,7 @@ public class IntegerList extends AbstractList<Integer>
     public int getInteger(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1), index));
+                    MessageFormat.format("Index {0} is out of bounds.", index));
         }
         index *= bitCount;
         int base = index >>> BASE_SHIFT;
@@ -320,11 +322,11 @@ public class IntegerList extends AbstractList<Integer>
     public void setInteger(int index, int value) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1), index));
+                    MessageFormat.format("Index {0} is out of bounds.", index));
         }
         if (value < 0 || value > mask) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.VALUE_OUT_OF_BOUNDS_$3), value, 0, mask));
+                    MessageFormat.format("Value {0} is out of range [{1}..{2}].", value, 0, mask));
         }
         setUnchecked(index, value);
     }

@@ -31,8 +31,6 @@ import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.util.CodeList;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.Utilities;
@@ -235,7 +233,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         if (minimum != null && maximum != null) {
             if (minimum.compareTo(valueClass.cast(maximum)) > 0) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), minimum, maximum));
+                        MessageFormat.format("Range [{0} .. {1}] is not valid.", minimum, maximum));
             }
         }
         if (validValues != null) {

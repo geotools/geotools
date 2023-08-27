@@ -68,8 +68,6 @@ import org.geotools.api.referencing.operation.Conversion;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -353,7 +351,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 // TODO: Need a createDerivedCRS method.
                 final Object arg0 = crs.getName().getCode();
                 throw new FactoryException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_CRS_$1), arg0));
+                        MessageFormat.format(
+                                "Coordinate reference system \"{0}\" is unsupported.", arg0));
             }
         } else if (sameCS) {
             return crs;
@@ -397,7 +396,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
             } else {
                 final Object arg0 = crs.getName().getCode();
                 throw new FactoryException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_CRS_$1), arg0));
+                        MessageFormat.format(
+                                "Coordinate reference system \"{0}\" is unsupported.", arg0));
             }
         }
         modified = pool.unique(modified);
@@ -505,7 +505,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                     return csFactory.createUserDefinedCS(properties, axis[0], axis[1], axis[2]);
             }
         }
-        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1), type));
+        throw new FactoryException(
+                MessageFormat.format("Coordinate system \"{0}\" is unsupported.", type));
     }
 
     /**

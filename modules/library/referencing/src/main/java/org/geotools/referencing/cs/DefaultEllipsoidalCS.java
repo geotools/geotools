@@ -28,8 +28,6 @@ import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.cs.EllipsoidalCS;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import si.uom.NonSI;
 import si.uom.SI;
@@ -288,7 +286,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
         if (heightConverter == null) {
             update();
             if (heightConverter == null) {
-                throw new IllegalStateException(Errors.getPattern(ErrorKeys.NOT_THREE_DIMENSIONAL_CS));
+                throw new IllegalStateException("Not a 3D coordinate system.");
             }
         }
         return heightConverter.convert(coordinates[heightAxis]);

@@ -35,8 +35,6 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.api.annotation.UML;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.CheckedCollection;
 import org.geotools.util.Classes;
 import org.geotools.util.SimpleInternationalString;
@@ -201,7 +199,9 @@ final class PropertyAccessor {
             final Integer old = mapping.put(lower, index);
             if (old != null && !old.equals(index)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.PARAMETER_NAME_CLASH_$4), name, index, lower, old));
+                        MessageFormat.format(
+                                "Name or alias for parameter \"{0}\" at index {1} conflict with name \"{2}\" at index {3}.",
+                                name, index, lower, old));
             }
         }
     }
@@ -369,7 +369,7 @@ final class PropertyAccessor {
         if (index != null) {
             return index;
         }
-        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_PARAMETER_NAME_$1), key));
+        throw new IllegalArgumentException(MessageFormat.format("Unknow parameter name: {0}", key));
     }
 
     /**
@@ -490,7 +490,8 @@ final class PropertyAccessor {
         } else {
             key = String.valueOf(index);
         }
-        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), key));
+        throw new IllegalArgumentException(
+                MessageFormat.format("Illegal value for argument \"{0}\".", key));
     }
 
     /**
@@ -601,7 +602,9 @@ final class PropertyAccessor {
             if (parsed == null) {
                 final ClassCastException e =
                         new ClassCastException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), argument.getClass(), elementType));
+                                MessageFormat.format(
+                                        "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                        argument.getClass(), elementType));
                 e.initCause(failure);
                 throw e;
             }

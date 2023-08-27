@@ -23,8 +23,6 @@ import java.text.MessageFormat;
 import java.util.prefs.Preferences;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.parameter.GeneralParameterValue;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.Classes;
 
@@ -167,7 +165,7 @@ public class Formattable {
             throws UnformattableObjectException {
         if (authority == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "authority"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "authority"));
         }
         Formatter formatter = FORMATTER.get();
         if (formatter == null

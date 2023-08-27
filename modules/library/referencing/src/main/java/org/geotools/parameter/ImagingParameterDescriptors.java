@@ -46,8 +46,6 @@ import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.citation.ContactImpl;
@@ -306,7 +304,9 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                  * with a missleading "null source" message.
                  */
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2), "AUTHORITIES", vendor));
+                        MessageFormat.format(
+                                "No object of type \"{0}\" has been found for code \"{1}\".",
+                                "AUTHORITIES", vendor));
             }
             /*
              * If we are able to construct an URI, replaces the contact info for the first (and only
@@ -390,7 +390,8 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 final String name = d.getName().getCode().trim().toLowerCase();
                 if (replacements.put(name, d) != null) {
                     throw new InvalidParameterNameException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.DUPLICATED_VALUES_$1), name), name);
+                            MessageFormat.format("Duplicated values for code \"{0}\".", name),
+                            name);
                 }
             }
         }

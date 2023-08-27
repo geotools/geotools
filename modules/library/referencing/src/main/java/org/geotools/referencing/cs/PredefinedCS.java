@@ -34,8 +34,6 @@ import org.geotools.api.referencing.cs.SphericalCS;
 import org.geotools.api.referencing.cs.TimeCS;
 import org.geotools.api.referencing.cs.UserDefinedCS;
 import org.geotools.api.referencing.cs.VerticalCS;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 
@@ -166,7 +164,7 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
         }
         final Object arg0 = cs.getName().getCode();
         throw new IllegalArgumentException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1), arg0));
+                MessageFormat.format("Coordinate system \"{0}\" is unsupported.", arg0));
     }
 
     /**

@@ -24,8 +24,6 @@ import org.geotools.api.parameter.InvalidParameterTypeException;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 
 /**
@@ -60,7 +58,8 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
         final Object arg0 = getType();
         final InvalidParameterTypeException exception =
                 new InvalidParameterTypeException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1), arg0),
+                        MessageFormat.format(
+                                "This operation can't be applied to values of class '{0}'.", arg0),
                         getName(descriptor));
         exception.initCause(cause);
         return exception;

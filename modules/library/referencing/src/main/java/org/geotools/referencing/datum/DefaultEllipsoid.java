@@ -27,8 +27,6 @@ import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import net.sf.geographiclib.GeodesicMask;
 import org.geotools.api.referencing.datum.Ellipsoid;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
@@ -306,7 +304,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
             return value;
         }
         throw new IllegalArgumentException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value));
+                MessageFormat.format("Illegal argument: \"{0}={1}\".", name, value));
     }
 
     /**

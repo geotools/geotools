@@ -29,8 +29,6 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.Matrix2;
 import org.geotools.referencing.operation.matrix.Matrix3;
@@ -116,7 +114,9 @@ public class AffineTransform2D extends XAffineTransform
             final int dimension = ptDst.getDimension();
             if (dimension != 2) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), "ptDst", dimension, 2));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                "ptDst", dimension, 2));
             }
         }
         final double[] array = ptSrc.getCoordinate();

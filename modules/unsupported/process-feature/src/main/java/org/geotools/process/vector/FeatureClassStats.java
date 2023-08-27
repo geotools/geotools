@@ -36,8 +36,6 @@ import org.geotools.filter.function.EqualIntervalFunction;
 import org.geotools.filter.function.JenksNaturalBreaksFunction;
 import org.geotools.filter.function.QuantileFunction;
 import org.geotools.filter.function.RangedClassifier;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.process.classify.ClassificationMethod;
 import org.geotools.process.classify.ClassificationStats;
@@ -99,10 +97,12 @@ public class FeatureClassStats implements VectorProcess {
         // initial checks/defaults
         //
         if (features == null) {
-            throw new ProcessException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "features"));
+            throw new ProcessException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "features"));
         }
         if (attribute == null) {
-            throw new ProcessException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "attribute"));
+            throw new ProcessException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "attribute"));
         }
         PropertyDescriptor property = features.getSchema().getDescriptor(attribute);
         if (property == null) {
@@ -118,7 +118,7 @@ public class FeatureClassStats implements VectorProcess {
 
         if (classes < 1) {
             throw new ProcessException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "classes", classes));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "classes", classes));
         }
 
         // other defaults

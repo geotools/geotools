@@ -64,8 +64,6 @@ import java.util.logging.Logger;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -128,7 +126,7 @@ public final class GeoTiffIIOMetadataDecoder {
     public GeoTiffIIOMetadataDecoder(final IIOMetadata imageMetadata) {
         if (imageMetadata == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "imageMetadata"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "imageMetadata"));
         }
         iioMetadata = imageMetadata;
         // getting the image metadata root node.

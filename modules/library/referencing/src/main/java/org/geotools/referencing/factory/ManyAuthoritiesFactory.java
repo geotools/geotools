@@ -40,8 +40,6 @@ import org.geotools.api.referencing.datum.DatumAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -504,9 +502,15 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final String message;
         if (authority == null) {
             authority = Vocabulary.format(VocabularyKeys.UNKNOWN);
-            message = MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_AUTHORITY_$1), code);
+            message =
+                    MessageFormat.format(
+                            "No authority was defined for code \"{0}\". Did you forget \"AUTHORITY:NUMBER\"?",
+                            code);
         } else {
-            message = MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_AUTHORITY_$1), authority);
+            message =
+                    MessageFormat.format(
+                            "Authority \"{0}\" is unknown or doesn't match the supplied hints. Maybe it is defined in an unreachable JAR file?",
+                            authority);
         }
         final NoSuchAuthorityCodeException exception =
                 new NoSuchAuthorityCodeException(message, authority, code);

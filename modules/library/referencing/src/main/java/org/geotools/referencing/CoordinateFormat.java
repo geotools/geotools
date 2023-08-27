@@ -44,8 +44,6 @@ import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.measure.UnitFormat;
 import org.geotools.measure.UnitFormatter;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.util.CRSUtilities;
@@ -399,7 +397,9 @@ public class CoordinateFormat extends Format {
         if (crs != null) {
             if (dimension != formats.length) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), "point", dimension, formats.length));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                "point", dimension, formats.length));
             }
             cs = crs.getCoordinateSystem();
         } else {

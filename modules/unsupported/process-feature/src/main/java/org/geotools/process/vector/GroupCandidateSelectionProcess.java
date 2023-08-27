@@ -44,8 +44,6 @@ import org.geotools.feature.collection.PushBackFeatureIterator;
 import org.geotools.feature.type.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.SortByImpl;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
@@ -84,19 +82,23 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                     List<String> groupingAttributes) {
         try {
             if (features == null) {
-                throw new ProcessException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "features"));
+                throw new ProcessException(
+                        MessageFormat.format("Argument \"{0}\" should not be null.", "features"));
             }
             if (operationAttribute == null) {
                 throw new ProcessException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "operationAttribute"));
+                        MessageFormat.format(
+                                "Argument \"{0}\" should not be null.", "operationAttribute"));
             }
             if (groupingAttributes == null || groupingAttributes.isEmpty()) {
                 throw new ProcessException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "groupingAttributes"));
+                        MessageFormat.format(
+                                "Argument \"{0}\" should not be null.", "groupingAttributes"));
             }
             if (aggregation == null) {
                 throw new ProcessException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "aggregation"));
+                        MessageFormat.format(
+                                "Argument \"{0}\" should not be null.", "aggregation"));
             }
             Operations op = Operations.valueOf(aggregation);
             FeatureType schema = features.getSchema();
@@ -114,7 +116,9 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                     features, groupingPn, opValue, op);
         } catch (IllegalArgumentException e) {
             throw new ProcessException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_PARAMETER_$2), "aggregation", aggregation));
+                    MessageFormat.format(
+                            "Parameter \"{0}\" can't have value \"{1}\".",
+                            "aggregation", aggregation));
         }
     }
 

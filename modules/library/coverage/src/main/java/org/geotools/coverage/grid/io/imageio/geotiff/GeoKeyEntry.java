@@ -16,11 +16,8 @@
  */
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.util.Utilities;
-
 import java.text.MessageFormat;
+import org.geotools.util.Utilities;
 
 /**
  * This class is a holder for a GeoKey record containing four short values as specified in the
@@ -109,7 +106,7 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
     private static void ensureNotNegative(final String argument, final int value) {
         if (value < 0)
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), argument, value));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", argument, value));
     }
 
     public int getKeyID() {

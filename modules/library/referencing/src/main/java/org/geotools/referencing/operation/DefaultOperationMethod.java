@@ -31,8 +31,6 @@ import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameters;
@@ -222,7 +220,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
             throws IllegalArgumentException {
         if (value < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", name, value));
         }
     }
 
@@ -401,7 +399,9 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
                 }
             }
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), name, actual, expected));
+                    MessageFormat.format(
+                            "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                            name, actual, expected));
         }
     }
 }

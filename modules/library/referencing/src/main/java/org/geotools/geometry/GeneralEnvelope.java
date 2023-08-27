@@ -39,8 +39,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
@@ -282,7 +280,8 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
             transformed = CRS.transform(gridToCRS, this);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_TRANSFORM_$1), Classes.getClass(gridToCRS)),
+                    MessageFormat.format(
+                            "Illegal transform of type \"{0}\".", Classes.getClass(gridToCRS)),
                     exception);
         }
         assert transformed.ordinates.length == this.ordinates.length;
@@ -300,7 +299,8 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 
@@ -309,7 +309,8 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
             throws MismatchedDimensionException {
         if (dim1 != dim2) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), dim1, dim2));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.", dim1, dim2));
         }
     }
 
@@ -338,7 +339,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         for (int i = 0; i < dimension; i++) {
             if (!(ordinates[i] <= ordinates[dimension + i])) { // Use '!' in order to catch 'NaN'.
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ENVELOPE_ORDINATE_$1), i));
+                        MessageFormat.format("Bad ordinates at dimension {0}.", i));
             }
         }
     }
@@ -540,7 +541,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     /** Creates an exception for an index out of bounds. */
     private static IndexOutOfBoundsException indexOutOfBounds(final int dimension) {
         return new IndexOutOfBoundsException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1), dimension));
+                MessageFormat.format("Index {0} is out of bounds.", dimension));
     }
 
     /**
@@ -666,13 +667,17 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     public void setEnvelope(final double... ordinates) {
         if ((ordinates.length & 1) != 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ODD_ARRAY_LENGTH_$1), ordinates.length));
+                    MessageFormat.format(
+                            "Bad array length: {0}. An even array length was expected.",
+                            ordinates.length));
         }
         final int dimension = ordinates.length >>> 1;
         final int check = this.ordinates.length >>> 1;
         if (dimension != check) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), "ordinates", dimension, check));
+                    MessageFormat.format(
+                            "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                            "ordinates", dimension, check));
         }
         checkCoordinates(ordinates);
         System.arraycopy(ordinates, 0, this.ordinates, 0, ordinates.length);
@@ -1020,11 +1025,11 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         final int newDim = upper - lower;
         if (lower < 0 || lower > curDim) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "lower", lower));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "lower", lower));
         }
         if (newDim < 0 || upper > curDim) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "upper", upper));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "upper", upper));
         }
         final GeneralEnvelope envelope = new GeneralEnvelope(newDim);
         System.arraycopy(ordinates, lower, envelope.ordinates, 0, newDim);
@@ -1047,11 +1052,11 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         final int rmvDim = upper - lower;
         if (lower < 0 || lower > curDim) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "lower", lower));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "lower", lower));
         }
         if (rmvDim < 0 || upper > curDim) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "upper", upper));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "upper", upper));
         }
         final GeneralEnvelope envelope = new GeneralEnvelope(curDim - rmvDim);
         System.arraycopy(ordinates, 0, envelope.ordinates, 0, lower);
@@ -1072,7 +1077,9 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
                     ordinates[0], ordinates[1], ordinates[2], ordinates[3]);
         } else {
             throw new IllegalStateException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_TWO_DIMENSIONAL_$1), getDimension()));
+                    MessageFormat.format(
+                            "Can't wrap a {0} dimensional object into a 2 dimensional one.",
+                            getDimension()));
         }
     }
 

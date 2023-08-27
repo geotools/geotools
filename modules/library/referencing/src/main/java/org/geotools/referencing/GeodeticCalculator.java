@@ -49,8 +49,6 @@ import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -192,7 +190,7 @@ public class GeodeticCalculator {
     private GeodeticCalculator(final Ellipsoid ellipsoid, final CoordinateReferenceSystem crs) {
         if (ellipsoid == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "ellipsoid"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "ellipsoid"));
         }
         this.ellipsoid = ellipsoid;
         semiMajorAxis = ellipsoid.getSemiMajorAxis();
@@ -246,8 +244,7 @@ public class GeodeticCalculator {
                 }
             }
         }
-        throw new IllegalArgumentException(
-                Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM));
+        throw new IllegalArgumentException("Illegal coordinate reference system.");
     }
 
     /**
@@ -270,7 +267,7 @@ public class GeodeticCalculator {
         if (!(latitude >= Latitude.MIN_VALUE && latitude <= Latitude.MAX_VALUE)) {
             final Object arg0 = new Latitude(latitude);
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1), arg0));
+                    MessageFormat.format("Latitude {0} is out of range (±90°).", arg0));
         }
     }
 
@@ -284,7 +281,7 @@ public class GeodeticCalculator {
         if (!(Math.abs(longitude) <= Double.MAX_VALUE)) {
             final Object arg1 = new Longitude(longitude);
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "longitude", arg1));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "longitude", arg1));
         }
     }
 
@@ -298,7 +295,7 @@ public class GeodeticCalculator {
         if (!(Math.abs(azimuth) <= Double.MAX_VALUE)) {
             final Object arg1 = new Longitude(azimuth);
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "azimuth", arg1));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "azimuth", arg1));
         }
     }
 
@@ -313,7 +310,7 @@ public class GeodeticCalculator {
             throws IllegalArgumentException {
         if (!(Math.abs(distance) <= Double.MAX_VALUE)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "distance", distance));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "distance", distance));
         }
     }
 
@@ -644,7 +641,7 @@ public class GeodeticCalculator {
      */
     private void computeDestinationPoint() throws IllegalStateException {
         if (!directionValid) {
-            throw new IllegalStateException(Errors.getPattern(ErrorKeys.DIRECTION_NOT_SET));
+            throw new IllegalStateException("The direction has not been set.");
         }
         GeodesicData g = geod.Direct(lat1, long1, azimuth, distance);
         lat2 = g.lat2;
@@ -678,7 +675,7 @@ public class GeodeticCalculator {
      */
     private void computeDirection() throws IllegalStateException {
         if (!destinationValid) {
-            throw new IllegalStateException(Errors.getPattern(ErrorKeys.DESTINATION_NOT_SET));
+            throw new IllegalStateException("The destination has not been set.");
         }
         GeodesicData g = geod.Inverse(lat1, long1, lat2, long2);
         azimuth = g.azi1;
@@ -745,7 +742,7 @@ public class GeodeticCalculator {
     public List<Point2D> getGeodeticPath(int numPoints) {
         if (numPoints < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "numPoints", numPoints));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "numPoints", numPoints));
         }
 
         List<Point2D> points = new ArrayList<>(numPoints + 2);

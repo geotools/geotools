@@ -40,8 +40,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.PlanarProjection;
 import org.geotools.measure.Latitude;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -115,7 +113,7 @@ public class EquidistantConic extends MapProjection {
             final Object arg0 = new Latitude(toDegrees(phi1));
             final Object arg1 = new Latitude(toDegrees(phi2));
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ANTIPODE_LATITUDES_$2), arg0, arg1));
+                    MessageFormat.format("Latitudes {0} and {1} are opposite.", arg0, arg1));
         }
 
         double sinphi = n = sin(phi1);

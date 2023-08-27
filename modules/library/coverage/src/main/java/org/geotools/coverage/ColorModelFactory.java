@@ -25,8 +25,6 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Map;
 import org.geotools.image.util.ColorUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.WeakValueHashMap;
 
 /**
@@ -101,7 +99,7 @@ final class ColorModelFactory {
         this.type = type;
         if (visibleBand < 0 || visibleBand >= numBands) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_BAND_NUMBER_$1), visibleBand));
+                    MessageFormat.format("Band number {0} is not valid.", visibleBand));
         }
     }
 

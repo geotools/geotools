@@ -76,8 +76,6 @@ import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
@@ -592,7 +590,8 @@ public final class ImageUtilities {
                 }
             }
         }
-        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_INTERPOLATION_$1), type));
+        throw new IllegalArgumentException(
+                MessageFormat.format("Interpolation \"{0}\" is unknown.", type));
     }
 
     /**
@@ -763,7 +762,7 @@ public final class ImageUtilities {
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
         } else {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.UNSUPPORTED_DATA_TYPE));
+            throw new IllegalArgumentException("Unsupported data type.");
         }
     }
 
@@ -1085,7 +1084,7 @@ public final class ImageUtilities {
         Utilities.ensureNonNull("reader", reader);
         if (imageIndex < 0)
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1), imageIndex));
+                    MessageFormat.format("Index {0} is out of bounds.", imageIndex));
         inStream.reset();
         reader.setInput(inStream);
         return new Rectangle(0, 0, reader.getWidth(imageIndex), reader.getHeight(imageIndex));

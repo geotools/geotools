@@ -22,8 +22,6 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
@@ -324,7 +322,7 @@ public class Category implements Serializable {
             final Object arg0 = range.getMinValue();
             final Object arg1 = range.getMaxValue();
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), arg0, arg1));
+                    MessageFormat.format("Range [{0} .. {1}] is not valid.", arg0, arg1));
         }
     }
 
@@ -536,7 +534,8 @@ public class Category implements Serializable {
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 }

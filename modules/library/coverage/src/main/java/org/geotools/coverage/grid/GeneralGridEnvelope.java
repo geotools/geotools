@@ -27,8 +27,6 @@ import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.geometry.PixelTranslation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 
 /**
@@ -79,7 +77,9 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
             final int upper = index[dimension + i];
             if (!(lower <= upper)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_GRID_RANGE_$3), i, lower, upper - 1));
+                        MessageFormat.format(
+                                "Illegal grid range [{1} .. {2}] for dimension {0}.",
+                                i, lower, upper - 1));
             }
         }
     }
@@ -187,7 +187,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     private GeneralGridEnvelope(int x, int y, int width, int height, int dimension) {
         if (dimension < 2) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dimension", dimension));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "dimension", dimension));
         }
         index = new int[dimension * 2];
         index[0] = x;
@@ -316,7 +316,9 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     public GeneralGridEnvelope(final int[] low, final int[] high, final boolean isHighIncluded) {
         if (low.length != high.length) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), low.length, high.length));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.",
+                            low.length, high.length));
         }
         index = new int[low.length + high.length];
         System.arraycopy(low, 0, index, 0, low.length);
@@ -433,11 +435,11 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
         final int newDim = upper - lower;
         if (lower < 0 || lower > curDim) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "lower", lower));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "lower", lower));
         }
         if (newDim < 0 || upper > curDim) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "upper", upper));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "upper", upper));
         }
         final GeneralGridEnvelope sub = new GeneralGridEnvelope(newDim);
         System.arraycopy(index, lower, sub.index, 0, newDim);
@@ -458,7 +460,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
         } else {
             final Object arg0 = getDimension();
             throw new IllegalStateException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_TWO_DIMENSIONAL_$1), arg0));
+                    MessageFormat.format(
+                            "Can't wrap a {0} dimensional object into a 2 dimensional one.", arg0));
         }
     }
 

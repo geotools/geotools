@@ -23,8 +23,6 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Arguments;
 import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
@@ -215,7 +213,8 @@ public class CommandLine {
      */
     protected <T> T parse(final Class<T> type, final String value)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+        throw new UnsupportedOperationException(
+                MessageFormat.format("Type \"{0}\" is unknow in this context.", type));
     }
 
     /**

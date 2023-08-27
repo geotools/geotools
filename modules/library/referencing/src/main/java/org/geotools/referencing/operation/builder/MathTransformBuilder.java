@@ -53,8 +53,6 @@ import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.api.util.InternationalString;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.extent.ExtentImpl;
@@ -233,7 +231,7 @@ public abstract class MathTransformBuilder {
         transform = null;
         final boolean add = positions.isEmpty();
         if (!add && points.length != positions.size()) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException("Mismatched array length.");
         }
         final int dimension = getDimension();
         for (int i = 0; i < points.length; i++) {
@@ -448,7 +446,7 @@ public abstract class MathTransformBuilder {
                     cs = DefaultCartesianCS.GENERIC_3D;
                     break;
                 default:
-                    throw new FactoryException(Errors.getPattern(ErrorKeys.UNSPECIFIED_CRS));
+                    throw new FactoryException("Coordinate reference system is unspecified.");
             }
         }
         return crsFactory.createEngineeringCRS(
@@ -547,7 +545,7 @@ public abstract class MathTransformBuilder {
              */
             if (!previousCRS.equals(candidate)) {
                 throw new MismatchedReferenceSystemException(
-                        Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                        "The coordinate reference system must be the same for all objects.");
             }
         }
         return previousCRS;
@@ -579,7 +577,9 @@ public abstract class MathTransformBuilder {
         final int necessaryNumber = getMinimumPointCount();
         if (points.length < necessaryNumber) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.INSUFFICIENT_POINTS_$2), points.length, necessaryNumber));
+                    MessageFormat.format(
+                            "{0} points were specified, while {1} are required.",
+                            points.length, necessaryNumber));
         }
         CoordinateReferenceSystem crs = null;
         final int dimension = getDimension();
@@ -588,7 +588,9 @@ public abstract class MathTransformBuilder {
             final int pointDim = point.getDimension();
             if (pointDim != dimension) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), label + '[' + i + ']', pointDim, dimension));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                label + '[' + i + ']', pointDim, dimension));
             }
             crs = getCoordinateReferenceSystem(point, crs);
         }
@@ -597,7 +599,7 @@ public abstract class MathTransformBuilder {
             if (!getCoordinateSystemType().isAssignableFrom(cs.getClass())) {
                 final Object arg0 = cs.getName();
                 throw new MismatchedReferenceSystemException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1), arg0));
+                        MessageFormat.format("Coordinate system \"{0}\" is unsupported.", arg0));
             }
         }
         return crs;
@@ -638,7 +640,7 @@ public abstract class MathTransformBuilder {
             try {
                 error = mp.getError(mt, buffer);
             } catch (TransformException e) {
-                throw new FactoryException(Errors.getPattern(ErrorKeys.CANT_TRANSFORM_VALID_POINTS), e);
+                throw new FactoryException("Can't transform some points that should be valid.", e);
             }
             stats.add(error);
         }

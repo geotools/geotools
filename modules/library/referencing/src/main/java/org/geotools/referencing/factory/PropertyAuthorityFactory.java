@@ -35,8 +35,6 @@ import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.api.referencing.datum.DatumAuthorityFactory;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.wkt.Symbols;
@@ -151,7 +149,7 @@ public class PropertyAuthorityFactory extends DirectAuthorityFactory
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);
         ensureNonNull("authorities", authorities);
         if (authorities.length == 0) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.EMPTY_ARRAY));
+            throw new IllegalArgumentException("The array should contains at least one element.");
         }
         this.authorities = authorities.clone();
         authority = authorities[0];

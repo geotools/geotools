@@ -30,8 +30,6 @@ import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CartesianCS;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.measure.Measure;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.VocabularyKeys;
 
 /**
@@ -231,7 +229,9 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
                 final double angle = DefaultCoordinateSystemAxis.getAngle(axis0, axis1);
                 if (Math.abs(Math.abs(angle) - 90) > DirectionAlongMeridian.EPS) {
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.NON_PERPENDICULAR_AXIS_$2), axis0.name(), axis1.name()));
+                            MessageFormat.format(
+                                    "Axis directions {0} and {1} are not perpendicular.",
+                                    axis0.name(), axis1.name()));
                 }
             }
         }

@@ -34,8 +34,6 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Measure;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -148,13 +146,15 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             if (!isCompatibleDirection(direction)) {
                 // TOOD: localize name()
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_AXIS_ORIENTATION_$2), direction.name(), getClass()));
+                        MessageFormat.format(
+                                "Axis can't be oriented toward {0} for coordinate system of class \"{1}\".",
+                                direction.name(), getClass()));
             }
             final Unit<?> unit = axis[i].getUnit();
             ensureNonNull("unit", unit);
             if (!isCompatibleUnit(direction, unit)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.INCOMPATIBLE_UNIT_$1), unit));
+                        MessageFormat.format("Incompatible unit: {0}", unit));
             }
             /*
              * Ensures there is no axis along the same direction
@@ -168,7 +168,8 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                         final String nameI = axis[i].getDirection().name();
                         final String nameJ = axis[j].getDirection().name();
                         throw new IllegalArgumentException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.COLINEAR_AXIS_$2), nameI, nameJ));
+                                MessageFormat.format(
+                                        "Axis {0} and {1} are colinear.", nameI, nameJ));
                     }
                 }
             }
@@ -195,7 +196,9 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                          */
                         if (m == null) {
                             throw new IllegalArgumentException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.INCONSISTENT_AXIS_ORIENTATION_$2), name, direction.name()));
+                                    MessageFormat.format(
+                                            "Direction \"{1}\" is inconsistent with axis \"{0}\".",
+                                            name, direction.name()));
                         }
                     }
                 }
@@ -310,8 +313,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             throws IllegalArgumentException {
         if (!Classes.sameInterfaces(
                 sourceCS.getClass(), targetCS.getClass(), CoordinateSystem.class)) {
-            throw new IllegalArgumentException(
-                    Errors.getPattern(ErrorKeys.INCOMPATIBLE_COORDINATE_SYSTEM_TYPE));
+            throw new IllegalArgumentException("Incompatible coordinate system type.");
         }
         final AxisDirection[] sourceAxis = getAxisDirections(sourceCS);
         final AxisDirection[] targetAxis = getAxisDirections(targetCS);
@@ -354,7 +356,9 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 UnitConverter converter = Units.getConverterToAny(sourceUnit, targetUnit);
                 if (!converter.isLinear()) {
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2), sourceUnit, targetUnit));
+                            MessageFormat.format(
+                                    "Unit conversion from \"{0}\" to \"{1}\" is non-linear.",
+                                    sourceUnit, targetUnit));
                 }
                 final double offset = converter.convert(0);
                 final double scale = converter.convert(1) - offset;
@@ -453,7 +457,9 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             throws MismatchedDimensionException {
         if (coordinates.length != axis.length) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), name, coordinates.length, axis.length));
+                    MessageFormat.format(
+                            "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                            name, coordinates.length, axis.length));
         }
     }
 

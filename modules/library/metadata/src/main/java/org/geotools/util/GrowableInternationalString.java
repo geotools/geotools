@@ -32,8 +32,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -212,7 +210,9 @@ public class GrowableInternationalString extends AbstractInternationalString
             parts[i] = key.substring(position, position = next);
         }
         throw new IllegalArgumentException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "locale", key.substring(prefix.length())));
+                MessageFormat.format(
+                        "Illegal argument: \"{0}={1}\".",
+                        "locale", key.substring(prefix.length())));
     }
 
     /**

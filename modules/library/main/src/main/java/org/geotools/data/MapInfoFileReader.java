@@ -37,8 +37,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.AffineTransformBuilder;
 import org.geotools.referencing.operation.builder.MappedPosition;
@@ -380,11 +378,11 @@ public class MapInfoFileReader {
     public MapInfoFileReader(final File tabfile) throws IOException {
         if (tabfile == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "tabfile"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "tabfile"));
         }
         if (!tabfile.isFile() || !tabfile.canRead()) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), tabfile));
+                    MessageFormat.format("File does not exist or is unreadable: {0}", tabfile));
         }
         parseTabFile(new BufferedReader(new FileReader(tabfile)));
     }
@@ -397,7 +395,8 @@ public class MapInfoFileReader {
      */
     public MapInfoFileReader(final URL tabfile) throws IOException {
         if (tabfile == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "inFile"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "inFile"));
         }
         parseTabFile(new BufferedReader(new InputStreamReader(tabfile.openStream())));
     }

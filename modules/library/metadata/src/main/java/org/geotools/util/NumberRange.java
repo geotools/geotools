@@ -19,9 +19,6 @@ package org.geotools.util;
 import static org.geotools.util.ClassChanger.getFinestClass;
 import static org.geotools.util.ClassChanger.getWidestClass;
 
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-
 import java.text.MessageFormat;
 
 /**
@@ -365,7 +362,9 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     private static void ensureNumberClass(final Class<?> type) throws IllegalArgumentException {
         if (!Number.class.isAssignableFrom(type)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, Number.class));
+                    MessageFormat.format(
+                            "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                            type, Number.class));
         }
     }
 
@@ -440,7 +439,7 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
     public boolean contains(final Number value) throws IllegalArgumentException {
         if (value != null && !(value instanceof Comparable)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_COMPARABLE_CLASS_$1), value.getClass()));
+                    MessageFormat.format("{0} is not a comparable class.", value.getClass()));
         }
         return contains((Comparable<?>) value);
     }

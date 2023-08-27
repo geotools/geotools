@@ -27,8 +27,6 @@ import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.api.referencing.Factory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -115,7 +113,9 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name), name, object);
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name),
+                    name,
+                    object);
         }
     }
 

@@ -23,8 +23,6 @@ import java.text.ParsePosition;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 import org.geotools.util.logging.LoggedFormat;
@@ -273,7 +271,8 @@ public final class Element {
                 "missingCharacter",
                 new ParseException(
                         complete(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_CHARACTER_$1), Character.valueOf(c))),
+                                MessageFormat.format(
+                                        "Character '{0}' was expected.", Character.valueOf(c))),
                         position));
     }
 
@@ -290,7 +289,8 @@ public final class Element {
         return trim(
                 "missingParameter",
                 new ParseException(
-                        complete(MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), key)), error));
+                        complete(MessageFormat.format("Parameter \"{0}\" is missing.", key)),
+                        error));
     }
 
     /**
@@ -301,7 +301,7 @@ public final class Element {
      */
     private String complete(String message) {
         if (keyword != null) {
-            message = MessageFormat.format(Errors.getPattern(ErrorKeys.IN_$1), keyword) + ' ' + message;
+            message = MessageFormat.format("Error in \"{0}\":", keyword) + ' ' + message;
         }
         return message;
     }
@@ -377,7 +377,9 @@ public final class Element {
                 final Number number = (Number) object;
                 if (number instanceof Float || number instanceof Double) {
                     throw new ParseException(
-                            complete(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), key, number)),
+                            complete(
+                                    MessageFormat.format(
+                                            "Illegal argument: \"{0}={1}\".", key, number)),
                             offset);
                 }
                 return number.intValue();
@@ -520,7 +522,9 @@ public final class Element {
     public void close() throws ParseException {
         if (list != null && !list.isEmpty()) {
             throw new ParseException(
-                    complete(MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), list.get(0))),
+                    complete(
+                            MessageFormat.format(
+                                    "Parameter \"{0}\" was not expected.", list.get(0))),
                     offset + keyword.length());
         }
     }

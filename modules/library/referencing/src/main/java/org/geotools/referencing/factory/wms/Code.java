@@ -16,13 +16,10 @@
  */
 package org.geotools.referencing.factory.wms;
 
+import java.text.MessageFormat;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-
-import java.text.MessageFormat;
 
 /**
  * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code
@@ -127,7 +124,9 @@ final class Code {
             final Class type, final String code) {
         final String authority = "AUTO";
         return new NoSuchAuthorityCodeException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3), code, authority, type),
+                MessageFormat.format(
+                        "No code \"{0}\" from authority \"{1}\" found for object of type \"{2}\".",
+                        code, authority, type),
                 authority,
                 code);
     }

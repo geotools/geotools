@@ -34,8 +34,6 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based
@@ -279,7 +277,7 @@ enum ReadType {
                 final ImageReaderSpi spi)
                 throws IOException {
             throw new UnsupportedOperationException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_OPERATION_$1), "read"));
+                    MessageFormat.format("Operation \"{0}\" is unsupported.", "read"));
         }
     };
 

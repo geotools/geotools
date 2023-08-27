@@ -61,8 +61,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -300,7 +298,9 @@ public class Crop extends Operation2D {
         final ParameterValue sourceParameter = parameters.parameter("Source");
         if (sourceParameter == null || !(sourceParameter.getValue() instanceof GridCoverage2D)) {
             throw new CannotCropException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_PARAMETER_$2), "Source", GridCoverage2D.class.toString()));
+                    MessageFormat.format(
+                            "\"{0}\" parameter should be not null and of type \"{1}\".",
+                            "Source", GridCoverage2D.class.toString()));
         }
         // extracted from parameters
         final GridCoverage2D source = (GridCoverage2D) sourceParameter.getValue();
@@ -318,7 +318,9 @@ public class Crop extends Operation2D {
         if ((envelopeParameter == null || envelopeParameter.getValue() == null)
                 && (roiParameter == null || roiParameter.getValue() == null))
             throw new CannotCropException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_PARAMETER_$2), PARAMNAME_ENVELOPE, GeneralEnvelope.class.toString()));
+                    MessageFormat.format(
+                            "\"{0}\" parameter should be not null and of type \"{1}\".",
+                            PARAMNAME_ENVELOPE, GeneralEnvelope.class.toString()));
 
         Object envelope = envelopeParameter.getValue();
         if (envelope != null) {
@@ -338,7 +340,7 @@ public class Crop extends Operation2D {
         } catch (IllegalArgumentException ex) {
             final Object arg1 = ex.getMessage();
             throw new CannotCropException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), PARAMNAME_ROI, arg1),
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", PARAMNAME_ROI, arg1),
                     ex);
         }
 
@@ -382,7 +384,9 @@ public class Crop extends Operation2D {
             final Object arg0 = sourceCRS.getName().getCode();
             final Object arg1 = destinationCRS.getName().getCode();
             throw new CannotCropException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2), arg0, arg1));
+                    MessageFormat.format(
+                            "The envelope uses an incompatible CRS: was \"{1}\" while we expected \"{0}\".",
+                            arg0, arg1));
         }
 
         // TODO: check ROI SRID
@@ -409,7 +413,7 @@ public class Crop extends Operation2D {
                             (org.locationtech.jts.geom.Envelope)
                                     new ReferencedEnvelope(intersectionEnvelope));
             if (!IntersectUtils.intersects(cropRoi, jis))
-                throw new CannotCropException(Errors.getPattern(ErrorKeys.CANT_CROP));
+                throw new CannotCropException("An error occurred while cropping.");
         }
         // //
         //
@@ -665,7 +669,7 @@ public class Crop extends Operation2D {
                 }
                 if (rasterSpaceROI == null || rasterSpaceROI.getBounds().isEmpty())
                     if (finalRasterArea.isEmpty())
-                        throw new CannotCropException(Errors.getPattern(ErrorKeys.CANT_CROP));
+                        throw new CannotCropException("An error occurred while cropping.");
                 if (forceMosaic || cropROI != null || internalROI != null || nodata != null) {
                     // prepare the params for the mosaic
                     ROI[] roiarr = null;
@@ -693,7 +697,7 @@ public class Crop extends Operation2D {
                         roiarr = new ROI[] {roi};
                     }
                     if (roiarr != null && roiarr[0].getBounds().isEmpty()) {
-                        throw new CannotCropException(Errors.getPattern(ErrorKeys.CANT_CROP));
+                        throw new CannotCropException("An error occurred while cropping.");
                     }
                     worker.setBackground(background);
                     worker.setNoData(nodata);
@@ -702,7 +706,7 @@ public class Crop extends Operation2D {
                     final Rectangle bounds = rasterSpaceROI.getBounds2D().getBounds();
                     Rectangle.intersect(bounds, sourceGridRange, bounds);
                     if (bounds.isEmpty())
-                        throw new CannotCropException(Errors.getPattern(ErrorKeys.CANT_CROP));
+                        throw new CannotCropException("An error occurred while cropping.");
 
                     // we do not have to crop in this case (should not really happen at
                     // this time)
@@ -798,7 +802,7 @@ public class Crop extends Operation2D {
                             properties);
 
         } catch (TransformException | NoninvertibleTransformException e) {
-            throw new CannotCropException(Errors.getPattern(ErrorKeys.CANT_CROP), e);
+            throw new CannotCropException("An error occurred while cropping.", e);
         }
     }
 

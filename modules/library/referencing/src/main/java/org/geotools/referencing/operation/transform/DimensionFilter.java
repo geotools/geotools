@@ -22,8 +22,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.Matrix;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -323,7 +321,7 @@ public class DimensionFilter {
                      *
                      * TODO: provide a more accurate error message.
                      */
-                    throw new FactoryException(Errors.getPattern(ErrorKeys.INSEPARABLE_TRANSFORM));
+                    throw new FactoryException("Inseparable transform.");
                 }
                 targetDimensions[i] = j;
             }
@@ -353,7 +351,8 @@ public class DimensionFilter {
         assert XArray.isStrictlySorted(sourceDimensions);
         if (upper > dimSource) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "sourceDimensions", upper - 1));
+                    MessageFormat.format(
+                            "Illegal argument: \"{0}={1}\".", "sourceDimensions", upper - 1));
         }
         /*
          * Check for easiest cases: same transform, identity transform or concatenated transforms.
@@ -492,7 +491,7 @@ public class DimensionFilter {
             // to any input dimension. But in this particuler case, our matrix has such
             // dependencies. TODO: is there anything we could do about that?
         }
-        throw new FactoryException(Errors.getPattern(ErrorKeys.INSEPARABLE_TRANSFORM));
+        throw new FactoryException("Inseparable transform.");
     }
 
     /**
@@ -519,7 +518,8 @@ public class DimensionFilter {
         assert XArray.isStrictlySorted(targetDimensions);
         if (upper > dimTarget) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "targetDimensions", upper));
+                    MessageFormat.format(
+                            "Illegal argument: \"{0}={1}\".", "targetDimensions", upper));
         }
         if (dimOutput == dimTarget) {
             assert lower == 0 && upper == dimTarget;
@@ -629,7 +629,7 @@ public class DimensionFilter {
     private static int[] add(int[] sequence, int dimension) throws IllegalArgumentException {
         if (dimension < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dimension", dimension));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "dimension", dimension));
         }
         if (sequence == null) {
             return new int[] {dimension};
@@ -681,7 +681,7 @@ public class DimensionFilter {
             throws IllegalArgumentException {
         if (lower < 0 || lower >= upper) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "lower", lower));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "lower", lower));
         }
         if (sequence == null) {
             sequence = series(lower, upper);
@@ -717,7 +717,8 @@ public class DimensionFilter {
             final int value = dimensions[i];
             if (value <= last) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dimensions[" + i + ']', value));
+                        MessageFormat.format(
+                                "Illegal argument: \"{0}={1}\".", "dimensions[" + i + ']', value));
             }
             last = value;
         }

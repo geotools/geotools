@@ -33,8 +33,6 @@ import org.geotools.api.coverage.SampleDimension;
 import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.util.InternationalString;
 import org.geotools.image.util.ColorUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.ClassChanger;
@@ -189,7 +187,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     /** Constructs a list of categories. Used by constructors only. */
     private static CategoryList list(final CharSequence[] names, final Color[] colors) {
         if (names.length != colors.length) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException("Mismatched array length.");
         }
         final int length = names.length;
         final Category[] categories = new Category[length];
@@ -337,7 +335,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
         if (Double.isInfinite(minimum) || Double.isInfinite(maximum) || !(minimum < maximum)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), minimum, maximum));
+                    MessageFormat.format("Range [{0} .. {1}] is not valid.", minimum, maximum));
         }
         if (type == null) {
             type = TypeMap.getSampleDimensionType(minimum, maximum);
@@ -712,7 +710,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             final int lower = (int) category.minimum;
             final int upper = (int) category.maximum;
             if (lower != category.minimum || lower < 0 || upper != category.maximum || upper < 0) {
-                throw new IllegalStateException(Errors.getPattern(ErrorKeys.NON_INTEGER_CATEGORY));
+                throw new IllegalStateException("Some categories use non-integer sample values.");
             }
             if (names == null) {
                 names = new InternationalString[upper + 1];
@@ -807,7 +805,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                                 || upper != max
                                 || !Classes.isInteger(category.getRange().getElementClass())) {
                             throw new IllegalStateException(
-                                    Errors.getPattern(ErrorKeys.NON_INTEGER_CATEGORY));
+                                    "Some categories use non-integer sample values.");
                         }
                         final int requiredLength = count + (upper - lower);
                         if (requiredLength > padValues.length) {

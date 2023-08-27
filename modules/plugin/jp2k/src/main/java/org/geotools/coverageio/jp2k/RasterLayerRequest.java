@@ -55,8 +55,6 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -743,11 +741,11 @@ class RasterLayerRequest {
                             };
                 }
             } else
-                // should not happen
+            // should not happen
             {
                 final Object arg0 = requestedGridToWorld.toString();
                 throw new UnsupportedOperationException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_OPERATION_$1), arg0));
+                        MessageFormat.format("Operation \"{0}\" is unsupported.", arg0));
             }
 
             // leave

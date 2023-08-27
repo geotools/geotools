@@ -29,8 +29,6 @@ import java.util.Locale;
 import java.util.Objects;
 import javax.measure.Unit;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.wkt.UnformattableObjectException;
@@ -186,7 +184,8 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
                         }
                     }
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.RANGE_OVERLAP_$4), (Object) args));
+                            MessageFormat.format(
+                                    "Ranges [{0}..{1}] and [{2}..{3}] overlap.", (Object) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {

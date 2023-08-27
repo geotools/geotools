@@ -33,8 +33,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.DefaultConversion;
 import org.geotools.referencing.operation.DefaultOperation;
@@ -265,7 +263,8 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
         if ((dim1 = dimSource) != (dim2 = base.getCoordinateSystem().getDimension())
                 || (dim1 = dimTarget) != (dim2 = derivedCS.getDimension())) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), dim1, dim2));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.", dim1, dim2));
         }
     }
 

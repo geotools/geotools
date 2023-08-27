@@ -63,8 +63,6 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.factory.FactoryNotFoundException;
@@ -138,7 +136,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         ensureNonNull("type", type);
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
-            throw new FactoryNotFoundException(MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), type));
+            throw new FactoryNotFoundException(
+                    MessageFormat.format("No factory of kind \"{0}\" found.", type));
         }
         return type.cast(create(false, interfaceMask(type), factories.iterator()));
     }
@@ -161,7 +160,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
             throw new FactoryNotFoundException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), AuthorityFactory.class));
+                    MessageFormat.format(
+                            "No factory of kind \"{0}\" found.", AuthorityFactory.class));
         }
         return create(false, interfaceMask(factories), factories.iterator());
     }

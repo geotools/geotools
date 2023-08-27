@@ -32,8 +32,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -137,7 +135,7 @@ public class ReadResolutionCalculator {
                 // should not happen
                 final Object arg0 = requestedGridToWorld.toString();
                 throw new UnsupportedOperationException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNSUPPORTED_OPERATION_$1), arg0));
+                        MessageFormat.format("Operation \"{0}\" is unsupported.", arg0));
             }
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.INFO))

@@ -68,8 +68,6 @@ import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.Transformation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -1217,8 +1215,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
                     datumShift = new Matrix4(); // Identity transform.
                     identifier = ELLIPSOID_SHIFT;
                 } else {
-                    throw new OperationNotFoundException(
-                            Errors.getPattern(ErrorKeys.BURSA_WOLF_PARAMETERS_REQUIRED));
+                    throw new OperationNotFoundException("Bursa wolf parameters required.");
                 }
             }
             final Matrix normalizeSource = swapAndScaleAxis(sourceCS, STANDARD);

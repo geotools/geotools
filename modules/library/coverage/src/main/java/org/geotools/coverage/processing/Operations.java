@@ -37,8 +37,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Resample;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 
@@ -970,7 +968,7 @@ public class Operations {
             } catch (ParameterNotFoundException cause) {
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_PARAMETER_NAME_$1), name), name);
+                                MessageFormat.format("Unknow parameter name: {0}", name), name);
                 exception.initCause(cause);
                 throw exception;
             }

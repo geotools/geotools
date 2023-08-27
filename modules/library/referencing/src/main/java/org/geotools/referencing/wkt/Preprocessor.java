@@ -34,8 +34,6 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.NoSuchIdentifierException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.Classes;
@@ -204,10 +202,15 @@ public class Preprocessor extends Format {
             if (type.isAssignableFrom(actualType)) {
                 return value;
             }
-            throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), actualType, type));
+            throw new FactoryException(
+                    MessageFormat.format(
+                            "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                            actualType, type));
         }
         throw new NoSuchIdentifierException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$2), type, text), text);
+                MessageFormat.format(
+                        "No object of type \"{0}\" has been found for code \"{1}\".", type, text),
+                text);
     }
 
     /**
@@ -329,11 +332,11 @@ public class Preprocessor extends Format {
      */
     public void addDefinition(final String name, String value) throws ParseException {
         if (value == null || value.trim().length() == 0) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISSING_WKT_DEFINITION));
+            throw new IllegalArgumentException("Missing WKT definition.");
         }
         if (!isIdentifier(name)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_IDENTIFIER_$1), name));
+                    MessageFormat.format("\"{0}\" is not a valid identifier.", name));
         }
         value = substitute(value);
         final Definition newDef = new Definition(value, forwardParse(value));

@@ -90,8 +90,6 @@ import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -235,7 +233,8 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         //
         if (input == null) {
             final IOException ex =
-                    new IOException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "input"));
+                    new IOException(
+                            MessageFormat.format("Argument \"{0}\" should not be null.", "input"));
             throw new DataSourceException(ex);
         }
         this.source = input;

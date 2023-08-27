@@ -62,8 +62,6 @@ import org.geotools.api.referencing.datum.TemporalDatum;
 import org.geotools.api.referencing.datum.VerticalDatum;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.OperationMethod;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 
 /**
@@ -193,7 +191,9 @@ abstract class AuthorityFactoryProxy {
             }
         }
         throw new IllegalArgumentException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, IdentifiedObject.class));
+                MessageFormat.format(
+                        "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                        type, IdentifiedObject.class));
     }
 
     /** Returns the type of the objects to be created by this proxy instance. */
@@ -278,7 +278,8 @@ abstract class AuthorityFactoryProxy {
                     return;
                 }
             }
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Type \"{0}\" is unknow in this context.", type));
         }
 
         /** {@inheritDoc} */

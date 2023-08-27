@@ -115,8 +115,6 @@ import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -551,7 +549,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final String table = metadata.getTableName(columnFault);
             result.close();
             throw new FactoryException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_VALUE_IN_TABLE_$3), code, column, table));
+                    MessageFormat.format(
+                            "Unexpected null value in record \"{0}\" for the column \"{1}\" in table \"{2}\".",
+                            code, column, table));
         }
         return str.trim();
     }
@@ -606,7 +606,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final String table = metadata.getTableName(columnIndex);
             result.close();
             throw new FactoryException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_VALUE_IN_TABLE_$3), code, column, table));
+                    MessageFormat.format(
+                            "Unexpected null value in record \"{0}\" for the column \"{1}\" in table \"{2}\".",
+                            code, column, table));
         }
     }
 
@@ -695,7 +697,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         if (oldValue.equals(newValue)) {
             return oldValue;
         }
-        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.DUPLICATED_VALUES_$1), code));
+        throw new FactoryException(
+                MessageFormat.format("Duplicated values for code \"{0}\".", code));
     }
 
     /**
@@ -865,7 +868,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     if (present) {
                         if (index >= 0) {
                             throw new FactoryException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.DUPLICATED_VALUES_$1), code));
+                                    MessageFormat.format(
+                                            "Duplicated values for code \"{0}\".", code));
                         }
                         index = (i < 0) ? lastObjectType : i;
                         if (isPrimaryKey) {
@@ -1037,7 +1041,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                             final String column = result.getMetaData().getColumnName(3);
                             result.close();
                             throw new FactoryException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_VALUE_IN_TABLE_$3), code, column));
+                                    MessageFormat.format(
+                                            "Unexpected null value in record \"{0}\" for the column \"{1}\" in table \"{2}\".",
+                                            code, column));
                         } else {
                             // We only have semiMinorAxis defined -> it's OK
                             ellipsoid =
@@ -1426,7 +1432,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         datum = factory.createEngineeringDatum(properties);
                     } else {
                         result.close();
-                        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+                        throw new FactoryException(
+                                MessageFormat.format(
+                                        "Type \"{0}\" is unknow in this context.", type));
                     }
                     returnValue = ensureSingleton(datum, returnValue, code);
                     if (exit) {
@@ -1591,7 +1599,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         }
         if (i != axis.length) {
             throw new FactoryException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), axis.length, i));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.", axis.length, i));
         }
         return axis;
     }
@@ -1710,12 +1719,16 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         }
                     } else {
                         result.close();
-                        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+                        throw new FactoryException(
+                                MessageFormat.format(
+                                        "Type \"{0}\" is unknow in this context.", type));
                     }
                     if (cs == null) {
                         result.close();
                         throw new FactoryException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_DIMENSION_FOR_CS_$1), type));
+                                MessageFormat.format(
+                                        "Unexpected dimension for a \"{0}\" coordinate system.",
+                                        type));
                     }
                     returnValue = ensureSingleton(cs, returnValue, code);
                 }
@@ -1896,7 +1909,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         } else {
                             result.close();
                             throw new FactoryException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2), cs.getClass(), GeocentricCRS.class));
+                                    MessageFormat.format(
+                                            "Coordinate system of type '{0}' are incompatible with CRS of type '{1}'.",
+                                            cs.getClass(), GeocentricCRS.class));
                         }
                     }
                     /* ----------------------------------------------------------------------
@@ -1916,7 +1931,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      * ---------------------------------------------------------------------- */
                     else {
                         result.close();
-                        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+                        throw new FactoryException(
+                                MessageFormat.format(
+                                        "Type \"{0}\" is unknow in this context.", type));
                     }
                     returnValue = ensureSingleton(crs, returnValue, code);
                     if (exit) {
@@ -2120,7 +2137,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      */
                     final NoSuchIdentifierException e =
                             new NoSuchIdentifierException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SET_PARAMETER_VALUE_$1), name),
+                                    MessageFormat.format(
+                                            "Can't set a value to the parameter \"{0}\".", name),
                                     name);
                     e.initCause(exception);
                     throw e;
@@ -2135,7 +2153,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     }
                 } catch (InvalidParameterValueException exception) {
                     throw new FactoryException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SET_PARAMETER_VALUE_$1), name), exception);
+                            MessageFormat.format(
+                                    "Can't set a value to the parameter \"{0}\".", name),
+                            exception);
                 }
             }
         }
@@ -2601,7 +2621,9 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                 result.close();
                                 final Object arg0 = method.getName().getCode();
                                 throw new FactoryException(
-                                        MessageFormat.format(Errors.getPattern(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1), arg0, exception));
+                                        MessageFormat.format(
+                                                "Geotools extension required for \"{0}\" operation.",
+                                                arg0, exception));
                             }
                         /*
                          * At this stage, the parameters are ready for use. Creates the math transform
@@ -2615,7 +2637,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         } else {
                             result.close();
                             throw new FactoryException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+                                    MessageFormat.format(
+                                            "Type \"{0}\" is unknow in this context.", type));
                         }
                         final MathTransform mt =
                                 factories
@@ -2849,14 +2872,20 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     /** Constructs an exception for recursive calls. */
     private static FactoryException recursiveCall(
             final Class<? extends IdentifiedObject> type, final String code) {
-        return new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.RECURSIVE_CALL_$2), type, code));
+        return new FactoryException(
+                MessageFormat.format(
+                        "Recursive call while creating a '{0}' object for code \"{1}\".",
+                        type, code));
     }
 
     /** Constructs an exception for a database failure. */
     private static FactoryException databaseFailure(
             final Class<? extends Object> type, final String code, final SQLException cause) {
         return new FactoryException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.DATABASE_FAILURE_$2), type, code), cause);
+                MessageFormat.format(
+                        "Database failure while creating a '{0}' object for code \"{1}\".",
+                        type, code),
+                cause);
     }
 
     /**
@@ -3117,7 +3146,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 parameters.ppm = value;
                 break;
             default:
-                throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), code));
+                throw new FactoryException(
+                        MessageFormat.format("Parameter \"{0}\" was not expected.", code));
         }
     }
 

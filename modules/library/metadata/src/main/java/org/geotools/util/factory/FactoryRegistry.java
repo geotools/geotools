@@ -41,8 +41,6 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.geotools.api.filter.Filter;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
@@ -352,7 +350,7 @@ public class FactoryRegistry {
                 if (debug) {
                     debug("THROW", category, key, "unexpected type:", valueClass);
                 }
-                throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_KEY_$1), key));
+                throw new IllegalArgumentException(MessageFormat.format("Illegal key: {0}", key));
             }
             if (hints != null) {
                 final Object hint = hints.get(key);
@@ -445,7 +443,7 @@ public class FactoryRegistry {
         }
         final Object arg0 = implementation != null ? implementation : category;
         throw new FactoryNotFoundException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), arg0));
+                MessageFormat.format("No factory of kind \"{0}\" found.", arg0));
     }
 
     /**
@@ -1064,7 +1062,9 @@ public class FactoryRegistry {
                                 }
                             } catch (Exception exception) {
                                 throw new FactoryRegistryException(
-                                        MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CREATE_FACTORY_$1), classname),
+                                        MessageFormat.format(
+                                                "Can't create a factory of type \"{0}\".",
+                                                classname),
                                         exception);
                             }
                         /*

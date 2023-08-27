@@ -89,8 +89,6 @@ import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -969,7 +967,8 @@ public class GranuleDescriptor {
         }
         if (rasterGranule == null && exceptionOnNullGranule) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "granuleLocation", granuleLocation));
+                    MessageFormat.format(
+                            "Illegal argument: \"{0}={1}\".", "granuleLocation", granuleLocation));
         }
         return rasterGranule;
     }

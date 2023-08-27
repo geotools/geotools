@@ -67,8 +67,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -243,7 +241,7 @@ public final class GridCoverageRenderer {
         this.destinationCRS = destinationCRS;
         if (this.destinationCRS == null) {
             throw new TransformException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), this.destinationCRS));
+                    MessageFormat.format("Can't separate CRS \"{0}\".", this.destinationCRS));
         }
         destinationEnvelope =
                 new GeneralEnvelope(new ReferencedEnvelope(envelope, this.destinationCRS));
@@ -924,11 +922,12 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "graphics"));
+            throw new NullPointerException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "graphics"));
         }
         if (gridCoverage == null) {
             throw new NullPointerException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "gridCoverage"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "gridCoverage"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))
@@ -964,11 +963,13 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "graphics"));
+            throw new NullPointerException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "graphics"));
         }
         if (gridCoverageReader == null) {
             throw new NullPointerException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "gridCoverageReader"));
+                    MessageFormat.format(
+                            "Argument \"{0}\" should not be null.", "gridCoverageReader"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))

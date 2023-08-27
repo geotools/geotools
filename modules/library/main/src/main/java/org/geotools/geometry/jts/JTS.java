@@ -42,8 +42,6 @@ import org.geotools.geometry.AbstractDirectPosition;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.util.ShapeUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -126,7 +124,8 @@ public final class JTS {
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 
@@ -184,7 +183,7 @@ public final class JTS {
                 || transform.getSourceDimensions() < 2) {
             final Object arg0 = Classes.getShortClassName(transform);
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_TRANSFORM_$1), arg0));
+                    MessageFormat.format("Illegal transform of type \"{0}\".", arg0));
         }
 
         npoints++; // for the starting point.
@@ -519,7 +518,7 @@ public final class JTS {
             return envelope.transform(DefaultGeographicCRS.WGS84, true);
         } catch (FactoryException exception) {
             throw new TransformPathNotFoundException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_TRANSFORM_ENVELOPE), exception));
+                    MessageFormat.format("Can't transform envelope.", exception));
         }
     }
     /**
@@ -844,7 +843,9 @@ public final class JTS {
                 final Object arg0 = crs.getName().getCode();
                 final Object arg1 = implicitCRS.getName().getCode();
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2), arg0, arg1));
+                        MessageFormat.format(
+                                "The envelope uses an incompatible CRS: was \"{1}\" while we expected \"{0}\".",
+                                arg0, arg1));
             }
         }
 
@@ -852,7 +853,7 @@ public final class JTS {
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
         if (crs2D == null)
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), crs));
+                    MessageFormat.format("Can't separate CRS \"{0}\".", crs));
 
         return new Envelope2D(
                 crs2D,
@@ -1054,7 +1055,8 @@ public final class JTS {
 
                 return geometry; // The extra Z values will be ignored
             } catch (FactoryException exception) {
-                throw new TransformException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REPROJECT_$1), crs));
+                throw new TransformException(
+                        MessageFormat.format("Can't reproject grid coverage \"{0}\".", crs));
             }
         } else if (CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
             return geom;
@@ -1063,7 +1065,8 @@ public final class JTS {
                 MathTransform transform = CRS.findMathTransform(crs, DefaultGeographicCRS.WGS84);
                 return transform(geom, transform);
             } catch (FactoryException exception) {
-                throw new TransformException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REPROJECT_$1), crs));
+                throw new TransformException(
+                        MessageFormat.format("Can't reproject grid coverage \"{0}\".", crs));
             }
         }
     }

@@ -28,8 +28,6 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.NamedIdentifier;
@@ -112,7 +110,7 @@ public abstract class Operation2D extends AbstractOperation {
         Utilities.ensureNonNull("sourceNames", sourceNames);
         Utilities.ensureNonNull("sources", sources);
         if (sources.length != sourceNames.length) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException("Mismatched array length.");
         }
         for (int i = 0; i < sourceNames.length; i++) {
             Object candidate = parameters.parameter(sourceNames[i]).getValue();
@@ -122,7 +120,9 @@ public abstract class Operation2D extends AbstractOperation {
             }
             if (!(candidate instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), Classes.getClass(candidate), GridCoverage2D.class),
+                        MessageFormat.format(
+                                "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                Classes.getClass(candidate), GridCoverage2D.class),
                         sourceNames[i],
                         candidate);
             }

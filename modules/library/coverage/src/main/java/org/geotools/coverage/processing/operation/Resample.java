@@ -40,8 +40,6 @@ import org.geotools.coverage.processing.Operation2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -257,7 +255,8 @@ public class Resample extends Operation2D {
         } catch (FactoryException | TransformException exception) {
             final Object arg0 = source.getName();
             throw new CannotReprojectException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REPROJECT_$1), arg0), exception);
+                    MessageFormat.format("Can't reproject grid coverage \"{0}\".", arg0),
+                    exception);
         }
     }
 

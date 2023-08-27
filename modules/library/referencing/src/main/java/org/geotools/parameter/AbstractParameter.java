@@ -24,13 +24,10 @@ import java.io.Serializable;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.text.MessageFormat;
-
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.TableWriter;
@@ -81,7 +78,8 @@ public abstract class AbstractParameter extends Formattable
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 
@@ -98,7 +96,8 @@ public abstract class AbstractParameter extends Formattable
             throws IllegalArgumentException {
         if (array[index] == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name + '[' + index + ']'));
+                    MessageFormat.format(
+                            "Argument \"{0}\" should not be null.", name + '[' + index + ']'));
         }
     }
 
@@ -115,7 +114,9 @@ public abstract class AbstractParameter extends Formattable
             final Class<?> valueClass = value.getClass();
             if (!expectedClass.isAssignableFrom(valueClass)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), valueClass, expectedClass));
+                        MessageFormat.format(
+                                "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                valueClass, expectedClass));
             }
         }
     }
@@ -127,7 +128,7 @@ public abstract class AbstractParameter extends Formattable
     static IllegalStateException unitlessParameter(final GeneralParameterDescriptor descriptor) {
         final Object arg0 = getName(descriptor);
         return new IllegalStateException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.UNITLESS_PARAMETER_$1), arg0));
+                MessageFormat.format("Parameter \"{0}\" has no unit.", arg0));
     }
 
     /**

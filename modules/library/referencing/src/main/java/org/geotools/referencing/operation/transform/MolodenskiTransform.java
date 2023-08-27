@@ -39,8 +39,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.api.util.GenericName;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -762,7 +760,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
                 default:
                     {
                         throw new IllegalArgumentException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dim", dim));
+                                MessageFormat.format("Illegal argument: \"{0}={1}\".", "dim", dim));
                     }
             }
             final double a = doubleValue(SRC_SEMI_MAJOR, values);

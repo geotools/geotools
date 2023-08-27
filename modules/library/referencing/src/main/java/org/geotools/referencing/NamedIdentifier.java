@@ -39,8 +39,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.LocalName;
 import org.geotools.api.util.NameSpace;
 import org.geotools.api.util.ScopedName;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
@@ -373,7 +371,9 @@ public class NamedIdentifier
         } catch (ClassCastException exception) {
             InvalidParameterValueException e =
                     new InvalidParameterValueException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), key, value), key, value);
+                            MessageFormat.format("Illegal argument: \"{0}={1}\".", key, value),
+                            key,
+                            value);
             e.initCause(exception);
             throw e;
         }
@@ -394,7 +394,9 @@ public class NamedIdentifier
             throws IllegalArgumentException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name), name, object);
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name),
+                    name,
+                    object);
         }
     }
 

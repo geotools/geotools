@@ -18,8 +18,6 @@ package org.geotools.referencing.operation.matrix;
 
 import java.io.Serializable;
 import org.geotools.api.referencing.operation.Matrix;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.
@@ -67,7 +65,7 @@ public class Matrix2 implements XMatrix, Serializable {
      */
     public Matrix2(final Matrix matrix) {
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            throw new IllegalArgumentException("Illegal matrix size.");
         }
         m00 = matrix.getElement(0, 0);
         m01 = matrix.getElement(0, 1);
@@ -81,7 +79,7 @@ public class Matrix2 implements XMatrix, Serializable {
             return (Matrix2) matrix;
         } else {
             if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
-                throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+                throw new IllegalArgumentException("Illegal matrix size.");
             }
             return new Matrix2(matrix);
         }

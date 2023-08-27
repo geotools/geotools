@@ -22,8 +22,6 @@ package org.geotools.util;
 import java.text.MessageFormat;
 import java.util.Locale;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A {@linkplain String string} that has been internationalized into several {@linkplain Locale
@@ -67,7 +65,8 @@ public abstract class AbstractInternationalString implements InternationalString
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 

@@ -43,7 +43,6 @@ import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.operation.CylindricalProjection;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -418,7 +417,7 @@ public class TransverseMercator extends MapProjection {
             return getZone(-52.5, -3);
         }
         // unknown
-        throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNKNOW_PROJECTION_TYPE));
+        throw new IllegalStateException("Unknow projection type.");
     }
 
     /**
@@ -440,7 +439,7 @@ public class TransverseMercator extends MapProjection {
             return getCentralMedirian(-52.5, -3);
         }
         // unknown
-        throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNKNOW_PROJECTION_TYPE));
+        throw new IllegalStateException("Unknow projection type.");
     }
 
     /** Returns a hash value for this projection. */

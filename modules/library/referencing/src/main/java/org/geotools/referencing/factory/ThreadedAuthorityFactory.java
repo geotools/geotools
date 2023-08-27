@@ -68,8 +68,6 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Utilities;
@@ -219,7 +217,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      */
     AbstractAuthorityFactory getBackingStore() throws FactoryException {
         if (backingStore == null) {
-            throw new FactoryException(Errors.getPattern(ErrorKeys.DISPOSED_FACTORY));
+            throw new FactoryException("The factory has been disposed.");
         }
         return backingStore;
     }

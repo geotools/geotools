@@ -29,8 +29,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.math.XMath;
 import org.geotools.util.Classes;
 import org.geotools.util.logging.LoggedFormat;
@@ -521,7 +519,7 @@ public class AngleFormat extends Format {
                         widthDecimal = 0;
                         decimalSeparator = true;
                         throw new IllegalArgumentException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1), pattern));
+                                MessageFormat.format("Illegal angle pattern: {0}", pattern));
                     }
                     if (c == upperCaseC) {
                         /*
@@ -559,7 +557,8 @@ public class AngleFormat extends Format {
                             default:
                                 {
                                     throw new IllegalArgumentException(
-                                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1), pattern));
+                                            MessageFormat.format(
+                                                    "Illegal angle pattern: {0}", pattern));
                                 }
                         }
                         int w = 1;
@@ -669,7 +668,7 @@ public class AngleFormat extends Format {
             if (minutes < 0 || minutes > 60) {
                 // Erreur d'arrondissement (parce que l'angle est trop élevé)
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ANGLE_OVERFLOW_$1), angle));
+                        MessageFormat.format("Angle {0} is too high.", angle));
             }
             if (width2 != 0) {
                 tmp = (int) minutes; // Arrondie vers 0 même si négatif.
@@ -678,7 +677,7 @@ public class AngleFormat extends Format {
                 if (secondes < 0 || secondes > 60) {
                     // Erreur d'arrondissement (parce que l'angle est trop élevé)
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ANGLE_OVERFLOW_$1), angle));
+                            MessageFormat.format("Angle {0} is too high.", angle));
                 }
                 tmp = (int) (secondes / 60);
                 secondes -= 60 * tmp;
@@ -851,7 +850,9 @@ public class AngleFormat extends Format {
             return numberFormat.format(obj, toAppendTo, (pos != null) ? pos : dummy);
         }
         throw new IllegalArgumentException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1), Classes.getClass(obj)));
+                MessageFormat.format(
+                        "Can't format object of class \"{1}\" as an angle.",
+                        Classes.getClass(obj)));
     }
 
     /**

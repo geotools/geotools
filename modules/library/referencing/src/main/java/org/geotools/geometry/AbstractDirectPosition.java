@@ -16,15 +16,12 @@
  */
 package org.geotools.geometry;
 
+import java.text.MessageFormat;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-
-import java.text.MessageFormat;
 
 /**
  * Base class for {@linkplain DirectPosition direct position} implementations. This base class
@@ -104,7 +101,9 @@ public abstract class AbstractDirectPosition implements DirectPosition {
             if (dimension != expected) {
                 final Object arg0 = crs.getName().getCode();
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), arg0, dimension, expected));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                arg0, dimension, expected));
             }
         }
     }
@@ -123,7 +122,9 @@ public abstract class AbstractDirectPosition implements DirectPosition {
             throws MismatchedDimensionException {
         if (dimension != expectedDimension) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), name, dimension, expectedDimension));
+                    MessageFormat.format(
+                            "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                            name, dimension, expectedDimension));
         }
     }
 

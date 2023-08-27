@@ -27,7 +27,6 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.text.MessageFormat;
-
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.metadata.Identifier;
@@ -44,8 +43,6 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.util.ShapeUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -150,7 +147,9 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     private static String constructMessage(
             final String argument, final int dimension, final int expected) {
-        return MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), argument, dimension, expected);
+        return MessageFormat.format(
+                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                argument, dimension, expected);
     }
 
     /**
@@ -523,7 +522,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (dimSource != 2) {
             throw new MismatchedDimensionException(constructMessage("point", 2, dimSource));
         }
-        throw new TransformException(Errors.getPattern(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
+        throw new TransformException("Can't compute derivative.");
     }
 
     /**
@@ -569,7 +568,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
                 return new Matrix1(((MathTransform1D) this).derivative(point.getOrdinate(0)));
             }
         }
-        throw new TransformException(Errors.getPattern(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
+        throw new TransformException("Can't compute derivative.");
     }
 
     /**
@@ -582,7 +581,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (isIdentity()) {
             return this;
         }
-        throw new NoninvertibleTransformException(Errors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+        throw new NoninvertibleTransformException("Transform is not invertible.");
     }
 
     /**
@@ -678,7 +677,9 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name), name, object);
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name),
+                    name,
+                    object);
         }
     }
 
@@ -810,8 +811,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
             return m;
         } catch (SingularMatrixException exception) {
             NoninvertibleTransformException e =
-                    new NoninvertibleTransformException(
-                            Errors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+                    new NoninvertibleTransformException("Transform is not invertible.");
             e.initCause(exception);
             throw e;
         }

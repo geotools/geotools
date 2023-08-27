@@ -66,8 +66,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.ImagingParameterDescriptors;
@@ -414,7 +412,7 @@ public class BandMerge extends OperationJAI {
                 || ((Collection) srcCoverages).isEmpty()
                 || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
             throw new InvalidParameterValueException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "sources"),
+                    MessageFormat.format("Illegal value for argument \"{0}\".", "sources"),
                     "sources",
                     srcCoverages);
         }

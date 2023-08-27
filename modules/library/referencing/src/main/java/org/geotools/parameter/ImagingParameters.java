@@ -38,8 +38,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.Utilities;
@@ -234,7 +232,9 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
                     if (AbstractIdentifiedObject.nameMatches(d, name)) {
                         final Object arg0 = d.getName().getCode();
                         throw new InvalidParameterNameException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.PARAMETER_NAME_CLASH_$4), arg0, j, name, i),
+                                MessageFormat.format(
+                                        "Name or alias for parameter \"{0}\" at index {1} conflict with name \"{2}\" at index {3}.",
+                                        arg0, j, name, i),
                                 name);
                     }
                 }
@@ -288,7 +288,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
             }
         }
         throw new ParameterNotFoundException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
+                MessageFormat.format("Parameter \"{0}\" is missing.", name), name);
     }
 
     /**
@@ -298,7 +298,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     @Override
     public List<ParameterValueGroup> groups(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
+                MessageFormat.format("Parameter \"{0}\" is missing.", name), name);
     }
 
     /**
@@ -308,7 +308,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     @Override
     public ParameterValueGroup addGroup(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
+                MessageFormat.format("Parameter \"{0}\" is missing.", name), name);
     }
 
     /** Compares the specified object with this parameter group for equality. */

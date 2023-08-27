@@ -39,8 +39,6 @@ import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.measure.Latitude;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Lambert Conical Conformal Projection. Areas and shapes are deformed as one moves away from
@@ -157,7 +155,7 @@ public abstract class LambertConformal extends MapProjection {
             final Object arg0 = new Latitude(toDegrees(phi1));
             final Object arg1 = new Latitude(toDegrees(phi2));
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ANTIPODE_LATITUDES_$2), arg0, arg1));
+                    MessageFormat.format("Latitudes {0} and {1} are opposite.", arg0, arg1));
         }
         final double cosphi1 = cos(phi1);
         final double sinphi1 = sin(phi1);

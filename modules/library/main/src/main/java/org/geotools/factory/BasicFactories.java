@@ -31,8 +31,6 @@ import org.geotools.api.referencing.datum.DatumFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.util.NameFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.FactoryNotFoundException;
@@ -93,7 +91,7 @@ public class BasicFactories {
      */
     private static String unsupportedFactory(final Class type) {
         final Object arg0 = Classes.getShortName(type);
-        return MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), arg0);
+        return MessageFormat.format("No factory of kind \"{0}\" found.", arg0);
     }
 
     /**

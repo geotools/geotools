@@ -16,9 +16,6 @@
  */
 package org.geotools.util;
 
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-
 import java.text.MessageFormat;
 
 /**
@@ -49,7 +46,7 @@ public class UnsupportedImplementationException extends UnsupportedOperationExce
      * @param classe The unexpected implementation class.
      */
     public UnsupportedImplementationException(final Class<?> classe) {
-        super(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), classe));
+        super(MessageFormat.format("Type \"{0}\" is unknow in this context.", classe));
     }
 
     /**
@@ -59,6 +56,6 @@ public class UnsupportedImplementationException extends UnsupportedOperationExce
      * @param cause The cause for the exception.
      */
     public UnsupportedImplementationException(final Class<?> classe, final Exception cause) {
-        super(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), classe), cause);
+        super(MessageFormat.format("Type \"{0}\" is unknow in this context.", classe), cause);
     }
 }

@@ -130,7 +130,7 @@ public class Arguments {
                 default:
                     illegalArgument(
                             new IllegalArgumentException(
-                                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_LOCALE_$1), locale)));
+                                    MessageFormat.format("Bad local: {0}", locale)));
             }
         }
         return Locale.getDefault();

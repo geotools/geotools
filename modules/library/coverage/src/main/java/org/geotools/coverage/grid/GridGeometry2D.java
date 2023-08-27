@@ -44,7 +44,6 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.TransformedDirectPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -590,7 +589,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             }
         }
         throw new IllegalArgumentException(
-                Errors.getPattern(ErrorKeys.NO_TRANSFORM2D_AVAILABLE), cause);
+                "No two-dimensional transform available for this geometry.", cause);
     }
 
     /**
@@ -609,7 +608,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 return gridToCRS2D.inverse();
             } catch (NoninvertibleTransformException exception) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_TRANSFORM_$1), Classes.getClass(gridToCRS2D)),
+                        MessageFormat.format(
+                                "Illegal transform of type \"{0}\".",
+                                Classes.getClass(gridToCRS2D)),
                         exception);
             }
     }
@@ -633,7 +634,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
         } catch (FactoryException exception) {
             final Object arg1 = crs.getName();
             throw new InvalidGridGeometryException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "crs", arg1), exception);
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "crs", arg1), exception);
         }
         return crs;
     }
@@ -993,7 +994,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
             CoordinateReferenceSystem targetCRS = getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2), sourceCRS, targetCRS));
+                        MessageFormat.format(
+                                "Coordinate system of type '{0}' are incompatible with CRS of type '{1}'.",
+                                sourceCRS, targetCRS));
             }
         }
 
@@ -1040,7 +1043,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
         } else {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1), point));
+                    MessageFormat.format("Coordinate ({0}) is outside coverage.", point));
         }
     }
 
@@ -1076,7 +1079,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
 
         } else {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1), gridEnv));
+                    MessageFormat.format("Coordinate ({0}) is outside coverage.", gridEnv));
         }
     }
 
@@ -1105,7 +1108,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 } catch (TransformException exception) {
                     final Object arg0 = AbstractGridCoverage.toString(point, Locale.getDefault());
                     throw new CannotEvaluateException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_EVALUATE_$1), arg0),
+                            MessageFormat.format(
+                                    "Can't evaluate a value for coordinate ({0}).", arg0),
                             exception);
                 }
                 return arbitraryToInternal.toPoint2D();
@@ -1123,7 +1127,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
         if (point.getDimension() < 2) {
             final Object arg0 = point.getDimension();
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), arg0, 2));
+                    MessageFormat.format("Mismatched object dimension: {0}D and {1}D.", arg0, 2));
         }
 
         if (point instanceof Point2D) {
@@ -1150,7 +1154,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
             } catch (TransformException exception) {
                 final Object arg0 = AbstractGridCoverage.toString(point, Locale.getDefault());
                 throw new CannotEvaluateException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_EVALUATE_$1), arg0, exception));
+                        MessageFormat.format(
+                                "Can't evaluate a value for coordinate ({0}).", arg0, exception));
             }
         }
         throw new InvalidGridGeometryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
@@ -1239,7 +1244,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 label = Integer.valueOf(i);
             }
             if (range.getLow(i) != min || range.getSpan(i) != length) {
-                return MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_GRID_RANGE_$3), label, min, min + length);
+                return MessageFormat.format(
+                        "Illegal grid range [{1} .. {2}] for dimension {0}.",
+                        label, min, min + length);
             }
         }
         return null;

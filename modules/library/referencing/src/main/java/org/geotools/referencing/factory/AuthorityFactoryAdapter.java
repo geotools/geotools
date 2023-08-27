@@ -69,8 +69,6 @@ import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactor
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
@@ -502,7 +500,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         if (caller == null) {
             return null;
         }
-        throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1), caller));
+        throw new FactoryException(
+                MessageFormat.format("Geotools extension required for \"{0}\" operation.", caller));
     }
 
     /**
@@ -1062,7 +1061,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      */
     private FactoryException missingFactory(final Class category, final String code) {
         return new NoSuchAuthorityCodeException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.FACTORY_NOT_FOUND_$1), category),
+                MessageFormat.format("No factory of kind \"{0}\" found.", category),
                 Citations.getIdentifier(getAuthority()),
                 trimAuthority(code));
     }
@@ -1076,7 +1075,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         try {
             return getAuthorityFactory(null);
         } catch (FactoryException cause) {
-            throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNDEFINED_PROPERTY), cause);
+            throw new IllegalStateException("Undefined property.", cause);
         }
     }
 
@@ -1108,7 +1107,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
             f = getCoordinateOperationAuthorityFactory(code);
         } else {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "type", type));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "type", type));
         }
         return type.cast(f);
     }

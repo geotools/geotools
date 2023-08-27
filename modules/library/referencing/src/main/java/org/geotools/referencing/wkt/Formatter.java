@@ -46,8 +46,6 @@ import org.geotools.api.util.CodeList;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
 import org.geotools.measure.UnitFormatter;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.math.XMath;
 import org.geotools.referencing.CRS;
@@ -224,11 +222,12 @@ public class Formatter {
         this.indentation = indentation;
         if (symbols == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "symbols"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "symbols"));
         }
         if (indentation < 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "indentation", indentation));
+                    MessageFormat.format(
+                            "Illegal argument: \"{0}={1}\".", "indentation", indentation));
         }
         numberFormat = (NumberFormat) symbols.numberFormat.clone();
         buffer = new StringBuffer();
@@ -765,7 +764,8 @@ public class Formatter {
      */
     public void setLinearUnit(final Unit<Length> unit) {
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_LINEAR_UNIT_$1), unit));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("\"{0}\" is not a linear unit.", unit));
         }
         linearUnit = unit;
     }
@@ -788,7 +788,8 @@ public class Formatter {
      */
     public void setAngularUnit(final Unit<Angle> unit) {
         if (unit != null && (!SI.RADIAN.isCompatible(unit) || AbstractUnit.ONE.equals(unit))) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_ANGULAR_UNIT_$1), unit));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Not an angular unit: \"{0}\".", unit));
         }
         angularUnit = unit;
     }

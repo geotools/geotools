@@ -26,8 +26,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.CRS;
 
@@ -52,7 +50,8 @@ public class BaseCoverageAlgebraProcess {
                     coverageA == null
                             ? (coverageB == null ? "coverageA and coverageB" : "coverageA")
                             : "coverageB";
-            throw new ProcessException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), coveragesNull));
+            throw new ProcessException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", coveragesNull));
         }
 
         //
@@ -96,7 +95,8 @@ public class BaseCoverageAlgebraProcess {
             throws ProcessException {
         if (coverages == null || coverages.isEmpty()) {
             throw new ProcessException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "Input coverage List"));
+                    MessageFormat.format(
+                            "Argument \"{0}\" should not be null.", "Input coverage List"));
         }
 
         //

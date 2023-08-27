@@ -32,8 +32,6 @@ import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 
 /**
@@ -111,7 +109,7 @@ public abstract class AbstractParser extends Format {
     public void setAuthority(final Citation authority) {
         if (authority == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "authority"));
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "authority"));
         }
         getFormatter().setAuthority(authority);
     }
@@ -303,7 +301,7 @@ public abstract class AbstractParser extends Format {
             }
         } catch (InvalidParameterValueException exception) {
             final Object arg0 = exception.getParameterName();
-            err.print(MessageFormat.format(Errors.getPattern(ErrorKeys.IN_$1), arg0));
+            err.print(MessageFormat.format("Error in \"{0}\":", arg0));
             err.print(' ');
             err.println(exception.getLocalizedMessage());
         }
@@ -322,7 +320,9 @@ public abstract class AbstractParser extends Format {
             if (formatter.warning != null) {
                 return formatter.warning;
             }
-            return MessageFormat.format(Errors.getPattern(ErrorKeys.INVALID_WKT_FORMAT_$1), formatter.getUnformattableClass());
+            return MessageFormat.format(
+                    "This \"{0}\" object is too complex for WKT syntax.",
+                    formatter.getUnformattableClass());
         }
         return null;
     }

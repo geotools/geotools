@@ -71,8 +71,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.CRS;
@@ -282,7 +280,9 @@ final class Resampler2D extends GridCoverage2D {
                 if (!CRS.equalsIgnoreMetadata(targetCRS, targetGGCRS)
                         && !CRS.findMathTransform(targetCRS, targetGGCRS).isIdentity()) {
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "TargetCRS must be compatible with TargetGG CRS"));
+                            MessageFormat.format(
+                                    "Illegal value for argument \"{0}\".",
+                                    "TargetCRS must be compatible with TargetGG CRS"));
                 }
             }
         }
@@ -463,7 +463,7 @@ final class Resampler2D extends GridCoverage2D {
             }
         } else {
             if (sourceCRS == null) {
-                throw new CannotReprojectException(Errors.getPattern(ErrorKeys.UNSPECIFIED_CRS));
+                throw new CannotReprojectException("Coordinate reference system is unspecified.");
             }
             final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
             final boolean force2D = (sourceCRS != compatibleSourceCRS);
@@ -525,7 +525,8 @@ final class Resampler2D extends GridCoverage2D {
         if (!(allSteps2D instanceof MathTransform2D)) {
             // Should not happen with Geotools implementations. May happen
             // with some external implementations, but should stay unusual.
-            throw new TransformException(Errors.getPattern(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+            throw new TransformException(
+                    "No two-dimensional transform available for this geometry.");
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -991,7 +992,7 @@ final class Resampler2D extends GridCoverage2D {
         if (candidate instanceof MathTransform2D) {
             return (MathTransform2D) candidate;
         }
-        throw new FactoryException(Errors.getPattern(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+        throw new FactoryException("No two-dimensional transform available for this geometry.");
     }
 
     /**

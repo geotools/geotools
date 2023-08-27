@@ -67,8 +67,6 @@ import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -238,7 +236,8 @@ public class Parser extends MathTransformParser {
                 assert isValid(r, keyword) : element;
             }
         }
-        throw element.parseFailed(null, MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), key));
+        throw element.parseFailed(
+                null, MessageFormat.format("Type \"{0}\" is unknow in this context.", key));
     }
 
     /**
@@ -448,7 +447,9 @@ public class Parser extends MathTransformParser {
         element.close();
 
         if (direction == null) {
-            throw element.parseFailed(null, MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), orientation));
+            throw element.parseFailed(
+                    null,
+                    MessageFormat.format("Type \"{0}\" is unknow in this context.", orientation));
         }
         try {
             return createAxis(properties, name, direction, unit);
@@ -657,8 +658,7 @@ public class Parser extends MathTransformParser {
         } catch (ParameterNotFoundException exception) {
             final Object arg0 = exception.getParameterName();
             throw param.parseFailed(
-                    exception,
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), arg0));
+                    exception, MessageFormat.format("Parameter \"{0}\" was not expected.", arg0));
         }
         return parameters;
     }
@@ -734,7 +734,8 @@ public class Parser extends MathTransformParser {
         final VerticalDatumType type =
                 DefaultVerticalDatum.getVerticalDatumTypeFromLegacyCode(datum);
         if (type == null) {
-            throw element.parseFailed(null, MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), datum));
+            throw element.parseFailed(
+                    null, MessageFormat.format("Type \"{0}\" is unknow in this context.", datum));
         }
         try {
             return datumFactory.createVerticalDatum(properties, type);

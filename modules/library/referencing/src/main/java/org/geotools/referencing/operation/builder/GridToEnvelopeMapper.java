@@ -29,8 +29,6 @@ import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Utilities;
@@ -157,7 +155,8 @@ public class GridToEnvelopeMapper {
         final int userDim = userRange.getDimension();
         if (userDim != gridDim) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), gridDim, userDim));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.", gridDim, userDim));
         }
         this.gridRange = gridRange;
         this.envelope = userRange;
@@ -167,7 +166,8 @@ public class GridToEnvelopeMapper {
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 
@@ -188,7 +188,9 @@ public class GridToEnvelopeMapper {
             }
             if (dim1 != dim2) {
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), label, dim1, dim2));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                label, dim1, dim2));
             }
         }
     }
@@ -241,7 +243,7 @@ public class GridToEnvelopeMapper {
     public GridEnvelope getGridRange() throws IllegalStateException {
         if (gridRange == null) {
             throw new IllegalStateException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_VALUE_$1), "gridRange"));
+                    MessageFormat.format("Missing value for parameter \"{0}\".", "gridRange"));
         }
         return gridRange;
     }
@@ -270,7 +272,7 @@ public class GridToEnvelopeMapper {
     public Envelope getEnvelope() throws IllegalStateException {
         if (envelope == null) {
             throw new IllegalStateException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_VALUE_$1), "envelope"));
+                    MessageFormat.format("Missing value for parameter \"{0}\".", "envelope"));
         }
         return envelope;
     }
@@ -505,7 +507,8 @@ public class GridToEnvelopeMapper {
                 translate = 0.0;
             } else {
                 throw new IllegalStateException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "gridType", gridType));
+                        MessageFormat.format(
+                                "Illegal argument: \"{0}={1}\".", "gridType", gridType));
             }
             final Matrix matrix = MatrixFactory.create(dimension + 1);
             for (int i = 0; i < dimension; i++) {
@@ -544,6 +547,6 @@ public class GridToEnvelopeMapper {
         if (transform instanceof AffineTransform) {
             return (AffineTransform) transform;
         }
-        throw new IllegalStateException(Errors.getPattern(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+        throw new IllegalStateException("Transform is not affine.");
     }
 }

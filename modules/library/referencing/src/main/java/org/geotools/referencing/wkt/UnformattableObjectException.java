@@ -19,9 +19,6 @@ package org.geotools.referencing.wkt;
 import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-
 /**
  * Thrown by {@link Formattable#toWKT} when an object can't be formatted as WKT. A formatting may
  * fails because an object is too complex for the WKT format capability (for example an {@linkplain
@@ -80,7 +77,7 @@ public class UnformattableObjectException extends UnsupportedOperationException 
                 }
                 c = candidate;
             }
-            return MessageFormat.format(Errors.getPattern(ErrorKeys.INVALID_WKT_FORMAT_$1), c);
+            return MessageFormat.format("This \"{0}\" object is too complex for WKT syntax.", c);
         }
         return message;
     }

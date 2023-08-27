@@ -37,8 +37,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.Utilities;
 
@@ -196,7 +194,8 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
             if (count == null) {
                 final String name = getName(descriptor);
                 throw new InvalidParameterTypeException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1), name), name);
+                        MessageFormat.format("Illegal descriptor for parameter \"{0}\".", name),
+                        name);
             }
             count[0]++;
         }
@@ -211,7 +210,9 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
             if (!(count >= min && count <= max)) {
                 final String name = getName(descriptor);
                 throw new InvalidParameterCardinalityException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4), name, count, min, max),
+                        MessageFormat.format(
+                                "Parameter \"{0}\" occurs {1} time, while the expected range of occurences was [{2}..{3}].",
+                                name, count, min, max),
                         name);
             }
         }
@@ -303,7 +304,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
             }
         }
         throw new ParameterNotFoundException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
+                MessageFormat.format("Parameter \"{0}\" is missing.", name), name);
     }
 
     /**
@@ -340,7 +341,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
                     ((ParameterDescriptorGroup) descriptor).descriptor(name);
             if (!(check instanceof ParameterDescriptorGroup)) {
                 throw new ParameterNotFoundException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
+                        MessageFormat.format("Parameter \"{0}\" is missing.", name), name);
             }
         }
         return groups;
@@ -367,7 +368,7 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
                 ((ParameterDescriptorGroup) descriptor).descriptor(name);
         if (!(check instanceof ParameterDescriptorGroup)) {
             throw new ParameterNotFoundException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), name), name);
+                    MessageFormat.format("Parameter \"{0}\" is missing.", name), name);
         }
         int count = 0;
         for (final GeneralParameterValue value : values) {
@@ -377,7 +378,10 @@ public class ParameterGroup extends AbstractParameter implements ParameterValueG
         }
         if (count >= check.getMaximumOccurs()) {
             throw new InvalidParameterCardinalityException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.TOO_MANY_OCCURENCES_$2), name, count), name);
+                    MessageFormat.format(
+                            "Too many occurences of \"{0}\". There is already {1} of them.",
+                            name, count),
+                    name);
         }
         final ParameterValueGroup value = ((ParameterDescriptorGroup) check).createValue();
         values.add(value);

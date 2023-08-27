@@ -31,8 +31,6 @@ import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.api.referencing.datum.DatumAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -213,7 +211,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             if (!super.isAvailable()) {
                 // Connection failed, but the exception is not available.
                 datasource = null;
-                throw new SQLException(Errors.getPattern(ErrorKeys.NO_DATA_SOURCE));
+                throw new SQLException("No data source found.");
             }
         }
         return datasource;
@@ -360,7 +358,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
          */
         DataSource source = createDataSource();
         if (source == null) {
-            throw new FactoryNotFoundException(Errors.getPattern(ErrorKeys.NO_DATA_SOURCE));
+            throw new FactoryNotFoundException("No data source found.");
         }
         final AbstractAuthorityFactory factory;
         try {
@@ -395,7 +393,8 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             }
         } catch (SQLException exception) {
             throw new FactoryException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONNECT_DATABASE_$1), "EPSG"), exception);
+                    MessageFormat.format("Failed to connect to the {0} database.", "EPSG"),
+                    exception);
         }
         log(Loggings.format(Level.CONFIG, LoggingKeys.CONNECTED_EPSG_DATABASE_$2, url, product));
         if (factory instanceof DirectEpsgFactory) {

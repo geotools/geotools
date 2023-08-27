@@ -37,8 +37,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -252,7 +250,8 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
             URL url = getDefinitionsURL();
             if (url == null) {
                 throw new FactoryNotFoundException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), FILENAME));
+                        MessageFormat.format(
+                                "File does not exist or is unreadable: {0}", FILENAME));
             }
             final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
@@ -266,7 +265,8 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
             LOGGER.log(record);
             return new PropertyAuthorityFactory(factories, getAuthorities(), url);
         } catch (IOException exception) {
-            throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_READ_$1), FILENAME), exception);
+            throw new FactoryException(
+                    MessageFormat.format("Can't read file \"{0}\".", FILENAME), exception);
         }
     }
 

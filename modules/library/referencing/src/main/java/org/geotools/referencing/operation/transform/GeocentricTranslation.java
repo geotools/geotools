@@ -26,8 +26,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.FloatParameter;
@@ -412,7 +410,8 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 default:
                     final Object arg0 = dim.getName().getCode();
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), arg0, dimension));
+                            MessageFormat.format(
+                                    "Illegal argument: \"{0}={1}\".", arg0, dimension));
             }
             ensureValid(major, semiMajor);
             ensureValid(minor, semiMinor);
@@ -431,7 +430,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
             if (!(value > 0)) {
                 final Object arg0 = param.getName().getCode();
                 throw new IllegalStateException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), arg0));
+                        MessageFormat.format("Parameter \"{0}\" is missing.", arg0));
             }
         }
     }

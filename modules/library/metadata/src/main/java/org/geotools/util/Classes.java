@@ -28,8 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A set of miscellaneous methods working on {@link Class} objects.
@@ -477,7 +475,8 @@ public final class Classes {
         if (String.class.equals(type)) {
             return (T) value;
         }
-        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), type));
+        throw new IllegalArgumentException(
+                MessageFormat.format("Type \"{0}\" is unknow in this context.", type));
     }
 
     /**

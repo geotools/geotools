@@ -36,8 +36,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -658,7 +656,8 @@ public final class Utilities {
     public static void ensureNonNull(final String name, final Object object)
             throws NullPointerException {
         if (object == null) {
-            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new NullPointerException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 
@@ -673,7 +672,8 @@ public final class Utilities {
     public static void ensureArgumentNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 

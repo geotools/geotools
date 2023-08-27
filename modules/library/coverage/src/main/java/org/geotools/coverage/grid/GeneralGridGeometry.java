@@ -34,7 +34,6 @@ import org.geotools.api.util.Cloneable;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -345,7 +344,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             transformed = org.geotools.referencing.CRS.transform(cornerToCRS.inverse(), envelope);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_TRANSFORM_$1), Classes.getClass(gridToCRS)),
+                    MessageFormat.format(
+                            "Illegal transform of type \"{0}\".", Classes.getClass(gridToCRS)),
                     exception);
         }
 
@@ -657,7 +657,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK))
                 != 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "bitmask", bitmask));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "bitmask", bitmask));
         }
         return ((bitmask & CRS_BITMASK) == 0
                         || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
@@ -722,7 +722,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 }

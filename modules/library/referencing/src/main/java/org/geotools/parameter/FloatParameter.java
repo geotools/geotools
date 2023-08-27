@@ -27,7 +27,6 @@ import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 
 /**
@@ -69,7 +68,9 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         final Class expected = Double.class;
         if (!expected.equals(type) && !Double.TYPE.equals(type)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, expected));
+                    MessageFormat.format(
+                            "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                            type, expected));
         }
         final Number value = descriptor.getDefaultValue();
         this.value = (value != null) ? value.doubleValue() : Double.NaN;
@@ -125,7 +126,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         }
         final int expectedID = Parameter.getUnitMessageID(thisUnit);
         if (Parameter.getUnitMessageID(unit) != expectedID) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(expectedID), unit));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(Errors.getPattern(expectedID), unit));
         }
         return Units.getConverterToAny(thisUnit, unit).convert(value);
     }
@@ -218,7 +220,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
 
     /** Format an error message for illegal method call for the current value type. */
     private static String getClassTypeError() {
-        return MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1), Double.class);
+        return MessageFormat.format(
+                "This operation can't be applied to values of class '{0}'.", Double.class);
     }
 
     /**
@@ -250,7 +253,8 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         }
         final int expectedID = Parameter.getUnitMessageID(thisUnit);
         if (Parameter.getUnitMessageID(unit) != expectedID) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(expectedID), unit));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(Errors.getPattern(expectedID), unit));
         }
         value = Units.getConverterToAny(unit, thisUnit).convert(value);
         this.value = Parameter.ensureValidValue(descriptor, Double.valueOf(value));

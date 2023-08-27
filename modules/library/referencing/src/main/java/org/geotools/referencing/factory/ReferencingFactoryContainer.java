@@ -44,8 +44,6 @@ import org.geotools.api.referencing.operation.Conversion;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.Matrix;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
@@ -464,7 +462,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
                 || dimensions[length - 1] >= crsDimension
                 || !XArray.isStrictlySorted(dimensions)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "dimension"));
+                    MessageFormat.format("Illegal value for argument \"{0}\".", "dimension"));
         }
         if (length == crsDimension) {
             return crs;
@@ -525,8 +523,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          *       which is why this method live in ReferencingFactoryContainer.
          */
         final Object arg0 = crs.getName().getCode();
-        throw new FactoryException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), arg0));
+        throw new FactoryException(MessageFormat.format("Can't separate CRS \"{0}\".", arg0));
     }
 
     /** Returns a temporary name for object derived from the specified one. */

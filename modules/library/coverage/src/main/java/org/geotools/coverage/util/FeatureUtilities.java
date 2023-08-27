@@ -46,8 +46,6 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
@@ -188,7 +186,7 @@ public final class FeatureUtilities {
         if (sourceCrs == null) {
             final Object arg0 = gridCoverageReader.getCoordinateReferenceSystem();
             throw new UnsupportedOperationException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), arg0));
+                    MessageFormat.format("Can't separate CRS \"{0}\".", arg0));
         }
 
         final Coordinate[] coord = new Coordinate[5];

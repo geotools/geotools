@@ -173,7 +173,11 @@ public class RangeLookupProcess implements RasterProcess {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(org.geotools.metadata.i18n.Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "classification ranges size", size));
+                            MessageFormat.format(
+                                    org.geotools.metadata.i18n.Errors.getPattern(
+                                            ErrorKeys.ILLEGAL_ARGUMENT_$2),
+                                    "classification ranges size",
+                                    size));
             }
         }
         worker.setROI(org.geotools.coverage.util.CoverageUtilities.getROIProperty(coverage));

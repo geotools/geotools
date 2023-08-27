@@ -73,8 +73,6 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -1175,7 +1173,7 @@ public final class CRS {
                 return Integer.parseInt(code);
             } catch (NumberFormatException e) {
                 throw new FactoryException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_IDENTIFIER_$1), identifier), e);
+                        MessageFormat.format("\"{0}\" is not a valid identifier.", identifier), e);
             }
         }
         return null;
@@ -1363,8 +1361,7 @@ public final class CRS {
                     try {
                         operation = factory.createOperation(sourceCRS, targetCRS);
                     } catch (FactoryException exception) {
-                        throw new TransformException(
-                                Errors.getPattern(ErrorKeys.CANT_TRANSFORM_ENVELOPE), exception);
+                        throw new TransformException("Can't transform envelope.", exception);
                     }
                     if (!operation.getMathTransform().isIdentity()) {
                         envelope = transform(operation, envelope);
@@ -1436,7 +1433,8 @@ public final class CRS {
         if (envelope.getDimension() != sourceDim) {
             final Object arg1 = envelope.getDimension();
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), sourceDim, arg1));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.", sourceDim, arg1));
         }
         int coordinateNumber = 0;
         GeneralEnvelope transformed = null;

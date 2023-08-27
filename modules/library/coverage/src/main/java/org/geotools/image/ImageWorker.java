@@ -138,8 +138,6 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.util.Arguments;
@@ -405,7 +403,8 @@ public class ImageWorker {
             return operation;
         }
 
-        throw new OperationNotFoundException(MessageFormat.format(Errors.getPattern(ErrorKeys.OPERATION_NOT_FOUND_$1), name));
+        throw new OperationNotFoundException(
+                MessageFormat.format("No such \"{0}\" operation for this processor.", name));
     }
 
     /**
@@ -1945,12 +1944,14 @@ public class ImageWorker {
 
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "datatype", datatype));
+                            MessageFormat.format(
+                                    "Illegal argument: \"{0}={1}\".", "datatype", datatype));
             }
 
             // did we initialized the LUT?
             if (lut == null)
-                throw new IllegalStateException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "lut"));
+                throw new IllegalStateException(
+                        MessageFormat.format("Argument \"{0}\" should not be null.", "lut"));
             /*
              * Get the default hints, which usually contains only information about tiling.
              * If the user override the rendering hints with an explicit color model,
@@ -2071,7 +2072,8 @@ public class ImageWorker {
 
                 default:
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "datatype", dataType));
+                            MessageFormat.format(
+                                    "Illegal argument: \"{0}={1}\".", "datatype", dataType));
             }
 
             // prepare color model and sample model
@@ -2569,7 +2571,7 @@ public class ImageWorker {
     public final ImageWorker retainBands(final int numBands) {
         if (numBands <= 0) {
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "numBands", numBands));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "numBands", numBands));
         }
         if (getNumBands() > numBands) {
             final int[] bands = new int[numBands];
@@ -2753,7 +2755,8 @@ public class ImageWorker {
             throws IllegalStateException {
         if (transparentColor == null) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "transparentColor"));
+                    MessageFormat.format(
+                            "Argument \"{0}\" should not be null.", "transparentColor"));
         }
         final ColorModel cm = image.getColorModel();
         if (cm instanceof IndexColorModel) {
@@ -2767,7 +2770,7 @@ public class ImageWorker {
                     // Add other types here if we support them...
             }
         }
-        throw new IllegalStateException(Errors.getPattern(ErrorKeys.UNSUPPORTED_DATA_TYPE));
+        throw new IllegalStateException("Unsupported data type.");
     }
 
     /**
@@ -3670,7 +3673,7 @@ public class ImageWorker {
         final String filename = output.getName();
         final int dot = filename.lastIndexOf('.');
         if (dot < 0) {
-            throw new IIOException(Errors.getPattern(ErrorKeys.NO_IMAGE_WRITER));
+            throw new IIOException("No suitable image writer for this output.");
         }
         final String extension = filename.substring(dot + 1).trim();
         write(output, ImageIO.getImageWritersBySuffix(extension));
@@ -3770,7 +3773,7 @@ public class ImageWorker {
             final Iterator<ImageWriter> it =
                     ImageIO.getImageWriters(new ImageTypeSpecifier(image), "PNG");
             if (!it.hasNext()) {
-                throw new IllegalStateException(Errors.getPattern(ErrorKeys.NO_IMAGE_WRITER));
+                throw new IllegalStateException("No suitable image writer for this output.");
             }
             while (it.hasNext()) {
                 writer = it.next();
@@ -3831,7 +3834,8 @@ public class ImageWorker {
         try (ImageOutputStream memOutStream =
                 ImageIOExt.createImageOutputStream(image, destination)) {
             if (memOutStream == null) {
-                throw new IIOException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "stream"));
+                throw new IIOException(
+                        MessageFormat.format("Argument \"{0}\" should not be null.", "stream"));
             }
             if (CLIB_PNG_IMAGE_WRITER_SPI != null
                     && originatingProvider
@@ -3898,11 +3902,12 @@ public class ImageWorker {
         forceIndexColorModelForGIF(true);
 
         if (IMAGEIO_GIF_IMAGE_WRITER_SPI == null) {
-            throw new IIOException(Errors.getPattern(ErrorKeys.NO_IMAGE_WRITER));
+            throw new IIOException("No suitable image writer for this output.");
         }
         try (ImageOutputStream stream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (stream == null)
-                throw new IIOException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "stream"));
+                throw new IIOException(
+                        MessageFormat.format("Argument \"{0}\" should not be null.", "stream"));
             final ImageWriter writer = IMAGEIO_GIF_IMAGE_WRITER_SPI.createWriterInstance();
             final ImageWriteParam param = writer.getDefaultWriteParam();
             param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -3975,7 +3980,9 @@ public class ImageWorker {
         if (writer == null) {
             if (JDK_JPEG_IMAGE_WRITER_SPI == null) {
                 throw new IllegalStateException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), "Unable to find JDK JPEG Writer"));
+                        MessageFormat.format(
+                                "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                "Unable to find JDK JPEG Writer"));
             }
             writer = JDK_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
         }
@@ -3985,7 +3992,8 @@ public class ImageWorker {
 
         try (ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (outStream == null) {
-                throw new IIOException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "stream"));
+                throw new IIOException(
+                        MessageFormat.format("Argument \"{0}\" should not be null.", "stream"));
             }
 
             iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -4073,7 +4081,7 @@ public class ImageWorker {
             LOGGER.finer("Unable to find ImageIO-Ext Tiff Writer, looking for another one");
             final Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("TIFF");
             if (!it.hasNext()) {
-                throw new IllegalStateException(Errors.getPattern(ErrorKeys.NO_IMAGE_WRITER));
+                throw new IllegalStateException("No suitable image writer for this output.");
             }
             writer = it.next();
         } else {
@@ -4088,7 +4096,8 @@ public class ImageWorker {
         final ImageWriteParam iwp = writer.getDefaultWriteParam();
         try (ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (outStream == null) {
-                throw new IIOException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "stream"));
+                throw new IIOException(
+                        MessageFormat.format("Argument \"{0}\" should not be null.", "stream"));
             }
 
             if (compression != null) {
@@ -5414,7 +5423,7 @@ public class ImageWorker {
                 return this;
             }
         }
-        throw new IIOException(Errors.getPattern(ErrorKeys.NO_IMAGE_WRITER));
+        throw new IIOException("No suitable image writer for this output.");
     }
 
     /** Returns {@code true} if the specified array contains the specified type. */

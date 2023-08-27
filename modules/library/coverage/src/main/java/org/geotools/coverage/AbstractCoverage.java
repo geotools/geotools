@@ -70,8 +70,6 @@ import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -259,7 +257,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                 type = type.getComponentType();
             }
         }
-        return MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONVERT_FROM_TYPE_$1), type);
+        return MessageFormat.format("Can't convert value from type '{0}'.", type);
     }
 
     /**
@@ -648,8 +646,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             final double boundsHeight = bounds.getHeight();
             if (!(width > 0)) { // Use '!' in order to catch NaN
                 if (!(height > 0)) {
-                    throw new IllegalArgumentException(
-                            Errors.getPattern(ErrorKeys.UNSPECIFIED_IMAGE_SIZE));
+                    throw new IllegalArgumentException("Unspecified image's size.");
                 }
                 width = (int) Math.round(height * (boundsWidth / boundsHeight));
             } else if (!(height > 0)) {
@@ -793,7 +790,9 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                         assert (y == gridBounds.y + gridBounds.height);
                     } catch (NoninvertibleTransformException exception) {
                         throw new IllegalArgumentException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "context"), exception);
+                                MessageFormat.format(
+                                        "Illegal value for argument \"{0}\".", "context"),
+                                exception);
                     }
                 image = tiled;
             }

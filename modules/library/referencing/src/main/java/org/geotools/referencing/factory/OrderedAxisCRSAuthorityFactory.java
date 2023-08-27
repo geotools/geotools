@@ -26,8 +26,6 @@ import javax.measure.Unit;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
@@ -250,7 +248,9 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
             if (previous != length) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.COLINEAR_AXIS_$2), axisOrder[previous].name(), axisOrder[i].name()));
+                        MessageFormat.format(
+                                "Axis {0} and {1} are colinear.",
+                                axisOrder[previous].name(), axisOrder[i].name()));
             }
             directionRanks[ordinal] = i;
         }

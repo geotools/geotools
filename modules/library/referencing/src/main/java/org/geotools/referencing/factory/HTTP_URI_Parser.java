@@ -17,12 +17,9 @@
 
 package org.geotools.referencing.factory;
 
-import org.geotools.api.referencing.NoSuchAuthorityCodeException;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.geotools.util.Version;
-
 import java.text.MessageFormat;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.util.Version;
 
 /**
  * Split an HTTP URI into its parts for {@link HTTP_URI_AuthorityFactory}. Must be immutable so
@@ -89,6 +86,8 @@ final class HTTP_URI_Parser extends URI_Parser {
             }
         }
         throw new NoSuchAuthorityCodeException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), uriText), AUTHORITY, uriText);
+                MessageFormat.format("Illegal value for argument \"{0}\".", uriText),
+                AUTHORITY,
+                uriText);
     }
 }

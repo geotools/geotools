@@ -18,12 +18,9 @@ package org.geotools.metadata.iso;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-
 import org.geotools.metadata.InvalidMetadataException;
 import org.geotools.metadata.MetadataStandard;
 import org.geotools.metadata.ModifiableMetadata;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A superclass for implementing ISO 19115 metadata interfaces. Subclasses must implement at least
@@ -79,7 +76,8 @@ public class MetadataEntity extends ModifiableMetadata implements Serializable {
     protected static void ensureNonNull(final String name, final Object object)
             throws InvalidMetadataException {
         if (object == null) {
-            throw new InvalidMetadataException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ATTRIBUTE_$1), name));
+            throw new InvalidMetadataException(
+                    MessageFormat.format("Attribute \"{0}\" should not be null.", name));
         }
     }
 }

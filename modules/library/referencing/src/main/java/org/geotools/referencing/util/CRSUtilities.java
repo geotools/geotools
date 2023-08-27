@@ -46,8 +46,6 @@ import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -195,7 +193,7 @@ public final class CRSUtilities {
         if (lower < 0 || lower > upper || upper > dimension) {
             final Object arg0 = lower < 0 ? lower : upper;
             throw new IndexOutOfBoundsException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1), arg0));
+                    MessageFormat.format("Index {0} is out of bounds.", arg0));
         }
         while (lower != 0 || upper != dimension) {
             final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -236,7 +234,9 @@ public final class CRSUtilities {
                 if (c == null) {
                     final Object arg0 = crs.getName();
                     throw new TransformException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), arg0));
+                            MessageFormat.format(
+                                    "Can't reduce \"{0}\" to a two-dimensional coordinate system.",
+                                    arg0));
                 }
                 crs = c.get(0);
             }
@@ -450,7 +450,7 @@ public final class CRSUtilities {
             final Object arg0 = crs.getName();
             exception =
                     new UnsupportedOperationException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_SEPARATE_CRS_$1), arg0));
+                            MessageFormat.format("Can't separate CRS \"{0}\".", arg0));
         } else
             try {
                 if (!CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs2D)) {

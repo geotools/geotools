@@ -36,8 +36,6 @@ import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.api.referencing.operation.Conversion;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -157,7 +155,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         if (!(value >= 0 && value <= max)) {
             // Use '!' in order to trap NaN
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", name, value));
         }
     }
 

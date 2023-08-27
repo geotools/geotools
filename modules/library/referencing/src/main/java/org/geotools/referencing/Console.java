@@ -38,8 +38,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.measure.Measure;
 import org.geotools.measure.UnitFormat;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.AbstractCRS;
@@ -398,7 +396,8 @@ public class Console extends AbstractConsole {
                 }
             }
         }
-        throw new ParseException(MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_INSTRUCTION_$1), instruction), 0);
+        throw new ParseException(
+                MessageFormat.format("Illegal instruction \"{0}\".", instruction), 0);
     }
 
     /** Executes the "{@code print crs}" instruction. */
@@ -596,7 +595,8 @@ public class Console extends AbstractConsole {
         final int targetDim = targetPosition.getDimension();
         if (sourceDim != targetDim) {
             throw new MismatchedDimensionException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), sourceDim, targetDim));
+                    MessageFormat.format(
+                            "Mismatched object dimension: {0}D and {1}D.", sourceDim, targetDim));
         }
         for (int i = 0; i < sourceDim; i++) {
             // Use '!' for catching NaN.
@@ -650,7 +650,7 @@ public class Console extends AbstractConsole {
             final Number result = numberFormat.parse(token, position);
             if (position.getIndex() != token.length()) {
                 throw new ParseException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.UNPARSABLE_NUMBER_$1), token),
+                        MessageFormat.format("Can't parse \"{0}\" as a number.", token),
                         position.getErrorIndex());
             }
             values[i] = result.doubleValue();
@@ -676,7 +676,7 @@ public class Console extends AbstractConsole {
      */
     private static ParseException unexpectedArgument(final String instruction) {
         return new ParseException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1), instruction), 0);
+                MessageFormat.format("Unexpected argument for operation \"{0}\".", instruction), 0);
     }
 
     /**

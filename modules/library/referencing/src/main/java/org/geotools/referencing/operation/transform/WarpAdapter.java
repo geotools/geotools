@@ -22,8 +22,6 @@ import java.text.MessageFormat;
 import javax.media.jai.Warp;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Wraps an arbitrary {@link MathTransform2D} into an image warp operation. This warp operation is
@@ -100,7 +98,8 @@ final class WarpAdapter extends Warp {
             // At least one transformation failed. In Geotools MapProjection
             // implementation, unprojected coordinates are set to (NaN,NaN).
             RasterFormatException e =
-                    new RasterFormatException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REPROJECT_$1), name));
+                    new RasterFormatException(
+                            MessageFormat.format("Can't reproject grid coverage \"{0}\".", name));
             e.initCause(exception);
             throw e;
         }
@@ -123,7 +122,9 @@ final class WarpAdapter extends Warp {
             result = inverse.transform(result, result);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_PARAMETER_$2), "destPt", destPt), exception);
+                    MessageFormat.format(
+                            "Parameter \"{0}\" can't have value \"{1}\".", "destPt", destPt),
+                    exception);
         }
         result.setLocation(result.getX() - 0.5, result.getY() - 0.5);
         return result;
@@ -142,7 +143,9 @@ final class WarpAdapter extends Warp {
             result = inverse.inverse().transform(result, result);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_PARAMETER_$2), "sourcePt", sourcePt), exception);
+                    MessageFormat.format(
+                            "Parameter \"{0}\" can't have value \"{1}\".", "sourcePt", sourcePt),
+                    exception);
         }
         result.setLocation(result.getX() - 0.5, result.getY() - 0.5);
         return result;

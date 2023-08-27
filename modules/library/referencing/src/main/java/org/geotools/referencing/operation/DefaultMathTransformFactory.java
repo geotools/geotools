@@ -265,8 +265,11 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                         .orElseThrow(
                                 () ->
                                         new NoSuchIdentifierException(
-                                                MessageFormat.format(Errors.getPattern(ErrorKeys
-                                                        .NO_TRANSFORM_FOR_CLASSIFICATION_$1), method),
+                                                MessageFormat.format(
+                                                        Errors.getPattern(
+                                                                ErrorKeys
+                                                                        .NO_TRANSFORM_FOR_CLASSIFICATION_$1),
+                                                        method),
                                                 method));
 
         return lastProvider = provider;

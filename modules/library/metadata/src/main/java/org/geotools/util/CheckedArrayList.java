@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import org.geotools.api.util.Cloneable;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A {@linkplain Collections#checkedList checked} and {@linkplain Collections#synchronizedList
@@ -86,7 +84,8 @@ public class CheckedArrayList<E> extends ArrayList<E> implements CheckedCollecti
     /** Make sure that {@link #type} is non-null. */
     private void ensureNonNull() {
         if (type == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "type"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", "type"));
         }
     }
 
@@ -100,7 +99,9 @@ public class CheckedArrayList<E> extends ArrayList<E> implements CheckedCollecti
     protected void ensureValidType(final E element) throws IllegalArgumentException {
         if (element != null && !type.isInstance(element)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), element.getClass(), type));
+                    MessageFormat.format(
+                            "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                            element.getClass(), type));
         }
     }
 

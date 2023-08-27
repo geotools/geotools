@@ -44,8 +44,6 @@ import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.Record;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractDerivedCRS;
@@ -265,7 +263,9 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
         final int actual = crs.getCoordinateSystem().getDimension();
         if (actual != expected) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), name, actual, expected));
+                    MessageFormat.format(
+                            "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                            name, actual, expected));
         }
     }
 

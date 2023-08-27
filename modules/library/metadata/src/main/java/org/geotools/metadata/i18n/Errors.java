@@ -49,5 +49,4 @@ public class Errors extends IndexedResourceBundle {
     public static String getPattern(int key) {
         return getResources(null).getString(key);
     }
-
 }

@@ -37,8 +37,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.referencing.operation.Transformation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -237,7 +235,9 @@ public final class EarthGravitationalModel extends VerticalTransform {
                         final Object arg1 = in.getLineNumber();
                         final IOException exception =
                                 new IOException(
-                                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_LINE_IN_FILE_$2), filename, arg1));
+                                        MessageFormat.format(
+                                                "Illegal data at line {1} in file \"{0}\".",
+                                                filename, arg1));
                         exception.initCause(
                                 cause); // TODO: Inline when we will be allowed to target Java 6.
                         throw exception;
@@ -433,7 +433,8 @@ public final class EarthGravitationalModel extends VerticalTransform {
             try {
                 mt.load(filename);
             } catch (IOException e) {
-                throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_READ_$1), filename), e);
+                throw new FactoryException(
+                        MessageFormat.format("Can't read file \"{0}\".", filename), e);
             }
             return mt;
         }

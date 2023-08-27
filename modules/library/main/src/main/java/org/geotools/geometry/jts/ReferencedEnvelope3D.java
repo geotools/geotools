@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.text.MessageFormat;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
 import org.geotools.api.geometry.DirectPosition;
@@ -28,13 +29,9 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-
-import java.text.MessageFormat;
 
 /**
  * A 3D envelope associated with a {@linkplain CoordinateReferenceSystem coordinate reference
@@ -1038,7 +1035,9 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                 final Object arg1 = Integer.valueOf(getDimension());
                 final Object arg2 = Integer.valueOf(targetCRS.getCoordinateSystem().getDimension());
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), arg0, arg1, arg2));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                arg0, arg1, arg2));
             }
         }
         // Gets a first estimation using an algorithm capable to take singularity in account

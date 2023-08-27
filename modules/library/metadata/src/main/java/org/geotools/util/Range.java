@@ -19,8 +19,6 @@ package org.geotools.util;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import javax.measure.Unit;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A range between a minimum and maximum comparable. The minimum/maximum may be included, excluded
@@ -139,7 +137,8 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
     static void ensureNonNull(final String name, final Object value)
             throws IllegalArgumentException {
         if (value == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 
@@ -156,7 +155,9 @@ public class Range<T extends Comparable<? super T>> implements Serializable {
     private void ensureCompatible(final Class<?> type) throws IllegalArgumentException {
         if (!elementClass.isAssignableFrom(type)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), type, elementClass));
+                    MessageFormat.format(
+                            "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                            type, elementClass));
         }
     }
 

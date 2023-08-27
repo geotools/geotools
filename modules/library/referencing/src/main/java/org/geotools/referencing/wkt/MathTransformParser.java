@@ -29,8 +29,6 @@ import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 
@@ -135,7 +133,8 @@ public class MathTransformParser extends AbstractParser {
             if ("PASSTHROUGH_MT".equals(keyword)) return parsePassThroughMT(element);
         }
         if (required) {
-            throw element.parseFailed(null, MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), key));
+            throw element.parseFailed(
+                    null, MessageFormat.format("Type \"{0}\" is unknow in this context.", key));
         }
         return null;
     }

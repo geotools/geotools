@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -304,7 +302,8 @@ public class FactoryCreator extends FactoryRegistry {
             }
         }
         throw new FactoryRegistryException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CREATE_FACTORY_$1), implementation), cause);
+                MessageFormat.format("Can't create a factory of type \"{0}\".", implementation),
+                cause);
     }
 
     /**

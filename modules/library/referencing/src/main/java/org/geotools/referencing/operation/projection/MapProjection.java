@@ -53,7 +53,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.math.XMath;
 import org.geotools.referencing.NamedIdentifier;
@@ -388,7 +387,7 @@ public abstract class MapProjection extends AbstractMathTransform
      */
     final void ensureSpherical() throws IllegalArgumentException {
         if (!isSpherical) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED));
+            throw new IllegalArgumentException("Elliptical projection not supported.");
         }
     }
 
@@ -408,7 +407,7 @@ public abstract class MapProjection extends AbstractMathTransform
             final String n = name.getName().getCode();
             final Object arg1 = new Latitude(y);
             throw new InvalidParameterValueException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), n, arg1), n, y);
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", n, arg1), n, y);
         }
     }
 
@@ -430,7 +429,7 @@ public abstract class MapProjection extends AbstractMathTransform
         y = toDegrees(y);
         final Object arg0 = new Latitude(y);
         throw new InvalidParameterValueException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1), arg0),
+                MessageFormat.format("Latitude {0} is out of range (±90°).", arg0),
                 name.getName().getCode(),
                 y);
     }
@@ -453,7 +452,7 @@ public abstract class MapProjection extends AbstractMathTransform
         x = toDegrees(x);
         final Object arg0 = new Longitude(x);
         throw new InvalidParameterValueException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1), arg0),
+                MessageFormat.format("Longitude {0} is out of range (±180°).", arg0),
                 name.getName().getCode(),
                 x);
     }
@@ -484,16 +483,18 @@ public abstract class MapProjection extends AbstractMathTransform
         final String lineSeparator = System.getProperty("line.separator", "\n");
         final StringBuilder buffer = new StringBuilder();
         final Object arg01 = tr.getName();
-        buffer.append(MessageFormat.format(Errors.getPattern(ErrorKeys.OUT_OF_PROJECTION_VALID_AREA_$1), arg01));
+        buffer.append(
+                MessageFormat.format(
+                        "Possible use of \"{0}\" projection outside its valid area.", arg01));
         if (xOut) {
             buffer.append(lineSeparator);
             final Object arg0 = new Longitude(x);
-            buffer.append(MessageFormat.format(Errors.getPattern(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1), arg0));
+            buffer.append(MessageFormat.format("Longitude {0} is out of range (±180°).", arg0));
         }
         if (yOut) {
             buffer.append(lineSeparator);
             final Object arg0 = new Latitude(y);
-            buffer.append(MessageFormat.format(Errors.getPattern(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1), arg0));
+            buffer.append(MessageFormat.format("Latitude {0} is out of range (±90°).", arg0));
         }
         final LogRecord record = new LogRecord(Level.WARNING, buffer.toString());
         final String classe;
@@ -697,7 +698,9 @@ public abstract class MapProjection extends AbstractMathTransform
                     final Object arg2 = new Latitude(latitude - toDegrees(latitudeOfOrigin));
                     final Object arg3 = getName();
                     throw new ProjectionException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.PROJECTION_CHECK_FAILED_$4), distance, arg1, arg2, arg3));
+                            MessageFormat.format(
+                                    "The transform result may be {0} meters away from the expected position. Are you sure that the input coordinates are inside this map projection area of validity? The point is located {1} away from the central meridian and {2} away from the latitude of origin. The projection is \"{3}\".",
+                                    distance, arg1, arg2, arg3));
                 }
             } catch (ProjectionException exception) {
                 throw exception;
@@ -776,7 +779,8 @@ public abstract class MapProjection extends AbstractMathTransform
                 expected = toDegrees(expected);
             }
             throw new AssertionError(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.TEST_FAILURE_$3), variable, expected, actual));
+                    MessageFormat.format(
+                            "Expected {0}={1} but got {2}.", variable, expected, actual));
         }
     }
 
@@ -1171,8 +1175,7 @@ public abstract class MapProjection extends AbstractMathTransform
     @Override
     public final MathTransform2D inverse() throws NoninvertibleTransformException {
         if (!invertible) {
-            throw new NoninvertibleTransformException(
-                    Errors.getPattern(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+            throw new NoninvertibleTransformException("Transform is not invertible.");
         }
 
         // No synchronization. Not a big deal if this method is invoked in
@@ -1364,7 +1367,7 @@ public abstract class MapProjection extends AbstractMathTransform
         double phi = arg;
         for (i = MAXIMUM_ITERATIONS; true; ) { // rarely goes over 5 iterations
             if (--i < 0) {
-                throw new ProjectionException(Errors.getPattern(ErrorKeys.NO_CONVERGENCE));
+                throw new ProjectionException("Transformation doesn't convergence.");
             }
             s = Math.sin(phi);
             t = 1.0 - excentricitySquared * s * s;

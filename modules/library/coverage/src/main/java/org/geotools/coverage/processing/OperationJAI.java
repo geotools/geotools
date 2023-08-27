@@ -62,8 +62,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.util.ImageUtilities;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.CRS;
@@ -207,7 +205,8 @@ public class OperationJAI extends Operation2D {
             return operation;
         }
 
-        throw new OperationNotFoundException(MessageFormat.format(Errors.getPattern(ErrorKeys.OPERATION_NOT_FOUND_$1), name));
+        throw new OperationNotFoundException(
+                MessageFormat.format("No such \"{0}\" operation for this processor.", name));
     }
 
     /** Ensures that the specified class is assignable to {@link RenderedImage}. */
@@ -292,8 +291,7 @@ public class OperationJAI extends Operation2D {
             if (!CRS.equalsIgnoreMetadata(crs, source.getCoordinateReferenceSystem2D())
                     || !CRS.equalsIgnoreMetadata(
                             gridToCRS, source.getGridGeometry().getGridToCRS2D())) {
-                throw new IllegalArgumentException(
-                        Errors.getPattern(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY));
+                throw new IllegalArgumentException("Incompatible grid geometries.");
             }
             block.setSource(source.getRenderedImage(), i);
         }
@@ -524,7 +522,7 @@ public class OperationJAI extends Operation2D {
                 } catch (FactoryException exception) {
                     final Object arg0 = source.getName();
                     throw new CannotReprojectException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REPROJECT_$1), arg0),
+                            MessageFormat.format("Can't reproject grid coverage \"{0}\".", arg0),
                             exception);
                 }
             }

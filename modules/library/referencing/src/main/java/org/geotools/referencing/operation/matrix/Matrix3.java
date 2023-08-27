@@ -22,8 +22,6 @@ import org.ejml.UtilEjml;
 import org.ejml.data.DMatrix3x3;
 import org.ejml.dense.fixed.CommonOps_DDF3;
 import org.geotools.api.referencing.operation.Matrix;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.
@@ -74,7 +72,7 @@ public class Matrix3 implements XMatrix, Serializable {
     public Matrix3(final Matrix matrix) {
         mat = new DMatrix3x3();
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            throw new IllegalArgumentException("Illegal matrix size.");
         }
         for (int j = 0; j < SIZE; j++) {
             for (int i = 0; i < SIZE; i++) {
@@ -390,7 +388,7 @@ public class Matrix3 implements XMatrix, Serializable {
                     getElement(0, 2),
                     getElement(1, 2));
         }
-        throw new IllegalStateException(Errors.getPattern(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+        throw new IllegalStateException("Transform is not affine.");
     }
 
     /**

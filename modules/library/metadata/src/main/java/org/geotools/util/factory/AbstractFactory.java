@@ -27,8 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.api.referencing.AuthorityFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.geotools.util.Utilities;
@@ -199,7 +197,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
         this.priority = priority;
         if (priority < MINIMUM_PRIORITY || priority > MAXIMUM_PRIORITY) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "priority", priority));
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", "priority", priority));
         }
     }
 

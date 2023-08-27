@@ -32,8 +32,6 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
@@ -165,7 +163,8 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
             URL url = getDefinitionsURL();
             if (url == null) {
                 throw new FactoryNotFoundException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.FILE_DOES_NOT_EXIST_$1), FILENAME));
+                        MessageFormat.format(
+                                "File does not exist or is unreadable: {0}", FILENAME));
             }
             final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
@@ -180,7 +179,8 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
             return new PropertyCoordinateOperationAuthorityFactory(
                     factories, this.getAuthority(), url);
         } catch (IOException exception) {
-            throw new FactoryException(MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_READ_$1), FILENAME), exception);
+            throw new FactoryException(
+                    MessageFormat.format("Can't read file \"{0}\".", FILENAME), exception);
         }
     }
 

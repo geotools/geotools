@@ -65,8 +65,6 @@ import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.NameFactory;
 
@@ -905,7 +903,9 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
             final Class type, final String code) {
         final InternationalString authority = getAuthority().getTitle();
         return new NoSuchAuthorityCodeException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3), code, authority, type),
+                MessageFormat.format(
+                        "No code \"{0}\" from authority \"{1}\" found for object of type \"{2}\".",
+                        code, authority, type),
                 authority.toString(),
                 code);
     }

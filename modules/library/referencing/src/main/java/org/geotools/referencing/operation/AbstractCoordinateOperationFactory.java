@@ -49,8 +49,6 @@ import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.Transformation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -768,7 +766,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
             final IdentifiedObject source, final IdentifiedObject target) {
         final Object arg0 = getClassName(source);
         final Object arg1 = getClassName(target);
-        return MessageFormat.format(Errors.getPattern(ErrorKeys.NO_TRANSFORMATION_PATH_$2),  arg0, arg1);
+        return MessageFormat.format(
+                "No transformation available from system \"{0}\" to \"{1}\".", arg0, arg1);
     }
 
     /**
@@ -781,7 +780,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     protected static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 }

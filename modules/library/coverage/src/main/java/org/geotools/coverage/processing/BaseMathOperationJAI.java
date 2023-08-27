@@ -17,7 +17,6 @@
 package org.geotools.coverage.processing;
 
 import it.geosolutions.jaiext.JAIExt;
-
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
@@ -31,8 +30,6 @@ import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.ImagingParameterDescriptors;
@@ -153,7 +150,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
                     || ((Collection) srcCoverages).isEmpty()
                     || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$1), "sources"),
+                        MessageFormat.format("Illegal value for argument \"{0}\".", "sources"),
                         "sources",
                         srcCoverages);
             }

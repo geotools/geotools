@@ -17,6 +17,7 @@
 
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import org.geotools.api.metadata.citation.Citation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -24,13 +25,9 @@ import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.api.referencing.datum.DatumAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.GenericName;
 import org.geotools.util.factory.Hints;
-
-import java.text.MessageFormat;
 
 /**
  * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "http://www.opengis.net/"}
@@ -158,6 +155,8 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
             }
         }
         throw new NoSuchAuthorityCodeException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "code", code), BASE_URL, code);
+                MessageFormat.format("Illegal argument: \"{0}={1}\".", "code", code),
+                BASE_URL,
+                code);
     }
 }

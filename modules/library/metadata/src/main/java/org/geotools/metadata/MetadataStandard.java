@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Enumeration of some metadata standards. A standard is defined by a set of Java interfaces in a
@@ -119,7 +117,8 @@ public final class MetadataStandard {
         final PropertyAccessor accessor = getAccessorOptional(implementation);
         if (accessor == null) {
             throw new ClassCastException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_TYPE_$1), implementation.getName()));
+                    MessageFormat.format(
+                            "Type \"{0}\" is unknow in this context.", implementation.getName()));
         }
         return accessor;
     }
@@ -246,10 +245,12 @@ public final class MetadataStandard {
         if (!accessor.type.isInstance(source)) {
             ensureNonNull("source", source);
             throw new ClassCastException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), source.getClass(), accessor.type));
+                    MessageFormat.format(
+                            "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                            source.getClass(), accessor.type));
         }
         if (!accessor.shallowCopy(source, target, skipNulls)) {
-            throw new UnmodifiableMetadataException(Errors.getPattern(ErrorKeys.UNMODIFIABLE_METADATA));
+            throw new UnmodifiableMetadataException("Unmodifiable metadata.");
         }
     }
 
@@ -322,7 +323,8 @@ public final class MetadataStandard {
     /** Ensures that the specified argument is non-null. */
     private static void ensureNonNull(final String name, final Object value) {
         if (value == null) {
-            throw new NullPointerException(MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), name));
+            throw new NullPointerException(
+                    MessageFormat.format("Argument \"{0}\" should not be null.", name));
         }
     }
 }

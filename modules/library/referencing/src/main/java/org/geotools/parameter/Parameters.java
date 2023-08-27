@@ -36,8 +36,6 @@ import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.Classes;
 import org.geotools.util.logging.Logging;
@@ -116,7 +114,8 @@ public final class Parameters {
             if (!type.equals(actual)) {
                 final Object arg0 = descriptor.getName().getCode();
                 throw new ClassCastException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_PARAMETER_TYPE_$2), arg0, actual));
+                        MessageFormat.format(
+                                "Parameter \"{0}\" can't be of type '{1}'.", arg0, actual));
             }
         }
         return (ParameterDescriptor) descriptor;
@@ -143,7 +142,8 @@ public final class Parameters {
             if (!type.equals(actual)) { // Same comment than cast(ParameterDescriptor)...
                 final Object arg0 = descriptor.getName().getCode();
                 throw new ClassCastException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_PARAMETER_TYPE_$2), arg0, actual));
+                        MessageFormat.format(
+                                "Parameter \"{0}\" can't be of type '{1}'.", arg0, actual));
             }
         }
         return (ParameterValue) value;

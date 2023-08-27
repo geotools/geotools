@@ -33,8 +33,6 @@ import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.cs.RangeMeaning;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -721,7 +719,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("rangeMeaning", rangeMeaning);
         if (!(minimum < maximum)) { // Use '!' for catching NaN
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), minimum, maximum));
+                    MessageFormat.format("Range [{0} .. {1}] is not valid.", minimum, maximum));
         }
     }
 
@@ -967,7 +965,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             return candidate;
         }
         throw new NoSuchElementException(
-                MessageFormat.format(Errors.getPattern(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1), direction));
+                MessageFormat.format("Unknow axis direction: \"{0}\".", direction));
     }
 
     /**
@@ -1184,7 +1182,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     maximum,
                     rangeMeaning);
         }
-        throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.INCOMPATIBLE_UNIT_$1), newUnit));
+        throw new IllegalArgumentException(MessageFormat.format("Incompatible unit: {0}", newUnit));
     }
 
     /**

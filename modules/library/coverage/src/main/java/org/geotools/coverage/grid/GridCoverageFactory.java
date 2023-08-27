@@ -41,8 +41,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.AbstractFactory;
@@ -155,7 +153,8 @@ public class GridCoverageFactory extends AbstractFactory {
                 return DefaultEngineeringCRS.CARTESIAN_3D;
             default:
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dimension", dimension));
+                        MessageFormat.format(
+                                "Illegal argument: \"{0}={1}\".", "dimension", dimension));
         }
     }
 
@@ -180,7 +179,7 @@ public class GridCoverageFactory extends AbstractFactory {
             final Map<?, ?> properties) {
         final MathTransform transform = gridGeometry.getGridToCRS2D();
         if (!(transform instanceof AffineTransform)) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+            throw new IllegalArgumentException("Transform is not affine.");
         }
         final AffineTransform at = (AffineTransform) transform;
         if (at.getShearX() != 0 || at.getShearY() != 0) {

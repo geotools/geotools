@@ -33,8 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.naming.Name;
 import javax.sql.DataSource;
 import org.geotools.api.util.InternationalString;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.EntityResolver;
@@ -1068,7 +1066,9 @@ public class Hints extends RenderingHints {
     private void fromPairs(final Object... pairs) throws IllegalArgumentException {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ODD_ARRAY_LENGTH_$1), pairs.length));
+                    MessageFormat.format(
+                            "Bad array length: {0}. An even array length was expected.",
+                            pairs.length));
         }
         for (int i = 0; i < pairs.length; i += 2) {
             super.put(pairs[i], pairs[i + 1]);

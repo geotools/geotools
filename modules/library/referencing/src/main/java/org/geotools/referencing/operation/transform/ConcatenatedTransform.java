@@ -20,7 +20,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.text.MessageFormat;
-
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -30,8 +29,6 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.Matrix3;
@@ -91,7 +88,8 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
             final Object arg0 = getName(transform1);
             final Object arg1 = getName(transform2);
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2), arg0, arg1));
+                    MessageFormat.format(
+                            "Can't concatenate transforms \"{0}\" and \"{1}\".", arg0, arg1));
         }
     }
 
@@ -149,9 +147,11 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
             final Object arg0 = getName(tr1);
             final Object arg1 = getName(tr2);
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_CONCATENATE_TRANSFORMS_$2), arg0, arg1)
+                    MessageFormat.format(
+                                    "Can't concatenate transforms \"{0}\" and \"{1}\".", arg0, arg1)
                             + ' '
-                            + MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), dim1, dim2));
+                            + MessageFormat.format(
+                                    "Mismatched object dimension: {0}D and {1}D.", dim1, dim2));
         }
         MathTransform mt = createOptimized(tr1, tr2);
         if (mt != null) {

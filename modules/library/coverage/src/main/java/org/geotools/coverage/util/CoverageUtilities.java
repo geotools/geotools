@@ -50,8 +50,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
@@ -162,7 +160,9 @@ public final class CoverageUtilities {
             returnedCRS = CRS.getHorizontalCRS(coverage.getCoordinateReferenceSystem());
         if (returnedCRS == null)
             throw new TransformException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1), returnedCRS));
+                    MessageFormat.format(
+                            "Can't reduce \"{0}\" to a two-dimensional coordinate system.",
+                            returnedCRS));
         return returnedCRS;
     }
 
@@ -283,7 +283,9 @@ public final class CoverageUtilities {
         // minimal checks
         if (coverage == null) {
             throw new NullPointerException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_PARAMETER_$2), "coverage", "GridCoverage2D"));
+                    MessageFormat.format(
+                            "\"{0}\" parameter should be not null and of type \"{1}\".",
+                            "coverage", "GridCoverage2D"));
         }
 
         // try to get the GC_NODATA double value from the coverage property
@@ -510,7 +512,8 @@ public final class CoverageUtilities {
                 return Float.valueOf(Float.NaN);
             default:
                 throw new IllegalAccessError(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), "dataType", dataType));
+                        MessageFormat.format(
+                                "Illegal argument: \"{0}={1}\".", "dataType", dataType));
         }
     }
 

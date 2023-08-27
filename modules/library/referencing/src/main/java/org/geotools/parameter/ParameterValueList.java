@@ -27,8 +27,6 @@ import org.geotools.api.parameter.InvalidParameterCardinalityException;
 import org.geotools.api.parameter.InvalidParameterNameException;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterValue;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 
 /**
@@ -147,7 +145,8 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
                      * the descriptor was illegal.
                      */
                     throw new IllegalArgumentException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_DESCRIPTOR_FOR_PARAMETER_$1), name));
+                            MessageFormat.format(
+                                    "Illegal descriptor for parameter \"{0}\".", name));
                 }
             }
             /*
@@ -161,7 +160,7 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
                 value = "(group)";
             }
             throw new InvalidParameterNameException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, value), name);
+                    MessageFormat.format("Illegal argument: \"{0}={1}\".", name, value), name);
         }
         final int max = type.getMaximumOccurs();
         if (max == 1) {
@@ -191,7 +190,10 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
             }
             if (count >= max) {
                 throw new InvalidParameterCardinalityException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.TOO_MANY_OCCURENCES_$2), name, count), name);
+                        MessageFormat.format(
+                                "Too many occurences of \"{0}\". There is already {1} of them.",
+                                name, count),
+                        name);
             }
         }
         values.add(parameter);
@@ -227,7 +229,9 @@ final class ParameterValueList extends AbstractList<GeneralParameterValue>
         if (count <= min) {
             final int max = type.getMaximumOccurs();
             throw new InvalidParameterCardinalityException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_OCCURS_FOR_PARAMETER_$4), name, count - 1, min, max),
+                    MessageFormat.format(
+                            "Parameter \"{0}\" occurs {1} time, while the expected range of occurences was [{2}..{3}].",
+                            name, count - 1, min, max),
                     name);
         }
         final GeneralParameterValue value = values.remove(index);

@@ -42,8 +42,6 @@ import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffUoMCodes;
 import org.geotools.measure.Units;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -280,7 +278,8 @@ public final class CRS2GeoTiffMetadataAdapter {
         // getting the linear unit
         final Unit<?> unit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.NON_LINEAR_UNIT_$1), unit));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("\"{0}\" is not a linear unit.", unit));
         }
         @SuppressWarnings("unchecked")
         Unit<Length> linearUnit = (Unit<Length>) unit;

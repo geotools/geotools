@@ -36,8 +36,6 @@ import java.util.ConcurrentModificationException;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import org.geotools.api.util.Cloneable;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * An ordered set of ranges. {@code RangeSet} objects store an arbitrary number of {@linkplain Range
@@ -154,7 +152,7 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
     public RangeSet(final Class<T> type) throws IllegalArgumentException {
         if (!Comparable.class.isAssignableFrom(type)) {
             throw new IllegalArgumentException(
-                    MessageFormat.format(Errors.getPattern(ErrorKeys.NOT_COMPARABLE_CLASS_$1), type));
+                    MessageFormat.format("{0} is not a comparable class.", type));
         }
         Class<?> elementType = ClassChanger.getTransformedClass(type); // e.g. change Date --> Long
         useClassChanger = (elementType != type);
@@ -172,8 +170,10 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         if (!relaxedClass.isInstance(value)) {
             throw new IllegalArgumentException(
                     value == null
-                            ? MessageFormat.format(Errors.getPattern(ErrorKeys.NULL_ARGUMENT_$1), "value")
-                            : MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), value.getClass(), elementClass));
+                            ? MessageFormat.format("Argument \"{0}\" should not be null.", "value")
+                            : MessageFormat.format(
+                                    "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                    value.getClass(), elementClass));
         }
         if (useClassChanger)
             try {
@@ -185,7 +185,9 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
                  */
                 final ClassCastException exception =
                         new ClassCastException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), value.getClass(), elementClass));
+                                MessageFormat.format(
+                                        "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                        value.getClass(), elementClass));
                 exception.initCause(cause);
                 throw exception;
             }
@@ -246,7 +248,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) > 0) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), min, max));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Range [{0} .. {1}] is not valid.", min, max));
         }
         if (array == null) {
             modCount++;
@@ -462,7 +465,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         Comparable lower = toArrayElement(min);
         Comparable upper = toArrayElement(max);
         if (lower.compareTo(upper) >= 0) {
-            throw new IllegalArgumentException(MessageFormat.format(Errors.getPattern(ErrorKeys.BAD_RANGE_$2), min, max));
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Range [{0} .. {1}] is not valid.", min, max));
         }
         // if already empty, or range outside the current set, nothing to change
         if (array == null) {

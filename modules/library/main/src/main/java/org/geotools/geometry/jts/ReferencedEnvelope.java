@@ -18,7 +18,6 @@ package org.geotools.geometry.jts;
 
 import java.awt.geom.Rectangle2D;
 import java.text.MessageFormat;
-
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
@@ -32,8 +31,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Classes;
 import org.locationtech.jts.geom.Coordinate;
@@ -319,7 +316,9 @@ public class ReferencedEnvelope extends Envelope
                 // or the factory method ReferencedEnvelope.reference( CoordinateReferenceSystem )
                 final Object arg0 = crs.getName().getCode();
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), arg0, Integer.valueOf(dimension), Integer.valueOf(expected)));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                arg0, Integer.valueOf(dimension), Integer.valueOf(expected)));
             }
         }
     }
@@ -337,7 +336,7 @@ public class ReferencedEnvelope extends Envelope
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
                     throw new MismatchedReferenceSystemException(
-                            Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                            "The coordinate reference system must be the same for all objects.");
                 }
             }
         }
@@ -353,7 +352,7 @@ public class ReferencedEnvelope extends Envelope
             if (other != null) {
                 if (!CRS.equalsIgnoreMetadata(crs, other)) {
                     throw new MismatchedReferenceSystemException(
-                            Errors.getPattern(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                            "The coordinate reference system must be the same for all objects.");
                 }
             }
         }
@@ -639,7 +638,9 @@ public class ReferencedEnvelope extends Envelope
                 final Object arg1 = Integer.valueOf(getDimension());
                 final Object arg2 = Integer.valueOf(targetCRS.getCoordinateSystem().getDimension());
                 throw new MismatchedDimensionException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$3), arg0, arg1, arg2));
+                        MessageFormat.format(
+                                "Argument \"{0}\" has {1} dimensions, while {2} was expected.",
+                                arg0, arg1, arg2));
             }
         }
         /*

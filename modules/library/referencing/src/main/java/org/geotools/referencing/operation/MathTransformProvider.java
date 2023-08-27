@@ -37,8 +37,6 @@ import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.util.GenericName;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.Parameters;
@@ -239,7 +237,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
     protected static Map<String, Object> toMap(final ReferenceIdentifier... identifiers) {
         ensureNonNull("identifiers", identifiers);
         if (identifiers.length == 0) {
-            throw new IllegalArgumentException(Errors.getPattern(ErrorKeys.EMPTY_ARRAY));
+            throw new IllegalArgumentException("The array should contains at least one element.");
         }
         int idCount = 0;
         int aliasCount = 0;
@@ -332,7 +330,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                     continue;
                 } else {
                     throw new InvalidParameterNameException(
-                            MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), name), name);
+                            MessageFormat.format("Parameter \"{0}\" was not expected.", name),
+                            name);
                 }
             }
             /*
@@ -345,7 +344,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             } catch (ParameterNotFoundException cause) {
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.UNEXPECTED_PARAMETER_$1), name), name);
+                                MessageFormat.format("Parameter \"{0}\" was not expected.", name),
+                                name);
                 exception.initCause(cause);
                 throw exception;
             }
@@ -359,7 +359,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                 target.setValue((double[]) v, unit);
             } else {
                 throw new InvalidParameterValueException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_ARGUMENT_$2), name, v), name, v);
+                        MessageFormat.format("Illegal argument: \"{0}={1}\".", name, v), name, v);
             }
         }
     }

@@ -37,8 +37,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.SingleOperation;
 import org.geotools.api.referencing.operation.Transformation;
-import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.wkt.Formatter;
@@ -193,7 +191,9 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                 expand(cops.toArray(new CoordinateOperation[cops.size()]), target, factory, false);
             } else {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.ILLEGAL_CLASS_$2), Classes.getClass(op), SingleOperation.class));
+                        MessageFormat.format(
+                                "Class '{0}' is illegal. It must be '{1}' or a derivated class.",
+                                Classes.getClass(op), SingleOperation.class));
             }
             /*
              * Check the CRS dimensions.
@@ -206,7 +206,8 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                     final int dim2 = next.getCoordinateSystem().getDimension();
                     if (dim1 != dim2) {
                         throw new IllegalArgumentException(
-                                MessageFormat.format(Errors.getPattern(ErrorKeys.MISMATCHED_DIMENSION_$2), dim1, dim2));
+                                MessageFormat.format(
+                                        "Mismatched object dimension: {0}D and {1}D.", dim1, dim2));
                     }
                 }
             }
@@ -228,7 +229,8 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final int size = target.size();
             if (size <= 1) {
                 throw new IllegalArgumentException(
-                        MessageFormat.format(Errors.getPattern(ErrorKeys.MISSING_PARAMETER_$1), "operations[" + size + ']'));
+                        MessageFormat.format(
+                                "Parameter \"{0}\" is missing.", "operations[" + size + ']'));
             }
         }
         return transform;

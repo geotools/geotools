@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.List;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
@@ -33,6 +34,8 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentFeatureStore;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
@@ -41,6 +44,7 @@ import org.geotools.geometry.jts.CurvePolygon;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.SingleCurvedGeometry;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -48,7 +52,9 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
+
 
 public abstract class JDBCCurvesTest extends JDBCTestSupport {
 
@@ -351,6 +357,29 @@ public abstract class JDBCCurvesTest extends JDBCTestSupport {
         ContentFeatureStore fs = cleanTable("compoundCurves");
         fs.addFeatures(DataUtilities.collection(feature));
         testClosedCompoundCurve();
+    }
+
+    @Test
+    public void testMultiSurfaceLinearized() throws Exception {
+        SimpleFeature feature = getSingleFeatureByName("curves", "Multipolygon with curves");
+
+        String featureTypeName = "curves";
+
+        SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName("multiPolygon");
+        ftb.add(aname("id"), Integer.class);
+        ftb.add(aname("name"), String.class);
+        ftb.add(aname("geometry"), MultiPolygon.class, CRS.decode("EPSG:4326"));
+
+        SimpleFeatureType ft = ftb.buildFeatureType();
+
+        SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
+        sfb.set("name", "the name");
+        sfb.set("geometry", feature.getDefaultGeometry());
+
+        ContentFeatureStore store =
+                (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);
+        store.addFeatures(DataUtilities.collection(sfb.buildFeature("1")));
     }
 
     protected SimpleFeature getSingleFeatureByName(String name) throws IOException {

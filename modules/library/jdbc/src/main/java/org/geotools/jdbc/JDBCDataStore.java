@@ -76,7 +76,7 @@ import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.geotools.geometry.jts.MultiCurvedGeometry;
+import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
@@ -1948,12 +1948,13 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
+    @SuppressWarnings("unchecked")
     private Geometry linearize(Object value, Class<?> binding) {
         Geometry g = (Geometry) value;
-        if (g != null
-                && MultiCurvedGeometry.class.isAssignableFrom(g.getClass())
-                && !MultiCurvedGeometry.class.isAssignableFrom(binding)) {
-            g = ((MultiCurvedGeometry<Geometry>) g).linearize();
+        if (CurvedGeometry.class.isInstance(g)
+                && !CurvedGeometry.class.isAssignableFrom(binding)
+                && !binding.isAssignableFrom(Geometry.class)) {
+            return ((CurvedGeometry<? extends Geometry>) g).linearize();
         }
         return g;
     }

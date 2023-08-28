@@ -76,7 +76,7 @@ import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.geotools.geometry.jts.MultiSurface;
+import org.geotools.geometry.jts.MultiCurvedGeometry;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
@@ -86,7 +86,6 @@ import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -1917,7 +1916,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
 
                     if (Geometry.class.isAssignableFrom(binding)) {
-                        Geometry g = getGeometryAccordingtoBinding(value, binding);
+                        Geometry g = linearize(value, binding);
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
@@ -1949,10 +1948,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
     }
 
-    private Geometry getGeometryAccordingtoBinding(Object value, Class<?> binding) {
+    private Geometry linearize(Object value, Class<?> binding) {
         Geometry g = (Geometry) value;
-        if (g != null && g instanceof MultiSurface && binding.equals(MultiPolygon.class)) {
-            g = ((MultiSurface) g).linearize();
+        if (g != null
+                && MultiCurvedGeometry.class.isAssignableFrom(g.getClass())
+                && !MultiCurvedGeometry.class.isAssignableFrom(binding)) {
+            g = ((MultiCurvedGeometry<Geometry>) g).linearize();
         }
         return g;
     }
@@ -3821,7 +3822,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             if (binding != null && Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = getGeometryAccordingtoBinding(value, binding);
+                Geometry g = linearize(value, binding);
                 dialect.setGeometryValue(g, dimension, srid, binding, ps, offset + i + 1);
             } else if (ad != null && this.dialect.isArray(ad)) {
                 dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
@@ -4416,7 +4417,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             } else {
                 if (Geometry.class.isAssignableFrom(binding)) {
                     try {
-                        Geometry g = getGeometryAccordingtoBinding(value, binding);
+                        Geometry g = linearize(value, binding);
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.encodeGeometryValue(g, dimension, srid, sql);
@@ -4565,7 +4566,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
                 try {
-                    Geometry g = getGeometryAccordingtoBinding(value, binding);
+                    Geometry g = linearize(value, binding);
                     int srid = getGeometrySRID(g, att);
                     int dimension = getGeometryDimension(g, att);
                     dialect.encodeGeometryValue(g, dimension, srid, sql);
@@ -4673,7 +4674,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Class binding = att.getType().getBinding();
             Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = getGeometryAccordingtoBinding(value, binding);
+                Geometry g = linearize(value, binding);
                 dialect.setGeometryValue(
                         g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j + 1);
             } else {

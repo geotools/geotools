@@ -87,8 +87,6 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     public Builder<PointSymbolizer> reset(org.geotools.api.style.PointSymbolizer original) {
         if (original == null) {
             return unset();
-        } else if (original instanceof PointSymbolizer) {
-            return reset((PointSymbolizer) original);
         }
         this.geometry = property(original.getGeometryPropertyName());
         this.graphic.reset(original.getGraphic());

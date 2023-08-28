@@ -352,7 +352,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
             if (this.symbolizer == symbolizer) {
                 return;
             }
-            this.symbolizer = StyleFactoryImpl2.cast(symbolizer);
+            this.symbolizer = symbolizer;
         } else {
             throw new IllegalArgumentException(
                     "Only a line or polygon symbolizer may be used to outline a raster");

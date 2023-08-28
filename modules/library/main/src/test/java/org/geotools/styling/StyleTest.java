@@ -27,7 +27,7 @@ import org.junit.Test;
  */
 public class StyleTest {
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    static StyleFactoryImpl2 sf = new StyleFactoryImpl2(ff);
+    static StyleFactoryImpl sf = new StyleFactoryImpl(ff);
 
     @Test
     public void displacement() {

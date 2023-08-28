@@ -53,7 +53,7 @@ public class AnchorPointImpl implements org.geotools.api.style.AnchorPoint, Clon
 
                 @Override
                 public void accept(StyleVisitor visitor) {
-                    cannotModifyConstant();
+                    visitor.visit(this);
                 }
 
                 @Override

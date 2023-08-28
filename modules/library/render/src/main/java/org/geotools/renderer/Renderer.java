@@ -19,8 +19,8 @@ package org.geotools.renderer;
 import java.awt.Graphics;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.style.Style;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.styling.Style;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 

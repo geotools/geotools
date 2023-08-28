@@ -23,10 +23,9 @@ package org.geotools.api.style;
 public interface GraphicFill extends Graphic {
 
     /**
-     * Calls the visit method of a StyleVisitor
+     * A default Graphic instance.
      *
-     * @param visitor the style visitor
+     * <p>For some attributes the standard does not define a default, so a reasonable value is
+     * supplied.
      */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
 }

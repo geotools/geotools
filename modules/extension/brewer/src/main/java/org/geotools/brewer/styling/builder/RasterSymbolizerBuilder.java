@@ -19,11 +19,7 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.OverlapBehavior;
-import org.geotools.api.style.PolygonSymbolizer;
-import org.geotools.api.style.Symbolizer;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.api.style.*;
 
 public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer> {
     private String name;
@@ -40,7 +36,7 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
 
     private ColorMapBuilder colorMap = new ColorMapBuilder(this).unset();
 
-    private OverlapBehavior overlapsBehaviour;
+    private OverlapBehaviorEnum overlapsBehaviour;
 
     private ContrastEnhancementBuilder contrast = new ContrastEnhancementBuilder(this).unset();
 
@@ -118,7 +114,7 @@ public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer>
         return shadedRelief;
     }
 
-    public RasterSymbolizerBuilder overlapBehavior(OverlapBehavior behavior) {
+    public RasterSymbolizerBuilder overlapBehavior(OverlapBehaviorEnum behavior) {
         unset = false;
         this.overlapsBehaviour = behavior;
         return this;

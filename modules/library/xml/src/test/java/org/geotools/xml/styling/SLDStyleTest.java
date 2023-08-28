@@ -43,43 +43,28 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.Disjoint;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
@@ -101,11 +86,7 @@ public class SLDStyleTest {
     /** Test of parseStyle method, of class org.geotools.styling.SLDStyle. */
     @Test
     public void testParseStyle() throws Exception {
-        // java.net.URL base = getClass().getResource("testData/");
-        // base = getClass().getResource("testData");
-        // base = getClass().getResource("/testData");
 
-        // java.net.URL surl = new java.net.URL(base + "/test-sld.xml");
         java.net.URL surl = TestData.getResource(this, "test-sld.xml");
         SLDParser stylereader = new SLDParser(sf, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
@@ -350,7 +331,7 @@ public class SLDStyleTest {
                                 .get(0);
 
         Assert.assertTrue(rs.getColorMap().getExtendedColors());
-        Assert.assertEquals(rs.getColorMap().getType(), ColorMap.TYPE_RAMP);
+        Assert.assertEquals(rs.getColorMap().getType(), org.geotools.api.style.ColorMap.TYPE_RAMP);
     }
 
     @Test
@@ -697,8 +678,7 @@ public class SLDStyleTest {
         Assert.assertTrue(filter instanceof Id);
 
         Id fidFilter = (Id) filter;
-        String[] fids =
-                fidFilter.getIDs().stream().map(id -> (String) id).toArray(n -> new String[n]);
+        String[] fids = fidFilter.getIDs().stream().map(id -> (String) id).toArray(String[]::new);
         Assert.assertEquals("Wrong number of fids", 5, fids.length);
 
         Arrays.sort(fids);
@@ -718,7 +698,7 @@ public class SLDStyleTest {
         Assert.assertEquals(1, styles[0].featureTypeStyles().get(0).rules().size());
         final Rule rule = styles[0].featureTypeStyles().get(0).rules().get(0);
         Assert.assertEquals(1, rule.symbolizers().size());
-        TextSymbolizer2 ts = (TextSymbolizer2) rule.symbolizers().get(0);
+        TextSymbolizer ts = (TextSymbolizer) rule.symbolizers().get(0);
 
         // abstract == property name
         Assert.assertEquals("propertyOne", ((PropertyName) ts.getSnippet()).getPropertyName());
@@ -794,7 +774,7 @@ public class SLDStyleTest {
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
         Double ggamma = gcs.getGammaValue().evaluate(null, Double.class);
-        Assert.assertEquals(2.8, ggamma.doubleValue(), 0d);
+        Assert.assertEquals(2.8, ggamma, 0d);
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
         ContrastMethod m = bcs.getMethod();
@@ -805,14 +785,14 @@ public class SLDStyleTest {
         String type = (String) overlapExpr.evaluate(null);
         Assert.assertEquals("LATEST_ON_TOP", type);
 
-        org.geotools.api.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
+        OverlapBehaviorEnum overlapBehavior = rs.getOverlapBehavior();
         type = overlapBehavior.name();
         Assert.assertEquals("LATEST_ON_TOP", type);
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
         Double v = ce.getGammaValue().evaluate(null, Double.class);
-        Assert.assertEquals(1.0, v.doubleValue(), 0d);
+        Assert.assertEquals(1.0, v, 0d);
     }
 
     /** Tests the parsing of a raster symbolizer sld */
@@ -849,7 +829,7 @@ public class SLDStyleTest {
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
         Double ggamma = gcs.getGammaValue().evaluate(null, Double.class);
-        Assert.assertEquals(3.8, ggamma.doubleValue(), 0d);
+        Assert.assertEquals(3.8, ggamma, 0d);
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
         ContrastMethod m = bcs.getMethod();
@@ -860,14 +840,14 @@ public class SLDStyleTest {
         String type = (String) overlapExpr.evaluate(null);
         Assert.assertEquals("LATEST_ON_TOP", type);
 
-        org.geotools.api.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
+        OverlapBehaviorEnum overlapBehavior = rs.getOverlapBehavior();
         type = overlapBehavior.name();
         Assert.assertEquals("LATEST_ON_TOP", type);
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
         Double v = ce.getGammaValue().evaluate(null, Double.class);
-        Assert.assertEquals(1.5, v.doubleValue(), 0d);
+        Assert.assertEquals(1.5, v, 0d);
     }
 
     /**
@@ -924,7 +904,7 @@ public class SLDStyleTest {
 
         // opacity
         Double d = rs.getOpacity().evaluate(null, Double.class);
-        Assert.assertEquals(1.0, d.doubleValue(), 0d);
+        Assert.assertEquals(1.0, d, 0d);
 
         // overlap behaviour
         Expression overlapExpr = rs.getOverlap();
@@ -1013,8 +993,8 @@ public class SLDStyleTest {
         Map<String, String> options = fts.getOptions();
         Assert.assertEquals(1, options.size());
         Assert.assertEquals(
-                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
-                options.get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+                org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
+                options.get(org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
     @Test

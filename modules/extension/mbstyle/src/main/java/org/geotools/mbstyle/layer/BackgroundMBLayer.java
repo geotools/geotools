@@ -21,14 +21,10 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.GraphicFill;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
 import org.json.simple.JSONObject;
 
 /**

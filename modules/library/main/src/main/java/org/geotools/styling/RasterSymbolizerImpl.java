@@ -22,8 +22,8 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.OverlapBehavior;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.*;
+import org.geotools.api.style.OverlapBehaviorEnum;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 
@@ -36,11 +36,11 @@ import org.geotools.util.factory.GeoTools;
 public class RasterSymbolizerImpl extends AbstractSymbolizer
         implements RasterSymbolizer, Cloneable {
 
-    private OverlapBehavior behavior;
+    private OverlapBehaviorEnum behavior;
 
     // TODO: make container ready
     private FilterFactory filterFactory;
-    private ChannelSelection channelSelection = new ChannelSelectionImpl();
+    private ChannelSelection channelSelection = (ChannelSelection) new ChannelSelectionImpl();
     private ColorMapImpl colorMap = new ColorMapImpl();
     private ContrastEnhancementImpl contrastEnhancement = new ContrastEnhancementImpl();
     private ShadedReliefImpl shadedRelief;
@@ -60,7 +60,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
             Description desc,
             String name,
             Unit<Length> uom,
-            OverlapBehavior behavior) {
+            OverlapBehaviorEnum behavior) {
         super(name, desc, (String) null, uom);
         this.filterFactory = factory;
         this.opacity = filterFactory.literal(1.0);
@@ -221,20 +221,20 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      */
     @Override
     public Expression getOverlap() {
-        OverlapBehavior overlap = getOverlapBehavior();
+        OverlapBehaviorEnum overlap = getOverlapBehavior();
         if (overlap == null) {
-            overlap = OverlapBehavior.RANDOM;
+            overlap = OverlapBehaviorEnum.RANDOM;
         }
         return filterFactory.literal(overlap.toString());
     }
 
     @Override
-    public OverlapBehavior getOverlapBehavior() {
+    public OverlapBehaviorEnum getOverlapBehavior() {
         return behavior;
     }
 
     @Override
-    public void setOverlapBehavior(OverlapBehavior overlapBehavior) {
+    public void setOverlapBehavior(OverlapBehaviorEnum overlapBehavior) {
         this.behavior = overlapBehavior;
     }
 
@@ -252,8 +252,8 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      * @return the shadedrelief object
      */
     @Override
-    public ShadedReliefImpl getShadedRelief() {
-        return shadedRelief;
+    public ShadedRelief getShadedRelief() {
+        return (ShadedRelief) shadedRelief;
     }
 
     /**
@@ -272,7 +272,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
         if (this.channelSelection == channel) {
             return;
         }
-        this.channelSelection = ChannelSelectionImpl.cast(channel);
+        this.channelSelection = channel;
     }
 
     /**
@@ -390,8 +390,8 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
             return;
         }
 
-        OverlapBehavior overlapBehavior =
-                OverlapBehavior.valueOf(overlap.evaluate(null, String.class));
+        OverlapBehaviorEnum overlapBehavior =
+                OverlapBehaviorEnum.valueOf(overlap.evaluate(null, String.class));
         setOverlapBehavior(overlapBehavior);
     }
 
@@ -417,12 +417,12 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

@@ -23,9 +23,8 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.*;
 import org.geotools.api.style.Rule;
-import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
@@ -38,7 +37,7 @@ import org.geotools.util.Utilities;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
+public class RuleImpl implements Rule, Cloneable {
     private List<Symbolizer> symbolizers = new ArrayList<>();
 
     private GraphicLegend legend;
@@ -60,8 +59,8 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     }
 
     protected RuleImpl(
-            org.geotools.styling.Symbolizer[] symbolizers,
-            org.geotools.api.style.Description desc,
+            Symbolizer[] symbolizers,
+            Description desc,
             GraphicLegend legend,
             String name,
             Filter filter,
@@ -93,7 +92,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
         if (rule.getDescription() != null && rule.getDescription().getAbstract() != null) {
             this.description.setTitle(rule.getDescription().getAbstract());
         }
-        if (rule.getLegend() instanceof org.geotools.styling.Graphic) {
+        if (rule.getLegend() instanceof Graphic) {
             this.legend = rule.getLegend();
         }
         this.name = rule.getName();
@@ -119,7 +118,7 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     }
 
     @Override
-    public org.geotools.styling.Symbolizer[] getSymbolizers() {
+    public Symbolizer[] getSymbolizers() {
 
         final Symbolizer[] ret = new Symbolizer[symbolizers.size()];
         for (int i = 0, n = symbolizers.size(); i < n; i++) {
@@ -210,20 +209,16 @@ public class RuleImpl implements org.geotools.styling.Rule, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
-    /**
-     * Creates a deep copy clone of the rule.
-     *
-     * @see org.geotools.styling.Rule#clone()
-     */
+    /** Creates a deep copy clone of the rule. */
     @Override
     public Object clone() {
         try {

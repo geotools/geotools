@@ -16,13 +16,17 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+
 /**
  * A style object is quite hard to set up, involving fills, strokes, symbolizers and rules.
  *
  * @author James Macgill, CCG
  * @version $Id$
  */
-public class BasicPolygonStyle extends StyleImpl implements org.geotools.styling.Style {
+public class BasicPolygonStyle extends StyleImpl implements Style {
     /** Creates a new instance of BasicPolygonStyle */
     public BasicPolygonStyle() {
         this(new FillImpl(), new StrokeImpl());

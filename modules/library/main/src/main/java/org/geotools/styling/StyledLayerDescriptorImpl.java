@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
+import org.geotools.api.style.*;
 import org.geotools.util.Utilities;
 
 /**

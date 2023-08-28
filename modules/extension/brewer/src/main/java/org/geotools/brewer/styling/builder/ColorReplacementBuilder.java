@@ -19,7 +19,7 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ColorReplacement;
+import org.geotools.api.style.ColorReplacement;
 
 public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
     private Expression propertyName;
@@ -54,11 +54,6 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         mapping.clear();
         unset = false;
         return this;
-    }
-
-    @Override
-    public ColorReplacementBuilder reset(ColorReplacement original) {
-        return reset((org.geotools.api.style.ColorReplacement) original);
     }
 
     public ColorReplacementBuilder reset(org.geotools.api.style.ColorReplacement replacement) {

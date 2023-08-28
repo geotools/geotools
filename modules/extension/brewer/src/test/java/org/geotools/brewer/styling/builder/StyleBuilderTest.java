@@ -14,20 +14,9 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.Halo;
+import org.geotools.api.style.*;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Description;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -86,8 +75,8 @@ public class StyleBuilderTest {
                 builder.featureTypeStyle()
                         .featureTypeName("Feature")
                         .option(
-                                FeatureTypeStyle.KEY_EVALUATION_MODE,
-                                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
+                                org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE,
+                                org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
                         .rule();
         rule.point().graphic().mark().name("circle");
 
@@ -97,8 +86,8 @@ public class StyleBuilderTest {
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals(1, fts.getOptions().size());
         assertEquals(
-                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
-                fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+                org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
+                fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
     @Test

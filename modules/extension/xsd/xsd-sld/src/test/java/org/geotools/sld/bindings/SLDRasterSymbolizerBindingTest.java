@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Map;
-import org.geotools.styling.RasterSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
 import org.junit.Test;
 
 public class SLDRasterSymbolizerBindingTest extends SLDTestSupport {

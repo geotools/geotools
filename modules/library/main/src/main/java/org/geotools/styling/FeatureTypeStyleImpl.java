@@ -27,9 +27,7 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.FeatureTypeStyle;
-import org.geotools.api.style.SemanticType;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.*;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 
@@ -40,7 +38,7 @@ import org.geotools.util.Utilities;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeStyle, Cloneable {
+public class FeatureTypeStyleImpl implements FeatureTypeStyle, Cloneable {
 
     /** This option influences how multiple rules matching the same feature are evaluated */
     public static String KEY_EVALUATION_MODE = "ruleEvaluation";
@@ -130,20 +128,16 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
-    /**
-     * Creates a deep copy clone of the FeatureTypeStyle.
-     *
-     * @see org.geotools.styling.FeatureTypeStyle#clone()
-     */
+    /** Creates a deep copy clone of the FeatureTypeStyle. */
     @Override
     public Object clone() {
         FeatureTypeStyleImpl clone;

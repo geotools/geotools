@@ -14,11 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.api.style;
 
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.DataStore;
 
 /**
  * A UserLayer allows a user-defined layer to be built from WFS and WCS data.
@@ -49,12 +48,23 @@ import org.geotools.data.DataStore;
 public interface UserLayer extends StyledLayer {
     public RemoteOWS getRemoteOWS();
 
-    public DataStore getInlineFeatureDatastore();
+    /**
+     * This Object must be a DataStore, but the interface can't see that from here!
+     *
+     * @return
+     */
+    public Object getInlineFeatureDatastore();
 
     public SimpleFeatureType getInlineFeatureType();
 
-    /** DataStore used to hold parsed feature collection content for use during rendering */
-    public void setInlineFeatureDatastore(DataStore store);
+    /**
+     * DataStore used to hold parsed feature collection content for use during rendering
+     *
+     * <p>* This Object must be a DataStore, but the interface can't see that from here!
+     *
+     * @param store
+     */
+    public void setInlineFeatureDatastore(Object store);
 
     public void setInlineFeatureType(SimpleFeatureType ft);
 
@@ -75,5 +85,5 @@ public interface UserLayer extends StyledLayer {
     public void addUserStyle(Style style);
 
     /** Used to navigate a Style/SLD. */
-    void accept(org.geotools.styling.StyleVisitor visitor);
+    void accept(StyleVisitor visitor);
 }

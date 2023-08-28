@@ -9,11 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.AnchorPoint;
-import org.geotools.api.style.Displacement;
-import org.geotools.api.style.Graphic;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 
@@ -58,9 +54,28 @@ public class StyleTest {
                     }
 
                     @Override
-                    public Object accept(StyleVisitor visitor, Object data) {
+                    public Object accept(TraversingStyleVisitor visitor, Object data) {
                         return visitor.visit(this, data);
                     }
+
+                    /**
+                     * Sets the expression that computes a pixel offset from the geometry point.
+                     *
+                     * @param x
+                     */
+                    @Override
+                    public void setDisplacementX(Expression x) {}
+
+                    /**
+                     * Sets the expression that computes a pixel offset from the geometry point.
+                     *
+                     * @param y
+                     */
+                    @Override
+                    public void setDisplacementY(Expression y) {}
+
+                    @Override
+                    public void accept(StyleVisitor visitor) {}
                 };
         displacement = DisplacementImpl.cast(external);
         assertEquals(ff.literal(1.0), displacement.getDisplacementX());

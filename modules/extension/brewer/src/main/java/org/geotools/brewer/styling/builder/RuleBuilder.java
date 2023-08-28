@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.geotools.api.filter.Filter;
-import org.geotools.styling.GraphicLegend;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Symbolizer;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Symbolizer;
 
 public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     List<Symbolizer> symbolizers = new ArrayList<>();
@@ -158,7 +158,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     public ExtensionSymbolizerBuilder extension() {
         unset = false;
         if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
-        symbolizerBuilder = new ExtensionSymbolizerBuilder(this);
+        symbolizerBuilder = (Builder<? extends Symbolizer>) new ExtensionSymbolizerBuilder(this);
         return (ExtensionSymbolizerBuilder) symbolizerBuilder;
     }
 

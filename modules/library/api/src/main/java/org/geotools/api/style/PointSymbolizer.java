@@ -22,9 +22,16 @@ package org.geotools.api.style;
 public interface PointSymbolizer extends Symbolizer {
 
     /**
-     * Returns the graphic that will be drawn at each point of the geometry.
+     * Boolean vendor option, defaults to true. If true, in case no specified mark or graphics can
+     * be used, the default square mark will be used instead. If false, the symbol will not be
+     * painted.
+     */
+    String FALLBACK_ON_DEFAULT_MARK = "fallbackOnDefaultMark";
+
+    /**
+     * Provides the graphical-symbolization parameter to use for the point geometry.
      *
-     * @return Graphic
+     * @return The Graphic to be used when drawing a point.
      */
     Graphic getGraphic();
 
@@ -34,5 +41,8 @@ public interface PointSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** Provides the graphical-symbolization parameter to use for the point geometry. */
+    void setGraphic(Graphic graphic);
 }

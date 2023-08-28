@@ -33,16 +33,8 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.ColorReplacement;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.Description;
-import org.geotools.api.style.ExternalMark;
-import org.geotools.api.style.GraphicFill;
-import org.geotools.api.style.GraphicLegend;
-import org.geotools.api.style.GraphicStroke;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.OverlapBehavior;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
+import org.geotools.api.style.OverlapBehaviorEnum;
 import org.geotools.api.util.InternationalString;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
@@ -56,7 +48,7 @@ import org.geotools.util.factory.GeoTools;
  * @author Jody Garnett
  * @version $Id$
  */
-public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
+public class StyleFactoryImpl2 extends StyleFactoryImpl implements StyleFactory {
     private FilterFactory filterFactory;
 
     public StyleFactoryImpl2() {
@@ -80,10 +72,8 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public ChannelSelectionImpl channelSelection(
-            org.geotools.api.style.SelectedChannelType red,
-            org.geotools.api.style.SelectedChannelType green,
-            org.geotools.api.style.SelectedChannelType blue) {
+    public ChannelSelection channelSelection(
+            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue) {
         ChannelSelectionImpl channelSelection = new ChannelSelectionImpl();
         channelSelection.setRGBChannels(red, green, blue);
         return channelSelection;
@@ -170,13 +160,13 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public FeatureTypeStyleImpl featureTypeStyle(
+    public FeatureTypeStyle featureTypeStyle(
             String name,
             Description description,
             Id definedFor,
             Set<Name> featureTypeNames,
             Set<SemanticType> types,
-            List<org.geotools.api.style.Rule> rules) {
+            List<Rule> rules) {
         FeatureTypeStyleImpl featureTypeStyle = new FeatureTypeStyleImpl();
         featureTypeStyle.setName(name);
 
@@ -409,10 +399,8 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public PointPlacementImpl pointPlacement(
-            org.geotools.api.style.AnchorPoint anchor,
-            org.geotools.api.style.Displacement displacement,
-            Expression rotation) {
+    public PointPlacement pointPlacement(
+            AnchorPoint anchor, Displacement displacement, Expression rotation) {
         PointPlacementImpl pointPlacment = new PointPlacementImpl(filterFactory);
         pointPlacment.setAnchorPoint(anchor);
         pointPlacment.setDisplacement(displacement);
@@ -422,12 +410,12 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
 
     @Override
     @SuppressWarnings("unchecked")
-    public PointSymbolizerImpl pointSymbolizer(
+    public PointSymbolizer pointSymbolizer(
             String name,
             Expression geometry,
             Description description,
             Unit<?> unit,
-            org.geotools.api.style.Graphic graphic) {
+            Graphic graphic) {
         PointSymbolizerImpl copy = new PointSymbolizerImpl();
         copy.setDescription(description);
         copy.setGeometryPropertyName(((PropertyName) geometry).getPropertyName());
@@ -439,14 +427,14 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
 
     @Override
     @SuppressWarnings("unchecked")
-    public PolygonSymbolizerImpl polygonSymbolizer(
+    public PolygonSymbolizer polygonSymbolizer(
             String name,
             Expression geometry,
             Description description,
             Unit<?> unit,
-            org.geotools.api.style.Stroke stroke,
-            org.geotools.api.style.Fill fill,
-            org.geotools.api.style.Displacement displacement,
+            Stroke stroke,
+            Fill fill,
+            Displacement displacement,
             Expression offset) {
         PolygonSymbolizerImpl polygonSymbolizer = new PolygonSymbolizerImpl();
         polygonSymbolizer.setStroke(stroke);
@@ -469,7 +457,7 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
             Unit<?> unit,
             Expression opacity,
             org.geotools.api.style.ChannelSelection channelSelection,
-            OverlapBehavior overlapsBehaviour,
+            OverlapBehaviorEnum overlapsBehaviour,
             org.geotools.api.style.ColorMap colorMap,
             org.geotools.api.style.ContrastEnhancement contrast,
             org.geotools.api.style.ShadedRelief shaded,
@@ -515,7 +503,7 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
         return extension;
     }
 
-    static org.geotools.styling.Symbolizer cast(org.geotools.api.style.Symbolizer symbolizer) {
+    static Symbolizer cast(Symbolizer symbolizer) {
         if (symbolizer instanceof org.geotools.api.style.PolygonSymbolizer) {
             return PolygonSymbolizerImpl.cast(symbolizer);
         } else if (symbolizer instanceof org.geotools.api.style.LineSymbolizer) {
@@ -561,9 +549,8 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public SelectedChannelTypeImpl selectedChannelType(
-            Expression channelName,
-            org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+    public SelectedChannelType selectedChannelType(
+            Expression channelName, ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
@@ -571,8 +558,8 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public SelectedChannelTypeImpl selectedChannelType(
-            String channelName, org.geotools.api.style.ContrastEnhancement contrastEnhancement) {
+    public SelectedChannelType selectedChannelType(
+            String channelName, ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);
         selectedChannelType.setContrastEnhancement(contrastEnhancement);
@@ -580,7 +567,7 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public ShadedReliefImpl shadedRelief(Expression reliefFactor, boolean brightnessOnly) {
+    public ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly) {
         ShadedReliefImpl shadedRelief = new ShadedReliefImpl(filterFactory);
         shadedRelief.setReliefFactor(reliefFactor);
         shadedRelief.setBrightnessOnly(brightnessOnly);
@@ -588,7 +575,7 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public StrokeImpl stroke(
+    public Stroke stroke(
             Expression color,
             Expression opacity,
             Expression width,
@@ -608,7 +595,7 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public StrokeImpl stroke(
+    public Stroke stroke(
             GraphicFill fill,
             Expression color,
             Expression opacity,
@@ -630,7 +617,7 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public StrokeImpl stroke(
+    public Stroke stroke(
             GraphicStroke stroke,
             Expression color,
             Expression opacity,
@@ -653,12 +640,12 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
     }
 
     @Override
-    public StyleImpl style(
+    public Style style(
             String name,
             Description description,
             boolean isDefault,
-            List<org.geotools.api.style.FeatureTypeStyle> featureTypeStyles,
-            org.geotools.api.style.Symbolizer defaultSymbolizer) {
+            List<FeatureTypeStyle> featureTypeStyles,
+            Symbolizer defaultSymbolizer) {
         StyleImpl style = new StyleImpl();
         style.setName(name);
         style.setDescription(description);
@@ -674,16 +661,16 @@ public class StyleFactoryImpl2 implements org.geotools.api.style.StyleFactory {
 
     @Override
     @SuppressWarnings("unchecked")
-    public TextSymbolizerImpl textSymbolizer(
+    public TextSymbolizer textSymbolizer(
             String name,
             Expression geometry,
             Description description,
             Unit<?> unit,
             Expression label,
-            org.geotools.api.style.Font font,
-            org.geotools.api.style.LabelPlacement placement,
-            org.geotools.api.style.Halo halo,
-            org.geotools.api.style.Fill fill) {
+            Font font,
+            LabelPlacement placement,
+            Halo halo,
+            Fill fill) {
 
         TextSymbolizerImpl tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setName(name);

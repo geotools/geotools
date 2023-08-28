@@ -87,8 +87,16 @@ import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -147,15 +155,7 @@ import org.geotools.renderer.style.MarkAlongLine;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.styling.RuleImpl;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
@@ -1062,7 +1062,7 @@ public class StreamingRenderer implements GTRenderer {
      * paint(Graphics2D, Rectangle, AffineTransform)</code>. It is package protected just to allow
      * unit testing it.
      *
-     * @param envelope the spatial extent which is the target area of the rendering process
+     * @param mapCRS the spatial extent which is the target area of the rendering process
      * @return the set of features resulting from <code>currLayer</code> after querying its feature
      *     source
      * @throws IllegalFilterException if something goes wrong constructing the bbox filter
@@ -2042,8 +2042,11 @@ public class StreamingRenderer implements GTRenderer {
                                     fts.getTransformation());
                 }
                 lfts.composite = composite;
-                if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(
-                        fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE))) {
+                if (org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(
+                        fts.getOptions()
+                                .get(
+                                        org.geotools.api.style.FeatureTypeStyle
+                                                .KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
                 }
 

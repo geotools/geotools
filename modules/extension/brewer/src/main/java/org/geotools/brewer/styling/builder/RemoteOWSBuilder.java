@@ -16,7 +16,7 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.RemoteOWS;
+import org.geotools.api.style.RemoteOWS;
 
 public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
     private String service;

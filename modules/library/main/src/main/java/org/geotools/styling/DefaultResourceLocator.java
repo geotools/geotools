@@ -19,6 +19,7 @@ package org.geotools.styling;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.geotools.api.style.ResourceLocator;
 import org.geotools.util.URLs;
 
 /**

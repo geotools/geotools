@@ -17,10 +17,10 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.api.util.InternationalString;
 import org.geotools.se.v1_1.SE;
-import org.geotools.styling.Description;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;

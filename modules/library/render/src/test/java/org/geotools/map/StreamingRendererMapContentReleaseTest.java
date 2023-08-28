@@ -15,6 +15,11 @@ import java.util.logging.Level;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -24,11 +29,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -88,7 +88,7 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
                 points.add(new Coordinate(rand.next(), rand.next()));
             }
 
-            fb.add(geom.createLineString(points.toArray(new Coordinate[points.size()])));
+            fb.add(geom.createLineString(points.toArray(new Coordinate[0])));
             fb.add("Feature " + i);
             coll.add(fb.buildFeature(null));
         }
@@ -138,7 +138,7 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
         int thick = 3;
 
         // create stroke
-        org.geotools.styling.Stroke stroke =
+        org.geotools.api.style.Stroke stroke =
                 sf.stroke(ff.literal(foreground), null, ff.literal(thick), null, null, null, null);
 
         // create line symbolizer

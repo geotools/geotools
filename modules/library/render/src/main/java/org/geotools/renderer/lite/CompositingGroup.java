@@ -22,6 +22,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
@@ -33,9 +36,6 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapLayerListener;
 import org.geotools.map.MapViewport;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 
 /**
  * Data structure holding a MapContent that has its own compositing base
@@ -177,7 +177,10 @@ class CompositingGroup {
     }
 
     static boolean isCompositingBase(FeatureTypeStyle fts) {
-        return "true".equalsIgnoreCase(fts.getOptions().get(FeatureTypeStyle.COMPOSITE_BASE));
+        return "true"
+                .equalsIgnoreCase(
+                        fts.getOptions()
+                                .get(org.geotools.api.style.FeatureTypeStyle.COMPOSITE_BASE));
     }
 
     Graphics2D graphics;

@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.media.jai.ROI;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.*;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -33,12 +34,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 
@@ -205,7 +200,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.RasterSymbolizer)
+     * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.api.style.RasterSymbolizer)
      */
     @Override
     public void visit(RasterSymbolizer rs) {

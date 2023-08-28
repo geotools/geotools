@@ -23,16 +23,17 @@ import org.geotools.api.filter.expression.Expression;
 public interface ExtensionSymbolizer extends Symbolizer {
 
     /**
-     * Returns the name of the extension, this name should be commun to all implementation of a
-     * given extension symbolizer sub class.
+     * Vendor specific name for your symbolizer.
      *
-     * @return the symbolizer extension name
+     * @return the symbolizer name
      */
     String getExtensionName();
 
+    /** Name of vendor specific extensions */
+    void setExtensionName(String name);
+
     /**
-     * Returns a map of all expressions used in this symbolizer. It can be used for analyze purpose
-     * but shoudl not be used for XML parsing.
+     * Live map symbolizer expressions.
      *
      * @return map of all expressions.
      */
@@ -44,5 +45,5 @@ public interface ExtensionSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
 }

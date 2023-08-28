@@ -17,22 +17,12 @@
  */
 package org.geotools.ysld.encode;
 
-import static org.geotools.ysld.TestUtils.fakeString;
-import static org.geotools.ysld.TestUtils.isColor;
-import static org.geotools.ysld.TestUtils.lexEqualTo;
-import static org.geotools.ysld.TestUtils.numEqualTo;
-import static org.geotools.ysld.TestUtils.yHasEntry;
-import static org.geotools.ysld.TestUtils.yHasItem;
-import static org.geotools.ysld.TestUtils.yTuple;
+import static org.geotools.ysld.TestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -43,38 +33,12 @@ import java.util.regex.Pattern;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.style.ChannelSelection;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.Graphic;
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
+import org.geotools.api.style.Stroke;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
 import org.geotools.util.logging.Logging;
-import org.geotools.ysld.Tuple;
-import org.geotools.ysld.YamlMap;
-import org.geotools.ysld.YamlSeq;
-import org.geotools.ysld.YamlUtil;
-import org.geotools.ysld.Ysld;
+import org.geotools.ysld.*;
 import org.geotools.ysld.parse.YsldParser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -577,18 +541,17 @@ public class YsldEncodeTest {
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         List<GraphicalSymbol> symbols = new ArrayList<>();
         symbols.add(mark);
-        TextSymbolizer2 text =
-                (TextSymbolizer2)
-                        sf.textSymbolizer(
-                                null,
-                                ff.property("geom"),
-                                null,
-                                null,
-                                ff.property("name"),
-                                null,
-                                null,
-                                null,
-                                null);
+        TextSymbolizer text =
+                sf.textSymbolizer(
+                        null,
+                        ff.property("geom"),
+                        null,
+                        null,
+                        ff.property("name"),
+                        null,
+                        null,
+                        null,
+                        null);
         text.setGraphic(sf.graphic(symbols, null, null, null, null, null));
         rule.symbolizers().add(text);
 
@@ -628,18 +591,17 @@ public class YsldEncodeTest {
                         sf.createAnchorPoint(ff.literal(0.75), ff.literal(0.25)),
                         sf.createDisplacement(ff.literal(10), ff.literal(15)),
                         ff.literal(90));
-        TextSymbolizer2 text =
-                (TextSymbolizer2)
-                        sf.textSymbolizer(
-                                null,
-                                ff.property("geom"),
-                                null,
-                                null,
-                                ff.property("name"),
-                                null,
-                                place,
-                                null,
-                                null);
+        TextSymbolizer text =
+                sf.textSymbolizer(
+                        null,
+                        ff.property("geom"),
+                        null,
+                        null,
+                        ff.property("name"),
+                        null,
+                        place,
+                        null,
+                        null);
         rule.symbolizers().add(text);
 
         StringWriter out = new StringWriter();
@@ -681,18 +643,17 @@ public class YsldEncodeTest {
 
         LabelPlacement place = sf.createLinePlacement(ff.literal(10));
 
-        TextSymbolizer2 text =
-                (TextSymbolizer2)
-                        sf.textSymbolizer(
-                                null,
-                                ff.property("geom"),
-                                null,
-                                null,
-                                ff.property("name"),
-                                null,
-                                place,
-                                null,
-                                null);
+        TextSymbolizer text =
+                sf.textSymbolizer(
+                        null,
+                        ff.property("geom"),
+                        null,
+                        null,
+                        ff.property("name"),
+                        null,
+                        place,
+                        null,
+                        null);
         rule.symbolizers().add(text);
 
         StringWriter out = new StringWriter();
@@ -1428,9 +1389,7 @@ public class YsldEncodeTest {
                                 styleFactory.createContrastEnhancement(filterFactory.literal(1.2))),
                         styleFactory.createSelectedChannelType(
                                 "baz", styleFactory.createContrastEnhancement()));
-        ((org.geotools.styling.ContrastEnhancement)
-                        sel.getRGBChannels()[2].getContrastEnhancement())
-                .setMethod(ContrastMethod.HISTOGRAM);
+        sel.getRGBChannels()[2].getContrastEnhancement().setMethod(ContrastMethod.HISTOGRAM);
         r.setChannelSelection(sel);
 
         StringWriter out = new StringWriter();
@@ -1828,7 +1787,9 @@ public class YsldEncodeTest {
         Rule rule = sf.createRule();
         rule.symbolizers().add(p);
         ExternalGraphic eg = sf.createExternalGraphic("smileyface.png", "image/png");
-        rule.setLegend(sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
+        rule.setLegend(
+                (GraphicLegend)
+                        sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(sf.createFeatureTypeStyle(rule)), out);

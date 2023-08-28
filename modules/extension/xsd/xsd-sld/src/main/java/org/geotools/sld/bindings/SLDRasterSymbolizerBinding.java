@@ -19,15 +19,8 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.*;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
@@ -150,7 +143,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
 
         // &lt;xsd:element ref="sld:OverlapBehavior" minOccurs="0"/&gt;
         if (node.hasChild("OverlapBehavior")) {
-            rs.setOverlapBehavior((OverlapBehavior) node.getChildValue("OverlapBehavior"));
+            rs.setOverlapBehavior((OverlapBehaviorEnum) node.getChildValue("OverlapBehavior"));
         }
 
         // &lt;xsd:element ref="sld:ColorMap" minOccurs="0"/&gt;

@@ -16,18 +16,13 @@
  */
 package org.geotools.xml.styling;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
@@ -40,9 +35,27 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.util.InternationalString;
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -50,47 +63,8 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Extent;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.OtherText;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbol;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.OverlapBehaviorImpl;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.xml.filter.FilterTransformer;
 import org.geotools.xml.transform.TransformerBase;
@@ -477,8 +451,9 @@ public class SLDTransformer extends TransformerBase {
             // adds the uom attribute according to the OGC SE specification
             AttributesImpl atts = new AttributesImpl();
             Unit<Length> uom = text.getUnitOfMeasure();
-            if (uom != null)
+            if (uom != null) {
                 atts.addAttribute("", "uom", "uom", "", UomOgcMapping.get(uom).getSEString());
+            }
 
             start("TextSymbolizer", atts);
 
@@ -531,18 +506,15 @@ public class SLDTransformer extends TransformerBase {
                 text.getFill().accept(this);
             }
 
-            if (text instanceof TextSymbolizer2) {
-                TextSymbolizer2 text2 = (TextSymbolizer2) text;
-                if (text2.getGraphic() != null) visit(text2.getGraphic());
-                if (text2.getSnippet() != null) element("Snippet", text2.getSnippet());
-                if (text2.getFeatureDescription() != null)
-                    element("FeatureDescription", text2.getFeatureDescription());
-                OtherText otherText = text2.getOtherText();
-                if (otherText != null) {
-                    AttributesImpl otherTextAtts = new AttributesImpl();
-                    otherTextAtts.addAttribute("", "target", "target", "", otherText.getTarget());
-                    element("OtherText", otherText.getText(), null, otherTextAtts);
-                }
+            if (text.getGraphic() != null) visit(text.getGraphic());
+            if (text.getSnippet() != null) element("Snippet", text.getSnippet());
+            if (text.getFeatureDescription() != null)
+                element("FeatureDescription", text.getFeatureDescription());
+            OtherText otherText = text.getOtherText();
+            if (otherText != null) {
+                AttributesImpl otherTextAtts = new AttributesImpl();
+                otherTextAtts.addAttribute("", "target", "target", "", otherText.getTarget());
+                element("OtherText", otherText.getText(), null, otherTextAtts);
             }
 
             if (text.getPriority() != null) {
@@ -701,8 +673,10 @@ public class SLDTransformer extends TransformerBase {
             // string-values: "ramp", "intervals" or "values".
             AttributesImpl atts = new AttributesImpl();
             String typeString;
-            if (colorMap.getType() == ColorMap.TYPE_INTERVALS) typeString = "intervals";
-            else if (colorMap.getType() == ColorMap.TYPE_VALUES) typeString = "values";
+            if (colorMap.getType() == org.geotools.api.style.ColorMap.TYPE_INTERVALS)
+                typeString = "intervals";
+            else if (colorMap.getType() == org.geotools.api.style.ColorMap.TYPE_VALUES)
+                typeString = "values";
             else typeString = "ramp"; // Also the default in the parser
             if (!"ramp".equals(typeString)) {
                 atts.addAttribute("", "type", "type", "", typeString);
@@ -1025,7 +999,7 @@ public class SLDTransformer extends TransformerBase {
                 element("Name", layer.getName()); // optional
             }
 
-            DataStore inlineFDS = layer.getInlineFeatureDatastore();
+            DataStore inlineFDS = (DataStore) layer.getInlineFeatureDatastore();
             if (inlineFDS != null) {
                 visitInlineFeatureType(inlineFDS, layer.getInlineFeatureType());
             } else if (layer.getRemoteOWS() != null) {
@@ -1462,7 +1436,7 @@ public class SLDTransformer extends TransformerBase {
         @Override
         public void visit(OverlapBehavior ob) {
             start("OverlapBehavior");
-            final String pn = (String) ob.getValue();
+            final String pn = (String) ((OverlapBehaviorImpl) ob).getValue();
             start(pn);
             end(pn);
             end("OverlapBehavior");

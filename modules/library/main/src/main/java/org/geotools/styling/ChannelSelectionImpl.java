@@ -16,7 +16,10 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.SelectedChannelType;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.util.Utilities;
 
 /**
@@ -57,10 +60,6 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.gray = gray;
     }
 
-    public void setGrayChannel(org.geotools.api.style.SelectedChannelType gray) {
-        this.gray = new SelectedChannelTypeImpl(gray);
-    }
-
     @Override
     public void setRGBChannels(SelectedChannelType[] channels) {
         if (channels == null) {
@@ -86,26 +85,17 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.blue = blue;
     }
 
-    public void setRGBChannels(
-            org.geotools.api.style.SelectedChannelType red,
-            org.geotools.api.style.SelectedChannelType green,
-            org.geotools.api.style.SelectedChannelType blue) {
-        this.red = new SelectedChannelTypeImpl(red);
-        this.green = new SelectedChannelTypeImpl(green);
-        this.blue = new SelectedChannelTypeImpl(blue);
-    }
-
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
-    public void accept(org.geotools.api.style.StyleVisitor visitor) {
+    public void accept(TraversingStyleVisitor visitor) {
         visitor.visit(this, null);
     }
 

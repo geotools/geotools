@@ -25,9 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
-import org.geotools.api.style.GraphicFill;
-import org.geotools.api.style.SemanticType;
-import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.*;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -35,12 +33,6 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -537,7 +529,7 @@ public class LineMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         List<Symbolizer> symbolizers = new ArrayList<>();
-        org.geotools.styling.Stroke stroke =
+        org.geotools.api.style.Stroke stroke =
                 sf.stroke(
                         lineColor(),
                         lineOpacity(),

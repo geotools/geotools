@@ -25,30 +25,11 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.FillImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.junit.Assert;
 import org.junit.Test;
@@ -191,8 +172,8 @@ public class StyleFactoryImplTest {
         Assert.assertNotNull("Failed to build fill", f);
 
         f = styleFactory.createFill(null);
-        Assert.assertEquals(f.getColor(), Fill.DEFAULT.getColor());
-        Assert.assertSame(f.getColor(), Fill.DEFAULT.getColor());
+        Assert.assertEquals(f.getColor(), FillImpl.DEFAULT.getColor());
+        Assert.assertSame(f.getColor(), FillImpl.DEFAULT.getColor());
     }
 
     /** Test of createMark method, of class org.geotools.styling.StyleFactoryImpl. */
@@ -252,7 +233,7 @@ public class StyleFactoryImplTest {
         Expression rotation = filterFactory.literal(145.0);
         Graphic g =
                 styleFactory.createGraphic(
-                        externalGraphics, marks, symbols, opacity, size, rotation);
+                        externalGraphics, marks, (Symbol[]) symbols, opacity, size, rotation);
 
         Assert.assertNotNull("failed to build graphic ", g);
     }

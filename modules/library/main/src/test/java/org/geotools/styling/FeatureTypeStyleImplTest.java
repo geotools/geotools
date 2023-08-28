@@ -16,7 +16,10 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.feature.NameImpl;
 import org.junit.Assert;
 import org.junit.Test;

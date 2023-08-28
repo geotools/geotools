@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
 
 /**
  * A basic implementation of the StyleVisitor interface.
@@ -200,7 +200,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
         }
         for (GraphicalSymbol gs : gr.graphicalSymbols()) {
             if (gs instanceof Symbol) {
-                ((Symbol) gs).accept(this);
+                gs.accept(this);
             } else {
                 throw new RuntimeException("Don't know how to visit " + gs);
             }

@@ -9,6 +9,7 @@
  */
 package org.geotools.api.style;
 
+import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
 
 /**
@@ -37,12 +38,20 @@ public interface ContrastEnhancement {
     /** We use a codeList to enable more enchancement type possibilities. */
     public ContrastMethod getMethod();
 
+    /** Used to set the contrast enhancement method used. */
+    void setMethod(ContrastMethod method);
+
     /**
-     * A "GammaValue" tells how much to brighten (values greater than 1.0) or dim (values less than
-     * 1.0) an image. The default GammaValue is 1.0 (no change).
+     * @param gamma How much to brighten (greater than 1) or dim (less than 1) this channel; use 1.0
+     *     to indicate no change.
+     */
+    void setGammaValue(Expression gamma);
+
+    /**
+     * How much to brighten (values greater than 1.0) or dim (values less than 1.0) an image. The
+     * default GammaValue is 1.0 (no change).
      *
-     * @return Expression to control gamma adjustment, null or Expression.NIL handled as the value
-     *     1.0
+     * @return Expression, if <code>null</code> a value of 1.0 is assumed indicating no change
      */
     Expression getGammaValue();
 
@@ -51,5 +60,45 @@ public interface ContrastEnhancement {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * Return vendor options relating to the enhancement method
+     *
+     * @return a Map containing expressions with string keys.
+     */
+    Map<String, Expression> getOptions();
+
+    /**
+     * check if vendor option key is available
+     *
+     * @param key - the name of the option to check
+     * @return true if present
+     */
+    boolean hasOption(String key);
+
+    /**
+     * Store a vendor option
+     *
+     * @param key - the name of the option
+     * @param value an expression that evaluates to it's value
+     */
+    void addOption(String key, Expression value);
+
+    /** Traversal of the style data structure. */
+    void accept(StyleVisitor visitor);
+
+    /** @param options a Map of VendorOptions */
+    void setOptions(Map<String, Expression> options);
+
+    /** @return An expression for the matching VendorOption */
+    Expression getOption(String string);
+
+    /**
+     * Convenience method to allow users to pass in a {@link ContrastEnhancementMethod} to update
+     * {@link Method} and {@link Options} in one go.
+     *
+     * @param method the {@link ContrastEnhancementMethod} that underlies this enhancement
+     */
+    void setMethod(ContrastMethodStrategy method);
 }

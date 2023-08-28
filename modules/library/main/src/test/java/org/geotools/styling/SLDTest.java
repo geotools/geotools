@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Before;
 import org.junit.Test;

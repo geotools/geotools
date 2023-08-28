@@ -16,24 +16,19 @@
  */
 package org.geotools.xml.styling;
 
-import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.filter.Filter;
@@ -42,76 +37,22 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.style.ContrastMethod;
-import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.*;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Stroke;
 import org.geotools.api.util.InternationalString;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.ContrastMethodStrategy;
-import org.geotools.styling.DefaultResourceLocator;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExponentialContrastMethodStrategy;
-import org.geotools.styling.Extent;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeConstraintImpl;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.HistogramContrastMethodStrategy;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.LogarithmicContrastMethodStrategy;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NamedLayerImpl;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.NormalizeContrastMethodStrategy;
-import org.geotools.styling.OtherText;
-import org.geotools.styling.OtherTextImpl;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.RemoteOWSImpl;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.SelectedChannelTypeImpl;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.ShadedReliefImpl;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
-import org.geotools.styling.UserLayerImpl;
+import org.geotools.styling.*;
 import org.geotools.util.Base64;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
+import org.w3c.dom.*;
 import org.w3c.dom.CharacterData;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -185,7 +126,7 @@ public class SLDParser {
 
     private static final Pattern TRAILING_WHITESPACES = Pattern.compile("\\s+$");
 
-    private FilterFactory ff;
+    private final FilterFactory ff;
 
     protected InputSource source;
 
@@ -200,7 +141,7 @@ public class SLDParser {
 
     private boolean disposeInputSource;
 
-    private ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FF);
+    private final ExpressionDOMParser expressionDOMParser = new ExpressionDOMParser(FF);
 
     /**
      * Create a Stylereader - use if you already have a dom to parse.
@@ -582,8 +523,7 @@ public class SLDParser {
                 if (ftc != null) featureTypeConstraints.add(ftc);
             }
         }
-        return featureTypeConstraints.toArray(
-                new FeatureTypeConstraint[featureTypeConstraints.size()]);
+        return featureTypeConstraints.toArray(new FeatureTypeConstraint[0]);
     }
 
     protected FeatureTypeConstraint parseFeatureTypeConstraint(Node root) {
@@ -603,7 +543,7 @@ public class SLDParser {
                 ftc.setFilter(parseFilter(child));
             }
         }
-        ftc.setExtents(new Extent[0]);
+        ftc.setExtents();
         if (ftc.getFeatureTypeName() == null) return null;
         else return ftc;
     }
@@ -958,7 +898,7 @@ public class SLDParser {
                 for (int k = 0; k < l; k++) {
                     Graphic graphic = parseGraphic(g.item(k));
                     if (graphic != null) {
-                        rule.setLegend(graphic);
+                        rule.setLegend((GraphicLegend) graphic);
                         break;
                     }
                 }
@@ -1163,7 +1103,7 @@ public class SLDParser {
             symbol.setUnitOfMeasure(uomMapping.getUnit());
         }
 
-        List<org.geotools.styling.Font> fonts = new ArrayList<>();
+        List<Font> fonts = new ArrayList<>();
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -1202,25 +1142,24 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("Graphic")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard Graphic in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2) {
-                    ((TextSymbolizer2) symbol).setGraphic(parseGraphic(child));
-                }
+
+                symbol.setGraphic(parseGraphic(child));
+
             } else if (childName.equalsIgnoreCase("Snippet")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard Abstract in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2)
-                    ((TextSymbolizer2) symbol).setSnippet(parseCssParameter(child, false));
+
+                symbol.setSnippet(parseCssParameter(child, false));
             } else if (childName.equalsIgnoreCase("FeatureDescription")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard Description in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2)
-                    ((TextSymbolizer2) symbol)
-                            .setFeatureDescription(parseCssParameter(child, false));
+
+                symbol.setFeatureDescription(parseCssParameter(child, false));
             } else if (childName.equalsIgnoreCase("OtherText")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("Parsing non-standard OtherText in TextSymbolizer");
-                if (symbol instanceof TextSymbolizer2)
-                    ((TextSymbolizer2) symbol).setOtherText(parseOtherText(child));
+
+                symbol.setOtherText(parseOtherText(child));
             } else if (childName.equalsIgnoreCase("priority")) {
                 symbol.setPriority(parseCssParameter(child));
             } else if (childName.equalsIgnoreCase(VendorOptionString)) {
@@ -1411,11 +1350,11 @@ public class SLDParser {
                 final String type = typeAtt.getNodeValue();
 
                 if ("ramp".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMap.TYPE_RAMP);
+                    symbol.setType(org.geotools.api.style.ColorMap.TYPE_RAMP);
                 } else if ("intervals".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMap.TYPE_INTERVALS);
+                    symbol.setType(org.geotools.api.style.ColorMap.TYPE_INTERVALS);
                 } else if ("values".equalsIgnoreCase(type)) {
-                    symbol.setType(ColorMap.TYPE_VALUES);
+                    symbol.setType(org.geotools.api.style.ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
             }
@@ -1946,8 +1885,8 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected org.geotools.styling.Stroke parseStroke(Node root) {
-        org.geotools.styling.Stroke stroke = factory.getDefaultStroke();
+    protected Stroke parseStroke(Node root) {
+        Stroke stroke = factory.getDefaultStroke();
         NodeList list = findElements(((Element) root), "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
@@ -2367,7 +2306,7 @@ public class SLDParser {
     }
 
     /** Internal method to parse a Font Node; protected to allow for unit testing */
-    protected org.geotools.styling.Font parseFont(Node root) {
+    protected Font parseFont(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing font");
         }

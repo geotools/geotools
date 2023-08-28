@@ -24,17 +24,17 @@ import java.util.regex.Pattern;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
 
 /**

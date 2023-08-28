@@ -27,6 +27,7 @@ import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.PropertyIsLessThan;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.*;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
@@ -35,17 +36,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
@@ -134,15 +125,11 @@ public class UserLayerTest {
 
         // create 1st point
         final Point g1 = jtsFactory.createPoint(new Coordinate(X_1, Y_1));
-        fc.add(
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {Integer.valueOf(1), g1, LABEL_1}, ID_1));
+        fc.add(SimpleFeatureBuilder.build(schema, new Object[] {1, g1, LABEL_1}, ID_1));
 
         // create 2nd point
         final Point g2 = jtsFactory.createPoint(new Coordinate(X_2, Y_2));
-        fc.add(
-                SimpleFeatureBuilder.build(
-                        schema, new Object[] {Integer.valueOf(2), g2, LABEL_2}, ID_2));
+        fc.add(SimpleFeatureBuilder.build(schema, new Object[] {2, g2, LABEL_2}, ID_2));
 
         final DataStore ds = DataUtilities.dataStore(fc);
 

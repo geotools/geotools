@@ -21,12 +21,7 @@ import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Font;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.api.style.*;
 
 public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();
@@ -35,7 +30,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
 
     FontBuilder font;
 
-    HaloBuilder halo = new HaloBuilder(this).unset();
+    HaloBuilder halo = (HaloBuilder) new HaloBuilder(this).unset();
 
     Expression label;
 
@@ -43,7 +38,7 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
 
     Unit<Length> uom;
 
-    GraphicBuilder shield = new GraphicBuilder(this).unset();
+    GraphicBuilder shield = (GraphicBuilder) new GraphicBuilder(this).unset();
 
     Builder<? extends LabelPlacement> placement = new PointPlacementBuilder(this).unset();
 
@@ -132,12 +127,11 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
         }
         ts.getOptions().putAll(options);
         ts.setPriority(priority);
-        if (ts instanceof TextSymbolizer2) {
-            TextSymbolizer2 ts2 = (TextSymbolizer2) ts;
-            if (!shield.isUnset()) {
-                ts2.setGraphic(shield.build());
-            }
+
+        if (!shield.isUnset()) {
+            ts.setGraphic(shield.build());
         }
+
         reset();
         return ts;
     }

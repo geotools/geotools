@@ -17,8 +17,8 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.ResourceLocator;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.ResourceLocator;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

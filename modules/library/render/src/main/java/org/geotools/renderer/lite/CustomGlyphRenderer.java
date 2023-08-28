@@ -28,8 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
 import org.geotools.util.logging.Logging;
 
 /** @author jfc173 */

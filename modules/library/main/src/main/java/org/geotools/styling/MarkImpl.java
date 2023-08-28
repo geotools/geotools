@@ -18,8 +18,7 @@ package org.geotools.styling;
 
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.*;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
@@ -31,7 +30,7 @@ import org.geotools.util.factory.GeoTools;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class MarkImpl implements Mark, Cloneable {
+public class MarkImpl implements Mark, Cloneable, Symbol {
 
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
@@ -155,12 +154,12 @@ public class MarkImpl implements Mark, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -169,7 +168,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * <p>Only the fill and stroke are cloned since Expressions should be immutable.
      *
-     * @see org.geotools.styling.Mark#clone()
+     * @see org.geotools.api.style.Mark
      */
     @Override
     public Object clone() {

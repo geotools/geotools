@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.*;
 import org.geotools.data.DataStore;
 import org.geotools.util.Utilities;
 
@@ -90,8 +91,8 @@ public class UserLayerImpl extends StyledLayerImpl implements UserLayer {
     }
 
     @Override
-    public void setInlineFeatureDatastore(DataStore store) {
-        inlineFeatureDatastore = store;
+    public void setInlineFeatureDatastore(Object store) {
+        inlineFeatureDatastore = (DataStore) store;
     }
 
     @Override

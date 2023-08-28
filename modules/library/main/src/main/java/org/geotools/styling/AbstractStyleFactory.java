@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 import javax.swing.Icon;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.*;
 
 /** Abstract base class for implementing style factories. */
 public abstract class AbstractStyleFactory implements StyleFactory {
@@ -113,7 +114,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     @Override
     public abstract FeatureTypeStyle createFeatureTypeStyle(Rule[] rules);
 
-    @Override
     public abstract LinePlacement createLinePlacement(Expression offset);
 
     @Override
@@ -158,7 +158,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @param color the color of the line
      * @param width the width of the line
      * @return the stroke object
-     * @see org.geotools.stroke
+     * @see org.geotools.api.style.Stroke
      */
     @Override
     public abstract Stroke createStroke(Expression color, Expression width);
@@ -170,7 +170,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @param width The width of the line
      * @param opacity The opacity of the line
      * @return The stroke
-     * @see org.geotools.stroke
      */
     @Override
     public abstract Stroke createStroke(Expression color, Expression width, Expression opacity);
@@ -188,7 +187,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @param graphicFill - a graphic object to fill the line with
      * @param graphicStroke - a graphic object to draw the line with
      * @return The completed stroke.
-     * @see org.geotools.stroke
      */
     @Override
     public abstract Stroke createStroke(

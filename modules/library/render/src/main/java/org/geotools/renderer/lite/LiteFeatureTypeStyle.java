@@ -21,10 +21,10 @@ import java.awt.Graphics2D;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.style.Rule;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.map.Layer;
 import org.geotools.renderer.crs.ProjectionHandler;
-import org.geotools.styling.Rule;
 
 /**
  * This is a simple class that contains the information needed to render a layer.

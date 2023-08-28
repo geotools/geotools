@@ -24,66 +24,15 @@ import java.util.Map;
 import javax.naming.OperationNotSupportedException;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.*;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.NamedLayerImpl;
-import org.geotools.styling.NamedStyle;
-import org.geotools.styling.NamedStyleImpl;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.StyledLayerImpl;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
-import org.geotools.styling.UserLayerImpl;
+import org.geotools.styling.*;
 import org.geotools.xml.PrintHandler;
-import org.geotools.xml.schema.Attribute;
-import org.geotools.xml.schema.ComplexType;
-import org.geotools.xml.schema.Element;
-import org.geotools.xml.schema.ElementGrouping;
-import org.geotools.xml.schema.ElementValue;
+import org.geotools.xml.schema.*;
 import org.geotools.xml.schema.impl.AttributeGT;
 import org.geotools.xml.schema.impl.ChoiceGT;
 import org.geotools.xml.schema.impl.SequenceGT;
-import org.geotools.xml.styling.sldComplexTypes._AVERAGE;
-import org.geotools.xml.styling.sldComplexTypes._AnchorPoint;
-import org.geotools.xml.styling.sldComplexTypes._ChannelSelection;
-import org.geotools.xml.styling.sldComplexTypes._ColorMap;
-import org.geotools.xml.styling.sldComplexTypes._ContrastEnhancement;
-import org.geotools.xml.styling.sldComplexTypes._CssParameter;
-import org.geotools.xml.styling.sldComplexTypes._Displacement;
-import org.geotools.xml.styling.sldComplexTypes._EARLIEST_ON_TOP;
-import org.geotools.xml.styling.sldComplexTypes._ElseFilter;
-import org.geotools.xml.styling.sldComplexTypes._FeatureTypeConstraint;
-import org.geotools.xml.styling.sldComplexTypes._FeatureTypeStyle;
-import org.geotools.xml.styling.sldComplexTypes._Fill;
-import org.geotools.xml.styling.sldComplexTypes._Font;
-import org.geotools.xml.styling.sldComplexTypes._Geometry;
-import org.geotools.xml.styling.sldComplexTypes._Graphic;
-import org.geotools.xml.styling.sldComplexTypes._GraphicStroke;
-import org.geotools.xml.styling.sldComplexTypes._Halo;
-import org.geotools.xml.styling.sldComplexTypes._ImageOutline;
-import org.geotools.xml.styling.sldComplexTypes._LATEST_ON_TOP;
-import org.geotools.xml.styling.sldComplexTypes._LabelPlacement;
+import org.geotools.xml.styling.sldComplexTypes.*;
 import org.geotools.xml.xLink.XLinkSchema;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -2488,7 +2437,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return org.geotools.styling.SelectedChannelType.class;
+            return SelectedChannelType.class;
         }
 
         /**
@@ -2527,8 +2476,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            org.geotools.styling.SelectedChannelType symbol =
-                    new org.geotools.styling.SelectedChannelTypeImpl();
+            org.geotools.api.style.SelectedChannelType symbol = new SelectedChannelTypeImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {

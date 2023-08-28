@@ -23,42 +23,51 @@ import org.geotools.api.filter.expression.Expression;
  * @since GeoAPI 2.2
  */
 public interface Font {
+    /** default font-size value * */
+    int DEFAULT_FONTSIZE = 10;
 
     // *************************************************************
     // SVG PARAMETERS
     // *************************************************************
 
     /**
-     * The "font-family" SvgParameter element gives the family name of a font to use. Allowed values
-     * are system-dependent. Any number of font-family SvgParameter elements may be given and they
-     * are assumed to be in preferred order.
+     * SVG font-family parameters in preferred order.
      *
-     * @return live list of font family
+     * @return live list of font-family parameters in preferred order
      */
     List<Expression> getFamily();
 
     /**
-     * The "font-style" SvgParameter element gives the style to use for a font. The allowed values
-     * are "normal", "italic", and "oblique". If null, the default is "normal".
+     * The "font-style" SVG parameter should be "normal", "italic", or "oblique".
      *
-     * @return Expression or Expression.NIL
+     * <p>If null is returned the default value should be considered "normal".
+     *
+     * @return Expression or null
      */
     Expression getStyle();
 
+    /** @param style The "font-style" SVG parameter (one of "normal", "italic", or "oblique" */
+    void setStyle(Expression style);
+
     /**
-     * The "font-weight" SvgParameter element gives the amount of weight or boldness to use for a
-     * font. Allowed values are "normal" and "bold". If null, the default is "normal".
+     * The "font-weight" SVG parameter should be "normal" or "bold".
      *
-     * @return Expression or or Expression.NIL
+     * <p>If null the default should be considered as "normal"
+     *
+     * @return font-weight SVG parameter
      */
     Expression getWeight();
 
+    /** @param weight The "font-weight" SVG parameter (one of "normal", "bold") */
+    void setWeight(Expression weight);
+
     /**
-     * The "font-size" SvgParameter element gives the size to use for the font in pixels. The
-     * default is defined to be 10 pixels, though various systems may have restrictions on what
-     * sizes are available.
+     * Font size in pixels with a default of 10 pixels.
      *
-     * @return Expression or null
+     * <p>Please note this is specified in pixels so you may need to take the resolution of your
+     * output into account when providing a size.
+     *
+     * @return font size
      */
     Expression getSize();
 
@@ -67,5 +76,34 @@ public interface Font {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** @param size the font size in pixels */
+    void setSize(Expression size);
+
+    /**
+     * Enumeration of allow font-style values.
+     *
+     * <p>This is a way to document the constants allowable for the setStyle method
+     *
+     * <p>enum Style2 implements Literal { NORMAL("normal"), ITALIC("italic"), OBLIQUE("oblique");
+     *
+     * <p>final String literal; final static int count=0; private Style2(String constant) { literal
+     * = constant; } public Object accept(ExpressionVisitor visitor, Object extraData) { return
+     * visitor.visit( this, extraData ); } public Object evaluate(Object object) { return literal; }
+     * public <T> T evaluate(Object object, Class<T> context) { // return
+     * Converters.convert(literal, context); if( context.isInstance( literal) ){ return
+     * context.cast(literal); } return null; } public Object getValue() { return literal; } }
+     */
+    interface Style {
+        static final String NORMAL = "normal";
+        static final String ITALIC = "italic";
+        static final String OBLIQUE = "oblique";
+    }
+
+    /** Enumeration of allow font-weight values. */
+    interface Weight {
+        static final String NORMAL = "normal";
+        static final String BOLD = "bold";
+    }
 }

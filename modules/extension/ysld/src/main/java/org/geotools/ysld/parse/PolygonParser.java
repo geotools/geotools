@@ -17,11 +17,11 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Symbolizer;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

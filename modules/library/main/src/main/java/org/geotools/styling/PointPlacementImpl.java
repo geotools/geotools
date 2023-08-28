@@ -20,9 +20,10 @@ package org.geotools.styling;
 
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.*;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 
@@ -31,6 +32,49 @@ import org.geotools.util.factory.GeoTools;
  * @version $Id$
  */
 public class PointPlacementImpl implements PointPlacement, Cloneable {
+    public static final AnchorPoint DEFAULT_ANCHOR_POINT =
+            new AnchorPoint() {
+                private void cannotModifyConstant() {
+                    throw new UnsupportedOperationException(
+                            "Constant AnchorPoint may not be modified");
+                }
+
+                @Override
+                public void setAnchorPointX(Expression x) {
+                    cannotModifyConstant();
+                }
+
+                @Override
+                public void setAnchorPointY(Expression y) {
+                    cannotModifyConstant();
+                }
+
+                /**
+                 * calls the visit method of a StyleVisitor
+                 *
+                 * @param visitor the style visitor
+                 */
+                @Override
+                public void accept(StyleVisitor visitor) {
+                    return;
+                }
+
+                @Override
+                public Object accept(TraversingStyleVisitor visitor, Object data) {
+                    cannotModifyConstant();
+                    return null;
+                }
+
+                @Override
+                public Expression getAnchorPointX() {
+                    return ConstantExpression.constant(0.0);
+                }
+
+                @Override
+                public Expression getAnchorPointY() {
+                    return ConstantExpression.constant(0.5);
+                }
+            };
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(PointPlacementImpl.class);
@@ -61,7 +105,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
      * @return Label's AnchorPoint.
      */
     @Override
-    public AnchorPointImpl getAnchorPoint() {
+    public AnchorPoint getAnchorPoint() {
         return anchorPoint;
     }
 
@@ -123,12 +167,12 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

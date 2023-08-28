@@ -20,14 +20,13 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -37,10 +36,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
@@ -234,7 +230,7 @@ public class FillTest {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         Symbolizer sym =
                 sf.createPolygonSymbolizer(
-                        Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
+                        StrokeImpl.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
         Style style = SLD.wrapSymbolizers(sym);
 
         MapContent mc = new MapContent();

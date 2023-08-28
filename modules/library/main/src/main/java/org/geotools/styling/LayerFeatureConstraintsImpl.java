@@ -17,6 +17,8 @@
 package org.geotools.styling;
 
 import java.util.Arrays;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.LayerFeatureConstraints;
 
 public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
 

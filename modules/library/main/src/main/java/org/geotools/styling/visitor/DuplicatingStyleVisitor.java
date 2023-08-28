@@ -28,54 +28,14 @@ import javax.swing.Icon;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.Description;
-import org.geotools.api.style.ExternalMark;
-import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.*;
+import org.geotools.api.style.OverlapBehavior;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.DescriptionImpl;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.Extent;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.FeatureTypeStyleImpl;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.OtherText;
 import org.geotools.styling.OtherTextImpl;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbol;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
-import org.geotools.styling.UserLayer;
+import org.geotools.styling.OverlapBehaviorImpl;
 
 /**
  * Creates a deep copy of a Style, this class is *NOT THREAD SAFE*.
@@ -283,7 +243,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
                         .filter(s -> s != null)
                         .collect(Collectors.toList());
 
-        Graphic legendCopy = copy((Graphic) rule.getLegend());
+        GraphicLegend legendCopy = (GraphicLegend) copy((Graphic) rule.getLegend());
 
         Description descCopy = rule.getDescription();
         descCopy = copy(descCopy);
@@ -307,15 +267,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     @Override
     public void visit(FeatureTypeStyle fts) {
 
-        FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
-
-        //        copy = new StyleFactoryImpl().createFeatureTypeStyle(
-        //                fts.getRules(),
-        //                fts.getSemanticTypeIdentifiers(),
-        //                fts.featureInstanceIDs(),
-        //                fts.getFeatureTypeName(),
-        //                fts.getDescription(),
-        //                fts.getName());
+        FeatureTypeStyle copy = (FeatureTypeStyle) new FeatureTypeStyleImpl(fts);
 
         List<Rule> rulesCopy =
                 fts.rules().stream()
@@ -487,7 +439,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         return (Mark) pages.pop();
     }
 
-    private ExternalMark copy(org.geotools.styling.ExternalMark other) {
+    private ExternalMark copy(ExternalMark other) {
         if (other == null) {
             return null;
         } else if (other.getInlineContent() != null) {
@@ -763,9 +715,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setPriority(copy(text.getPriority()));
         copy.getOptions().putAll(text.getOptions());
 
-        if (text instanceof TextSymbolizer2) {
-            TextSymbolizer2 text2 = (TextSymbolizer2) text;
-            TextSymbolizer2 copy2 = (TextSymbolizer2) copy;
+        if (text instanceof TextSymbolizer) {
+            TextSymbolizer text2 = (TextSymbolizer) text;
+            TextSymbolizer copy2 = (TextSymbolizer) copy;
 
             copy2.setGraphic(copy(text2.getGraphic()));
             copy2.setSnippet(copy(text2.getSnippet()));
@@ -1058,9 +1010,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         pages.push(copy);
     }
 
-    @Override
     public void visit(OverlapBehavior ob) {
-        final String behavior = (String) ob.getValue();
+        final String behavior = (String) ((OverlapBehaviorImpl) ob).getValue();
         if (behavior.equalsIgnoreCase(OverlapBehavior.AVERAGE_RESCTRICTION)) {
             pages.push(OverlapBehavior.AVERAGE_RESCTRICTION);
         } else if (behavior.equalsIgnoreCase(OverlapBehavior.EARLIEST_ON_TOP_RESCTRICTION)) {

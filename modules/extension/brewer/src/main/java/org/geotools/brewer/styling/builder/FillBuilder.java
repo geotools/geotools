@@ -18,7 +18,8 @@ package org.geotools.brewer.styling.builder;
 
 import java.awt.Color;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Fill;
+import org.geotools.api.style.Fill;
+import org.geotools.styling.FillImpl;
 import org.geotools.util.Converters;
 
 public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fill> {
@@ -26,7 +27,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
 
     Expression opacity;
 
-    GraphicBuilder graphic = new GraphicBuilder(this).unset();
+    GraphicBuilder graphic = (GraphicBuilder) new GraphicBuilder(this).unset();
 
     /** Create a FillBuilder on its own; not part of a larger data structure. */
     public FillBuilder() {
@@ -107,8 +108,8 @@ public class FillBuilder extends AbstractStyleBuilder<org.geotools.api.style.Fil
     @Override
     public FillBuilder reset() {
         unset = false;
-        color = Fill.DEFAULT.getColor();
-        opacity = Fill.DEFAULT.getOpacity();
+        color = FillImpl.DEFAULT.getColor();
+        opacity = FillImpl.DEFAULT.getOpacity();
         graphic.unset();
         return this;
     }

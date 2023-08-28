@@ -23,6 +23,17 @@ import org.geotools.api.filter.expression.Expression;
  */
 public interface PolygonSymbolizer extends Symbolizer {
 
+    /** Pixels between each graphic of a polygon fill */
+    String GRAPHIC_MARGIN_KEY = "graphic-margin";
+
+    /**
+     * Provides the graphical-symbolization parameter to use to fill the area of the geometry. Note
+     * that the area should be filled first before the outline is rendered.
+     *
+     * @param fill The Fill style to use when rendering the area.
+     */
+    void setFill(Fill fill);
+
     /**
      * Returns the object containing all the information necessary to draw styled lines. This is
      * used for the edges of polygons.
@@ -38,6 +49,22 @@ public interface PolygonSymbolizer extends Symbolizer {
      * @return Fill
      */
     Fill getFill();
+
+    /**
+     * Provides the graphical-symbolization parameter to use for the outline of the Polygon.
+     *
+     * @param stroke The Stroke style to use when rendering lines.
+     */
+    void setStroke(Stroke stroke);
+
+    /**
+     * PerpendicularOffset works as defined for LineSymbolizer, allowing to draw polygons smaller or
+     * larger than their actual geometry.
+     *
+     * @param offset Offset from the edge polygon positive outside; negative to the inside with a
+     *     default of 0.
+     */
+    void setPerpendicularOffset(Expression offset);
 
     /**
      * The Displacement gives the X and Y displacements from the original geometry. This element may
@@ -64,5 +91,8 @@ public interface PolygonSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** Provide x / y offset in pixels used to crate shadows. */
+    void setDisplacement(Displacement displacement);
 }

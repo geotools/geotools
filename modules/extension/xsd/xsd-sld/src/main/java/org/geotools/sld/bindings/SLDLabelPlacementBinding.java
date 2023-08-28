@@ -17,8 +17,8 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.StyleFactory;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

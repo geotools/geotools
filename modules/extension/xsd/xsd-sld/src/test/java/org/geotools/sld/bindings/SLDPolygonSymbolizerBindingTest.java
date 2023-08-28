@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.filter.expression.Function;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
 import org.junit.Test;
 
 public class SLDPolygonSymbolizerBindingTest extends SLDTestSupport {

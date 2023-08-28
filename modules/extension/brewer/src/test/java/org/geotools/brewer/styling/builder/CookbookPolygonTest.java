@@ -4,13 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Font;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.api.style.*;
 import org.junit.Test;
 import si.uom.SI;
 
@@ -149,7 +143,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertEquals(Color.WHITE, ps.getStroke().getColor().evaluate(null, Color.class));
         assertEquals(2, (int) ps.getStroke().getWidth().evaluate(null, Integer.class));
 
-        TextSymbolizer2 ts = (TextSymbolizer2) collector.symbolizers.get(1);
+        TextSymbolizer ts = (TextSymbolizer) collector.symbolizers.get(1);
         assertEquals(ff.property("name"), ts.getLabel());
         assertEquals(Color.BLACK, ts.getFill().getColor().evaluate(null, Color.class));
 
@@ -157,8 +151,12 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         Font font = ts.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(11, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
-        assertEquals(Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
+        assertEquals(
+                org.geotools.api.style.Font.Style.NORMAL,
+                font.getStyle().evaluate(null, String.class));
+        assertEquals(
+                org.geotools.api.style.Font.Weight.BOLD,
+                font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ts.getLabelPlacement();

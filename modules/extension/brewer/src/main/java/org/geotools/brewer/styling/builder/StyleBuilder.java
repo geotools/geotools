@@ -19,8 +19,8 @@ package org.geotools.brewer.styling.builder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
 import org.geotools.util.SimpleInternationalString;
 
 public class StyleBuilder extends AbstractStyleBuilder<Style> {

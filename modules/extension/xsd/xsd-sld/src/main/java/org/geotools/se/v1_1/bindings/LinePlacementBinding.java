@@ -18,10 +18,10 @@ package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDLinePlacementBinding;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 

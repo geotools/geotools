@@ -17,7 +17,7 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.Mark;
+import org.geotools.api.style.Mark;
 
 public class MarkBuilder extends AbstractStyleBuilder<Mark> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this).unset();
@@ -89,11 +89,6 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
             reset();
         }
         return mark;
-    }
-
-    @Override
-    public MarkBuilder reset(Mark mark) {
-        return reset((org.geotools.api.style.Mark) mark);
     }
 
     public MarkBuilder reset(org.geotools.api.style.Mark mark) {

@@ -17,6 +17,9 @@
 package org.geotools.styling;
 
 import java.net.URL;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
 import org.junit.Assert;
 import org.junit.Test;
 

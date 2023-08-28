@@ -17,8 +17,8 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

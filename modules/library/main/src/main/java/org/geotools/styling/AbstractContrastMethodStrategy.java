@@ -21,6 +21,7 @@ import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethodStrategy;
 import org.geotools.factory.CommonFactoryFinder;
 
 /**

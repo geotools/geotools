@@ -16,10 +16,10 @@
  */
 package org.geotools.sld.v1_1.bindings;
 
+import org.geotools.api.style.Description;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.sld.bindings.SLDStyledLayerDescriptorBinding;
-import org.geotools.styling.Description;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 

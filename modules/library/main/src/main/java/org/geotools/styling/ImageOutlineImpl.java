@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.*;
 import org.geotools.util.Utilities;
 
 public class ImageOutlineImpl implements ImageOutline {

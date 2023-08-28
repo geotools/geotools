@@ -9,21 +9,8 @@ import java.awt.Color;
 import java.util.List;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.style.Fill;
-import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.api.style.Mark;
-import org.geotools.api.style.Stroke;
+import org.geotools.api.style.*;
 import org.geotools.filter.function.CategorizeFunction;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
 import si.uom.SI;
 
@@ -241,7 +228,10 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).weightName(Font.Weight.BOLD);
+        tb.newFont()
+                .familyName("Arial")
+                .size(12)
+                .weightName(org.geotools.api.style.Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
         Style style = rb.buildStyle();
@@ -259,8 +249,12 @@ public class CookbookPointTest extends AbstractStyleTest {
         Font font = ps.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(12, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
-        assertEquals(Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
+        assertEquals(
+                org.geotools.api.style.Font.Style.NORMAL,
+                font.getStyle().evaluate(null, String.class));
+        assertEquals(
+                org.geotools.api.style.Font.Weight.BOLD,
+                font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ps.getLabelPlacement();
@@ -278,7 +272,10 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12).weightName(Font.Weight.BOLD);
+        tb.newFont()
+                .familyName("Arial")
+                .size(12)
+                .weightName(org.geotools.api.style.Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
         tb.pointPlacement().rotation(-45);
@@ -297,8 +294,12 @@ public class CookbookPointTest extends AbstractStyleTest {
         Font font = ps.getFont();
         assertEquals("Arial", font.getFamily().get(0).evaluate(null, String.class));
         assertEquals(12, (int) font.getSize().evaluate(null, Integer.class));
-        assertEquals(Font.Style.NORMAL, font.getStyle().evaluate(null, String.class));
-        assertEquals(Font.Weight.BOLD, font.getWeight().evaluate(null, String.class));
+        assertEquals(
+                org.geotools.api.style.Font.Style.NORMAL,
+                font.getStyle().evaluate(null, String.class));
+        assertEquals(
+                org.geotools.api.style.Font.Weight.BOLD,
+                font.getWeight().evaluate(null, String.class));
 
         // placement
         PointPlacement pp = (PointPlacement) ps.getLabelPlacement();

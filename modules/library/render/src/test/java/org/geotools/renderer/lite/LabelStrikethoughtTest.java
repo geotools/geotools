@@ -18,9 +18,9 @@ package org.geotools.renderer.lite;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.image.test.ImageAssert;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
 
 /** Tests labels underling. */
@@ -34,7 +34,7 @@ public class LabelStrikethoughtTest extends AbstractLabelLineTest {
                         this,
                         "lineStyleTemplate.sld",
                         "VENDOR_KEY",
-                        TextSymbolizer.STRIKETHROUGH_TEXT_KEY,
+                        org.geotools.api.style.TextSymbolizer.STRIKETHROUGH_TEXT_KEY,
                         "VENDOR_VALUE",
                         "true");
         // set the map content

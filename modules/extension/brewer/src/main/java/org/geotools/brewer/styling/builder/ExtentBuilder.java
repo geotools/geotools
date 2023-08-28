@@ -16,9 +16,9 @@
  */
 package org.geotools.brewer.styling.builder;
 
+import org.geotools.api.style.Extent;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.Extent;
-import org.geotools.styling.StyleFactory;
 
 public class ExtentBuilder<P> implements Builder<Extent> {
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);

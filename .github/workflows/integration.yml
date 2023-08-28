@@ -88,11 +88,11 @@ jobs:
         echo "staging ~/.m2/repository folder"
         mkdir -p m2/repository/org
         cp -r ~/.m2/repository/org/geotools m2/repository/org/geotools
-        echo "checking contents of m2/repository/org/geotools"
-        ls m2/repository/org/geotools
-        ls m2/repository/org/geotools/gt-epsg-hsql
-        echo "Starting makefile"
         make build
+        make tests
+        make acceptance-tests-up
+        make acceptance-tests-run
+        make acceptance-tests-down
     - name: Build Mapfish-print v2 with tests
       run: |
         cd ~

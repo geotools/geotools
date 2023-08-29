@@ -271,6 +271,12 @@
     <refactor package1="org.opengis.geometry.coordinate" class1="Position" package2="org.opengis.geometry" class2="DirectPosition" />
     <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;" />
   </target>
+    <target name="_geometry" description="Geometry API cleanup">
+    <echo />
+    <echo message="removing org.opengis.geometry.Geometry)" />
+    <!-- you cann use refid="Position.files" fileset after refactor -->
+    <refactor package1="org.opengis.geometry" class1="Geometry" package2="org.locationtech.jts.geom" class2="Geometry" />
+  </target>
   <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
     <echo />
     <echo message="Refactor org.opengis to org.geotools.api" />

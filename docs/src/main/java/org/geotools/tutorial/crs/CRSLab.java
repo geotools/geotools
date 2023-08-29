@@ -50,7 +50,7 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
+import org.geotools.api.style.Style;
 import org.geotools.swing.JMapFrame;
 import org.geotools.swing.JProgressWindow;
 import org.geotools.swing.action.SafeAction;

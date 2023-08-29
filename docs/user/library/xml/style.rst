@@ -58,7 +58,7 @@ To parse the document::
   import java.io.InputStream;
   import javax.xml.parsers.ParserConfigurationException;
   import org.geotools.sld.SLDConfiguration;
-  import org.geotools.styling.StyledLayerDescriptor;
+  import org.geotools.api.style.StyledLayerDescriptor;
   import org.geotools.xsd.Configuration;
   import org.geotools.xsd.Parser;
   import org.xml.sax.SAXException;

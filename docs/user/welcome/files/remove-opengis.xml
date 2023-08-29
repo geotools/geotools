@@ -271,7 +271,7 @@
     <refactor package1="org.opengis.geometry.coordinate" class1="Position" package2="org.opengis.geometry" class2="DirectPosition" />
     <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;" />
   </target>
-    <target name="_geometry" description="Geometry API cleanup">
+  <target name="_geometry" description="Geometry API cleanup">
     <echo />
     <echo message="removing org.opengis.geometry.Geometry)" />
     <!-- you cann use refid="Position.files" fileset after refactor -->
@@ -296,7 +296,7 @@
       <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2" />
     </move>
   </target>
-  <target name="update" depends="starting-up,_filterFactory,_styling,_bounds,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_styling,_bounds,_geometry,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo>UPDATE COMPLETED: ${project.dir}</echo>
     <echo />
     <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

@@ -156,6 +156,66 @@
       <fileset refid="filterFactory.files" />
     </replaceregexp>
   </target>
+  <target name="_styleFactory" description="StyleFactory2 and StyleFactory merge">
+    <echo />
+    <echo message="Files containing org.geotools.styling.StyleFactory2:" />
+    <fileset id="StyleFactory2.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.geotools.styling.StyleFactory2" casesensitive="yes" />
+    </fileset>
+    <echo message="Refactor StyleFactory2 --&gt; StyleFactory" />
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="(\W)StyleFactory2(\W)" />
+      <substitution expression="\1StyleFactory\2" />
+      <fileset refid="StyleFactory2.files" />
+    </replaceregexp>
+    <echo message="CommonFactoryFinder.getStyleFactory()" />
+    <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replacefilter>
+        <replacetoken>.getStyleFactory2(</replacetoken>
+        <replacevalue>.getStyleFactory(</replacevalue>
+      </replacefilter>
+    </replace>
+    <fileset id="StyleFactory.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.geotools.styling.StyleFactory" casesensitive="yes" />
+    </fileset>
+    <echo message="org.geotools.styling.StyleFactory to org.geotools.api.style.StyleFactory" />
+    <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replacefilter>
+        <replacetoken>org.geotools.styling.StyleFactory</replacetoken>
+        <replacevalue>org.geotools.api.style.StyleFactory</replacevalue>
+      </replacefilter>
+    </replace>
+  </target>
+  <target name="_styling" description="Fix renaming of org.geotools.styling.* interfaces to org.geotools.api.style">
+    <fileset id="style.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.geotools.styling" casesensitive="yes" />
+    </fileset>
+    <echo />
+    <echo message="fixing style interface locations"/>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.geotools\.styling\.(.*)" />
+      <substitution expression=".geotools.api.style.\1" />
+      <fileset dir="${project.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+
+    </replaceregexp> 
+
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.geotools\.api\.style\.(Abstract.*)" />
+      <substitution expression=".geotools.styling.\1" />
+      <fileset dir="${project.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+    </replaceregexp> 
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.geotools\.api\.style\.DefaultResourceLocator" />
+      <substitution expression=".geotools.styling.DefaultResourceLocator" />
+      <fileset dir="${project.dir}" includes="**/*.java"/>
+      <contains text="DefaultResourceLocator" casesensitive="yes" />
+      </fileset>
+    </replaceregexp> 
+  </target>
   <!-- the following tasks run after _opengis above to reflect api refactoring -->
   <target name="_bounds" description="Bounds and Position API cleanup">
     <echo />
@@ -184,7 +244,7 @@
       <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2" />
     </move>
   </target>
-  <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_styleFactory,_styling,_bounds,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo>UPDATE COMPLETED: ${project.dir}</echo>
     <echo />
     <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

@@ -16,7 +16,7 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.ChannelSelection;
+import org.geotools.api.style.ChannelSelection;
 
 public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelection> {
 

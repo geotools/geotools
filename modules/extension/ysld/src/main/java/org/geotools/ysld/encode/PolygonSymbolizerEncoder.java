@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
 
 /** Encodes a {@link PolygonSymbolizer} as YSLD. */
 public class PolygonSymbolizerEncoder extends SymbolizerEncoder<PolygonSymbolizer> {

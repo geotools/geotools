@@ -19,12 +19,12 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
 
 public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     Expression geometry;
 
-    GraphicBuilder graphic = new GraphicBuilder(this).unset();
+    GraphicBuilder graphic = (GraphicBuilder) new GraphicBuilder(this).unset();
 
     Unit<Length> uom = null;
 
@@ -85,23 +85,9 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     }
 
     @Override
-    public Builder<PointSymbolizer> reset(PointSymbolizer original) {
-        if (original == null) {
-            return unset();
-        }
-        this.geometry = original.getGeometry();
-        this.graphic.reset(original.getGraphic());
-        this.uom = original.getUnitOfMeasure();
-        unset = false;
-
-        return this;
-    }
-
     public Builder<PointSymbolizer> reset(org.geotools.api.style.PointSymbolizer original) {
         if (original == null) {
             return unset();
-        } else if (original instanceof PointSymbolizer) {
-            return reset((PointSymbolizer) original);
         }
         this.geometry = property(original.getGeometryPropertyName());
         this.graphic.reset(original.getGraphic());

@@ -16,6 +16,7 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.Extent;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 

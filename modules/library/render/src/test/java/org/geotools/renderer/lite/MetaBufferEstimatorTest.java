@@ -23,14 +23,14 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Style;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 
@@ -170,7 +170,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
     @Test
     public void testNullStroke() throws Exception {
         StyleBuilder sb = new StyleBuilder();
-        LineSymbolizer ls = sb.createLineSymbolizer(Stroke.NULL);
+        LineSymbolizer ls = sb.createLineSymbolizer(StrokeImpl.NULL);
         Style style = sb.createStyle(ls);
 
         MetaBufferEstimator estimator = new MetaBufferEstimator();

@@ -66,36 +66,35 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ContrastEnhancement;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LabelPlacement;
 import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
 import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.ResourceLocator;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
-import org.geotools.styling.UserLayer;
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
@@ -1997,7 +1996,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        TextSymbolizer2 p = (TextSymbolizer2) SLD.textSymbolizer(SLD.defaultStyle(sld));
+        TextSymbolizer p = (TextSymbolizer) SLD.textSymbolizer(SLD.defaultStyle(sld));
         assertThat(
                 p.getGraphic().getDisplacement(),
                 allOf(
@@ -2077,7 +2076,7 @@ public class YsldParseTest {
 
         StyledLayerDescriptor sld = Ysld.parse(yaml);
 
-        TextSymbolizer2 p = (TextSymbolizer2) SLD.textSymbolizer(SLD.defaultStyle(sld));
+        TextSymbolizer p = SLD.textSymbolizer(SLD.defaultStyle(sld));
         assertNotNull(p.getPriority());
         assertTrue(p.getPriority() instanceof PropertyName);
         assertEquals("pop", ((PropertyName) p.getPriority()).getPropertyName());

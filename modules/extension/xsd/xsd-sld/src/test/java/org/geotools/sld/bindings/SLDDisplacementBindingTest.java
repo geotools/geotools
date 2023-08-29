@@ -18,8 +18,8 @@ package org.geotools.sld.bindings;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.style.Displacement;
 import org.geotools.filter.Filters;
-import org.geotools.styling.Displacement;
 import org.junit.Test;
 
 public class SLDDisplacementBindingTest extends SLDTestSupport {

@@ -28,6 +28,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.DataUtilities;
@@ -44,10 +47,7 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.Symbolizer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -368,7 +368,7 @@ public class StreamingRendererCompositeTest {
         Style baseStyle = sb.createStyle(sb.createRasterSymbolizer());
         mc.addLayer(new GridCoverageLayer(first, baseStyle));
         FeatureTypeStyle compositeFts = sb.createFeatureTypeStyle(sb.createRasterSymbolizer());
-        compositeFts.getOptions().put(FeatureTypeStyle.COMPOSITE, composite);
+        compositeFts.getOptions().put(org.geotools.api.style.FeatureTypeStyle.COMPOSITE, composite);
         Style compositeStyle = sb.createStyle();
         compositeStyle.featureTypeStyles().add(compositeFts);
         mc.addLayer(new GridCoverageLayer(second, compositeStyle));
@@ -529,7 +529,7 @@ public class StreamingRendererCompositeTest {
         Style style = RendererBaseTest.loadStyle(StreamingRendererCompositeTest.class, styleName);
         Symbolizer symbolizer =
                 style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
-        symbolizer.getOptions().put(FeatureTypeStyle.COMPOSITE, composite);
+        symbolizer.getOptions().put(org.geotools.api.style.FeatureTypeStyle.COMPOSITE, composite);
         return style;
     }
 }

@@ -10,14 +10,26 @@
     <attribute name="class2" />
     <sequential>
       <fileset id="@{class1}.files" dir="${project.dir}" includes="**/*.java">
-        <contains text="import @{package1}.@{class1};" casesensitive="yes" />
+        <contains text="@{class1}" casesensitive="yes" />
       </fileset>
-      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
-      <replaceregexp byline="true">
+      <!--<replaceregexp byline="true">
         <fileset refid="@{class1}.files" />
-        <regexp pattern="(\s)@{class1}(\W)" />
+        <regexp pattern="(\W.*)@{class1}(\W)" />
+        <substitution expression="\1@{class2}\2" />
+      </replaceregexp>-->
+      <echo message="Refactor @{class1} -&gt; @{class2}" />
+      <!--      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+        <replacefilter>
+          <replacetoken>(\W)@{class1}(\W)</replacetoken>
+          <replacevalue>\1@{class2}\2</replacevalue>
+        </replacefilter>
+      </replace> -->
+      <replaceregexp byline="true" flags="g">
+        <fileset refid="@{class1}.files" />
+        <regexp pattern="(\W)@{class1}(\W)" />
         <substitution expression="\1@{class2}\2" />
       </replaceregexp>
+      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
       <replace dir="${project.dir}" includes="**/*.java" summary="yes">
         <replacefilter>
           <replacetoken>(\s)@{package1}\.@{class1}(\W)</replacetoken>
@@ -46,6 +58,24 @@
           <replacevalue>\1@{package2}@{class2}\2</replacevalue>
         </replacefilter>
       </replace>
+    </sequential>
+  </macrodef>
+    <macrodef name="moveClass">
+    <attribute name="srcPackage" />
+    <attribute name="dstPackage" />
+    <attribute name="class" />
+    <sequential>
+      <echo message="Move  @{srcPackage}.@{class} -&gt; @{dstPackage}.@{class}" />
+      <replaceregexp byline="true">
+        <fileset refid="@{srcPackage}.files" />
+        <regexp pattern="^import @{srcPackage}\.@{class};$" />
+        <substitution expression="import @{dstPackage}\.@{class};" />
+      </replaceregexp>
+      <replaceregexp byline="true">
+        <fileset refid="@{srcPackage}.files" />
+        <regexp pattern="@{srcPackage}\.@{class}(\W)" /> <!-- make sure to miss the Impl-->
+        <substitution expression="@{dstPackage}\.@{class}\1" />
+      </replaceregexp>
     </sequential>
   </macrodef>
   <target name="starting-up" description="Update project in current directory to remove org.opengis package use">
@@ -156,6 +186,82 @@
       <fileset refid="filterFactory.files" />
     </replaceregexp>
   </target>
+  <target name="_styling" description="GeoTools styling interfaces merge">
+    <echo />
+    <echo message="org.geotools.styling interfaces are now merged into org.geotools.api.style" />
+    <property name="sp">org.geotools.styling</property>
+    <property name="dp">org.geotools.api.style</property>
+    <fileset id="org.geotools.styling.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.geotools.styling." casesensitive="yes" />
+    </fileset>
+    <refactor package1="${sp}" package2="${dp}" class1="StyleFactory2" class2="StyleFactory"/>
+    <refactor package1="${sp}" package2="${dp}" class1="TextSymbolizer2" class2="TextSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="AnchorPoint"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ChannelSelection"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ColorMapEntry"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ColorMap"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ColorReplacement"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ContrastEnhancement"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ContrastMethod"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ContrastMethodStrategy"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Description"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Displacement"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ExtensionSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Extent"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ExternalGraphic"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ExternalMark"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="FeatureTypeConstraint"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="FeatureTypeStyle"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Fill"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Font"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="GraphicalSymbol"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="GraphicFill"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Graphic"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="GraphicLegend"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="GraphicStroke"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Halo"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ImageOutline"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="LabelPlacement"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="LayerFeatureConstraints"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="LinePlacement"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="LineSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Mark"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="NamedLayer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="NamedStyle"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="OtherText"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="OverlapBehaviorEnum"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="OverlapBehavior"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="PointPlacement"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="PointSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="PolygonSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="RasterSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="RemoteOWS"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ResourceLocator"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Rule"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="SelectedChannelType"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="SemanticType"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="ShadedRelief"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Stroke"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyledLayerDescriptor"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyledLayer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyleFactory"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Style"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="StyleVisitor"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Symbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="Symbol"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="TextSymbolizer"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="TraversingStyleVisitor"/>
+    <moveClass srcPackage="${sp}" dstPackage="${dp}" class="UserLayer"/>
+
+   <!-- Temporary hack while we wait for the data access API to move to gt-api -->
+    <replaceregexp flags="g">
+      <regexp pattern="(\w+)\.getInlineFeatureDatastore\(\)" />
+      <substitution expression="(DataStore) \1.getInlineFeatureDatastore()" />
+      <fileset dir="${project.dir}" includes="**/*.java">
+        <contains text="getInlineFeatureDatastore" casesensitive="yes" />
+    </fileset>
+    </replaceregexp>
+ </target>
   <!-- the following tasks run after _opengis above to reflect api refactoring -->
   <target name="_bounds" description="Bounds and Position API cleanup">
     <echo />
@@ -164,6 +270,12 @@
     <!-- you cann use refid="Position.files" fileset after refactor -->
     <refactor package1="org.opengis.geometry.coordinate" class1="Position" package2="org.opengis.geometry" class2="DirectPosition" />
     <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;" />
+  </target>
+  <target name="_geometry" description="Geometry API cleanup">
+    <echo />
+    <echo message="removing org.opengis.geometry.Geometry)" />
+    <!-- you cann use refid="Position.files" fileset after refactor -->
+    <refactor package1="org.opengis.geometry" class1="Geometry" package2="org.locationtech.jts.geom" class2="Geometry" />
   </target>
   <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
     <echo />
@@ -184,7 +296,7 @@
       <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2" />
     </move>
   </target>
-  <target name="update" depends="starting-up,_filterFactory,_bounds,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_styling,_bounds,_geometry,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo>UPDATE COMPLETED: ${project.dir}</echo>
     <echo />
     <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

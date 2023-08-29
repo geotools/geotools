@@ -14,39 +14,51 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.api.style;
+
+import java.util.List;
 
 /**
- * The "LabelPlacement" specifies where and how a text label should be rendered relative to a
- * geometry.
+ * A NamedLayer is used to refer to a layer that has a name in a WMS.
  *
  * <p>The details of this object are taken from the <a
  * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
  * Report (OGC 02-070) version 1.0.0.</a>:
  *
  * <pre><code>
- * &lt;xsd:element name="LabelPlacement"&gt;
+ * &lt;xsd:element name="NamedLayer"&gt;
  *   &lt;xsd:annotation&gt;
  *     &lt;xsd:documentation&gt;
- *       The "LabelPlacement" specifies where and how a text label should
- *       be rendered relative to a geometry.  The present mechanism is
- *       poorly aligned with CSS/SVG.
+ *       A NamedLayer is a layer of data that has a name advertised by a WMS.
  *     &lt;/xsd:documentation&gt;
  *   &lt;/xsd:annotation&gt;
  *   &lt;xsd:complexType&gt;
- *     &lt;xsd:choice&gt;
- *       &lt;xsd:element ref="sld:PointPlacement"/&gt;
- *       &lt;xsd:element ref="sld:LinePlacement"/&gt;
- *     &lt;/xsd:choice&gt;
+ *     &lt;xsd:sequence&gt;
+ *       &lt;xsd:element ref="sld:Name"/&gt;
+ *       &lt;xsd:element ref="sld:LayerFeatureConstraints" minOccurs="0"/&gt;
+ *       &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
+ *         &lt;xsd:element ref="sld:NamedStyle"/&gt;
+ *         &lt;xsd:element ref="sld:UserStyle"/&gt;
+ *       &lt;/xsd:choice&gt;
+ *     &lt;/xsd:sequence&gt;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- *
- * <p>
- *
- * @author Ian Turton, CCG
  */
-public interface LabelPlacement extends org.geotools.api.style.LabelPlacement {
+public interface NamedLayer extends StyledLayer {
 
+    public List<FeatureTypeConstraint> layerFeatureConstraints();
+
+    public FeatureTypeConstraint[] getLayerFeatureConstraints();
+
+    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);
+
+    public List<Style> styles();
+
+    public Style[] getStyles();
+
+    public void addStyle(Style sl);
+
+    /** Used to navigate a Style/SLD. */
     void accept(StyleVisitor visitor);
 }

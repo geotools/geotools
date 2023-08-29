@@ -17,6 +17,7 @@
 package org.geotools.styling;
 
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.OtherText;
 
 public class OtherTextImpl implements OtherText {
 

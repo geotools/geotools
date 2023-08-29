@@ -18,14 +18,14 @@
 package org.geotools.process.raster;
 
 import java.io.IOException;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Style;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.lite.gridcoverage2d.RasterSymbolizerHelper;
 import org.geotools.renderer.lite.gridcoverage2d.SubchainStyleVisitorCoverageProcessingAdapter;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Style;
 
 /**
  * Applies a raster symbolizer to the coverage

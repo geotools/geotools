@@ -19,8 +19,8 @@ package org.geotools.sld.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.style.Halo;
 import org.geotools.filter.Filters;
-import org.geotools.styling.Halo;
 import org.junit.Test;
 
 public class SLDHaloBindingTest extends SLDTestSupport {

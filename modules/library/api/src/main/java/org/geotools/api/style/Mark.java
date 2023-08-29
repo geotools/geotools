@@ -21,7 +21,9 @@ import org.geotools.api.filter.expression.Expression;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.2
  */
-public interface Mark extends GraphicalSymbol {
+public interface Mark extends GraphicalSymbol, Symbol {
+
+    Mark[] MARKS_EMPTY = new Mark[0];
 
     /**
      * Returns the expression whose value will indicate the symbol to draw. The WellKnownName
@@ -42,6 +44,13 @@ public interface Mark extends GraphicalSymbol {
     Expression getWellKnownName();
 
     /**
+     * This parameter defines which fill style to use when rendering the Mark.
+     *
+     * @param fill the Fill definition to use when rendering the Mark.
+     */
+    void setFill(Fill fill);
+
+    /**
      * The alternative to a WellKnownName is an external mark format. See {@link ExternalMark} for
      * details.
      *
@@ -53,11 +62,28 @@ public interface Mark extends GraphicalSymbol {
     ExternalMark getExternalMark();
 
     /**
+     * This paramterer defines which stroke style should be used when rendering the Mark.
+     *
+     * @param stroke The Stroke definition to use when rendering the Mark.
+     */
+    void setStroke(Stroke stroke);
+
+    /**
      * Returns the object that indicates how the mark should be filled. Null means no fill.
      *
      * @return Fill or null
      */
     Fill getFill();
+
+    /**
+     * This parameter gives the well-known name of the shape of the mark.<br>
+     * Allowed names include at least "square", "circle", "triangle", "star", "cross" and "x" though
+     * renderers may draw a different symbol instead if they don't have a shape for all of these.
+     * <br>
+     *
+     * @param wellKnownName The well-known name of a shape. The default value is "square".
+     */
+    void setWellKnownName(Expression wellKnownName);
 
     /**
      * Returns the object that indicates how the edges of the mark will be drawn. Null means that
@@ -72,5 +98,15 @@ public interface Mark extends GraphicalSymbol {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    @Override
+    void accept(StyleVisitor visitor);
+
+    public Object accept(TraversingStyleVisitor visitor, Object data);
+
+    /**
+     * Mark defined by an external resource.
+     *
+     * @param externalMark Indicate an mark defined by an external resource
+     */
+    void setExternalMark(ExternalMark externalMark);
 }

@@ -19,7 +19,13 @@ package org.geotools.styling;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Stroke;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 
 /**
@@ -131,12 +137,12 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer
      * @param visitor The visitor to accept.
      */
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

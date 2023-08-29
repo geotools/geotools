@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 
@@ -171,7 +172,7 @@ public class FontImpl implements Font, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 

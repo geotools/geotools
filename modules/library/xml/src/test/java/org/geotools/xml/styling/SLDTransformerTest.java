@@ -45,47 +45,44 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ContrastEnhancement;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
 import org.geotools.api.style.Rule;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelectionImpl;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.Displacement;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
 import org.geotools.styling.GraphicImpl;
 import org.geotools.styling.HistogramContrastMethodStrategy;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.OtherTextImpl;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.RuleImpl;
 import org.geotools.styling.SLD;
 import org.geotools.styling.SelectedChannelTypeImpl;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyleFactory2;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.test.xml.XmlTestSupport;
 import org.geotools.util.GrowableInternationalString;
@@ -117,7 +114,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 Namespace("xlink", "http://www.w3.org/1999/xlink"));
     }
 
-    static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory sf = (StyleFactory) CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -907,9 +904,8 @@ public class SLDTransformerTest extends XmlTestSupport {
 
     private String getFontFamily(Style s) {
 
-        List<org.geotools.styling.Symbolizer> symbolizers =
-                s.featureTypeStyles().get(0).rules().get(0).symbolizers();
-        for (org.geotools.styling.Symbolizer symbolizer : symbolizers) {
+        List<Symbolizer> symbolizers = s.featureTypeStyles().get(0).rules().get(0).symbolizers();
+        for (Symbolizer symbolizer : symbolizers) {
             if (symbolizer instanceof TextSymbolizer) {
                 Font font = ((TextSymbolizer) symbolizer).fonts().get(0);
                 assertTrue(font.getFamily().size() > 0);
@@ -983,22 +979,22 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testColorMap() throws TransformerException {
         SLDTransformer st = new SLDTransformer();
-        ColorMap cm = sf.createColorMap();
+        org.geotools.api.style.ColorMap cm = sf.createColorMap();
 
         // Test type = values
-        cm.setType(ColorMap.TYPE_VALUES);
+        cm.setType(org.geotools.api.style.ColorMap.TYPE_VALUES);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"values\""));
 
         // Test type = intervals
-        cm.setType(ColorMap.TYPE_INTERVALS);
+        cm.setType(org.geotools.api.style.ColorMap.TYPE_INTERVALS);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("type=\"intervals\""));
 
         // Test type = ramp
-        cm.setType(ColorMap.TYPE_RAMP);
+        cm.setType(org.geotools.api.style.ColorMap.TYPE_RAMP);
         assertEquals(
                 "parsed xml must contain attribbute type with correct value",
                 -1,
@@ -1008,24 +1004,24 @@ public class SLDTransformerTest extends XmlTestSupport {
     @Test
     public void testColorMapExtended() throws TransformerException {
         SLDTransformer st = new SLDTransformer();
-        ColorMap cm = sf.createColorMap();
+        org.geotools.api.style.ColorMap cm = sf.createColorMap();
 
         // Test type = values, extended = true
-        cm.setType(ColorMap.TYPE_VALUES);
+        cm.setType(org.geotools.api.style.ColorMap.TYPE_VALUES);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = intervals, extended = true
-        cm.setType(ColorMap.TYPE_INTERVALS);
+        cm.setType(org.geotools.api.style.ColorMap.TYPE_INTERVALS);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
                 st.transform(cm).contains("extended=\"true\""));
 
         // Test type = ramp, extended = true
-        cm.setType(ColorMap.TYPE_RAMP);
+        cm.setType(org.geotools.api.style.ColorMap.TYPE_RAMP);
         cm.setExtendedColors(true);
         assertTrue(
                 "parsed xml must contain attribbute type with correct value",
@@ -1278,7 +1274,7 @@ public class SLDTransformerTest extends XmlTestSupport {
     public void textTextSymbolizer2_InAndOut() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
 
-        TextSymbolizer2 ts2 = (TextSymbolizer2) sf.createTextSymbolizer();
+        TextSymbolizer ts2 = sf.createTextSymbolizer();
         // Create a Graphic with two recognizable values
         GraphicImpl gr = new GraphicImpl(ff);
         gr.setOpacity(ff.literal(0.77));
@@ -1308,8 +1304,8 @@ public class SLDTransformerTest extends XmlTestSupport {
         SLDParser sldParser = new SLDParser(sf);
         sldParser.setInput(new StringReader(xml));
         Style importedStyle = sldParser.readXML()[0];
-        TextSymbolizer2 copy =
-                (TextSymbolizer2)
+        TextSymbolizer copy =
+                (TextSymbolizer)
                         importedStyle
                                 .featureTypeStyles()
                                 .get(0)
@@ -1473,7 +1469,8 @@ public class SLDTransformerTest extends XmlTestSupport {
                                 .get(0)
                                 .symbolizers()
                                 .get(0);
-        ExternalGraphic egCopy = (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
+        org.geotools.api.style.ExternalGraphic egCopy =
+                (ExternalGraphic) psCopy.getGraphic().graphicalSymbols().get(0);
         assertEquals(chartURI, egCopy.getLocation().toExternalForm());
     }
 
@@ -2270,8 +2267,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                         notNullValue(String.class)));
     }
 
-    private StyledLayerDescriptor buildSLDAroundSymbolizer(
-            org.geotools.styling.Symbolizer symbolizer) {
+    private StyledLayerDescriptor buildSLDAroundSymbolizer(Symbolizer symbolizer) {
         StyleBuilder sb = new StyleBuilder();
         Style s = sb.createStyle(symbolizer);
         s.setDefault(true);
@@ -2381,7 +2377,7 @@ public class SLDTransformerTest extends XmlTestSupport {
 
         Style style = parsed[0];
         assertNotNull(style);
-        org.geotools.styling.Rule rule = style.featureTypeStyles().get(0).rules().get(0);
+        Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         assertNotNull(rule);
         assertEquals("firstValue", rule.getOptions().get("firstOption"));
         assertEquals("secondValue", rule.getOptions().get("secondOption"));

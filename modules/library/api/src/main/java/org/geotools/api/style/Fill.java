@@ -24,33 +24,58 @@ import org.geotools.api.filter.expression.Expression;
 public interface Fill {
 
     /**
-     * If this object is to be filled with tiled copies of an image, then returns a non-null Graphic
-     * that indicates what image should be drawn.
-     *
-     * @return Graphic object or null if no graphic pattern to use.
+     * This specifies the level of translucency to use when rendering the fill. <br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
+     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
+     * for intermediate values.<br>
+     * For example, "0.65" would represent 65% opacity.
      */
-    GraphicFill getGraphicFill();
+    void setOpacity(Expression opacity);
+
+    /**
+     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
+     * fill graphic to use.
+     *
+     * @return The graphic to use as a stipple fill. If null then no stipple fill should be used.
+     */
+    Graphic getGraphicFill();
 
     // *************************************************************
     // SVG PARAMETERS
     // *************************************************************
 
     /**
-     * Indicates the color to be used for solid-filling the interior of polygons. The format of the
-     * color is {@code "#rrggbb"} where {@code rr}, {@code gg}, and {@code bb} are two digit
-     * hexadecimal integers specify the red, green, and blue color intensities, repsectively. If
-     * null, the default color is 50% gray, {@code "#808080"}.
+     * This parameter gives the solid color that will be used for a Fill.<br>
+     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
+     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits beetween
+     * A and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
+     * (with no quotation marks). The default color is defined to be 50% gray ("#808080"). Note: in
+     * CSS this parameter is just called Fill and not Color.
      *
-     * @return Expression : if null the color used shall be a 50% gray {@code "#808080"}.
+     * @return The color of the Fill encoded as a hexidecimal RGB value.
      */
     Expression getColor();
 
     /**
-     * Indicates the opacity of the fill. This value must be a floating point number ranging from
-     * 0.0 to 1.0, where 0.0 means completely transparent and 1.0 means completely opaque. If null,
-     * the default value is 1.0, completely opaque.
+     * This parameter gives the solid color that will be used for a Fill.<br>
+     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
+     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits beetween
+     * A and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
+     * (with no quotation marks).
      *
-     * @return Expression : if null, value used shall be 1.0
+     * @param color solid color that will be used for a Fill
+     */
+    void setColor(Expression color);
+
+    /**
+     * This specifies the level of translucency to use when rendering the fill. <br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
+     * totally transparent and 1.0 representing totally opaque, with a linear scale of translucency
+     * for intermediate values.<br>
+     * For example, "0.65" would represent 65% opacity. The default value is 1.0 (opaque).
+     *
+     * @return The opacity of the fill, where 0.0 is completely transparent and 1.0 is completely
+     *     opaque.
      */
     Expression getOpacity();
 
@@ -59,5 +84,13 @@ public interface Fill {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
+     * fill graphic to use.
+     */
+    void setGraphicFill(Graphic graphicFill);
+
+    void accept(StyleVisitor visitor);
 }

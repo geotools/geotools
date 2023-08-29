@@ -10,6 +10,7 @@
 package org.geotools.api.style;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
@@ -28,6 +29,82 @@ import org.geotools.api.metadata.citation.OnLineResource;
  */
 public interface FeatureTypeStyle {
 
+    /** This option influences how multiple rules matching the same feature are evaluated */
+    String KEY_EVALUATION_MODE = "ruleEvaluation";
+    /** The standard behavior, all the matching rules are executed */
+    String VALUE_EVALUATION_MODE_ALL = "all";
+    /** Only the first matching rule gets executed, all the others are skipped */
+    String VALUE_EVALUATION_MODE_FIRST = "first";
+    /**
+     * Applies a color composition/blending operation at the feature type style level (that is,
+     * blending the current FTS level against the map below it).
+     *
+     * <p>The syntax for this key is {code}<VendorOption
+     * name="composite">name[,opacity]</VendorOption>{code} where:
+     *
+     * <ul>
+     *   <li>{code}name is one of the <a href="http://www.w3.org/TR/compositing-1/">SVG composition
+     *       operations</a>, in particular, copy, destination, source-over, destination-over,
+     *       source-in, destination-in, source-out, destination-out, source-atop, destination-atop,
+     *       xor, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light,
+     *       soft-light, difference, exclusion
+     *   <li>{opacity} indicates the opacity level to be used during the operation, defauls to 1
+     * </ul>
+     *
+     * For example:
+     *
+     * <ul>
+     *   <li>{code}<VendorOption name="composite">source-atop, 0.5</VendorOption>{code} composes the
+     *       current FTS exclusively where the previous map has already been drawn, using a 0.5
+     *       opacity level
+     *   <li>{code}<VendorOption name="composite">multiply</VendorOption>{code} blends the current
+     *       FTS with the underlying map using color multiplication
+     * </ul>
+     *
+     * <p>The same vendor option can also be applied at the symbolizer level to achieve different
+     * effects (feature by feature composition as oppose to layer by layer one).
+     *
+     * <p>Important note: for most compositing operation to work properly, the graphics used for the
+     * rendering should be derived from an image that has an alpha channel and transparent
+     * background (as most of the operations consider the transparency of the target surface in
+     * their math)
+     */
+    String COMPOSITE = "composite";
+    /**
+     * Boolean value, if true the current feature type style will be treated as a base for the
+     * subsequent feature type styles in the rendering stack (including other layer ones) as opposed
+     * to use the merged backdrop rendered so far. When the top of the stack is reached, or another
+     * base is found, this FTS will be merged into the backdrop, eventually using the indicated
+     * composite operator
+     */
+    String COMPOSITE_BASE = "composite-base";
+    /**
+     * String value controlling the order in which the features are loaded from the data source, and
+     * thus painted, in this feature type style.
+     *
+     * <p>The syntax is <code>Attribute1 {A|D},Attribute2 {A|D}...</code>, <code>A</code> is
+     * ascending, <code>D</code> is descending. The sorting direction is optional and defaults to
+     * ascending if not specified.
+     *
+     * <p>E.g., <code>cat D,name</code> sorts data by <code>cat</code> in descending order, and then
+     * by ascending <code>name</code> within all features having the same <code>cat</code> value.
+     */
+    String SORT_BY = "sortBy";
+    /**
+     * String value controlling cross layer z-ordering. Several feature type styles in the same
+     * sortByGroup will have their features globally ordered before painting, for example, in order
+     * to respect their real world relationships. FeatureTypeStyle are grouped only if they are
+     * adjacent in the overall MapContent (even across layers). In case compositing is used in the
+     * same FeatureTypeStyle, the first value in group will be used for the entire group.
+     */
+    String SORT_BY_GROUP = "sortByGroup";
+    /**
+     * String value allowing to control whether an SLD element should be included when applying the
+     * style to render maps or a legends. The option can be used also on Rule and all the
+     * Symbolizers. Possible values are normal, legendOnly, mapOnly.
+     */
+    String VENDOR_OPTION_INCLUSION = "inclusion";
+
     /**
      * Returns a name for this style. This can be any string that uniquely identifies this style
      * within a given canvas. It is not meant to be human-friendly. (The "title" property is meant
@@ -37,10 +114,13 @@ public interface FeatureTypeStyle {
      */
     String getName();
 
+    void setName(String name);
+
     /**
-     * Returns the description of this style.
+     * Description for this style.
      *
-     * @return Description with usual informations used for user interfaces.
+     * @return Human readable description for use in user interfaces
+     * @since 2.5.x
      */
     Description getDescription();
 
@@ -87,11 +167,13 @@ public interface FeatureTypeStyle {
     Set<SemanticType> semanticTypeIdentifiers();
 
     /**
-     * Returns the list of rules contained by this style.
+     * Rules govern the appearance of any given feature to be styled by this styler.
      *
-     * @return the list of rules. can not be null but can be empty.
+     * <p>This is *the* list being used to manage the rules!
+     *
+     * @since GeoTools 2.2.M3, GeoAPI 2.0
      */
-    List<? extends Rule> rules();
+    List<Rule> rules();
 
     /**
      * It is common to have a style coming from a external xml file, this method provide a way to
@@ -103,9 +185,19 @@ public interface FeatureTypeStyle {
     OnLineResource getOnlineResource();
 
     /**
-     * gets the transformation as expression
+     * It is common to have a style coming from a external xml file, this method provide a way to
+     * get the original source if there is one.
      *
-     * @return Transformation or null
+     * @param online location external file defining this style, or null if not available
+     */
+    void setOnlineResource(OnLineResource online);
+
+    void accept(StyleVisitor visitor);
+
+    /**
+     * The eventual transformation to be applied before rendering the data (should be an expression
+     * taking a feature collection or a grid coverage as the evaluation context and returns a
+     * feature collection or a grid coverage as an output)
      */
     Expression getTransformation();
 
@@ -114,5 +206,39 @@ public interface FeatureTypeStyle {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * Sets the eventual transformation to be applied before rendering the data (should be an
+     * expression taking a feature collection or a grid coverage as an input and returns a feature
+     * collection or a grid coverage as an output)
+     */
+    void setTransformation(Expression transformation);
+
+    /** Determines if a vendor option with the specific key has been set on this symbolizer. */
+    boolean hasOption(String key);
+
+    /**
+     * Map of vendor options for the symbolizer.
+     *
+     * <p>Client code looking for the existence of a single option should use {@link
+     * #hasOption(String)}
+     */
+    Map<String, String> getOptions();
+
+    enum RenderingSelectionOptions {
+        NORMAL("normal"),
+        LEGENDONLY("legendOnly"),
+        MAPONLY("mapOnly");
+
+        private String option;
+
+        RenderingSelectionOptions(String option) {
+            this.option = option;
+        }
+
+        public String getOption() {
+            return option;
+        }
+    }
 }

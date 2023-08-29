@@ -17,13 +17,22 @@
 package org.geotools.styling;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.GraphicStroke;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
@@ -37,7 +46,86 @@ import org.geotools.util.factory.GeoTools;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class GraphicImpl implements Graphic, Cloneable {
+public class GraphicImpl
+        implements org.geotools.api.style.GraphicLegend,
+                org.geotools.api.style.Graphic,
+                org.geotools.api.style.GraphicFill,
+                org.geotools.api.style.GraphicStroke,
+                Cloneable {
+    /**
+     * A default Graphic instance.
+     *
+     * <p>For some attributes the standard does not define a default, so a reasonable value is
+     * supplied.
+     */
+    public static final Graphic DEFAULT =
+            new ConstantGraphic() {
+
+                @Override
+                public List<GraphicalSymbol> graphicalSymbols() {
+                    return Collections.emptyList();
+                }
+
+                @Override
+                public Expression getOpacity() {
+                    return ConstantExpression.ONE;
+                }
+
+                @Override
+                public Expression getSize() {
+                    // default size is unknown, it depends on the target
+                    return Expression.NIL;
+                }
+
+                @Override
+                public Displacement getDisplacement() {
+                    return DisplacementImpl.DEFAULT;
+                }
+
+                @Override
+                public Expression getRotation() {
+                    return ConstantExpression.ZERO;
+                }
+            };
+    /**
+     * Indicates an absense of graphic.
+     *
+     * <p>This value is used to indicate that the Graphics based opperation should be skipped. Aka
+     * this is used by Stroke.Stroke as place holders for GRAPHIC_FILL and GRAPHIC_STROKE.
+     */
+    public static final Graphic NULL =
+            new ConstantGraphic() {
+
+                @Override
+                public List<GraphicalSymbol> graphicalSymbols() {
+                    return Collections.emptyList();
+                }
+
+                @Override
+                public Expression getOpacity() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getSize() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Displacement getDisplacement() {
+                    return DisplacementImpl.NULL;
+                }
+
+                @Override
+                public Expression getRotation() {
+                    return ConstantExpression.NULL;
+                }
+
+                //            public String getGeometryPropertyName() {
+                //                return "";
+                //            }
+
+            };
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(GraphicImpl.class);
@@ -78,17 +166,13 @@ public class GraphicImpl implements Graphic, Cloneable {
     }
 
     @Override
-    public AnchorPointImpl getAnchorPoint() {
+    public AnchorPoint getAnchorPoint() {
         return anchor;
     }
 
-    public void setAnchorPoint(org.geotools.styling.AnchorPoint anchor) {
-        this.anchor = AnchorPointImpl.cast(anchor);
-    }
-
     @Override
-    public void setAnchorPoint(org.geotools.api.style.AnchorPoint anchorPoint) {
-        this.anchor = AnchorPointImpl.cast(anchorPoint);
+    public void setAnchorPoint(AnchorPoint anchor) {
+        this.anchor = AnchorPointImpl.cast(anchor);
     }
 
     /**
@@ -136,7 +220,7 @@ public class GraphicImpl implements Graphic, Cloneable {
     }
 
     @Override
-    public DisplacementImpl getDisplacement() {
+    public Displacement getDisplacement() {
         return displacement;
     }
 
@@ -191,12 +275,12 @@ public class GraphicImpl implements Graphic, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit((org.geotools.api.style.GraphicStroke) this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -304,6 +388,101 @@ public class GraphicImpl implements Graphic, Cloneable {
                 }
             }
             return copy;
+        }
+    }
+
+    public abstract static class ConstantGraphic implements Graphic, GraphicStroke, GraphicFill {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Graphic may not be modified");
+        }
+
+        @Override
+        public void setDisplacement(Displacement offset) {
+            cannotModifyConstant();
+        }
+
+        public void setExternalGraphics(ExternalGraphic... externalGraphics) {
+            cannotModifyConstant();
+        }
+
+        public void addExternalGraphic(ExternalGraphic externalGraphic) {
+            cannotModifyConstant();
+        }
+
+        public void setMarks(Mark... marks) {
+            cannotModifyConstant();
+        }
+
+        public void addMark(Mark mark) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setGap(Expression gap) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setInitialGap(Expression initialGap) {
+            cannotModifyConstant();
+        }
+
+        public void setSymbols(Symbol... symbols) {
+            cannotModifyConstant();
+        }
+
+        public void addSymbol(Symbol symbol) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setOpacity(Expression opacity) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setSize(Expression size) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setRotation(Expression rotation) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setAnchorPoint(AnchorPoint anchor) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object data) {
+            return visitor.visit((GraphicStroke) this, data);
+        }
+
+        @Override
+        public void accept(StyleVisitor visitor) {
+            visitor.visit(this);
+        }
+
+        @Override
+        public List<GraphicalSymbol> graphicalSymbols() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public AnchorPoint getAnchorPoint() {
+            return AnchorPointImpl.DEFAULT;
+        }
+
+        @Override
+        public Expression getGap() {
+            return ConstantExpression.constant(0);
+        }
+
+        @Override
+        public Expression getInitialGap() {
+            return ConstantExpression.constant(0);
         }
     }
 }

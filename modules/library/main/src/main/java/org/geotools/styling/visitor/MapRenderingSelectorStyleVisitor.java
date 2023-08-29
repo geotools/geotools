@@ -17,7 +17,7 @@
 
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
 
 /** RenderingSelectorStyleVisitor implementation meant to be used when rendering maps * */
 public class MapRenderingSelectorStyleVisitor extends RenderingSelectorStyleVisitor {

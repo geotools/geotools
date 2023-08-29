@@ -22,8 +22,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 

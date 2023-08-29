@@ -28,13 +28,11 @@ import org.geotools.api.filter.expression.Expression;
 public interface Graphic {
 
     /**
-     * Returns the list of external image files or marks that comprise this graphic. All elements of
-     * the list must be instances of either {@link Mark} or {@link ExternalGraphic}.
+     * The items in this list are either a Mark or a ExternalGraphic.
      *
-     * <p>
-     *
-     * @return List of Marks or ExternalGraphics; if empty it is to be treated a single default
-     *     Mark.
+     * <p>This list may be directly edited; the items are considered in order from most preferred
+     * (say an SVG file) to least preferred (a simple shape) with the intension that the system will
+     * make use of the first entry which it is capabile of displaying.
      */
     List<GraphicalSymbol> graphicalSymbols();
 
@@ -52,6 +50,12 @@ public interface Graphic {
     Expression getOpacity();
 
     /**
+     * Graphic opacity.
+     *
+     * @param opacity New value of property opacity.
+     */
+    void setOpacity(Expression opacity);
+    /**
      * The Size element gives the absolute size of the graphic in uoms encoded as a floating- point
      * number. The default size for an object is context-dependent. Negative values are not allowed.
      * The default size of an image format (such as GIF) is the inherent size of the image. The
@@ -65,6 +69,14 @@ public interface Graphic {
      * @return Expression
      */
     Expression getSize();
+
+    /**
+     * Indicates the size at which the graphic should be displayed.
+     *
+     * <p>If this value is null the natural size of the graphic will be used; or for graphics
+     * without a natural size like SVG files 16x16 will be used.
+     */
+    void setSize(Expression size);
 
     /**
      * Returns the expression that will be used to calculate the rotation of the graphic when it is
@@ -81,6 +93,14 @@ public interface Graphic {
      * @return Expression
      */
     Expression getRotation();
+
+    /**
+     * This parameter defines the rotation of a graphic in the clockwise direction about its centre
+     * point in decimal degrees. The value encoded as a floating point number.
+     *
+     * @param rotation in decimal degrees
+     */
+    void setRotation(Expression rotation);
 
     /**
      * The AnchorPoint element of a PointSymbolizer gives the location inside of a Graphic (or label
@@ -110,13 +130,30 @@ public interface Graphic {
      */
     Displacement getDisplacement();
 
+    void setDisplacement(Displacement displacement);
+
     /**
      * Calls the visit method of a StyleVisitor
      *
-     * <p>Please note StlyeVisitor has methods to directly visit a Graphic, GraphicLegend, or
-     * GraphicFill or GraphicStroke; please call the most appropriate method.
-     *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    Expression getGap();
+
+    void setGap(Expression gap);
+
+    Expression getInitialGap();
+
+    void setInitialGap(Expression initialGap);
+
+    /**
+     * accepts a StyleVisitor - used by xmlencoder and other packages which need to walk the style
+     * tree
+     *
+     * @param visitor - the visitor object
+     */
+    void accept(StyleVisitor visitor);
+
+    void setAnchorPoint(AnchorPoint anchor);
 }

@@ -23,8 +23,8 @@ import java.awt.Composite;
 import java.awt.Paint;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Stroke;
 
 /**
  * A dynamic line style, that will compute its parameters each time they are requested instead of
@@ -139,7 +139,7 @@ public class DynamicLineStyle2D extends org.geotools.renderer.style.LineStyle2D 
         }
 
         // if a graphic fill is to be used, prepare the paint accordingly....
-        org.geotools.styling.Graphic gr = stroke.getGraphicFill();
+        org.geotools.api.style.Graphic gr = stroke.getGraphicFill();
         SLDStyleFactory fac = new SLDStyleFactory();
 
         if (gr != null) {

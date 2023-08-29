@@ -21,8 +21,8 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Paint;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.PolygonSymbolizer;
 
 /**
  * A dynamic polygon style, that will compute its parameters each time they are requested instead of
@@ -52,7 +52,7 @@ public class DynamicPolygonStyle2D extends org.geotools.renderer.style.PolygonSt
         Paint fillPaint = fill.getColor().evaluate(feature, Color.class);
 
         // if a graphic fill is to be used, prepare the paint accordingly....
-        org.geotools.styling.Graphic gr = fill.getGraphicFill();
+        org.geotools.api.style.Graphic gr = fill.getGraphicFill();
 
         if (gr != null) {
             SLDStyleFactory fac = new SLDStyleFactory();

@@ -20,6 +20,10 @@ package org.geotools.styling;
 
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -106,10 +110,10 @@ public class TextSymbolTest {
         pointsym.setGraphic(graphic);
 
         RuleImpl rule = new RuleImpl();
-        rule.symbolizers().add(pointsym);
+        rule.symbolizers().add((Symbolizer) pointsym);
 
-        FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
-        fts.rules().add(rule);
+        FeatureTypeStyle fts = (FeatureTypeStyle) new FeatureTypeStyleImpl();
+        fts.rules().add((Rule) rule);
         fts.featureTypeNames().add(new NameImpl("testPoint"));
 
         StyleImpl style = new StyleImpl();

@@ -17,11 +17,11 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDFeatureTypeStyleBinding;
-import org.geotools.styling.Description;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 

@@ -18,8 +18,8 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.GraphicLegend;
 import org.geotools.api.style.GraphicalSymbol;
-import org.geotools.styling.GraphicLegend;
 
 public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
     private List<GraphicalSymbol> symbols;
@@ -119,6 +119,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         return this;
     }
 
+    @Override
     public GraphicLegendBuilder reset(org.geotools.api.style.GraphicLegend graphic) {
         if (graphic == null) {
             return unset();
@@ -140,11 +141,5 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
     @Override
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().legend().init(this);
-    }
-
-    @Override
-    public GraphicLegendBuilder reset(GraphicLegend original) {
-        reset((org.geotools.api.style.GraphicLegend) original);
-        return this;
     }
 }

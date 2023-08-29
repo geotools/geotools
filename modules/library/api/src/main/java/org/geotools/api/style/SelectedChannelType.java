@@ -24,23 +24,31 @@ import org.geotools.api.filter.expression.Expression;
 public interface SelectedChannelType {
 
     /**
-     * Returns the channel's name.
+     * Set the source channel name.
      *
-     * @return Expression
+     * @param name name of the source channel
      */
-    public Expression getChannelName();
+    void setChannelName(Expression name);
+
+    void setChannelName(String name);
 
     /**
-     * Contrast enhancement may be applied to each channel in isolation.
+     * Returns the channel's name.
      *
-     * @return ContrastEnhancement
+     * @return Source channel name
      */
-    public ContrastEnhancement getContrastEnhancement();
+    Expression getChannelName();
+
+    void setContrastEnhancement(ContrastEnhancement enhancement);
+
+    ContrastEnhancement getContrastEnhancement();
 
     /**
      * calls the visit method of a StyleVisitor
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

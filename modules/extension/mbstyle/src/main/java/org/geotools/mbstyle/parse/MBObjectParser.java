@@ -25,12 +25,12 @@ import java.util.logging.Logger;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.StyleFactory2;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -75,7 +75,7 @@ public class MBObjectParser {
     final Class<?> context;
 
     final FilterFactory ff;
-    final StyleFactory2 sf;
+    final StyleFactory sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
 
     /**
@@ -85,7 +85,7 @@ public class MBObjectParser {
      */
     public MBObjectParser(Class<?> context) {
         this.context = context;
-        this.sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory();
+        this.sf = (StyleFactory) CommonFactoryFinder.getStyleFactory();
         this.ff = CommonFactoryFinder.getFilterFactory();
     }
 
@@ -99,7 +99,7 @@ public class MBObjectParser {
         this.context = context;
         sf =
                 parse == null
-                        ? (StyleFactory2) CommonFactoryFinder.getStyleFactory()
+                        ? (StyleFactory) CommonFactoryFinder.getStyleFactory()
                         : parse.getStyleFactory();
         ff = parse == null ? CommonFactoryFinder.getFilterFactory() : parse.getFilterFactory();
     }
@@ -115,7 +115,7 @@ public class MBObjectParser {
     }
 
     /** Shared StyleFactory */
-    public StyleFactory2 getStyleFactory() {
+    public StyleFactory getStyleFactory() {
         return sf;
     }
 

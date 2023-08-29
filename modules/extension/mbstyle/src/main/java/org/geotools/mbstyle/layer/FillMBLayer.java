@@ -25,7 +25,12 @@ import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
 import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -33,11 +38,6 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 
@@ -268,7 +268,7 @@ public class FillMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         // use factory to avoid defaults values
-        org.geotools.styling.Stroke stroke =
+        org.geotools.api.style.Stroke stroke =
                 sf.stroke(
                         fillOutlineColor(),
                         fillOpacity(),

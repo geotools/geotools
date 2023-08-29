@@ -18,14 +18,14 @@ package org.geotools.styling;
 
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 
 /**
  * Default implementation of ExternalMark.
  *
  * @version $Id$
  */
-public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
+public class ExternalMarkImpl implements org.geotools.api.style.ExternalMark {
 
     private OnLineResource onlineResource;
     private Icon inlineContent;
@@ -69,7 +69,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object extraData) {
+    public Object accept(TraversingStyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 

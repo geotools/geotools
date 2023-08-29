@@ -19,6 +19,11 @@ package org.geotools.ows.wmts.map;
 import java.util.logging.Logger;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
@@ -26,11 +31,6 @@ import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.Parameter;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 
 /**
  * Wraps a WMTS layer into a {@link Layer} for interactive rendering usage.

@@ -25,6 +25,6 @@
  *       provided for use.
  * </ul>
  *
- * @see org.geotools.styling.StyledLayerDescriptor
+ * @see org.geotools.api.style.StyledLayerDescriptor
  */
 package org.geotools.mbstyle.parse;

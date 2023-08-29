@@ -17,8 +17,8 @@
 package org.geotools.sld.bindings;
 
 import java.util.Map;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.api.util.InternationalString;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;

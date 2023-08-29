@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import java.io.IOException;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Fill;
 import org.geotools.mbstyle.layer.BackgroundMBLayer;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Fill;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;

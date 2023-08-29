@@ -22,7 +22,17 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.OtherText;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
@@ -35,7 +45,7 @@ import org.geotools.util.factory.GeoTools;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbolizer2, Cloneable {
+public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbolizer, Cloneable {
     private List<Font> fonts = new ArrayList<>(1);
     private final FilterFactory filterFactory;
     private FillImpl fill;
@@ -73,7 +83,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * @return The fill to be used.
      */
     @Override
-    public FillImpl getFill() {
+    public Fill getFill() {
         return fill;
     }
 
@@ -107,9 +117,9 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
         }
         if (font != null) {
             if (this.fonts.isEmpty()) {
-                this.fonts.add(FontImpl.cast(font));
+                this.fonts.add(font);
             } else {
-                this.fonts.set(0, FontImpl.cast(font));
+                this.fonts.set(0, font);
             }
         }
     }
@@ -119,7 +129,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      *
      * @param font New value of property font.
      */
-    public void addFont(org.geotools.styling.Font font) {
+    public void addFont(Font font) {
         fonts.add(font);
     }
 
@@ -128,7 +138,7 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * easier to read over a background.
      */
     @Override
-    public HaloImpl getHalo() {
+    public Halo getHalo() {
         return halo;
     }
 
@@ -199,12 +209,12 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
      * @param visitor The StyleVisitor to accept.
      */
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

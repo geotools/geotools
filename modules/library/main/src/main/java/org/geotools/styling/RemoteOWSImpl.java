@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.RemoteOWS;
+
 public class RemoteOWSImpl implements RemoteOWS {
 
     private String service;

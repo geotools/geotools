@@ -23,11 +23,35 @@ package org.geotools.api.style;
 public interface ChannelSelection {
 
     /**
+     * Set the RGB channels to be used
+     *
+     * @param red the red channel
+     * @param green the green channel
+     * @param blue the blue channel
+     */
+    void setRGBChannels(
+            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
+
+    /**
+     * Set the RGB channels to be used
+     *
+     * @param channels array of channels in RGB order
+     */
+    void setRGBChannels(SelectedChannelType... channels);
+
+    /**
      * get the RGB channels to be used
      *
      * @return array of channels in RGB order
      */
     SelectedChannelType[] getRGBChannels();
+
+    /**
+     * Set the gray channel to be used
+     *
+     * @param gray the gray channel
+     */
+    void setGrayChannel(SelectedChannelType gray);
 
     /**
      * Get the gray channel to be used
@@ -41,5 +65,7 @@ public interface ChannelSelection {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    void accept(StyleVisitor visitor);
 }

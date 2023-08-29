@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory2;
 import org.geotools.styling.UomOgcMapping;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,12 +34,12 @@ import org.junit.Test;
 
 public class UnitRescaleTest {
 
-    private StyleFactory2 sf;
+    private StyleFactory sf;
     private FilterFactory ff;
 
     @Before
     public void setUp() throws Exception {
-        sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
+        sf = CommonFactoryFinder.getStyleFactory(null);
         ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
@@ -84,7 +84,7 @@ public class UnitRescaleTest {
         }
 
         Map<Object, Object> hints = new HashMap<>();
-        hints.put("dpi", Double.valueOf(dpi));
+        hints.put("dpi", dpi);
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.scaleDenominator = 1;

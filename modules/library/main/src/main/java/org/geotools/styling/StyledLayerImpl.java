@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyledLayer;
+
 /**
  * Default implementation of StyledLayer.
  *

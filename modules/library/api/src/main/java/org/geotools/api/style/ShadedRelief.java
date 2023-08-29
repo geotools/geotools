@@ -54,5 +54,23 @@ public interface ShadedRelief {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * turns brightnessOnly on or off depending on value of flag.
+     *
+     * @param flag boolean
+     */
+    void setBrightnessOnly(boolean flag);
+
+    /**
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
+     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
+     * is system-dependent.
+     *
+     * @param reliefFactor an expression which evaluates to a double.
+     */
+    void setReliefFactor(Expression reliefFactor);
+
+    void accept(StyleVisitor visitor);
 }

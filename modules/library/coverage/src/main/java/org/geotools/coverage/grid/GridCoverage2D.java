@@ -55,7 +55,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
@@ -242,7 +241,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
         if (dimension <= Math.max(gridGeometry.axisDimensionX, gridGeometry.axisDimensionY)
                 || !(gridGeometry.envelope.getSpan(gridGeometry.axisDimensionX) > 0)
                 || !(gridGeometry.envelope.getSpan(gridGeometry.axisDimensionY) > 0)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.EMPTY_ENVELOPE));
+            throw new IllegalArgumentException(ErrorKeys.EMPTY_ENVELOPE);
         }
     }
 

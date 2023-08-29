@@ -16,11 +16,11 @@
  */
 package org.geotools.util;
 
+import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A {@linkplain Collections#checkedMap checked} and {@linkplain Collections#synchronizedMap
@@ -68,7 +68,7 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
     /** Ensure that the given argument is non-null. */
     private static void ensureNonNull(final Class<?> type, final String name) {
         if (type == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new NullPointerException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -83,7 +83,7 @@ public class CheckedHashMap<K, V> extends LinkedHashMap<K, V> implements Cloneab
             throws IllegalArgumentException {
         if (element != null && !type.isInstance(element)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
         }
     }
 

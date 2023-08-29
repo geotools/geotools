@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -34,7 +35,6 @@ import org.geotools.api.referencing.cs.TimeCS;
 import org.geotools.api.referencing.cs.UserDefinedCS;
 import org.geotools.api.referencing.cs.VerticalCS;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 
@@ -163,8 +163,9 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
             Arrays.sort(std, csComparator);
             return Arrays.equals(user, std) ? cs : new DefaultCompoundCS(std);
         }
+        final Object arg0 = cs.getName().getCode();
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, cs.getName().getCode()));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, arg0));
     }
 
     /**

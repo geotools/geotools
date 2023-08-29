@@ -16,6 +16,7 @@
  */
 package org.geotools.parameter;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,6 @@ import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.util.UnmodifiableArrayList;
@@ -166,7 +166,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
             throws IndexOutOfBoundsException {
         if (index < 0 || index >= upper) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, index));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, index));
         }
     }
 
@@ -389,7 +389,8 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
                 }
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
+                                MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name),
+                                name);
                 if (cause != null) {
                     exception.initCause(cause);
                 }

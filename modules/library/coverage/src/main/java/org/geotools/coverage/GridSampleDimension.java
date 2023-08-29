@@ -20,6 +20,7 @@ import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +34,6 @@ import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.util.InternationalString;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.ClassChanger;
@@ -188,7 +188,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     /** Constructs a list of categories. Used by constructors only. */
     private static CategoryList list(final CharSequence[] names, final Color[] colors) {
         if (names.length != colors.length) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException(ErrorKeys.MISMATCHED_ARRAY_LENGTH);
         }
         final int length = names.length;
         final Category[] categories = new Category[length];
@@ -336,7 +336,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         }
         if (Double.isInfinite(minimum) || Double.isInfinite(maximum) || !(minimum < maximum)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
         }
         if (type == null) {
             type = TypeMap.getSampleDimensionType(minimum, maximum);
@@ -711,7 +711,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             final int lower = (int) category.minimum;
             final int upper = (int) category.maximum;
             if (lower != category.minimum || lower < 0 || upper != category.maximum || upper < 0) {
-                throw new IllegalStateException(Errors.format(ErrorKeys.NON_INTEGER_CATEGORY));
+                throw new IllegalStateException(ErrorKeys.NON_INTEGER_CATEGORY);
             }
             if (names == null) {
                 names = new InternationalString[upper + 1];
@@ -805,8 +805,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
                         if (lower != min
                                 || upper != max
                                 || !Classes.isInteger(category.getRange().getElementClass())) {
-                            throw new IllegalStateException(
-                                    Errors.format(ErrorKeys.NON_INTEGER_CATEGORY));
+                            throw new IllegalStateException(ErrorKeys.NON_INTEGER_CATEGORY);
                         }
                         final int requiredLength = count + (upper - lower);
                         if (requiredLength > padValues.length) {

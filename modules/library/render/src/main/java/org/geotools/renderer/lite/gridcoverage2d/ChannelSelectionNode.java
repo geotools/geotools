@@ -17,6 +17,7 @@
 package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -25,7 +26,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.ChannelSelection;
@@ -93,7 +93,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
         final int length = localSources.size();
         if (length == 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, "ChannelSelectionNode"));
+                    MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, "ChannelSelectionNode"));
         final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
         GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
 
@@ -132,7 +132,7 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
             if ((rgb != null && rgb[0] != null && rgb[1] != null && rgb[2] != null)
                     && (gray != null))
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$1,
                                 "Both gray and rgb channel selection are valid!"));
             final SelectedChannelType[] sc = gray == null ? rgb : new SelectedChannelType[] {gray};

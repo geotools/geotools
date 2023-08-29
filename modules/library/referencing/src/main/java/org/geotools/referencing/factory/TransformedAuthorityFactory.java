@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -68,7 +69,6 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -350,8 +350,9 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                                 properties, (GeographicCRS) baseCRS, fromBase, (CartesianCS) cs);
             } else {
                 // TODO: Need a createDerivedCRS method.
+                final Object arg0 = crs.getName().getCode();
                 throw new FactoryException(
-                        Errors.format(ErrorKeys.UNSUPPORTED_CRS_$1, crs.getName().getCode()));
+                        MessageFormat.format(ErrorKeys.UNSUPPORTED_CRS_$1, arg0));
             }
         } else if (sameCS) {
             return crs;
@@ -393,8 +394,9 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                 }
                 modified = crsFactory.createCompoundCRS(properties, m);
             } else {
+                final Object arg0 = crs.getName().getCode();
                 throw new FactoryException(
-                        Errors.format(ErrorKeys.UNSUPPORTED_CRS_$1, crs.getName().getCode()));
+                        MessageFormat.format(ErrorKeys.UNSUPPORTED_CRS_$1, arg0));
             }
         }
         modified = pool.unique(modified);
@@ -502,7 +504,8 @@ public class TransformedAuthorityFactory extends AuthorityFactoryAdapter {
                     return csFactory.createUserDefinedCS(properties, axis[0], axis[1], axis[2]);
             }
         }
-        throw new FactoryException(Errors.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, type));
+        throw new FactoryException(
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_COORDINATE_SYSTEM_$1, type));
     }
 
     /**

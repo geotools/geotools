@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory;
 
 import java.awt.RenderingHints;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -44,7 +45,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
@@ -463,7 +463,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
                 || dimensions[length - 1] >= crsDimension
                 || !XArray.isStrictlySorted(dimensions)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "dimension"));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "dimension"));
         }
         if (length == crsDimension) {
             return crs;
@@ -523,8 +523,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
          *       It may requires the creation of new CoordinateSystem objects,
          *       which is why this method live in ReferencingFactoryContainer.
          */
-        throw new FactoryException(
-                Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, crs.getName().getCode()));
+        final Object arg0 = crs.getName().getCode();
+        throw new FactoryException(MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
     }
 
     /** Returns a temporary name for object derived from the specified one. */

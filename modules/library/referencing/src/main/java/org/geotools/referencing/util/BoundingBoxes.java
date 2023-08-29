@@ -17,6 +17,7 @@
 package org.geotools.referencing.util;
 
 import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.util.Locale;
 import org.geotools.api.geometry.Envelope;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
@@ -30,7 +31,6 @@ import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -83,7 +83,7 @@ public final class BoundingBoxes {
                     operation = factory.createOperation(crs, standardCRS);
                 } catch (FactoryException exception) {
                     throw new TransformPathNotFoundException(
-                            Errors.format(ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception));
+                            MessageFormat.format(ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception));
                 }
                 envelope = CRS.transform(operation, envelope);
             }

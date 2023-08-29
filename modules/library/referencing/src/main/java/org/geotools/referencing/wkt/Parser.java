@@ -19,6 +19,7 @@ package org.geotools.referencing.wkt;
 import static java.util.Collections.singletonMap;
 
 import java.io.BufferedReader;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.ArrayList;
@@ -67,7 +68,6 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -237,7 +237,7 @@ public class Parser extends MathTransformParser {
                 assert isValid(r, keyword) : element;
             }
         }
-        throw element.parseFailed(null, Errors.format(ErrorKeys.UNKNOW_TYPE_$1, key));
+        throw element.parseFailed(null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, key));
     }
 
     /**
@@ -447,7 +447,8 @@ public class Parser extends MathTransformParser {
         element.close();
 
         if (direction == null) {
-            throw element.parseFailed(null, Errors.format(ErrorKeys.UNKNOW_TYPE_$1, orientation));
+            throw element.parseFailed(
+                    null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, orientation));
         }
         try {
             return createAxis(properties, name, direction, unit);
@@ -654,9 +655,9 @@ public class Parser extends MathTransformParser {
                 parameter.setValue(paramValue);
             }
         } catch (ParameterNotFoundException exception) {
+            final Object arg0 = exception.getParameterName();
             throw param.parseFailed(
-                    exception,
-                    Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, exception.getParameterName()));
+                    exception, MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg0));
         }
         return parameters;
     }
@@ -732,7 +733,7 @@ public class Parser extends MathTransformParser {
         final VerticalDatumType type =
                 DefaultVerticalDatum.getVerticalDatumTypeFromLegacyCode(datum);
         if (type == null) {
-            throw element.parseFailed(null, Errors.format(ErrorKeys.UNKNOW_TYPE_$1, datum));
+            throw element.parseFailed(null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, datum));
         }
         try {
             return datumFactory.createVerticalDatum(properties, type);

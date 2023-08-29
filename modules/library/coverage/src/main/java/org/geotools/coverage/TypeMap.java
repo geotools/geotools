@@ -33,6 +33,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -41,7 +42,6 @@ import org.geotools.api.coverage.SampleDimensionType;
 import org.geotools.api.util.InternationalString;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.AbstractInternationalString;
@@ -278,7 +278,8 @@ public final class TypeMap {
     public static SampleDimensionType getSampleDimensionType(
             final SampleModel model, final int band) throws IllegalArgumentException {
         if (band < 0 || band >= model.getNumBands()) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }
         boolean signed = true;
         switch (model.getDataType()) {
@@ -403,7 +404,7 @@ public final class TypeMap {
             }
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
     }
 
     /**
@@ -494,11 +495,11 @@ public final class TypeMap {
             default:
                 {
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
                 }
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", value));
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", value));
     }
 
     /**
@@ -515,7 +516,8 @@ public final class TypeMap {
             return ColorInterpretation.UNDEFINED;
         }
         if (band < 0 || band >= ColorUtilities.getNumBands(model)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.BAD_BAND_NUMBER_$1, band));
         }
         if (model instanceof IndexColorModel) {
             return ColorInterpretation.PALETTE_INDEX;

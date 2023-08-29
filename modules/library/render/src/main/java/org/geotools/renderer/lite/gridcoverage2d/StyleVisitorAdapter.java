@@ -16,8 +16,8 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.text.MessageFormat;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
@@ -72,7 +72,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(StyledLayerDescriptor sld) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(StyledLayerDescriptor)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(StyledLayerDescriptor)"));
     }
 
     /*
@@ -83,7 +84,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(NamedLayer layer) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(NamedLayer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(NamedLayer)"));
     }
 
     /*
@@ -94,7 +95,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(UserLayer layer) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(UserLayer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(UserLayer)"));
     }
 
     /*
@@ -105,7 +106,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(FeatureTypeConstraint ftc) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeConstraint)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeConstraint)"));
     }
 
     /*
@@ -116,7 +118,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Style style) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Style)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Style)"));
     }
 
     /*
@@ -127,7 +129,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Rule rule) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Rule)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Rule)"));
     }
 
     /*
@@ -138,7 +140,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(FeatureTypeStyle fts) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeStyle)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeStyle)"));
     }
 
     /*
@@ -149,7 +152,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Fill fill) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Fill)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Fill)"));
     }
 
     /*
@@ -161,7 +164,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(Stroke stroke) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Stroke)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Stroke)"));
     }
 
     /*
@@ -172,7 +175,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Symbolizer sym) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Symbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Symbolizer)"));
     }
 
     /*
@@ -183,7 +186,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(PointSymbolizer ps) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointSymbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointSymbolizer)"));
     }
 
     /*
@@ -194,7 +197,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(LineSymbolizer line) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LineSymbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LineSymbolizer)"));
     }
 
     /*
@@ -206,7 +209,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(PolygonSymbolizer poly) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PolygonSymbolizer)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PolygonSymbolizer)"));
     }
 
     /*
@@ -218,7 +222,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(TextSymbolizer text) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(TextSymbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(TextSymbolizer)"));
     }
 
     /*
@@ -229,7 +233,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(RasterSymbolizer raster) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(RasterSymbolizer)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(RasterSymbolizer)"));
     }
 
     /*
@@ -240,7 +245,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Graphic gr) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Graphic)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Graphic)"));
     }
 
     /*
@@ -251,7 +256,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Mark mark) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Mark)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Mark)"));
     }
 
     /*
@@ -262,7 +267,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(ExternalGraphic exgr) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ExternalGraphic)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ExternalGraphic)"));
     }
 
     /*
@@ -273,7 +278,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(PointPlacement pp) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointPlacement)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointPlacement)"));
     }
 
     /*
@@ -284,7 +289,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(AnchorPoint ap) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(AnchorPoint)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(AnchorPoint)"));
     }
 
     /*
@@ -295,7 +300,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Displacement dis) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Displacement)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Displacement)"));
     }
 
     /*
@@ -306,7 +311,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(LinePlacement lp) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LinePlacement)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LinePlacement)"));
     }
 
     /*
@@ -317,7 +322,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(Halo halo) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Halo)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Halo)"));
     }
 
     /*
@@ -328,7 +333,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(ColorMap colorMap) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapTransform)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapTransform)"));
     }
 
     /*
@@ -339,7 +345,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(ColorMapEntry colorMapEntry) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapEntry)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapEntry)"));
     }
 
     /*
@@ -349,7 +355,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(ContrastEnhancement ce) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ContrastEnhancement)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ContrastEnhancement)"));
     }
 
     /*
@@ -360,7 +367,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(ChannelSelection cs) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ChannelSelection)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ChannelSelection)"));
     }
 
     /*
@@ -371,7 +379,8 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(SelectedChannelType sct) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(SelectedChannelType)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(SelectedChannelType)"));
     }
 
     /*
@@ -382,7 +391,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(OverlapBehavior ob) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(OverlapBehavior)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(OverlapBehavior)"));
     }
 
     /*
@@ -392,7 +401,7 @@ public class StyleVisitorAdapter implements StyleVisitor {
     @Override
     public void visit(ShadedRelief sr) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ShadedRelief)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ShadedRelief)"));
     }
 
     /*
@@ -403,6 +412,6 @@ public class StyleVisitorAdapter implements StyleVisitor {
     public void visit(ImageOutline io) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ImageOutline)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ImageOutline)"));
     }
 }

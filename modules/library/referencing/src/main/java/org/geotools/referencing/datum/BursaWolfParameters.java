@@ -26,7 +26,6 @@ import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.Matrix4;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.wkt.Formattable;
@@ -155,7 +154,7 @@ public class BursaWolfParameters extends Formattable implements Cloneable, Seria
         for (int i = 0; i < 4; i++) {
             double difference = matrix.getElement(3, i) - (i == 3 ? 1 : 0);
             if (Math.abs(difference) > eps) {
-                throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_AFFINE_TRANSFORM));
+                throw new IllegalArgumentException(ErrorKeys.NON_AFFINE_TRANSFORM);
             }
         }
         dx = matrix.getElement(0, 3);

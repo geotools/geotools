@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.awt.geom.Point2D;
 import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +34,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -190,8 +190,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
 
     /** Returns a localized error message for {@link IndexOutOfBoundsException}. */
     private String indexOutOfBounds(final int index) {
-        return Errors.getResources(getLocale())
-                .getString(ErrorKeys.ILLEGAL_ARGUMENT_$2, "index", index);
+        return MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "index", index);
     }
 
     /**
@@ -220,10 +219,9 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      */
     protected String formatEvaluateError(final DirectPosition point, final boolean outside) {
         final Locale locale = getLocale();
-        return Errors.getResources(locale)
-                .getString(
-                        outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1,
-                        toString(point, locale));
+        return MessageFormat.format(
+                outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1,
+                toString(point, locale));
     }
 
     /**

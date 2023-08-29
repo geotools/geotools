@@ -19,6 +19,7 @@ package org.geotools.referencing.util;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,6 @@ import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -192,8 +192,9 @@ public final class CRSUtilities {
             CoordinateReferenceSystem crs, int lower, int upper) {
         int dimension = crs.getCoordinateSystem().getDimension();
         if (lower < 0 || lower > upper || upper > dimension) {
+            final Object arg0 = lower < 0 ? lower : upper;
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, lower < 0 ? lower : upper));
+                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, arg0));
         }
         while (lower != 0 || upper != dimension) {
             final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -232,9 +233,9 @@ public final class CRSUtilities {
             while (crs.getCoordinateSystem().getDimension() != 2) {
                 final List<CoordinateReferenceSystem> c = getComponents(crs);
                 if (c == null) {
+                    final Object arg0 = crs.getName();
                     throw new TransformException(
-                            Errors.format(
-                                    ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, crs.getName()));
+                            MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, arg0));
                 }
                 crs = c.get(0);
             }
@@ -445,9 +446,10 @@ public final class CRSUtilities {
         final StringBuffer buffer = new StringBuffer();
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
         if (crs2D == null) {
+            final Object arg0 = crs.getName();
             exception =
                     new UnsupportedOperationException(
-                            Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, crs.getName()));
+                            MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
         } else
             try {
                 if (!CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs2D)) {

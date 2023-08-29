@@ -26,6 +26,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,6 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
@@ -161,7 +161,7 @@ public final class CoverageUtilities {
             returnedCRS = CRS.getHorizontalCRS(coverage.getCoordinateReferenceSystem());
         if (returnedCRS == null)
             throw new TransformException(
-                    Errors.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, returnedCRS));
+                    MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, returnedCRS));
         return returnedCRS;
     }
 
@@ -282,7 +282,8 @@ public final class CoverageUtilities {
         // minimal checks
         if (coverage == null) {
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_PARAMETER_$2, "coverage", "GridCoverage2D"));
+                    MessageFormat.format(
+                            ErrorKeys.NULL_PARAMETER_$2, "coverage", "GridCoverage2D"));
         }
 
         // try to get the GC_NODATA double value from the coverage property
@@ -509,7 +510,7 @@ public final class CoverageUtilities {
                 return Float.valueOf(Float.NaN);
             default:
                 throw new IllegalAccessError(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dataType", dataType));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dataType", dataType));
         }
     }
 

@@ -16,10 +16,10 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.text.MessageFormat;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Thrown by {@link MapProjection} when a map projection failed.
@@ -39,20 +39,11 @@ public class ProjectionException extends TransformException {
     /**
      * Constructs a new exception with the specified detail message.
      *
-     * @param code One of the constants suitable for {@link Errors#format(int)}.
-     */
-    ProjectionException(final int code) {
-        this(Errors.format(code));
-    }
-
-    /**
-     * Constructs a new exception with the specified detail message.
-     *
-     * @param code One of the constants suitable for {@link Errors#format(int)}.
+     * @param pattern Error message format.
      * @param value An argument value to be formatted.
      */
-    ProjectionException(final int code, final Object value) {
-        this(Errors.format(code, value));
+    ProjectionException(final String pattern, final Object value) {
+        super(MessageFormat.format(pattern, value));
     }
 
     /**
@@ -60,7 +51,9 @@ public class ProjectionException extends TransformException {
      * pole.
      */
     ProjectionException(final double latitude) {
-        this(Errors.format(ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
+        super(
+                MessageFormat.format(
+                        ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
     }
 
     /** Constructs a new exception with the specified detail message. */

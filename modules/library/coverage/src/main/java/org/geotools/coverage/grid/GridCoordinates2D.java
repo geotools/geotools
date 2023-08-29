@@ -17,9 +17,9 @@
 package org.geotools.coverage.grid;
 
 import java.awt.Point;
+import java.text.MessageFormat;
 import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Holds the set of two-dimensional grid coordinates that specifies the location of the {@linkplain
@@ -119,7 +119,7 @@ public class GridCoordinates2D extends Point implements GridCoordinates {
 
     /** Formats a message for an index out of 2D bounds. */
     static String indexOutOfBounds(final int dimension) {
-        return Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension);
+        return MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, dimension);
     }
 
     /** Returns a string representation of this grid coordinates. */
@@ -152,7 +152,8 @@ public class GridCoordinates2D extends Point implements GridCoordinates {
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

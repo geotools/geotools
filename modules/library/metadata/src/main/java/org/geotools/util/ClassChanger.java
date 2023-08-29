@@ -16,9 +16,9 @@
  */
 package org.geotools.util;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A central place to register transformations between an arbitrary class and a {@link Number}. For
@@ -371,6 +371,6 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
 
     /** Returns an exception for an unnkown type. */
     private static IllegalArgumentException unknownType(final Class<?> type) {
-        return new IllegalArgumentException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+        return new IllegalArgumentException(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
     }
 }

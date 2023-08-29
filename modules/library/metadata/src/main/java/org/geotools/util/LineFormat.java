@@ -17,15 +17,10 @@
 package org.geotools.util;
 
 import java.lang.reflect.Array;
-import java.text.FieldPosition;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
+import java.text.*;
 import java.util.Arrays;
 import java.util.Locale;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Parses a line of text data. This class is mostly used for parsing lines in a matrix or a table.
@@ -140,7 +135,8 @@ public class LineFormat extends Format {
         this.format = new Format[] {format};
         if (format == null) {
             final Integer one = 1;
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_FORMAT_$2, one, one));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_FORMAT_$2, one, one));
         }
     }
 
@@ -162,7 +158,7 @@ public class LineFormat extends Format {
         for (int i = 0; i < format.length; i++) {
             if (format[i] == null) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.NULL_FORMAT_$2, i + 1, format.length));
+                        MessageFormat.format(ErrorKeys.NULL_FORMAT_$2, i + 1, format.length));
             }
         }
     }
@@ -232,7 +228,7 @@ public class LineFormat extends Format {
                 int end = error;
                 while (end < upper && !Character.isWhitespace(line.charAt(end))) end++;
                 throw new ParseException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.PARSE_EXCEPTION_$2,
                                 line.substring(lower, end).trim(),
                                 line.substring(error, Math.min(error + 1, end))),
@@ -291,7 +287,8 @@ public class LineFormat extends Format {
             throw new ArrayIndexOutOfBoundsException(index);
         }
         if (value == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
         }
         if (index == count) {
             if (index == data.length) {
@@ -343,7 +340,8 @@ public class LineFormat extends Format {
         }
         ParseException exception =
                 new ParseException(
-                        Errors.format(ErrorKeys.UNPARSABLE_NUMBER_$1, data[index]), limits[index]);
+                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, data[index]),
+                        limits[index]);
         if (error != null) {
             exception.initCause(error);
         }
@@ -517,14 +515,10 @@ public class LineFormat extends Format {
         if (count != expected) {
             final int lower = limits[Math.min(count, expected)];
             final int upper = limits[Math.min(count, expected + 1)];
+            final String key =
+                    count < expected ? ErrorKeys.LINE_TOO_SHORT_$2 : ErrorKeys.LINE_TOO_LONG_$3;
             throw new ParseException(
-                    Errors.format(
-                            count < expected
-                                    ? ErrorKeys.LINE_TOO_SHORT_$2
-                                    : ErrorKeys.LINE_TOO_LONG_$3,
-                            count,
-                            expected,
-                            line.substring(lower, upper).trim()),
+                    MessageFormat.format(key, count, expected, line.substring(lower, upper).trim()),
                     lower);
         }
     }
@@ -537,7 +531,7 @@ public class LineFormat extends Format {
      */
     private ParseException notAnInteger(final int i) {
         return new ParseException(
-                Errors.format(
+                MessageFormat.format(
                         ErrorKeys.NOT_AN_INTEGER_$1, line.substring(limits[i], limits[i + 1])),
                 limits[i]);
     }

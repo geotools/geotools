@@ -42,7 +42,6 @@ import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -84,7 +83,7 @@ class EnvelopeReprojector {
             final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
             if (crs != null && !CRS.equalsIgnoreMetadata(crs, sourceCRS)) {
                 throw new MismatchedReferenceSystemException(
-                        Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                        ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
             }
         }
         MathTransform mt = operation.getMathTransform();

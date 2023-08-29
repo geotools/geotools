@@ -19,6 +19,7 @@ package org.geotools.referencing.factory;
 import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.EASTING;
 import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import javax.measure.Unit;
@@ -26,7 +27,6 @@ import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
@@ -249,7 +249,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
             if (previous != length) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.COLINEAR_AXIS_$2,
                                 axisOrder[previous].name(),
                                 axisOrder[i].name()));

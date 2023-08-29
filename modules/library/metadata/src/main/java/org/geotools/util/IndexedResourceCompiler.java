@@ -68,8 +68,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
             new Class[] {
                 org.geotools.metadata.i18n.Descriptions.class,
                 org.geotools.metadata.i18n.Vocabulary.class,
-                org.geotools.metadata.i18n.Loggings.class,
-                org.geotools.metadata.i18n.Errors.class
+                org.geotools.metadata.i18n.Loggings.class
             };
 
     /**

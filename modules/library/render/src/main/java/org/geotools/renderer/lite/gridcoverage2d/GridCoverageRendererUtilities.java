@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -68,7 +69,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.match.HausdorffSimilarityMeasure;
 import org.locationtech.jts.geom.Envelope;
@@ -97,7 +97,8 @@ public final class GridCoverageRendererUtilities {
      */
     static void ensureNotNull(final Object source, final String name) {
         if (source == null)
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
     }
 
     /**
@@ -110,7 +111,7 @@ public final class GridCoverageRendererUtilities {
     static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
+                    MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
     }
 
     /** Reprojecting the input coverage using the provided parameters. */

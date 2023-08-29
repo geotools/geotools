@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.AffineTransformBuilder;
 import org.geotools.referencing.operation.builder.MappedPosition;
@@ -379,11 +379,11 @@ public class MapInfoFileReader {
     public MapInfoFileReader(final File tabfile) throws IOException {
         if (tabfile == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "tabfile"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "tabfile"));
         }
         if (!tabfile.isFile() || !tabfile.canRead()) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, tabfile));
+                    MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, tabfile));
         }
         parseTabFile(new BufferedReader(new FileReader(tabfile)));
     }
@@ -396,7 +396,8 @@ public class MapInfoFileReader {
      */
     public MapInfoFileReader(final URL tabfile) throws IOException {
         if (tabfile == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "inFile"));
         }
         parseTabFile(new BufferedReader(new InputStreamReader(tabfile.openStream())));
     }

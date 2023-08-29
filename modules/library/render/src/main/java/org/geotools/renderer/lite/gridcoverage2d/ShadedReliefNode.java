@@ -24,6 +24,7 @@ import it.geosolutions.jaiext.shadedrelief.ShadedReliefRIF;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderedImageFactory;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import javax.measure.Unit;
@@ -44,7 +45,6 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
@@ -121,7 +121,8 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                         || Double.isNaN(reliefFactor)
                         || Double.isInfinite(reliefFactor)) {
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "reliefFactor", number));
+                            MessageFormat.format(
+                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "reliefFactor", number));
                 }
             }
         }
@@ -274,8 +275,9 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
             }
             return output;
         }
+        final Object arg0 = this.getName().toString();
         throw new IllegalStateException(
-                Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, this.getName().toString()));
+                MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, arg0));
     }
 
     private RenderedImage performShadedRelief(

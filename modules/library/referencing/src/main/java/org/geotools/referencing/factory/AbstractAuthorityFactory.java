@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Set;
 import javax.measure.Unit;
@@ -65,7 +66,6 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.util.GenericName;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.NameFactory;
 
@@ -904,7 +904,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
             final Class type, final String code) {
         final InternationalString authority = getAuthority().getTitle();
         return new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type),
+                MessageFormat.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, type),
                 authority.toString(),
                 code);
     }

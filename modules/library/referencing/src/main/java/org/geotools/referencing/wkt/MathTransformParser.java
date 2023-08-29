@@ -17,6 +17,7 @@
 package org.geotools.referencing.wkt;
 
 import java.net.URI;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import org.geotools.api.parameter.ParameterValue;
@@ -29,7 +30,6 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 
@@ -134,7 +134,7 @@ public class MathTransformParser extends AbstractParser {
             if ("PASSTHROUGH_MT".equals(keyword)) return parsePassThroughMT(element);
         }
         if (required) {
-            throw element.parseFailed(null, Errors.format(ErrorKeys.UNKNOW_TYPE_$1, key));
+            throw element.parseFailed(null, MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, key));
         }
         return null;
     }

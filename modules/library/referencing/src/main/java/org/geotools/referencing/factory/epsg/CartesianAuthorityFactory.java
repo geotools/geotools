@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -30,7 +31,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.EngineeringCRS;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -137,7 +137,7 @@ public class CartesianAuthorityFactory extends DirectAuthorityFactory
             throws NoSuchAuthorityCodeException {
         String authority = "EPSG";
         return new NoSuchAuthorityCodeException(
-                Errors.format(
+                MessageFormat.format(
                         ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, EngineeringCRS.class),
                 authority,
                 code);

@@ -17,6 +17,7 @@
 package org.geotools.parameter;
 
 import java.lang.reflect.Array;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -36,7 +37,6 @@ import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.Classes;
 import org.geotools.util.logging.Logging;
@@ -113,11 +113,9 @@ public final class Parameters {
             // We require a strict equality - not type.isAssignableFrom(actual) - because in
             // the later case we could have (to be strict) to return a <? extends T> type.
             if (!type.equals(actual)) {
+                final Object arg0 = descriptor.getName().getCode();
                 throw new ClassCastException(
-                        Errors.format(
-                                ErrorKeys.BAD_PARAMETER_TYPE_$2,
-                                descriptor.getName().getCode(),
-                                actual));
+                        MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
             }
         }
         return (ParameterDescriptor) descriptor;
@@ -142,11 +140,9 @@ public final class Parameters {
             final ParameterDescriptor descriptor = value.getDescriptor();
             final Class<?> actual = descriptor.getValueClass();
             if (!type.equals(actual)) { // Same comment than cast(ParameterDescriptor)...
+                final Object arg0 = descriptor.getName().getCode();
                 throw new ClassCastException(
-                        Errors.format(
-                                ErrorKeys.BAD_PARAMETER_TYPE_$2,
-                                descriptor.getName().getCode(),
-                                actual));
+                        MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
             }
         }
         return (ParameterValue) value;

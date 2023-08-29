@@ -23,11 +23,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
@@ -60,14 +60,14 @@ public class WorldFileWriter {
     private static AffineTransform checkTransform(AffineTransform transform) {
         if (transform == null)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
         return transform;
     }
 
     private static MathTransform checkMathTransform(MathTransform transform) {
         if (transform == null)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transform"));
         return transform;
     }
 
@@ -159,17 +159,15 @@ public class WorldFileWriter {
             throws IOException {
         if (outLocation == null)
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
-        if (transform.getSourceDimensions() != 2 || transform.getTargetDimensions() != 2)
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
+        if (transform.getSourceDimensions() != 2 || transform.getTargetDimensions() != 2) {
+            final Object arg1 = transform.getSourceDimensions();
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3,
-                            "transform",
-                            transform.getSourceDimensions(),
-                            2));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "transform", arg1, 2));
+        }
         if (buffSize <= 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "buffSize", buffSize));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "buffSize", buffSize));
         write(new BufferedWriter(new OutputStreamWriter(outLocation), buffSize), transform);
     }
 
@@ -245,24 +243,22 @@ public class WorldFileWriter {
             throws IOException {
         if (outLocation == null)
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "outLocation"));
         checkMathTransform(transform);
-        if (transform.getSourceDimensions() != 2 || transform.getTargetDimensions() != 2)
+        if (transform.getSourceDimensions() != 2 || transform.getTargetDimensions() != 2) {
+            final Object arg1 = transform.getSourceDimensions();
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$3,
-                            "transform",
-                            transform.getSourceDimensions(),
-                            2));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "transform", arg1, 2));
+        }
         if (!outLocation.exists())
             if (!outLocation.createNewFile())
                 throw new IOException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$1,
                                 "Unable to create file " + outLocation));
         if (!outLocation.canWrite() || !outLocation.isFile())
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, outLocation));
+                    MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, outLocation));
         // create a writer
         write(new BufferedWriter(new FileWriter(outLocation), buffSize), transform);
     }

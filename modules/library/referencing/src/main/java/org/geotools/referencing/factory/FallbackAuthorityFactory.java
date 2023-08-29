@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -63,7 +64,6 @@ import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactor
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.factory.FactoryNotFoundException;
@@ -137,7 +137,8 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         ensureNonNull("type", type);
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
-            throw new FactoryNotFoundException(Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
+            throw new FactoryNotFoundException(
+                    MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, type));
         }
         return type.cast(create(false, interfaceMask(type), factories.iterator()));
     }
@@ -160,7 +161,7 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         ensureNonNull("factories", factories);
         if (factories.isEmpty()) {
             throw new FactoryNotFoundException(
-                    Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, AuthorityFactory.class));
+                    MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, AuthorityFactory.class));
         }
         return create(false, interfaceMask(factories), factories.iterator());
     }

@@ -29,6 +29,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,7 +49,6 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.styling.AbstractContrastMethodStrategy;
@@ -140,7 +140,8 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 this.type = type.toUpperCase();
                 if (!SUPPORTED_HE_ALGORITHMS.contains(type.toUpperCase()))
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, type.toUpperCase()));
+                            MessageFormat.format(
+                                    ErrorKeys.OPERATION_NOT_FOUND_$1, type.toUpperCase()));
                 this.contrastEnhancementMethod =
                         parseContrastEnhancementMethod(contrastMethod, ce.getOptions());
             }
@@ -159,10 +160,10 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 // check the gamma value
                 if (gammaValue < 0)
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
                 if (Double.isNaN(gammaValue) || Double.isInfinite(gammaValue))
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
             }
         }
     }
@@ -185,7 +186,7 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
             ceMethod = new HistogramContrastMethodStrategy();
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
+                    MessageFormat.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
         }
         ceMethod.setOptions(options);
         return ceMethod;
@@ -493,8 +494,9 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 output = source;
             return output;
         }
+        final Object arg0 = this.getName().toString();
         throw new IllegalStateException(
-                Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, this.getName().toString()));
+                MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, arg0));
     }
 
     /**

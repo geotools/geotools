@@ -20,6 +20,7 @@ import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,7 +54,6 @@ import org.geotools.coverage.grid.Interpolator2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -444,8 +444,8 @@ public class CoverageProcessor {
         if (old != null && !old.equals(operation)) {
             operations.put(old.getName().trim(), old);
             throw new IllegalStateException(
-                    Errors.getResources(getLocale())
-                            .getString(ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
+                    MessageFormat.format(
+                            ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
         }
     }
 
@@ -481,8 +481,7 @@ public class CoverageProcessor {
                 return operation;
             }
             throw new OperationNotFoundException(
-                    Errors.getResources(getLocale())
-                            .getString(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+                    MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
         }
     }
 
@@ -550,8 +549,7 @@ public class CoverageProcessor {
         } catch (ClassCastException cause) {
             final OperationNotFoundException exception =
                     new OperationNotFoundException(
-                            Errors.getResources(getLocale())
-                                    .getString(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
+                            MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
             exception.initCause(cause);
             throw exception;
         }

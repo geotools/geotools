@@ -35,6 +35,7 @@ import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -52,7 +53,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.math.XMath;
 import org.geotools.referencing.NamedIdentifier;
@@ -387,7 +387,7 @@ public abstract class MapProjection extends AbstractMathTransform
      */
     final void ensureSpherical() throws IllegalArgumentException {
         if (!isSpherical) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED));
+            throw new IllegalArgumentException(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED);
         }
     }
 
@@ -405,8 +405,9 @@ public abstract class MapProjection extends AbstractMathTransform
         if (!(abs(abs(y) - expected) < EPSILON)) {
             y = toDegrees(y);
             final String n = name.getName().getCode();
+            final Object arg1 = new Latitude(y);
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, n, new Latitude(y)), n, y);
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, n, arg1), n, y);
         }
     }
 
@@ -426,8 +427,9 @@ public abstract class MapProjection extends AbstractMathTransform
             return;
         }
         y = toDegrees(y);
+        final Object arg0 = new Latitude(y);
         throw new InvalidParameterValueException(
-                Errors.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, new Latitude(y)),
+                MessageFormat.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, arg0),
                 name.getName().getCode(),
                 y);
     }
@@ -448,8 +450,9 @@ public abstract class MapProjection extends AbstractMathTransform
             return;
         }
         x = toDegrees(x);
+        final Object arg0 = new Longitude(x);
         throw new InvalidParameterValueException(
-                Errors.format(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1, new Longitude(x)),
+                MessageFormat.format(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1, arg0),
                 name.getName().getCode(),
                 x);
     }
@@ -479,14 +482,17 @@ public abstract class MapProjection extends AbstractMathTransform
         }
         final String lineSeparator = System.getProperty("line.separator", "\n");
         final StringBuilder buffer = new StringBuilder();
-        buffer.append(Errors.format(ErrorKeys.OUT_OF_PROJECTION_VALID_AREA_$1, tr.getName()));
+        final Object arg01 = tr.getName();
+        buffer.append(MessageFormat.format(ErrorKeys.OUT_OF_PROJECTION_VALID_AREA_$1, arg01));
         if (xOut) {
             buffer.append(lineSeparator);
-            buffer.append(Errors.format(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1, new Longitude(x)));
+            final Object arg0 = new Longitude(x);
+            buffer.append(MessageFormat.format(ErrorKeys.LONGITUDE_OUT_OF_RANGE_$1, arg0));
         }
         if (yOut) {
             buffer.append(lineSeparator);
-            buffer.append(Errors.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, new Latitude(y)));
+            final Object arg0 = new Latitude(y);
+            buffer.append(MessageFormat.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, arg0));
         }
         final LogRecord record = new LogRecord(Level.WARNING, buffer.toString());
         final String classe;
@@ -686,13 +692,16 @@ public abstract class MapProjection extends AbstractMathTransform
                      * "try ... catch" statements. Failure are normal in their case and we want to let
                      * them handle the exception the way they are used to.
                      */
+                    final Object arg1 = new Longitude(longitude - toDegrees(centralMeridian));
+                    final Object arg2 = new Latitude(latitude - toDegrees(latitudeOfOrigin));
+                    final Object arg3 = getName();
                     throw new ProjectionException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.PROJECTION_CHECK_FAILED_$4,
                                     distance,
-                                    new Longitude(longitude - toDegrees(centralMeridian)),
-                                    new Latitude(latitude - toDegrees(latitudeOfOrigin)),
-                                    getName()));
+                                    arg1,
+                                    arg2,
+                                    arg3));
                 }
             } catch (ProjectionException exception) {
                 throw exception;
@@ -771,7 +780,7 @@ public abstract class MapProjection extends AbstractMathTransform
                 expected = toDegrees(expected);
             }
             throw new AssertionError(
-                    Errors.format(ErrorKeys.TEST_FAILURE_$3, variable, expected, actual));
+                    MessageFormat.format(ErrorKeys.TEST_FAILURE_$3, variable, expected, actual));
         }
     }
 
@@ -1166,8 +1175,7 @@ public abstract class MapProjection extends AbstractMathTransform
     @Override
     public final MathTransform2D inverse() throws NoninvertibleTransformException {
         if (!invertible) {
-            throw new NoninvertibleTransformException(
-                    Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+            throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
         }
 
         // No synchronization. Not a big deal if this method is invoked in
@@ -1359,7 +1367,7 @@ public abstract class MapProjection extends AbstractMathTransform
         double phi = arg;
         for (i = MAXIMUM_ITERATIONS; true; ) { // rarely goes over 5 iterations
             if (--i < 0) {
-                throw new ProjectionException(Errors.format(ErrorKeys.NO_CONVERGENCE));
+                throw new ProjectionException(ErrorKeys.NO_CONVERGENCE);
             }
             s = Math.sin(phi);
             t = 1.0 - excentricitySquared * s * s;

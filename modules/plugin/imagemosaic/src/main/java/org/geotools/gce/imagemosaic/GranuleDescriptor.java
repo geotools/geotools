@@ -41,6 +41,7 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +90,6 @@ import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -968,7 +968,7 @@ public class GranuleDescriptor {
         }
         if (rasterGranule == null && exceptionOnNullGranule) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2, "granuleLocation", granuleLocation));
         }
         return rasterGranule;

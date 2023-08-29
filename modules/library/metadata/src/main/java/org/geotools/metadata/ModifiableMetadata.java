@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.util.CheckedHashSet;
 import org.geotools.util.UnmodifiableArrayList;
@@ -279,7 +278,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      */
     protected void checkWritePermission() throws UnmodifiableMetadataException {
         if (!isModifiable()) {
-            throw new UnmodifiableMetadataException(Errors.format(ErrorKeys.UNMODIFIABLE_METADATA));
+            throw new UnmodifiableMetadataException(ErrorKeys.UNMODIFIABLE_METADATA);
         }
         unmodifiable = null;
     }

@@ -25,6 +25,7 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.geographiclib.Geodesic;
@@ -49,7 +50,6 @@ import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -191,7 +191,7 @@ public class GeodeticCalculator {
     private GeodeticCalculator(final Ellipsoid ellipsoid, final CoordinateReferenceSystem crs) {
         if (ellipsoid == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
         }
         this.ellipsoid = ellipsoid;
         semiMajorAxis = ellipsoid.getSemiMajorAxis();
@@ -245,8 +245,7 @@ public class GeodeticCalculator {
                 }
             }
         }
-        throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM));
+        throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM);
     }
 
     /**
@@ -267,8 +266,9 @@ public class GeodeticCalculator {
      */
     private static void checkLatitude(final double latitude) throws IllegalArgumentException {
         if (!(latitude >= Latitude.MIN_VALUE && latitude <= Latitude.MAX_VALUE)) {
+            final Object arg0 = new Latitude(latitude);
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, new Latitude(latitude)));
+                    MessageFormat.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, arg0));
         }
     }
 
@@ -280,9 +280,9 @@ public class GeodeticCalculator {
      */
     private static void checkLongitude(final double longitude) throws IllegalArgumentException {
         if (!(Math.abs(longitude) <= Double.MAX_VALUE)) {
+            final Object arg1 = new Longitude(longitude);
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", new Longitude(longitude)));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", arg1));
         }
     }
 
@@ -294,9 +294,9 @@ public class GeodeticCalculator {
      */
     private static void checkAzimuth(final double azimuth) throws IllegalArgumentException {
         if (!(Math.abs(azimuth) <= Double.MAX_VALUE)) {
+            final Object arg1 = new Longitude(azimuth);
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", new Longitude(azimuth)));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", arg1));
         }
     }
 
@@ -311,7 +311,7 @@ public class GeodeticCalculator {
             throws IllegalArgumentException {
         if (!(Math.abs(distance) <= Double.MAX_VALUE)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "distance", distance));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "distance", distance));
         }
     }
 
@@ -642,7 +642,7 @@ public class GeodeticCalculator {
      */
     private void computeDestinationPoint() throws IllegalStateException {
         if (!directionValid) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.DIRECTION_NOT_SET));
+            throw new IllegalStateException(ErrorKeys.DIRECTION_NOT_SET);
         }
         GeodesicData g = geod.Direct(lat1, long1, azimuth, distance);
         lat2 = g.lat2;
@@ -676,7 +676,7 @@ public class GeodeticCalculator {
      */
     private void computeDirection() throws IllegalStateException {
         if (!destinationValid) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.DESTINATION_NOT_SET));
+            throw new IllegalStateException(ErrorKeys.DESTINATION_NOT_SET);
         }
         GeodesicData g = geod.Inverse(lat1, long1, lat2, long2);
         azimuth = g.azi1;
@@ -743,7 +743,7 @@ public class GeodeticCalculator {
     public List<Point2D> getGeodeticPath(int numPoints) {
         if (numPoints < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numPoints", numPoints));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numPoints", numPoints));
         }
 
         List<Point2D> points = new ArrayList<>(numPoints + 2);

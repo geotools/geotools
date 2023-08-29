@@ -211,8 +211,15 @@
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.geotools\.api\.style\.DefaultResourceLocator" />
       <substitution expression=".geotools.styling.DefaultResourceLocator" />
-      <fileset dir="${project.dir}" includes="**/*.java"/>
-      <contains text="DefaultResourceLocator" casesensitive="yes" />
+      <fileset dir="${project.dir}" includes="**/*.java">
+        <contains text="DefaultResourceLocator" casesensitive="yes" />
+      </fileset>
+    </replaceregexp> 
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="= (.*).getInlineFeatureDatastore\(\)" />
+      <substitution expression="= (DataStore)\1.getInlineFeatureDatastore()" />
+      <fileset dir="${project.dir}" includes="**/*.java">
+        <contains text="getInlineFeatureDatastore" casesensitive="yes" />
       </fileset>
     </replaceregexp> 
   </target>

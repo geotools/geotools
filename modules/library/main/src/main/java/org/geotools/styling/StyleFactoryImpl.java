@@ -264,7 +264,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
     public Rule createRule(
             Symbolizer[] symbolizers,
             Description desc,
-            org.geotools.api.style.GraphicLegend legend,
+            Graphic legend,
             String name,
             Filter filter,
             boolean isElseFilter,

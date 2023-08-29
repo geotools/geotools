@@ -66,7 +66,7 @@ public class RuleImpl implements Rule, Cloneable {
     protected RuleImpl(
             Symbolizer[] symbolizers,
             Description desc,
-            GraphicLegend legend,
+            Graphic legend,
             String name,
             Filter filter,
             boolean isElseFilter,
@@ -75,7 +75,7 @@ public class RuleImpl implements Rule, Cloneable {
         this.symbolizers = new ArrayList<>(Arrays.asList(symbolizers));
         description.setAbstract(desc.getAbstract());
         description.setTitle(desc.getTitle());
-        this.legend = legend;
+        this.legend = (GraphicLegend) legend;
         this.name = name;
         this.filter = filter;
         hasElseFilter = isElseFilter;

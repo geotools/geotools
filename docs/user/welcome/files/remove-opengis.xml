@@ -12,19 +12,24 @@
       <fileset id="@{class1}.files" dir="${project.dir}" includes="**/*.java">
         <contains text="@{class1}" casesensitive="yes" />
       </fileset>
-      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
       <!--<replaceregexp byline="true">
         <fileset refid="@{class1}.files" />
         <regexp pattern="(\W.*)@{class1}(\W)" />
         <substitution expression="\1@{class2}\2" />
       </replaceregexp>-->
       <echo message="Refactor @{class1} -&gt; @{class2}" />
-      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <!--      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
         <replacefilter>
-          <replacetoken>@{class1}</replacetoken>
-          <replacevalue>@{class2}</replacevalue>
+          <replacetoken>(\W)@{class1}(\W)</replacetoken>
+          <replacevalue>\1@{class2}\2</replacevalue>
         </replacefilter>
-      </replace>
+      </replace> -->
+      <replaceregexp byline="true" flags="g">
+        <fileset refid="@{class1}.files" />
+        <regexp pattern="(\W)@{class1}(\W)" />
+        <substitution expression="\1@{class2}\2" />
+      </replaceregexp>
+      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
       <replace dir="${project.dir}" includes="**/*.java" summary="yes">
         <replacefilter>
           <replacetoken>(\s)@{package1}\.@{class1}(\W)</replacetoken>
@@ -250,9 +255,11 @@
 
    <!-- Temporary hack while we wait for the data access API to move to gt-api -->
     <replaceregexp flags="g">
-      <fileset refid="org.geotools.styling.files"/>
       <regexp pattern="(\w+)\.getInlineFeatureDatastore\(\)" />
       <substitution expression="(DataStore) \1.getInlineFeatureDatastore()" />
+      <fileset dir="${project.dir}" includes="**/*.java">
+        <contains text="getInlineFeatureDatastore" casesensitive="yes" />
+    </fileset>
     </replaceregexp>
  </target>
   <!-- the following tasks run after _opengis above to reflect api refactoring -->

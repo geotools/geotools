@@ -19,6 +19,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.brewer.color.ColorBrewer;
 import org.geotools.brewer.color.StyleGenerator;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -26,7 +27,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.filter.function.RangedClassifier;
-import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.util.SuppressFBWarnings;
 
 @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")

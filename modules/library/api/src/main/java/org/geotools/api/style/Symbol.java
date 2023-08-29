@@ -30,5 +30,6 @@ package org.geotools.api.style;
 public interface Symbol extends org.geotools.api.style.GraphicalSymbol {
     public static final Symbol[] SYMBOLS_EMPTY = new Symbol[0];
 
+    @Override
     void accept(StyleVisitor visitor);
 }

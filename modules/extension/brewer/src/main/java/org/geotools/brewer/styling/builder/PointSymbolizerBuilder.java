@@ -84,6 +84,7 @@ public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
         return this;
     }
 
+    @Override
     public Builder<PointSymbolizer> reset(org.geotools.api.style.PointSymbolizer original) {
         if (original == null) {
             return unset();

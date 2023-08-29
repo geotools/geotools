@@ -16,7 +16,7 @@
  */
 package org.geotools.mbstyle.parse;
 
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;

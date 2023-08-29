@@ -4,7 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
-import org.geotools.api.style.*;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.TextSymbolizer;
 import org.junit.Test;
 import si.uom.SI;
 

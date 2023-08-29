@@ -18,7 +18,13 @@ package org.geotools.styling;
 
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.ExternalMark;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;

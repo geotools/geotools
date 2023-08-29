@@ -91,6 +91,7 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
         return mark;
     }
 
+    @Override
     public MarkBuilder reset(org.geotools.api.style.Mark mark) {
         if (mark == null) {
             return unset();

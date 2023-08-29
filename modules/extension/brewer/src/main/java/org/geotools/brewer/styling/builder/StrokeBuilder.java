@@ -16,7 +16,7 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.Stroke;
@@ -76,6 +76,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     }
 
     /** Reset builder to provided original stroke. */
+    @Override
     public StrokeBuilder reset(Stroke stroke) {
         if (stroke == null) {
             return unset();

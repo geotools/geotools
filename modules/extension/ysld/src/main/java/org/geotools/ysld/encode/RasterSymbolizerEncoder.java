@@ -19,7 +19,13 @@ package org.geotools.ysld.encode;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import org.geotools.api.style.*;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.SelectedChannelType;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
 

@@ -97,6 +97,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         return this;
     }
 
+    @Override
     public LineSymbolizerBuilder reset(org.geotools.api.style.LineSymbolizer original) {
 
         if (original == null) {

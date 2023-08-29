@@ -18,7 +18,11 @@
 package org.geotools.ysld.parse;
 
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.style.*;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
 import org.geotools.api.style.LinePlacement;
 import org.geotools.api.style.PointPlacement;
 import org.geotools.api.style.Rule;

@@ -20,7 +20,11 @@ package org.geotools.styling;
 
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
@@ -55,9 +59,7 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
                  * @param visitor the style visitor
                  */
                 @Override
-                public void accept(StyleVisitor visitor) {
-                    return;
-                }
+                public void accept(StyleVisitor visitor) {}
 
                 @Override
                 public Object accept(TraversingStyleVisitor visitor, Object data) {

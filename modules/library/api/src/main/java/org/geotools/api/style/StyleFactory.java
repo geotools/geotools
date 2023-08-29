@@ -9,7 +9,7 @@
  */
 package org.geotools.api.style;
 
-import java.awt.*;
+import java.awt.RenderingHints;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;

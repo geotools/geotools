@@ -119,6 +119,7 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         return this;
     }
 
+    @Override
     public GraphicLegendBuilder reset(org.geotools.api.style.GraphicLegend graphic) {
         if (graphic == null) {
             return unset();

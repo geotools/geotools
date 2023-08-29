@@ -18,7 +18,7 @@
 
 package org.geotools.maven.xmlcodegen.templates;
 
-import org.eclipse.xsd.*;
+import org.eclipse.xsd.XSDSchema;
 import org.geotools.xsd.Schemas;
 
 public class BindingTestSupportClass

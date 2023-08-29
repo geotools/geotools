@@ -24,7 +24,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.style.*;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.data.DataStore;
 import org.geotools.util.Utilities;
 

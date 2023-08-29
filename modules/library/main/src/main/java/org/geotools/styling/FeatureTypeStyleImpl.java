@@ -27,7 +27,12 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.*;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 

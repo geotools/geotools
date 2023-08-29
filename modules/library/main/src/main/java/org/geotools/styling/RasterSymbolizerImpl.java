@@ -22,8 +22,16 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.OverlapBehaviorEnum;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 

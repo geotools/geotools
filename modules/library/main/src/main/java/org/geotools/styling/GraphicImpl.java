@@ -22,7 +22,17 @@ import java.util.List;
 import java.util.Objects;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.GraphicStroke;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ConstantExpression;
@@ -160,6 +170,7 @@ public class GraphicImpl
         return anchor;
     }
 
+    @Override
     public void setAnchorPoint(AnchorPoint anchor) {
         this.anchor = AnchorPointImpl.cast(anchor);
     }
@@ -439,6 +450,7 @@ public class GraphicImpl
             cannotModifyConstant();
         }
 
+        @Override
         public void setAnchorPoint(AnchorPoint anchor) {
             cannotModifyConstant();
         }

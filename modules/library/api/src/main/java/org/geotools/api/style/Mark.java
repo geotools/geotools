@@ -98,6 +98,7 @@ public interface Mark extends GraphicalSymbol, Symbol {
      *
      * @param visitor the style visitor
      */
+    @Override
     void accept(StyleVisitor visitor);
 
     public Object accept(TraversingStyleVisitor visitor, Object data);

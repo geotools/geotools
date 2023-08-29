@@ -19,7 +19,11 @@ package org.geotools.brewer.styling.builder;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.OverlapBehaviorEnum;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Symbolizer;
 
 public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer> {
     private String name;

@@ -109,6 +109,7 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
         return (AnchorPointBuilder) super.unset();
     }
 
+    @Override
     public AnchorPointBuilder reset(org.geotools.api.style.AnchorPoint anchorPoint) {
         if (anchorPoint == null) {
             return unset();

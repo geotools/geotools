@@ -21,7 +21,11 @@ import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.TextSymbolizer;
 
 public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();

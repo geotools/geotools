@@ -1,3 +1,11 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2023, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    All Rights Reserved. http://www.opengis.org/legal/
+ */
 package org.geotools.api.style;
 
 public interface OverlapBehavior {

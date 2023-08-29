@@ -19,7 +19,11 @@ package org.geotools.styling;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.style.*;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 
 /**

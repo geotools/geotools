@@ -18,7 +18,14 @@
 package org.geotools.ysld.parse;
 
 import java.util.Map;
-import org.geotools.api.style.*;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;

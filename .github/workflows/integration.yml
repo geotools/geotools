@@ -89,9 +89,9 @@ jobs:
         mkdir -p m2/repository/org
         cp -r ~/.m2/repository/org/geotools m2/repository/org/geotools
         make build
-        # make acceptance-tests-up
-        # make acceptance-tests-run
-        # make acceptance-tests-down
+        make acceptance-tests-up
+        make acceptance-tests-run
+        make acceptance-tests-down
     - name: Build Mapfish-print v2 with tests
       run: |
         cd ~

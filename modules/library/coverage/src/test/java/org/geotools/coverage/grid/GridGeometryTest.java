@@ -291,7 +291,8 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
     @Test
     public void testCanonicalFromOrthogonal() throws Exception {
-        ReferencedEnvelope bbox = ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, 150, 40, 10, 10);
+        ReferencedEnvelope bbox =
+                ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, 150, 40, 10, 10);
         GridGeometry2D gg =
                 new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100), (Bounds) bbox);
 
@@ -313,10 +314,10 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
     @Test
     public void testRectangleConstructor() throws Exception {
-        GridGeometry2D gg1 =
-                new GridGeometry2D(
-                        new GridEnvelope2D( new Rectangle(100, 100)),
-                        ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, -180, 180, -90, 90));
+        ReferencedEnvelope userRange =
+                ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, -180, -90, 360, 180);
+        GridEnvelope2D gridRange = new GridEnvelope2D(new Rectangle(100, 100));
+        GridGeometry2D gg1 = new GridGeometry2D(gridRange, userRange);
         Assert.assertTrue(gg1.isDefined(GridGeometry2D.CRS_BITMASK));
         try {
             Assert.assertNotNull(gg1.getCoordinateReferenceSystem());
@@ -326,7 +327,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
         GridGeometry2D gg2 =
                 new GridGeometry2D(
-                        new Rectangle(100, 100), new Rectangle2D.Double(-180, 180, -90, 90));
+                        new Rectangle(100, 100), new Rectangle2D.Double(-180, -90, 360, 180));
         Assert.assertFalse(gg2.isDefined(GridGeometry2D.CRS_BITMASK));
     }
 

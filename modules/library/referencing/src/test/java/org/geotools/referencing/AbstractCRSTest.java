@@ -598,7 +598,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         envelope = new GeneralBounds(crs);
         // random bbox that does not include the pole, but it's really just slightly off it
         envelope.add(-10718812.640513, -10006238.053703);
-        envelope.add(12228504.561708, -344209.75803081);
+        envelope.add(12228504.561708, 344209.75803081);
         transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
         assertEquals(-90, transformed.getMinimum(1), 0.1d);
     }

@@ -347,7 +347,9 @@ public class Crop extends Operation2D {
 
         // Setting a GeneralEnvelope from ROI if needed
         if (cropRoi != null && cropEnvelope == null) {
-            Bounds e2d = new ReferencedEnvelope(cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
+            Bounds e2d =
+                    new ReferencedEnvelope(
+                            cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
             cropEnvelope = new GeneralBounds(e2d);
         }
 

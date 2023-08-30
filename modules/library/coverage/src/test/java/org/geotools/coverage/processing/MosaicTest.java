@@ -1121,7 +1121,8 @@ public class MosaicTest extends GridProcessingTestBase {
         return GRID_COVERAGE_FACTORY.create(
                 "Test coverage",
                 pi,
-                ReferencedEnvelope.envelope2D(DefaultEngineeringCRS.GENERIC_2D, x0, y0, width, height),
+                ReferencedEnvelope.envelope2D(
+                        DefaultEngineeringCRS.GENERIC_2D, x0, y0, width, height),
                 null,
                 null,
                 coverageProperties);

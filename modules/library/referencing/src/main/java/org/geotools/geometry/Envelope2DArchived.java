@@ -50,7 +50,8 @@ import org.geotools.util.Utilities;
  * @see org.geotools.geometry.jts.ReferencedEnvelope
  * @see org.geotools.api.metadata.extent.GeographicBoundingBox
  */
-public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBox, Bounds, Cloneable {
+public class Envelope2DArchived extends Rectangle2D.Double
+        implements BoundingBox, Bounds, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3319231220761419350L;
 
@@ -119,8 +120,8 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      * the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
      * AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). Those parameter names
      * simply match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations
-     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc} for
-     * details.
+     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc}
+     * for details.
      *
      * @param crs The coordinate reference system, or {@code null}.
      * @param x The <var>x</var> minimal value.
@@ -143,8 +144,8 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      * the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
      * AxisDirection#EAST East}, {@linkplain AxisDirection#NORTH North}). Those parameter names
      * simply match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations
-     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc} for
-     * details.
+     * are determined by the specified CRS. See the {@linkplain Envelope2DArchived class javadoc}
+     * for details.
      *
      * <p>The {@code minDP} and {@code maxDP} arguments usually contains the minimal and maximal
      * ordinate values respectively, but this is not mandatory. The ordinates will be rearanged as
@@ -329,7 +330,9 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             final CoordinateReferenceSystem otherCRS =
-                    (object instanceof Envelope2DArchived) ? ((Envelope2DArchived) object).crs : null;
+                    (object instanceof Envelope2DArchived)
+                            ? ((Envelope2DArchived) object).crs
+                            : null;
             return Utilities.equals(crs, otherCRS);
         }
         return false;
@@ -455,8 +458,8 @@ public class Envelope2DArchived extends Rectangle2D.Double implements BoundingBo
      * bounds.
      *
      * <p>Note this method conflicts with {@link Rectangle2D#intersects(Rectangle2D)} so you may
-     * need to call it via envelope2d.intersects( (Envelope2DArchived) bounds ) in order to correctly check
-     * that the coordinate reference systems match.
+     * need to call it via envelope2d.intersects( (Envelope2DArchived) bounds ) in order to
+     * correctly check that the coordinate reference systems match.
      *
      * @param bounds The bounds to test for intersection.
      * @return {@code true} if the two bounds intersect.

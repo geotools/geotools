@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -84,7 +83,7 @@ public class ThreadedTransformTest {
     public void setUp() throws Exception {
         nad83 = CRS.decode("EPSG:4269");
         wgs84 = CRS.decode("EPSG:4326");
-        envelope = new GeneralBounds(new Rectangle2D.Double(-77.145996, 39.04541, 0.1, 0.1),wgs84);
+        envelope = new GeneralBounds(new Rectangle2D.Double(-77.145996, 39.04541, 0.1, 0.1), wgs84);
     }
 
     @After

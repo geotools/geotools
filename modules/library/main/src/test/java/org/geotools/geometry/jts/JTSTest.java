@@ -25,7 +25,6 @@ import static org.junit.Assert.fail;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Position;

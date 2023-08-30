@@ -16,7 +16,6 @@
  */
 package org.geotools.geometry.jts;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.BoundingBox;
@@ -38,7 +37,6 @@ import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -363,7 +361,6 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         }
     }
 
-
     /** Returns the coordinate reference system associated with this envelope. */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -539,12 +536,15 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         expandToInclude(coordinate);
     }
 
-    public void expandToInclude(Point2D pt){
-        this.expandToInclude(pt);
+    public void expandToInclude(Point2D pt) {
+        Position pos = new Position2D();
+        ((Position2D) pos).setLocation(pt);
+        this.expandToInclude(pos);
     }
-    /** Returns the X coordinate of the center of the rectangle.
+    /**
+     * Returns the X coordinate of the center of the rectangle.
      *
-     * Method compatibility with {@link XRectangle2D#getCenterX()}
+     * <p>Method compatibility with {@link XRectangle2D#getCenterX()}
      */
     public double getCenterX() {
         return getMedian(0);
@@ -553,7 +553,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     /**
      * Returns the Y coordinate of the center of the rectangle.
      *
-     * Method compatibility with {@link XRectangle2D#getCenterY()}
+     * <p>Method compatibility with {@link XRectangle2D#getCenterY()}
      */
     public double getCenterY() {
         return getMedian(1);
@@ -598,19 +598,20 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         super.init(getJTSEnvelope(bbox));
     }
 
-    public void setFrameFromCenter(Point2D center, Point2D corner){
+    public void setFrameFromCenter(Point2D center, Point2D corner) {
         double widthDelta = Math.abs(corner.getX() - center.getX());
         double heightDelta = Math.abs(corner.getY() - center.getY());
-        super.init( center.getX() - widthDelta, center.getX()+widthDelta,
-                    center.getY()-heightDelta, getCenterY()+heightDelta);
+        super.init(
+                center.getX() - widthDelta, center.getX() + widthDelta,
+                center.getY() - heightDelta, getCenterY() + heightDelta);
     }
-    public void setFrameFromDiagonal(Point2D lowerLeft, Point2D upperRight){
-        super.init( lowerLeft.getX(),upperRight.getX(),
-                lowerLeft.getY(),upperRight.getY());
+
+    public void setFrameFromDiagonal(Point2D lowerLeft, Point2D upperRight) {
+        super.init(lowerLeft.getX(), upperRight.getX(), lowerLeft.getY(), upperRight.getY());
     }
     /** Rectangle style x,y,width,height bounds definition */
-    public void setFrame(double x, double y, double width, double height){
-        super.init(x, x+width, y, y+height);
+    public void setFrame(double x, double y, double width, double height) {
+        super.init(x, x + width, y, y + height);
     }
 
     /**
@@ -930,7 +931,9 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
         if (bounds.getDimension() >= 3) {
             // emptiness test is inside reference-method
-            return new ReferencedEnvelope3D((ReferencedEnvelope3D) reference(bounds), bounds.getCoordinateReferenceSystem());
+            return new ReferencedEnvelope3D(
+                    (ReferencedEnvelope3D) reference(bounds),
+                    bounds.getCoordinateReferenceSystem());
         }
 
         return new ReferencedEnvelope(reference(bounds), bounds.getCoordinateReferenceSystem());
@@ -971,7 +974,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     /**
      * Construct 2D WGS84 referenced envelope using rectangle conventions using width and height.
      *
-     * Migration method, previously {@code Envelope2D(crs,x,y,w,h)}.
+     * <p>Migration method, previously {@code Envelope2D(crs,x,y,w,h)}.
      *
      * @param x
      * @param y
@@ -979,8 +982,9 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @param height
      * @return ReferencedEnvelope WGS84
      */
-    public static ReferencedEnvelope envelope2D(CoordinateReferenceSystem crs, double x, double y, double width, double height){
-        return create( new Rectangle2D.Double(x,y,width,height), crs);
+    public static ReferencedEnvelope envelope2D(
+            CoordinateReferenceSystem crs, double x, double y, double width, double height) {
+        return create(new Rectangle2D.Double(x, y, width, height), crs);
     }
 
     /**

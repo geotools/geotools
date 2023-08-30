@@ -187,17 +187,18 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
         index[2] = (int) Math.round(envelope.getMinY() + offset);
         index[3] = (int) Math.round(envelope.getMaxY() + offset);
 
-//        for (int i = 0; i < DIMENSION; i++) {
-//            // See "note about conversion of floating point values to integers" in the JavaDoc.
-//            index[i] = (int) Math.round(envelope.getMinimum(i) + offset);
-//            index[i + DIMENSION] = (int) Math.round(envelope.getMaximum(i) + offset);
-//        }
+        //        for (int i = 0; i < DIMENSION; i++) {
+        //            // See "note about conversion of floating point values to integers" in the
+        // JavaDoc.
+        //            index[i] = (int) Math.round(envelope.getMinimum(i) + offset);
+        //            index[i + DIMENSION] = (int) Math.round(envelope.getMaximum(i) + offset);
+        //        }
         if (isHighIncluded) {
             index[2]++;
             index[3]++;
-//            for (int i = index.length / 2; i < index.length; i++) {
-//                index[i]++;
-//            }
+            //            for (int i = index.length / 2; i < index.length; i++) {
+            //                index[i]++;
+            //            }
         }
 
         setLocation(index[0], index[1]);
@@ -247,7 +248,9 @@ public class GridEnvelope2D extends Rectangle implements GridEnvelope, Cloneable
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      */
     public GridEnvelope2D(
-            final ReferencedEnvelope envelope, final PixelInCell anchor, final boolean isHighIncluded)
+            final ReferencedEnvelope envelope,
+            final PixelInCell anchor,
+            final boolean isHighIncluded)
             throws IllegalArgumentException {
         final double offset = PixelTranslation.getPixelTranslation(anchor) + 0.5;
         final int dimension = envelope.getDimension();

@@ -281,7 +281,7 @@ public class OperationJAI extends Operation2D {
         resampleToCommonGeometry(sources, null, null, hints);
         GridCoverage2D coverage = sources[PRIMARY_SOURCE_INDEX];
         final CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem2D();
-        // TODO: remove the cast when we will be allowed to compile for J2SE 1.5.
+
         final MathTransform2D gridToCRS = coverage.getGridGeometry().getGridToCRS2D();
         for (int i = 0; i < sources.length; i++) {
             if (sources[i] == null) {

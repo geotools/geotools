@@ -64,7 +64,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.CoordinateXY;
 
 /**
  * A RenderedImage that provides values coming from a source GridCoverage2D, with a backing grid
@@ -451,8 +450,7 @@ public class GridCoverage2DRIA extends GeometricOpImage {
         Coordinate coordinate = new Coordinate(coords[0], coords[1]);
         if (dstEnv.contains(coordinate)) {
             return ret;
-        }
-        else {
+        } else {
             return null;
         }
     }

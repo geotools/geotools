@@ -140,4 +140,13 @@ public final class GeneralBoundsTest {
         assertEquals(p1, p2);
         assertEquals(p1.hashCode(), p2.hashCode());
     }
+
+    @Test
+    public void testMedian() {
+        double delta = 0.00001;
+        GeneralBounds bounds = new GeneralBounds(DefaultGeographicCRS.WGS84);
+        bounds.setEnvelope(-10, -10, 10, 10);
+        assertEquals(0.0, bounds.getMedian(0), delta);
+        assertEquals(0.0, bounds.getMedian(1), delta);
+    }
 }

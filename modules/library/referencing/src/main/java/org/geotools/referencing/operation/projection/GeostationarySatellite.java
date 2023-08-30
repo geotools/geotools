@@ -21,10 +21,7 @@ package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
-
-import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
-import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -37,7 +34,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position2D;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import si.uom.SI;
@@ -152,7 +148,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             double b = 2. * radius_g * Vx;
             double det = (b * b) - 4. * a * C;
             if (det < 0.) {
-                throw new ProjectionException();
+                throw new ProjectionException("Det less than 0: " + det);
             }
             /* Calculation of three components of vector from satellite to position.*/
             double k = (-b - Math.sqrt(det)) / (2. * a);
@@ -292,7 +288,7 @@ public abstract class GeostationarySatellite extends MapProjection {
         double yMax = dp2d.getY();
 
         GeneralBounds bounds = new GeneralBounds(geosCRS);
-        bounds.setEnvelope(xMin, yMin, xMax, yMin);
+        bounds.setEnvelope(xMin, yMin, xMax, yMax);
 
         return bounds;
     }

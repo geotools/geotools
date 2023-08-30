@@ -111,11 +111,11 @@ public final class FeatureUtilities {
         final PrecisionModel pm = new PrecisionModel();
         final GeometryFactory gf = new GeometryFactory(pm, 0);
         final Coordinate[] coord = {
-                new Coordinate(bounds.getMinX(), bounds.getMinY()),
-                new Coordinate(bounds.getMaxX(), bounds.getMinY()),
-                new Coordinate(bounds.getMaxX(), bounds.getMaxY()),
-                new Coordinate(bounds.getMinX(), bounds.getMaxY()),
-                new Coordinate(bounds.getMinX(), bounds.getMinY())
+            new Coordinate(bounds.getMinX(), bounds.getMinY()),
+            new Coordinate(bounds.getMaxX(), bounds.getMinY()),
+            new Coordinate(bounds.getMaxX(), bounds.getMaxY()),
+            new Coordinate(bounds.getMinX(), bounds.getMaxY()),
+            new Coordinate(bounds.getMinX(), bounds.getMinY())
         };
         final LinearRing ring = gf.createLinearRing(coord);
         return new Polygon(ring, null, gf);

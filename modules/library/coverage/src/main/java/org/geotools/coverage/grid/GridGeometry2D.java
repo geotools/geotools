@@ -46,7 +46,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
@@ -495,8 +494,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
                 gridRange instanceof GridEnvelope2D
                         ? (GridEnvelope2D) gridRange
                         : new GridEnvelope2D(gridRange),
-                userRange instanceof Bounds ? (Bounds) userRange :
-                        ReferencedEnvelope.create(userRange,null));
+                userRange instanceof Bounds
+                        ? (Bounds) userRange
+                        : ReferencedEnvelope.create(userRange, null));
     }
 
     /**
@@ -638,8 +638,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
     }
 
     /**
-     * Reduces the specified bounds to a two-dimensional ReferencedEnvelope. If the given bounds has more than
-     * two dimensions, then a new one is created using only the coordinates at ({@link
+     * Reduces the specified bounds to a two-dimensional ReferencedEnvelope. If the given bounds has
+     * more than two dimensions, then a new one is created using only the coordinates at ({@link
      * #axisDimensionX}, {@link #axisDimensionY}) index.
      *
      * <p>The {@link Bounds#getCoordinateReferenceSystem coordinate reference system} of the source
@@ -647,8 +647,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * #getCoordinateReferenceSystem2D} or {@code null}.
      *
      * @param bounds The bounds to reduce, or {@code null}. This envelope will not be modified.
-     * @return An ReferencedEnvelope with exactly 2 dimensions, or {@code null} if {@code bounds} was null.
-     *     The returned ReferencedEnvelope is always a new instance, so it can be modified safely.
+     * @return An ReferencedEnvelope with exactly 2 dimensions, or {@code null} if {@code bounds}
+     *     was null. The returned ReferencedEnvelope is always a new instance, so it can be modified
+     *     safely.
      * @since 2.5
      */
     public ReferencedEnvelope reduce(final Bounds bounds) {
@@ -1018,9 +1019,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
     }
 
     /**
-     * Transforms a rectangle represented by an ReferencedEnvelope (or BoundingBox) from world to grid coordinates. If
-     * the envelope contains a {@code CoordinateReferenceSystem}, it <b>must</b> be the same as that
-     * of this coverage, otherwise an exception is thrown.
+     * Transforms a rectangle represented by an ReferencedEnvelope (or BoundingBox) from world to
+     * grid coordinates. If the envelope contains a {@code CoordinateReferenceSystem}, it
+     * <b>must</b> be the same as that of this coverage, otherwise an exception is thrown.
      *
      * <p>The {@code GridEnvelope2D} returned contains the range of cells whose centers lie inside
      * the input {@code Envelope2D}
@@ -1104,8 +1105,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
     }
 
     /**
-     * Transforms an represented by a GridEnvelope2D object from grid to world coordinates.
-     * The bounds of the Envelope2D object returned correspond to the outer edges of the grid cells
+     * Transforms an represented by a GridEnvelope2D object from grid to world coordinates. The
+     * bounds of the Envelope2D object returned correspond to the outer edges of the grid cells
      * within the input envelope.
      *
      * <p>Users needing more control over the nature of the conversion can use the {@code
@@ -1118,7 +1119,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * @throws IllegalArgumentException if the input rectangle lies outside the coverage
      * @since 2.6
      */
-    public final ReferencedEnvelope gridToWorld(final GridEnvelope2D gridEnv) throws TransformException {
+    public final ReferencedEnvelope gridToWorld(final GridEnvelope2D gridEnv)
+            throws TransformException {
 
         MathTransform2D mt = getGridToCRS2D();
 
@@ -1129,8 +1131,8 @@ public class GridGeometry2D extends GeneralGridGeometry {
             GridCoordinates2D high = gridEnv.getHigh();
             Point2D trHigh = mt.transform(new Point2D.Double(high.x + 0.5, high.y + 0.5), null);
 
-            return new ReferencedEnvelope(  trLow.getX(), trHigh.getX(),
-                    trLow.getY(), trHigh.getY(), crs2D);
+            return new ReferencedEnvelope(
+                    trLow.getX(), trHigh.getX(), trLow.getY(), trHigh.getY(), crs2D);
         } else {
             throw new IllegalArgumentException(
                     Errors.format(ErrorKeys.POINT_OUTSIDE_COVERAGE_$1, gridEnv));

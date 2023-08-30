@@ -19,6 +19,7 @@ package org.geotools.referencing.operation.projection;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.geotools.api.geometry.Bounds;
@@ -60,6 +61,8 @@ public class GeostationarySatelliteTest {
                     + "    PARAMETER[\"false_easting\",0],"
                     + "    PARAMETER[\"false_northing\",0],"
                     + "    UNIT[\"meter\", 1]]";
+    public static final int DIMENSION_X = 0;
+    public static final int DIMENSION_Y = 1;
 
     static CoordinateReferenceSystem sphericalGeosCRS;
     static MathTransform sphericalGeosToGeog;
@@ -114,10 +117,10 @@ public class GeostationarySatelliteTest {
     @Test
     public void testCircumscribeFullDisk_Spheroidal() throws TransformException, FactoryException {
 
-        final Bounds circumscribed =
-                GeostationarySatellite.circumscribeFullDisk(sphericalGeosCRS);
+        final Bounds circumscribed = GeostationarySatellite.circumscribeFullDisk(sphericalGeosCRS);
         assertThat(circumscribed, is(notNullValue()));
-
+        assertEquals("Median dim 0 is wrong", 0.0, circumscribed.getMedian(0), 0.00001);
+        assertEquals("Median dim 1 is wrong", 0.0, circumscribed.getMedian(1), 0.00001);
         final Position2D p = new Position2D();
 
         p.setLocation(circumscribed.getMedian(0), circumscribed.getMaximum(1));
@@ -201,25 +204,25 @@ public class GeostationarySatelliteTest {
 
         final Position2D p = new Position2D();
 
-        p.setLocation(circumscribed.getMedian(0), circumscribed.getMaximum(0));
+        p.setLocation(circumscribed.getMedian(DIMENSION_X), circumscribed.getMaximum(DIMENSION_Y));
         ellipsoidalGeosToGeog.transform(p, p);
         assertThat(p, is(notNullValue()));
         geogToEllipsoidalGeos.transform(p, p);
         assertThat(p, is(notNullValue()));
 
-        p.setLocation(circumscribed.getMedian(0), circumscribed.getMinimum(1));
+        p.setLocation(circumscribed.getMedian(DIMENSION_X), circumscribed.getMinimum(DIMENSION_Y));
         ellipsoidalGeosToGeog.transform(p, p);
         assertThat(p, is(notNullValue()));
         geogToEllipsoidalGeos.transform(p, p);
         assertThat(p, is(notNullValue()));
 
-        p.setLocation(circumscribed.getMaximum(0), circumscribed.getMedian(1));
+        p.setLocation(circumscribed.getMaximum(DIMENSION_X), circumscribed.getMedian(DIMENSION_Y));
         ellipsoidalGeosToGeog.transform(p, p);
         assertThat(p, is(notNullValue()));
         geogToEllipsoidalGeos.transform(p, p);
         assertThat(p, is(notNullValue()));
 
-        p.setLocation(circumscribed.getMinimum(0), circumscribed.getMedian(1));
+        p.setLocation(circumscribed.getMinimum(DIMENSION_X), circumscribed.getMedian(DIMENSION_Y));
         ellipsoidalGeosToGeog.transform(p, p);
         assertThat(p, is(notNullValue()));
         geogToEllipsoidalGeos.transform(p, p);
@@ -277,8 +280,7 @@ public class GeostationarySatelliteTest {
     public void testInscribeFullDiskEstimate_Spheroidal()
             throws TransformException, FactoryException {
 
-        final Bounds inscribed =
-                GeostationarySatellite.inscribeFullDiskEstimate(sphericalGeosCRS);
+        final Bounds inscribed = GeostationarySatellite.inscribeFullDiskEstimate(sphericalGeosCRS);
         assertThat(inscribed, is(notNullValue()));
 
         final Position2D p = new Position2D();
@@ -310,19 +312,23 @@ public class GeostationarySatelliteTest {
         // Inscribed rectangle is smaller than largest inscribing rectangle, hence ESTIMATE
         //        final double tickle = 1;
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMaximum(0) + tickle);
+        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMaximum(0) +
+        // tickle);
         //            sphericalGeosToGeog.transform(p, p);
         //        }});
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMinimum(1) - tickle);
+        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMinimum(1) -
+        // tickle);
         //            sphericalGeosToGeog.transform(p, p);
         //        }});
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMaximum(0) + tickle);
+        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMaximum(0) +
+        // tickle);
         //            sphericalGeosToGeog.transform(p, p);
         //        }});
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMinimum(1) - tickle);
+        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMinimum(1) -
+        // tickle);
         //            sphericalGeosToGeog.transform(p, p);
         //        }});
     }
@@ -334,10 +340,11 @@ public class GeostationarySatelliteTest {
         final Bounds inscribed =
                 GeostationarySatellite.inscribeFullDiskEstimate(ellipsoidalGeosCRS);
         assertThat(inscribed, is(notNullValue()));
-
+        assertEquals("Median dim 0 is wrong", 0.0, inscribed.getMedian(0), 0.00001);
+        assertEquals("Median dim 1 is wrong", 0.0, inscribed.getMedian(1), 0.00001);
         final Position2D p = new Position2D();
 
-        p.setLocation(inscribed.getMaximum(0), inscribed.getMaximum(0));
+        p.setLocation(inscribed.getMaximum(0), inscribed.getMaximum(1));
         ellipsoidalGeosToGeog.transform(p, p);
         assertThat(p, is(notNullValue()));
         geogToEllipsoidalGeos.transform(p, p);
@@ -349,7 +356,7 @@ public class GeostationarySatelliteTest {
         geogToEllipsoidalGeos.transform(p, p);
         assertThat(p, is(notNullValue()));
 
-        p.setLocation(inscribed.getMinimum(0), inscribed.getMaximum(0));
+        p.setLocation(inscribed.getMinimum(0), inscribed.getMaximum(1));
         ellipsoidalGeosToGeog.transform(p, p);
         assertThat(p, is(notNullValue()));
         geogToEllipsoidalGeos.transform(p, p);
@@ -364,19 +371,23 @@ public class GeostationarySatelliteTest {
         // Inscribed rectangle is smaller than largest inscribing rectangle, hence ESTIMATE
         //        final double tickle = 1;
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMaximum(0) + tickle);
+        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMaximum(0) +
+        // tickle);
         //            ellipsoidalGeosToGeog.transform(p, p);
         //        }});
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMinimum(1) - tickle);
+        //            p.setLocation(inscribed.getMaximum(0) + tickle, inscribed.getMinimum(1) -
+        // tickle);
         //            ellipsoidalGeosToGeog.transform(p, p);
         //        }});
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMaximum(0) + tickle);
+        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMaximum(0) +
+        // tickle);
         //            ellipsoidalGeosToGeog.transform(p, p);
         //        }});
         //        expectProjectionException(new Testable() { public void test() throws Exception {
-        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMinimum(1) - tickle);
+        //            p.setLocation(inscribed.getMinimum(0) - tickle, inscribed.getMinimum(1) -
+        // tickle);
         //            ellipsoidalGeosToGeog.transform(p, p);
         //        }});
     }

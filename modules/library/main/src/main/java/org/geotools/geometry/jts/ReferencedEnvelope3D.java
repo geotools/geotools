@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.text.MessageFormat;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
 import org.geotools.api.geometry.Bounds;
@@ -30,7 +31,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.Position3D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -1031,12 +1031,11 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
             if (lenient) {
                 return JTS.transformTo2D(this, targetCRS, lenient, numPointsForTransformation);
             } else {
+                final Object arg0 = crs.getName().getCode();
+                final Object arg1 = Integer.valueOf(getDimension());
+                final Object arg2 = Integer.valueOf(targetCRS.getCoordinateSystem().getDimension());
                 throw new MismatchedDimensionException(
-                        Errors.format(
-                                ErrorKeys.MISMATCHED_DIMENSION_$3,
-                                crs.getName().getCode(),
-                                Integer.valueOf(getDimension()),
-                                Integer.valueOf(targetCRS.getCoordinateSystem().getDimension())));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, arg0, arg1, arg2));
             }
         }
         // Gets a first estimation using an algorithm capable to take singularity in account

@@ -23,6 +23,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -34,7 +35,6 @@ import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.ContentFormatException;
 import org.geotools.util.LineFormat;
 import org.geotools.util.SuppressFBWarnings;
@@ -111,7 +111,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
     public GeneralMatrix(final int numRow, final int numCol, final Matrix matrix) {
         mat = new DMatrixRMaj(numRow, numCol);
         if (matrix.getNumRow() != numRow || matrix.getNumCol() != numCol) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            throw new IllegalArgumentException(ErrorKeys.ILLEGAL_MATRIX_SIZE);
         }
         for (int j = 0; j < numRow; j++) {
             for (int i = 0; i < numCol; i++) {
@@ -133,7 +133,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         final int numCol = getNumCol();
         for (int j = 0; j < numRow; j++) {
             if (matrix[j].length != numCol) {
-                throw new IllegalArgumentException(Errors.format(ErrorKeys.MATRIX_NOT_REGULAR));
+                throw new IllegalArgumentException(ErrorKeys.MATRIX_NOT_REGULAR);
             }
             for (int i = 0; i < numCol; i++) {
                 mat.set(j, i, matrix[j][i]);
@@ -317,7 +317,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                     if (hasFound) {
                         // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                         throw new IllegalArgumentException(
-                                Errors.format(
+                                MessageFormat.format(
                                         ErrorKeys.COLINEAR_AXIS_$2, srcAxe.name(), dstAxe.name()));
                     }
                     hasFound = true;
@@ -344,7 +344,8 @@ public class GeneralMatrix implements XMatrix, Serializable {
             if (!hasFound) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
+                        MessageFormat.format(
+                                ErrorKeys.NO_SOURCE_AXIS_$1, dstAxis[dstIndex].name()));
             }
         }
         setElement(dstAxis.length, srcAxis.length, 1);
@@ -386,7 +387,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         final int dim = envelope.getDimension();
         if (dimension != dim) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, dim, dimension));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, dim, dimension));
         }
     }
 
@@ -714,7 +715,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
         int check;
         if ((check = getNumRow()) != 3 || (check = getNumCol()) != 3) {
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, check - 1));
+                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, check - 1));
         }
         if (isAffine()) {
             return new AffineTransform(
@@ -725,7 +726,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                     getElement(0, 2),
                     getElement(1, 2));
         }
-        throw new IllegalStateException(Errors.format(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+        throw new IllegalStateException(ErrorKeys.NOT_AN_AFFINE_TRANSFORM);
     }
 
     /**

@@ -19,11 +19,11 @@
  */
 package org.geotools.parameter;
 
+import java.text.MessageFormat;
 import java.util.Map;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 
@@ -73,7 +73,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
         this.minimumOccurs = minimumOccurs;
         if (minimumOccurs < 0 || maximumOccurs < minimumOccurs) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimumOccurs, maximumOccurs));
+                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimumOccurs, maximumOccurs));
         }
     }
 

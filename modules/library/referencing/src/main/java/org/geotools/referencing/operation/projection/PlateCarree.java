@@ -25,7 +25,6 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.CylindricalProjection;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 
@@ -148,7 +147,7 @@ public class PlateCarree extends EquidistantCylindrical {
             if (isSpherical(parameters)) {
                 return new PlateCarree(parameters);
             } else {
-                throw new FactoryException(Errors.format(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED));
+                throw new FactoryException(ErrorKeys.ELLIPTICAL_NOT_SUPPORTED);
             }
         }
     }

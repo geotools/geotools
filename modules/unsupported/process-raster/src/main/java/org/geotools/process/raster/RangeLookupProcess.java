@@ -23,6 +23,7 @@ import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
 
@@ -97,11 +97,12 @@ public class RangeLookupProcess implements RasterProcess {
         // initial checks
         //
         if (coverage == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
+            throw new ProcessException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
         }
         if (classificationRanges == null) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "classificationRanges"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "classificationRanges"));
         }
         double nd = DEFAULT_NODATA;
         NoDataContainer noDataProperty =
@@ -116,7 +117,8 @@ public class RangeLookupProcess implements RasterProcess {
             final int ranges = classificationRanges.size();
             if (ranges != outputPixelValues.length) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH, "outputPixelValues"));
+                        MessageFormat.format(
+                                ErrorKeys.MISMATCHED_ARRAY_LENGTH, "outputPixelValues"));
             }
         }
 
@@ -130,7 +132,7 @@ public class RangeLookupProcess implements RasterProcess {
             final int numbands = sourceImage.getSampleModel().getNumBands();
             if (band < 0 || numbands <= band) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
             }
 
             if (band == 0 && numbands > 0 || band > 0) {
@@ -172,7 +174,7 @@ public class RangeLookupProcess implements RasterProcess {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            org.geotools.metadata.i18n.Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.ILLEGAL_ARGUMENT_$2,
                                     "classification ranges size",
                                     size));

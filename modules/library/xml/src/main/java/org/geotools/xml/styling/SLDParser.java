@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,7 +89,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.styling.ContrastEnhancementImpl;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
@@ -1415,7 +1415,9 @@ public class SLDParser {
                 } else if ("values".equalsIgnoreCase(type)) {
                     symbol.setType(org.geotools.api.style.ColorMap.TYPE_VALUES);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
+                    LOGGER.fine(
+                            MessageFormat.format(
+                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "ColorMapType", type));
             }
 
             // parsing extended colors
@@ -1428,7 +1430,8 @@ public class SLDParser {
                 } else if ("false".equalsIgnoreCase(type)) {
                     symbol.setExtendedColors(false);
                 } else if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Extended", type));
+                    LOGGER.fine(
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Extended", type));
             }
         }
 

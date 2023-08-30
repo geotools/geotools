@@ -19,6 +19,7 @@ package org.geotools.util.factory;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -27,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.geotools.util.Utilities;
@@ -198,7 +198,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
         this.priority = priority;
         if (priority < MINIMUM_PRIORITY || priority > MAXIMUM_PRIORITY) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "priority", priority));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "priority", priority));
         }
     }
 

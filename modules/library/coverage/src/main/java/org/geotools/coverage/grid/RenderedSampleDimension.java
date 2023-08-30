@@ -22,6 +22,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.text.MessageFormat;
 import javax.measure.Unit;
 import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.SampleDimensionType;
@@ -31,7 +32,6 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
@@ -92,7 +92,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = image.getSampleModel().getNumBands();
         if (src != null && src.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
                             numBands,
                             src.length,
@@ -100,7 +100,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
         }
         if (dst.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
                             numBands,
                             dst.length,
@@ -134,7 +134,7 @@ final class RenderedSampleDimension extends GridSampleDimension {
         if (count == numBands) {
             return true;
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.MIXED_CATEGORIES));
+        throw new IllegalArgumentException(ErrorKeys.MIXED_CATEGORIES);
     }
 
     /**
@@ -199,17 +199,17 @@ final class RenderedSampleDimension extends GridSampleDimension {
         final int numBands = dst.length;
         if (min != null && min.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, min.length, "min[i]"));
         }
         if (max != null && max.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3, numBands, max.length, "max[i]"));
         }
         if (colors != null && colors.length != numBands) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NUMBER_OF_BANDS_MISMATCH_$3,
                             numBands,
                             colors.length,

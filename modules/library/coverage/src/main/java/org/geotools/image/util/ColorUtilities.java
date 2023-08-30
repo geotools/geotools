@@ -23,9 +23,9 @@ import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A set of static methods for handling of colors informations. Some of those methods are useful,
@@ -450,7 +450,7 @@ public final class ColorUtilities {
                 return -Float.MAX_VALUE;
             default:
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$2, "DataType unknown:", dataType));
         }
     }
@@ -491,9 +491,11 @@ public final class ColorUtilities {
      */
     public static int findColorIndex(Color bgColor, IndexColorModel icm) {
         if (bgColor == null)
-            throw new NullPointerException((Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "bgColor")));
+            throw new NullPointerException(
+                    (MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bgColor")));
         if (icm == null)
-            throw new NullPointerException((Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "icm")));
+            throw new NullPointerException(
+                    (MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "icm")));
 
         final int r = bgColor.getRed();
         final int g = bgColor.getGreen();
@@ -600,7 +602,7 @@ public final class ColorUtilities {
 
             default:
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$2, "DataType unknown:", dataType));
         }
     }

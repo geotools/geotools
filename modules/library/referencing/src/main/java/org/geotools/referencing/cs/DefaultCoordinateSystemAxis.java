@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale; // For javadoc
@@ -33,7 +34,6 @@ import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.cs.RangeMeaning;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -720,7 +720,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("rangeMeaning", rangeMeaning);
         if (!(minimum < maximum)) { // Use '!' for catching NaN
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
         }
     }
 
@@ -966,7 +966,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             return candidate;
         }
         throw new NoSuchElementException(
-                Errors.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
+                MessageFormat.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
     }
 
     /**
@@ -1183,7 +1183,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     maximum,
                     rangeMeaning);
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
+        throw new IllegalArgumentException(
+                MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
     }
 
     /**

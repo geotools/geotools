@@ -35,7 +35,6 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
@@ -523,12 +522,11 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
                 return;
             }
         } catch (NoninvertibleTransformException exception) {
-            final TransformException e =
-                    new TransformException(Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+            final TransformException e = new TransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
             e.initCause(exception);
             throw e;
         }
-        throw new TransformException(Errors.format(ErrorKeys.NO_CONVERGENCE));
+        throw new TransformException(ErrorKeys.NO_CONVERGENCE);
     }
 
     /**

@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -119,7 +118,7 @@ public abstract class DeferredAuthorityFactory extends BufferedAuthorityFactory
                 if (backingStore == null) {
                     backingStore = createBackingStore();
                     if (backingStore == null) {
-                        throw new FactoryNotFoundException(Errors.format(ErrorKeys.NO_DATA_SOURCE));
+                        throw new FactoryNotFoundException(ErrorKeys.NO_DATA_SOURCE);
                     }
                     completeHints();
                 }

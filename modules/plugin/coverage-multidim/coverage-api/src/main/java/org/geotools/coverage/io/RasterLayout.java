@@ -18,9 +18,9 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.Objects;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * A class describing the desired layout of an <code>OpImage</code>.
@@ -133,7 +133,8 @@ public class RasterLayout implements Cloneable {
 
     public RasterLayout(Rectangle bounds) {
         if (bounds == null)
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "bounds"));
+            throw new NullPointerException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "bounds"));
         this.height = bounds.height;
         this.width = bounds.width;
         this.minX = bounds.x;

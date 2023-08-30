@@ -18,13 +18,13 @@ package org.geotools.geometry;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.SuppressFBWarnings;
 
 /**
@@ -256,7 +256,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     public final void setLocation(final Point2D point) throws MismatchedDimensionException {
         if (ordinates.length != 2) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
+                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
         }
         ordinates[0] = point.getX();
         ordinates[1] = point.getY();
@@ -272,7 +272,7 @@ public class GeneralPosition extends AbstractPosition implements Serializable, C
     public Point2D toPoint2D() throws IllegalStateException {
         if (ordinates.length != 2) {
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
+                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, ordinates.length));
         }
         return new Point2D.Double(ordinates[0], ordinates[1]);
     }

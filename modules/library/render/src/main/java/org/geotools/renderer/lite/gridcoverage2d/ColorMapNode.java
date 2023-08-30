@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.media.jai.RenderedOp;
@@ -40,7 +41,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.util.SimpleInternationalString;
@@ -148,7 +148,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                 if (!cm.hasAlpha() && cm.getNumColorComponents() != 2) {
                     // let's check, it might
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
+                            MessageFormat.format(
+                                    ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
                 }
             }
             // /////////////////////////////////////////////////////////////////////

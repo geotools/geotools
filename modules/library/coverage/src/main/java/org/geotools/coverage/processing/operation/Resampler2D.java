@@ -26,6 +26,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +72,6 @@ import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.CRS;
@@ -281,7 +281,7 @@ final class Resampler2D extends GridCoverage2D {
                 if (!CRS.equalsIgnoreMetadata(targetCRS, targetGGCRS)
                         && !CRS.findMathTransform(targetCRS, targetGGCRS).isIdentity()) {
                     throw new IllegalArgumentException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.ILLEGAL_ARGUMENT_$1,
                                     "TargetCRS must be compatible with TargetGG CRS"));
                 }
@@ -464,7 +464,7 @@ final class Resampler2D extends GridCoverage2D {
             }
         } else {
             if (sourceCRS == null) {
-                throw new CannotReprojectException(Errors.format(ErrorKeys.UNSPECIFIED_CRS));
+                throw new CannotReprojectException(ErrorKeys.UNSPECIFIED_CRS);
             }
             final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
             final boolean force2D = (sourceCRS != compatibleSourceCRS);
@@ -526,7 +526,7 @@ final class Resampler2D extends GridCoverage2D {
         if (!(allSteps2D instanceof MathTransform2D)) {
             // Should not happen with Geotools implementations. May happen
             // with some external implementations, but should stay unusual.
-            throw new TransformException(Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+            throw new TransformException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -992,7 +992,7 @@ final class Resampler2D extends GridCoverage2D {
         if (candidate instanceof MathTransform2D) {
             return (MathTransform2D) candidate;
         }
-        throw new FactoryException(Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+        throw new FactoryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
     }
 
     /**

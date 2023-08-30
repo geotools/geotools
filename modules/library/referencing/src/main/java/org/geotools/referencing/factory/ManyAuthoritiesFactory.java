@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,7 +41,6 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -503,9 +503,9 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final String message;
         if (authority == null) {
             authority = Vocabulary.format(VocabularyKeys.UNKNOWN);
-            message = Errors.format(ErrorKeys.MISSING_AUTHORITY_$1, code);
+            message = MessageFormat.format(ErrorKeys.MISSING_AUTHORITY_$1, code);
         } else {
-            message = Errors.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
+            message = MessageFormat.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
         }
         final NoSuchAuthorityCodeException exception =
                 new NoSuchAuthorityCodeException(message, authority, code);

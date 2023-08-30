@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Locale;
@@ -29,10 +30,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.math.XMath;
 import org.geotools.util.Classes;
-import org.geotools.util.logging.LoggedFormat;
 
 /**
  * Parses and formats angles according a specified pattern. The pattern is a string containing any
@@ -520,7 +519,7 @@ public class AngleFormat extends Format {
                         widthDecimal = 0;
                         decimalSeparator = true;
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
+                                MessageFormat.format(ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
                     }
                     if (c == upperCaseC) {
                         /*
@@ -558,7 +557,7 @@ public class AngleFormat extends Format {
                             default:
                                 {
                                     throw new IllegalArgumentException(
-                                            Errors.format(
+                                            MessageFormat.format(
                                                     ErrorKeys.ILLEGAL_ANGLE_PATTERN_$1, pattern));
                                 }
                         }
@@ -669,7 +668,7 @@ public class AngleFormat extends Format {
             if (minutes < 0 || minutes > 60) {
                 // Erreur d'arrondissement (parce que l'angle est trop élevé)
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
+                        MessageFormat.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
             }
             if (width2 != 0) {
                 tmp = (int) minutes; // Arrondie vers 0 même si négatif.
@@ -678,7 +677,7 @@ public class AngleFormat extends Format {
                 if (secondes < 0 || secondes > 60) {
                     // Erreur d'arrondissement (parce que l'angle est trop élevé)
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
+                            MessageFormat.format(ErrorKeys.ANGLE_OVERFLOW_$1, angle));
                 }
                 tmp = (int) (secondes / 60);
                 secondes -= 60 * tmp;
@@ -851,7 +850,7 @@ public class AngleFormat extends Format {
             return numberFormat.format(obj, toAppendTo, (pos != null) ? pos : dummy);
         }
         throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1, Classes.getClass(obj)));
+                MessageFormat.format(ErrorKeys.NOT_AN_ANGLE_OBJECT_$1, Classes.getClass(obj)));
     }
 
     /**
@@ -1396,7 +1395,7 @@ public class AngleFormat extends Format {
             if (!Character.isWhitespace(source.charAt(index))) {
                 index = Math.max(origin, pos.getErrorIndex());
                 throw new ParseException(
-                        LoggedFormat.formatUnparsable(source, 0, index, null), index);
+                        "Cannot parse '" + source + "', error at index " + index + ".", index);
             }
         }
         return angle;

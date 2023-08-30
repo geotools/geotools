@@ -19,6 +19,7 @@ package org.geotools.referencing.factory.epsg;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.jar.Attributes.Name;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -31,7 +32,6 @@ import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.api.referencing.datum.DatumAuthorityFactory;
 import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -212,7 +212,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             if (!super.isAvailable()) {
                 // Connection failed, but the exception is not available.
                 datasource = null;
-                throw new SQLException(Errors.format(ErrorKeys.NO_DATA_SOURCE));
+                throw new SQLException(ErrorKeys.NO_DATA_SOURCE);
             }
         }
         return datasource;
@@ -359,7 +359,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
          */
         DataSource source = createDataSource();
         if (source == null) {
-            throw new FactoryNotFoundException(Errors.format(ErrorKeys.NO_DATA_SOURCE));
+            throw new FactoryNotFoundException(ErrorKeys.NO_DATA_SOURCE);
         }
         final AbstractAuthorityFactory factory;
         try {
@@ -394,7 +394,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
             }
         } catch (SQLException exception) {
             throw new FactoryException(
-                    Errors.format(ErrorKeys.CANT_CONNECT_DATABASE_$1, "EPSG"), exception);
+                    MessageFormat.format(ErrorKeys.CANT_CONNECT_DATABASE_$1, "EPSG"), exception);
         }
         log(Loggings.format(Level.CONFIG, LoggingKeys.CONNECTED_EPSG_DATABASE_$2, url, product));
         if (factory instanceof DirectEpsgFactory) {

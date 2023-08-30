@@ -22,6 +22,7 @@ package org.geotools.referencing.operation.transform;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.Objects;
 import javax.measure.Unit;
@@ -36,7 +37,6 @@ import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.api.referencing.operation.Conversion;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -156,7 +156,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
         if (!(value >= 0 && value <= max)) {
             // Use '!' in order to trap NaN
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
         }
     }
 

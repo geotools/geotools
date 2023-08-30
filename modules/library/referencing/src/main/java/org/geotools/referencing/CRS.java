@@ -21,6 +21,7 @@ import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -72,7 +73,6 @@ import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -1173,7 +1173,7 @@ public final class CRS {
                 return Integer.parseInt(code);
             } catch (NumberFormatException e) {
                 throw new FactoryException(
-                        Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, identifier), e);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, identifier), e);
             }
         }
         return null;
@@ -1360,8 +1360,7 @@ public final class CRS {
                     try {
                         operation = factory.createOperation(sourceCRS, targetCRS);
                     } catch (FactoryException exception) {
-                        throw new TransformException(
-                                Errors.format(ErrorKeys.CANT_TRANSFORM_ENVELOPE), exception);
+                        throw new TransformException(ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception);
                     }
                     if (!operation.getMathTransform().isIdentity()) {
                         envelope = transform(operation, envelope);
@@ -1431,9 +1430,9 @@ public final class CRS {
          */
         final int sourceDim = transform.getSourceDimensions();
         if (envelope.getDimension() != sourceDim) {
+            final Object arg1 = envelope.getDimension();
             throw new MismatchedDimensionException(
-                    Errors.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, envelope.getDimension()));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, arg1));
         }
         int coordinateNumber = 0;
         GeneralBounds transformed = null;

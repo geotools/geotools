@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.crs;
 
+import java.text.MessageFormat;
 import java.util.Map;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -33,7 +34,6 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.DefaultConversion;
 import org.geotools.referencing.operation.DefaultOperation;
@@ -264,7 +264,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
         if ((dim1 = dimSource) != (dim2 = base.getCoordinateSystem().getDimension())
                 || (dim1 = dimTarget) != (dim2 = derivedCS.getDimension())) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
         }
     }
 

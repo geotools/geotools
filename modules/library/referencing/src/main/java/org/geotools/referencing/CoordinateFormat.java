@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,6 @@ import org.geotools.measure.Longitude;
 import org.geotools.measure.UnitFormat;
 import org.geotools.measure.UnitFormatter;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.util.CRSUtilities;
@@ -399,7 +399,7 @@ public class CoordinateFormat extends Format {
         if (crs != null) {
             if (dimension != formats.length) {
                 throw new MismatchedDimensionException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.MISMATCHED_DIMENSION_$3,
                                 "point",
                                 dimension,

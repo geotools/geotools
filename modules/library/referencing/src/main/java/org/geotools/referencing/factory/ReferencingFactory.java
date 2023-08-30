@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
@@ -27,7 +28,6 @@ import org.geotools.api.parameter.InvalidParameterValueException;
 import org.geotools.api.referencing.AuthorityFactory;
 import org.geotools.api.referencing.Factory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -114,7 +114,7 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
         }
     }
 

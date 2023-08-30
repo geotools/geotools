@@ -17,6 +17,8 @@
 package org.geotools.referencing.operation.builder;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -24,7 +26,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.TableWriter;
@@ -95,7 +96,8 @@ public class MappedPosition implements Serializable {
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -178,7 +180,7 @@ public class MappedPosition implements Serializable {
         final int dimension = target.getDimension();
         if (otherDim != dimension) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, otherDim, dimension));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, otherDim, dimension));
         }
         double sum = 0;
         for (int i = 0; i < dimension; i++) {

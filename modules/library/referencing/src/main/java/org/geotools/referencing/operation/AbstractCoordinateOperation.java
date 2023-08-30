@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +45,6 @@ import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.api.util.InternationalString;
 import org.geotools.api.util.Record;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractDerivedCRS;
@@ -264,7 +264,8 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
         final int actual = crs.getCoordinateSystem().getDimension();
         if (actual != expected) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
+                    MessageFormat.format(
+                            ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
         }
     }
 

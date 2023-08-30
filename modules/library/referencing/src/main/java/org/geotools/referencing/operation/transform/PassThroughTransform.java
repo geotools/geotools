@@ -17,6 +17,8 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
+import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -25,7 +27,6 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
@@ -84,14 +85,14 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
             final int numTrailingOrdinates) {
         if (firstAffectedOrdinate < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "firstAffectedOrdinate",
                             firstAffectedOrdinate));
         }
         if (numTrailingOrdinates < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "numTrailingOrdinates",
                             numTrailingOrdinates));
@@ -132,14 +133,14 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
             final int numTrailingOrdinates) {
         if (firstAffectedOrdinate < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "firstAffectedOrdinate",
                             firstAffectedOrdinate));
         }
         if (numTrailingOrdinates < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "numTrailingOrdinates",
                             numTrailingOrdinates));
@@ -299,7 +300,7 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
         final int pointDim = point.getDimension();
         if (pointDim != transDim + nSkipped) {
             throw new MismatchedDimensionException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.MISMATCHED_DIMENSION_$3,
                             "point",
                             pointDim,

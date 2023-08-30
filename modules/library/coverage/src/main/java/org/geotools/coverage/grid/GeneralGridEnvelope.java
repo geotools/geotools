@@ -20,6 +20,7 @@ import java.awt.Rectangle;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -27,7 +28,6 @@ import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 
 /**
@@ -78,7 +78,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
             final int upper = index[dimension + i];
             if (!(lower <= upper)) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.BAD_GRID_RANGE_$3, i, lower, upper - 1));
+                        MessageFormat.format(ErrorKeys.BAD_GRID_RANGE_$3, i, lower, upper - 1));
             }
         }
     }
@@ -186,7 +186,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     private GeneralGridEnvelope(int x, int y, int width, int height, int dimension) {
         if (dimension < 2) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
         }
         index = new int[dimension * 2];
         index[0] = x;
@@ -315,7 +315,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     public GeneralGridEnvelope(final int[] low, final int[] high, final boolean isHighIncluded) {
         if (low.length != high.length) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, low.length, high.length));
+                    MessageFormat.format(
+                            ErrorKeys.MISMATCHED_DIMENSION_$2, low.length, high.length));
         }
         index = new int[low.length + high.length];
         System.arraycopy(low, 0, index, 0, low.length);
@@ -432,11 +433,11 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
         final int newDim = upper - lower;
         if (lower < 0 || lower > curDim) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (newDim < 0 || upper > curDim) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
         final GeneralGridEnvelope sub = new GeneralGridEnvelope(newDim);
         System.arraycopy(index, lower, sub.index, 0, newDim);
@@ -455,8 +456,9 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
         if (index.length == 4) {
             return new Rectangle(index[0], index[1], index[2] - index[0], index[3] - index[1]);
         } else {
+            final Object arg0 = getDimension();
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, getDimension()));
+                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, arg0));
         }
     }
 

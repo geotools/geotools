@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -29,7 +30,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.util.factory.Hints;
@@ -371,14 +371,14 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
 
     private void detectCycle() throws IllegalStateException {
         if (cycleDetector.detectCycle(this))
-            throw new IllegalStateException(Errors.format(ErrorKeys.CYCLE_DETECTED));
+            throw new IllegalStateException(ErrorKeys.CYCLE_DETECTED);
     }
 
     private void checkNumSources(final int sourcesToAdd) {
         if (maximumNumberOfSources != -1)
             if (this.sources.size() + sourcesToAdd > maximumNumberOfSources)
                 throw new IllegalStateException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.TOO_MANY_SOURCES_$1,
                                 Integer.valueOf(maximumNumberOfSources)));
     }
@@ -553,7 +553,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
     protected static void ensureSourceNotNull(final Object source, final String name) {
         if (source == null)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
+                    MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, name));
     }
 
     /**
@@ -565,7 +565,8 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
      */
     protected static void ensureNotNull(final Object source, final String name) {
         if (source == null)
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
     }
 
     /*

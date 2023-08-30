@@ -21,6 +21,7 @@ import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,7 +30,6 @@ import java.util.Objects;
 import javax.measure.Unit;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.wkt.UnformattableObjectException;
@@ -185,7 +185,7 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
                         }
                     }
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.RANGE_OVERLAP_$4, args));
+                            MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {

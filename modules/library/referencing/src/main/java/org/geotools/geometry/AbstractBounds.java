@@ -21,7 +21,6 @@ import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 
@@ -57,7 +56,7 @@ public abstract class AbstractBounds implements Bounds {
         } else {
             if (crs2 != null && !crs1.equals(crs2)) {
                 throw new MismatchedReferenceSystemException(
-                        Errors.format(ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM));
+                        ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
             }
             return crs1;
         }

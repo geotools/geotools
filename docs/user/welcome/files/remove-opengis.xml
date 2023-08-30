@@ -10,32 +10,23 @@
     <attribute name="class2" />
     <sequential>
       <fileset id="@{class1}.files" dir="${project.dir}" includes="**/*.java">
-        <contains text="@{class1}" casesensitive="yes" />
+        <contains text="@{package1}.@{class1}" casesensitive="yes" />
       </fileset>
-      <!--<replaceregexp byline="true">
-        <fileset refid="@{class1}.files" />
-        <regexp pattern="(\W.*)@{class1}(\W)" />
-        <substitution expression="\1@{class2}\2" />
-      </replaceregexp>-->
-      <echo message="Refactor @{class1} -&gt; @{class2}" />
-      <!--      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-        <replacefilter>
-          <replacetoken>(\W)@{class1}(\W)</replacetoken>
-          <replacevalue>\1@{class2}\2</replacevalue>
-        </replacefilter>
-      </replace> -->
+      <fileset id="@{class2}.files" dir="${project.dir}" includes="**/*.java">
+        <contains text="@{package2}.@{class2}" casesensitive="yes" />
+      </fileset>
+      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
       <replaceregexp byline="true" flags="g">
         <fileset refid="@{class1}.files" />
+          <regexp pattern="(\W)@{package1}\.@{class1}(\W)"/>
+          <substitution expression="\1@{package2}.@{class2}\2"/>
+        </replaceregexp>
+      <echo message="Refactor @{class1} -&gt; @{class2}" />
+      <replaceregexp byline="true" flags="g">
+        <fileset refid="@{class2}.files" />
         <regexp pattern="(\W)@{class1}(\W)" />
         <substitution expression="\1@{class2}\2" />
       </replaceregexp>
-      <echo message="Refactor @{package1}.@{class1} -&gt; @{package2}.@{class2}" />
-      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-        <replacefilter>
-          <replacetoken>(\s)@{package1}\.@{class1}(\W)</replacetoken>
-          <replacevalue>\1@{package2}.@{class2}\2</replacevalue>
-        </replacefilter>
-      </replace>
     </sequential>
   </macrodef>
   <macrodef name="remove">
@@ -271,11 +262,25 @@
     <refactor package1="org.opengis.geometry.coordinate" class1="Position" package2="org.opengis.geometry" class2="DirectPosition" />
     <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;" />
   </target>
+
+
+
   <target name="_geometry" description="Geometry API cleanup">
     <echo />
-    <echo message="removing org.opengis.geometry.Geometry)" />
+    <echo message="removing org.opengis.geometry.Geometry" />
     <!-- you cann use refid="Position.files" fileset after refactor -->
+    <refactor package1="org.opengis.geometry.coordinate" class1="Polygon" package2="org.locationtech.jts.geom" class2="Polygon" />
+    <refactor package1="org.opengis.geometry.coordinate" class1="Point" package2="org.locationtech.jts.geom" class2="Point" />
+    <refactor package1="org.opengis.geometry.coordinate" class1="LineString" package2="org.locationtech.jts.geom" class2="LineString" />
     <refactor package1="org.opengis.geometry" class1="Geometry" package2="org.locationtech.jts.geom" class2="Geometry" />
+  </target>
+
+
+
+  <target name="_errors" description="change from org.geotools.metadata.i18n.Errors to MessageFormat" >
+    <echo message="Error clean up"/>
+    <refactor package1="org.geotools.metadata.i18n" class1="Errors" package2="java.text" class2="MessageFormat" />
+    <refactor package1="org.geotools.renderer.i18n" class1="Errors" package2="java.text" class2="MessageFormat" />
   </target>
   <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
     <echo />
@@ -296,7 +301,7 @@
       <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2" />
     </move>
   </target>
-  <target name="update" depends="starting-up,_filterFactory,_styling,_bounds,_geometry,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_styling,_bounds,_geometry,_errors,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo>UPDATE COMPLETED: ${project.dir}</echo>
     <echo />
     <echo>At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

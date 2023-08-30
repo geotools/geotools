@@ -17,7 +17,7 @@
 package org.geotools.styling.css;
 
 import java.util.List;
-import org.geotools.styling.Rule;
+import org.geotools.api.style.Rule;
 
 /**
  * A CSS stylesheet, that is, a ordered list of {@link Rule}

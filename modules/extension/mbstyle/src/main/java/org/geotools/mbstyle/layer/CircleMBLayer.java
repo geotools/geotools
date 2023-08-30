@@ -25,19 +25,20 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.style.Displacement;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Stroke;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.measure.Units;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
 
@@ -336,7 +337,7 @@ public class CircleMBLayer extends MBLayer {
                         circleStrokeOpacity(),
                         circleStrokeWidth(),
                         null,
-                        Stroke.DEFAULT.getLineCap(),
+                        StrokeImpl.DEFAULT.getLineCap(),
                         null,
                         null);
         Fill f = sf.fill(null, circleColor(), circleOpacity());

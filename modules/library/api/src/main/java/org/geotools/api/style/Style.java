@@ -35,10 +35,15 @@ public interface Style {
      */
     String getName();
 
+    void setName(String name);
+
+    void setBackground(Fill background);
+
     /**
-     * Returns the description of this style.
+     * Description for this style.
      *
-     * @return Description with usual informations used for user interfaces.
+     * @return Human readable description for use in user interfaces
+     * @since 2.5.x
      */
     Description getDescription();
 
@@ -49,14 +54,26 @@ public interface Style {
      */
     boolean isDefault();
 
-    /** Returns a collection of feature type style. */
-    List<? extends FeatureTypeStyle> featureTypeStyles();
+    /**
+     * Indicates that this is the default style.
+     *
+     * <p>Assume this is kept for GeoServer enabling a WMS to track which style is considered the
+     * default. May consider providing a clientProperties mechanism similar to Swing JComponent
+     * allowing applications to mark up the Style content for custom uses.
+     */
+    void setDefault(boolean isDefault);
+
+    /** FeatureTypeStyles rendered in order of appearance in this list. */
+    List<FeatureTypeStyle> featureTypeStyles();
 
     /**
-     * Returns the default specification used if no rule return true. This specification should not
-     * use any external functions. This specification should use at least one spatial attribut.
+     * This functionality is from an ISO specificaiton; and conflicts with the idea of an else rule
+     * presented by SLD.
      *
-     * @return PortrayalSpecification
+     * <p>Implementations may choose to look up the first symbolizer of an elseFilter or allow this
+     * to be provided?
+     *
+     * @return Symbolizer to use if no rules work out.
      */
     Symbolizer getDefaultSpecification();
 
@@ -65,5 +82,16 @@ public interface Style {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** @param defaultSymbolizer To be used if a feature is not rendered by any of the rules */
+    void setDefaultSpecification(Symbolizer defaultSymbolizer);
+
+    /** Used to navigate Style information during portrayal. */
+    void accept(StyleVisitor visitor);
+
+    /** The background Fill , if any, <code>null</code> otherwise */
+    default Fill getBackground() {
+        return null;
+    }
 }

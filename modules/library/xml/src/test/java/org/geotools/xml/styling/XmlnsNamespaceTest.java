@@ -19,7 +19,7 @@ package org.geotools.xml.styling;
 import static org.junit.Assert.fail;
 
 import java.io.StringReader;
-import org.geotools.styling.Style;
+import org.geotools.api.style.Style;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.test.TestData;
 import org.junit.Test;

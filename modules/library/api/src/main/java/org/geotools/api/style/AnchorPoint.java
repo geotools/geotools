@@ -43,5 +43,26 @@ public interface AnchorPoint {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * Set the X coordinate for the anchor point
+     *
+     * @param x an expression which represents the X coordinate
+     */
+    void setAnchorPointX(Expression x);
+
+    /**
+     * set the Y coordinate for the anchor point
+     *
+     * @param y an expression which represents the Y coordinate
+     */
+    void setAnchorPointY(Expression y);
+
+    /**
+     * calls the visit method of a StyleVisitor
+     *
+     * @param visitor the style visitor
+     */
+    void accept(StyleVisitor visitor);
 }

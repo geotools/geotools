@@ -19,10 +19,9 @@ package org.geotools.renderer.style;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.VolatileFunction;
-import org.geotools.styling.Font;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TextSymbolizer;
 
 /**
  * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
@@ -67,13 +66,13 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
         return super.visit(expression, data);
     };
 
-    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
+    /** @see StyleVisitor#visit(org.geotools.api.style.TextSymbolizer) */
     @Override
     public void visit(TextSymbolizer text) {
 
-        if (text instanceof TextSymbolizer2) {
-            if (((TextSymbolizer2) text).getGraphic() != null)
-                ((TextSymbolizer2) text).getGraphic().accept(this);
+        if (text instanceof TextSymbolizer) {
+            if (((TextSymbolizer) text).getGraphic() != null)
+                ((TextSymbolizer) text).getGraphic().accept(this);
         }
 
         if (text.getFill() != null) {

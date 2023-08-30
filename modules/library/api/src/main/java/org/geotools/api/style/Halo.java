@@ -24,6 +24,9 @@ import org.geotools.api.filter.expression.Expression;
  */
 public interface Halo {
 
+    /** Expression that represents the the distance the halo extends from the text */
+    void setRadius(Expression radius);
+
     /**
      * Returns the object that indicates how the halo area around the text should be filled.
      *
@@ -53,5 +56,10 @@ public interface Halo {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** The fill (color) of the halo */
+    void setFill(Fill fill);
+
+    void accept(StyleVisitor visitor);
 }

@@ -605,19 +605,18 @@ public class Hints extends RenderingHints {
     public static final Key COORDINATE_DIMENSION = new Key(Integer.class);
 
     /**
-     * The {@link org.geotools.styling.StyleFactory} instance to use.
+     * The {@link org.geotools.api.style.StyleFactory} instance to use.
      *
-     * @see CommonFactoryFinder#getStyleFactory
      * @since 2.4
      */
-    public static final ClassKey STYLE_FACTORY = new ClassKey("org.geotools.styling.StyleFactory");
+    public static final ClassKey STYLE_FACTORY =
+            new ClassKey("org.geotools.api.style.StyleFactory");
 
     /**
      * The color definition to use when converting from String to Color. "CSS" corresponds to the
      * CSS Color Module 4 name set ( <a
      * href="https://www.w3.org/TR/css-color-4/#named-colors">https://www.w3.org/TR/css-color-4/#named-colors</a>)
      *
-     * @see CommonFactoryFinder#getStyleFactory
      * @since 17
      */
     public static final OptionKey COLOR_DEFINITION = new OptionKey("CSS");
@@ -625,7 +624,6 @@ public class Hints extends RenderingHints {
     /**
      * The {@link org.geotools.feature.AttributeTypeFactory} instance to use.
      *
-     * @see CommonFactoryFinder#getAttributeTypeFactory
      * @since 2.4
      */
     public static final ClassKey ATTRIBUTE_TYPE_FACTORY =
@@ -634,7 +632,6 @@ public class Hints extends RenderingHints {
     /**
      * The {@link org.geotools.api.filter.FilterFactory} instance to use.
      *
-     * @see CommonFactoryFinder#getFilterFactory
      * @since 2.4
      */
     public static final ClassKey FILTER_FACTORY =

@@ -17,10 +17,10 @@
 
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.SelectedChannelType;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**

@@ -18,8 +18,8 @@ package org.geotools.renderer.lite;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
 
 /** @author jamesm */
 public interface GlyphRenderer {

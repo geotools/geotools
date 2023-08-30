@@ -16,7 +16,7 @@
  */
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
 
 /** RenderingSelectorStyleVisitor implementation meant to be used when rendering legends * */
 public class LegendRenderingSelectorStyleVisitor extends RenderingSelectorStyleVisitor {

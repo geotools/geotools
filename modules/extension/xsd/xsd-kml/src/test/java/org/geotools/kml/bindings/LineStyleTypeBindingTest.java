@@ -19,9 +19,9 @@ package org.geotools.kml.bindings;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
+import org.geotools.api.style.LineSymbolizer;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.xsd.Binding;
 import org.junit.Test;

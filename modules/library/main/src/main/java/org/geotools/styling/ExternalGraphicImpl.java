@@ -30,6 +30,8 @@ import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.ColorReplacement;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.util.Utilities;
@@ -38,7 +40,8 @@ import org.geotools.util.Utilities;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
+public class ExternalGraphicImpl
+        implements Symbol, Cloneable, org.geotools.api.style.ExternalGraphic {
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(ExternalGraphicImpl.class);
@@ -131,12 +134,12 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

@@ -26,6 +26,11 @@ import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.MapBoxFontBaseNameFunction;
@@ -34,12 +39,6 @@ import org.geotools.mbstyle.function.MapBoxFontWeightFunction;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Font;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.Rule;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -132,7 +131,7 @@ public class SymbolMBLayerTest {
         assertEquals(0, testLayerDefault.getTextRotate().intValue());
         // Default values from FeatureTypeStyle transform
         Rule r = featureTypeDefaults.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
         PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
         assertEquals("0.0", pp.getRotation().toString());
     }
@@ -143,7 +142,7 @@ public class SymbolMBLayerTest {
         assertEquals(10, testLayer.getTextRotate().intValue());
         // Test values from FeatureTypeStyle transform
         Rule r = featureTypeTestValues.get(0).rules().get(0);
-        TextSymbolizer2 symbolizer = (TextSymbolizer2) r.symbolizers().get(0);
+        TextSymbolizer symbolizer = (TextSymbolizer) r.symbolizers().get(0);
         PointPlacement pp = (PointPlacement) symbolizer.getLabelPlacement();
         assertEquals("10", pp.getRotation().toString());
     }

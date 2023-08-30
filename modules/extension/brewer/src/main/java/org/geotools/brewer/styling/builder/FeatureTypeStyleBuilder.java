@@ -25,12 +25,12 @@ import java.util.Set;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
 import org.geotools.brewer.styling.filter.IdBuilder;
 import org.geotools.feature.NameImpl;
-import org.geotools.styling.Description;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
 
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;

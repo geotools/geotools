@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.geotools.styling.ExternalGraphic;
+import org.geotools.api.style.ExternalGraphic;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
 import org.w3c.dom.Element;

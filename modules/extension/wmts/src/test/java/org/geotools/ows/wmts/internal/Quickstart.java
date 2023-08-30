@@ -3,6 +3,7 @@ package org.geotools.ows.wmts.internal;
 import java.io.File;
 import java.net.URL;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.Style;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -15,7 +16,6 @@ import org.geotools.ows.wmts.map.WMTSMapLayer;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
 import org.geotools.swing.JMapFrame;
 
 /**

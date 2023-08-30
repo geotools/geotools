@@ -16,6 +16,8 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.filter.ConstantExpression;
 
 /**
@@ -48,27 +50,23 @@ import org.geotools.filter.ConstantExpression;
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
-public class OverlapBehavior extends ConstantExpression {
-    public static final String AVERAGE_RESCTRICTION = "AVERAGE";
-    public static final String RANDOM_RESCTRICTION = "RANDOM";
-    public static final String LATEST_ON_TOP_RESCTRICTION = "LATEST_ON_TOP";
-    public static final String EARLIEST_ON_TOP_RESCTRICTION = "EARLIEST_ON_TOP";
-    public static final String UNSPECIFIED_RESCTRICTION = "UNSPECIFIED";
+public class OverlapBehaviorImpl extends ConstantExpression implements OverlapBehavior {
 
-    public static final OverlapBehavior LATEST_ON_TOP =
-            new OverlapBehavior(OverlapBehavior.LATEST_ON_TOP_RESCTRICTION);
-    public static final OverlapBehavior EARLIEST_ON_TOP =
-            new OverlapBehavior(OverlapBehavior.EARLIEST_ON_TOP_RESCTRICTION);
-    public static final OverlapBehavior AVERAGE =
-            new OverlapBehavior(OverlapBehavior.AVERAGE_RESCTRICTION);
-    public static final OverlapBehavior RANDOM =
-            new OverlapBehavior(OverlapBehavior.RANDOM_RESCTRICTION);
+    public static final OverlapBehaviorImpl LATEST_ON_TOP =
+            new OverlapBehaviorImpl(OverlapBehavior.LATEST_ON_TOP_RESCTRICTION);
+    public static final OverlapBehaviorImpl EARLIEST_ON_TOP =
+            new OverlapBehaviorImpl(OverlapBehavior.EARLIEST_ON_TOP_RESCTRICTION);
+    public static final OverlapBehaviorImpl AVERAGE =
+            new OverlapBehaviorImpl(OverlapBehavior.AVERAGE_RESCTRICTION);
+    public static final OverlapBehaviorImpl RANDOM =
+            new OverlapBehaviorImpl(OverlapBehavior.RANDOM_RESCTRICTION);
 
-    private OverlapBehavior(String value) {
+    private OverlapBehaviorImpl(String value) {
         super(value);
     }
 
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    @Override
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 }

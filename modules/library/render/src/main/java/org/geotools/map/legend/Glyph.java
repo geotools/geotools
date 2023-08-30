@@ -23,7 +23,7 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.styling.Rule;
+import org.geotools.api.style.Rule;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;

@@ -80,5 +80,21 @@ public interface LinePlacement extends LabelPlacement {
      * @param visitor the style visitor
      */
     @Override
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * Sets the expression that is used to compute how far from the lines the text will be drawn.
+     * See {@link #getPerpendicularOffset} for details.
+     */
+    void setPerpendicularOffset(Expression offset);
+
+    void setRepeated(boolean repeated);
+
+    void setGeneralized(boolean generalized);
+
+    void setAligned(boolean aligned);
+
+    void setGap(Expression gap);
+
+    void setInitialGap(Expression initialGap);
 }

@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.Rule;
+import org.geotools.api.style.Rule;
 
 /**
  * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be

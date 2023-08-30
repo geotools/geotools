@@ -18,7 +18,7 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.geotools.styling.Symbolizer;
+import org.geotools.api.style.Symbolizer;
 
 /** Base class handling options management */
 public abstract class SymbolizerBuilder<T extends Symbolizer> extends AbstractStyleBuilder<T> {

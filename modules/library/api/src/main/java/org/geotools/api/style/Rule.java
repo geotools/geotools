@@ -9,7 +9,9 @@
  */
 package org.geotools.api.style;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.metadata.citation.OnLineResource;
 
@@ -38,28 +40,64 @@ public interface Rule {
     String getName();
 
     /**
-     * Returns the description of this rule.
+     * Sets the name of the rule.
      *
-     * @return Description with usual informations used for user interfaces.
+     * @param name The name of the rule. This provides a way to identify a rule.
+     */
+    void setName(String name);
+
+    /**
+     * Description for this rule.
+     *
+     * @return Human readable description for use in user interfaces
+     * @since 2.5.x
      */
     Description getDescription();
 
     /**
-     * Returns a small Graphic that could be used by the rendering engine to draw a legend window.
+     * Filter used to select content for this rule to display.
      *
-     * <p>A nice user interface may want to present the user with a legend that indicates how
-     * features of a given type are being portrayed. Through its {@code LegendGraphic} property, a
-     * {@code Rule} may provide a custom picture to be used in such a legend window.
+     * <p>This filter is only consulted if isElseFilter is false.
      */
+    void setFilter(Filter filter);
+
+    /** @param isElse if this rule should accept any features not already rendered */
+    void setElseFilter(boolean isElse);
+
+    /** */
     GraphicLegend getLegend();
 
     /**
-     * Returns the filter that will limit the features for which this {@code Rule} will fire. This
-     * can only be non-null if {@link #isElseFilter} returns false. If this value is null and {@code
-     * isElseFilter} is false, this means that this {@code Rule} should fire for all features.
+     * Description for this rule.
      *
-     * @return Filter, use Filter.INCLUDES to indicate everything; or Filter.EXCLUDES for an "else"
-     *     rule
+     * @param description Human readable title and abstract.
+     */
+    void setDescription(Description description);
+
+    /**
+     * The smallest value for scale denominator at which symbolizers contained by this rule should
+     * be applied.
+     *
+     * @param scale The smallest (inclusive) denominator value that this rule will be active for.
+     */
+    void setMinScaleDenominator(double scale);
+
+    /**
+     * The largest value for scale denominator at which symbolizers contained by this rule should be
+     * applied.
+     *
+     * @param scale The largest (exclusive) denominator value that this rule will be active for.
+     */
+    void setMaxScaleDenominator(double scale);
+
+    /**
+     * This is the filter used to select content for this rule to display
+     *
+     * <p>
+     *
+     * @return Filter use to select content for this rule to display, Filter.INCLUDES to include all
+     *     content; or use Filter.EXCLUDES to mark this as an "else" Rule accepting all remaining
+     *     content
      */
     Filter getFilter();
 
@@ -92,27 +130,33 @@ public interface Rule {
      */
     double getMaxScaleDenominator();
 
-    /**
-     * This method returns the list of Symbolizer objects contained by this {@code Rule}.
-     *
-     * <p>We use a list of <? extends Symbolizer> to enable the possibility for an implementation to
-     * return a special type of Symbolizer. This doesnt mean a Rule must return a list of
-     * PointSymbolizer or TextSymbolizer only, no. The purpose of this if to offer the solution to
-     * return different implementations like MutableSymbolizer or RichSymbolizer and then avoid
-     * redundant cast in the code. If you dont intend to use a special interface you can override
-     * this method by : List<Symbolizer> symbolizers();
-     *
-     * @return the list of Symbolizer
-     */
-    List<? extends Symbolizer> symbolizers();
+    /** @param legend */
+    void setLegend(GraphicLegend legend);
 
     /**
-     * It is common to have a style coming from a external xml file, this method provide a way to
-     * get the original source if there is one. OGC SLD specification can use this method to know if
-     * a style must be written completely or if writing the online resource path is enough.
+     * The symbolizers contain the actual styling information for different geometry types. A single
+     * feature may be rendered by more than one of the symbolizers returned by this method. It is
+     * important that the symbolizers be applied in the order in which they are returned if the end
+     * result is to be as intended. All symbolizers should be applied to all features which make it
+     * through the filters in this rule regardless of the features' geometry. For example, a polygon
+     * symbolizer should be applied to line geometries and even points. If this is not the desired
+     * beaviour, ensure that either the filters block inappropriate features or that the
+     * FeatureTypeStyler which contains this rule has its FeatureTypeName or SemanticTypeIdentifier
+     * set appropriately.
      *
-     * @return OnlineResource or null
+     * @return An array of symbolizers to be applied, in sequence, to all of the features addressed
+     *     by the FeatureTypeStyler which contains this rule.
      */
+    Symbolizer[] getSymbolizers();
+
+    /**
+     * Symbolizers used, in order, to portray the features selected by this rule.
+     *
+     * <p>Please note that this list may be modified direct.
+     */
+    List<Symbolizer> symbolizers();
+
+    /** @return Location where this style is defined; file or server; or null if unknown */
     OnLineResource getOnlineResource();
 
     /**
@@ -120,5 +164,26 @@ public interface Rule {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** @param resource Indicates where this style is defined */
+    void setOnlineResource(OnLineResource resource);
+
+    /** Determines if a vendor option with the specific key has been set on this Rule. */
+    default boolean hasOption(String key) {
+        return false;
+    }
+
+    /**
+     * Map of vendor options for the Rule.
+     *
+     * <p>Client code looking for the existence of a single option should use {@link
+     * #hasOption(String)}
+     */
+    default Map<String, String> getOptions() {
+        return new HashMap<>();
+    }
+
+    /** Used to traverse the style data structure. */
+    void accept(StyleVisitor visitor);
 }

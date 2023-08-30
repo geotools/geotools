@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Fill;
+import org.geotools.api.style.Fill;
 
 /** Encodes a {@link Fill} as YSLD. */
 public class FillEncoder extends YsldEncodeHandler<Fill> {

@@ -35,6 +35,10 @@ import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
@@ -46,10 +50,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
@@ -395,7 +395,8 @@ class ZGroupLayer extends Layer {
         boolean cleanupStyle = false;
         for (FeatureTypeStyle fts : featureTypeStyles) {
             Map<String, String> options = fts.getOptions();
-            String compositingBaseDefinition = options.get(FeatureTypeStyle.COMPOSITE_BASE);
+            String compositingBaseDefinition =
+                    options.get(org.geotools.api.style.FeatureTypeStyle.COMPOSITE_BASE);
             if ("true".equalsIgnoreCase(compositingBaseDefinition)) {
                 this.compositingBase = true;
             }
@@ -415,8 +416,10 @@ class ZGroupLayer extends Layer {
                         public void visit(FeatureTypeStyle fts) {
                             super.visit(fts);
                             FeatureTypeStyle copy = (FeatureTypeStyle) pages.peek();
-                            copy.getOptions().remove(FeatureTypeStyle.COMPOSITE);
-                            copy.getOptions().remove(FeatureTypeStyle.COMPOSITE_BASE);
+                            copy.getOptions()
+                                    .remove(org.geotools.api.style.FeatureTypeStyle.COMPOSITE);
+                            copy.getOptions()
+                                    .remove(org.geotools.api.style.FeatureTypeStyle.COMPOSITE_BASE);
                         }
                     };
             layer.getStyle().accept(cleaner);

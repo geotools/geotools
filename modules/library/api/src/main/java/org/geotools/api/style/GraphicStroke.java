@@ -9,8 +9,6 @@
  */
 package org.geotools.api.style;
 
-import org.geotools.api.filter.expression.Expression;
-
 /**
  * The GraphicStroke element both indicates that a repeated-linear-graphic stroke type will be used.
  *
@@ -20,28 +18,4 @@ import org.geotools.api.filter.expression.Expression;
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
-public interface GraphicStroke extends Graphic {
-
-    /**
-     * InitialGap specifies how far away the first graphic will be drawn relative to the start of
-     * the rendering line
-     *
-     * @return Expression
-     */
-    Expression getInitialGap();
-
-    /**
-     * Gap gives the distance between two graphics.
-     *
-     * @return Expression
-     */
-    Expression getGap();
-
-    /**
-     * Calls the visit method of a StyleVisitor
-     *
-     * @param visitor the style visitor
-     */
-    @Override
-    Object accept(StyleVisitor visitor, Object extraData);
-}
+public interface GraphicStroke extends Graphic {}

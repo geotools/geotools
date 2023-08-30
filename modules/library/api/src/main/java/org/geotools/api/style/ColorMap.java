@@ -31,6 +31,10 @@ import org.geotools.api.filter.expression.Function;
  */
 public interface ColorMap {
 
+    int TYPE_RAMP = 1;
+    int TYPE_INTERVALS = 2;
+    int TYPE_VALUES = 3;
+
     /** @return Interpolate or Categorize function */
     Function getFunction();
 
@@ -39,5 +43,32 @@ public interface ColorMap {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    void addColorMapEntry(ColorMapEntry entry);
+
+    ColorMapEntry[] getColorMapEntries();
+
+    ColorMapEntry getColorMapEntry(int i);
+
+    /**
+     * Type of color map; matchinges the function returned by getFunction().getName()
+     *
+     * @return One of TYPE_RAMP, TYPE_INTERVALS, or TYPE_VALUE
+     */
+    int getType();
+
+    /** @param type One of TYPE_RAMP, TYPE_INTERVALS, or TYPE_VALUE */
+    void setType(int type);
+
+    void accept(StyleVisitor visitor);
+
+    /**
+     * Tells me to use 65536 colors even if 256 could suffice.
+     *
+     * @param extended <code>true</code> for using 65536 colors, <code>false</code> for using 256.
+     */
+    void setExtendedColors(boolean extended);
+
+    boolean getExtendedColors();
 }

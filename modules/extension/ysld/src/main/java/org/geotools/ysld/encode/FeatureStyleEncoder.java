@@ -19,8 +19,8 @@ package org.geotools.ysld.encode;
 
 import java.util.Optional;
 import java.util.logging.Logger;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
 import org.geotools.util.logging.Logging;
 
 /**

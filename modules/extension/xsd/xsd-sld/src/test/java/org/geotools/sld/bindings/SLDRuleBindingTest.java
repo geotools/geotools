@@ -21,7 +21,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Locale;
 import java.util.Map;
-import org.geotools.styling.Rule;
+import org.geotools.api.style.Rule;
 import org.junit.Test;
 
 public class SLDRuleBindingTest extends SLDTestSupport {

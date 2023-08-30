@@ -16,6 +16,8 @@
  */
 package org.geotools.se.v1_1;
 
+import org.geotools.api.style.ResourceLocator;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.se.v1_1.bindings.AnchorPointBinding;
 import org.geotools.se.v1_1.bindings.BaseSymbolizerBinding;
@@ -76,8 +78,6 @@ import org.geotools.se.v1_1.bindings.ThreshholdsBelongToTypeBinding;
 import org.geotools.se.v1_1.bindings.TrimBinding;
 import org.geotools.se.v1_1.bindings.VendorOptionBinding;
 import org.geotools.styling.DefaultResourceLocator;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;

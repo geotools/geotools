@@ -1,11 +1,11 @@
 package org.geotools.renderer.style;
 
 import java.net.URL;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.OpacityFinder;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.xml.styling.SLDParser;
 import org.junit.Test;

@@ -28,6 +28,7 @@ import java.util.List;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.style.SelectedChannelType;
 import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -35,7 +36,6 @@ import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
 

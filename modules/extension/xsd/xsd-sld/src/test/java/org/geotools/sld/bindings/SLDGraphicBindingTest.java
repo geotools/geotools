@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Mark;
 import org.geotools.filter.Filters;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
 import org.junit.Test;
 
 public class SLDGraphicBindingTest extends SLDTestSupport {

@@ -55,7 +55,7 @@ jobs:
         git clone -b remove-opengis https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
         echo "Checking out mapfish-print-v3"
         mkdir mapfish-print-v3
-        git clone https://github.com/mapfish/mapfish-print.git mapfish-print-v3
+        git clone -b opengis-migration https://github.com/mapfish/mapfish-print.git mapfish-print-v3
     - name: Apply org.opengis removal scripts
       run: |
         cd ~
@@ -85,8 +85,13 @@ jobs:
       run: |
         cd ~/mapfish-print-v3/
         touch CI.asc
-        # commented out as not building for the moment, will restore
-        # make build
+        echo "staging ~/.m2/repository folder"
+        mkdir -p m2/repository/org
+        cp -r ~/.m2/repository/org/geotools m2/repository/org/geotools
+        make build
+        # make acceptance-tests-up
+        # make acceptance-tests-run
+        # make acceptance-tests-down
     - name: Build Mapfish-print v2 with tests
       run: |
         cd ~

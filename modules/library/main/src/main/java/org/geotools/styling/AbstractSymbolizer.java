@@ -22,6 +22,8 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 
 public abstract class AbstractSymbolizer implements Symbolizer {

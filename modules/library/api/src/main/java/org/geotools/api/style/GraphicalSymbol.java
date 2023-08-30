@@ -18,4 +18,8 @@ package org.geotools.api.style;
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0
  */
-public interface GraphicalSymbol {}
+public interface GraphicalSymbol {
+    Symbol[] SYMBOLS_EMPTY = new Symbol[0];
+
+    void accept(StyleVisitor visitor);
+}

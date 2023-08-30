@@ -18,7 +18,11 @@ package org.geotools.styling;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.SimpleInternationalString;
 
@@ -37,7 +41,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
     /** Creates a new instance of DefaultPointSymbolizer */
     protected PointSymbolizerImpl() {
         this(
-                new GraphicImpl(),
+                (Graphic) new GraphicImpl(),
                 null,
                 null,
                 null,
@@ -58,7 +62,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      * @return The Graphic to be used when drawing a point
      */
     @Override
-    public GraphicImpl getGraphic() {
+    public Graphic getGraphic() {
         return graphic;
     }
 
@@ -81,12 +85,12 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
      * @param visitor The StyleVisitor to accept.
      */
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

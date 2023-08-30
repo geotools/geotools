@@ -301,7 +301,7 @@ Announce on GeoTools Blog
 
 #. Navigate to Blogger and sign in: https://www.blogger.com/
 #. Select the GeoTools blog from the list (if not listed, get someone to add you)
-#. Create a new blog post anouncing your release; copy and paste a previous blog post preserving series information unless this is the first of a new series
+#. Create a new blog post announcing your release; copy and paste a previous blog post preserving series information unless this is the first of a new series
 #. You will need to correct the following information: 
 
    * Update the Sourceforge links above to reflect the release

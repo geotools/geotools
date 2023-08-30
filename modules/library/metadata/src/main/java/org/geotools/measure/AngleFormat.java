@@ -18,7 +18,13 @@ package org.geotools.measure;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.text.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.MessageFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Level;

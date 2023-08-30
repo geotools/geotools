@@ -28,11 +28,11 @@ public class InternationalizationReplacements {
         //                                        + "\";"));
     }
 
-    private static String cleanKey(String k) {
+    static String cleanKey(String k) {
         return Pattern.quote("Errors.getPattern(" + k + ")");
     }
 
-    private static String cleanValue(String v) {
+    static String cleanValue(String v) {
         return v.replace("''", "'").replace("\"", "\\\"");
     }
 }

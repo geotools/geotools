@@ -17,7 +17,12 @@
 package org.geotools.util;
 
 import java.lang.reflect.Array;
-import java.text.*;
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Locale;
 import org.geotools.metadata.i18n.ErrorKeys;

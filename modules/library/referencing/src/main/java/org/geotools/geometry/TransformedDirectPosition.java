@@ -17,7 +17,7 @@
 package org.geotools.geometry;
 
 import java.text.MessageFormat;
-import org.geotools.api.geometry.DirectPosition;
+
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;

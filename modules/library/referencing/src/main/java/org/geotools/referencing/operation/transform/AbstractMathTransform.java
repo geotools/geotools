@@ -27,7 +27,6 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.text.MessageFormat;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.Identifier;

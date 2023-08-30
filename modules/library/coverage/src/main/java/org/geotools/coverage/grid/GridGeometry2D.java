@@ -994,7 +994,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             CoordinateReferenceSystem targetCRS = getCoordinateReferenceSystem();
             if (!CRS.equalsIgnoreMetadata(sourceCRS, targetCRS)) {
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2,
                                 sourceCRS,
                                 targetCRS));

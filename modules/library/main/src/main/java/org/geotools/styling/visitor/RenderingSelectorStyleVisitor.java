@@ -17,17 +17,17 @@
 
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
 
 import java.util.Map;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 
 /**
  * This abstract class applies the include VendorOptions to a Style eg. <VendorOption
@@ -95,7 +95,8 @@ public abstract class RenderingSelectorStyleVisitor extends DuplicatingStyleVisi
         boolean canRenderer;
         String value =
                 vendorOptions != null
-                        ? vendorOptions.get(FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
+                        ? vendorOptions.get(
+                                org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION)
                         : null;
         if (value == null) canRenderer = true;
         else if (value.equalsIgnoreCase(NORMAL.name())) canRenderer = true;

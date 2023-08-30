@@ -26,31 +26,53 @@ import org.geotools.api.metadata.citation.OnLineResource;
 public interface ExternalMark {
 
     /**
-     * Returns on online resource defined by an URI.
+     * Online resource defined by an URI.
      *
-     * <p>Both OnlineResource and InlineContent can't be null and both can't be set at the same
-     * time.
+     * <p>Only one of OnlineResource or InlineContent can be supplied.
      *
-     * @return OnlineResource or null
+     * @return OnlineResource or <code>null</code>
      */
     OnLineResource getOnlineResource();
 
+    /** @param resource Online resource with format defined by getFormat() */
+    void setOnlineResource(OnLineResource resource);
+
     /**
-     * Returns on inline content.
+     * Inline content.
      *
-     * <p>Both OnlineResource and InlineContent can't be null and both can't be set at the same
-     * time.
+     * <p>Only one of OnlineResource or InlineContent can be supplied.
      *
-     * @return InlineContent or null
+     * @return InlineContent or <code>null</code>
      */
     Icon getInlineContent();
 
     /**
-     * Returns the mime type of the onlineResource/InlineContent
+     * Icon to use for inline content.
+     *
+     * <p>This is often a SwingImageIcon with a format defined by getFormat()
+     */
+    void setInlineContent(Icon inline);
+
+    /**
+     * Mime type of the onlineResource/InlineContent
+     *
+     * <p>Common examples:
+     *
+     * <ul>
+     *   <li>image/svg
+     *   <li>image/png
+     *   <li>image/gif
+     * </ul>
+     *
+     * This information is used by a renderer to determine if it can support the image format being
+     * supplied.
      *
      * @return mime type
      */
     String getFormat();
+
+    /** @param mimeType Mime type of external (or internal) resource */
+    void setFormat(String mimeType);
 
     /**
      * Returns an integer value that can used for accessing a particular Font character in a TTF
@@ -65,5 +87,8 @@ public interface ExternalMark {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /** Mark index used to specify true type font character; or frame of an animated gif. */
+    void setMarkIndex(int markIndex);
 }

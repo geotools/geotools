@@ -47,7 +47,19 @@ import javax.media.jai.RenderedOp;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ContrastEnhancement;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethodStrategy;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -62,23 +74,11 @@ import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.styling.AbstractContrastMethodStrategy;
-import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ChannelSelectionImpl;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.ContrastMethodStrategy;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
@@ -1352,7 +1352,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, 40),
                             new Color(0, 0, 255, 125)
                         },
-                        ColorMap.TYPE_RAMP);
+                        org.geotools.api.style.ColorMap.TYPE_RAMP);
 
         rsb_1.setColorMap(cm);
 
@@ -1793,7 +1793,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, 40),
                             new Color(0, 0, 255, 125)
                         },
-                        ColorMap.TYPE_RAMP);
+                        org.geotools.api.style.ColorMap.TYPE_RAMP);
 
         rsb_1.setColorMap(cm);
 
@@ -2110,7 +2110,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, (int) (255 * 0.8)),
                             new Color(0, 0, 255, (int) (255 * 0.2))
                         },
-                        ColorMap.TYPE_RAMP);
+                        org.geotools.api.style.ColorMap.TYPE_RAMP);
         cm.setExtendedColors(true);
         rs.setColorMap(cm);
 
@@ -2261,7 +2261,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                             new Color(0, 255, 0, 40),
                             new Color(0, 0, 255, 125)
                         },
-                        ColorMap.TYPE_RAMP);
+                        org.geotools.api.style.ColorMap.TYPE_RAMP);
 
         rsb_1.setColorMap(cm);
 

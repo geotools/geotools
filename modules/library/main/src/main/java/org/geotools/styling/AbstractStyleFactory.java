@@ -22,6 +22,36 @@ import java.util.Collections;
 import java.util.Map;
 import javax.swing.Icon;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedStyle;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 
 /** Abstract base class for implementing style factories. */
 public abstract class AbstractStyleFactory implements StyleFactory {
@@ -158,7 +188,7 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @param color the color of the line
      * @param width the width of the line
      * @return the stroke object
-     * @see org.geotools.stroke
+     * @see org.geotools.api.style.Stroke
      */
     @Override
     public abstract Stroke createStroke(Expression color, Expression width);
@@ -170,7 +200,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @param width The width of the line
      * @param opacity The opacity of the line
      * @return The stroke
-     * @see org.geotools.stroke
      */
     @Override
     public abstract Stroke createStroke(Expression color, Expression width, Expression opacity);
@@ -188,7 +217,6 @@ public abstract class AbstractStyleFactory implements StyleFactory {
      * @param graphicFill - a graphic object to fill the line with
      * @param graphicStroke - a graphic object to draw the line with
      * @return The completed stroke.
-     * @see org.geotools.stroke
      */
     @Override
     public abstract Stroke createStroke(

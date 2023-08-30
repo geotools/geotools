@@ -14,51 +14,51 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.api.style;
 
-import java.util.List;
+import org.geotools.api.filter.Filter;
 
 /**
- * A NamedLayer is used to refer to a layer that has a name in a WMS.
+ * A FeatureTypeConstraint identifies a specific feature type and supplies filtering.
  *
  * <p>The details of this object are taken from the <a
  * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
  * Report (OGC 02-070) version 1.0.0.</a>:
  *
  * <pre><code>
- * &lt;xsd:element name="NamedLayer"&gt;
+ * &lt;xsd:element name="FeatureTypeConstraint"&gt;
  *   &lt;xsd:annotation&gt;
  *     &lt;xsd:documentation&gt;
- *       A NamedLayer is a layer of data that has a name advertised by a WMS.
+ *       A FeatureTypeConstraint identifies a specific feature type and
+ *       supplies filtering.
  *     &lt;/xsd:documentation&gt;
  *   &lt;/xsd:annotation&gt;
  *   &lt;xsd:complexType&gt;
  *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:Name"/&gt;
- *       &lt;xsd:element ref="sld:LayerFeatureConstraints" minOccurs="0"/&gt;
- *       &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
- *         &lt;xsd:element ref="sld:NamedStyle"/&gt;
- *         &lt;xsd:element ref="sld:UserStyle"/&gt;
- *       &lt;/xsd:choice&gt;
+ *       &lt;xsd:element ref="sld:FeatureTypeName" minOccurs="0"/&gt;
+ *       &lt;xsd:element ref="ogc:Filter" minOccurs="0"/&gt;
+ *       &lt;xsd:element ref="sld:Extent" minOccurs="0" maxOccurs="unbounded"/&gt;
  *     &lt;/xsd:sequence&gt;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
+ *
+ * <p>
+ *
+ * @author James Macgill
  */
-public interface NamedLayer extends StyledLayer {
+public interface FeatureTypeConstraint {
+    public String getFeatureTypeName();
 
-    public List<FeatureTypeConstraint> layerFeatureConstraints();
+    public void setFeatureTypeName(String name);
 
-    public FeatureTypeConstraint[] getLayerFeatureConstraints();
+    public Filter getFilter();
 
-    public void setLayerFeatureConstraints(FeatureTypeConstraint... constraints);
+    public void setFilter(Filter filter);
 
-    public List<Style> styles();
+    public Extent[] getExtents();
 
-    public Style[] getStyles();
+    public void setExtents(Extent... extents);
 
-    public void addStyle(Style sl);
-
-    /** Used to navigate a Style/SLD. */
-    void accept(StyleVisitor visitor);
+    public void accept(StyleVisitor visitor);
 }

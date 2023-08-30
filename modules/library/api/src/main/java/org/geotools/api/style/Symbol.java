@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2019, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,22 +14,22 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
 
-import org.geotools.api.filter.expression.Function;
+/*
+ * Symbol.java
+ *
+ * Created on 01 August 2002, 10:46
+ */
+package org.geotools.api.style;
 
 /**
- * Apply color replacement to an external graphic.
+ * This a mostly empty interface for styling symbol objects to implement
  *
- * <p>Can be used to indicate the background color to make transparent; or to swap colors around as
- * needed.
+ * @author iant
  */
-public interface ColorReplacement extends org.geotools.api.style.ColorReplacement {
+public interface Symbol extends org.geotools.api.style.GraphicalSymbol {
+    public static final Symbol[] SYMBOLS_EMPTY = new Symbol[0];
 
-    /** Function providing recoding of values. */
     @Override
-    Function getRecoding();
-
-    /** @param function Recoding function to use */
-    void setRecoding(Function function);
+    void accept(StyleVisitor visitor);
 }

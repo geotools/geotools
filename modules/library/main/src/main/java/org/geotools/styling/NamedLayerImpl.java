@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleVisitor;
 import org.geotools.util.Utilities;
 
 /**

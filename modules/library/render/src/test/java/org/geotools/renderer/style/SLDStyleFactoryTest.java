@@ -49,6 +49,19 @@ import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -61,20 +74,7 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.SLDStyleFactory.SymbolizerKey;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.hamcrest.CoreMatchers;
@@ -324,7 +324,8 @@ public class SLDStyleFactoryTest {
         PointSymbolizer symb = sf.createPointSymbolizer();
         ExternalGraphic eg = sf.createExternalGraphic(url + "iAmNotThere.png", "image/png");
         symb.getGraphic().graphicalSymbols().add(eg);
-        symb.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+        symb.getOptions()
+                .put(org.geotools.api.style.PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
 
         // fallback has been disabled
         Assert.assertNull(sld.createPointStyle(feature, symb, range));
@@ -392,7 +393,7 @@ public class SLDStyleFactoryTest {
         PolygonSymbolizer symb = sf.createPolygonSymbolizer();
         Mark myMark = sf.createMark();
         myMark.setWellKnownName(ff.literal("square"));
-        org.geotools.styling.Fill fill = sf.createFill(null);
+        org.geotools.api.style.Fill fill = sf.createFill(null);
         fill.setGraphicFill(sf.createGraphic(null, new Mark[] {myMark}, null, null, null, null));
         symb.setFill(fill);
 
@@ -537,7 +538,7 @@ public class SLDStyleFactoryTest {
                         ff.literal("bold"),
                         ff.literal(20));
         ts.setFont(font);
-        ts.getOptions().put(TextSymbolizer.KERNING_KEY, "false");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.KERNING_KEY, "false");
 
         TextStyle2D tsd = (TextStyle2D) sld.createTextStyle(feature, ts, range);
         Assert.assertEquals(20, tsd.getFont().getSize());

@@ -26,6 +26,11 @@ import java.io.InputStreamReader;
 import java.util.List;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -35,11 +40,6 @@ import org.geotools.ows.wms.WebMapServer;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 
 /**
  * Wraps a WMS layer into a {@link Layer} for interactive rendering usage TODO: expose a

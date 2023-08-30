@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Displacement;
+import org.geotools.api.style.Displacement;
 
 /** Encodes a {@link Displacement} as YSLD. */
 public class DisplacementEncoder extends YsldEncodeHandler<Displacement> {

@@ -36,8 +36,8 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
+                org.geotools.api.style.ChannelSelection sel,
+                org.geotools.api.style.SelectedChannelType chan) {
             sel.setGrayChannel(chan);
         }
     },
@@ -49,9 +49,9 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
+                org.geotools.api.style.ChannelSelection sel,
+                org.geotools.api.style.SelectedChannelType chan) {
+            org.geotools.api.style.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[0] = chan;
             sel.setRGBChannels(channels);
         }
@@ -64,9 +64,9 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
+                org.geotools.api.style.ChannelSelection sel,
+                org.geotools.api.style.SelectedChannelType chan) {
+            org.geotools.api.style.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[1] = chan;
             sel.setRGBChannels(channels);
         }
@@ -79,9 +79,9 @@ public enum Band {
 
         @Override
         public void setTo(
-                org.geotools.styling.ChannelSelection sel,
-                org.geotools.styling.SelectedChannelType chan) {
-            org.geotools.styling.SelectedChannelType[] channels = sel.getRGBChannels();
+                org.geotools.api.style.ChannelSelection sel,
+                org.geotools.api.style.SelectedChannelType chan) {
+            org.geotools.api.style.SelectedChannelType[] channels = sel.getRGBChannels();
             channels[2] = chan;
             sel.setRGBChannels(channels);
         }
@@ -97,8 +97,8 @@ public enum Band {
 
     /** Set the {@link SelectedChannelType} in sel that is represented by this band to chan. */
     public abstract void setTo(
-            org.geotools.styling.ChannelSelection sel,
-            org.geotools.styling.SelectedChannelType chan);
+            org.geotools.api.style.ChannelSelection sel,
+            org.geotools.api.style.SelectedChannelType chan);
 
     public final String key;
 

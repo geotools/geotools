@@ -49,5 +49,20 @@ public interface LineSymbolizer extends Symbolizer {
      * @param visitor the style visitor
      */
     @Override
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * Provides the graphical-symbolization parameter to use for the linear geometry.
+     *
+     * @param stroke The Stroke style to use when rendering lines.
+     */
+    void setStroke(Stroke stroke);
+
+    /**
+     * Define an offset to draw lines in parallel to the original geometry.
+     *
+     * @param offset Distance in UOMs to offset line; left-hand side is positive; right-hand side is
+     *     negative; the default value is 0
+     */
+    void setPerpendicularOffset(Expression offset);
 }

@@ -21,6 +21,7 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.Style;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -32,7 +33,6 @@ import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
 import org.locationtech.jts.geom.Polygon;
 

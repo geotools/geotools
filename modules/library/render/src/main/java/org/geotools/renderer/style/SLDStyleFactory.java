@@ -49,33 +49,33 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.style.RandomFillBuilder.PositionRandomizer;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
 import org.geotools.styling.MarkImpl;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.PointPlacementImpl;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.factory.Hints;
@@ -598,7 +598,9 @@ public class SLDStyleFactory {
         if (retval == null) {
             // vendor option to turn off fallback
             if (!voParser.getBooleanOption(
-                    symbolizer, PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, true)) {
+                    symbolizer,
+                    org.geotools.api.style.PointSymbolizer.FALLBACK_ON_DEFAULT_MARK,
+                    true)) {
                 return null;
             }
 
@@ -706,9 +708,13 @@ public class SLDStyleFactory {
         // compute label position, anchor, rotation and displacement
         LabelPlacement placement = symbolizer.getLabelPlacement();
         double anchorX =
-                PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointX().evaluate(null, Double.class);
+                PointPlacementImpl.DEFAULT_ANCHOR_POINT
+                        .getAnchorPointX()
+                        .evaluate(null, Double.class);
         double anchorY =
-                PointPlacement.DEFAULT_ANCHOR_POINT.getAnchorPointY().evaluate(null, Double.class);
+                PointPlacementImpl.DEFAULT_ANCHOR_POINT
+                        .getAnchorPointY()
+                        .evaluate(null, Double.class);
         double rotation = 0;
         double dispX = 0;
         double dispY = 0;
@@ -737,8 +743,8 @@ public class SLDStyleFactory {
             }
 
             // rotation
-            if ((symbolizer instanceof TextSymbolizer2)
-                    && (((TextSymbolizer2) symbolizer).getGraphic() != null)) {
+            if ((symbolizer instanceof TextSymbolizer)
+                    && (((TextSymbolizer) symbolizer).getGraphic() != null)) {
                 // don't rotate labels that are being placed on shields.
                 rotation = 0.0;
             } else {
@@ -778,8 +784,8 @@ public class SLDStyleFactory {
         }
 
         Graphic graphicShield = null;
-        if (symbolizer instanceof TextSymbolizer2) {
-            graphicShield = ((TextSymbolizer2) symbolizer).getGraphic();
+        if (symbolizer instanceof TextSymbolizer) {
+            graphicShield = symbolizer.getGraphic();
             if (graphicShield != null) {
                 Style2D shieldStyle =
                         createPointStyle(feature, symbolizer, graphicShield, scaleRange, true);
@@ -882,15 +888,17 @@ public class SLDStyleFactory {
         // check vendor options
         boolean kerning =
                 voParser.getBooleanOption(
-                        symbolizer, TextSymbolizer.KERNING_KEY, TextSymbolizer.DEFAULT_KERNING);
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.KERNING_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_KERNING);
         if (kerning) {
             javaFont = applyKerning(javaFont);
         }
         double spacing =
                 voParser.getDoubleOption(
                         symbolizer,
-                        TextSymbolizer.CHAR_SPACING_KEY,
-                        TextSymbolizer.DEFAULT_CHAR_SPACING);
+                        org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_CHAR_SPACING);
         if (spacing != 0) {
             javaFont = applySpacing(javaFont, spacing);
         }
@@ -911,7 +919,7 @@ public class SLDStyleFactory {
     // be needed during rendering
     private Style2D getGraphicStroke(
             Symbolizer symbolizer,
-            org.geotools.styling.Stroke stroke,
+            org.geotools.api.style.Stroke stroke,
             Object feature,
             Range scaleRange) {
         if ((stroke == null) || (stroke.getGraphicStroke() == null)) {
@@ -922,7 +930,7 @@ public class SLDStyleFactory {
         return createPointStyle(feature, symbolizer, stroke.getGraphicStroke(), scaleRange, false);
     }
 
-    Stroke getStroke(org.geotools.styling.Stroke stroke, Object feature) {
+    Stroke getStroke(org.geotools.api.style.Stroke stroke, Object feature) {
         if (stroke == null) {
             return null;
         }
@@ -980,7 +988,7 @@ public class SLDStyleFactory {
         return true;
     }
 
-    public static float[] evaluateDashArray(org.geotools.styling.Stroke stroke, Object feature)
+    public static float[] evaluateDashArray(org.geotools.api.style.Stroke stroke, Object feature)
             throws NumberFormatException {
         if (stroke.dashArray() != null && !stroke.dashArray().isEmpty()) {
             List<Float> dashArrayValues = new ArrayList<>();
@@ -1011,7 +1019,7 @@ public class SLDStyleFactory {
         return dashValues;
     }
 
-    private Paint getStrokePaint(org.geotools.styling.Stroke stroke, Object feature) {
+    private Paint getStrokePaint(org.geotools.api.style.Stroke stroke, Object feature) {
         if (stroke == null) {
             return null;
         }
@@ -1020,7 +1028,7 @@ public class SLDStyleFactory {
         Paint contourPaint = evalToColor(stroke.getColor(), feature, Color.BLACK);
 
         // if a graphic fill is to be used, prepare the paint accordingly....
-        org.geotools.styling.Graphic gr = stroke.getGraphicFill();
+        org.geotools.api.style.Graphic gr = stroke.getGraphicFill();
 
         if (gr != null && gr.graphicalSymbols() != null && gr.graphicalSymbols().size() > 0) {
             contourPaint = getTexturePaint(gr, feature, null);
@@ -1029,7 +1037,7 @@ public class SLDStyleFactory {
         return contourPaint;
     }
 
-    private Composite getStrokeComposite(org.geotools.styling.Stroke stroke, Object feature) {
+    private Composite getStrokeComposite(org.geotools.api.style.Stroke stroke, Object feature) {
         if (stroke == null) {
             return null;
         }
@@ -1050,7 +1058,7 @@ public class SLDStyleFactory {
         Paint fillPaint = evalToColor(fill.getColor(), feature, null);
 
         // if a graphic fill is to be used, prepare the paint accordingly....
-        org.geotools.styling.Graphic gr = fill.getGraphicFill();
+        org.geotools.api.style.Graphic gr = fill.getGraphicFill();
 
         if (gr != null && gr.graphicalSymbols() != null && gr.graphicalSymbols().size() > 0) {
             fillPaint = getTexturePaint(gr, feature, symbolizer);
@@ -1073,7 +1081,7 @@ public class SLDStyleFactory {
     }
 
     TexturePaint getTexturePaint(
-            org.geotools.styling.Graphic gr, Object feature, Symbolizer symbolizer) {
+            org.geotools.api.style.Graphic gr, Object feature, Symbolizer symbolizer) {
         // -1 to have the image use its natural size if none was provided by the
         // user
         double graphicSize = evalToDouble(gr.getSize(), feature, -1);
@@ -1162,7 +1170,11 @@ public class SLDStyleFactory {
     }
 
     private BufferedImage markToTilableImage(
-            org.geotools.styling.Graphic gr, Object feature, Mark mark, Shape shape, int[] margin) {
+            org.geotools.api.style.Graphic gr,
+            Object feature,
+            Mark mark,
+            Shape shape,
+            int[] margin) {
         Rectangle2D shapeBounds = shape.getBounds2D();
 
         // The aspect ratio is the relation between the width and height of
@@ -1482,7 +1494,7 @@ public class SLDStyleFactory {
      */
     public static Composite getComposite(Map<String, String> options, float defaultOpacity) {
         // get the spec, if no spec, no composite
-        String spec = options.get(FeatureTypeStyle.COMPOSITE);
+        String spec = options.get(org.geotools.api.style.FeatureTypeStyle.COMPOSITE);
         if (spec == null) {
             return null;
         }
@@ -1495,7 +1507,7 @@ public class SLDStyleFactory {
             if (split.length != 2) {
                 throw new IllegalArgumentException(
                         "Invalid syntax for "
-                                + FeatureTypeStyle.COMPOSITE
+                                + org.geotools.api.style.FeatureTypeStyle.COMPOSITE
                                 + " key, expecting 'name' or 'name,opacity' but got "
                                 + spec);
             }
@@ -1722,7 +1734,7 @@ public class SLDStyleFactory {
         if (!Boolean.parseBoolean(
                 symbolizer.getOptions().getOrDefault(MarkAlongLine.VENDOR_OPTION_NAME, "false")))
             return false;
-        org.geotools.styling.Stroke stroke = symbolizer.getStroke();
+        org.geotools.api.style.Stroke stroke = symbolizer.getStroke();
         if (stroke == null) return false;
         if (stroke.getGraphicStroke() == null) return false;
         if (stroke.getGraphicStroke().graphicalSymbols().isEmpty()) return false;

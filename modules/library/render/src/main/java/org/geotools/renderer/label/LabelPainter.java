@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.label;
 
-import static org.geotools.styling.TextSymbolizer.GraphicPlacement.INDEPENDENT;
+import static org.geotools.api.style.TextSymbolizer.GraphicPlacement.INDEPENDENT;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;

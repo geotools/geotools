@@ -16,11 +16,11 @@
  */
 package org.geotools.brewer.styling.builder;
 
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.LayerFeatureConstraints;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.brewer.styling.filter.expression.ChildExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.LayerFeatureConstraints;
-import org.geotools.styling.StyleFactory;
 
 public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureConstraints> {
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);

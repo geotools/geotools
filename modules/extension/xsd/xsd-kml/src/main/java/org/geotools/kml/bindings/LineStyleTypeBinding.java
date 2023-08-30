@@ -18,8 +18,8 @@ package org.geotools.kml.bindings;
 
 import java.awt.Color;
 import javax.xml.namespace.QName;
+import org.geotools.api.style.LineSymbolizer;
 import org.geotools.kml.KML;
-import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Binding;

@@ -22,7 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastEnhancement;
 import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethodStrategy;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.factory.CommonFactoryFinder;
 
 /**
@@ -62,7 +66,7 @@ import org.geotools.factory.CommonFactoryFinder;
  *
  * @author iant
  */
-public class ContrastEnhancementImpl implements ContrastEnhancement {
+public class ContrastEnhancementImpl implements org.geotools.api.style.ContrastEnhancement {
 
     @SuppressWarnings("PMD.UnusedPrivateField")
     private FilterFactory filterFactory;
@@ -128,7 +132,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
+    public Object accept(TraversingStyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 

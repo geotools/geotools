@@ -17,7 +17,7 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.styling.Graphic;
+import org.geotools.api.style.Graphic;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

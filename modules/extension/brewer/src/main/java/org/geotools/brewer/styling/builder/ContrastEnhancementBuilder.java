@@ -19,8 +19,8 @@ package org.geotools.brewer.styling.builder;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastEnhancement;
 import org.geotools.api.style.ContrastMethod;
-import org.geotools.styling.ContrastEnhancement;
 
 public class ContrastEnhancementBuilder extends AbstractStyleBuilder<ContrastEnhancement> {
     private Expression gamma = null;

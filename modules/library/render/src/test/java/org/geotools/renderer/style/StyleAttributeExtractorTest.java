@@ -12,12 +12,12 @@ import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Rule;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 

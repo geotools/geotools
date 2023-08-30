@@ -18,10 +18,10 @@ package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.se.v1_1.SE;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

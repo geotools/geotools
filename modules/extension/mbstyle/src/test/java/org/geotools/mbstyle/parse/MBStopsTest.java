@@ -22,11 +22,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.MBLayer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;

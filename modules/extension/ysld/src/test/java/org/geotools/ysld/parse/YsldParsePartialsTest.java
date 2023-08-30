@@ -20,9 +20,9 @@ package org.geotools.ysld.parse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.geotools.styling.PointSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.SLD;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.Ysld;
 import org.junit.Test;
 

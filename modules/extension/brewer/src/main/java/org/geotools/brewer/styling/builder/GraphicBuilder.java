@@ -21,12 +21,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
 import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.Symbol;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Symbol;
 
 public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.Graphic> {
     List<Builder<? extends Symbol>> symbols = new ArrayList<>();
@@ -191,7 +191,8 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
                 Symbol symbol = (Symbol) graphicalSymbol;
                 Builder<? extends Symbol> builder;
                 if (symbol instanceof Mark) {
-                    builder = new MarkBuilder(this).reset((Mark) symbol);
+                    builder =
+                            (Builder<? extends Symbol>) new MarkBuilder(this).reset((Mark) symbol);
                 } else if (symbol instanceof ExternalGraphic) {
                     builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
                 } else {

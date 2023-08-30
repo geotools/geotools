@@ -16,10 +16,12 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
 
-public class DescriptionImpl implements Description {
+public class DescriptionImpl implements org.geotools.api.style.Description {
     private InternationalString title;
 
     private InternationalString description;
@@ -74,7 +76,7 @@ public class DescriptionImpl implements Description {
     }
 
     @Override
-    public Object accept(org.geotools.api.style.StyleVisitor visitor, Object extraData) {
+    public Object accept(TraversingStyleVisitor visitor, Object extraData) {
         return null;
     }
 

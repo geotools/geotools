@@ -54,6 +54,9 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.SelectedChannelType;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -78,9 +81,6 @@ import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
@@ -888,8 +888,7 @@ public final class GridCoverageRenderer {
 
     /**
      * Paint this grid coverage. The caller must ensure that <code>graphics</code> has an affine
-     * transform mapping "real world" coordinates in the coordinate system given by {@link
-     * #getCoordinateSystem}.
+     * transform mapping "real world" coordinates in the coordinate system given by
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
      * @throws UnsupportedOperationException if the transformation from grid to coordinate system in

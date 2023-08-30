@@ -14,21 +14,16 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
-
-import java.net.URL;
+package org.geotools.api.style;
 
 /**
- * Provides a hook to locate online resources in {@link ExternalGraphic} instances. To be used by
- * parser implementers.
+ * 'StyledLayer' is not part of the SLD 1.0 spec. We're currently used it as a parent interface for
+ * NamedLayer and UserLayer.
+ *
+ * <p>TODO: investigate why this is here.
  */
-public interface ResourceLocator {
+public interface StyledLayer {
+    public String getName();
 
-    /**
-     * Locate the specified resource.
-     *
-     * @param uri uri of the resource
-     * @return the fully resolved URL of the resource or null, if the resource cannot be located.
-     */
-    URL locateResource(String uri);
+    public void setName(String name);
 }

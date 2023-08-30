@@ -17,15 +17,15 @@
 package org.geotools.renderer.lite;
 
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.StyleFactory;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.util.Range;
 

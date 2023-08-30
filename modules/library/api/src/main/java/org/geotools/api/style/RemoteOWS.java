@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,30 +14,26 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
-
-import org.geotools.api.filter.Filter;
+package org.geotools.api.style;
 
 /**
- * A FeatureTypeConstraint identifies a specific feature type and supplies filtering.
+ * A RemoteOWS gives a reference to a remote WFS/WCS/other-OWS server.
  *
  * <p>The details of this object are taken from the <a
  * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
  * Report (OGC 02-070) version 1.0.0.</a>:
  *
  * <pre><code>
- * &lt;xsd:element name="FeatureTypeConstraint"&gt;
+ * &lt;xsd:element name="RemoteOWS"&gt;
  *   &lt;xsd:annotation&gt;
  *     &lt;xsd:documentation&gt;
- *       A FeatureTypeConstraint identifies a specific feature type and
- *       supplies filtering.
+ *       A RemoteOWS gives a reference to a remote WFS/WCS/other-OWS server.
  *     &lt;/xsd:documentation&gt;
  *   &lt;/xsd:annotation&gt;
  *   &lt;xsd:complexType&gt;
  *     &lt;xsd:sequence&gt;
- *       &lt;xsd:element ref="sld:FeatureTypeName" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="ogc:Filter" minOccurs="0"/&gt;
- *       &lt;xsd:element ref="sld:Extent" minOccurs="0" maxOccurs="unbounded"/&gt;
+ *       &lt;xsd:element ref="sld:Service"/&gt;
+ *       &lt;xsd:element ref="sld:OnlineResource"/&gt;
  *     &lt;/xsd:sequence&gt;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
@@ -47,18 +43,12 @@ import org.geotools.api.filter.Filter;
  *
  * @author James Macgill
  */
-public interface FeatureTypeConstraint {
-    public String getFeatureTypeName();
+public interface RemoteOWS {
+    String getService();
 
-    public void setFeatureTypeName(String name);
+    void setService(String service);
 
-    public Filter getFilter();
+    String getOnlineResource();
 
-    public void setFilter(Filter filter);
-
-    public Extent[] getExtents();
-
-    public void setExtents(Extent... extents);
-
-    public void accept(org.geotools.styling.StyleVisitor visitor);
+    void setOnlineResource(String onlineResource);
 }

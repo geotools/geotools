@@ -9,16 +9,17 @@
  */
 package org.geotools.api.style;
 
+import java.util.List;
 import org.geotools.api.filter.expression.Expression;
 
 /**
  * Contains all the information needed to draw styled lines. Stroke objects are contained by {@link
- * LineSymbol}s and {@link PolygonSymbol}s. There are three basic types of strokes: solid-color,
- * {@code GraphicFill} (stipple), and repeated linear {@code GraphicStroke}. A repeated linear
- * graphic is plotted linearly and has its graphic symbol bent around the curves of the line string,
- * and a graphic fill has the pixels of the line rendered with a repeating area-fill pattern. If
- * neither a {@link #getGraphicFill GraphicFill} nor {@link #getGraphicStroke GraphicStroke} element
- * is given, then the line symbolizer will render a solid color.
+ * LineSymbolizer}s and {@link PolygonSymbolizer}s. There are three basic types of strokes:
+ * solid-color, {@code GraphicFill} (stipple), and repeated linear {@code GraphicStroke}. A repeated
+ * linear graphic is plotted linearly and has its graphic symbol bent around the curves of the line
+ * string, and a graphic fill has the pixels of the line rendered with a repeating area-fill
+ * pattern. If neither a {@link #getGraphicFill GraphicFill} nor {@link #getGraphicStroke
+ * GraphicStroke} element is given, then the line symbolizer will render a solid color.
  *
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
@@ -30,25 +31,45 @@ import org.geotools.api.filter.expression.Expression;
 public interface Stroke {
 
     /**
-     * If non-null, indicates that line should be drawn by tiling the (thin) area of the line with
-     * the given graphic. Between {@code getGraphicFill()} and {@link #getGraphicStroke()}, only one
-     * may return a non-null value since a {@code Stroke} can have a {@code GraphicFill} or a {@code
-     * GraphicStroke}, but not both.
+     * Default Stroke capturing the defaults indicated by the standard.
      *
-     * @return Graphic
+     * <p>For some attributes the standard does not define a default, so a reasonable value is
+     * supplied.
      */
-    GraphicFill getGraphicFill();
 
     /**
-     * If non-null, indicates that lines should be drawn by repeatedly plotting the given graphic
-     * along the path of the lines, rotating it according to the orientation of the line. Between
-     * {@link #getGraphicFill()} and {@code getGraphicStroke}, only one may return a non-null value
-     * since a {@code Stroke} can have a {@code GraphicFill} or a {@code GraphicStroke}, but not
-     * both.
-     *
-     * @return Graphic
+     * A dash array need not start from the beginning. This method allows for an offset into the
+     * dash array before starting it.
      */
-    GraphicStroke getGraphicStroke();
+    void setDashOffset(Expression dashOffset);
+
+    /**
+     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
+     * fill graphic to use.
+     *
+     * @return The graphic to use as a stipple fill. If null, then no Stipple fill should be used.
+     */
+    Graphic getGraphicFill();
+
+    /**
+     * This parameter indicates that a stipple-fill repeated graphic will be used and specifies the
+     * fill graphic to use.
+     */
+    void setGraphicFill(Graphic graphicFill);
+
+    /**
+     * This parameter indicates that a repeated-linear-graphic graphic stroke type will be used and
+     * specifies the graphic to use.
+     *
+     * <p>Proper stroking with a linear graphic requires two "hot-spot" points within the space of
+     * the graphic to indicate where the rendering line starts and stops. In the case of raster
+     * images with no special mark-up, this line will be assumed to be the middle pixel row of the
+     * image, starting from the first pixel column and ending at the last pixel column.
+     *
+     * @return The graphic to use as a linear graphic. If null, then no graphic stroke should be
+     *     used.
+     */
+    Graphic getGraphicStroke();
 
     // *************************************************************
     // SVG PARAMETERS
@@ -84,20 +105,38 @@ public interface Stroke {
     Expression getWidth();
 
     /**
-     * Indicates how the various segments of a (thick) line string should be joined. Valid values
-     * are "miter", "round", and "bevel". If null, the default value is system dependent (probably
-     * whichever one is fastest to render).
+     * This parameter gives the solid color that will be used for a stroke.<br>
+     * The color value is RGB-encoded using two hexidecimal digits per primary-color component in
+     * the order Red, Green, Blue, prefixed wih the hash (#) sign. The hexidecimal digits between A
+     * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
+     * (with no quotation marks).
      *
-     * @return expression
+     * <p>Note: in CSS this parameter is just called Stroke and not Color.
      */
-    Expression getLineJoin();
+    void setColor(Expression color);
 
     /**
-     * Indicates how the beginning and ending segments of a line string will be terminated. Valid
-     * values are "butt", "round", and "square". If null, the default value is system dependent.
-     *
-     * @return expression
+     * This parameter gives the absolute width (thickness) of a stroke in pixels encoded as a float.
+     * Fractional numbers are allowed but negative numbers are not.
      */
+    void setWidth(Expression width);
+
+    /**
+     * This specifies the level of translucency to use when rendering the stroke.<br>
+     * The value is encoded as a floating-point value between 0.0 and 1.0 with 0.0 representing
+     * totally transparent and 1.0 representing totally opaque. A linear scale of translucency is
+     * used for intermediate values.<br>
+     * For example, "0.65" would represent 65% opacity.
+     */
+    void setOpacity(Expression opacity);
+
+    /** This parameter controls how line strings should be joined together. */
+    Expression getLineJoin();
+
+    /** This parameter controls how line strings should be joined together. */
+    void setLineJoin(Expression lineJoin);
+
+    /** This parameter controls how line strings should be capped. */
     Expression getLineCap();
 
     /**
@@ -112,11 +151,41 @@ public interface Stroke {
      */
     float[] getDashArray();
 
+    /** This parameter controls how line strings should be capped. */
+    void setLineCap(Expression lineCap);
+
+    /** Shortcut to define dash array using literal numbers. */
+    void setDashArray(float[] dashArray);
+
     /**
-     * Indicates the distance offset into the dash array to begin drawing. If null, the default
-     * value is zero.
+     * This parameter encodes the dash pattern as a seqeuence of floats.<br>
+     * The first number gives the length in pixels of the dash to draw, the second gives the amount
+     * of space to leave, and this pattern repeats.<br>
+     * If an odd number of values is given, then the pattern is expanded by repeating it twice to
+     * give an even number of values.
      *
-     * @return expression
+     * <p>For example, "2 1 3 2" would produce:<br>
+     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
+     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
+     */
+    List<Expression> dashArray();
+
+    /**
+     * This parameter encodes the dash pattern as a list of expressions.<br>
+     * The first expression gives the length in pixels of the dash to draw, the second gives the
+     * amount of space to leave, and this pattern repeats.<br>
+     * If an odd number of values is given, then the pattern is expanded by repeating it twice to
+     * give an even number of values.
+     *
+     * <p>For example, "2 1 3 2" would produce:<br>
+     * <code>--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;
+     * --&nbsp;---&nbsp;&nbsp;--&nbsp;---&nbsp;&nbsp;--</code>
+     */
+    void setDashArray(List<Expression> dashArray);
+
+    /**
+     * A dash array need not start from the beginning. This method allows for an offset into the
+     * dash array before starting it.
      */
     Expression getDashOffset();
 
@@ -125,5 +194,85 @@ public interface Stroke {
      *
      * @param visitor the style visitor
      */
-    Object accept(StyleVisitor visitor, Object extraData);
+    Object accept(TraversingStyleVisitor visitor, Object extraData);
+
+    /**
+     * This parameter indicates that a repeated-linear-graphic graphic stroke type will be used and
+     * specifies the graphic to use.
+     *
+     * <p>Proper stroking with a linear graphic requires two "hot-spot" points within the space of
+     * the graphic to indicate where the rendering line starts and stops. In the case of raster
+     * images with no special mark-up, this line will be assumed to be the middle pixel row of the
+     * image, starting from the first pixel column and ending at the last pixel column.
+     */
+    void setGraphicStroke(Graphic graphicStroke);
+
+    void accept(StyleVisitor visitor);
+
+    abstract class ConstantStroke implements Stroke {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Stroke may not be modified");
+        }
+
+        @Override
+        public void setColor(Expression color) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setWidth(Expression width) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setOpacity(Expression opacity) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setLineJoin(Expression lineJoin) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setLineCap(Expression lineCap) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setDashArray(float[] dashArray) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setDashArray(List<Expression> dashArray) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setDashOffset(Expression dashOffset) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setGraphicStroke(org.geotools.api.style.Graphic graphicStroke) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void accept(StyleVisitor visitor) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object data) {
+            cannotModifyConstant();
+            return null;
+        }
+    }
 }

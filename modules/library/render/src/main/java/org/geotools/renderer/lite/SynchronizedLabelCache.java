@@ -21,9 +21,9 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import org.geotools.api.feature.Feature;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.label.LabelCacheImpl;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
 
 /**

@@ -20,7 +20,9 @@ package org.geotools.styling;
 
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ShadedRelief;
 import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
@@ -89,12 +91,12 @@ public class ShadedReliefImpl implements ShadedRelief {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 

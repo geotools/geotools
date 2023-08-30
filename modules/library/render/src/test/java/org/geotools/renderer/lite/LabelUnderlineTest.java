@@ -20,6 +20,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Collections;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -27,8 +29,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -43,7 +43,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
                         this,
                         "lineStyleTemplate.sld",
                         "VENDOR_KEY",
-                        TextSymbolizer.UNDERLINE_TEXT_KEY,
+                        org.geotools.api.style.TextSymbolizer.UNDERLINE_TEXT_KEY,
                         "VENDOR_VALUE",
                         "true");
         // set the map content
@@ -64,7 +64,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
                         this,
                         "lineStyleTemplate.sld",
                         "VENDOR_KEY",
-                        TextSymbolizer.UNDERLINE_TEXT_KEY,
+                        org.geotools.api.style.TextSymbolizer.UNDERLINE_TEXT_KEY,
                         "VENDOR_VALUE",
                         "true");
         BufferedImage image = renderNonStraightLines(featureSource, style, 1000, 1000, bounds);
@@ -104,7 +104,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
                         this,
                         "lineStyleTemplate.sld",
                         "VENDOR_KEY",
-                        TextSymbolizer.UNDERLINE_TEXT_KEY,
+                        org.geotools.api.style.TextSymbolizer.UNDERLINE_TEXT_KEY,
                         "VENDOR_VALUE",
                         "true");
         Style offsetStyle = PerpendicularOffsetVisitor.apply(style, 15);

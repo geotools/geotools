@@ -16,9 +16,9 @@
  */
 package org.geotools.sld.bindings;
 
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.test.XMLTestSupport;
 

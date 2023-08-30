@@ -23,6 +23,7 @@ import static org.geotools.api.referencing.IdentifiedObject.NAME_KEY;
 import static org.geotools.referencing.CRS.equalsIgnoreMetadata;
 
 import java.awt.RenderingHints;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,7 +50,6 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -765,8 +765,9 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
      */
     protected static String getErrorMessage(
             final IdentifiedObject source, final IdentifiedObject target) {
-        return Errors.format(
-                ErrorKeys.NO_TRANSFORMATION_PATH_$2, getClassName(source), getClassName(target));
+        final Object arg0 = getClassName(source);
+        final Object arg1 = getClassName(target);
+        return MessageFormat.format(ErrorKeys.NO_TRANSFORMATION_PATH_$2, arg0, arg1);
     }
 
     /**
@@ -779,7 +780,8 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     protected static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

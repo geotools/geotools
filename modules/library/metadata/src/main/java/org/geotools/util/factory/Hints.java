@@ -20,6 +20,7 @@ import java.awt.RenderingHints;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +34,6 @@ import javax.naming.Name;
 import javax.sql.DataSource;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.xml.sax.EntityResolver;
@@ -1064,7 +1064,7 @@ public class Hints extends RenderingHints {
     private void fromPairs(final Object... pairs) throws IllegalArgumentException {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));
+                    MessageFormat.format(ErrorKeys.ODD_ARRAY_LENGTH_$1, pairs.length));
         }
         for (int i = 0; i < pairs.length; i += 2) {
             super.put(pairs[i], pairs[i + 1]);

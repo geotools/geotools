@@ -22,8 +22,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Utilities for manipulating and converting to and from {@link URL}s.
@@ -71,10 +71,12 @@ public class URLs {
      */
     public static URL extendUrl(URL base, String extension) throws MalformedURLException {
         if (base == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "base"));
+            throw new NullPointerException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "base"));
         }
         if (extension == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "extension"));
+            throw new NullPointerException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "extension"));
         }
         String a = base.toString();
         if (!a.endsWith("/")) {

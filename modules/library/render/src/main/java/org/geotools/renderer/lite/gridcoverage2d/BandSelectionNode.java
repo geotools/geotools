@@ -23,6 +23,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.text.MessageFormat;
 import java.util.List;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
@@ -33,7 +34,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.util.SimpleInternationalString;
@@ -125,7 +125,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
                 final int numSampleDimensions = source.getNumSampleDimensions();
                 if (bandIndex < 1 || bandIndex > numSampleDimensions)
                     throw new IllegalArgumentException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(bandIndex)));
 
                 // //
@@ -208,7 +208,7 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
                 // something bad happened
                 final IllegalArgumentException iee =
                         new IllegalArgumentException(
-                                Errors.format(
+                                MessageFormat.format(
                                         ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(bandIndex)));
                 iee.initCause(e);
                 throw iee;

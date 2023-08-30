@@ -36,7 +36,6 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -365,7 +364,7 @@ public class NADCONTransform extends AbstractMathTransform
                     break;
                 }
                 if (--i < 0) {
-                    throw new TransformException(Errors.format(ErrorKeys.NO_CONVERGENCE));
+                    throw new TransformException(ErrorKeys.NO_CONVERGENCE);
                 }
             }
 

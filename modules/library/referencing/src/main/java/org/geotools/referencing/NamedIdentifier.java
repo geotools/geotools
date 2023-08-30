@@ -22,6 +22,7 @@ package org.geotools.referencing;
 import static org.geotools.api.referencing.IdentifiedObject.REMARKS_KEY;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,6 @@ import org.geotools.api.util.LocalName;
 import org.geotools.api.util.NameSpace;
 import org.geotools.api.util.ScopedName;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
@@ -372,7 +372,9 @@ public class NamedIdentifier
         } catch (ClassCastException exception) {
             InvalidParameterValueException e =
                     new InvalidParameterValueException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value), key, value);
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, value),
+                            key,
+                            value);
             e.initCause(exception);
             throw e;
         }
@@ -393,7 +395,7 @@ public class NamedIdentifier
             throws IllegalArgumentException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
         }
     }
 

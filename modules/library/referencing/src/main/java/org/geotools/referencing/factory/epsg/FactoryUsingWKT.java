@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -37,7 +38,6 @@ import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -251,7 +251,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
             URL url = getDefinitionsURL();
             if (url == null) {
                 throw new FactoryNotFoundException(
-                        Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                        MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
             }
             final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
@@ -265,7 +265,8 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
             LOGGER.log(record);
             return new PropertyAuthorityFactory(factories, getAuthorities(), url);
         } catch (IOException exception) {
-            throw new FactoryException(Errors.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(
+                    MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
         }
     }
 

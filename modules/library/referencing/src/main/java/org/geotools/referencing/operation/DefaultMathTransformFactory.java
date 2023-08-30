@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -43,7 +44,6 @@ import org.geotools.api.referencing.operation.Operation;
 import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.ParameterWriter;
 import org.geotools.parameter.Parameters;
@@ -264,7 +264,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
                         .orElseThrow(
                                 () ->
                                         new NoSuchIdentifierException(
-                                                Errors.format(
+                                                MessageFormat.format(
                                                         ErrorKeys
                                                                 .NO_TRANSFORM_FOR_CLASSIFICATION_$1,
                                                         method),

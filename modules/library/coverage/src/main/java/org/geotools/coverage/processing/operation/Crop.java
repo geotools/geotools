@@ -25,6 +25,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,6 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -299,7 +299,7 @@ public class Crop extends Operation2D {
         final ParameterValue sourceParameter = parameters.parameter("Source");
         if (sourceParameter == null || !(sourceParameter.getValue() instanceof GridCoverage2D)) {
             throw new CannotCropException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NULL_PARAMETER_$2,
                             "Source",
                             GridCoverage2D.class.toString()));
@@ -320,7 +320,7 @@ public class Crop extends Operation2D {
         if ((envelopeParameter == null || envelopeParameter.getValue() == null)
                 && (roiParameter == null || roiParameter.getValue() == null))
             throw new CannotCropException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.NULL_PARAMETER_$2,
                             PARAMNAME_ENVELOPE,
                             GeneralEnvelope.class.toString()));
@@ -341,9 +341,9 @@ public class Crop extends Operation2D {
                     IntersectUtils.unrollGeometries(
                             (Geometry) roiParameter.getValue()); // may throw if format not correct
         } catch (IllegalArgumentException ex) {
+            final Object arg1 = ex.getMessage();
             throw new CannotCropException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, PARAMNAME_ROI, ex.getMessage()),
-                    ex);
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, PARAMNAME_ROI, arg1), ex);
         }
 
         // Setting a GeneralEnvelope from ROI if needed
@@ -383,11 +383,10 @@ public class Crop extends Operation2D {
         //
         // //
         if (!CRS.equalsIgnoreMetadata(sourceCRS, destinationCRS)) {
+            final Object arg0 = sourceCRS.getName().getCode();
+            final Object arg1 = destinationCRS.getName().getCode();
             throw new CannotCropException(
-                    Errors.format(
-                            ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2,
-                            sourceCRS.getName().getCode(),
-                            destinationCRS.getName().getCode()));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2, arg0, arg1));
         }
 
         // TODO: check ROI SRID
@@ -414,7 +413,7 @@ public class Crop extends Operation2D {
                             (org.locationtech.jts.geom.Envelope)
                                     new ReferencedEnvelope(intersectionEnvelope));
             if (!IntersectUtils.intersects(cropRoi, jis))
-                throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
+                throw new CannotCropException(ErrorKeys.CANT_CROP);
         }
         // //
         //
@@ -670,7 +669,7 @@ public class Crop extends Operation2D {
                 }
                 if (rasterSpaceROI == null || rasterSpaceROI.getBounds().isEmpty())
                     if (finalRasterArea.isEmpty())
-                        throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
+                        throw new CannotCropException(ErrorKeys.CANT_CROP);
                 if (forceMosaic || cropROI != null || internalROI != null || nodata != null) {
                     // prepare the params for the mosaic
                     ROI[] roiarr = null;
@@ -698,7 +697,7 @@ public class Crop extends Operation2D {
                         roiarr = new ROI[] {roi};
                     }
                     if (roiarr != null && roiarr[0].getBounds().isEmpty()) {
-                        throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
+                        throw new CannotCropException(ErrorKeys.CANT_CROP);
                     }
                     worker.setBackground(background);
                     worker.setNoData(nodata);
@@ -706,8 +705,7 @@ public class Crop extends Operation2D {
                     // prepare the final layout
                     final Rectangle bounds = rasterSpaceROI.getBounds2D().getBounds();
                     Rectangle.intersect(bounds, sourceGridRange, bounds);
-                    if (bounds.isEmpty())
-                        throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
+                    if (bounds.isEmpty()) throw new CannotCropException(ErrorKeys.CANT_CROP);
 
                     // we do not have to crop in this case (should not really happen at
                     // this time)
@@ -803,7 +801,7 @@ public class Crop extends Operation2D {
                             properties);
 
         } catch (TransformException | NoninvertibleTransformException e) {
-            throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP), e);
+            throw new CannotCropException(ErrorKeys.CANT_CROP, e);
         }
     }
 

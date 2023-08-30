@@ -17,9 +17,9 @@
 
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
 
 /**
@@ -87,6 +87,6 @@ final class HTTP_URI_Parser extends URI_Parser {
             }
         }
         throw new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, uriText), AUTHORITY, uriText);
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, uriText), AUTHORITY, uriText);
     }
 }

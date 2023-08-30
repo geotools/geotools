@@ -36,7 +36,6 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -483,7 +482,7 @@ public class ProjectiveTransform extends AbstractMathTransform
                         | IllegalArgumentException
                         | MatrixDimensionException exception) {
                     throw new NoninvertibleTransformException(
-                            Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
+                            ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
                 }
                 inverse = createInverse(matrix);
                 inverse.inverse = this;

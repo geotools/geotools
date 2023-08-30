@@ -25,7 +25,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.math.XMath;
 
 /**
@@ -82,8 +81,7 @@ public class XAffineTransform extends AffineTransform {
      * @throws UnsupportedOperationException if this affine transform is immutable.
      */
     protected void checkPermission() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM));
+        throw new UnsupportedOperationException(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM);
     }
 
     /** Checks for {@linkplain #checkPermission permission} before translating this transform. */

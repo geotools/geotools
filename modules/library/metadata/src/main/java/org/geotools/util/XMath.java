@@ -17,8 +17,8 @@
 package org.geotools.util;
 
 import java.text.ChoiceFormat;
+import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Simple mathematical functions.
@@ -174,6 +174,7 @@ public final class XMath {
         if (Classes.isInteger(type)) {
             return value + amount;
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1, type));
+        throw new IllegalArgumentException(
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_DATA_TYPE_$1, type));
     }
 }

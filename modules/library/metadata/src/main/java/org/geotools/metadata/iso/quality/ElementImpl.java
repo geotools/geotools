@@ -31,7 +31,6 @@ import org.geotools.api.metadata.quality.EvaluationMethodType;
 import org.geotools.api.metadata.quality.Result;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.MetadataEntity;
 
 /**
@@ -201,8 +200,7 @@ public class ElementImpl extends MetadataEntity implements Element {
             if (it.hasNext()) {
                 date2 = it.next().getTime();
                 if (it.hasNext()) {
-                    throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+                    throw new IllegalArgumentException(ErrorKeys.MISMATCHED_ARRAY_LENGTH);
                 }
             }
         }

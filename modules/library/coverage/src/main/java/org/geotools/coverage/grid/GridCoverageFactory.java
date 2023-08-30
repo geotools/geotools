@@ -24,6 +24,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
+import java.text.MessageFormat;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.media.jai.ImageFunction;
@@ -41,7 +42,6 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.AbstractFactory;
@@ -154,7 +154,8 @@ public class GridCoverageFactory extends AbstractFactory {
                 return DefaultEngineeringCRS.CARTESIAN_3D;
             default:
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
+                        MessageFormat.format(
+                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
         }
     }
 
@@ -179,7 +180,7 @@ public class GridCoverageFactory extends AbstractFactory {
             final Map<?, ?> properties) {
         final MathTransform transform = gridGeometry.getGridToCRS2D();
         if (!(transform instanceof AffineTransform)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+            throw new IllegalArgumentException(ErrorKeys.NOT_AN_AFFINE_TRANSFORM);
         }
         final AffineTransform at = (AffineTransform) transform;
         if (at.getShearX() != 0 || at.getShearY() != 0) {

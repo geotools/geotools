@@ -21,6 +21,7 @@ import static org.geotools.util.Utilities.streamIfSubtype;
 
 import java.awt.RenderingHints;
 import java.lang.ref.Reference;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,7 +42,6 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.geotools.api.filter.Filter;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.Classes;
@@ -351,7 +351,8 @@ public class FactoryRegistry {
                 if (debug) {
                     debug("THROW", category, key, "unexpected type:", valueClass);
                 }
-                throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_KEY_$1, key));
+                throw new IllegalArgumentException(
+                        MessageFormat.format(ErrorKeys.ILLEGAL_KEY_$1, key));
             }
             if (hints != null) {
                 final Object hint = hints.get(key);
@@ -442,10 +443,9 @@ public class FactoryRegistry {
         if (debug) {
             debug("THROW", category, key, "could not find implementation.", null);
         }
+        final Object arg0 = implementation != null ? implementation : category;
         throw new FactoryNotFoundException(
-                Errors.format(
-                        ErrorKeys.FACTORY_NOT_FOUND_$1,
-                        implementation != null ? implementation : category));
+                MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, arg0));
     }
 
     /**
@@ -1064,7 +1064,8 @@ public class FactoryRegistry {
                                 }
                             } catch (Exception exception) {
                                 throw new FactoryRegistryException(
-                                        Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
+                                        MessageFormat.format(
+                                                ErrorKeys.CANT_CREATE_FACTORY_$1, classname),
                                         exception);
                             }
                         /*

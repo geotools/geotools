@@ -20,6 +20,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -303,7 +303,7 @@ public class FactoryCreator extends FactoryRegistry {
             }
         }
         throw new FactoryRegistryException(
-                Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, implementation), cause);
+                MessageFormat.format(ErrorKeys.CANT_CREATE_FACTORY_$1, implementation), cause);
     }
 
     /**

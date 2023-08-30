@@ -19,6 +19,7 @@
  */
 package org.geotools.parameter;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,7 +32,6 @@ import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.util.CodeList;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.Utilities;
@@ -234,7 +234,7 @@ public class DefaultParameterDescriptor<T> extends AbstractParameterDescriptor
         if (minimum != null && maximum != null) {
             if (minimum.compareTo(valueClass.cast(maximum)) > 0) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+                        MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
             }
         }
         if (validValues != null) {

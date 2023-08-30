@@ -18,6 +18,7 @@ package org.geotools.factory;
 
 // J2SE dependencies
 
+import java.text.MessageFormat;
 import java.util.Map;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.metadata.citation.CitationFactory;
@@ -31,7 +32,6 @@ import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactor
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.util.NameFactory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.FactoryNotFoundException;
@@ -91,7 +91,8 @@ public class BasicFactories {
      * @param type The factory type requested by the users.
      */
     private static String unsupportedFactory(final Class type) {
-        return Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, Classes.getShortName(type));
+        final Object arg0 = Classes.getShortName(type);
+        return MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, arg0);
     }
 
     /**

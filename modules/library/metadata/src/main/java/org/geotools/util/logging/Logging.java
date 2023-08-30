@@ -18,13 +18,13 @@ package org.geotools.util.logging;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.XArray;
@@ -354,7 +354,7 @@ public final class Logging {
             }
             if (!LoggerFactory.class.isAssignableFrom(factoryClass)) {
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_CLASS_$2, factoryClass, LoggerFactory.class));
             }
             try {
@@ -378,7 +378,7 @@ public final class Logging {
                     throw factoryNotFound(className, (NoClassDefFoundError) cause);
                 }
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.CANT_CREATE_FACTORY_$1, className, cause));
+                        MessageFormat.format(ErrorKeys.CANT_CREATE_FACTORY_$1, className, cause));
             }
         }
         setLoggerFactory(factory);
@@ -389,7 +389,7 @@ public final class Logging {
      */
     private static ClassNotFoundException factoryNotFound(String name, NoClassDefFoundError error) {
         return new ClassNotFoundException(
-                Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, name), error);
+                MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, name), error);
     }
 
     /**

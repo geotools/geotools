@@ -35,6 +35,7 @@ import static java.lang.Math.tan;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.text.MessageFormat;
 import java.util.Collection;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.InvalidParameterValueException;
@@ -48,7 +49,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -391,7 +391,9 @@ public class ObliqueMercator extends MapProjection {
             if (desc != null) {
                 final String name = desc.getName().getCode();
                 throw new InvalidParameterValueException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name, value);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value),
+                        name,
+                        value);
             }
             /*
              * The coefficients for the "two points" case.
@@ -436,7 +438,9 @@ public class ObliqueMercator extends MapProjection {
                 final String name = Provider.AZIMUTH.getName().getCode();
                 final Angle value = new Angle(toDegrees(azimuth));
                 throw new InvalidParameterValueException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value), name, value);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value),
+                        name,
+                        value);
             }
             temp = doubleValue(expected, Provider.RECTIFIED_GRID_ANGLE, parameters);
             if (Double.isNaN(temp)) {
@@ -448,7 +452,7 @@ public class ObliqueMercator extends MapProjection {
             temp = 0.5 * (F - 1.0 / F) * tan(gamma0);
             if (abs(temp) > 1.0) {
                 if (abs(abs(temp) - 1.0) > EPSILON) {
-                    throw new IllegalArgumentException(Errors.format(ErrorKeys.TOLERANCE_ERROR));
+                    throw new IllegalArgumentException(ErrorKeys.TOLERANCE_ERROR);
                 }
                 temp = (temp > 0) ? 1.0 : -1.0;
             }

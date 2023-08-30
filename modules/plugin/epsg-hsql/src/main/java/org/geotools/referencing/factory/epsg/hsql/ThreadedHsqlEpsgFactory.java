@@ -24,6 +24,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
@@ -31,7 +32,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javax.sql.DataSource;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
@@ -303,7 +303,8 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                     new File(directory, MARKER_FILE).createNewFile();
                 }
             } catch (IOException exception) {
-                SQLException e = new SQLException(Errors.format(ErrorKeys.CANT_READ_$1, ZIP_FILE));
+                SQLException e =
+                        new SQLException(MessageFormat.format(ErrorKeys.CANT_READ_$1, ZIP_FILE));
                 e.initCause(
                         exception); // TODO: inline cause when we will be allowed to target Java 6.
                 throw e;

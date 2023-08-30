@@ -18,10 +18,10 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.piecewise.MathTransformation;
 import it.geosolutions.jaiext.piecewise.Position;
+import java.text.MessageFormat;
 import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 
 /**
  * Adapter class for {@link MathTransform1D}.
@@ -52,7 +52,8 @@ public class MathTransformationAdapter implements MathTransformation {
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -65,7 +66,7 @@ public class MathTransformationAdapter implements MathTransformation {
     public double derivative(double value) throws TransformException {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
     }
 
     /*
@@ -77,7 +78,7 @@ public class MathTransformationAdapter implements MathTransformation {
     public double transform(double value) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "transform"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "transform"));
     }
 
     /*
@@ -110,7 +111,7 @@ public class MathTransformationAdapter implements MathTransformation {
     @Override
     public MathTransformation inverseTransform() {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "inverse"));
     }
 
     /*
@@ -122,7 +123,7 @@ public class MathTransformationAdapter implements MathTransformation {
     public boolean isIdentity() {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "isIdentity"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "isIdentity"));
     }
 
     @Override

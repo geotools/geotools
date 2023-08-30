@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -26,7 +27,6 @@ import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.FloatParameter;
@@ -409,11 +409,9 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 case 3:
                     break; // The dimension is a valid value.
                 default:
+                    final Object arg0 = dim.getName().getCode();
                     throw new IllegalArgumentException(
-                            Errors.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                                    dim.getName().getCode(),
-                                    dimension));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, arg0, dimension));
             }
             ensureValid(major, semiMajor);
             ensureValid(minor, semiMinor);
@@ -430,8 +428,9 @@ public class GeocentricTranslation extends ProjectiveTransform {
         /** Ensures the the specified parameter is valid. */
         private static void ensureValid(final ParameterDescriptor param, double value) {
             if (!(value > 0)) {
+                final Object arg0 = param.getName().getCode();
                 throw new IllegalStateException(
-                        Errors.format(ErrorKeys.MISSING_PARAMETER_$1, param.getName().getCode()));
+                        MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, arg0));
             }
         }
     }

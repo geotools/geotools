@@ -18,6 +18,7 @@ package org.geotools.coverage.util;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
 import org.geotools.api.coverage.grid.GridCoverage;
@@ -46,7 +47,6 @@ import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
@@ -184,11 +184,11 @@ public final class FeatureUtilities {
         final Rectangle2D rect = gridCoverageReader.getOriginalEnvelope().toRectangle2D();
         final CoordinateReferenceSystem sourceCrs =
                 CRS.getHorizontalCRS(gridCoverageReader.getCoordinateReferenceSystem());
-        if (sourceCrs == null)
+        if (sourceCrs == null) {
+            final Object arg0 = gridCoverageReader.getCoordinateReferenceSystem();
             throw new UnsupportedOperationException(
-                    Errors.format(
-                            ErrorKeys.CANT_SEPARATE_CRS_$1,
-                            gridCoverageReader.getCoordinateReferenceSystem()));
+                    MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
+        }
 
         final Coordinate[] coord = new Coordinate[5];
         coord[0] = new Coordinate(rect.getMinX(), rect.getMinY());

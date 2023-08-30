@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +35,6 @@ import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Measure;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -147,7 +147,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             if (!isCompatibleDirection(direction)) {
                 // TOOD: localize name()
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_AXIS_ORIENTATION_$2,
                                 direction.name(),
                                 getClass()));
@@ -156,7 +156,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             ensureNonNull("unit", unit);
             if (!isCompatibleUnit(direction, unit)) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, unit));
+                        MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, unit));
             }
             /*
              * Ensures there is no axis along the same direction
@@ -170,7 +170,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                         final String nameI = axis[i].getDirection().name();
                         final String nameJ = axis[j].getDirection().name();
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.COLINEAR_AXIS_$2, nameI, nameJ));
+                                MessageFormat.format(ErrorKeys.COLINEAR_AXIS_$2, nameI, nameJ));
                     }
                 }
             }
@@ -197,7 +197,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                          */
                         if (m == null) {
                             throw new IllegalArgumentException(
-                                    Errors.format(
+                                    MessageFormat.format(
                                             ErrorKeys.INCONSISTENT_AXIS_ORIENTATION_$2,
                                             name,
                                             direction.name()));
@@ -315,8 +315,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             throws IllegalArgumentException {
         if (!Classes.sameInterfaces(
                 sourceCS.getClass(), targetCS.getClass(), CoordinateSystem.class)) {
-            throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.INCOMPATIBLE_COORDINATE_SYSTEM_TYPE));
+            throw new IllegalArgumentException(ErrorKeys.INCOMPATIBLE_COORDINATE_SYSTEM_TYPE);
         }
         final AxisDirection[] sourceAxis = getAxisDirections(sourceCS);
         final AxisDirection[] targetAxis = getAxisDirections(targetCS);
@@ -359,7 +358,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 UnitConverter converter = Units.getConverterToAny(sourceUnit, targetUnit);
                 if (!converter.isLinear()) {
                     throw new IllegalArgumentException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2,
                                     sourceUnit,
                                     targetUnit));
@@ -461,7 +460,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
             throws MismatchedDimensionException {
         if (coordinates.length != axis.length) {
             throw new MismatchedDimensionException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.MISMATCHED_DIMENSION_$3,
                             name,
                             coordinates.length,

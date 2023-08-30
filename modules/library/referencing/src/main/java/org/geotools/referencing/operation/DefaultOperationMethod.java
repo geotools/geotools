@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,6 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameters;
@@ -221,7 +221,7 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
             throws IllegalArgumentException {
         if (value < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, value));
         }
     }
 
@@ -400,7 +400,8 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
                 }
             }
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
+                    MessageFormat.format(
+                            ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
         }
     }
 }

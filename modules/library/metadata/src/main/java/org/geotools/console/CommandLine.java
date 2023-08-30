@@ -19,11 +19,11 @@ package org.geotools.console;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Arguments;
 import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
@@ -214,7 +214,8 @@ public class CommandLine {
      */
     protected <T> T parse(final Class<T> type, final String value)
             throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+        throw new UnsupportedOperationException(
+                MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
     }
 
     /**

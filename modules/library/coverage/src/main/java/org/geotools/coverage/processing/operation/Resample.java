@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing.operation;
 
 import java.awt.Dimension;
+import java.text.MessageFormat;
 import javax.media.jai.Interpolation;
 import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.WarpDescriptor;
@@ -40,7 +41,6 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -254,8 +254,9 @@ public class Resample extends Operation2D {
                     (hints instanceof Hints) ? hints : new Hints(hints),
                     bgValues);
         } catch (FactoryException | TransformException exception) {
+            final Object arg0 = source.getName();
             throw new CannotReprojectException(
-                    Errors.format(ErrorKeys.CANT_REPROJECT_$1, source.getName()), exception);
+                    MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, arg0), exception);
         }
     }
 

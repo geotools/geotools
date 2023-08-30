@@ -17,6 +17,7 @@
  */
 package org.geotools.process.raster;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
 import org.geotools.api.coverage.grid.GridEnvelope;
@@ -26,7 +27,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.CRS;
 
@@ -51,7 +51,8 @@ public class BaseCoverageAlgebraProcess {
                     coverageA == null
                             ? (coverageB == null ? "coverageA and coverageB" : "coverageA")
                             : "coverageB";
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, coveragesNull));
+            throw new ProcessException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, coveragesNull));
         }
 
         //
@@ -95,7 +96,7 @@ public class BaseCoverageAlgebraProcess {
             throws ProcessException {
         if (coverages == null || coverages.isEmpty()) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "Input coverage List"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "Input coverage List"));
         }
 
         //

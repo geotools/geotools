@@ -19,6 +19,7 @@ package org.geotools.coverage.processing;
 import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.media.jai.Interpolation;
@@ -37,7 +38,6 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 
@@ -969,7 +969,8 @@ public class Operations {
             } catch (ParameterNotFoundException cause) {
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                Errors.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, name), name);
+                                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, name),
+                                name);
                 exception.initCause(cause);
                 throw exception;
             }

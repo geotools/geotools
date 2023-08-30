@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.text.MessageFormat;
 import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.ChannelSelection;
 import org.geotools.api.style.ColorMap;
@@ -49,7 +50,6 @@ import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.UserLayer;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 
 /**
  * Simple empty implementation for the {@link StyleVisitor} interface.

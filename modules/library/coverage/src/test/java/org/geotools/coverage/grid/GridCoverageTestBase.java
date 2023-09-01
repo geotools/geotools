@@ -331,12 +331,12 @@ public class GridCoverageTestBase extends CoverageTestBase {
                                 return factory.create(
                                         "Float coverage",
                                         raster,
-                                        new ReferencedEnvelope(
+                                        ReferencedEnvelope.envelope2D(
+                                                DefaultGeographicCRS.WGS84,
                                                 35,
-                                                35 + 45,
                                                 -41,
-                                                -41 + 46,
-                                                DefaultGeographicCRS.WGS84),
+                                                35 + 45,
+                                                -41 + 46),
                                         null,
                                         null,
                                         null,

@@ -81,17 +81,6 @@ jobs:
         cd ~/mapfish-print-v3/examples/src
         cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
         ant -noinput -buildfile remove-opengis.xml
-    - name: Build Mapfish-print v3 with tests
-      run: |
-        cd ~/mapfish-print-v3/
-        touch CI.asc
-        echo "staging ~/.m2/repository folder"
-        mkdir -p m2/repository/org
-        cp -r ~/.m2/repository/org/geotools m2/repository/org/geotools
-        make build
-        # make acceptance-tests-up
-        # make acceptance-tests-run
-        # make acceptance-tests-down
     - name: Build Mapfish-print v2 with tests
       run: |
         cd ~
@@ -122,6 +111,17 @@ jobs:
         mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/pom.xml test -fae -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
+    - name: Build Mapfish-print v3 with tests
+      run: |
+        cd ~/mapfish-print-v3/
+        touch CI.asc
+        echo "staging ~/.m2/repository folder"
+        mkdir -p m2/repository/org
+        cp -r ~/.m2/repository/org/geotools m2/repository/org/geotools
+        make build
+        # make acceptance-tests-up
+        # make acceptance-tests-run
+        # make acceptance-tests-down
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

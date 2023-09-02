@@ -57,13 +57,16 @@
     <attribute name="class" />
     <sequential>
       <echo message="Move  @{srcPackage}.@{class} -&gt; @{dstPackage}.@{class}" />
+      <fileset id="@{srcPackage}.@{class}.files" dir="${project.dir}" includes="**/*.java">
+        <contains text="import @{srcPackage}\.@{class};" casesensitive="yes" />
+      </fileset>
       <replaceregexp byline="true">
-        <fileset refid="@{srcPackage}.files" />
+        <fileset refid="@{srcPackage}.@{class}.files" />
         <regexp pattern="^import @{srcPackage}\.@{class};$" />
         <substitution expression="import @{dstPackage}\.@{class};" />
       </replaceregexp>
       <replaceregexp byline="true">
-        <fileset refid="@{srcPackage}.files" />
+        <fileset refid="@{srcPackage}.@{class}.files" />
         <regexp pattern="@{srcPackage}\.@{class}(\W)" /> <!-- make sure to miss the Impl-->
         <substitution expression="@{dstPackage}\.@{class}\1" />
       </replaceregexp>
@@ -256,11 +259,15 @@
   <!-- the following tasks run after _opengis above to reflect api refactoring -->
   <target name="_bounds" description="Bounds and Position API cleanup">
     <echo />
-    <echo message="Refactor Position to DirectPosition" />
-    <echo message="and removing org.opengis.geometry.coordinates.Position)" />
+    <echo message="Refactor Position to DirectPosition and removing org.opengis.geometry.coordinates.Position)" />
+    
     <!-- you cann use refid="Position.files" fileset after refactor -->
-    <refactor package1="org.opengis.geometry.coordinate" class1="Position" package2="org.opengis.geometry" class2="DirectPosition" />
-    <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;" />
+    <refactor package1="org.opengis.geometry" class1="DirectPosition"
+              package2="org.opengis.geometry"            class2="Position" />
+    <moveClass srcPackage="org.opengis.geometry.coordinate"
+               dstPackage="org.opengis.geometry" class="Position" />
+    <remove package="org.opengis.geometry.coordinate" class="PointArray"
+            removed="// removed - use List&lt;DirectPosition&gt;" />
   </target>
 
 

@@ -1,6 +1,13 @@
 name: SAP HANA online tests
 
 on: [pull_request]
+  # trigger on PR, but only on main (dev), stable, and maintenance branches 
+  pull_request:
+    branches:
+      - main
+      - 30.x
+      - 29.x
+      - 28.x
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

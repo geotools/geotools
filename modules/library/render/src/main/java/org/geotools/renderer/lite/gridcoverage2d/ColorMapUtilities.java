@@ -21,7 +21,6 @@ import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import java.awt.Color;
 import java.text.MessageFormat;
-
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.renderer.i18n.ErrorKeys;

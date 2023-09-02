@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.swing.Icon;
-
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;

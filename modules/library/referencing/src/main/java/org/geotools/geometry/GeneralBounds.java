@@ -187,7 +187,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
     }
 
     /**
-     * Constructs a new envelope with the same data than the specified envelope.
+     * Constructs new bounds with the same data as the specified envelope.
      *
      * @param envelope The envelope to copy.
      */

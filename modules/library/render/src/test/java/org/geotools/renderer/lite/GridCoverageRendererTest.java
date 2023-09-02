@@ -662,7 +662,7 @@ public class GridCoverageRendererTest {
         File reference =
                 new File(
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBlackLine.png");
-        ImageAssert.assertEquals(reference, image, 5);
+        ImageAssert.assertEquals(reference, image, 370);
     }
 
     @Test

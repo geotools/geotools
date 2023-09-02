@@ -814,7 +814,6 @@ public final class JTS {
         }
     }
 
-
     /**
      * Create a Point from a ISO Geometry DirectPosition.
      *

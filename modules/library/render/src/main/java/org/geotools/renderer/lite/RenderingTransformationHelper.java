@@ -259,7 +259,7 @@ public abstract class RenderingTransformationHelper {
                         coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
                     }
                 } else {
-                    if (coverage.getEnvelope2D().intersects((BoundingBox)renderingEnvelope)) {
+                    if (coverage.getEnvelope2D().intersects((BoundingBox) renderingEnvelope)) {
                         // the resulting coverage might be larger than the readGG envelope,
                         // shall we crop it?
                         final ParameterValueGroup param =

@@ -19,9 +19,8 @@ package org.geotools.referencing.operation.transform;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import org.geotools.api.geometry.Position;
 import java.text.MessageFormat;
-
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform1D;

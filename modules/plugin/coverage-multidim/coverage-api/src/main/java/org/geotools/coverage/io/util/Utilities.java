@@ -289,16 +289,15 @@ public class Utilities {
     }
 
     /**
-     * Get a WGS84 envelope for the specified envelope. The get2D parameter
-     * allows to specify if we need the returned coverage as an
-     * {@code ReferencedEnvelope} or a more general {@code GeneralEnvelope} instance.
+     * Get a WGS84 envelope for the specified envelope. The get2D parameter allows to specify if we
+     * need the returned coverage as an {@code ReferencedEnvelope} or a more general {@code
+     * GeneralEnvelope} instance.
      *
-     * if {@code true}, the requested envelope will be an
-     * instance of {@link ReferencedEnvelope}. If {@code false} it will
-     * be an instance of {@link GeneralBounds}
+     * <p>if {@code true}, the requested envelope will be an instance of {@link ReferencedEnvelope}.
+     * If {@code false} it will be an instance of {@link GeneralBounds}
      *
-     * @return a WGS84 envelope as {@link Envelope2D} in case of request for a
-     *         2D WGS84 Envelope, or a {@link GeneralBounds } otherwise.
+     * @return a WGS84 envelope as {@link Envelope2D} in case of request for a 2D WGS84 Envelope, or
+     *     a {@link GeneralBounds } otherwise.
      */
     public static Bounds getEnvelopeAsWGS84(final Bounds bounds, boolean get2D)
             throws FactoryException, TransformException {
@@ -311,7 +310,7 @@ public class Utilities {
         if (!CRS.equalsIgnoreMetadata(crs, DefaultGeographicCRS.WGS84)) {
             GeneralBounds wgs84Bounds = CRS.transform(bounds, DefaultGeographicCRS.WGS84);
             if (get2D) {
-                return ReferencedEnvelope.create( bounds, DefaultGeographicCRS.WGS84);
+                return ReferencedEnvelope.create(bounds, DefaultGeographicCRS.WGS84);
             } else {
                 wgs84Bounds.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
                 return wgs84Bounds;
@@ -319,9 +318,8 @@ public class Utilities {
 
         } else {
             if (get2D) {
-                return ReferencedEnvelope.create(bounds,bounds.getCoordinateReferenceSystem());
-            }
-            else {
+                return ReferencedEnvelope.create(bounds, bounds.getCoordinateReferenceSystem());
+            } else {
                 return new GeneralBounds(bounds);
             }
         }

@@ -798,7 +798,8 @@ public class RasterLayerResponse {
         // GridEnvelope
         // Javadoc)
         rasterBounds =
-                new GridEnvelope2D(new ReferencedEnvelope(tempRasterBounds), PixelInCell.CELL_CORNER);
+                new GridEnvelope2D(
+                        new ReferencedEnvelope(tempRasterBounds), PixelInCell.CELL_CORNER);
         if (rasterBounds.width == 0) rasterBounds.width++;
         if (rasterBounds.height == 0) rasterBounds.height++;
         if (oversampledRequest) rasterBounds.grow(2, 2);
@@ -811,7 +812,8 @@ public class RasterLayerResponse {
                     CRS.transform(
                             finalWorldToGridCorner, request.spatialRequestHelper.getCoverageBBox());
             final GridEnvelope2D levelRasterArea =
-                    new GridEnvelope2D(new ReferencedEnvelope(levelRasterArea_), PixelInCell.CELL_CORNER);
+                    new GridEnvelope2D(
+                            new ReferencedEnvelope(levelRasterArea_), PixelInCell.CELL_CORNER);
             XRectangle2D.intersect(levelRasterArea, rasterBounds, rasterBounds);
         }
     }

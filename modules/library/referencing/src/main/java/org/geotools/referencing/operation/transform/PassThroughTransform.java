@@ -18,7 +18,6 @@ package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;

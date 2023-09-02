@@ -240,7 +240,9 @@ public class DefaultClassesTest {
                 CRS.equalsIgnoreMetadata(
                         response.getCoordinateReferenceSystem(),
                         cov.getCoordinateReferenceSystem()));
-        assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains((BoundingBox)cov.getEnvelope2D()));
+        assertTrue(
+                new ReferencedEnvelope(response.getEnvelope())
+                        .contains((BoundingBox) cov.getEnvelope2D()));
         assertEquals(response.isDataEditable(), cov.isDataEditable());
         assertSame(response.getGridGeometry(), cov.getGridGeometry());
         assertSame(response.getGridCoverage2D(), cov);

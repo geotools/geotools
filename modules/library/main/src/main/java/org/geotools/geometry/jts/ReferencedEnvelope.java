@@ -984,7 +984,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      */
     public static ReferencedEnvelope envelope2D(
             CoordinateReferenceSystem crs, double x, double y, double width, double height) {
-        return create(new Rectangle2D.Double(x, y, width, height), crs);
+        return new ReferencedEnvelope(x, x + width, y, y + height, crs);
     }
 
     /**

@@ -39,7 +39,7 @@ import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.geometry.Position2D;
-import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.geometry.TransformedPosition;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -164,8 +164,8 @@ public class OperationFactoryTest {
     }
 
     /**
-     * The TransformedDirectPosition class is a thin wrapper around CoordinateOperationFactory used
-     * for time critical functions.
+     * The TransformedPosition class is a thin wrapper around CoordinateOperationFactory used for
+     * time critical functions.
      *
      * <p>This test isolates a regression introduced during GEOT-22 change of vector library.
      */
@@ -216,8 +216,8 @@ public class OperationFactoryTest {
                                 + "  AXIS[\"y\", NORTH]]");
 
         Position position = new Position2D(requestedCRS, -886885.0962724264, 4468200.416916506);
-        final TransformedDirectPosition arbitraryToInternal =
-                new TransformedDirectPosition(
+        final TransformedPosition arbitraryToInternal =
+                new TransformedPosition(
                         requestedCRS,
                         targetCRS,
                         new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
@@ -225,9 +225,9 @@ public class OperationFactoryTest {
 
         Position expected = new Position2D(targetCRS, 214741.10238960697, 26957.60506898933);
 
-        // geoserver vecmath: TransformedDirectPosition[214741.10238960697, 26957.60506898933]
-        // geoserver ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
-        // geotools ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
+        // geoserver vecmath: TransformedPosition[214741.10238960697, 26957.60506898933]
+        // geoserver ejml: TransformedPosition[214636.7447572897, 27218.077500249085]
+        // geotools ejml: TransformedPosition[214636.7447572897, 27218.077500249085]
         Assert.assertEquals(expected.getOrdinate(0), arbitraryToInternal.getOrdinate(0), 1e-9);
         Assert.assertEquals(expected.getOrdinate(1), arbitraryToInternal.getOrdinate(1), 1e-9);
     }

@@ -45,7 +45,7 @@ import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.Position2D;
-import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.geometry.TransformedPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
@@ -100,7 +100,7 @@ public class GeodeticCalculator {
      * The transform from user coordinates to geodetic coordinates used for computation, or {@code
      * null} if no transformations are required.
      */
-    private final TransformedDirectPosition userToGeodetic;
+    private final TransformedPosition userToGeodetic;
 
     /**
      * The coordinate reference system for all methods working on {@link Position} objects. If
@@ -207,7 +207,7 @@ public class GeodeticCalculator {
              *       fails with a "Bursa-Wolf parameters required" error message, then we probably
              *       have a bug somewhere.
              */
-            userToGeodetic = new TransformedDirectPosition(crs, geographicCRS, null);
+            userToGeodetic = new TransformedPosition(crs, geographicCRS, null);
         } else {
             userToGeodetic = null;
         }

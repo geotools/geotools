@@ -42,7 +42,7 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.Position2D;
-import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.geometry.TransformedPosition;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
@@ -134,7 +134,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
      * Used for transforming a direct position from arbitrary to internal CRS. Will be created only
      * when first needed. Note that the target CRS should be two-dimensional.
      */
-    private transient TransformedDirectPosition arbitraryToInternal;
+    private transient TransformedPosition arbitraryToInternal;
 
     /** Tests the validity of this grid geometry. */
     private boolean isValid() {
@@ -730,12 +730,9 @@ public class GridGeometry2D extends GeneralGridGeometry {
     public ReferencedEnvelope getEnvelope2D() throws InvalidGridGeometryException {
         if (envelope != null && !envelope.isNull()) {
             assert isDefined(ENVELOPE_BITMASK);
-            return ReferencedEnvelope.envelope2D(
-                    crs2D,
-                    envelope.getMinimum(axisDimensionX),
-                    envelope.getMinimum(axisDimensionY),
-                    envelope.getSpan(axisDimensionX),
-                    envelope.getSpan(axisDimensionY));
+            return ReferencedEnvelope.rect(
+                    envelope.getMinimum(axisDimensionX), envelope.getMinimum(axisDimensionY), envelope.getSpan(axisDimensionX), envelope.getSpan(axisDimensionY), crs2D
+            );
             // Note: we didn't invoked reduce(Envelope) in order to make sure that
             //       our private 'envelope' field is not exposed to subclasses.
         }
@@ -1158,7 +1155,7 @@ public class GridGeometry2D extends GeneralGridGeometry {
             synchronized (this) {
                 if (arbitraryToInternal == null) {
                     final CoordinateReferenceSystem targetCRS = getCoordinateReferenceSystem2D();
-                    arbitraryToInternal = new TransformedDirectPosition(sourceCRS, targetCRS, null);
+                    arbitraryToInternal = new TransformedPosition(sourceCRS, targetCRS, null);
                 }
                 try {
                     arbitraryToInternal.transform(point);

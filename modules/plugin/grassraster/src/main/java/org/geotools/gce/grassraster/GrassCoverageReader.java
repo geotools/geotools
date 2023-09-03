@@ -297,8 +297,11 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
             requestedRegionEnvelope =
                     ReferencedEnvelope.rect(
-                            requestedWest, requestedSouth, requestedEast - requestedWest, requestedNorth - requestedSouth, crs
-                    );
+                            requestedWest,
+                            requestedSouth,
+                            requestedEast - requestedWest,
+                            requestedNorth - requestedSouth,
+                            crs);
 
             /*
              * the real world deltas
@@ -398,8 +401,11 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
             requestedRegionEnvelope =
                     ReferencedEnvelope.rect(
-                            requestedWest, requestedSouth, requestedEast - requestedWest, requestedNorth - requestedSouth, crs
-                    );
+                            requestedWest,
+                            requestedSouth,
+                            requestedEast - requestedWest,
+                            requestedNorth - requestedSouth,
+                            crs);
 
             /*
              * define the subsampling values. This done starting from the

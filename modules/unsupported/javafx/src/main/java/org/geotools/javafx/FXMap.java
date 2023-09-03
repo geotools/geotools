@@ -62,7 +62,7 @@ import org.geotools.ows.wms.map.WMSLayer;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
+import org.geotools.api.style.StyleFactory;
 import org.jfree.fx.FXGraphics2D;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.FilterFactory;

@@ -211,8 +211,11 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
         ReferencedEnvelope subEnv =
                 ReferencedEnvelope.rect(
-                        worldBounds.getMinX() + cellWidthX * 0.6, worldBounds.getMinY() + cellWidthY * 0.6, worldBounds.getWidth() - cellWidthX * 1.2, worldBounds.getHeight() - cellWidthY * 1.2, gg.getCoordinateReferenceSystem2D()
-                );
+                        worldBounds.getMinX() + cellWidthX * 0.6,
+                        worldBounds.getMinY() + cellWidthY * 0.6,
+                        worldBounds.getWidth() - cellWidthX * 1.2,
+                        worldBounds.getHeight() - cellWidthY * 1.2,
+                        gg.getCoordinateReferenceSystem2D());
 
         gridEnv = gg.worldToGrid(subEnv);
 
@@ -277,16 +280,18 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
         ReferencedEnvelope expectedEnv =
                 ReferencedEnvelope.rect(
-                        worldBounds.getMinX() + cellWidthX, worldBounds.getMinY() + cellWidthY, worldBounds.getWidth() - 2 * cellWidthX, worldBounds.getHeight() - 2 * cellWidthY, gg.getCoordinateReferenceSystem2D()
-                );
+                        worldBounds.getMinX() + cellWidthX,
+                        worldBounds.getMinY() + cellWidthY,
+                        worldBounds.getWidth() - 2 * cellWidthX,
+                        worldBounds.getHeight() - 2 * cellWidthY,
+                        gg.getCoordinateReferenceSystem2D());
 
         assertTrue(expectedEnv.boundsEquals(subEnv, 0, 1, TOL));
     }
 
     @Test
     public void testCanonicalFromOrthogonal() throws Exception {
-        ReferencedEnvelope bbox =
-                ReferencedEnvelope.rect(150, 40, 10, 10);
+        ReferencedEnvelope bbox = ReferencedEnvelope.rect(150, 40, 10, 10);
         GridGeometry2D gg =
                 new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100), (Bounds) bbox);
 
@@ -308,8 +313,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
 
     @Test
     public void testRectangleConstructor() throws Exception {
-        ReferencedEnvelope userRange =
-                ReferencedEnvelope.rect(-180, -90, 360, 180);
+        ReferencedEnvelope userRange = ReferencedEnvelope.rect(-180, -90, 360, 180);
         GridEnvelope2D gridRange = new GridEnvelope2D(new Rectangle(100, 100));
         GridGeometry2D gg1 = new GridGeometry2D(gridRange, userRange);
         Assert.assertTrue(gg1.isDefined(GridGeometry2D.CRS_BITMASK));

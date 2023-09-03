@@ -360,8 +360,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                                 return factory.create(
                                         "UInt16 coverage",
                                         image,
-                                        ReferencedEnvelope.rect(35, -41, 35 + 45, -41 + 46)
-                                );
+                                        ReferencedEnvelope.rect(35, -41, 35 + 45, -41 + 46));
                             }
                     }
                     /*

@@ -22,10 +22,8 @@ import java.awt.image.WritableRaster;
 import javax.media.jai.RasterFactory;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.geometry.Bounds;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 
 /**

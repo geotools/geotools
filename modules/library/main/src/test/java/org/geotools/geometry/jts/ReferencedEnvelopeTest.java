@@ -214,7 +214,7 @@ public class ReferencedEnvelopeTest {
         ReferencedEnvelope re = new ReferencedEnvelope();
         assertTrue(re.isEmpty());
         assertTrue(ReferencedEnvelope.create(re).isEmpty());
-        assertTrue(ReferencedEnvelope.create(re, re.getCoordinateReferenceSystem()).isEmpty());
+        assertTrue(ReferencedEnvelope.create(re).isEmpty());
         assertTrue(ReferencedEnvelope.reference(re).isEmpty());
     }
 }

@@ -731,8 +731,11 @@ public class GridGeometry2D extends GeneralGridGeometry {
         if (envelope != null && !envelope.isNull()) {
             assert isDefined(ENVELOPE_BITMASK);
             return ReferencedEnvelope.rect(
-                    envelope.getMinimum(axisDimensionX), envelope.getMinimum(axisDimensionY), envelope.getSpan(axisDimensionX), envelope.getSpan(axisDimensionY), crs2D
-            );
+                    envelope.getMinimum(axisDimensionX),
+                    envelope.getMinimum(axisDimensionY),
+                    envelope.getSpan(axisDimensionX),
+                    envelope.getSpan(axisDimensionY),
+                    crs2D);
             // Note: we didn't invoked reduce(Envelope) in order to make sure that
             //       our private 'envelope' field is not exposed to subclasses.
         }

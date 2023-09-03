@@ -1,8 +1,12 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project name="remove-opengis" default="update">
   <!-- Use this property to run script on your project location -->
   <property name="project.dir" location="."/>
-  <!-- macros -->
+  
+  <!--                                                                                  -->
+  <!-- Macros                                                                           -->
+  <!--                                                                                  -->
+  <!-- Refactorings are captued as macros so we can improve the steps based on feedback -->
   <macrodef name="refactor">
     <attribute name="srcPackage"/>
     <attribute name="srcClass"/>
@@ -12,23 +16,26 @@
       <fileset id="@{srcClass}.files" dir="${project.dir}" includes="**/*.java">
         <contains text="@{srcPackage}.@{srcClass}" casesensitive="yes"/>
       </fileset>
-      <fileset id="@{dstClass}.files" dir="${project.dir}" includes="**/*.java">
-        <contains text="@{dstPackage}.@{dstClass}" casesensitive="yes"/>
-      </fileset>
       <echo level="info" message="Refactor: @{srcPackage}.@{srcClass} -&gt; @{dstPackage}.@{dstClass}"/>
       <replaceregexp byline="true" flags="g">
         <fileset refid="@{srcClass}.files"/>
-          <regexp pattern="(\W)@{srcPackage}\.@{srcClass}(\W)"/>
-          <substitution expression="\1@{dstPackage}.@{dstClass}\2"/>
-        </replaceregexp>
+        <regexp pattern="(\W)@{srcPackage}\.@{srcClass}(\W)"/>
+        <substitution expression="\1@{dstPackage}.@{dstClass}\2"/>
+      </replaceregexp>
+      <!--
+      <fileset id="@{dstClass}.files" dir="${project.dir}" includes="**/*.java">
+        <contains text="@{dstPackage}.@{dstClass}" casesensitive="yes"/>
+      </fileset>
       <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
       <replaceregexp byline="true" flags="g">
         <fileset refid="@{dstClass}.files"/>
         <regexp pattern="(\W)@{srcClass}(\W)"/>
         <substitution expression="\1@{dstClass}\2"/>
       </replaceregexp>
+      -->
     </sequential>
   </macrodef>
+  
   <macrodef name="remove">
     <attribute name="package"/>
     <attribute name="class"/>
@@ -44,12 +51,6 @@
         <regexp pattern="^import @{class}\.@{class};$"/>
         <substitution expression="// import @{class}.@{class};@{removed}"/>
       </replaceregexp>
-      <replace dir="${project.dir}" includes="**/*.java" summary="yes">
-        <replacefilter>
-          <replacetoken>(\s)@{srcPackage}@{srcClass}(\W)</replacetoken>
-          <replacevalue>\1@{dstPackage}@{dstClass}\2</replacevalue>
-        </replacefilter>
-      </replace>
     </sequential>
   </macrodef>
   
@@ -100,13 +101,17 @@
         <substitution expression="import @{dstPackage}\.@{class};"/>
       </replaceregexp>
       <replaceregexp byline="true">
-        <fileset refid="@{srcPackage}.files />
+        <fileset refid="@{srcPackage}.files"/>
         <regexp pattern="@{srcPackage}\.@{class}(\W)"/> <!-- make sure to miss the Impl-->
         <substitution expression="@{dstPackage}\.@{class}\1"/>
       </replaceregexp>
     </sequential>
   </macrodef>
   
+  <!--                                                                  -->
+  <!-- Tasks                                                            -->
+  <!--                                                                  -->
+  <!-- Tasks are listed in order of execution to aid in troubleshooting -->
   <target name="starting-up" description="Update project in current directory to remove org.opengis package use">
     <echo level="warning">Update to GeoTools 30.x series</echo>
     <echo level="info"/>
@@ -216,6 +221,7 @@
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
   </target>
+  
   <target name="_styling" description="GeoTools styling interfaces merge">
     <echo level="info"/>
     <echo level="info" message="org.geotools.styling interfaces are now merged into org.geotools.api.style"/>
@@ -281,7 +287,7 @@
     <moveTo srcPackage="${sp}" dstPackage="${dp}" class="TraversingStyleVisitor"/>
     <moveTo srcPackage="${sp}" dstPackage="${dp}" class="UserLayer"/>
 
-   <!-- Temporary hack while we wait for the data access API to move to gt-api -->
+   <!-- A cast is required as DataStore API is defined in gt-main -->
     <replaceregexp flags="g">
       <regexp pattern="(\w+)\.getInlineFeatureDatastore\(\)"/>
       <substitution expression="(DataStore) \1.getInlineFeatureDatastore()"/>
@@ -315,6 +321,7 @@
     <echo level="warning" message="new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
     <refactor srcPackage="org.geotools.geometry" srcClass="Envelope2D" dstPackage="org.geotools.geometry.jts" dstClass="ReferencedEnvelope"/>
   </target>
+
   <target name="_geometry" description="Geometry API cleanup">
     <echo level="info"/>
     <echo level="info" message="Removing org.opengis.geometry.Geometry"/>

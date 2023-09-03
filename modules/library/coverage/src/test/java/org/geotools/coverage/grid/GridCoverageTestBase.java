@@ -331,12 +331,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                                 return factory.create(
                                         "Float coverage",
                                         raster,
-                                        ReferencedEnvelope.envelope2D(
-                                                DefaultGeographicCRS.WGS84,
-                                                35,
-                                                -41,
-                                                35 + 45,
-                                                -41 + 46),
+                                        ReferencedEnvelope.rect(35, -41, 35 + 45, -41 + 46),
                                         null,
                                         null,
                                         null,
@@ -365,12 +360,8 @@ public class GridCoverageTestBase extends CoverageTestBase {
                                 return factory.create(
                                         "UInt16 coverage",
                                         image,
-                                        ReferencedEnvelope.envelope2D(
-                                                DefaultGeographicCRS.WGS84,
-                                                35,
-                                                -41,
-                                                35 + 45,
-                                                -41 + 46));
+                                        ReferencedEnvelope.rect(35, -41, 35 + 45, -41 + 46)
+                                );
                             }
                     }
                     /*

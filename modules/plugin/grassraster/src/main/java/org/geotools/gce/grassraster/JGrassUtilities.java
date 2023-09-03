@@ -562,7 +562,7 @@ public class JGrassUtilities {
             boolean matrixIsRowCol) {
         WritableRaster writableRaster = createWritableRasterFromMatrix(dataMatrix, matrixIsRowCol);
 
-        ReferencedEnvelope writeEnvelope = ReferencedEnvelope.envelope2D(crs, w, s, e - w, n - s);
+        ReferencedEnvelope writeEnvelope = ReferencedEnvelope.rect(w, s, e - w, n - s, crs);
         GridCoverageFactory factory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
 

@@ -325,12 +325,12 @@ public final class ResampleTest extends GridProcessingTestBase {
         RenderedImage image = ImageIO.read(world);
 
         final CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
-        ReferencedEnvelope envelope = ReferencedEnvelope.envelope2D(wgs84, -180, -90, 360, 180);
+        ReferencedEnvelope envelope = ReferencedEnvelope.rect(-180, -90, 360, 180, wgs84);
         GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
 
         // crop, we cannot reproject it fully to the google projection
         final ReferencedEnvelope cropEnvelope =
-                ReferencedEnvelope.envelope2D(wgs84, -180, -80, 360, 160);
+                ReferencedEnvelope.rect(-180, -80, 360, 160, wgs84);
         GridCoverage2D gcCropWorld =
                 (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
 
@@ -356,12 +356,12 @@ public final class ResampleTest extends GridProcessingTestBase {
         RenderedImage image = ImageIO.read(world);
 
         final CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
-        ReferencedEnvelope envelope = ReferencedEnvelope.envelope2D(wgs84, -180, -90, 360, 180);
+        ReferencedEnvelope envelope = ReferencedEnvelope.rect(-180, -90, 360, 180, wgs84);
         GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
 
         // crop, we cannot reproject it fully to the google projection
         final ReferencedEnvelope cropEnvelope =
-                ReferencedEnvelope.envelope2D(wgs84, -180, -80, 360, 160);
+                ReferencedEnvelope.rect(-180, -80, 360, 160, wgs84);
         GridCoverage2D gcCropWorld =
                 (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
 
@@ -428,7 +428,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         GridCoverage2D coverage =
                 factory.create(
-                        "translated", ti, ReferencedEnvelope.envelope2D(wgs84LatLon, 3, 5, 6, 8));
+                        "translated", ti, ReferencedEnvelope.rect(3, 5, 6, 8, wgs84LatLon));
 
         // verify we're good
         int[] pixel = new int[3];
@@ -442,7 +442,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         GridGeometry gg =
                 new GridGeometry2D(
                         new GridEnvelope2D(-10, -10, 5, 5),
-                        (Bounds) ReferencedEnvelope.envelope2D(wgs84LonLat, 5, 3, 8, 6));
+                        (Bounds) ReferencedEnvelope.rect(5, 3, 8, 6, wgs84LonLat));
         GridCoverage2D flipped =
                 (GridCoverage2D)
                         Operations.DEFAULT.resample(

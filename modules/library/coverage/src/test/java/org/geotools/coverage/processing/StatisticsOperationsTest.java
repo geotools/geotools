@@ -65,8 +65,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
                 raster.setSample(x, y, 0, x + y);
             }
         }
-        final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        final Bounds envelope = ReferencedEnvelope.envelope2D(crs, 0, 0, 30, 30);
+        final Bounds envelope = ReferencedEnvelope.rect(0, 0, 30, 30);
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         return factory.create("My grayscale float coverage", raster, envelope);
     }

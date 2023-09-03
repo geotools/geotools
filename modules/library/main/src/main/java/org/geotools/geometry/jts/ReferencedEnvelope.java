@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.text.MessageFormat;
@@ -37,6 +38,7 @@ import org.geotools.geometry.Position2D;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -939,12 +941,15 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         return new ReferencedEnvelope(reference(bounds), bounds.getCoordinateReferenceSystem());
     }
     /**
-     * Utility method to create a ReferencedEnvelope from an opengis Envelope class, supporting 2d
-     * as well as 3d envelopes (returning the right class).
+     * Utility method to create a ReferencedEnvelope from provided {@code Bounds}.
      *
-     * @param env The opgenis Envelope object
-     * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
-     *     results in a null/an empty envelope, if input envelope was a null/an empty envelope
+     * <p>Uses {@code crs} to determine if {@code ReferencedEnvelope} or {@code
+     * ReferencedEnvelope3D} is required.
+     *
+     * @param env Bounds representing extent
+     * @param crs CRS
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if crs is 3d,<br>
+     *     results in a null/an empty envelope, if input envelope was a null/an empty envelope.
      * @see {@link #reference(Bounds)}
      */
     public static ReferencedEnvelope create(Bounds env, CoordinateReferenceSystem crs) {
@@ -961,20 +966,65 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         return new ReferencedEnvelope(reference(env), crs);
     }
     /**
-     * Utility method to create a ReferencedEnvelope from an opengis Envelope class, supporting 2d
-     * as well as 3d envelopes (returning the right class).
+     * Utility method to copy a ReferencedEnvelope.
      *
-     * @param env The opgenis Envelope object
+     * <p>Uses {@code crs} to determine if {@code ReferencedEnvelope} or {@code
+     * ReferencedEnvelope3D} is required.
+     *
+     * @param crs CRS
+     * @return ReferencedEnvelope, ReferencedEnvelope3D if crs is 3d,<br>
+     *     results in a null/an empty envelope, if input envelope was a null/an empty envelope.
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d
      */
-    public static ReferencedEnvelope create(ReferencedEnvelope env, CoordinateReferenceSystem crs) {
-        return create((Bounds) env, crs);
+    //    public static ReferencedEnvelope create(ReferencedEnvelope env, CoordinateReferenceSystem
+    // crs) {
+    //        return create((Bounds) env, crs);
+    //    }
+
+    /**
+     * Construct 2D WGS84 referenced envelope using rectangle conventions using width and height.
+     *
+     * @param rectangle Rectangle defining extend of Referenced Envelope.
+     */
+    public static ReferencedEnvelope rect(Rectangle2D rectangle) {
+        return new ReferencedEnvelope(
+                rectangle.getX(),
+                rectangle.getWidth(),
+                rectangle.getY(),
+                rectangle.getHeight(),
+                DefaultGeographicCRS.WGS84);
+    }
+    /**
+     * Construct referenced envelope using rectangle conventions using width and height.
+     *
+     * @param rectangle Rectangle defining extend of Referenced Envelope.
+     */
+    public static ReferencedEnvelope rect(Rectangle2D rectangle, CoordinateReferenceSystem crs) {
+        return new ReferencedEnvelope(
+                rectangle.getX(),
+                rectangle.getWidth(),
+                rectangle.getY(),
+                rectangle.getHeight(),
+                crs);
     }
 
     /**
      * Construct 2D WGS84 referenced envelope using rectangle conventions using width and height.
      *
-     * <p>Migration method, previously {@code Envelope2D(crs,x,y,w,h)}.
+     * <p>Migration method, previously {@code new Envelope2D(crs,x,y,w,h)}.
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
+    public static ReferencedEnvelope rect(double x, double y, double width, double height) {
+        return new ReferencedEnvelope(x, x + width, y, y + height, DefaultGeographicCRS.WGS84);
+    }
+    /**
+     * Construct referenced envelope using rectangle conventions using width and height.
+     *
+     * <p>Migration method, previously {@code new Envelope2D(crs,x,y,w,h)}.
      *
      * @param x
      * @param y
@@ -982,8 +1032,8 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @param height
      * @return ReferencedEnvelope WGS84
      */
-    public static ReferencedEnvelope envelope2D(
-            CoordinateReferenceSystem crs, double x, double y, double width, double height) {
+    public static ReferencedEnvelope rect(
+            double x, double y, double width, double height, CoordinateReferenceSystem crs) {
         return new ReferencedEnvelope(x, x + width, y, y + height, crs);
     }
 

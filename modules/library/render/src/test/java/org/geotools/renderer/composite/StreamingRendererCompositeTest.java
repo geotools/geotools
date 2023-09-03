@@ -129,8 +129,8 @@ public class StreamingRendererCompositeTest {
                 ImageIO.read(CompositeTest.class.getResourceAsStream("test-data/" + imageFileName));
         GridCoverageFactory factory = new GridCoverageFactory();
         ReferencedEnvelope envelope =
-                ReferencedEnvelope.envelope2D(
-                        DefaultEngineeringCRS.GENERIC_2D, 0, 0, bi.getWidth(), bi.getHeight());
+                ReferencedEnvelope.rect(
+                        0, 0, bi.getWidth(), bi.getHeight(), DefaultEngineeringCRS.GENERIC_2D);
         return factory.create(imageFileName, bi, envelope);
     }
 

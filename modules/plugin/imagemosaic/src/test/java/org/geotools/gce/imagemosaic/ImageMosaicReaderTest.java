@@ -2107,8 +2107,8 @@ public class ImageMosaicReaderTest {
         final ParameterValue<GridGeometry2D> ggp =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ReferencedEnvelope env =
-                ReferencedEnvelope.envelope2D(
-                        reader.getCoordinateReferenceSystem(), 500000, 3200000, 1000, 1000);
+                ReferencedEnvelope.rect(
+                        500000, 3200000, 1000, 1000, reader.getCoordinateReferenceSystem());
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         ggp.setValue(gg);
 
@@ -2172,7 +2172,7 @@ public class ImageMosaicReaderTest {
         final ParameterValue<GridGeometry2D> ggp =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ReferencedEnvelope env =
-                ReferencedEnvelope.envelope2D(reader.getCoordinateReferenceSystem(), 10, 41, 1, 1);
+                ReferencedEnvelope.rect(10, 41, 1, 1, reader.getCoordinateReferenceSystem());
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Bounds) env);
         ggp.setValue(gg);
 
@@ -2218,12 +2218,9 @@ public class ImageMosaicReaderTest {
         final ParameterValue<GridGeometry2D> ggp =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ReferencedEnvelope env =
-                ReferencedEnvelope.envelope2D(
-                        reader.getCoordinateReferenceSystem(),
-                        44887,
-                        2299342,
-                        646897 - 44887,
-                        3155705 - 2299342);
+                ReferencedEnvelope.rect(
+                        44887, 2299342, 646897 - 44887, 3155705 - 2299342, reader.getCoordinateReferenceSystem()
+                );
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         ggp.setValue(gg);
 
@@ -2261,8 +2258,8 @@ public class ImageMosaicReaderTest {
             final ParameterValue<GridGeometry2D> ggp =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
             ReferencedEnvelope env =
-                    ReferencedEnvelope.envelope2D(
-                            reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
+                    ReferencedEnvelope.rect(
+                            19, 45, 1, 1, reader.getCoordinateReferenceSystem());
             GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Bounds) env);
             ggp.setValue(gg);
 
@@ -2678,7 +2675,7 @@ public class ImageMosaicReaderTest {
 
         // make a request in a bbox that's outside of the original envelope
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        Bounds env = ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        Bounds env = ReferencedEnvelope.rect(10, 40, 15, 45);
         GridEnvelope2D rasterEnvelope =
                 new GridEnvelope2D(
                         new ReferencedEnvelope(CRS.transform(mt.inverse(), env)),
@@ -2751,7 +2748,7 @@ public class ImageMosaicReaderTest {
         // second reader does not have the metadata updated, but can still respond to the
         // request
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        Bounds env = ReferencedEnvelope.envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        Bounds env = ReferencedEnvelope.rect(10, 40, 15, 45);
         GridEnvelope2D rasterEnvelope =
                 new GridEnvelope2D(
                         new ReferencedEnvelope(CRS.transform(mt.inverse(), env)),
@@ -4688,8 +4685,8 @@ public class ImageMosaicReaderTest {
         bkg.setValue(new double[] {-9999.0});
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ReferencedEnvelope env =
-                ReferencedEnvelope.envelope2D(
-                        reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
+                ReferencedEnvelope.rect(
+                        0, 0, 1000, 1000, reader.getCoordinateReferenceSystem());
         GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         gg.setValue(gg2D);
         coverage = reader.read(new GeneralParameterValue[] {bkg, gg, useJai, tileSize});
@@ -4792,8 +4789,8 @@ public class ImageMosaicReaderTest {
         bkg.setValue(new double[] {-9999.0});
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         ReferencedEnvelope env =
-                ReferencedEnvelope.envelope2D(
-                        reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
+                ReferencedEnvelope.rect(
+                        0, 0, 1000, 1000, reader.getCoordinateReferenceSystem());
         GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         gg.setValue(gg2D);
         coverage = reader.read(new GeneralParameterValue[] {bkg, gg, useJai, tileSize});

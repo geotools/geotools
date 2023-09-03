@@ -103,7 +103,17 @@ org.opengis.geometry.GeneralEnvelope             org.geotools.api.geometry.Bound
 org.opengis.geometry.AbstractEnvelope            org.geotools.api.geometry.Bounds
 org.opengis.geometry.BoundingBox                 org.geotools.geometry.jts.ReferencedEnvelope
 org.opengis.geometry.BoundingBox3D               org.geotools.geometry.jts.ReferencedEnvelope3D
+org.opengis.geometry.Envelope2D                  org.geotools.geometry.jts.ReferencedEnvelope
 ===============================================  ===============================================================
+
+Migration recommendations:
+
+* The constructor ``Envelope2D(crs,x,y,width,height)``
+  replaced with ``ReferencedEnvelope.envelope2d(crs,c,y,width,height)``
+
+* ``Envelope2D.equals(Envelope2D)`` only checked extent,
+  replace with ``ReferencedEnvelope.boundsEquals2D(Bounds,double)``
+
 
 GeoTools 29.x
 -------------

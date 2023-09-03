@@ -259,15 +259,41 @@
   <!-- the following tasks run after _opengis above to reflect api refactoring -->
   <target name="_bounds" description="Bounds and Position API cleanup">
     <echo />
-    <echo message="Refactor Position to DirectPosition and removing org.opengis.geometry.coordinates.Position)" />
-    
-    <!-- you cann use refid="Position.files" fileset after refactor -->
+    <echo message="Position and DirectPosition cleanup ..." />
     <refactor package1="org.opengis.geometry" class1="DirectPosition"
-              package2="org.opengis.geometry"            class2="Position" />
+              package2="org.opengis.geometry" class2="Position" />
     <moveClass srcPackage="org.opengis.geometry.coordinate"
                dstPackage="org.opengis.geometry" class="Position" />
+    <refactor package1="org.geotools.geometry" class1="AbstractDirectPosition"
+              package2="org.geotools.geometry" class2="AbstractPosition" />
+    <refactor package1="org.geotools.geometry" class1="GeneralDirectPosition"
+              package2="org.geotools.geometry" class2="GeneralPosition" />
+    <refactor package1="org.geotools.geometry" class1="DirectPosition1D"
+              package2="org.geotools.geometry" class2="Position1D" />
+    <refactor package1="org.geotools.geometry" class1="DirectPosition2D"
+              package2="org.geotools.geometry" class2="Position2D" />
+    <refactor package1="org.geotools.geometry" class1="DirectPosition3D"
+              package2="org.geotools.geometry" class2="Position3D" />
+    <!--
+    <refactor package1="org.geotools.geometry" class1="TransformedDirectPosition"
+              package2="org.geotools.geometry" class2="TransformedPosition" />
+    -->
     <remove package="org.opengis.geometry.coordinate" class="PointArray"
             removed="// removed - use List&lt;DirectPosition&gt;" />
+    <!-- bounds -->
+    <echo message="Bounds and Envelope cleanup ..." />
+    <refactor package1="org.opengis.geometry" class1="Envelope"
+              package2="org.opengis.geometry" class2="Bounds" />
+    <refactor package1="org.geotools.geometry" class1="AbstractEnvelope"
+              package2="org.geotools.geometry" class2="AbstractBounds" />
+    <refactor package1="org.geotools.geometry" class1="AbstractEnvelope"
+              package2="org.geotools.geometry" class2="AbstractBounds" />
+
+    <echo message="Remove Envelope2D, refactor code to use to ReferencedEnvelope" />
+    <echo message="* Envelope2D.equals(Evenlope2D): Use ReferencedEnvelope.equals(bounds) or ReferencedEnvelope.equals2D(bounds,double)" />
+    <echo message="* new Envelope2D(crs,x1,x2,y1,y2): Use ReferencedEnvelope.envelope2D(x1,x2,y1,y2,crs)" />
+    <refactor package1="org.geotools.geometry" class1="Envelope2D"
+              package2="org.geotools.geometry.jts" class2="ReferencedEnvelope" />
   </target>
 
 

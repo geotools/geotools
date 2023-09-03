@@ -1038,14 +1038,14 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     }
 
     /**
-     * Utility method to create a ReferencedEnvelope from an JTS Envelope class, supporting 2d as
+     * Utility method to create a ReferencedEnvelope a plain JTS Envelope class, supporting 2d as
      * well as 3d envelopes (returning the right class).
      *
      * @param env The JTS Envelope object
      * @return ReferencedEnvelope, ReferencedEnvelope3D if it is 3d,<br>
      *     results in a null/an empty envelope, if input envelope was a null/an empty envelope
      */
-    public static ReferencedEnvelope create(Envelope env, CoordinateReferenceSystem crs) {
+    public static ReferencedEnvelope envelope(Envelope env, CoordinateReferenceSystem crs) {
         if (env == null) {
             return null;
         }

@@ -13,26 +13,23 @@
     <attribute name="dstPackage"/>
     <attribute name="dstClass"/>
     <sequential>
-      <fileset id="@{srcClass}.files" dir="${project.dir}" includes="**/*.java">
-        <contains text="@{srcPackage}.@{srcClass}" casesensitive="yes"/>
-      </fileset>
       <echo level="info" message="Refactor: @{srcPackage}.@{srcClass} -&gt; @{dstPackage}.@{dstClass}"/>
+      <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
       <replaceregexp byline="true" flags="g">
-        <fileset refid="@{srcClass}.files"/>
+        <fileset dir="${project.dir}" includes="**/*.java">
+          <contains text="@{srcPackage}.@{srcClass}" casesensitive="yes"/>
+        </fileset>
         <regexp pattern="(\W)@{srcPackage}\.@{srcClass}(\W)"/>
         <substitution expression="\1@{dstPackage}.@{dstClass}\2"/>
       </replaceregexp>
-      <!--
-      <fileset id="@{dstClass}.files" dir="${project.dir}" includes="**/*.java">
+      <fileset id="@{dstPackage}.@{dstClass}.files" dir="${project.dir}" includes="**/*.java">
         <contains text="@{dstPackage}.@{dstClass}" casesensitive="yes"/>
       </fileset>
-      <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
       <replaceregexp byline="true" flags="g">
-        <fileset refid="@{dstClass}.files"/>
+        <fileset refid="@{dstPackage}.@{dstClass}.files"/>
         <regexp pattern="(\W)@{srcClass}(\W)"/>
         <substitution expression="\1@{dstClass}\2"/>
       </replaceregexp>
-      -->
     </sequential>
   </macrodef>
   
@@ -42,12 +39,11 @@
     <attribute name="removed" default="// removed"/>
     <sequential>
       <echo level="info" message="Removed:  @{package}.@{class} -&gt;"/>
-      <fileset id="@{package}.@{class}.remove" dir="${project.dir}" includes="**/*.java">
-        <contains text="import @{package}.@{class};" casesensitive="yes"/>
-      </fileset>
       <echo level="verbose">... ${toString:@{package}.@{class}.remove}</echo>
       <replaceregexp byline="true">
-        <fileset refid="@{package}.@{class}.remove"/>
+        <fileset dir="${project.dir}" includes="**/*.java">
+          <contains text="import @{package}.@{class};" casesensitive="yes"/>
+        </fileset>
         <regexp pattern="^import @{class}\.@{class};$"/>
         <substitution expression="// import @{class}.@{class};@{removed}"/>
       </replaceregexp>
@@ -71,7 +67,7 @@
       </replaceregexp>
       <replaceregexp byline="true">
         <fileset refid="@{srcPackage}.@{class}.files"/>
-        <regexp pattern="@{srcPackage}\.@{class}(\W)"/> <!-- make sure to miss the Impl-->
+        <regexp pattern="@{srcPackage}\.@{class}(\W)"/>
         <substitution expression="@{dstPackage}\.@{class}\1"/>
       </replaceregexp>
     </sequential>
@@ -102,7 +98,7 @@
       </replaceregexp>
       <replaceregexp byline="true">
         <fileset refid="@{srcPackage}.files"/>
-        <regexp pattern="@{srcPackage}\.@{class}(\W)"/> <!-- make sure to miss the Impl-->
+        <regexp pattern="@{srcPackage}\.@{class}(\W)"/>
         <substitution expression="@{dstPackage}\.@{class}\1"/>
       </replaceregexp>
     </sequential>
@@ -319,6 +315,7 @@
     <echo level="info" message="Remove Envelope2D, refactor code to use to ReferencedEnvelope"/>
     <echo level="warning" message="Envelope2D.equals(Evenlope2D): Use ReferencedEnvelope.equals(bounds) or ReferencedEnvelope.equals2D(bounds,double)"/>
     <echo level="warning" message="new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
+    <echo level="warning" message="ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>
     <refactor srcPackage="org.geotools.geometry" srcClass="Envelope2D" dstPackage="org.geotools.geometry.jts" dstClass="ReferencedEnvelope"/>
   </target>
 

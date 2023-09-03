@@ -541,7 +541,7 @@ public class Crop extends Operation2D {
                             FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
                     Geometry intersection = IntersectUtils.intersection(cropROI, modelSpaceROI);
                     ReferencedEnvelope e2d =
-                            ReferencedEnvelope.create(
+                            ReferencedEnvelope.envelope(
                                     intersection.getEnvelopeInternal(),
                                     cropEnvelope.getCoordinateReferenceSystem());
                     GeneralBounds ge = new GeneralBounds(e2d);

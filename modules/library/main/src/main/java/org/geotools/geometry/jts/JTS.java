@@ -496,9 +496,9 @@ public final class JTS {
             if (envelope instanceof ReferencedEnvelope) {
                 return envelope;
             }
-            return ReferencedEnvelope.create(envelope, DefaultGeographicCRS.WGS84);
+            return ReferencedEnvelope.envelope(envelope, DefaultGeographicCRS.WGS84);
         }
-        ReferencedEnvelope initial = ReferencedEnvelope.create(envelope, crs);
+        ReferencedEnvelope initial = ReferencedEnvelope.envelope(envelope, crs);
         return toGeographic(initial);
     }
     /**

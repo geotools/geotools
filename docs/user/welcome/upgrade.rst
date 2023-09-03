@@ -32,8 +32,7 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 30.x
 -------------
 
-Remove OpenGIS and Cleanup GeoTools API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This update contains a major breaking change to the GeoTools library refactoring to remove the ``org.opengis`` pacakage.
 
 The ``gt-opengis`` module has been renamed, change your dependency to:
 
@@ -44,6 +43,11 @@ The ``gt-opengis`` module has been renamed, change your dependency to:
        <artifactId>gt-api</artifactId>
        <version>${geotools.version}</version>
    </dependency>
+
+Unfortunately we could not maintain a deprecation cycle for this change and have provided an update script to assist.
+
+Remove OpenGIS and Cleanup GeoTools API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The package ``org.opengis`` has changed ``org.geotools.api``.
 
@@ -67,7 +71,7 @@ To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is p
 
 3. We have done our best to with this update script but it is not perfect - known issues:
 
-   * Double check use of coordinate Position and temporal Position which have the same classname in different packages
+   * Double check use of geometry Position and temporal Position which have the same classname in different packages
    * Clean up unused or duplicate imports
    * You may need to re-run code formatters
 
@@ -92,28 +96,36 @@ The **org.opengis.geometry** and **org.opengis.geometry.coordinates** interfaces
 boxes have been revised as part of their refactor to **org.geotools.api**.
 
 ===============================================  ===============================================================
-OpenGIS                                          GeoTools API
+GeoAPI Preflight / OpenGIS                       GeoTools 30.x API
 ===============================================  ===============================================================
-org.opengis.geometry.coordinates.Position        org.geotools.api.geometry.Position
-org.opengis.geometry.coordinates.PointArray      (removed)
+org.opengis.geometry.BoundingBox                 org.geotools.api.geometry.BoundingBox
+org.opengis.geometry.BoundingBox3D               org.geotools.api.geometry.BoundingBox3D
 org.opengis.geometry.DirectPosition              org.geotools.api.geometry.Position
-org.opengis.geometry.DirectPosition3D            org.geotools.api.geometry.Position3D
 org.opengis.geometry.Envelope                    org.geotools.api.geometry.Bounds
-org.opengis.geometry.GeneralEnvelope             org.geotools.api.geometry.Bounds
-org.opengis.geometry.AbstractEnvelope            org.geotools.api.geometry.Bounds
-org.opengis.geometry.BoundingBox                 org.geotools.geometry.jts.ReferencedEnvelope
-org.opengis.geometry.BoundingBox3D               org.geotools.geometry.jts.ReferencedEnvelope3D
-org.opengis.geometry.Envelope2D                  org.geotools.geometry.jts.ReferencedEnvelope
+org.opengis.geometry.coordinates.PointArray      java.util.List<Position>
+org.opengis.geometry.coordinates.Position        org.geotools.api.geometry.Position
+===============================================  ===============================================================
+
+===============================================  ===============================================================
+GeoTools 29.x Implementation                     GeoTools 30.x Implementation
+===============================================  ===============================================================
+org.geotools.geometry.AbstractDirectPosition     org.geotools.api.geometry.AbstractPosition
+org.geotools.geometry.AbstractEnvelope           org.geotools.api.geometry.AbstractBounds
+org.geotools.geometry.DirectPosition1D           org.geotools.api.geometry.Position1D
+org.geotools.geometry.DirectPosition2D           org.geotools.api.geometry.Position2D
+org.geotools.geometry.DirectPosition3D           org.geotools.api.geometry.Position3D
+org.geotools.geometry.Envelope2D                 org.geotools.geometry.jts.ReferencedEnvelope
+org.geotools.geometry.GeneralDirectPosition      org.geotools.api.geometry.GeneralPosition
+org.geotools.geometry.GeneralEnvelope            org.geotools.api.geometry.GeneralBounds
 ===============================================  ===============================================================
 
 Migration recommendations:
 
-* The constructor ``Envelope2D(crs,x,y,width,height)``
-  replaced with ``ReferencedEnvelope.envelope2d(crs,c,y,width,height)``
+* Replace ``ReferencedEnvelope.create(Envelope,CoordinateReferenceSystem)`` with ``ReferencedEnvelope.envelope(Envelope,CoordinateReferenceSystem)``
 
-* ``Envelope2D.equals(Envelope2D)`` only checked extent,
-  replace with ``ReferencedEnvelope.boundsEquals2D(Bounds,double)``
+* Replace constructor ``Envelope2D(crs,x,y,width,height)`` with ``ReferencedEnvelope.rect(x,y,width,height,crs)``
 
+* Replace ``Envelope2D.equals(Envelope2D)`` with ``ReferencedEnvelope.boundsEquals2D(Bounds,double)``
 
 GeoTools 29.x
 -------------

@@ -240,7 +240,7 @@ public class APIExamples {
 
         // safely create ReferencedEnvelope from org.locationtech.jts.geom.Envelope, uses
         // dimension in Envelope to determine type
-        env = ReferencedEnvelope.create(jts_env, crs);
+        env = ReferencedEnvelope.envelope(jts_env, crs);
 
         // safely reference org.geotools.api.geometry.Envelope as ReferencedEnvelope
         // --> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion

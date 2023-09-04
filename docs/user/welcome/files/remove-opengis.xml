@@ -339,19 +339,14 @@
     -->
     <replaceregexp byline="true" flags="g">
       <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
-      <regexp pattern="(\.|\s|\(|\&lt;)Envelope(\W)"/>
-      <substitution expression="\1Bounds\2"/>
+      <regexp pattern="(^\&quot;.*)(\.|\s|\(|\&lt;)Envelope(\W)"/>
+      <substitution expression="\1\2Bounds\3"/>
     </replaceregexp>
     <echo level="info" message="          org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
     <fileset id="org.opengis.geometry.Envelope.files" dir="${project.dir}" includes="**/*.java">
       <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
     </fileset>
     <echo level="verbose">... ${toString:org.opengis.geometry.Envelope.files}</echo>
-    <replaceregexp byline="true" flags="g">
-      <fileset refid="org.opengis.geometry.Envelope.files"/>
-      <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
-      <substitution expression="\1org.opengis.geometry.Bounds\2"/>
-    </replaceregexp>
     <replaceregexp byline="true" flags="g">
       <fileset refid="org.opengis.geometry.Envelope.files"/>
       <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>

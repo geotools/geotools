@@ -14,7 +14,6 @@
     <attribute name="dstClass"/>
     <sequential>
       <echo level="info" message="Refactor: @{srcPackage}.@{srcClass} -&gt; @{dstPackage}.@{dstClass}"/>
-      <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
       <replaceregexp byline="true" flags="g">
         <fileset dir="${project.dir}" includes="**/*.java">
           <contains text="@{srcPackage}.@{srcClass}" casesensitive="yes"/>
@@ -22,6 +21,7 @@
         <regexp pattern="(\W)@{srcPackage}\.@{srcClass}(\W)"/>
         <substitution expression="\1@{dstPackage}.@{dstClass}\2"/>
       </replaceregexp>
+      <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
       <fileset id="@{dstPackage}.@{dstClass}.files" dir="${project.dir}" includes="**/*.java">
         <contains text="@{dstPackage}.@{dstClass}" casesensitive="yes"/>
       </fileset>
@@ -293,7 +293,7 @@
     </replaceregexp>
   </target>
   
-  <target name="_bounds" description="Bounds and Position API cleanup">
+  <target name="_position" description="Position API cleanup">
     <echo level="info"/>
     <echo level="info" message="Position and DirectPosition cleanup ..."/>
     <refactor srcPackage="org.opengis.geometry" srcClass="DirectPosition" dstPackage="org.opengis.geometry" dstClass="Position"/>
@@ -306,17 +306,43 @@
     <refactor srcPackage="org.geotools.geometry" srcClass="DirectPosition3D" dstPackage="org.geotools.geometry" dstClass="Position3D"/>
     <refactor srcPackage="org.geotools.geometry" srcClass="TransformedDirectPosition" dstPackage="org.geotools.geometry" dstClass="TransformedPosition"/>
     <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;"/>
+  </target>
+  
+  <target name="_bounds" description="Bounds API cleanup">
     <echo level="info"/>
     <echo level="info" message="Bounds and Envelope cleanup ..."/>
-    <refactor srcPackage="org.opengis.geometry" srcClass="Envelope" dstPackage="org.opengis.geometry" dstClass="Bounds"/>
-    <replaceregexp byline="true" flags="g">
-      <fileset refid="org.opengis.geometry.Bounds.files"/>
-      <regexp pattern="org\.locationtech\.jts\.geom\.Bounds"/>
-      <substitution expression="org.locationtech.jts.geom.Envelope"/>
-    </replaceregexp>
-    
     <refactor srcPackage="org.geotools.geometry" srcClass="AbstractEnvelope" dstPackage="org.geotools.geometry" dstClass="AbstractBounds"/>
     <refactor srcPackage="org.geotools.geometry" srcClass="GeneralEnvelope" dstPackage="org.geotools.geometry" dstClass="GeneralBounds"/>
+    
+    <!-- step by step refactor of Envelope to avoid conflicts with jts Envelope -->
+    <!--
+    <refactor srcPackage="org.opengis.geometry" srcClass="Envelope" dstPackage="org.opengis.geometry" dstClass="Bounds"/>
+    -->
+    <echo level="info" message="Refactor: org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset dir="${project.dir}" includes="**/*.java">
+        <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
+      </fileset>
+      <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
+      <substitution expression="\1org.opengis.geometry.Bounds\2"/>
+    </replaceregexp>
+    
+    <echo level="info" message="          Envelope -&gt; Bounds"/>
+    <echo level="info" message="          (skipping files that import org.locationtech.jts.geom.Envelope)"/>
+    <fileset id="org.opengis.geometry.Bounds.safeFiles" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
+        <not>
+          <contains text="^import org.locationtech.jts.geom.Envelope;$" casesensitive="yes"/>
+        </not>
+    </fileset>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Bounds.safeFiles"/>
+      <regexp pattern="(\W)Envelope(\W)"/>
+      <substitution expression="\1Bounds\2"/>
+    </replaceregexp>
+  </target>
+  
+  <target name="_envelope2d" description="Envelope2D removal">
     <echo level="info"/>
     <echo level="info" message="Remove Envelope2D, refactor code to use to ReferencedEnvelope"/>
     <!-- pre: Envelope2D method cleanup -->
@@ -343,6 +369,8 @@
       <substitution expression="ReferencedEnvelope.envelope("/>
     </replaceregexp>
   </target>
+  
+  
 
   <target name="_geometry" description="Geometry API cleanup">
     <echo level="info"/>
@@ -380,7 +408,7 @@
     </move>
   </target>
   
-  <target name="update" depends="starting-up,_filterFactory,_styling,_bounds,_geometry,_errors,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_styling,_position,_bounds,_envelope2d,_geometry,_errors,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo level="warning">UPDATE COMPLETED: ${project.dir}</echo>
     <echo level="info"/>
     <echo level="info">At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

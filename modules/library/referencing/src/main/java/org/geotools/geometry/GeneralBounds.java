@@ -818,7 +818,7 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
         if (isEmptyOrdinates(ordinates)) {
             return true;
         }
-        assert !isNull() : this; // JG I worry that this is circular
+        assert !isNull() : this;
         return false;
     }
     /**

@@ -396,6 +396,11 @@
       <regexp pattern="ReferencedEnvelope\.create\(\(Envelope\)\s*"/>
       <substitution expression="ReferencedEnvelope.envelope("/>
     </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="ReferencedEnvelope\.create\((\w+nvelope),"/>
+      <substitution expression="ReferencedEnvelope.envelope(\1,"/>
+    </replaceregexp>
     
     <!-- match against variable names like sourceEnvelope.x -->
     <echo message="       ReferencedEnvelope.getMinX()"/>

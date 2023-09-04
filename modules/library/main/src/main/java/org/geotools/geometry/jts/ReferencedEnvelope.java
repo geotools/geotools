@@ -294,7 +294,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     }
 
     /** Returns the specified bounding box as a JTS envelope. */
-    private static Envelope getJTSEnvelope(final BoundingBox bbox) {
+    private static Envelope toJTSEnvelope(final BoundingBox bbox) {
         if (bbox == null) {
             throw new NullPointerException("Provided bbox envelope was null");
         }
@@ -486,15 +486,27 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     }
 
     /**
-     * Returns {@code true} if the provided bounds are contained by this bounding box.
+     * Check if provided bounds are contained by this ReferencedEnvelope.
      *
+     * @param bounds
+     * @return {@code true} if bounds are contained by this ReferencedEnvelope
+     */
+    public boolean contains(final ReferencedEnvelope bounds) {
+        ensureCompatibleReferenceSystem(bounds);
+        return super.contains(toJTSEnvelope(bounds));
+    }
+
+    /**
+     * Check if provided bbox is contained by this ReferencedEnvelope.
+     *
+     * @param bbox
+     * @return {@code true} if bbox is contained by this ReferencedEnvelope
      * @since 2.4
      */
     @Override
     public boolean contains(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
-
-        return super.contains(getJTSEnvelope(bbox));
+        return super.contains(toJTSEnvelope(bbox));
     }
 
     /**
@@ -506,7 +518,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public boolean intersects(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
 
-        return super.intersects(getJTSEnvelope(bbox));
+        return super.intersects(toJTSEnvelope(bbox));
     }
     /** Check if this bounding box intersects the provided bounds. */
     @Override
@@ -597,7 +609,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     @Override
     public void setBounds(final BoundingBox bbox) {
         ensureCompatibleReferenceSystem(bbox);
-        super.init(getJTSEnvelope(bbox));
+        super.init(toJTSEnvelope(bbox));
     }
 
     public void setFrameFromCenter(Point2D center, Point2D corner) {
@@ -980,6 +992,9 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @param rectangle Rectangle defining extend of Referenced Envelope.
      */
     public static ReferencedEnvelope rect(Rectangle2D rectangle) {
+        if (rectangle.isEmpty()) {
+            return new ReferencedEnvelope(DefaultGeographicCRS.WGS84);
+        }
         return new ReferencedEnvelope(
                 rectangle.getX(),
                 rectangle.getWidth(),
@@ -993,6 +1008,9 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
      * @param rectangle Rectangle defining extend of Referenced Envelope.
      */
     public static ReferencedEnvelope rect(Rectangle2D rectangle, CoordinateReferenceSystem crs) {
+        if (rectangle.isEmpty()) {
+            return new ReferencedEnvelope(crs);
+        }
         return new ReferencedEnvelope(
                 rectangle.getX(),
                 rectangle.getWidth(),
@@ -1127,18 +1145,18 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         }
 
         if (env.getDimension() >= 3) {
-            // emptiness test according to org.locationtech.jts.geom.Envelope
-            if (env.getMaximum(0) < env.getMinimum(0)) {
+            // emptiness test according to org.locationtech.jts.geom.Envelope using ! to catch NaN
+            if (!(env.getMinimum(0) < env.getMaximum(0))) {
                 return new ReferencedEnvelope3D(env.getCoordinateReferenceSystem());
             } else {
                 return new ReferencedEnvelope3D(env);
             }
         }
 
-        // emptiness test according to org.locationtech.jts.geom.Envelope
-        if (env.getMaximum(0) < env.getMinimum(0))
+        // emptiness test according to org.locationtech.jts.geom.Envelope using ! to catch NaN
+        if (!(env.getMinimum(0) < env.getMaximum(0))) {
             return new ReferencedEnvelope(env.getCoordinateReferenceSystem());
-
+        }
         return new ReferencedEnvelope(env);
     }
 

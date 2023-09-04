@@ -205,16 +205,24 @@ public class ReferencedEnvelopeTest {
         assertTrue(ReferencedEnvelope.create(ge, ge.getCoordinateReferenceSystem()).isEmpty());
         assertTrue(ReferencedEnvelope.reference(ge).isEmpty());
 
+        GeneralBounds bounds = new GeneralBounds(DefaultGeographicCRS.WGS84);
+        assertTrue(bounds.isEmpty());
+        assertTrue(
+                ReferencedEnvelope.create(bounds, bounds.getCoordinateReferenceSystem()).isEmpty());
+        assertTrue(ReferencedEnvelope.reference(bounds).isEmpty());
+
         // conversion of an empty Java Rectangle 2D should stay empty
         Rectangle2D r2d = new Rectangle2D.Double(0, 0, -1, -1);
         assertTrue(r2d.isEmpty());
         assertTrue(ReferencedEnvelope.create(r2d, null).isEmpty());
+        assertTrue(ReferencedEnvelope.rect(r2d).isEmpty());
+        assertTrue(ReferencedEnvelope.rect(r2d, DefaultGeographicCRS.WGS84).isEmpty());
 
         // conversion of an empty ReferencedEnvelope should stay empty
         ReferencedEnvelope re = new ReferencedEnvelope();
         assertTrue(re.isEmpty());
         assertTrue(ReferencedEnvelope.create(re).isEmpty());
-        assertTrue(ReferencedEnvelope.create(re).isEmpty());
+        assertTrue(ReferencedEnvelope.create(re, re.getCoordinateReferenceSystem()).isEmpty());
         assertTrue(ReferencedEnvelope.reference(re).isEmpty());
     }
 }

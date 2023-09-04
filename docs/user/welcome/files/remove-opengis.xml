@@ -318,27 +318,30 @@
     <!--
     <refactor srcPackage="org.opengis.geometry" srcClass="Envelope" dstPackage="org.opengis.geometry" dstClass="Bounds"/>
     -->
-    <echo level="info" message="Refactor: org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
-    <replaceregexp byline="true" flags="g">
-      <fileset dir="${project.dir}" includes="**/*.java">
-        <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
-      </fileset>
-      <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
-      <substitution expression="\1org.opengis.geometry.Bounds\2"/>
-    </replaceregexp>
-    
-    <echo level="info" message="          Envelope -&gt; Bounds"/>
+    <echo level="info" message="Refactor: Envelope -&gt; Bounds"/>
     <echo level="info" message="          (skipping files that import org.locationtech.jts.geom.Envelope)"/>
-    <fileset id="org.opengis.geometry.Bounds.safeFiles" dir="${project.dir}" includes="**/*.java">
+    
+    <fileset id="org.opengis.geometry.Envelope.safeFiles" dir="${project.dir}" includes="**/*.java">
       <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
-        <not>
-          <contains text="^import org.locationtech.jts.geom.Envelope;$" casesensitive="yes"/>
-        </not>
+      <not>
+        <contains text="import org.locationtech.jts.geom.Envelope;" casesensitive="yes"/>
+      </not>
     </fileset>
+    <echo>... ${toString:org.opengis.geometry.Envelope.safeFiles}</echo>
     <replaceregexp byline="true" flags="g">
-      <fileset refid="org.opengis.geometry.Bounds.safeFiles"/>
+      <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
       <regexp pattern="(\W)Envelope(\W)"/>
       <substitution expression="\1Bounds\2"/>
+    </replaceregexp>
+    <echo level="info" message="          org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
+    <fileset id="org.opengis.geometry.Envelope.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
+    </fileset>
+    <echo>... ${toString:org.opengis.geometry.Envelope.files}</echo>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Envelope.files"/>
+      <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
+      <substitution expression="\1org.opengis.geometry.Bounds\2"/>
     </replaceregexp>
   </target>
   
@@ -367,6 +370,32 @@
       <fileset refid="referencedEnvelope.files"/>
       <regexp pattern="ReferencedEnvelope\.create\(\(Envelope\)\s*"/>
       <substitution expression="ReferencedEnvelope.envelope("/>
+    </replaceregexp>
+    
+    <!-- match against variable names like sourceEnvelope.x -->
+    <echo message="       ReferencedEnvelope.getMinX()"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.x(\W)"/>
+      <substitution expression="\1nvelope.getMinX()\2"/>
+    </replaceregexp>
+    <echo message="       ReferencedEnvelope.getMinY()"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.y(\W)"/>
+      <substitution expression="\1nvelope.getMinY()\2"/>
+    </replaceregexp>
+    <echo message="       ReferencedEnvelope.getWidth()"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.width(\W)"/>
+      <substitution expression="\1nvelope.getWidth()\2"/>
+    </replaceregexp>
+    <echo message="       ReferencedEnvelope.getHeight()"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.height(\W)"/>
+      <substitution expression="\1nvelope.getHeight()\2"/>
     </replaceregexp>
   </target>
   

@@ -326,8 +326,8 @@
     <echo message="  new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
     <replaceregexp byline="true" flags="g">
       <fileset refid="envelope2D.files"/>
-      <regexp pattern="new Envelope2D\((.*),\s*(.*)\)"/>
-      <substitution expression="ReferencedEnvelope.rectangle(\2,\1)"/>
+      <regexp pattern="new Envelope2D\(\s*(.*?),\s*(.*?),\s*(.*?),\s*(.+?),\s*(.+?)\)"/>
+      <substitution expression="ReferencedEnvelope.rect(\2, \3\, \4, \5, \1)"/>
     </replaceregexp>
     <!-- refactor: Envelope2D to ReferencedEnvelope -->
     <refactor srcPackage="org.geotools.geometry" srcClass="Envelope2D" dstPackage="org.geotools.geometry.jts" dstClass="ReferencedEnvelope"/>
@@ -336,7 +336,7 @@
     <fileset id="referencedEnvelope.files" dir="${project.dir}" includes="**/*.java">
       <contains text="import org.geotools.geometry.jts.ReferencedEnvelope;" casesensitive="yes"/>
     </fileset>
-    <echo message="  ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>
+    <echo message="       ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>
     <replaceregexp byline="true" flags="g">
       <fileset refid="referencedEnvelope.files"/>
       <regexp pattern="ReferencedEnvelope\.create\(\(Envelope\)\s*"/>

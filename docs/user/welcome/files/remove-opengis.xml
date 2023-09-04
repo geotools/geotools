@@ -15,14 +15,14 @@
     <sequential>
       <echo level="info" message="Refactor: @{srcPackage}.@{srcClass} -&gt; @{dstPackage}.@{dstClass}"/>
       <replaceregexp byline="true" flags="g">
-        <fileset dir="${project.dir}" includes="**/*.java">
+        <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
           <contains text="@{srcPackage}.@{srcClass}" casesensitive="yes"/>
         </fileset>
         <regexp pattern="(\W)@{srcPackage}\.@{srcClass}(\W)"/>
         <substitution expression="\1@{dstPackage}.@{dstClass}\2"/>
       </replaceregexp>
       <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
-      <fileset id="@{dstPackage}.@{dstClass}.files" dir="${project.dir}" includes="**/*.java">
+      <fileset id="@{dstPackage}.@{dstClass}.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
         <contains text="@{dstPackage}.@{dstClass}" casesensitive="yes"/>
       </fileset>
       <replaceregexp byline="true" flags="g">
@@ -41,7 +41,7 @@
       <echo level="info" message="Removed:  @{package}.@{class} -&gt;"/>
       <echo level="verbose">... ${toString:@{package}.@{class}.remove}</echo>
       <replaceregexp byline="true">
-        <fileset dir="${project.dir}" includes="**/*.java">
+        <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
           <contains text="import @{package}.@{class};" casesensitive="yes"/>
         </fileset>
         <regexp pattern="^import @{class}\.@{class};$"/>
@@ -56,7 +56,7 @@
     <attribute name="class"/>
     <sequential>
       <echo level="info" message="Moved:    '@{srcPackage}.@{class}' -&gt; '@{dstPackage}.@{class}'"/>
-      <fileset id="@{srcPackage}.@{class}.files" dir="${project.dir}" includes="**/*.java">
+      <fileset id="@{srcPackage}.@{class}.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
         <contains text="@{srcPackage}." casesensitive="yes"/>
       </fileset>
       <echo level="verbose">... ${toString:@{srcPackage}.@{class}.files}</echo>
@@ -78,7 +78,7 @@
     <attribute name="srcPackage"/>
     <sequential>
       <echo level="info" message="Move From: '@{srcPackage}':"/>
-      <fileset id="@{srcPackage}.files" dir="${project.dir}" includes="**/*.java">
+      <fileset id="@{srcPackage}.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
         <contains text="@{srcPackage}." casesensitive="yes"/>
       </fileset>
       <echo level="verbose">... ${toString:@{srcPackage}.files}</echo>
@@ -117,7 +117,7 @@
   <target name="_filterFactory" description="FilterFactory2 and FilterFactory merge">
     <echo level="info"/>
     <echo level="info" message="Files containing org.opengis.filter.FilterFactory2:"/>
-    <fileset id="FilterFactory2.files" dir="${project.dir}" includes="**/*.java">
+    <fileset id="FilterFactory2.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
       <contains text="org.opengis.filter.FilterFactory2" casesensitive="yes"/>
     </fileset>
     <echo level="info" message="       Refactor FilterFactory2 --&gt; FilerFactory"/>
@@ -134,7 +134,7 @@
       </replacefilter>
     </replace>
     <echo level="info" message="Files containing org.opengis.filter.FilterFactory:"/>
-    <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java">
+    <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
       <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes"/>
     </fileset>
     <echo level="info">       FilterFactory.property(null)</echo>
@@ -287,7 +287,7 @@
     <replaceregexp flags="g">
       <regexp pattern="(\w+)\.getInlineFeatureDatastore\(\)"/>
       <substitution expression="(DataStore) \1.getInlineFeatureDatastore()"/>
-      <fileset dir="${project.dir}" includes="**/*.java">
+      <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
         <contains text="getInlineFeatureDatastore" casesensitive="yes"/>
       </fileset>
     </replaceregexp>
@@ -320,7 +320,7 @@
     -->
     <echo level="info" message="Refactor: Envelope -&gt; Bounds"/>
     <echo level="info" message="          (skipping files that import org.locationtech.jts.geom.Envelope)"/>
-    <fileset id="org.opengis.geometry.Envelope.safeFiles" dir="${project.dir}" includes="**/*.java">
+    <fileset id="org.opengis.geometry.Envelope.safeFiles" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
       <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
       <not>
         <contains text="import org.locationtech.jts.geom.Envelope;" casesensitive="yes"/>
@@ -336,14 +336,21 @@
          CustomEnvelopeBounds               (preserve as part of class names)
          sourceEnvelope                     (preserve as part of varaible names)
          org.locationtech.jts.geom.Envelope (post-process to fix)
+    LITERAL: (cannot figure out how to avoid string literals, pre/post process)
+         "coverageA and coverageB should share the same Envelope or something";
     -->
     <replaceregexp byline="true" flags="g">
       <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
-      <regexp pattern="(^\&quot;.*)(\.|\s|\(|\&lt;)Envelope(\W)"/>
-      <substitution expression="\1\2Bounds\3"/>
+      <regexp pattern="&quot;(.*?)Envelope(.*?)&quot;"/>
+      <substitution expression="&quot;\1_LITERAL_ENVELOPE_\2&quot;"/>
+    </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
+      <regexp pattern="(\s|\(|\&lt;|org\.opengis\.geometry\.)Envelope(;|&gt;|\)|\s)"/>
+      <substitution expression="\1Bounds\2"/>
     </replaceregexp>
     <echo level="info" message="          org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
-    <fileset id="org.opengis.geometry.Envelope.files" dir="${project.dir}" includes="**/*.java">
+    <fileset id="org.opengis.geometry.Envelope.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
       <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
     </fileset>
     <echo level="verbose">... ${toString:org.opengis.geometry.Envelope.files}</echo>
@@ -353,15 +360,22 @@
       <substitution expression="\1org.opengis.geometry.Bounds\2"/>
     </replaceregexp>
     <!--
-    BAD:
+    POSTPROCESS:
         org.locationtech.jts.geom.Bounds (post-process to fix)>
     -->
     <replaceregexp byline="true" flags="g">
-      <fileset dir="${project.dir}" includes="**/*.java">
+      <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
         <contains text="org.locationtech.jts.geom.Bounds" casesensitive="yes"/>
       </fileset>
       <regexp pattern="(\W)org.locationtech.jts.geom.Bounds(\W)"/>
       <substitution expression="\1org.locationtech.jts.geom.Envelope\2"/>
+    </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="_LITERAL_ENVELOPE_" casesensitive="yes"/>
+      </fileset>
+      <regexp pattern="_LITERAL_ENVELOPE_"/>
+      <substitution expression="Envelope"/>
     </replaceregexp>
   </target>
   
@@ -369,7 +383,7 @@
     <echo level="info"/>
     <echo level="info" message="Remove Envelope2D, refactor code to use to ReferencedEnvelope"/>
     <!-- pre: Envelope2D method cleanup -->
-    <fileset id="envelope2D.files" dir="${project.dir}" includes="**/*.java">
+    <fileset id="envelope2D.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
       <contains text="import org.geotools.geometry.Envelope2D;" casesensitive="yes"/>
     </fileset>
     <echo message="  new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
@@ -382,7 +396,7 @@
     <refactor srcPackage="org.geotools.geometry" srcClass="Envelope2D" dstPackage="org.geotools.geometry.jts" dstClass="ReferencedEnvelope"/>
     
     <!-- post: Envelope2D method cleanup -->
-    <fileset id="referencedEnvelope.files" dir="${project.dir}" includes="**/*.java">
+    <fileset id="referencedEnvelope.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
       <contains text="import org.geotools.geometry.jts.ReferencedEnvelope;" casesensitive="yes"/>
     </fileset>
     <echo message="       ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>

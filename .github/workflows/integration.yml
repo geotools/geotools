@@ -34,7 +34,7 @@ jobs:
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: sudo ethtool -K eth0 tx off rx off
     - name: Build GeoTools (no tests, prepare fresh artifacts)
-      run: mvn -B clean install -T2 -Dall --file pom.xml -DskipTests
+      run: mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn clean install -T2 -Dall --file pom.xml -DskipTests
     - name: Checkout GeoWebCache, GeoServer and ...
       run: |
         cd ~
@@ -84,14 +84,14 @@ jobs:
     - name: Build Mapfish-print v2 with tests
       run: |
         cd ~
-        mvn -B -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T2
+        mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T2
         mvn -B -f mapfish-print-v2/pom.xml test -fae -nsu -T2 
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
         cd ~
-        mvn -B -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests -T2
+        mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geowebcache/geowebcache/pom.xml test -fae -nsu -T2 -Dspotless.apply.skip=true
     - name: Build GeoFence with tests
       run: |
@@ -99,7 +99,7 @@ jobs:
         export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
         cd ~
         sed -i "s/<gt-version>29.2<\/gt-version>/<gt-version>30-SNAPSHOT<\/gt-version>/g" geofence/src/services/pom.xml
-        mvn -B -f geofence/src/pom.xml install -nsu -T2
+        mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geofence/src/pom.xml install -nsu -T2
     - name: Build GeoServer with tests
       run: |
         echo "Building GeoServer without printing (as mapfish-print-v2 not available)"
@@ -108,7 +108,7 @@ jobs:
         cd ~
         sed -i "s/<module>printing<\/module>/<\!--module>printing<\/module-->/g" geoserver/src/extension/pom.xml
         sed -i "s/<gf.version>3.6.0<\/gf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
-        mvn -B -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
+        mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/pom.xml test -fae -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
     - name: Build Mapfish-print v3 with tests

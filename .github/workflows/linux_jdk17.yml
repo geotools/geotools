@@ -1,13 +1,6 @@
 name: Linux JDK 17 GitHub CI
 
 on: [pull_request]
-  # trigger on PR, but only on main (dev), stable, and maintenance branches 
-  pull_request:
-    branches:
-      - main
-      - 30.x
-      - 29.x
-      - 28.x
 
 env:
   MAVEN_OPTS: -Dmaven.wagon.httpconnectionManager.ttlSeconds=25 -Dmaven.wagon.http.retryHandler.count=3

@@ -326,7 +326,7 @@
         <contains text="import org.locationtech.jts.geom.Envelope;" casesensitive="yes"/>
       </not>
     </fileset>
-    <echo>... ${toString:org.opengis.geometry.Envelope.safeFiles}</echo>
+    <echo level="verbose">... ${toString:org.opengis.geometry.Envelope.safeFiles}</echo>
     <!-- 
     GOOD: Envelope
           (Envelope)
@@ -346,7 +346,7 @@
     <fileset id="org.opengis.geometry.Envelope.files" dir="${project.dir}" includes="**/*.java">
       <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
     </fileset>
-    <echo>... ${toString:org.opengis.geometry.Envelope.files}</echo>
+    <echo level="verbose">... ${toString:org.opengis.geometry.Envelope.files}</echo>
     <replaceregexp byline="true" flags="g">
       <fileset refid="org.opengis.geometry.Envelope.files"/>
       <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
@@ -457,13 +457,16 @@
         <replacevalue>org.geotools.api.</replacevalue>
       </replacefilter>
     </replace>
+    <echo level="info" message="    META-INF/services"/>
     <!-- Service INF -->
-    <move todir="." verbose="true">
-      <fileset dir=".">
+    <fileset id="services.files" dir="${project.dir}">
         <include name="**/META-INF/services/org.opengis.*"/>
         <exclude name="**/target/*"/>
-      </fileset>
-      <regexpmapper from="(.*)/org.opengis.(.*)" to="\1/org.geotools.api.\2"/>
+    </fileset>
+    <echo level="verbose">    ... ${toString:services.files}</echo>
+    <move todir="${project.dir}" verbose="true">
+      <fileset refid="services.files"/>
+      <regexpmapper from="(.*)/org\.opengis\.(.*)" to="\1/org.geotools.api.\2"/>
     </move>
   </target>
   

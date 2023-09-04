@@ -27,7 +27,17 @@
       </fileset>
       <replaceregexp byline="true" flags="g">
         <fileset refid="@{dstPackage}.@{dstClass}.files"/>
-        <regexp pattern="(\W)@{srcClass}(\W)"/>
+        <regexp pattern="\(@{srcClass}\)"/>
+        <substitution expression="(@{dstClass})"/>
+      </replaceregexp>
+      <replaceregexp byline="true" flags="g">
+        <fileset refid="@{dstPackage}.@{dstClass}.files"/>
+        <regexp pattern="(\W)@{srcClass}\.class"/>
+        <substitution expression="\1@{dstClass}.class"/>
+      </replaceregexp>
+      <replaceregexp byline="true" flags="g">
+        <fileset refid="@{dstPackage}.@{dstClass}.files"/>
+        <regexp pattern="(\s)@{srcClass}(\W)"/>
         <substitution expression="\1@{dstClass}\2"/>
       </replaceregexp>
     </sequential>
@@ -120,13 +130,13 @@
     <fileset id="FilterFactory2.files" dir="${project.dir}" includes="**/*.java">
       <contains text="org.opengis.filter.FilterFactory2" casesensitive="yes"/>
     </fileset>
-    <echo level="info" message="Refactor FilterFactory2 --&gt; FilerFactory"/>
+    <echo level="info" message="       Refactor FilterFactory2 --&gt; FilerFactory"/>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="(\W)FilterFactory2(\W)"/>
       <substitution expression="\1FilterFactory\2"/>
       <fileset refid="FilterFactory2.files"/>
     </replaceregexp>
-    <echo level="info" message="CommonFactoryFinder.getFilterFactory()"/>
+    <echo level="info" message="       CommonFactoryFinder.getFilterFactory()"/>
     <replace dir="${project.dir}" includes="**/*.java" summary="yes">
       <replacefilter>
         <replacetoken>.getFilterFactory2(</replacetoken>
@@ -137,80 +147,80 @@
     <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java">
       <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes"/>
     </fileset>
-    <echo level="info">FilterFactory.property(null)</echo>
+    <echo level="info">       FilterFactory.property(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.property\(null\)"/>
       <substitution expression=".property((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.beyond(null)</echo>
+    <echo level="info">       FilterFactory.beyond(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.beyond\(null\)"/>
       <substitution expression=".beyond((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.contains(null)</echo>
+    <echo level="info">       FilterFactory.contains(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.contains\(null\)"/>
       <substitution expression=".contains((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="warning">check: Collecions.contains((String) null) use for possible conflicts</echo>
+    <echo level="warning">       Collecions.contains((String) null) use for possible conflicts</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.crosses\(null\)"/>
       <substitution expression=".crosses((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.disjoint(null)</echo>
+    <echo level="info">       FilterFactory.disjoint(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.disjoint\(null\)"/>
       <substitution expression=".disjoint((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.intersects(null)</echo>
+    <echo level="info">       FilterFactory.intersects(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.intersects\(null\)"/>
       <substitution expression=".intersects((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.overlaps(null)</echo>
+    <echo level="info">       FilterFactory.overlaps(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.overlaps\(null\)"/>
       <substitution expression=".overlaps((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.equals(null)</echo>
+    <echo level="info">       FilterFactory.equals(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.equals\(null\)"/>
       <substitution expression=".equals((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="warning">check: Object.equals((String) null) use for possible conflict</echo>
-    <echo level="info">FilterFactory.dwithin(null)</echo>
+    <echo level="warning">       Object.equals((String) null) use for possible conflict</echo>
+    <echo level="info">       FilterFactory.dwithin(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.dwithin\(null\)"/>
       <substitution expression=".dwithin((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.touches(null)</echo>
+    <echo level="info">       FilterFactory.touches(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.touches\(null\)"/>
       <substitution expression=".touches((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.overlaps(null)</echo>
+    <echo level="info">       FilterFactory.overlaps(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.overlaps\(null\)"/>
       <substitution expression=".overlaps((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.touches(null)</echo>
+    <echo level="info">       FilterFactory.touches(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.touches\(null\)"/>
       <substitution expression=".touches((String) null)"/>
       <fileset refid="filterFactory.files"/>
     </replaceregexp>
-    <echo level="info">FilterFactory.within(null)</echo>
+    <echo level="info">       FilterFactory.within(null)</echo>
     <replaceregexp byline="true" flags="g">
       <regexp pattern="\.within\(null\)"/>
       <substitution expression=".within((String) null)"/>

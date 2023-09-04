@@ -313,10 +313,29 @@
     <refactor srcPackage="org.geotools.geometry" srcClass="GeneralEnvelope" dstPackage="org.geotools.geometry" dstClass="GeneralBounds"/>
     <echo level="info"/>
     <echo level="info" message="Remove Envelope2D, refactor code to use to ReferencedEnvelope"/>
-    <echo level="warning" message="Envelope2D.equals(Evenlope2D): Use ReferencedEnvelope.equals(bounds) or ReferencedEnvelope.equals2D(bounds,double)"/>
-    <echo level="warning" message="new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
-    <echo level="warning" message="ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>
+    <!-- pre: Envelope2D method cleanup -->
+    <fileset id="envelope2D.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="import org.geotools.geometry.Envelope2D;" casesensitive="yes"/>
+    </fileset>
+    <echo message="  new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="envelope2D.files"/>
+      <regexp pattern="new Envelope2D\((.*),\s*(.*)\)"/>
+      <substitution expression="ReferencedEnvelope.rectangle(\2,\1)"/>
+    </replaceregexp>
+    <!-- refactor: Envelope2D to ReferencedEnvelope -->
     <refactor srcPackage="org.geotools.geometry" srcClass="Envelope2D" dstPackage="org.geotools.geometry.jts" dstClass="ReferencedEnvelope"/>
+    
+    <!-- post: Envelope2D method cleanup -->
+    <fileset id="referencedEnvelope.files" dir="${project.dir}" includes="**/*.java">
+      <contains text="import org.geotools.geometry.jts.ReferencedEnvelope;" casesensitive="yes"/>
+    </fileset>
+    <echo message="  ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="ReferencedEnvelope\.create\(\(Envelope\)\s*"/>
+      <substitution expression="ReferencedEnvelope.envelope("/>
+    </replaceregexp>
   </target>
 
   <target name="_geometry" description="Geometry API cleanup">

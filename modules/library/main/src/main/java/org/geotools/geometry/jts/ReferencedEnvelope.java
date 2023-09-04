@@ -771,10 +771,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         delta[3] = getMaximum(1) - other.getMaximum(1);
 
         for (double v : delta) {
-            /*
-             * As per Envelope2D#boundsEquals we use ! here to
-             * catch any NaN values
-             */
+            // Use ! here to catch any NaN values
             if (!(Math.abs(v) <= eps)) {
                 return false;
             }
@@ -808,10 +805,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         delta[3] = getMaximum(1) - other.getMaxX();
 
         for (double v : delta) {
-            /*
-             * As per Envelope2D#boundsEquals we use ! here to
-             * catch any NaN values
-             */
+            // Use ! here to catch any NaN values
             if (!(Math.abs(v) <= eps)) {
                 return false;
             }

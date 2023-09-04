@@ -330,14 +330,16 @@
     <!-- 
     GOOD: Envelope
           (Envelope)
+          <Envelope>
           org.opengis.geometry.Envelope
-    BAD: "Envelope"              (preserve text parameters)
-         CustomEnvelopeBounds    (preserve as part of class names)
-         sourceEnvelope          (preserve as part of varaible names)
+    BAD: "Envelope"                         (preserve text parameters)
+         CustomEnvelopeBounds               (preserve as part of class names)
+         sourceEnvelope                     (preserve as part of varaible names)
+         org.locationtech.jts.geom.Envelope (post-process to fix)
     -->
     <replaceregexp byline="true" flags="g">
       <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
-      <regexp pattern="(\.|\s|\()Envelope(\W)"/>
+      <regexp pattern="(\.|\s|\(|\&lt;)Envelope(\W)"/>
       <substitution expression="\1Bounds\2"/>
     </replaceregexp>
     <echo level="info" message="          org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
@@ -349,6 +351,22 @@
       <fileset refid="org.opengis.geometry.Envelope.files"/>
       <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
       <substitution expression="\1org.opengis.geometry.Bounds\2"/>
+    </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Envelope.files"/>
+      <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
+      <substitution expression="\1org.opengis.geometry.Bounds\2"/>
+    </replaceregexp>
+    <!--
+    BAD:
+        org.locationtech.jts.geom.Bounds (post-process to fix)>
+    -->
+    <replaceregexp byline="true" flags="g">
+      <fileset dir="${project.dir}" includes="**/*.java">
+        <contains text="org.locationtech.jts.geom.Bounds" casesensitive="yes"/>
+      </fileset>
+      <regexp pattern="(\W)org.locationtech.jts.geom.Bounds(\W)"/>
+      <substitution expression="\1org.locationtech.jts.geom.Envelope\2"/>
     </replaceregexp>
   </target>
   
@@ -381,25 +399,25 @@
     
     <!-- match against variable names like sourceEnvelope.x -->
     <echo message="       ReferencedEnvelope.getMinX()"/>
-    <replaceregexp byline="true" flags="g">
+    <replaceregexp flags="gs">
       <fileset refid="referencedEnvelope.files"/>
       <regexp pattern="(\w)nvelope\.x(\W)"/>
       <substitution expression="\1nvelope.getMinX()\2"/>
     </replaceregexp>
     <echo message="       ReferencedEnvelope.getMinY()"/>
-    <replaceregexp byline="true" flags="g">
+    <replaceregexp flags="gs">
       <fileset refid="referencedEnvelope.files"/>
       <regexp pattern="(\w)nvelope\.y(\W)"/>
       <substitution expression="\1nvelope.getMinY()\2"/>
     </replaceregexp>
     <echo message="       ReferencedEnvelope.getWidth()"/>
-    <replaceregexp byline="true" flags="g">
+    <replaceregexp flags="gs">
       <fileset refid="referencedEnvelope.files"/>
       <regexp pattern="(\w)nvelope\.width(\W)"/>
       <substitution expression="\1nvelope.getWidth()\2"/>
     </replaceregexp>
     <echo message="       ReferencedEnvelope.getHeight()"/>
-    <replaceregexp byline="true" flags="g">
+    <replaceregexp flags="gs">
       <fileset refid="referencedEnvelope.files"/>
       <regexp pattern="(\w)nvelope\.height(\W)"/>
       <substitution expression="\1nvelope.getHeight()\2"/>

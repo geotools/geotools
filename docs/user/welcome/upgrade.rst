@@ -119,13 +119,15 @@ org.geotools.geometry.GeneralDirectPosition      org.geotools.api.geometry.Gener
 org.geotools.geometry.GeneralEnvelope            org.geotools.api.geometry.GeneralBounds
 ===============================================  ===============================================================
 
-Migration recommendations:
+For the most part these changes are method compatible, attempting common replacements:
 
 * Replace ``ReferencedEnvelope.create(Envelope,CoordinateReferenceSystem)`` with ``ReferencedEnvelope.envelope(Envelope,CoordinateReferenceSystem)``
 
 * Replace constructor ``Envelope2D(crs,x,y,width,height)`` with ``ReferencedEnvelope.rect(x,y,width,height,crs)``
 
 * Replace ``Envelope2D.equals(Envelope2D)`` with ``ReferencedEnvelope.boundsEquals2D(Bounds,double)``
+
+* Replace ``Envelope`` field access ``x``,``y``,``width``,``height`` with appropriate methods (example ``ReferencedEnvelope.getMinX()``)
 
 GeoTools 29.x
 -------------

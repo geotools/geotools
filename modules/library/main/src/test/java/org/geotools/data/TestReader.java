@@ -18,6 +18,8 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;

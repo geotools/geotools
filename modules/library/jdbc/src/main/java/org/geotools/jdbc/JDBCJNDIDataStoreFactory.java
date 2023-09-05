@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.geotools.util.factory.GeoTools;
 
 /**

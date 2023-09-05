@@ -25,7 +25,7 @@ import java.util.List;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.Id;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.gml3.GML;

@@ -27,13 +27,13 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
-import org.geotools.data.BatchFeatureEvent;
+import org.geotools.api.data.BatchFeatureEvent;
 import org.geotools.data.Diff;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureEvent.Type;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.FeatureEvent;
+import org.geotools.api.data.FeatureEvent.Type;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Transaction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**

@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.Set;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.ResourceInfo;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**

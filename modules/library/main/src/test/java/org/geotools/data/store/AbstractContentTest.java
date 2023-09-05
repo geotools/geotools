@@ -21,15 +21,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.data.simple.SimpleFeatureWriter;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureReader;
+import org.geotools.api.data.SimpleFeatureWriter;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -122,7 +123,7 @@ public abstract class AbstractContentTest {
 
         /**
          * @see
-         *     org.geotools.data.store.ContentFeatureSource#getReaderInternal(org.geotools.data.Query)
+         *     org.geotools.data.store.ContentFeatureSource#getReaderInternal(Query)
          */
         @Override
         protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
@@ -149,26 +150,26 @@ public abstract class AbstractContentTest {
         /** Index of the next test feature to be returned. */
         private int index = 0;
 
-        /** @see org.geotools.data.FeatureReader#getFeatureType() */
+        /** @see FeatureReader#getFeatureType() */
         @Override
         public SimpleFeatureType getFeatureType() {
             return TYPE;
         }
 
-        /** @see org.geotools.data.FeatureReader#next() */
+        /** @see FeatureReader#next() */
         @Override
         public SimpleFeature next()
                 throws IOException, IllegalArgumentException, NoSuchElementException {
             return FEATURES.get(index++);
         }
 
-        /** @see org.geotools.data.FeatureReader#hasNext() */
+        /** @see FeatureReader#hasNext() */
         @Override
         public boolean hasNext() throws IOException {
             return index < FEATURES.size();
         }
 
-        /** @see org.geotools.data.FeatureReader#close() */
+        /** @see FeatureReader#close() */
         @Override
         public void close() throws IOException {
             // ignored

@@ -7,7 +7,7 @@ Create a new JDBC datastore notes:
 2) Create a org.geotools.data.<dbname>.<dbname>DataStoreFactory
    and populate the abstract methods with the necessary content
 3) Register the factory in SPI by creating a 
-   src\main\resources\META-INF\org.geotools.data.DataStoreFactorySpi
+   src\main\resources\META-INF\org.geotools.api.data.DataStoreFactorySpi
    file and adding a single line looking like
    org.geotools.data.oracle.<dbname>DataStoreFactory
 4) Let's start by adding a read only test. We extend JDBCTestSetup

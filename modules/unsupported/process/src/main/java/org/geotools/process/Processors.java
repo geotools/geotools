@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.stream.Stream;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;

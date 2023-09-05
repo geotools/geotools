@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile.dbf;
 
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
 
 /** Thrown when an error relating to the shapefile occurs. */
 public class DbaseFileException extends DataSourceException {

@@ -20,8 +20,10 @@ import java.awt.RenderingHints;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
+
+import org.geotools.api.data.FileGroupProvider;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
@@ -42,14 +44,14 @@ public interface GranuleSource {
      * Asks a {@link GranuleSource} to return a file based view of the granules instead of a slice
      * based view. In case a granule file contains more than one slice (e.g., NetCDF). The returned
      * features will also miss an eventual location attribute, and include a full {@link
-     * org.geotools.data.FileGroupProvider.FileGroup} as the feature metadata under the {@link
+     * FileGroupProvider.FileGroup} as the feature metadata under the {@link
      * #FILES} key.
      */
     public static final Hints.Key FILE_VIEW = new Hints.Key(Boolean.class);
 
     /**
      * Used as key in the granule feature user data, pointing to a {@link
-     * org.geotools.data.FileGroupProvider.FileGroup} with the infos about the group of files
+     * FileGroupProvider.FileGroup} with the infos about the group of files
      * composing
      */
     public static final String FILES = "GranuleFiles";

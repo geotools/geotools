@@ -29,8 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import net.miginfocom.swing.MigLayout;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.swing.wizard.JPage;
 
 /** A wizard page that will allow the user to choose a format (ie DataAccess factory). */

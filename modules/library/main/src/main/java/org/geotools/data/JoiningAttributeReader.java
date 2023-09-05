@@ -17,6 +17,8 @@
 package org.geotools.data;
 
 import java.io.IOException;
+
+import org.geotools.api.data.AttributeReader;
 import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**

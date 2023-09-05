@@ -25,8 +25,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
+
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStore;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -232,7 +233,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Describe parameters.
      *
-     * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
+     * @see DataStoreFactorySpi#getParametersInfo()
      */
     @Override
     public Param[] getParametersInfo() {

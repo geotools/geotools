@@ -46,7 +46,7 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.feature.visitor.StandardDeviationVisitor;

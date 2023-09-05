@@ -19,10 +19,10 @@ package org.geotools.jdbc;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureEvent.Type;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureEvent;
+import org.geotools.api.data.FeatureEvent.Type;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /** Records FeatureEvents and provides a record that we can check. */

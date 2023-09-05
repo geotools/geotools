@@ -33,6 +33,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.geotools.api.data.DataAccess;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -49,12 +51,11 @@ import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DataStore;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.ServiceInfo;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ServiceInfo;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.feature.type.Types;
@@ -371,7 +372,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Creates a <code>org.geotools.data.Query</code> that operates over the surrogate DataStore, by
+     * Creates a <code>org.geotools.api.data.Query</code> that operates over the surrogate DataStore, by
      * unrolling the <code>org.geotools.filter.Filter</code> contained in the passed <code>query
      * </code>, and replacing the list of required attributes by the ones of the mapped FeatureType.
      */
@@ -716,7 +717,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#getInfo()
+     * @see DataAccess#getInfo()
      */
     @Override
     public ServiceInfo getInfo() {
@@ -726,7 +727,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Return the names of the target features.
      *
-     * @see org.geotools.data.DataAccess#getNames()
+     * @see DataAccess#getNames()
      */
     @Override
     public List<Name> getNames() {
@@ -738,7 +739,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#createSchema(org.geotools.api.feature.type.FeatureType)
+     * @see DataAccess#createSchema(org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void createSchema(FeatureType featureType) throws IOException {
@@ -748,7 +749,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Return a feature source that can be used to obtain features of a particular type.
      *
-     * @see org.geotools.data.DataAccess#getFeatureSource(org.geotools.api.feature.type.Name)
+     * @see DataAccess#getFeatureSource(org.geotools.api.feature.type.Name)
      */
     @Override
     public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
@@ -758,7 +759,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#updateSchema(org.geotools.api.feature.type.Name,
+     * @see DataAccess#updateSchema(org.geotools.api.feature.type.Name,
      *     org.geotools.api.feature.type.FeatureType)
      */
     @Override
@@ -769,7 +770,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#removeSchema(org.geotools.api.feature.type.Name)
+     * @see DataAccess#removeSchema(org.geotools.api.feature.type.Name)
      */
     @Override
     public void removeSchema(Name typeName) throws IOException {

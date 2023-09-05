@@ -5,9 +5,9 @@ import static org.junit.Assert.assertNotNull;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataTestCase;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Test;
 

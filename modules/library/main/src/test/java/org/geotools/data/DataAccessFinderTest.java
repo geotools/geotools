@@ -25,13 +25,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataAccessFactory;
+import org.geotools.api.data.DataAccessFinder;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.LockingManager;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -222,7 +236,7 @@ public class DataAccessFinderTest {
         }
 
         @Override
-        public org.geotools.data.DataAccessFactory.Param[] getParametersInfo() {
+        public DataAccessFactory.Param[] getParametersInfo() {
             return null;
         }
 
@@ -276,7 +290,7 @@ public class DataAccessFinderTest {
         }
 
         @Override
-        public org.geotools.data.DataAccessFactory.Param[] getParametersInfo() {
+        public DataAccessFactory.Param[] getParametersInfo() {
             return null;
         }
 

@@ -18,9 +18,9 @@ package org.geotools.gce.imagemosaic.catalog.oracle;
 
 import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.DataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureStore;
 
 /**
  * Specific Oracle implementation for a {@link DataStoreWrapper} Oracle DB has a couple of

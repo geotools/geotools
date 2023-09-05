@@ -41,7 +41,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

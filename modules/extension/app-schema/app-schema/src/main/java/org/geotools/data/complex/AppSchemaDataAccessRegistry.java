@@ -22,7 +22,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.appschema.util.InterpolationProperties;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 
 /**
  * A registry that stores all app schema data access instances per application. This allows mappings

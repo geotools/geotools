@@ -30,7 +30,7 @@ import javax.swing.JFrame;
 import org.apache.commons.lang3.ArrayUtils;
 import org.geotools.api.style.Font;
 import org.geotools.api.util.ProgressListener;
-import org.geotools.data.FileDataStore;
+import org.geotools.api.data.FileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;

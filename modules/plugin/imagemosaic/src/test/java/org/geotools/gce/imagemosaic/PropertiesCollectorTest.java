@@ -38,7 +38,7 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.HarvestedSource;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;

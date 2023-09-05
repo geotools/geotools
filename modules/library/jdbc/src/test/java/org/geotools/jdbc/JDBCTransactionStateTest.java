@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Transaction;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

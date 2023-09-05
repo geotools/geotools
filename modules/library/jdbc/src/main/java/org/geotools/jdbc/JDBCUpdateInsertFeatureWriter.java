@@ -22,7 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 
 public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
 

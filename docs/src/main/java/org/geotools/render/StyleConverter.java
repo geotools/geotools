@@ -33,7 +33,7 @@ import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;

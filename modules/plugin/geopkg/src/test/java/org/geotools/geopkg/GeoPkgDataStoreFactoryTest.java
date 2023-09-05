@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Rule;
 import org.junit.Test;

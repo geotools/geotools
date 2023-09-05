@@ -24,8 +24,8 @@ import java.util.Set;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.metadata.MetadataNode;
-import org.geotools.data.Parameter;
-import org.geotools.data.ServiceInfo;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.data.ServiceInfo;
 import org.geotools.util.factory.Hints;
 
 /**

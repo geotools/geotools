@@ -20,7 +20,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.impl.WFSContentDataAccess;
 import org.geotools.data.wfs.impl.WFSDataAccessFactory;

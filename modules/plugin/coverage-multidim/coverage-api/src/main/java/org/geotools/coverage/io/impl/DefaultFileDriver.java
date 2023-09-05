@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.FileDriver;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;

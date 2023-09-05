@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.6" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" language="java" name="org.geotools.data.FeatureSource" project="gt-api" 
+  <interface id="1" language="java" name="org.geotools.api.data.FeatureSource" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/FeatureSource.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="146" y="370"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
@@ -10,7 +10,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="2" language="java" name="org.geotools.data.FeatureStore" project="gt-api" 
+  <interface id="2" language="java" name="org.geotools.api.data.FeatureStore" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/FeatureStore.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="143" y="446"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 

@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.util.List;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.FeatureLock;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureLocking;
+import org.geotools.api.data.FeatureLock;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureLocking;
 
 public class TransformFeatureLocking extends TransformFeatureStore implements SimpleFeatureLocking {
     private final SimpleFeatureLocking locking;

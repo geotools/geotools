@@ -9,9 +9,9 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.URI;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.DataStore;
-import org.geotools.data.ServiceInfo;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.junit.Before;
 import org.junit.Test;
 

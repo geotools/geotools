@@ -37,7 +37,7 @@ import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;

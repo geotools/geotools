@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Map;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;

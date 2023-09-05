@@ -30,7 +30,7 @@ import org.assertj.swing.core.MouseButton;
 import org.geotools.api.feature.Property;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.geometry.Position2D;
 import org.geotools.map.Layer;
 import org.geotools.swing.testutils.GraphicsTestRunner;

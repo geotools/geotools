@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.geotools.TestData;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.data.CloseableIterator;
+import org.geotools.api.data.CloseableIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
 import org.locationtech.jts.geom.Geometry;

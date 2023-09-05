@@ -23,9 +23,9 @@ import java.util.Collections;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.DataAccessFactory.Param;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.DataAccessFactory.Param;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.Parameter;
 
 /**
  * A datasource factory using DBCP connection pool

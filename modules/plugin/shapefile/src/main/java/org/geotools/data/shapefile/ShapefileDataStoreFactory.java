@@ -30,12 +30,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FileDataStore;
-import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.api.data.FileDataStore;
+import org.geotools.api.data.FileDataStoreFactorySpi;
 import org.geotools.data.directory.DirectoryDataStore;
-import org.geotools.data.directory.FilteringFileStoreFactory;
+import org.geotools.api.data.FilteringFileStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
@@ -124,7 +124,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                 /*
                  * This is an example of a non simple Param type where a custom parse method is required.
                  *
-                 * @see org.geotools.data.DataStoreFactorySpi.Param#parse(java.lang.String)
+                 * @see org.geotools.api.data.DataStoreFactorySpi.Param#parse(java.lang.String)
                  */
                 @Override
                 public Object parse(String text) throws IOException {

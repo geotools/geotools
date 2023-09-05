@@ -19,7 +19,7 @@ package org.geotools.data.jdbc.datasource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
 
 /**
  * Utility methods to build a default connection pool

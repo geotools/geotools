@@ -32,7 +32,7 @@ import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.referencing.FactoryException;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSStrategy;

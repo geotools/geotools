@@ -25,7 +25,7 @@ import java.util.Arrays;
 import org.apache.commons.lang3.tuple.Pair;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.stac.client.SearchQuery;
 import org.junit.Before;

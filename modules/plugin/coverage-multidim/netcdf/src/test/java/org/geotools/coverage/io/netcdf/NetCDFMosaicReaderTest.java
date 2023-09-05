@@ -88,7 +88,7 @@ import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.directory.DirectoryDataStore;
 import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;

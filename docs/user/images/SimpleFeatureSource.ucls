@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.FeatureSource" project="gt-api" 
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.FeatureSource" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/FeatureSource.java" binary="false">    
     <position x="223" y="190" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -8,7 +8,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccess" project="gt-api" 
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataAccess" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/DataAccess.java" binary="false">    
     <position x="-18" y="187" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -16,7 +16,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.simple.SimpleFeatureSource" 
+  <interface id="6" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.SimpleFeatureSource"
     project="gt-api" file="/gt-api/src/main/java/org/geotools/data/simple/SimpleFeatureSource.java" binary="false">    
     <position x="224" y="399" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -24,7 +24,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataStore" project="gt-api" 
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataStore" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/DataStore.java" binary="false">    
     <position x="-18" y="396" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -32,7 +32,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.Query" project="gt-api" 
+  <class id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.Query" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/Query.java" binary="false">    
     <position x="451" y="187" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="false" visibility="true">      

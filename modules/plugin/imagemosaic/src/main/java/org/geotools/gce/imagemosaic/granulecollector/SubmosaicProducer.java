@@ -19,7 +19,7 @@ package org.geotools.gce.imagemosaic.granulecollector;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.MosaicElement;
 

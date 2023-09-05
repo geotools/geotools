@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.api.filter.sort.SortOrder;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.junit.Test;
 
 public class TransformerTest extends AbstractTransformTest {

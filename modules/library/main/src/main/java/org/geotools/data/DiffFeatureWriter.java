@@ -19,6 +19,11 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureEvent;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -61,7 +66,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Supplys FeatureTypeFrom reader
      *
-     * @see org.geotools.data.FeatureWriter#getFeatureType()
+     * @see FeatureWriter#getFeatureType()
      */
     @Override
     public SimpleFeatureType getFeatureType() {
@@ -71,7 +76,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Next Feature from reader or new content.
      *
-     * @see org.geotools.data.FeatureWriter#next()
+     * @see FeatureWriter#next()
      */
     @Override
     public SimpleFeature next() throws IOException {
@@ -109,7 +114,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         }
     }
 
-    /** @see org.geotools.data.FeatureWriter#remove() */
+    /** @see FeatureWriter#remove() */
     @Override
     public void remove() throws IOException {
         if (live != null) {
@@ -128,7 +133,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Writes out the current feature.
      *
-     * @see org.geotools.data.FeatureWriter#write()
+     * @see FeatureWriter#write()
      */
     @Override
     public void write() throws IOException {
@@ -172,7 +177,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     /**
      * Query for more content.
      *
-     * @see org.geotools.data.FeatureWriter#hasNext()
+     * @see FeatureWriter#hasNext()
      */
     @Override
     public boolean hasNext() throws IOException {
@@ -207,7 +212,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      * <p>Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and
      * may yet be written out.
      *
-     * @see org.geotools.data.FeatureWriter#close()
+     * @see FeatureWriter#close()
      */
     @Override
     public void close() throws IOException {

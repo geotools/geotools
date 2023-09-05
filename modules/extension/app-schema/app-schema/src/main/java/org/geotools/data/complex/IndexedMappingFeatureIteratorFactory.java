@@ -17,8 +17,8 @@
 package org.geotools.data.complex;
 
 import org.geotools.api.filter.Filter;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.data.complex.IndexQueryManager.QueryIndexCoverage;
 
 /**

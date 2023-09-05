@@ -20,7 +20,7 @@ import org.geotools.api.style.Style;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 
 /**
  * Layer responsible for raster content.

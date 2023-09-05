@@ -22,9 +22,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import org.geotools.api.data.DelegatingFeatureWriter;
+import org.geotools.api.data.FeatureLock;
+import org.geotools.api.data.FeatureLockException;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.LockingManager;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.Transaction.State;
+import org.geotools.api.data.Transaction.State;
 import org.geotools.util.SuppressFBWarnings;
 
 /**
@@ -449,7 +456,7 @@ public class InProcessLockingManager implements LockingManager {
      * <p>Remeber lock may have expired.
      *
      * @return true if lock exists for authID
-     * @see org.geotools.data.LockingManager#lockExists(java.lang.String)
+     * @see LockingManager#lockExists(java.lang.String)
      */
     @Override
     public boolean exists(String authID) {

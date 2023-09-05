@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.filter.sort.SortBy;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.renderer.lite.StreamingRenderer.RenderableFeature;
 
 /**

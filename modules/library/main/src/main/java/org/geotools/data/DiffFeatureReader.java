@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -110,13 +113,13 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         }
     }
 
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public T getFeatureType() {
         return reader.getFeatureType();
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     @Override
     public F next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
@@ -129,7 +132,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         throw new NoSuchElementException("No more Feature exists");
     }
 
-    /** @see org.geotools.data.FeatureReader#hasNext() */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
@@ -171,7 +174,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         return next != null;
     }
 
-    /** @see org.geotools.data.FeatureReader#close() */
+    /** @see FeatureReader#close() */
     @Override
     public void close() throws IOException {
         if (reader != null) {

@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.DelegatingFeatureWriter;
-import org.geotools.data.FeatureWriter;
+import org.geotools.api.data.DelegatingFeatureWriter;
+import org.geotools.api.data.FeatureWriter;
 
 public class JDBCClosingFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 

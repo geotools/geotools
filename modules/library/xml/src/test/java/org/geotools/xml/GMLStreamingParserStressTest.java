@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.FeatureReader;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.xml.gml.FCBuffer;
 import org.junit.Assert;
 import org.junit.Ignore;

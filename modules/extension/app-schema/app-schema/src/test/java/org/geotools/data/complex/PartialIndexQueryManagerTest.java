@@ -31,7 +31,7 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.complex.IndexQueryManager.PartialIndexQueryManager;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.feature.FeatureCollection;

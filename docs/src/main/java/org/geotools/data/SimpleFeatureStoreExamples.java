@@ -16,6 +16,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.geotools.api.data.BatchFeatureEvent;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureEvent;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -25,7 +32,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
@@ -99,10 +106,10 @@ public class SimpleFeatureStoreExamples {
                     BatchFeatureEvent batchEvent = (BatchFeatureEvent) featureEvent;
 
                     System.out.println("area changed:" + batchEvent.getBounds());
-                    System.out.println("created fids:" + batchEvent.fids);
+                    System.out.println("created fids:" + batchEvent.getCreatedFeatureIds());
                 } else {
                     System.out.println("bounds:" + featureEvent.getBounds());
-                    System.out.println("change:" + featureEvent.filter);
+                    System.out.println("change:" + featureEvent.getFilter());
                 }
             }
         }

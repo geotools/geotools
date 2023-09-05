@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.data.DataAccess;
+import org.geotools.api.data.DataAccess;
 
 /**
  * Utility class to help keep track of the DataAccess instances created while parsing App-Schema

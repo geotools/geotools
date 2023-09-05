@@ -21,9 +21,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.spy;
 
-import org.geotools.data.Query;
-import org.geotools.data.Repository;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Repository;
+import org.geotools.api.data.Transaction;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;

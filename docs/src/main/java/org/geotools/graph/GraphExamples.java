@@ -15,7 +15,7 @@ import java.util.Iterator;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.build.line.LineGraphGenerator;
 import org.geotools.graph.structure.Graph;

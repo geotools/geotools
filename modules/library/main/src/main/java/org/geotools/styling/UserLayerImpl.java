@@ -29,7 +29,7 @@ import org.geotools.api.style.RemoteOWS;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.style.UserLayer;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.geotools.util.Utilities;
 
 /**

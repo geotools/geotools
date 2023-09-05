@@ -47,7 +47,7 @@ import org.geotools.api.style.Rule;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.RasterLayer;

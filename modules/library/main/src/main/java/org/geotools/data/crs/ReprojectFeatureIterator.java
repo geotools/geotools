@@ -18,6 +18,8 @@ package org.geotools.data.crs;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.operation.MathTransform;
@@ -80,7 +82,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#getFeatureType()
+     * @see FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
         if (schema == null) {
@@ -95,7 +97,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#next()
+     * @see FeatureReader#next()
      */
     @Override
     public SimpleFeature next() throws NoSuchElementException {
@@ -133,7 +135,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#hasNext()
+     * @see FeatureReader#hasNext()
      */
     @Override
     public boolean hasNext() {
@@ -149,7 +151,7 @@ public class ReprojectFeatureIterator implements Iterator<SimpleFeature>, Simple
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#close()
+     * @see FeatureReader#close()
      */
     @Override
     public void close() {

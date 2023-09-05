@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.Parameter" project="gt-api" 
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.Parameter" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/Parameter.java" binary="false">    
     <position x="345" y="231" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -8,7 +8,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccessFactory.Param" project="gt-api" 
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataAccessFactory.Param" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/DataAccessFactory.java" binary="false">    
     <position x="348" y="621" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      

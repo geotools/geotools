@@ -21,21 +21,22 @@ import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.DataAccess;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
-import org.geotools.data.ResourceInfo;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.ResourceInfo;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * {@link org.geotools.data.FeatureSource} for {@link SampleDataAccess}.
+ * {@link FeatureSource} for {@link SampleDataAccess}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
@@ -46,7 +47,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Unsupported operation.
      *
-     * @see org.geotools.data.FeatureSource#addFeatureListener(org.geotools.data.FeatureListener)
+     * @see FeatureSource#addFeatureListener(FeatureListener)
      */
     @Override
     public void addFeatureListener(FeatureListener listener) {
@@ -56,7 +57,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getBounds()
+     * @see FeatureSource#getBounds()
      */
     @Override
     public ReferencedEnvelope getBounds() throws IOException {
@@ -67,7 +68,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getBounds(org.geotools.data.Query)
+     * @see FeatureSource#getBounds(Query)
      */
     @Override
     public ReferencedEnvelope getBounds(Query query) throws IOException {
@@ -78,7 +79,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getCount(org.geotools.data.Query)
+     * @see FeatureSource#getCount(Query)
      */
     @Override
     public int getCount(Query query) throws IOException {
@@ -89,7 +90,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getDataStore()
+     * @see FeatureSource#getDataStore()
      */
     @Override
     public DataAccess<FeatureType, Feature> getDataStore() {
@@ -100,7 +101,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Return a {@link FeatureCollection} containing the sample features.
      *
-     * @see org.geotools.data.FeatureSource#getFeatures()
+     * @see FeatureSource#getFeatures()
      */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
@@ -112,7 +113,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.api.filter.Filter)
+     * @see FeatureSource#getFeatures(org.geotools.api.filter.Filter)
      */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {
@@ -123,7 +124,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getFeatures(org.geotools.data.Query)
+     * @see FeatureSource#getFeatures(Query)
      */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures(Query query) throws IOException {
@@ -134,7 +135,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getInfo()
+     * @see FeatureSource#getInfo()
      */
     @Override
     public ResourceInfo getInfo() {
@@ -145,7 +146,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getName()
+     * @see FeatureSource#getName()
      */
     @Override
     public Name getName() {
@@ -155,7 +156,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Not yet implemented.
      *
-     * @see org.geotools.data.FeatureSource#getQueryCapabilities()
+     * @see FeatureSource#getQueryCapabilities()
      */
     @Override
     public QueryCapabilities getQueryCapabilities() {
@@ -166,7 +167,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Return feature type.
      *
-     * @see org.geotools.data.FeatureSource#getSchema()
+     * @see FeatureSource#getSchema()
      */
     @Override
     public FeatureType getSchema() {
@@ -176,7 +177,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Return an empty list of no hints.
      *
-     * @see org.geotools.data.FeatureSource#getSupportedHints()
+     * @see FeatureSource#getSupportedHints()
      */
     @Override
     public Set<Key> getSupportedHints() {
@@ -186,7 +187,7 @@ public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType,
     /**
      * Unsupported operation.
      *
-     * @see org.geotools.data.FeatureSource#removeFeatureListener(org.geotools.data.FeatureListener)
+     * @see FeatureSource#removeFeatureListener(FeatureListener)
      */
     @Override
     public void removeFeatureListener(FeatureListener listener) {

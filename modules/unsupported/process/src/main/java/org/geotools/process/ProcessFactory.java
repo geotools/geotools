@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.util.InternationalString;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.util.factory.OptionalFactory;
 
 /**

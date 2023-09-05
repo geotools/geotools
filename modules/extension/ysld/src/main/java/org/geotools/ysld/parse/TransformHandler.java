@@ -30,7 +30,7 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.FeatureTypeStyle;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.ysld.ProcessUtil;
 import org.geotools.ysld.YamlMap;

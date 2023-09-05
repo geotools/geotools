@@ -28,9 +28,9 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.identity.FeatureId;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 

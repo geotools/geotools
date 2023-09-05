@@ -5,9 +5,9 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Map;
-import org.geotools.data.FeatureStore;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.FeatureStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.jdbc.VirtualTable;

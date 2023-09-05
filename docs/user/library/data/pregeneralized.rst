@@ -451,7 +451,7 @@ Background
   
   The two interfaces
   
-  * ``org.geotools.data.Repository``
+  * ``org.geotools.api.data.Repository``
   * ``org.geotools.data.gen.info.GeneralizationInfosProvider``
   
   Allow special implementations to be plugged in. As an example, a ``GeneralizationInfosProvider``

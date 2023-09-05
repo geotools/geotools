@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 
@@ -49,8 +49,7 @@ class ConcatenatedTransformDirect extends ConcatenatedTransform {
 
     /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst)
-            throws TransformException {
+    public Position transform(final Position ptSrc, Position ptDst) throws TransformException {
         assert isValid();
         ptDst = transform1.transform(ptSrc, ptDst);
         return transform2.transform(ptDst, ptDst);

@@ -66,7 +66,7 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
@@ -125,8 +125,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
     @Test
     public void contrastEnhancement_Histogram_SLD() throws Exception {
         // the GridCoverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -175,8 +175,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         //
         // ////////////////////////////////////////////////////////////////////
         // the GridCoverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -185,8 +185,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -238,8 +237,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -277,7 +275,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
 
         // the RasterSymbolizer Helper
@@ -323,8 +321,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -362,8 +359,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -415,8 +411,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -463,8 +458,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "test_ushort.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -528,8 +522,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -599,8 +592,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -649,8 +641,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -714,8 +705,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -783,8 +773,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -856,8 +845,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 source,
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("band")},
                                 null,
                                 null);
@@ -922,8 +910,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "hs.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -983,8 +970,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "test_ushort.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension("test1BandByte_SLD")
                                 },
@@ -1052,8 +1038,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -1122,8 +1107,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                 JAI.create(
                                         "ImageRead",
                                         new File(TestData.url(this, "smalldem.tif").toURI())),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {new GridSampleDimension("dem")},
                                 null,
                                 null);
@@ -1178,8 +1162,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             throws IOException, TransformerException, FactoryRegistryException,
                     IllegalArgumentException, URISyntaxException {
         // the GridCoverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -1234,7 +1218,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_1band_Float32.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
         // the RasterSymbolizer Helper
         rsh = new RasterSymbolizerHelper(gc, null);
@@ -1265,8 +1249,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             throws IOException, TransformerException, FactoryRegistryException,
                     IllegalArgumentException, URISyntaxException {
         // the GridCoverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -1328,7 +1312,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_1band_Float32.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
         // the RasterSymbolizer Helper
         rsh = new RasterSymbolizerHelper(gc, null);
@@ -1386,8 +1370,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final GridSampleDimension[] gsd = {
             new GridSampleDimension("test1BandByte_SLD1"),
         };
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -1439,7 +1423,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_4bands_UInt16.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
         // the RasterSymbolizer Helper
         rsh = new RasterSymbolizerHelper(gc, null);
@@ -1483,8 +1467,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final GridSampleDimension[] gsd = {
             new GridSampleDimension("test1BandByte_SLD1"),
         };
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         RenderedOp image =
                 JAI.create("ImageRead", new File(TestData.url(this, "test.tif").toURI()));
@@ -1550,8 +1534,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 image2,
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 null,
                                 null,
                                 properties);
@@ -1642,7 +1625,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_3bands_Byte.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
         // the RasterSymbolizer Helper
         rsh = new RasterSymbolizerHelper(gc, null);
@@ -1704,8 +1687,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
     public GridCoverage2D read3BandsByteCoverage()
             throws URISyntaxException, FileNotFoundException {
         // the GridCoverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         final GridSampleDimension[] gsd = {
             new GridSampleDimension("test1BandByte_SLD1"),
@@ -1771,7 +1754,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_3bands_Byte.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
 
         // the RasterSymbolizer Helper
@@ -1825,8 +1808,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             throws IOException, TransformerException, FactoryRegistryException,
                     IllegalArgumentException, URISyntaxException {
         // the GridCoverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -1880,7 +1863,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_1band_Byte.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
         // the RasterSymbolizer Helper
         rsh = new RasterSymbolizerHelper(gc, null);
@@ -1926,7 +1909,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                                         new File(
                                                 TestData.url(this, "small_1band_Byte.tif")
                                                         .toURI())),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
 
         surl = TestData.url(this, "1band_Float32_test2.sld");
@@ -1956,8 +1939,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         final StyledLayerDescriptor sld = stylereader.parseSLD();
 
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2010,8 +1993,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",
@@ -2055,8 +2037,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 PlanarImage.wrapRenderedImage(image),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",
@@ -2102,8 +2083,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 PlanarImage.wrapRenderedImage(getSynthetic(Double.NaN)),
-                                new GeneralEnvelope(
-                                        new double[] {-90, -180}, new double[] {90, 180}),
+                                new GeneralBounds(new double[] {-90, -180}, new double[] {90, 180}),
                                 new GridSampleDimension[] {
                                     new GridSampleDimension(
                                             "sd",
@@ -2154,8 +2134,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             new GridSampleDimension("test1BandByte_SLD3"),
         };
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         final GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2191,8 +2171,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
 
         final GridSampleDimension[] gsd = {new GridSampleDimension("test1BandByte_SLD1")};
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         final GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2223,8 +2203,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         // Test using an SLD file
         //
         ////
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         java.net.URL surl = TestData.url(this, "raster_dem.sld");
         SLDParser stylereader = new SLDParser(sf, surl);
@@ -2255,7 +2235,7 @@ public class RasterSymbolizerTest extends org.junit.Assert {
                         .create(
                                 "name",
                                 JAI.create("ImageRead", TestData.file(this, "smalldem.tif")),
-                                new GeneralEnvelope(
+                                new GeneralBounds(
                                         new double[] {-90, -180}, new double[] {90, 180}));
         StyleBuilder sldBuilder = new StyleBuilder();
         // the RasterSymbolizer Helper
@@ -2301,8 +2281,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2331,8 +2311,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2367,8 +2347,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             new GridSampleDimension("test1BandByte_SLD")
         };
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         final GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2409,8 +2389,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         StyledLayerDescriptor sld = stylereader.parseSLD();
 
         // get a coverage
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         GridCoverage2D gc =
                 CoverageFactoryFinder.getGridCoverageFactory(null)
@@ -2459,8 +2439,8 @@ public class RasterSymbolizerTest extends org.junit.Assert {
         // Test using an SLD file
         //
         ////
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         envelope.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
         java.net.URL surl = TestData.url(this, "raster.sld");
         SLDParser stylereader = new SLDParser(sf, surl);

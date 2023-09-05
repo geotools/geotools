@@ -45,8 +45,8 @@ import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -262,13 +262,12 @@ public class GribTest extends Assert {
             // Expanding the envelope
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-            final GeneralEnvelope newEnvelope = new GeneralEnvelope(originalEnvelope);
+            final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            final GeneralBounds newEnvelope = new GeneralBounds(originalEnvelope);
             newEnvelope.setCoordinateReferenceSystem(
                     reader.getCoordinateReferenceSystem(coverageName));
             newEnvelope.add(
-                    new DirectPosition2D(
-                            newEnvelope.getMinimum(0) - 10, newEnvelope.getMinimum(1) - 10));
+                    new Position2D(newEnvelope.getMinimum(0) - 10, newEnvelope.getMinimum(1) - 10));
 
             // Selecting the same gridRange
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);

@@ -182,7 +182,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
                     Optional.ofNullable(getSchema().getGeometryDescriptor())
                             .map(GeometryDescriptor::getCoordinateReferenceSystem);
             if (crs.isPresent()) {
-                return ReferencedEnvelope.create(newBBox, crs.get());
+                return ReferencedEnvelope.envelope(newBBox, crs.get());
             } else {
                 return ReferencedEnvelope.reference(newBBox);
             }

@@ -79,7 +79,6 @@ public class BinaryOpTest extends GridProcessingTestBase {
      * Applies the specified operation to the given coverages.
      *
      * @param coverage0 The coverage to scale.
-     * @param interp The interpolation to use.
      */
     private GridCoverage2D doOp(
             final String operationName,

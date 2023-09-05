@@ -20,7 +20,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.text.MessageFormat;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform1D;
@@ -28,7 +28,7 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -387,7 +387,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, final DirectPosition ptDst)
+    public Position transform(final Position ptSrc, final Position ptDst)
             throws TransformException {
         assert isValid();
         //  Note: If we know that the transfert dimension is the same than source
@@ -503,8 +503,8 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
 
     /**
      * Gets the derivative of this transform at a point. This method delegates to the {@link
-     * #derivative(DirectPosition)} method because the transformation steps {@link #transform1} and
-     * {@link #transform2} may not be instances of {@link MathTransform2D}.
+     * #derivative(Position)} method because the transformation steps {@link #transform1} and {@link
+     * #transform2} may not be instances of {@link MathTransform2D}.
      *
      * @param point The coordinate point where to evaluate the derivative.
      * @return The derivative at the specified point as a 2&times;2 matrix.
@@ -512,7 +512,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      */
     @Override
     public Matrix derivative(final Point2D point) throws TransformException {
-        return derivative(new GeneralDirectPosition(point));
+        return derivative(new GeneralPosition(point));
     }
 
     /**
@@ -523,7 +523,7 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         final Matrix matrix1 = transform1.derivative(point);
         final Matrix matrix2 = transform2.derivative(transform1.transform(point, null));
         // Compute "matrix = matrix2 * matrix1". Reuse an existing matrix object

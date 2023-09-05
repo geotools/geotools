@@ -30,7 +30,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.Style;
+import org.geotools.api.style.Style;
 import org.geotools.swt.control.JFileDataStoreChooser;
 import org.geotools.swt.utils.ImageCache;
 import org.geotools.swt.utils.Utils;

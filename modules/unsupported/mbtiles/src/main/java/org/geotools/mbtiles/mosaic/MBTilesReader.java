@@ -49,7 +49,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.mbtiles.MBTilesFile;
 import org.geotools.mbtiles.MBTilesMetadata;
@@ -93,7 +93,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
             } catch (Exception e) {
                 bounds = null;
             }
-            originalEnvelope = new GeneralEnvelope(bounds == null ? WORLD_ENVELOPE : bounds);
+            originalEnvelope = new GeneralBounds(bounds == null ? WORLD_ENVELOPE : bounds);
 
             long maxZoom;
             try {

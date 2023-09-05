@@ -22,7 +22,7 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.util.SimpleInternationalString;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,7 +48,7 @@ public class BaseCoverageProcessingNodeTest {
                                         "name",
                                         PlanarImage.wrapRenderedImage(
                                                 RasterSymbolizerTest.getSynthetic(Double.NaN)),
-                                        new GeneralEnvelope(
+                                        new GeneralBounds(
                                                 new double[] {-90, -180}, new double[] {90, 180}),
                                         new GridSampleDimension[] {
                                             new GridSampleDimension(
@@ -75,7 +75,7 @@ public class BaseCoverageProcessingNodeTest {
                                         "name",
                                         PlanarImage.wrapRenderedImage(
                                                 RasterSymbolizerTest.getSynthetic(Double.NaN)),
-                                        new GeneralEnvelope(
+                                        new GeneralBounds(
                                                 new double[] {-90, -180}, new double[] {90, 180}),
                                         new GridSampleDimension[] {
                                             new GridSampleDimension(

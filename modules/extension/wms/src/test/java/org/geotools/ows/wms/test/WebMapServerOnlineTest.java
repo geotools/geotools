@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wms.WMSCapabilities;
@@ -123,7 +123,7 @@ public class WebMapServerOnlineTest extends WMSOnlineTestSupport {
         assertNotNull(layer);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 
-        GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
+        GeneralBounds envelope = wms.getEnvelope(layer, crs);
         double tolerance = 0.000000001;
 
         //        minx="-172.367" miny="35.6673" maxx="-11.5624" maxy="83.8293" />

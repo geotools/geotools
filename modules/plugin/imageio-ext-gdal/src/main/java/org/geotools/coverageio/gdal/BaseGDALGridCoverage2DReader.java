@@ -36,7 +36,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverageio.BaseGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
@@ -231,7 +231,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
                         this.originalEnvelope =
                                 CRS.transform(
                                         ProjectiveTransform.create(tempTransform),
-                                        new GeneralEnvelope(
+                                        new GeneralBounds(
                                                 ((GridEnvelope2D) this.originalGridRange)));
                     } catch (IllegalStateException | TransformException e) {
                         if (LOGGER.isLoggable(Level.WARNING)) {

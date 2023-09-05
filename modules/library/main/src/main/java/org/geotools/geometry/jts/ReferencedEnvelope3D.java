@@ -19,16 +19,17 @@ package org.geotools.geometry.jts;
 import java.text.MessageFormat;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition3D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position3D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
@@ -36,8 +37,8 @@ import org.locationtech.jts.geom.Envelope;
 
 /**
  * A 3D envelope associated with a {@linkplain CoordinateReferenceSystem coordinate reference
- * system}. In addition, this JTS envelope also implements the GeoAPI {@linkplain
- * org.geotools.api.geometry.Envelope envelope} interface for interoperability with GeoAPI.
+ * system}. In addition, this JTS envelope also implements the GeoAPI {@linkplain Bounds envelope}
+ * interface for interoperability with GeoAPI.
  *
  * @version $Id$
  * @author Niels Charlier
@@ -308,7 +309,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
     }
 
     @Override
-    public void expandToInclude(DirectPosition pt) {
+    public void expandToInclude(Position pt) {
         double x = pt.getOrdinate(0);
         double y = pt.getOrdinate(1);
         double z = pt.getDimension() >= 3 ? pt.getOrdinate(2) : Double.NaN;
@@ -525,7 +526,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
                 }
 
                 @Override
-                public boolean contains(DirectPosition pos) {
+                public boolean contains(Position pos) {
                     return true;
                 }
 
@@ -656,9 +657,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * Creates a new envelope from an existing bounding box.
      *
      * <p>NOTE: if the bounding box is empty, the resulting ReferencedEnvelope will not be. In case
-     * this is needed use {@link #create(org.geotools.api.geometry.Envelope,
-     * CoordinateReferenceSystem) ReferencedEnvelope.create(bbox,
-     * bbox.getCoordinateReferenceSystem())}
+     * this is needed use {@link #create(Bounds, CoordinateReferenceSystem)
+     * ReferencedEnvelope.create(bbox, bbox.getCoordinateReferenceSystem())}
      *
      * @param bbox The bounding box to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
@@ -694,14 +694,13 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * Creates a new envelope from an existing OGC envelope.
      *
      * <p>NOTE: if the envelope is empty, the resulting ReferencedEnvelope will not be. In case this
-     * is needed use {@link #create(org.geotools.api.geometry.Envelope, CoordinateReferenceSystem)
+     * is needed use {@link #create(Bounds, CoordinateReferenceSystem)
      * ReferencedEnvelope.create(envelope, envelope.getCoordinateReferenceSystem())}
      *
      * @param envelope The envelope to initialize from.
      * @throws MismatchedDimensionException if the CRS dimension is not valid.
      */
-    public ReferencedEnvelope3D(final org.geotools.api.geometry.Envelope envelope)
-            throws MismatchedDimensionException {
+    public ReferencedEnvelope3D(final Bounds envelope) throws MismatchedDimensionException {
         init(
                 envelope.getMinimum(0),
                 envelope.getMaximum(0),
@@ -838,8 +837,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * points within the {@code Envelope}.
      */
     @Override
-    public DirectPosition getLowerCorner() {
-        return new DirectPosition3D(crs, getMinX(), getMinY(), getMinZ());
+    public Position getLowerCorner() {
+        return new Position3D(crs, getMinX(), getMinY(), getMinZ());
     }
 
     /**
@@ -847,8 +846,8 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * points within the {@code Envelope}.
      */
     @Override
-    public DirectPosition getUpperCorner() {
-        return new DirectPosition3D(crs, getMaxX(), getMaxY(), getMaxZ());
+    public Position getUpperCorner() {
+        return new Position3D(crs, getMaxX(), getMaxY(), getMaxZ());
     }
 
     /** Returns {@code true} if lengths along all dimension are zero. */
@@ -859,7 +858,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 
     /** Returns {@code true} if the provided location is contained by this bounding box. */
     @Override
-    public boolean contains(DirectPosition pos) {
+    public boolean contains(Position pos) {
         ensureCompatibleReferenceSystem(pos);
         return contains(pos.getOrdinate(0), pos.getOrdinate(1), pos.getOrdinate(2));
     }
@@ -984,7 +983,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @return The transformed envelope.
      * @throws FactoryException if the math transform can't be determined.
      * @throws TransformException if at least one coordinate can't be transformed.
-     * @see CRS#transform(CoordinateOperation, org.geotools.api.geometry.Envelope)
+     * @see CRS#transform(CoordinateOperation, Bounds)
      */
     @Override
     public ReferencedEnvelope transform(CoordinateReferenceSystem targetCRS, boolean lenient)
@@ -1006,7 +1005,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      * @return The transformed envelope.
      * @throws FactoryException if the math transform can't be determined.
      * @throws TransformException if at least one coordinate can't be transformed.
-     * @see CRS#transform(CoordinateOperation, org.geotools.api.geometry.Envelope)
+     * @see CRS#transform(CoordinateOperation, Bounds)
      */
     @Override
     public ReferencedEnvelope transform(
@@ -1047,7 +1046,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
 
         final CoordinateOperation operation =
                 coordinateOperationFactory.createOperation(crs, targetCRS);
-        final GeneralEnvelope transformed = CRS.transform(operation, this);
+        final GeneralBounds transformed = CRS.transform(operation, this);
         transformed.setCoordinateReferenceSystem(targetCRS);
 
         // Now expands the box using the usual utility methods.
@@ -1120,7 +1119,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      *     envlope's width and height
      * @return true if all bounding coordinates are equal within the set tolerance; false otherwise
      */
-    public boolean boundsEquals3D(final org.geotools.api.geometry.Envelope other, double eps) {
+    public boolean boundsEquals3D(final Bounds other, double eps) {
         eps *= 0.5 * (getWidth() + getHeight());
 
         double[] delta = new double[6];

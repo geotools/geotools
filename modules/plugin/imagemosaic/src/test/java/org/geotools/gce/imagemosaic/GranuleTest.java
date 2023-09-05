@@ -40,7 +40,7 @@ import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -302,7 +302,7 @@ public class GranuleTest extends Assert {
                 new ReferencedEnvelope(
                         1587997.8835, 1612003.2265, 6162000.4515, 6198002.1165, crs_EN);
         manager.spatialDomainManager.coverageBBox = mosaicBounds;
-        manager.spatialDomainManager.coverageEnvelope = new GeneralEnvelope(mosaicBounds);
+        manager.spatialDomainManager.coverageEnvelope = new GeneralBounds(mosaicBounds);
 
         // set up the request (north-east version)
         final ReferencedEnvelope requestBBoxNE =

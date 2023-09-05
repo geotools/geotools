@@ -88,6 +88,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -2481,8 +2482,7 @@ public class Utils {
         return JTS.toGeometry(sourceEnvelope);
     }
 
-    private static org.geotools.api.geometry.Envelope getCRSEnvelope(
-            CoordinateReferenceSystem targetCRS)
+    private static Bounds getCRSEnvelope(CoordinateReferenceSystem targetCRS)
             throws FactoryException, NoSuchAuthorityCodeException {
         if (targetCRS.getDomainOfValidity() == null) {
             Integer code = CRS.lookupEpsgCode(targetCRS, true);
@@ -2490,7 +2490,7 @@ public class Utils {
                 CRS.decode("EPSG:" + code, CRS.getAxisOrder(targetCRS) != AxisOrder.NORTH_EAST);
             }
         }
-        org.geotools.api.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
+        Bounds envelope = CRS.getEnvelope(targetCRS);
         return envelope;
     }
 

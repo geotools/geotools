@@ -50,7 +50,7 @@ It is often easier to treat the problem in two steps:
      
      final int X = 0;
      final int Y = 1;
-     public void drawPoint( Graphics g, DirectPosition point ){
+     public void drawPoint( Graphics g, Position point ){
          int x = point.getOrdinate(X);
          int x = point.getOrdinate(Y);
          g.drawPoint(x, y);
@@ -76,10 +76,9 @@ The above instructions seem to cause some confusion; it may be easier to take th
 Avoid Assumptions
 ^^^^^^^^^^^^^^^^^
 
-This is a problem when you run into code that would like to assume that each ``DirectPosition`` contains data in (x,y) order
-(i.e. matching the screen).
+A common assumption is that each each ``Position`` contains data in (x,y) order (i.e. matching the screen).
 
-There exist many methods that are almost helpful:
+There exist many methods that to help:
 
 * ``getHorizontalCRS`` return the ``GeographicCRS`` or ``ProjectedCRS`` part, or a ``DerivedCRS`` based on the above, that applies to
   the Earth's surface (i.e. real geophysical meaning - not the first two axis).
@@ -88,9 +87,9 @@ There exist many methods that are almost helpful:
 
 A really common assumption for Java developers is to treat Geometry in exactly the same manner as Java2D Shape::
   
-  public void drawPoint( Graphics g, DirectPosition point ){
-      int x = (point.getOrdinate(X) - dx) * scale;
-      int y = height - ((point.getOrdinate(Y) - dy) * scale);
+  public void drawPoint( Graphics g, Position position ){
+      int x = (position.getOrdinate(X) - dx) * scale;
+      int y = height - ((position.getOrdinate(Y) - dy) * scale);
       
       g.drawPoint(x, y);
   }
@@ -117,12 +116,12 @@ Quick Fix
 If you run into some information that has proceeded with the above assumptions
 you can make a quick fix::
   
-  public void drawPoint( Graphics g, DirectPosition point ){
+  public void drawPoint( Graphics g, Position position ){
      final int X = 0;
      final int Y = 1;
      
-     int x = (point.getOrdinate(X) - dx) * scale;
-     int y = height - ((point.getOrdinate(Y) - dy)*scale);
+     int x = (position.getOrdinate(X) - dx) * scale;
+     int y = height - ((position.getOrdinate(Y) - dy)*scale);
      
      g.drawPoint(x, y);
   }
@@ -150,12 +149,12 @@ Lookup Axis
 
 The following will allow you to math up to a correct axis::
   
-  public void drawPoint( Graphics g, DirectPosition point ){
-     final int X = indexOfX( point.getCoordinateReferenceSystem() );
-     final int Y = indexOfY( point.getCoordinateReferenceSystem() );
+  public void drawPoint( Graphics g, Position position ){
+     final int X = indexOfX( position.getCoordinateReferenceSystem() );
+     final int Y = indexOfY( position.getCoordinateReferenceSystem() );
 
-     int x = (point.getOrdinate(X) - dx) * scale;
-     int y = height - ((point.getOrdinate(Y) - dy)*scale);
+     int x = (position.getOrdinate(X) - dx) * scale;
+     int y = height - ((position.getOrdinate(Y) - dy)*scale);
      
      g.drawPoint(x, y);
   }

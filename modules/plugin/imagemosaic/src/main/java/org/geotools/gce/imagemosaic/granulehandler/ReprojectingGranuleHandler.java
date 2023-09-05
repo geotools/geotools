@@ -26,7 +26,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.Utils;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -58,7 +58,7 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
                     inputFeatureType,
                     mosaicConfiguration);
         } else {
-            GeneralEnvelope coverageEnvelope = inputReader.getOriginalEnvelope();
+            GeneralBounds coverageEnvelope = inputReader.getOriginalEnvelope();
             CoordinateReferenceSystem coverageCRS = inputReader.getCoordinateReferenceSystem();
             ReferencedEnvelope finalEnvelope = new ReferencedEnvelope(coverageEnvelope);
             Geometry geometry = null;

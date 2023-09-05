@@ -36,7 +36,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
@@ -272,7 +272,7 @@ class Utils {
         }
         properties.put("LevelsDirs", sbDirNames.toString());
         properties.put("Levels", sbLevels.toString().trim());
-        GeneralEnvelope envelope = mosaics.get(0).getEnvelope();
+        GeneralBounds envelope = mosaics.get(0).getEnvelope();
         properties.put(
                 "Envelope2D",
                 envelope.getMinimum(0)
@@ -404,7 +404,7 @@ class Utils {
 
         String coverageName;
 
-        GeneralEnvelope envelope;
+        GeneralBounds envelope;
 
         String coverageNames = null;
 
@@ -445,7 +445,7 @@ class Utils {
             return directory.getName();
         }
 
-        GeneralEnvelope getEnvelope() {
+        GeneralBounds getEnvelope() {
             return envelope;
         }
 

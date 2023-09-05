@@ -106,7 +106,7 @@ import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
@@ -607,7 +607,7 @@ public class ImageMosaicConfigHandler {
             final GridCoverage2DReader inputReader,
             final ImageMosaicReader mosaicReader,
             final CatalogBuilderConfiguration configuration,
-            final GeneralEnvelope envelope,
+            final GeneralBounds envelope,
             final DefaultTransaction transaction,
             final List<PropertiesCollector> propertiesCollectors)
             throws IOException, GranuleHandlingException {
@@ -1418,7 +1418,7 @@ public class ImageMosaicConfigHandler {
         // the builder
         final MosaicBeanBuilder configBuilder = new MosaicBeanBuilder();
 
-        final GeneralEnvelope envelope = coverageReader.getOriginalEnvelope(inputCoverageName);
+        final GeneralBounds envelope = coverageReader.getOriginalEnvelope(inputCoverageName);
         final CoordinateReferenceSystem actualCRS =
                 coverageReader.getCoordinateReferenceSystem(inputCoverageName);
 
@@ -1662,7 +1662,7 @@ public class ImageMosaicConfigHandler {
             double[][] resolutionLevels,
             CoordinateReferenceSystem fromCRS,
             CoordinateReferenceSystem toCRS,
-            GeneralEnvelope sourceEnvelope)
+            GeneralBounds sourceEnvelope)
             throws FactoryException, TransformException {
 
         // prepare a set of points at middle of the envelope and their

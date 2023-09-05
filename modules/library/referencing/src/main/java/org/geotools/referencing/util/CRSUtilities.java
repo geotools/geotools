@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.measure.Unit;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.crs.CompoundCRS;
@@ -42,7 +42,7 @@ import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
@@ -369,13 +369,13 @@ public final class CRSUtilities {
      * @throws TransformException if the transformation failed.
      * @since 2.3
      */
-    public static DirectPosition deltaTransform(
-            final MathTransform transform, final DirectPosition origin, final DirectPosition source)
+    public static Position deltaTransform(
+            final MathTransform transform, final Position origin, final Position source)
             throws TransformException {
         final int sourceDim = transform.getSourceDimensions();
         final int targetDim = transform.getTargetDimensions();
-        DirectPosition P1 = new GeneralDirectPosition(sourceDim);
-        DirectPosition P2 = new GeneralDirectPosition(sourceDim);
+        Position P1 = new GeneralPosition(sourceDim);
+        Position P2 = new GeneralPosition(sourceDim);
         for (int i = 0; i < sourceDim; i++) {
             final double c = origin.getOrdinate(i);
             final double d = source.getOrdinate(i) * 0.5;

@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.BoundingBox3D;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
@@ -38,9 +38,8 @@ import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.AbstractDirectPosition;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.AbstractPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.ShapeUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
@@ -91,14 +90,14 @@ import org.locationtech.jts.operation.polygonize.Polygonizer;
  */
 public final class JTS {
     /** A pool of direct positions for use in {@link #orthodromicDistance}. */
-    private static final GeneralDirectPosition[] POSITIONS = new GeneralDirectPosition[4];
+    private static final GeneralPosition[] POSITIONS = new GeneralPosition[4];
 
     public static final AffineTransformation Y_INVERSION =
             new AffineTransformation(1, 0, 0, 0, -1, 0);
 
     static {
         for (int i = 0; i < POSITIONS.length; i++) {
-            POSITIONS[i] = new GeneralDirectPosition(i);
+            POSITIONS[i] = new GeneralPosition(i);
         }
     }
 
@@ -270,19 +269,19 @@ public final class JTS {
             double dx = scaleX * t;
             double dy = scaleY * t;
 
-            GeneralDirectPosition left = new GeneralDirectPosition(xmin, ymin + dy);
-            DirectPosition pt = transformTo3D(left, transform1, transform2);
+            GeneralPosition left = new GeneralPosition(xmin, ymin + dy);
+            Position pt = transformTo3D(left, transform1, transform2);
             targetEnvelope.expandToInclude(pt);
 
-            GeneralDirectPosition top = new GeneralDirectPosition(xmin + dx, ymax);
+            GeneralPosition top = new GeneralPosition(xmin + dx, ymax);
             pt = transformTo3D(top, transform1, transform2);
             targetEnvelope.expandToInclude(pt);
 
-            GeneralDirectPosition right = new GeneralDirectPosition(xmax, ymax - dy);
+            GeneralPosition right = new GeneralPosition(xmax, ymax - dy);
             pt = transformTo3D(right, transform1, transform2);
             targetEnvelope.expandToInclude(pt);
 
-            GeneralDirectPosition bottom = new GeneralDirectPosition(xmax - dx, ymin);
+            GeneralPosition bottom = new GeneralPosition(xmax - dx, ymin);
             pt = transformTo3D(bottom, transform1, transform2);
             targetEnvelope.expandToInclude(pt);
         }
@@ -340,20 +339,20 @@ public final class JTS {
                 double dz = scaleZ * u;
                 double z = zmin + dz;
 
-                GeneralDirectPosition left = new GeneralDirectPosition(xmin, ymin + dy, z);
+                GeneralPosition left = new GeneralPosition(xmin, ymin + dy, z);
 
-                DirectPosition pt = transformTo2D(left, transform1, transform2);
+                Position pt = transformTo2D(left, transform1, transform2);
                 targetEnvelope.expandToInclude(pt);
 
-                GeneralDirectPosition top = new GeneralDirectPosition(xmin + dx, ymax, z);
+                GeneralPosition top = new GeneralPosition(xmin + dx, ymax, z);
                 pt = transformTo2D(top, transform1, transform2);
                 targetEnvelope.expandToInclude(pt);
 
-                GeneralDirectPosition right = new GeneralDirectPosition(xmax, ymax - dy, z);
+                GeneralPosition right = new GeneralPosition(xmax, ymax - dy, z);
                 pt = transformTo2D(right, transform1, transform2);
                 targetEnvelope.expandToInclude(pt);
 
-                GeneralDirectPosition bottom = new GeneralDirectPosition(xmax - dx, ymax, z);
+                GeneralPosition bottom = new GeneralPosition(xmax - dx, ymax, z);
                 pt = transformTo2D(bottom, transform1, transform2);
                 targetEnvelope.expandToInclude(pt);
 
@@ -374,19 +373,19 @@ public final class JTS {
      * @param transformFromWGS84_3D From WGS84_3D to target CRS
      * @return Position in target CRS as calculated by transform2
      */
-    private static DirectPosition transformTo3D(
-            GeneralDirectPosition srcPosition,
+    private static Position transformTo3D(
+            GeneralPosition srcPosition,
             MathTransform transformToWGS84,
             MathTransform transformFromWGS84_3D)
             throws TransformException {
-        DirectPosition world2D = transformToWGS84.transform(srcPosition, null);
+        Position world2D = transformToWGS84.transform(srcPosition, null);
 
-        DirectPosition world3D = new GeneralDirectPosition(DefaultGeographicCRS.WGS84_3D);
+        Position world3D = new GeneralPosition(DefaultGeographicCRS.WGS84_3D);
         world3D.setOrdinate(0, world2D.getOrdinate(0));
         world3D.setOrdinate(1, world2D.getOrdinate(1));
         world3D.setOrdinate(2, 0.0); // 0 elliposial height is assumed
 
-        DirectPosition targetPosition = transformFromWGS84_3D.transform(world3D, null);
+        Position targetPosition = transformFromWGS84_3D.transform(world3D, null);
         return targetPosition;
     }
 
@@ -399,8 +398,8 @@ public final class JTS {
      * @param transformFromWGS84 From WGS84 to target CRS
      * @return Position in target CRS as calculated by transform2
      */
-    private static DirectPosition transformTo2D(
-            GeneralDirectPosition srcPosition,
+    private static Position transformTo2D(
+            GeneralPosition srcPosition,
             MathTransform transformToWGS84_3D,
             MathTransform transformFromWGS84)
             throws TransformException {
@@ -408,13 +407,13 @@ public final class JTS {
             srcPosition.setOrdinate(
                     2, 0.0); // lazy add 3rd ordinate if not provided to prevent failure
         }
-        DirectPosition world3D = transformToWGS84_3D.transform(srcPosition, null);
+        Position world3D = transformToWGS84_3D.transform(srcPosition, null);
 
-        DirectPosition world2D = new GeneralDirectPosition(DefaultGeographicCRS.WGS84);
+        Position world2D = new GeneralPosition(DefaultGeographicCRS.WGS84);
         world2D.setOrdinate(0, world3D.getOrdinate(0));
         world2D.setOrdinate(1, world3D.getOrdinate(1));
 
-        DirectPosition targetPosition = transformFromWGS84.transform(world2D, null);
+        Position targetPosition = transformFromWGS84.transform(world2D, null);
         return targetPosition;
     }
 
@@ -497,9 +496,9 @@ public final class JTS {
             if (envelope instanceof ReferencedEnvelope) {
                 return envelope;
             }
-            return ReferencedEnvelope.create(envelope, DefaultGeographicCRS.WGS84);
+            return ReferencedEnvelope.envelope(envelope, DefaultGeographicCRS.WGS84);
         }
-        ReferencedEnvelope initial = ReferencedEnvelope.create(envelope, crs);
+        ReferencedEnvelope initial = ReferencedEnvelope.envelope(envelope, crs);
         return toGeographic(initial);
     }
     /**
@@ -620,7 +619,7 @@ public final class JTS {
         }
         assert crs.equals(gc.getCoordinateReferenceSystem()) : crs;
 
-        final GeneralDirectPosition pos =
+        final GeneralPosition pos =
                 POSITIONS[Math.min(POSITIONS.length - 1, crs.getCoordinateSystem().getDimension())];
         pos.setCoordinateReferenceSystem(crs);
         copy(p1, pos.ordinates);
@@ -636,13 +635,13 @@ public final class JTS {
      *
      * @return DirectPosition
      */
-    public static DirectPosition toDirectPosition(
+    public static Position toDirectPosition(
             final Coordinate point, final CoordinateReferenceSystem crs) {
         // GeneralDirectPosition directPosition = new GeneralDirectPosition(crs);
         // copy( point, directPosition.ordinates );
         // return directPosition;
 
-        return new AbstractDirectPosition() {
+        return new AbstractPosition() {
 
             @Override
             public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -816,58 +815,11 @@ public final class JTS {
     }
 
     /**
-     * Converts a JTS 2D envelope in an {@link Envelope2D} for interoperability with the referencing
-     * package.
-     *
-     * <p>If the provided envelope is a {@link ReferencedEnvelope} we check that the provided CRS
-     * and the implicit CRS are similar.
-     *
-     * @param envelope The JTS envelope to convert.
-     * @param crs The coordinate reference system for the specified envelope.
-     * @return The GeoAPI envelope.
-     * @throws MismatchedDimensionException if a two-dimensional envelope can't be created from an
-     *     envelope with the specified CRS.
-     * @since 2.3
-     */
-    public static Envelope2D getEnvelope2D(
-            final Envelope envelope, final CoordinateReferenceSystem crs)
-            throws MismatchedDimensionException {
-        // Initial checks
-        ensureNonNull("envelope", envelope);
-        ensureNonNull("crs", crs);
-
-        if (envelope instanceof ReferencedEnvelope) {
-            final ReferencedEnvelope referenced = (ReferencedEnvelope) envelope;
-            final CoordinateReferenceSystem implicitCRS = referenced.getCoordinateReferenceSystem();
-
-            if ((crs != null) && !CRS.equalsIgnoreMetadata(crs, implicitCRS)) {
-                final Object arg0 = crs.getName().getCode();
-                final Object arg1 = implicitCRS.getName().getCode();
-                throw new IllegalArgumentException(
-                        MessageFormat.format(ErrorKeys.MISMATCHED_ENVELOPE_CRS_$2, arg0, arg1));
-            }
-        }
-
-        // Ensure the CRS is 2D and retrieve the new envelope
-        final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
-        if (crs2D == null)
-            throw new MismatchedDimensionException(
-                    MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, crs));
-
-        return new Envelope2D(
-                crs2D,
-                envelope.getMinX(),
-                envelope.getMinY(),
-                envelope.getWidth(),
-                envelope.getHeight());
-    }
-
-    /**
      * Create a Point from a ISO Geometry DirectPosition.
      *
      * @return Point
      */
-    public static Point toGeometry(DirectPosition position) {
+    public static Point toGeometry(Position position) {
         return toGeometry(position, null);
     }
 
@@ -877,7 +829,7 @@ public final class JTS {
      * @param factory Optional GeometryFactory
      * @return Point
      */
-    public static Point toGeometry(DirectPosition position, GeometryFactory factory) {
+    public static Point toGeometry(Position position, GeometryFactory factory) {
         if (factory == null) {
             factory = new GeometryFactory();
         }

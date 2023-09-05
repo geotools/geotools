@@ -30,6 +30,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -44,7 +45,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
@@ -101,6 +102,23 @@ public final class FeatureUtilities {
      */
     private static Polygon getPolygon(final Rectangle2D rect) {
         return getPolygon(rect, 0);
+    }
+    /**
+     * Returns the polygon surrounding the specified rectangle. Code lifted from ArcGridDataSource
+     * (temporary).
+     */
+    private static Polygon getPolygon(final BoundingBox bounds) {
+        final PrecisionModel pm = new PrecisionModel();
+        final GeometryFactory gf = new GeometryFactory(pm, 0);
+        final Coordinate[] coord = {
+            new Coordinate(bounds.getMinX(), bounds.getMinY()),
+            new Coordinate(bounds.getMaxX(), bounds.getMinY()),
+            new Coordinate(bounds.getMaxX(), bounds.getMaxY()),
+            new Coordinate(bounds.getMinX(), bounds.getMaxY()),
+            new Coordinate(bounds.getMinX(), bounds.getMinY())
+        };
+        final LinearRing ring = gf.createLinearRing(coord);
+        return new Polygon(ring, null, gf);
     }
 
     /**
@@ -303,7 +321,7 @@ public final class FeatureUtilities {
      * Convert the crop envelope into a polygon and the use the world-to-grid transform to get a ROI
      * for the source coverage.
      */
-    public static Polygon getPolygon(final GeneralEnvelope env, final GeometryFactory gf)
+    public static Polygon getPolygon(final GeneralBounds env, final GeometryFactory gf)
             throws IllegalStateException, MismatchedDimensionException {
         final Rectangle2D rect = env.toRectangle2D();
         final Coordinate[] coord = {

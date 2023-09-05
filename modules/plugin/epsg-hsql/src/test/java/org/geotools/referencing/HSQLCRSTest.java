@@ -23,7 +23,7 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 
@@ -53,8 +53,8 @@ public class HSQLCRSTest extends AbstractCRSTest {
         // System.out.println(targetCrs.getDomainOfValidity());
         MathTransform mathTransform =
                 CRS.findMathTransform(DefaultGeographicCRS.WGS84, targetCrs, true);
-        DirectPosition2D position2D = new DirectPosition2D(DefaultGeographicCRS.WGS84, 0.1, 39);
-        DirectPosition2D position2Dres = new DirectPosition2D();
+        Position2D position2D = new Position2D(DefaultGeographicCRS.WGS84, 0.1, 39);
+        Position2D position2Dres = new Position2D();
         mathTransform.transform(position2D, position2Dres);
     }
 

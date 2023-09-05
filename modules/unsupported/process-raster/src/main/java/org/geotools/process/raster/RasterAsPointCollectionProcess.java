@@ -45,7 +45,7 @@ import org.geotools.feature.collection.AdaptorFeatureCollection;
 import org.geotools.feature.collection.BaseSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -413,10 +413,10 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
         private final Coordinate sourceCoordinate = new Coordinate();
 
         /** Position of the Point in the source CRS */
-        private DirectPosition2D sourceCRSPosition;
+        private Position2D sourceCRSPosition;
 
         /** Position of the Point in the target CRS */
-        private DirectPosition2D targetCRSPosition;
+        private Position2D targetCRSPosition;
 
         public RasterAsPointFeatureIterator(final RasterAsPointFeatureCollection fc) {
 
@@ -448,8 +448,8 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
 
             // grid convergence angle manager
             if (fc.gridConvergenceAngleCorrectionNeeded) {
-                sourceCRSPosition = new DirectPosition2D();
-                targetCRSPosition = new DirectPosition2D(fc.targetCRS);
+                sourceCRSPosition = new Position2D();
+                targetCRSPosition = new Position2D(fc.targetCRS);
             }
         }
 

@@ -19,12 +19,11 @@ package org.geotools.renderer.lite.gridcoverage2d;
 import java.awt.Rectangle;
 import java.util.logging.Logger;
 import org.geotools.api.coverage.Coverage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
@@ -127,7 +126,7 @@ class GridGeometryReducer {
                                 reducedRange, gg.getGridToCRS(), gg.getCoordinateReferenceSystem());
 
                 // see if we actually reduced the grid geometry on the side we needed it to
-                Envelope reducedEnvelope = reducedGeometry.getEnvelope();
+                Bounds reducedEnvelope = reducedGeometry.getEnvelope();
                 if (!reducedGeometry.getGridRange2D().isEmpty()) {
                     switch (side) {
                         case TOP:
@@ -174,8 +173,8 @@ class GridGeometryReducer {
      * Builds a cut envelope for the Crop operation. Since the crop internals will add back the
      * pixels we just removed due to numerical issues, we keep the envelope a bit on the safe side
      */
-    public GeneralEnvelope getCutEnvelope(GridGeometry2D reduced) {
-        GeneralEnvelope result;
+    public GeneralBounds getCutEnvelope(GridGeometry2D reduced) {
+        GeneralBounds result;
         MathTransform2D mt = reduced.getGridToCRS2D();
         if (mt instanceof AffineTransform2D) {
             AffineTransform2D at = (AffineTransform2D) mt;
@@ -183,8 +182,8 @@ class GridGeometryReducer {
             double scaleY = Math.abs(at.getScaleY());
             double step = ((scaleX + scaleY) / 2.) / 10.;
 
-            Envelope2D envelope = reduced.getEnvelope2D();
-            result = new GeneralEnvelope(envelope.getCoordinateReferenceSystem());
+            ReferencedEnvelope envelope = reduced.getEnvelope2D();
+            result = new GeneralBounds(envelope.getCoordinateReferenceSystem());
             result.setEnvelope(
                     envelope.getMinX() + step,
                     envelope.getMinY() + step,
@@ -192,7 +191,7 @@ class GridGeometryReducer {
                     envelope.getMaxY() - step);
         } else {
             // general transform, keep it as is
-            result = new GeneralEnvelope(reduced.getEnvelope());
+            result = new GeneralBounds(reduced.getEnvelope());
         }
 
         return result;

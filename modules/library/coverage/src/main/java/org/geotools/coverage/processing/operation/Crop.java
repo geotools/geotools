@@ -38,7 +38,7 @@ import javax.media.jai.ROI;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.api.coverage.Coverage;
 import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterValue;
@@ -56,8 +56,7 @@ import org.geotools.coverage.processing.Operation2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.coverage.util.IntersectUtils;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -87,7 +86,7 @@ import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
  * as capabilities.
  *
  * <p>The key point is that the CoverageCrop operation aims to perform a spatial crop, i.e. cropping
- * the underlying raster by providing a spatial {@link Envelope} (if the envelope is not 2D only the
+ * the underlying raster by providing a spatial {@link Bounds} (if the envelope is not 2D only the
  * 2D part of it will be used). This means that, depending on the grid-to-world transformation
  * existing for the raster we want to crop, the crop area in the raster space might not be a
  * rectangle, hence JAI's crop may not suffice in order to shrink the raster area we would obtain.
@@ -162,11 +161,11 @@ public class Crop extends Operation2D {
      * The parameter descriptor used to pass this operation the envelope to use when doing the
      * spatial crop.
      */
-    public static final ParameterDescriptor<Envelope> CROP_ENVELOPE =
+    public static final ParameterDescriptor<Bounds> CROP_ENVELOPE =
             new DefaultParameterDescriptor<>(
                     Citations.GEOTOOLS,
                     PARAMNAME_ENVELOPE,
-                    Envelope.class, // Value class
+                    Bounds.class, // Value class
                     null, // Array of valid values
                     null, // Default value
                     null, // Minimal value
@@ -282,7 +281,7 @@ public class Crop extends Operation2D {
     public Coverage doOperation(ParameterValueGroup parameters, Hints hints) {
 
         final Geometry cropRoi; // extracted from parameters
-        GeneralEnvelope cropEnvelope = null; // extracted from parameters
+        GeneralBounds cropEnvelope = null; // extracted from parameters
         final double roiTolerance = parameters.parameter(Crop.PARAMNAME_ROITOLERANCE).doubleValue();
         final boolean forceMosaic = parameters.parameter(Crop.PARAMNAME_FORCEMOSAIC).booleanValue();
         Range nodata = (Range) parameters.parameter(Crop.PARAMNAME_NODATA).getValue();
@@ -323,14 +322,14 @@ public class Crop extends Operation2D {
                     MessageFormat.format(
                             ErrorKeys.NULL_PARAMETER_$2,
                             PARAMNAME_ENVELOPE,
-                            GeneralEnvelope.class.toString()));
+                            GeneralBounds.class.toString()));
 
         Object envelope = envelopeParameter.getValue();
         if (envelope != null) {
-            if (envelope instanceof GeneralEnvelope) {
-                cropEnvelope = (GeneralEnvelope) envelope;
-            } else if (envelope instanceof Envelope) {
-                cropEnvelope = new GeneralEnvelope((Envelope) envelope);
+            if (envelope instanceof GeneralBounds) {
+                cropEnvelope = (GeneralBounds) envelope;
+            } else if (envelope instanceof Bounds) {
+                cropEnvelope = new GeneralBounds((Bounds) envelope);
             }
         }
         // may be null
@@ -348,10 +347,10 @@ public class Crop extends Operation2D {
 
         // Setting a GeneralEnvelope from ROI if needed
         if (cropRoi != null && cropEnvelope == null) {
-            Envelope e2d =
-                    JTS.getEnvelope2D(
+            Bounds e2d =
+                    new ReferencedEnvelope(
                             cropRoi.getEnvelopeInternal(), source.getCoordinateReferenceSystem());
-            cropEnvelope = new GeneralEnvelope(e2d);
+            cropEnvelope = new GeneralBounds(e2d);
         }
 
         // /////////////////////////////////////////////////////////////////////
@@ -363,15 +362,15 @@ public class Crop extends Operation2D {
         //
         // /////////////////////////////////////////////////////////////////////
         // envelope of the source coverage
-        final Envelope2D sourceEnvelope = source.getEnvelope2D();
+        final ReferencedEnvelope sourceEnvelope = source.getEnvelope2D();
         // crop envelope
-        Envelope2D destinationEnvelope = new Envelope2D(cropEnvelope);
+        ReferencedEnvelope destinationEnvelope = new ReferencedEnvelope(cropEnvelope);
         CoordinateReferenceSystem sourceCRS = sourceEnvelope.getCoordinateReferenceSystem();
         CoordinateReferenceSystem destinationCRS =
                 destinationEnvelope.getCoordinateReferenceSystem();
         if (destinationCRS == null) {
             // Do not change the user provided object - clone it first.
-            final Envelope2D ge = new Envelope2D(destinationEnvelope);
+            final ReferencedEnvelope ge = new ReferencedEnvelope(destinationEnvelope);
             destinationCRS = source.getCoordinateReferenceSystem2D();
             ge.setCoordinateReferenceSystem(destinationCRS);
             destinationEnvelope = ge;
@@ -396,8 +395,7 @@ public class Crop extends Operation2D {
         // Check the intersection and, if needed, do the crop operation.
         //
         // //
-        final GeneralEnvelope intersectionEnvelope =
-                new GeneralEnvelope((Envelope) destinationEnvelope);
+        final GeneralBounds intersectionEnvelope = new GeneralBounds((Bounds) destinationEnvelope);
         intersectionEnvelope.setCoordinateReferenceSystem(source.getCoordinateReferenceSystem());
         // intersect the envelopes
         intersectionEnvelope.intersect(sourceEnvelope);
@@ -490,7 +488,7 @@ public class Crop extends Operation2D {
             ROI internalROI,
             Range nodata,
             double[] destnodata,
-            final GeneralEnvelope cropEnvelope,
+            final GeneralBounds cropEnvelope,
             final Geometry cropROI,
             final double roiTolerance,
             final boolean forceMosaic,
@@ -542,12 +540,11 @@ public class Crop extends Operation2D {
                     final Polygon modelSpaceROI =
                             FeatureUtilities.getPolygon(cropEnvelope, GFACTORY);
                     Geometry intersection = IntersectUtils.intersection(cropROI, modelSpaceROI);
-                    Envelope2D e2d =
-                            JTS.getEnvelope2D(
+                    ReferencedEnvelope e2d =
+                            ReferencedEnvelope.envelope(
                                     intersection.getEnvelopeInternal(),
                                     cropEnvelope.getCoordinateReferenceSystem());
-                    GeneralEnvelope ge =
-                            new GeneralEnvelope((org.geotools.api.geometry.Envelope) e2d);
+                    GeneralBounds ge = new GeneralBounds(e2d);
                     cropEnvelope.setEnvelope(ge);
                 } catch (TopologyException e) {
                     // in case the intersection fail, accept using intersection(cropEnvelope,
@@ -560,7 +557,7 @@ public class Crop extends Operation2D {
                             cropROIEnvelope.intersection(
                                     ReferencedEnvelope.reference(cropEnvelope));
                     cropEnvelope.setEnvelope(
-                            new GeneralEnvelope(
+                            new GeneralBounds(
                                     new ReferencedEnvelope(
                                             intersection,
                                             cropEnvelope.getCoordinateReferenceSystem())));

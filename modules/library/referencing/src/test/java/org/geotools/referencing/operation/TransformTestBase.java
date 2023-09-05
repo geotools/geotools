@@ -28,8 +28,8 @@ import org.geotools.api.referencing.operation.MathTransform1D;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.Hints;
 import org.junit.Before;
@@ -114,8 +114,8 @@ public abstract class TransformTestBase {
             final double ex,
             final double ey)
             throws TransformException {
-        final DirectPosition2D source = new DirectPosition2D(x, y);
-        final DirectPosition2D target = new DirectPosition2D();
+        final Position2D source = new Position2D(x, y);
+        final Position2D target = new Position2D();
         assertSame(target, transform.transform(source, target));
         final String message =
                 "Expected ("
@@ -152,8 +152,8 @@ public abstract class TransformTestBase {
             final double ey,
             final double ez)
             throws TransformException {
-        final GeneralDirectPosition source = new GeneralDirectPosition(x, y, z);
-        final GeneralDirectPosition target = new GeneralDirectPosition(3);
+        final GeneralPosition source = new GeneralPosition(x, y, z);
+        final GeneralPosition target = new GeneralPosition(3);
         assertSame(target, transform.transform(source, target));
         final String message =
                 "Expected ("
@@ -194,8 +194,8 @@ public abstract class TransformTestBase {
             final double ey,
             final double ez)
             throws TransformException {
-        final GeneralDirectPosition source = new GeneralDirectPosition(x, y);
-        final GeneralDirectPosition target = new GeneralDirectPosition(3);
+        final GeneralPosition source = new GeneralPosition(x, y);
+        final GeneralPosition target = new GeneralPosition(3);
         assertSame(target, transform.transform(source, target));
         final String message =
                 "Expected ("
@@ -236,8 +236,8 @@ public abstract class TransformTestBase {
             final double ex,
             final double ey)
             throws TransformException {
-        final GeneralDirectPosition source = new GeneralDirectPosition(x, y, z);
-        final GeneralDirectPosition target = new GeneralDirectPosition(2);
+        final GeneralPosition source = new GeneralPosition(x, y, z);
+        final GeneralPosition target = new GeneralPosition(2);
         assertSame(target, transform.transform(source, target));
         final String message =
                 "Expected ("
@@ -271,8 +271,8 @@ public abstract class TransformTestBase {
             final double z,
             final double ez)
             throws TransformException {
-        final GeneralDirectPosition source = new GeneralDirectPosition(x, y, z);
-        final GeneralDirectPosition target = new GeneralDirectPosition(1);
+        final GeneralPosition source = new GeneralPosition(x, y, z);
+        final GeneralPosition target = new GeneralPosition(1);
         assertSame(target, transform.transform(source, target));
         final String message =
                 "Expected (" + ez + "), " + "transformed=(" + target.ordinates[0] + ")";

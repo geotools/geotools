@@ -19,7 +19,7 @@ package org.geotools.swing.tool;
 
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 
 /**
  * Contains static methods used by some {@code InfoToolHelper} classes.
@@ -37,10 +37,10 @@ public class InfoToolHelperUtils {
      * @param pos the position
      * @return the transformed position
      */
-    public static DirectPosition2D getTransformed(DirectPosition2D pos, MathTransform transform) {
+    public static Position2D getTransformed(Position2D pos, MathTransform transform) {
         if (transform != null) {
             try {
-                return new DirectPosition2D(transform.transform(pos, null));
+                return new Position2D(transform.transform(pos, null));
             } catch (Exception ex) {
                 throw new IllegalStateException(ex);
             }

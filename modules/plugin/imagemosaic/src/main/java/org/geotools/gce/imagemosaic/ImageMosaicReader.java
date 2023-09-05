@@ -77,7 +77,7 @@ import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.Converters;
@@ -441,9 +441,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         // we might have an imposed bbox
         this.crs = bounds.getCoordinateReferenceSystem();
-        if (envelope == null) this.originalEnvelope = new GeneralEnvelope(bounds);
+        if (envelope == null) this.originalEnvelope = new GeneralBounds(bounds);
         else {
-            this.originalEnvelope = new GeneralEnvelope(envelope);
+            this.originalEnvelope = new GeneralBounds(envelope);
             this.originalEnvelope.setCoordinateReferenceSystem(crs);
         }
 
@@ -931,12 +931,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope() {
+    public GeneralBounds getOriginalEnvelope() {
         return getOriginalEnvelope(UNSPECIFIED);
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+    public GeneralBounds getOriginalEnvelope(String coverageName) {
         String name = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(name);
         return manager.spatialDomainManager.coverageEnvelope;

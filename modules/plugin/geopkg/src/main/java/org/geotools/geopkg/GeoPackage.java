@@ -52,6 +52,7 @@ import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -69,7 +70,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
@@ -1095,7 +1096,7 @@ public class GeoPackage implements Closeable {
                 if (srid != null) {
                     CoordinateReferenceSystem crs = getCRS(srid);
                     if (crs != null) {
-                        org.geotools.api.geometry.Envelope env = CRS.getEnvelope(crs);
+                        Bounds env = CRS.getEnvelope(crs);
                         if (env != null) {
                             minx = env.getMinimum(0);
                             miny = env.getMinimum(1);
@@ -1254,7 +1255,7 @@ public class GeoPackage implements Closeable {
     }
 
     static ReferencedEnvelope findBounds(GridCoverage2D raster) {
-        org.geotools.api.geometry.Envelope e = raster.getEnvelope();
+        Bounds e = raster.getEnvelope();
         return new ReferencedEnvelope(
                 e.getMinimum(0),
                 e.getMaximum(0),
@@ -1263,9 +1264,9 @@ public class GeoPackage implements Closeable {
                 raster.getCoordinateReferenceSystem());
     }
 
-    static GeneralEnvelope toGeneralEnvelope(ReferencedEnvelope e) {
-        GeneralEnvelope ge =
-                new GeneralEnvelope(
+    static GeneralBounds toGeneralEnvelope(ReferencedEnvelope e) {
+        GeneralBounds ge =
+                new GeneralBounds(
                         new double[] {e.getMinX(), e.getMinY()},
                         new double[] {e.getMaxX(), e.getMaxY()});
         ge.setCoordinateReferenceSystem(e.getCoordinateReferenceSystem());

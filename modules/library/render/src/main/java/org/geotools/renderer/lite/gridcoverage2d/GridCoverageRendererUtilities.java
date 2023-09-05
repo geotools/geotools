@@ -60,8 +60,7 @@ import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -119,7 +118,7 @@ public final class GridCoverageRendererUtilities {
             final GridCoverage2D gc,
             CoordinateReferenceSystem crs,
             final Interpolation interpolation,
-            final GeneralEnvelope destinationEnvelope,
+            final GeneralBounds destinationEnvelope,
             final double[] bkgValues,
             final Hints hints)
             throws FactoryException {
@@ -145,7 +144,7 @@ public final class GridCoverageRendererUtilities {
             List<GridCoverage2D> coverages,
             CoordinateReferenceSystem destinationCRS,
             final Interpolation interpolation,
-            final GeneralEnvelope destinationEnvelope,
+            final GeneralBounds destinationEnvelope,
             final double[] bkgValues,
             GridCoverageFactory gridCoverageFactory,
             final Hints hints)
@@ -181,7 +180,7 @@ public final class GridCoverageRendererUtilities {
             GridCoverage2D coverage,
             CoordinateReferenceSystem destinationCRS,
             final Interpolation interpolation,
-            final GeneralEnvelope destinationEnvelope,
+            final GeneralBounds destinationEnvelope,
             final double[] bkgValues,
             GridCoverageFactory gridCoverageFactory,
             final Hints hints)
@@ -241,11 +240,11 @@ public final class GridCoverageRendererUtilities {
 
     /** Cropping the provided coverage to the requested geographic area. */
     static GridCoverage2D coverageCrop(
-            GridCoverage2D gc, GeneralEnvelope envelope, double[] background, final Hints hints) {
-        final GeneralEnvelope oldEnvelope = (GeneralEnvelope) gc.getEnvelope();
+            GridCoverage2D gc, GeneralBounds envelope, double[] background, final Hints hints) {
+        final GeneralBounds oldEnvelope = (GeneralBounds) gc.getEnvelope();
         // intersect the envelopes in order to prepare for cropping the coverage
         // down to the neded resolution
-        final GeneralEnvelope intersectionEnvelope = new GeneralEnvelope(envelope);
+        final GeneralBounds intersectionEnvelope = new GeneralBounds(envelope);
         intersectionEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
         intersectionEnvelope.intersect(oldEnvelope);
 
@@ -272,7 +271,7 @@ public final class GridCoverageRendererUtilities {
         // let's compute the new grid geometry
         GridGeometry2D originalGG = coverage.getGridGeometry();
         GridEnvelope gridRange = originalGG.getGridRange();
-        Envelope2D envelope = originalGG.getEnvelope2D();
+        ReferencedEnvelope envelope = originalGG.getEnvelope2D();
 
         double minx = envelope.getMinX() + tx;
         double miny = envelope.getMinY() + ty;
@@ -299,7 +298,7 @@ public final class GridCoverageRendererUtilities {
     static GridCoverage2D mosaic(
             List<GridCoverage2D> coverages,
             List<GridCoverage2D> alphas,
-            GeneralEnvelope renderingEnvelope,
+            GeneralBounds renderingEnvelope,
             final Hints hints,
             double[] background) {
 
@@ -358,11 +357,11 @@ public final class GridCoverageRendererUtilities {
     }
 
     /** */
-    static GeneralEnvelope reprojectEnvelope(
-            GeneralEnvelope inputEnvelope, final CoordinateReferenceSystem outputCRS)
+    static GeneralBounds reprojectEnvelope(
+            GeneralBounds inputEnvelope, final CoordinateReferenceSystem outputCRS)
             throws Exception {
 
-        GeneralEnvelope outputEnvelope = null;
+        GeneralBounds outputEnvelope = null;
         CoordinateReferenceSystem inputCRS = inputEnvelope.getCoordinateReferenceSystem();
         if (!CRS.equalsIgnoreMetadata(inputCRS, outputCRS)) {
             outputEnvelope = CRS.transform(inputEnvelope, outputCRS);
@@ -370,15 +369,15 @@ public final class GridCoverageRendererUtilities {
         }
         // simple copy
         if (outputEnvelope == null) {
-            outputEnvelope = new GeneralEnvelope(inputEnvelope);
+            outputEnvelope = new GeneralBounds(inputEnvelope);
             outputEnvelope.setCoordinateReferenceSystem(inputCRS);
         }
         return null;
     }
 
     /** */
-    static GeneralEnvelope reprojectEnvelopeWithWGS84Pivot(
-            GeneralEnvelope inputEnvelope, CoordinateReferenceSystem targetCRS) throws Exception {
+    static GeneralBounds reprojectEnvelopeWithWGS84Pivot(
+            GeneralBounds inputEnvelope, CoordinateReferenceSystem targetCRS) throws Exception {
 
         GridCoverageRendererUtilities.ensureNotNull(inputEnvelope, "destinationEnvelope");
         GridCoverageRendererUtilities.ensureNotNull(targetCRS, "coverageCRS");
@@ -402,7 +401,7 @@ public final class GridCoverageRendererUtilities {
             CoordinateOperation operation =
                     CRS.getCoordinateOperationFactory(true)
                             .createOperation(destinationCRS, targetCRS);
-            GeneralEnvelope output = CRS.transform(operation, inputEnvelope);
+            GeneralBounds output = CRS.transform(operation, inputEnvelope);
             output.setCoordinateReferenceSystem(targetCRS);
             return output;
         } catch (TransformException te) {
@@ -412,7 +411,7 @@ public final class GridCoverageRendererUtilities {
             // comparisons later on with the original crs of this coverage.
             //
             // //
-            final GeneralEnvelope destinationEnvelopeWGS84 =
+            final GeneralBounds destinationEnvelopeWGS84 =
                     GridCoverageRendererUtilities.reprojectEnvelope(
                             inputEnvelope, DefaultGeographicCRS.WGS84);
 
@@ -442,7 +441,7 @@ public final class GridCoverageRendererUtilities {
      * but their reprojected version does not). Cleanup the ones completely out.
      */
     public static void removeNotIntersecting(
-            List<GridCoverage2D> coverages, GeneralEnvelope destinationEnvelope) {
+            List<GridCoverage2D> coverages, GeneralBounds destinationEnvelope) {
         for (Iterator<GridCoverage2D> it = coverages.iterator(); it.hasNext(); ) {
             GridCoverage2D coverage = it.next();
             ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
@@ -459,7 +458,7 @@ public final class GridCoverageRendererUtilities {
     public static List<GridCoverage2D> displace(
             List<GridCoverage2D> coverages,
             ProjectionHandler handler,
-            GeneralEnvelope destinationEnvelope,
+            GeneralBounds destinationEnvelope,
             CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem targetCRS,
             GridCoverageFactory gridCoverageFactory)
@@ -531,7 +530,7 @@ public final class GridCoverageRendererUtilities {
                 GridGeometry2D gg = coverage.getGridGeometry();
                 GridGeometry2D reduced = reducer.reduce(gg);
                 if (!reduced.equals(gg)) {
-                    GeneralEnvelope cutEnvelope = reducer.getCutEnvelope(reduced);
+                    GeneralBounds cutEnvelope = reducer.getCutEnvelope(reduced);
                     GridCoverage2D croppedCoverage =
                             crop(coverage, cutEnvelope, false, bgValues, hints);
                     if (croppedCoverage != null) {
@@ -549,27 +548,26 @@ public final class GridCoverageRendererUtilities {
     /** Crop a coverage on a specified destination Envelope */
     public static GridCoverage2D crop(
             GridCoverage2D coverage,
-            GeneralEnvelope destinationEnvelope,
+            GeneralBounds destinationEnvelope,
             boolean doReprojection,
             double[] backgroundValues,
             Hints hints) {
         // CREATING THE CROP ENVELOPE
         GridCoverage2D outputCoverage = coverage;
-        final GeneralEnvelope coverageEnvelope = (GeneralEnvelope) coverage.getEnvelope();
+        final GeneralBounds coverageEnvelope = (GeneralBounds) coverage.getEnvelope();
         final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem2D();
 
         try {
-            GeneralEnvelope renderingEnvelopeInCoverageCRS = null;
+            GeneralBounds renderingEnvelopeInCoverageCRS = null;
             if (doReprojection) {
                 renderingEnvelopeInCoverageCRS =
                         GridCoverageRendererUtilities.reprojectEnvelopeWithWGS84Pivot(
                                 destinationEnvelope, coverageCRS);
             } else {
                 // NO REPROJECTION
-                renderingEnvelopeInCoverageCRS = new GeneralEnvelope(destinationEnvelope);
+                renderingEnvelopeInCoverageCRS = new GeneralBounds(destinationEnvelope);
             }
-            final GeneralEnvelope cropEnvelope =
-                    new GeneralEnvelope(renderingEnvelopeInCoverageCRS);
+            final GeneralBounds cropEnvelope = new GeneralBounds(renderingEnvelopeInCoverageCRS);
             cropEnvelope.intersect(coverageEnvelope);
             if (cropEnvelope.isEmpty() || cropEnvelope.isNull()) {
                 if (LOGGER.isLoggable(Level.INFO)) {
@@ -595,7 +593,7 @@ public final class GridCoverageRendererUtilities {
     /** Mosaic coverages with a preliminary sorting by size */
     public static GridCoverage2D mosaicSorted(
             List<GridCoverage2D> coverages,
-            GeneralEnvelope destinationEnvelope,
+            GeneralBounds destinationEnvelope,
             double[] bgValues,
             Hints hints) {
         GridCoverage2D mosaicked = null;

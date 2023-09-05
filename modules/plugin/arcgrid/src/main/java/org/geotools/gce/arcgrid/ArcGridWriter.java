@@ -38,7 +38,7 @@ import javax.media.jai.Interpolation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridCoverageWriter;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -56,7 +56,7 @@ import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -257,7 +257,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
             //
             // /////////////////////////////////////////////////////////////////
             // getting the new envelope after the reshaping
-            final Envelope newEnv = gc.getEnvelope2D();
+            final Bounds newEnv = gc.getEnvelope2D();
 
             // trying to prepare the header
             final AffineTransform gridToWorld =
@@ -362,7 +362,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         // gridgeometry
         //
         // /////////////////////////////////////////////////////////////////////
-        final Envelope oldEnv = gc.getEnvelope2D();
+        final Bounds oldEnv = gc.getEnvelope2D();
         final double W = oldEnv.getSpan(0);
         final double H = oldEnv.getSpan(1);
         if ((dx - dy) > ArcGridWriter.ROTATION_EPS) {
@@ -387,7 +387,7 @@ public final class ArcGridWriter extends AbstractGridCoverageWriter implements G
         final GeneralGridEnvelope newGridrange =
                 new GeneralGridEnvelope(new int[] {0, 0}, new int[] {Nx, Ny});
         final GridGeometry2D newGridGeometry =
-                new GridGeometry2D(newGridrange, new GeneralEnvelope(gc.getEnvelope()));
+                new GridGeometry2D(newGridrange, new GeneralBounds(gc.getEnvelope()));
 
         // /////////////////////////////////////////////////////////////////////
         //

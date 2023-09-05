@@ -56,7 +56,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -74,7 +74,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
@@ -115,7 +115,7 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     /** The base {@link GridRange} for the {@link GridCoverage2D} of this reader. */
     private GridEnvelope2D nativeGridRange = null;
 
-    private GeneralEnvelope nativeEnvelope = null;
+    private GeneralBounds nativeEnvelope = null;
 
     ImageReaderSpi cachedSPI;
 
@@ -180,12 +180,12 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     }
 
     /** @param coverageEnvelope the envelope to set */
-    protected void setCoverageEnvelope(GeneralEnvelope coverageEnvelope) {
+    protected void setCoverageEnvelope(GeneralBounds coverageEnvelope) {
         this.nativeEnvelope = coverageEnvelope;
     }
 
     /** @return the nativeEnvelope */
-    protected GeneralEnvelope getCoverageEnvelope() {
+    protected GeneralBounds getCoverageEnvelope() {
         return nativeEnvelope;
     }
 
@@ -534,10 +534,10 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
         }
 
         try {
-            final GeneralEnvelope envelope =
+            final GeneralBounds envelope =
                     CRS.transform(
                             ProjectiveTransform.create(tempTransform),
-                            new GeneralEnvelope(nativeGridRange));
+                            new GeneralBounds(nativeGridRange));
             envelope.setCoordinateReferenceSystem(crs);
             this.nativeEnvelope = envelope;
         } catch (TransformException e) {
@@ -581,10 +581,10 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
     }
 
     private void setEnvelopeFromTransform(AffineTransform tempTransform) throws TransformException {
-        final GeneralEnvelope envelope =
+        final GeneralBounds envelope =
                 CRS.transform(
                         ProjectiveTransform.create(tempTransform),
-                        new GeneralEnvelope(nativeGridRange));
+                        new GeneralBounds(nativeGridRange));
         envelope.setCoordinateReferenceSystem(crs);
         setCoverageEnvelope(envelope);
     }
@@ -832,8 +832,8 @@ public final class JP2KReader extends AbstractGridCoverage2DReader implements Gr
                     PixelTranslation.translate(
                             raster2Model, PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER);
             try {
-                final Envelope gridRange = new GeneralEnvelope(nativeGridRange);
-                final GeneralEnvelope coverageEnvelope = CRS.transform(tempTransform, gridRange);
+                final Bounds gridRange = new GeneralBounds(nativeGridRange);
+                final GeneralBounds coverageEnvelope = CRS.transform(tempTransform, gridRange);
                 nativeEnvelope = coverageEnvelope;
             } catch (TransformException | IllegalStateException e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {

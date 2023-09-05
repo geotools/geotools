@@ -15,7 +15,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 
 /**
  * A Mock Class to access methods for AbstractGridCoverage2DReader class Intially intended for
@@ -97,7 +97,7 @@ public class MockAbstractGridCoverage2DReader extends AbstractGridCoverage2DRead
     protected Integer setReadParams(
             OverviewPolicy overviewPolicy,
             ImageReadParam readP,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
         return super.setReadParams(overviewPolicy, readP, requestedEnvelope, requestedDim);
@@ -108,7 +108,7 @@ public class MockAbstractGridCoverage2DReader extends AbstractGridCoverage2DRead
             String coverageName,
             OverviewPolicy overviewPolicy,
             ImageReadParam readP,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
         return super.setReadParams(

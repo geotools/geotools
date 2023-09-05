@@ -220,11 +220,9 @@ file to include the official definition.
 Q: How do I Transform?
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The MathTransform interface is used to transform (or "re-project") one DirectPosition
-at a time.
+The MathTransform interface is used to transform (or "re-project") one Position at a time.
 
-You can also use the utility class **JTS** which has helper methods to transform
-a Geometry.
+You can also use the utility class **JTS** which has helper methods to transform a Geometry.
 
 Q: How to Transform a Geometry?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

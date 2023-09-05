@@ -61,7 +61,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
     }
 
     @Override
-    public void setRGBChannels(SelectedChannelType[] channels) {
+    public void setRGBChannels(SelectedChannelType... channels) {
         if (channels == null) {
             red = null;
             green = null;

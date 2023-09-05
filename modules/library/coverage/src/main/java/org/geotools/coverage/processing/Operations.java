@@ -29,7 +29,7 @@ import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridGeometry;
 import org.geotools.api.coverage.processing.Operation;
 import org.geotools.api.coverage.processing.OperationNotFoundException;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.InvalidParameterNameException;
 import org.geotools.api.parameter.ParameterNotFoundException;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -375,9 +375,7 @@ public class Operations {
      * @since 2.5
      */
     public Coverage resample(
-            final GridCoverage source,
-            final Envelope envelope,
-            final Interpolation interpolationType)
+            final GridCoverage source, final Bounds envelope, final Interpolation interpolationType)
             throws CoverageProcessingException {
         final GridGeometry gridGeometry;
         try {
@@ -450,7 +448,7 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Crop
      * @since 2.3
      */
-    public Coverage crop(final Coverage source, final Envelope envelope)
+    public Coverage crop(final Coverage source, final Bounds envelope)
             throws CoverageProcessingException {
         return doOperation("CoverageCrop", source, "Envelope", envelope);
     }

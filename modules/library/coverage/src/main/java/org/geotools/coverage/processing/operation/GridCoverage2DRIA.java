@@ -58,10 +58,12 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * A RenderedImage that provides values coming from a source GridCoverage2D, with a backing grid
@@ -440,11 +442,17 @@ public class GridCoverage2DRIA extends GeometricOpImage {
             LOGGER.log(Level.WARNING, "Error transforming coords", e);
             return null;
         }
+        ReferencedEnvelope dstEnv = dst.getEnvelope2D();
 
         Point2D ret = ((Point2D) destPt.clone());
         ret.setLocation(coords[0], coords[1]);
-        if (dst.getEnvelope2D().contains(ret)) return ret;
-        else return null;
+
+        Coordinate coordinate = new Coordinate(coords[0], coords[1]);
+        if (dstEnv.contains(coordinate)) {
+            return ret;
+        } else {
+            return null;
+        }
     }
 
     private void mapDestPoint(double[] coords) throws TransformException {

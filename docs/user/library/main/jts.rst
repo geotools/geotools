@@ -26,9 +26,9 @@ coordinate reference systems).
 Transform
 ^^^^^^^^^
 
-You can make use of ``MathTransform`` directly - it has methods for feeding ``DirectPosition`` instances in one at a time, transforming, and returning a modified ``DirectPosition``.
+You can make use of ``MathTransform`` directly - it has methods for feeding ``Position`` instances in one at a time, transforming, and returning a modified ``Position``.
 
-The problem is our JTS Geometry instances are built out of ``Coordinate`` instances rather than using ``DirectPosition``.
+The challenge is our JTS Geometry instances are built out of ``Coordinate`` instances rather than using ``Position``.
 
 The **JTS** utility class defines a helper method for this common activity::
   
@@ -87,7 +87,7 @@ Quickly convert from a JTS ``Envelope`` to the ISO Geometry ``Envelope`` (with a
    Envelope envelope = geometry.getEnvelopeInternal();
 
    // create with supplied crs
-   Envelope2D bounds = JTS.getEnvelope2D( envelope, crs );
+   GeneralBounds bounds = JTS.getGeneralBounds( envelope, crs );
    
    // Check geometry.getUserData() for srsName or CoordinateReferenceSystem
    ReferencedEnvelope bounds = JTS.toEnvelope( geometry );

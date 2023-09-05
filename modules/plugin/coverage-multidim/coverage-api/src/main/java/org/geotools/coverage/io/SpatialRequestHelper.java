@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -37,7 +37,7 @@ import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -154,7 +154,7 @@ public class SpatialRequestHelper {
 
     double[] requestedResolution;
 
-    GeneralEnvelope requestedBBOXInCoverageGeographicCRS;
+    GeneralBounds requestedBBOXInCoverageGeographicCRS;
 
     MathTransform requestCRSToCoverageGeographicCRS2D;
 
@@ -170,11 +170,11 @@ public class SpatialRequestHelper {
 
     boolean needsReprojection = false;
 
-    GeneralEnvelope approximateRequestedBBoInNativeCRS;
+    GeneralBounds approximateRequestedBBoInNativeCRS;
 
     public void setRequestedGridGeometry(GridGeometry2D gridGeometry) {
         Utilities.ensureNonNull("girdGeometry", gridGeometry);
-        requestedBBox = new ReferencedEnvelope((Envelope) gridGeometry.getEnvelope2D());
+        requestedBBox = new ReferencedEnvelope((Bounds) gridGeometry.getEnvelope2D());
         requestedRasterArea = gridGeometry.getGridRange2D().getBounds();
         requestedGridToWorld = (AffineTransform) gridGeometry.getGridToCRS2D();
     }
@@ -329,8 +329,7 @@ public class SpatialRequestHelper {
                     requestedBBox =
                             new ReferencedEnvelope(
                                     CRS.transform(
-                                            tempTransform,
-                                            new GeneralEnvelope(requestedRasterArea)));
+                                            tempTransform, new GeneralBounds(requestedRasterArea)));
 
                 } catch (MismatchedDimensionException | TransformException e) {
                     throw new DataSourceException("Unable to inspect request CRS", e);
@@ -386,8 +385,7 @@ public class SpatialRequestHelper {
                 destinationRasterArea =
                         new GeneralGridEnvelope(
                                         CRS.transform(
-                                                requestedWorldToGrid,
-                                                new GeneralEnvelope(cropBBox)),
+                                                requestedWorldToGrid, new GeneralBounds(cropBBox)),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();
@@ -399,7 +397,7 @@ public class SpatialRequestHelper {
             // reproject the crop bbox back and then crop, notice that we are imposing
             //
             try {
-                final GeneralEnvelope cropBBOXInRequestCRS =
+                final GeneralBounds cropBBOXInRequestCRS =
                         CRS.transform(cropBBox, requestedBBox.getCoordinateReferenceSystem());
                 cropBBOXInRequestCRS.setCoordinateReferenceSystem(
                         requestedBBox.getCoordinateReferenceSystem());
@@ -553,8 +551,8 @@ public class SpatialRequestHelper {
             // now transform the requested envelope to source crs
             if (destinationToSourceTransform != null
                     && !destinationToSourceTransform.isIdentity()) {
-                final GeneralEnvelope temp =
-                        new GeneralEnvelope(CRS.transform(requestedBBox, coverageProperties.crs2D));
+                final GeneralBounds temp =
+                        new GeneralBounds(CRS.transform(requestedBBox, coverageProperties.crs2D));
                 temp.setCoordinateReferenceSystem(coverageProperties.crs2D);
                 cropBBox = new ReferencedEnvelope(temp);
                 needsReprojection = true;
@@ -627,7 +625,7 @@ public class SpatialRequestHelper {
                     }
                 }
                 if (requestedBBOXInCoverageGeographicCRS == null) {
-                    requestedBBOXInCoverageGeographicCRS = new GeneralEnvelope(requestCRS);
+                    requestedBBOXInCoverageGeographicCRS = new GeneralBounds(requestCRS);
                 }
 
                 // STEP 2 intersection with the geographic bbox for this coverage

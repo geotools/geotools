@@ -30,7 +30,7 @@ import java.util.Random;
 import java.util.logging.Logger;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
@@ -343,7 +343,7 @@ public class VectorToRasterProcessTest {
             for (int x = 0; x < gridDim.width; x++) {
                 if (rand.nextDouble() < PROB_POINT) {
                     gridPos.setLocation(x, y);
-                    DirectPosition worldPos = gridGeom.gridToWorld(gridPos);
+                    Position worldPos = gridGeom.gridToWorld(gridPos);
 
                     String wkt =
                             String.format(

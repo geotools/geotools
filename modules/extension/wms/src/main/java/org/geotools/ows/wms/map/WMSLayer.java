@@ -32,7 +32,7 @@ import org.geotools.api.style.Rule;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.ows.wms.Layer;
@@ -100,7 +100,7 @@ public class WMSLayer extends GridReaderLayer {
      *
      * @param pos the position to be checked, in real world coordinates
      */
-    public String getFeatureInfoAsText(DirectPosition2D pos, int featureCount) throws IOException {
+    public String getFeatureInfoAsText(Position2D pos, int featureCount) throws IOException {
         GetMapRequest mapRequest = getReader().mapRequest;
         try (InputStream is =
                         getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
@@ -125,7 +125,7 @@ public class WMSLayer extends GridReaderLayer {
      * @param pos the position to be checked, in real world coordinates
      * @param infoFormat The INFO_FORMAT parameter in the GetFeatureInfo request
      */
-    public InputStream getFeatureInfo(DirectPosition2D pos, String infoFormat, int featureCount)
+    public InputStream getFeatureInfo(Position2D pos, String infoFormat, int featureCount)
             throws IOException {
         GetMapRequest mapRequest = getReader().mapRequest;
         return getReader().getFeatureInfo(pos, infoFormat, featureCount, mapRequest);
@@ -157,8 +157,8 @@ public class WMSLayer extends GridReaderLayer {
             Point2D screenPos = new Point2D.Double(x, y);
             Point2D worldPos = new Point2D.Double(x, y);
             at.inverseTransform(screenPos, worldPos);
-            DirectPosition2D fromPos = new DirectPosition2D(worldPos.getX(), worldPos.getY());
-            DirectPosition2D toPos = new DirectPosition2D();
+            Position2D fromPos = new Position2D(worldPos.getX(), worldPos.getY());
+            Position2D toPos = new Position2D();
             MathTransform mt =
                     CRS.findMathTransform(
                             bbox.getCoordinateReferenceSystem(),

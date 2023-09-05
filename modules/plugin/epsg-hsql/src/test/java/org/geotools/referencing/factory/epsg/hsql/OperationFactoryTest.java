@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
@@ -38,8 +38,8 @@ import org.geotools.api.referencing.operation.CoordinateOperationFactory;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.referencing.operation.Transformation;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.TransformedPosition;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -164,8 +164,8 @@ public class OperationFactoryTest {
     }
 
     /**
-     * The TransformedDirectPosition class is a thin wrapper around CoordinateOperationFactory used
-     * for time critical functions.
+     * The TransformedPosition class is a thin wrapper around CoordinateOperationFactory used for
+     * time critical functions.
      *
      * <p>This test isolates a regression introduced during GEOT-22 change of vector library.
      */
@@ -215,21 +215,19 @@ public class OperationFactoryTest {
                                 + "  AXIS[\"x\", EAST], "
                                 + "  AXIS[\"y\", NORTH]]");
 
-        DirectPosition position =
-                new DirectPosition2D(requestedCRS, -886885.0962724264, 4468200.416916506);
-        final TransformedDirectPosition arbitraryToInternal =
-                new TransformedDirectPosition(
+        Position position = new Position2D(requestedCRS, -886885.0962724264, 4468200.416916506);
+        final TransformedPosition arbitraryToInternal =
+                new TransformedPosition(
                         requestedCRS,
                         targetCRS,
                         new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE));
         arbitraryToInternal.transform(position);
 
-        DirectPosition expected =
-                new DirectPosition2D(targetCRS, 214741.10238960697, 26957.60506898933);
+        Position expected = new Position2D(targetCRS, 214741.10238960697, 26957.60506898933);
 
-        // geoserver vecmath: TransformedDirectPosition[214741.10238960697, 26957.60506898933]
-        // geoserver ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
-        // geotools ejml: TransformedDirectPosition[214636.7447572897, 27218.077500249085]
+        // geoserver vecmath: TransformedPosition[214741.10238960697, 26957.60506898933]
+        // geoserver ejml: TransformedPosition[214636.7447572897, 27218.077500249085]
+        // geotools ejml: TransformedPosition[214636.7447572897, 27218.077500249085]
         Assert.assertEquals(expected.getOrdinate(0), arbitraryToInternal.getOrdinate(0), 1e-9);
         Assert.assertEquals(expected.getOrdinate(1), arbitraryToInternal.getOrdinate(1), 1e-9);
     }
@@ -465,10 +463,9 @@ public class OperationFactoryTest {
         assertTrue(crsTransform.toString().contains("PARAMETER[\"dx\", -175.0]"));
         assertTrue(crsTransform.toString().contains("PARAMETER[\"dy\", -23.0]"));
         assertTrue(crsTransform.toString().contains("PARAMETER[\"dz\", -303.0]"));
-        DirectPosition input = new DirectPosition2D(sourceCRS, 790615.026, 9316007.421);
-        DirectPosition expected =
-                new DirectPosition2D(targetCRS, 790691.8117871293, 9315700.848637346);
-        DirectPosition output = new DirectPosition2D();
+        Position input = new Position2D(sourceCRS, 790615.026, 9316007.421);
+        Position expected = new Position2D(targetCRS, 790691.8117871293, 9315700.848637346);
+        Position output = new Position2D();
         crsTransform.transform(input, output);
         assertPointsEqual(expected, output);
 
@@ -476,9 +473,9 @@ public class OperationFactoryTest {
         targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:4326");
         crsTransform = CRS.findMathTransform(sourceCRS, targetCRS, "EPSG:1199");
         assertNotNull(crsTransform);
-        input = new DirectPosition2D(sourceCRS, 10000, 40000);
-        expected = new DirectPosition2D(targetCRS, 50.1314925, -7.4594847);
-        output = new DirectPosition2D();
+        input = new Position2D(sourceCRS, 10000, 40000);
+        expected = new Position2D(targetCRS, 50.1314925, -7.4594847);
+        output = new Position2D();
         crsTransform.transform(input, output);
         assertPointsEqual(expected, output);
     }
@@ -542,7 +539,7 @@ public class OperationFactoryTest {
      * @param expected
      * @param output
      */
-    private void assertPointsEqual(DirectPosition expected, DirectPosition output) {
+    private void assertPointsEqual(Position expected, Position output) {
         Assert.assertEquals(expected.getOrdinate(0), output.getOrdinate(0), 1e-6);
         Assert.assertEquals(expected.getOrdinate(1), output.getOrdinate(1), 1e-6);
     }

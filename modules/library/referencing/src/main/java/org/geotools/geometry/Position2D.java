@@ -16,26 +16,63 @@
  */
 package org.geotools.geometry;
 
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
 
 /**
- * Holds the coordinates for a three-dimensional position within some coordinate reference system.
+ * Holds the coordinates for a two-dimensional position within some coordinate reference system.
  *
+ * <p><b>Note 1:</b>
+ *
+ * <blockquote>
+ *
+ * This class inherits {@linkplain #x x} and {@linkplain #y y} fields. But despite their names, they
+ * don't need to be oriented toward {@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST
+ * East} and {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH North}. The
+ * (<var>x</var>,<var>y</var>) axis can have any orientation and should be understood as
+ * "<cite>ordinate 0</cite>" and "<cite>ordinate 1</cite>" values instead. This is not specific to
+ * this implementation; in Java2D too, the visual axis orientation depend on the {@linkplain
+ * java.awt.Graphics2D#getTransform affine transform in the graphics context}.
+ *
+ * <p>The rational for avoiding axis orientation restriction is that other {@link Position}
+ * implementation do not have such restriction, and it would be hard to generalize (what to do with
+ * {@linkplain org.geotools.api.referencing.cs.AxisDirection#NORTH_EAST North-East} direction?).
+ *
+ * </blockquote>
+ *
+ * <p><b>Note 2:</b>
+ *
+ * <blockquote>
+ *
+ * <strong>Do not mix instances of this class with ordinary {@link Point2D} instances in a {@link
+ * java.util.HashSet} or as {@link java.util.HashMap} keys.</strong> It is not possible to meet both
+ * {@link Point2D#hashCode} and {@link Position#hashCode} contract, and this class choose to
+ * implements the later. Concequently, <strong>{@link #hashCode} is inconsistent with {@link
+ * Point2D#equals}</strong> (but is consistent with {@link Position#equals}).
+ *
+ * <p>In other words, it is safe to add instances of {@code DirectPosition2D} in a {@code
+ * HashSet<DirectPosition>}, but it is unsafe to add them in a {@code HashSet<Point2D>}. Collections
+ * that do not rely on {@link Object#hashCode}, like {@link java.util.ArrayList}, are safe in all
+ * cases.
+ *
+ * </blockquote>
+ *
+ * @since 2.0
  * @version $Id$
- * @author Niels Charlier
+ * @author Martin Desruisseaux (IRD)
+ * @see Position1D
+ * @see GeneralPosition
+ * @see java.awt.geom.Point2D
  */
-public class DirectPosition3D implements DirectPosition, Serializable, Cloneable {
-
-    public double x, y, z;
-
+public class Position2D extends Point2D.Double implements Position, Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 835130287438466996L;
 
@@ -43,60 +80,79 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
     private CoordinateReferenceSystem crs;
 
     /**
-     * Constructs a position initialized to (0,0,0) with a {@code null} coordinate reference system.
+     * Constructs a position initialized to (0,0) with a {@code null} coordinate reference system.
      */
-    public DirectPosition3D() {}
+    public Position2D() {}
 
     /**
      * Constructs a position with the specified coordinate reference system.
      *
      * @param crs The coordinate reference system, or {@code null}.
      */
-    public DirectPosition3D(final CoordinateReferenceSystem crs) {
+    public Position2D(final CoordinateReferenceSystem crs) {
         setCoordinateReferenceSystem(crs);
     }
 
     /**
-     * Constructs a 3D position from the specified ordinates.
+     * Constructs a 2D position from the specified ordinates. Despite their name, the
+     * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
+     * match the {@linkplain #x x} and {@linkplain #y y} fields. See the {@linkplain Position2D
+     * class javadoc} for details.
      *
      * @param x The <var>x</var> value.
      * @param y The <var>y</var> value.
-     * @param z The <var>z</var> value.
      */
-    public DirectPosition3D(final double x, final double y, final double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public Position2D(final double x, final double y) {
+        super(x, y);
     }
 
     /**
-     * Constructs a 2D position from the specified ordinates in the specified CRS.
+     * Constructs a 2D position from the specified ordinates in the specified CRS. Despite their
+     * name, the (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward
+     * ({@linkplain org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). Those parameter names simply
+     * match the {@linkplain #x x} and {@linkplain #y y} fields. The actual axis orientations are
+     * determined by the specified CRS. See the {@linkplain Position2D class javadoc} for details.
      *
      * @param crs The coordinate reference system, or {@code null}.
      * @param x The <var>x</var> value.
      * @param y The <var>y</var> value.
-     * @param z The <var>z</var> value.
      */
-    public DirectPosition3D(
-            final CoordinateReferenceSystem crs, final double x, final double y, final double z) {
-        this(x, y, z);
+    public Position2D(final CoordinateReferenceSystem crs, final double x, final double y) {
+        super(x, y);
         setCoordinateReferenceSystem(crs);
     }
+
+    /**
+     * Constructs a position from the specified {@link Point2D}.
+     *
+     * @param point The point to copy.
+     */
+    public Position2D(final Point2D point) {
+        super(point.getX(), point.getY());
+        if (point instanceof Position) {
+            setCoordinateReferenceSystem(((Position) point).getCoordinateReferenceSystem());
+        }
+    }
+
     /**
      * Constructs a position initialized to the same values than the specified point.
      *
      * @param point The point to copy.
      */
-    public DirectPosition3D(final DirectPosition point) {
+    public Position2D(final Position point) {
         setLocation(point);
     }
 
     /**
-     * Returns always {@code this}, the direct position for this {@linkplain DirectPosition
-     * position}.
+     * Returns always {@code this}, the direct position for this {@linkplain Position position}.
+     *
+     * @since 2.5
      */
     @Override
-    public DirectPosition getDirectPosition() {
+    public Position getDirectPosition() {
         return this;
     }
 
@@ -118,19 +174,19 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @param crs The new coordinate reference system, or {@code null}.
      */
     public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs) {
-        AbstractDirectPosition.checkCoordinateReferenceSystemDimension(crs, 3);
+        AbstractPosition.checkCoordinateReferenceSystemDimension(crs, 2);
         this.crs = crs;
     }
 
     /**
-     * The length of coordinate sequence (the number of entries). This is always 3 for <code>
-     * DirectPosition3D</code> objects.
+     * The length of coordinate sequence (the number of entries). This is always 2 for <code>
+     * DirectPosition2D</code> objects.
      *
      * @return The dimensionality of this position.
      */
     @Override
     public final int getDimension() {
-        return 3;
+        return 2;
     }
 
     /**
@@ -141,15 +197,16 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      */
     @Override
     public double[] getCoordinate() {
-        return new double[] {x, y, z};
+        return new double[] {x, y};
     }
 
     /**
      * Returns the ordinate at the specified dimension.
      *
-     * @param dimension The dimension in the range 0 to 2 inclusive.
+     * @param dimension The dimension in the range 0 to 1 inclusive.
      * @return The coordinate at the specified dimension.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
+     * @todo Provides a more detailled error message.
      */
     @Override
     public final double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
@@ -158,8 +215,6 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
                 return x;
             case 1:
                 return y;
-            case 2:
-                return z;
             default:
                 throw new IndexOutOfBoundsException(String.valueOf(dimension));
         }
@@ -171,7 +226,7 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @param dimension the dimension for the ordinate of interest.
      * @param value the ordinate value of interest.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
-     * @todo Provides a more detailed error message.
+     * @todo Provides a more detailled error message.
      */
     @Override
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
@@ -181,9 +236,6 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
                 break;
             case 1:
                 y = value;
-                break;
-            case 2:
-                z = value;
                 break;
             default:
                 throw new IndexOutOfBoundsException(String.valueOf(dimension));
@@ -198,35 +250,50 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public void setLocation(final DirectPosition position) throws MismatchedDimensionException {
-        AbstractDirectPosition.ensureDimensionMatch("position", position.getDimension(), 3);
+    public void setLocation(final Position position) throws MismatchedDimensionException {
+        AbstractPosition.ensureDimensionMatch("position", position.getDimension(), 2);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         x = position.getOrdinate(0);
         y = position.getOrdinate(1);
-        z = position.getOrdinate(2);
     }
 
-    /** Returns a string representation of this coordinate. */
+    /**
+     * Returns a {@link Point2D} with the same coordinate as this direct position.
+     *
+     * @return This position as a point.
+     */
+    public Point2D toPoint2D() {
+        return new Point2D.Double(x, y);
+    }
+
+    /**
+     * Returns a string representation of this coordinate. The default implementation formats this
+     * coordinate using a shared instance of {@link org.geotools.referencing.CoordinateFormat}. This
+     * is okay for occasional formatting (for example for debugging purpose). But if there is a lot
+     * of positions to format, users will get better performance and more control by using their own
+     * instance of {@link org.geotools.referencing.CoordinateFormat}.
+     */
     @Override
     public String toString() {
-        return AbstractDirectPosition.toString(this);
+        return AbstractPosition.toString(this);
     }
 
     /**
      * Returns a hash value for this coordinate. This method implements the {@link
-     * DirectPosition#hashCode} contract.
+     * Position#hashCode} contract, not the {@link Point2D#hashCode} contract.
      *
      * @return A hash code value for this position.
      */
     @Override
     public int hashCode() {
-        return AbstractDirectPosition.hashCode(this);
+        return AbstractPosition.hashCode(this);
     }
 
     /**
      * Compares this point with the specified object for equality. If the given object implements
-     * the {@link DirectPosition} interface, then the comparison is performed as specified in its
-     * {@link DirectPosition#equals} contract.
+     * the {@link Position} interface, then the comparaison is performed as specified in its {@link
+     * Position#equals} contract. Otherwise the comparaison is performed as specified in {@link
+     * Point2D#equals}.
      *
      * @param object The object to compare with this position.
      * @return {@code true} if the given object is equals to this position.
@@ -237,19 +304,23 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
          * If the other object implements the DirectPosition interface, performs
          * the comparaison as specified in DirectPosition.equals(Object) contract.
          */
-        if (object instanceof DirectPosition) {
-            final DirectPosition other = (DirectPosition) object;
-            if (other.getDimension() == 3
+        if (object instanceof Position) {
+            final Position other = (Position) object;
+            if (other.getDimension() == 2
                     && Utilities.equals(other.getOrdinate(0), x)
                     && Utilities.equals(other.getOrdinate(1), y)
-                    && Utilities.equals(other.getOrdinate(2), z)
                     && Utilities.equals(other.getCoordinateReferenceSystem(), crs)) {
                 assert hashCode() == other.hashCode() : this;
                 return true;
             }
             return false;
         }
-        return false;
+        /*
+         * Otherwise performs the comparaison as in Point2D.equals(Object).
+         * Do NOT check the CRS if the given object is an ordinary Point2D.
+         * This is necessary in order to respect the contract defined in Point2D.
+         */
+        return super.equals(object);
     }
 
     /**
@@ -258,8 +329,8 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
      * @return A clone of this position.
      */
     @Override
-    public DirectPosition3D clone() {
-        return new DirectPosition3D(this);
+    public Position2D clone() {
+        return (Position2D) super.clone();
     }
 
     /**
@@ -270,7 +341,6 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
         out.defaultWriteObject();
         out.writeDouble(x);
         out.writeDouble(y);
-        out.writeDouble(z);
     }
 
     /**
@@ -281,6 +351,5 @@ public class DirectPosition3D implements DirectPosition, Serializable, Cloneable
         in.defaultReadObject();
         x = in.readDouble();
         y = in.readDouble();
-        z = in.readDouble();
     }
 }

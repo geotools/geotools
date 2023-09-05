@@ -59,7 +59,7 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverageio.jp2k.RasterManager.OverviewLevel;
 import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
@@ -282,7 +282,7 @@ class RasterLayerResponse {
     private GridCoverageFactory coverageFactory;
 
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     private URL inputURL;
 
@@ -386,7 +386,7 @@ class RasterLayerResponse {
     }
 
     /**
-     * This method loads the granules which overlap the requested {@link GeneralEnvelope} using the
+     * This method loads the granules which overlap the requested {@link GeneralBounds} using the
      * provided values for alpha and input ROI.
      */
     private RenderedImage assembleGranules() throws DataSourceException {
@@ -548,7 +548,7 @@ class RasterLayerResponse {
         return coverageFactory.create(
                 rasterManager.getCoverageIdentifier(),
                 image,
-                new GeneralEnvelope(bbox),
+                new GeneralBounds(bbox),
                 bands,
                 null,
                 null);

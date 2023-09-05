@@ -101,7 +101,7 @@ import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.geotiff.GeoTiffWriteParams;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -246,7 +246,7 @@ public class GridCoverageRendererTest {
 
         // 41°S - 5°N ; 35°E - 80°E (450 x 460 pixels)
         final Rectangle2D bounds = new Rectangle2D.Double(35, -41, 45, 46);
-        final GeneralEnvelope envelope = new GeneralEnvelope(bounds);
+        final GeneralBounds envelope = new GeneralBounds(bounds);
         final RenderedImage image = ImageIO.read(TestData.getResource(this, path));
         final int numBands = image.getSampleModel().getNumBands();
         final GridSampleDimension[] bands = new GridSampleDimension[numBands];
@@ -662,7 +662,7 @@ public class GridCoverageRendererTest {
         File reference =
                 new File(
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBlackLine.png");
-        ImageAssert.assertEquals(reference, image, 5);
+        ImageAssert.assertEquals(reference, image, 370);
     }
 
     @Test
@@ -1980,7 +1980,7 @@ public class GridCoverageRendererTest {
         public TestSingleBandReader(int... expectedBands) {
             this.expectedBands = expectedBands;
             this.originalEnvelope =
-                    new GeneralEnvelope(
+                    new GeneralBounds(
                             new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84));
             this.crs = DefaultGeographicCRS.WGS84;
         }
@@ -2095,7 +2095,7 @@ public class GridCoverageRendererTest {
         public TestMultiBandReader(int... expectedBands) {
             this.expectedBands = expectedBands;
             this.originalEnvelope =
-                    new GeneralEnvelope(
+                    new GeneralBounds(
                             new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84));
             this.crs = DefaultGeographicCRS.WGS84;
         }

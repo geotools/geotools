@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
@@ -34,7 +34,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.ReadResolutionCalculator;
 import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -183,7 +183,7 @@ public class SpatialRequestHelper {
 
     private double[] computedResolution;
 
-    private GeneralEnvelope requestedBBOXInCoverageGeographicCRS;
+    private GeneralBounds requestedBBOXInCoverageGeographicCRS;
 
     private MathTransform requestCRSToCoverageGeographicCRS2D;
 
@@ -201,7 +201,7 @@ public class SpatialRequestHelper {
      */
     private boolean emptyRequest;
 
-    private GeneralEnvelope approximateRequestedBBoInNativeCRS;
+    private GeneralBounds approximateRequestedBBoInNativeCRS;
 
     private boolean isSupportingAlternativeCRSOutput;
 
@@ -214,7 +214,7 @@ public class SpatialRequestHelper {
 
     public void setRequestedGridGeometry(GridGeometry2D gridGeometry) {
         Utilities.ensureNonNull("girdGeometry", gridGeometry);
-        requestedBBox = new ReferencedEnvelope((Envelope) gridGeometry.getEnvelope2D());
+        requestedBBox = new ReferencedEnvelope((Bounds) gridGeometry.getEnvelope2D());
         requestedRasterArea = gridGeometry.getGridRange2D().getBounds();
         requestedGridGeometry = gridGeometry;
         requestedGridToWorld = (AffineTransform) gridGeometry.getGridToCRS2D();
@@ -375,7 +375,7 @@ public class SpatialRequestHelper {
                                 new ReferencedEnvelope(
                                         CRS.transform(
                                                 tempTransform,
-                                                new GeneralEnvelope(requestedRasterArea)));
+                                                new GeneralBounds(requestedRasterArea)));
 
                     } catch (Exception e) {
                         throw new DataSourceException("Unable to inspect request CRS", e);
@@ -425,7 +425,7 @@ public class SpatialRequestHelper {
                         new GeneralGridEnvelope(
                                         CRS.transform(
                                                 requestedWorldToGrid,
-                                                new GeneralEnvelope(getComputedBBox(true))),
+                                                new GeneralBounds(getComputedBBox(true))),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();
@@ -626,7 +626,7 @@ public class SpatialRequestHelper {
                             coverageProperties.geographicCRS);
                 }
                 if (requestedBBOXInCoverageGeographicCRS == null) {
-                    requestedBBOXInCoverageGeographicCRS = new GeneralEnvelope(requestCRS);
+                    requestedBBOXInCoverageGeographicCRS = new GeneralBounds(requestCRS);
                 }
 
                 // STEP 2 intersection with the geographic bbox for this coverage

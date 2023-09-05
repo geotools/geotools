@@ -55,8 +55,8 @@ Here is described an example::
 			GridCoverage2D grid = reader.read(first, null);
 			
 			// Example: Get the value for the following position.
-			float[] value = grid.evaluate((DirectPosition) new
-				DirectPosition2D(grid.getCoordinateReferenceSystem(), 5, 45 ), new float[1]);
+			float[] value = grid.evaluate((Position) new
+				Position2D(grid.getCoordinateReferenceSystem(), 5, 45 ), new float[1]);
 
 		} finally {
 			// Closure of the Reader

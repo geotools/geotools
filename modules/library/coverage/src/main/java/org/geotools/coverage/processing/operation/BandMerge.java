@@ -63,8 +63,8 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessingException;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -329,7 +329,7 @@ public class BandMerge extends OperationJAI {
         // CRS to use. The first CRS is used
         final CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem2D();
         // Global bounding Box to use
-        Envelope2D globalBbox = new Envelope2D();
+        ReferencedEnvelope globalBbox = new ReferencedEnvelope();
         // Transformation choice string parameter
         String transChoice = (String) parameters.parameter(TRANSFORM_CHOICE).getValue();
         // The TransformList object is initilaized to FIRST in order to take the first element.
@@ -470,7 +470,7 @@ public class BandMerge extends OperationJAI {
         ImageLayout layout = (hints != null) ? (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT) : null;
 
         // Selection of the Bounding Box to use if present
-        Envelope2D bbox = parameters.bbox;
+        ReferencedEnvelope bbox = parameters.bbox;
 
         if (layout != null) {
             // If BBOX is present the it is added to the layout
@@ -533,7 +533,7 @@ public class BandMerge extends OperationJAI {
 
     /** This method is used for setting the final image layout. */
     private void updateLayout(
-            final BandMergeParams parameters, ImageLayout layout, Envelope2D bbox) {
+            final BandMergeParams parameters, ImageLayout layout, ReferencedEnvelope bbox) {
         // Creation of a GridGeoemtry with the selected BBOX and the defined World2Grid
         // transformation
         GridGeometry2D gg2D =
@@ -734,13 +734,13 @@ public class BandMerge extends OperationJAI {
         public final Hints hints;
 
         /** The Bounding box of the Final Coverage */
-        public Envelope2D bbox;
+        public ReferencedEnvelope bbox;
 
         /** Constructs a new instance with the specified values. */
         BandMergeParams(
                 final CoordinateReferenceSystem crs,
                 final AffineTransform2D gridToCRS,
-                final Envelope2D bbox,
+                final ReferencedEnvelope bbox,
                 final ParameterBlockJAI parameters,
                 final Hints hints) {
             this.crs = crs;

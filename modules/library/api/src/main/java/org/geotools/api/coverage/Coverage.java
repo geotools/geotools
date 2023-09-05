@@ -15,18 +15,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.geotools.api.annotation.Specification;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Record;
 import org.geotools.api.util.RecordType;
 
 /**
  * A function from a spatial, temporal or spatiotemporal domain to an attribute range. A coverage
- * associates a {@linkplain DirectPosition position} within its domain to a record of values of
- * defined data types. Examples include a raster image, polygon overlay, or digital elevation
- * matrix. The essential property of coverage is to be able to generate a value for any point within
- * its domain. How coverage is represented internally is not a concern.
+ * associates a {@linkplain Position position} within its domain to a record of values of defined
+ * data types. Examples include a raster image, polygon overlay, or digital elevation matrix. The
+ * essential property of coverage is to be able to generate a value for any point within its domain.
+ * How coverage is represented internally is not a concern.
  *
  * <p>For example consider the following different internal representations of coverage:<br>
  *
@@ -100,7 +100,7 @@ public interface Coverage {
      * @return The bounding box for the coverage domain in coordinate system coordinates.
      * @todo We need to explain the relationship with {@link #getDomainExtents}, if any.
      */
-    Envelope getEnvelope();
+    Bounds getEnvelope();
 
     /**
      * Describes the range of the coverage. It consists of a list of attribute name/data type pairs.
@@ -131,7 +131,7 @@ public interface Coverage {
      * @throws PointOutsideCoverageException if the point is outside the coverage domain.
      * @throws CannotEvaluateException If the point can't be evaluated for some other reason.
      */
-    Set<Record> evaluate(DirectPosition p, Collection<String> list)
+    Set<Record> evaluate(Position p, Collection<String> list)
             throws PointOutsideCoverageException, CannotEvaluateException;
 
     /**
@@ -153,8 +153,7 @@ public interface Coverage {
      * @throws CannotEvaluateException If the point can't be evaluated for some other reason.
      * @see Raster#getDataElements(int, int, Object)
      */
-    Object evaluate(DirectPosition point)
-            throws PointOutsideCoverageException, CannotEvaluateException;
+    Object evaluate(Position point) throws PointOutsideCoverageException, CannotEvaluateException;
 
     /**
      * Return a sequence of boolean values for a given point in the coverage. A value for each
@@ -176,7 +175,7 @@ public interface Coverage {
      * @throws ArrayIndexOutOfBoundsException if the {@code destination} array is not null and too
      *     small to hold the output.
      */
-    boolean[] evaluate(DirectPosition point, boolean[] destination)
+    boolean[] evaluate(Position point, boolean[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
 
@@ -200,7 +199,7 @@ public interface Coverage {
      * @throws ArrayIndexOutOfBoundsException if the {@code destination} array is not null and too
      *     small to hold the output.
      */
-    byte[] evaluate(DirectPosition point, byte[] destination)
+    byte[] evaluate(Position point, byte[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
 
@@ -225,7 +224,7 @@ public interface Coverage {
      *     small to hold the output.
      * @see Raster#getPixel(int, int, int[])
      */
-    int[] evaluate(DirectPosition point, int[] destination)
+    int[] evaluate(Position point, int[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
 
@@ -249,7 +248,7 @@ public interface Coverage {
      *     small to hold the output.
      * @see Raster#getPixel(int, int, float[])
      */
-    float[] evaluate(DirectPosition point, float[] destination)
+    float[] evaluate(Position point, float[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
 
@@ -273,7 +272,7 @@ public interface Coverage {
      *     small to hold the output.
      * @see Raster#getPixel(int, int, double[])
      */
-    double[] evaluate(DirectPosition point, double[] destination)
+    double[] evaluate(Position point, double[] destination)
             throws PointOutsideCoverageException, CannotEvaluateException,
                     ArrayIndexOutOfBoundsException;
 

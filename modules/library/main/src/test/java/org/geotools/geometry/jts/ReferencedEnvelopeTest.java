@@ -12,7 +12,7 @@ import static org.junit.Assert.fail;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -200,15 +200,23 @@ public class ReferencedEnvelopeTest {
     @Test
     public void testEmptyEnvelopeConversion() throws Exception {
         // conversion of an empty OGC envelope should stay empty
-        GeneralEnvelope ge = new GeneralEnvelope(new double[] {0, 0}, new double[] {-1, -1});
+        GeneralBounds ge = new GeneralBounds(new double[] {0, 0}, new double[] {-1, -1});
         assertTrue(ge.isEmpty());
         assertTrue(ReferencedEnvelope.create(ge, ge.getCoordinateReferenceSystem()).isEmpty());
         assertTrue(ReferencedEnvelope.reference(ge).isEmpty());
+
+        GeneralBounds bounds = new GeneralBounds(DefaultGeographicCRS.WGS84);
+        assertTrue(bounds.isEmpty());
+        assertTrue(
+                ReferencedEnvelope.create(bounds, bounds.getCoordinateReferenceSystem()).isEmpty());
+        assertTrue(ReferencedEnvelope.reference(bounds).isEmpty());
 
         // conversion of an empty Java Rectangle 2D should stay empty
         Rectangle2D r2d = new Rectangle2D.Double(0, 0, -1, -1);
         assertTrue(r2d.isEmpty());
         assertTrue(ReferencedEnvelope.create(r2d, null).isEmpty());
+        assertTrue(ReferencedEnvelope.rect(r2d).isEmpty());
+        assertTrue(ReferencedEnvelope.rect(r2d, DefaultGeographicCRS.WGS84).isEmpty());
 
         // conversion of an empty ReferencedEnvelope should stay empty
         ReferencedEnvelope re = new ReferencedEnvelope();

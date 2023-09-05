@@ -21,6 +21,7 @@ package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
@@ -30,8 +31,8 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -147,7 +148,7 @@ public abstract class GeostationarySatellite extends MapProjection {
             double b = 2. * radius_g * Vx;
             double det = (b * b) - 4. * a * C;
             if (det < 0.) {
-                throw new ProjectionException();
+                throw new ProjectionException("Det less than 0: " + det);
             }
             /* Calculation of three components of vector from satellite to position.*/
             double k = (-b - Math.sqrt(det)) / (2. * a);
@@ -249,7 +250,7 @@ public abstract class GeostationarySatellite extends MapProjection {
     }
 
     /** Circumscribed rectangle (smallest) for full disk earth image */
-    public static Envelope2D circumscribeFullDisk(CoordinateReferenceSystem geosCRS)
+    public static Bounds circumscribeFullDisk(CoordinateReferenceSystem geosCRS)
             throws TransformException, FactoryException {
 
         if (!isGeostationaryCRS(geosCRS)) {
@@ -265,7 +266,7 @@ public abstract class GeostationarySatellite extends MapProjection {
         double satelliteHeight = parameters.parameter("satellite_height").doubleValue();
         double centralMeridian = parameters.parameter("central_meridian").doubleValue();
 
-        DirectPosition2D dp2d = new DirectPosition2D();
+        Position2D dp2d = new Position2D();
 
         double halfFoVRadians = Math.acos(semiMajorAxis / (satelliteHeight + semiMajorAxis));
         double halfFoVDegrees = Math.toDegrees(halfFoVRadians);
@@ -286,30 +287,36 @@ public abstract class GeostationarySatellite extends MapProjection {
         imt.transform(dp2d, dp2d);
         double yMax = dp2d.getY();
 
-        return new Envelope2D(geosCRS, xMin, yMin, xMax - xMin, yMax - yMin);
+        GeneralBounds bounds = new GeneralBounds(geosCRS);
+        bounds.setEnvelope(xMin, yMin, xMax, yMax);
+
+        return bounds;
     }
 
     /**
      * Inscribed rectangle for for full disk earth image (not largest inscribing rectangle but
      * close, hence "Estimate")
      */
-    public static Envelope2D inscribeFullDiskEstimate(CoordinateReferenceSystem geosCRS)
+    public static Bounds inscribeFullDiskEstimate(CoordinateReferenceSystem geosCRS)
             throws TransformException, FactoryException {
-        Envelope2D circumscribed = circumscribeFullDisk(geosCRS);
+        Bounds circumscribed = circumscribeFullDisk(geosCRS);
         return (circumscribed == null) ? null : doInscribeFullDisk(circumscribed);
     }
 
     private static final double SQRT2 = Math.sqrt(2.);
 
-    static Envelope2D doInscribeFullDisk(Envelope2D circumscribed) {
-        double dx = circumscribed.getWidth() / SQRT2;
-        double dy = circumscribed.getHeight() / SQRT2;
-        return new Envelope2D(
-                circumscribed.getCoordinateReferenceSystem(),
-                circumscribed.getCenterX() - dx / 2.,
-                circumscribed.getCenterY() - dy / 2.,
-                dx,
-                dy);
+    static Bounds doInscribeFullDisk(Bounds circumscribed) {
+        double dx = circumscribed.getSpan(0) / SQRT2;
+        double dy = circumscribed.getSpan(1) / SQRT2;
+
+        GeneralBounds bounds = new GeneralBounds(circumscribed.getCoordinateReferenceSystem());
+        bounds.setEnvelope(
+                circumscribed.getMedian(0) - dx / 2.0,
+                circumscribed.getMedian(1) - dy / 2.0,
+                circumscribed.getMedian(0) + dx / 2.0,
+                circumscribed.getMedian(1) + dy / 2.0);
+
+        return bounds;
     }
 
     static boolean isGeostationaryCRS(CoordinateReferenceSystem crs) {

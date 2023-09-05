@@ -35,7 +35,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  */
-public interface DirectPosition {
+public interface Position {
     /**
      * The coordinate reference system in which the coordinate is given. May be {@code null} if this
      * particular {@code DirectPosition} is included in a larger object with such a reference to a
@@ -117,7 +117,7 @@ public interface DirectPosition {
      * @since GeoAPI 2.2
      */
     @UML(identifier = "direct", obligation = CONDITIONAL, specification = ISO_19107)
-    DirectPosition getDirectPosition();
+    Position getDirectPosition();
 
     /**
      * Returns the ordinate at the specified dimension.

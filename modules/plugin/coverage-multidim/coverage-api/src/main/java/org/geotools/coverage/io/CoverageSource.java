@@ -26,7 +26,7 @@ import java.util.SortedSet;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.geometry.BoundingBox;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.TemporalCRS;
 import org.geotools.api.referencing.crs.VerticalCRS;
@@ -116,9 +116,9 @@ public interface CoverageSource {
     public abstract class VerticalDomain {
 
         /**
-         * A {@link Set} of {@link Envelope} element for the underlying coverage. Note that the
-         * {@link CRS} for such envelope can be <code>null</code> in case the overall spatial {@link
-         * CRS} is a non-separable 3D {@link CRS} like WGS84-3D. Otherwise, all the envelopes should
+         * A {@link Set} of {@link Bounds} element for the underlying coverage. Note that the {@link
+         * CRS} for such envelope can be <code>null</code> in case the overall spatial {@link CRS}
+         * is a non-separable 3D {@link CRS} like WGS84-3D. Otherwise, all the envelopes should
          * share the same {@link VerticalCRS}. Finally, note that the envelope should be
          * 1-dimensional. In case of single vertical value, the lower coordinate should match the
          * upper coordinate while lower and upper coordinates may be different to define vertical

@@ -33,7 +33,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -110,8 +110,8 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
                         pointOne,
                         pointTwo);
         Object value = function.evaluate(feature);
-        assertTrue(value instanceof DirectPosition);
-        DirectPosition pos = (DirectPosition) value;
+        assertTrue(value instanceof Position);
+        Position pos = (Position) value;
         assertEquals(CRS.toSRS(pos.getCoordinateReferenceSystem()), "EPSG:4326");
         assertEquals(pos.getDimension(), 2);
         assertEquals(pos.getOrdinate(0), 5.0, 0);
@@ -120,8 +120,8 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         // 1 point, no SRS
         function = ff.function("toDirectPosition", pointOne);
         value = function.evaluate(feature);
-        assertTrue(value instanceof DirectPosition);
-        pos = (DirectPosition) value;
+        assertTrue(value instanceof Position);
+        pos = (Position) value;
         assertNull(pos.getCoordinateReferenceSystem());
         assertEquals(pos.getDimension(), 1);
         assertEquals(pos.getOrdinate(0), 5.0, 0);

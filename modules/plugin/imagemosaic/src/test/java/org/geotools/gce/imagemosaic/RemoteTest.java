@@ -33,7 +33,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class RemoteTest {
         ImageMosaicReader reader = format.getReader(TestData.file(this, "remote_test"));
 
         GridEnvelope originalRange = reader.getOriginalGridRange();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         CoordinateReferenceSystem nativeCRS = envelope.getCoordinateReferenceSystem();
 
         final int minX = originalRange.getLow(0);
@@ -60,8 +60,8 @@ public class RemoteTest {
         // build the corresponding envelope
         final MathTransform gridToWorldCorner =
                 reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        final GeneralEnvelope testEnvelope =
-                CRS.transform(gridToWorldCorner, new GeneralEnvelope(testRange.getBounds()));
+        final GeneralBounds testEnvelope =
+                CRS.transform(gridToWorldCorner, new GeneralBounds(testRange.getBounds()));
         testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));

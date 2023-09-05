@@ -16,16 +16,16 @@
  */
 package org.geotools.geometry;
 
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 
 /**
- * Base class for {@linkplain Envelope envelope} implementations. This base class provides default
+ * Base class for {@linkplain Bounds envelope} implementations. This base class provides default
  * implementations for {@link #toString}, {@link #equals} and {@link #hashCode} methods.
  *
  * <p>This class do not holds any state. The decision to implement {@link java.io.Serializable} or
@@ -35,9 +35,9 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public abstract class AbstractEnvelope implements Envelope {
+public abstract class AbstractBounds implements Bounds {
     /** Constructs an envelope. */
-    protected AbstractEnvelope() {}
+    protected AbstractBounds() {}
 
     /**
      * Returns the common CRS of specified points.
@@ -48,8 +48,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * @throws MismatchedReferenceSystemException if the two positions don't use the same CRS.
      */
     static CoordinateReferenceSystem getCoordinateReferenceSystem(
-            final DirectPosition minDP, final DirectPosition maxDP)
-            throws MismatchedReferenceSystemException {
+            final Position minDP, final Position maxDP) throws MismatchedReferenceSystemException {
         final CoordinateReferenceSystem crs1 = minDP.getCoordinateReferenceSystem();
         final CoordinateReferenceSystem crs2 = maxDP.getCoordinateReferenceSystem();
         if (crs1 == null) {
@@ -71,7 +70,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * @return The lower corner.
      */
     @Override
-    public DirectPosition getLowerCorner() {
+    public Position getLowerCorner() {
         return new LowerCorner();
     }
 
@@ -83,7 +82,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * @return The upper corner.
      */
     @Override
-    public DirectPosition getUpperCorner() {
+    public Position getUpperCorner() {
         return new UpperCorner();
     }
 
@@ -107,7 +106,7 @@ public abstract class AbstractEnvelope implements Envelope {
      * #getLowerCorner lower corner} coordinates first, followed by {@linkplain #getUpperCorner
      * upper corner} coordinates.
      */
-    static String toString(final Envelope envelope) {
+    static String toString(final Bounds envelope) {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(envelope));
         final int dimension = envelope.getDimension();
         if (dimension != 0) {
@@ -146,7 +145,7 @@ public abstract class AbstractEnvelope implements Envelope {
     }
 
     /**
-     * Returns {@code true} if the specified object is also an {@linkplain Envelope envelope} with
+     * Returns {@code true} if the specified object is also an {@linkplain Bounds envelope} with
      * equals coordinates and {@linkplain #getCoordinateReferenceSystem CRS}.
      *
      * @param object The object to compare with this envelope.
@@ -158,7 +157,7 @@ public abstract class AbstractEnvelope implements Envelope {
     @Override
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
-            final Envelope that = (Envelope) object;
+            final Bounds that = (Bounds) object;
             final int dimension = getDimension();
             if (dimension == that.getDimension()) {
                 for (int i = 0; i < dimension; i++) {
@@ -181,17 +180,17 @@ public abstract class AbstractEnvelope implements Envelope {
      * Base class for direct position from an envelope. This class delegates its work to the
      * enclosing envelope.
      */
-    private abstract class Corner extends AbstractDirectPosition {
+    private abstract class Corner extends AbstractPosition {
         /** The coordinate reference system in which the coordinate is given. */
         @Override
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-            return AbstractEnvelope.this.getCoordinateReferenceSystem();
+            return AbstractBounds.this.getCoordinateReferenceSystem();
         }
 
         /** The length of coordinate sequence (the number of entries). */
         @Override
         public int getDimension() {
-            return AbstractEnvelope.this.getDimension();
+            return AbstractBounds.this.getDimension();
         }
 
         /** Sets the ordinate value along the specified dimension. */
@@ -201,7 +200,7 @@ public abstract class AbstractEnvelope implements Envelope {
         }
     }
 
-    /** The corner returned by {@link AbstractEnvelope#getLowerCorner}. */
+    /** The corner returned by {@link AbstractBounds#getLowerCorner}. */
     private final class LowerCorner extends Corner {
         @Override
         public double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
@@ -209,7 +208,7 @@ public abstract class AbstractEnvelope implements Envelope {
         }
     }
 
-    /** The corner returned by {@link AbstractEnvelope#getUpperCorner}. */
+    /** The corner returned by {@link AbstractBounds#getUpperCorner}. */
     private final class UpperCorner extends Corner {
         @Override
         public double getOrdinate(final int dimension) throws IndexOutOfBoundsException {

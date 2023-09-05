@@ -27,7 +27,7 @@ import static org.junit.Assert.fail;
 import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.Random;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -37,8 +37,8 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position1D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.WKT;
@@ -76,7 +76,7 @@ public final class MathTransformTest {
         factory = new DefaultMathTransformFactory();
     }
 
-    /** Tests a transformation on a {@link DirectPosition} object. */
+    /** Tests a transformation on a {@link Position} object. */
     @Test
     public void testDirectPositionTransform() throws FactoryException, TransformException {
         CoordinateReferenceSystem crs =
@@ -85,7 +85,7 @@ public final class MathTransformTest {
                 ReferencingFactoryFinder.getCoordinateOperationFactory(null)
                         .createOperation(DefaultGeographicCRS.WGS84, crs)
                         .getMathTransform();
-        DirectPosition position = new GeneralDirectPosition(-123, 55);
+        Position position = new GeneralPosition(-123, 55);
         position = t.transform(position, position);
         position = t.inverse().transform(position, position);
         assertEquals(-123, position.getOrdinate(0), 1E-6);
@@ -398,8 +398,8 @@ public final class MathTransformTest {
         /*
          * Initialisation...
          */
-        final GeneralDirectPosition[] sources = new GeneralDirectPosition[transforms.length];
-        final GeneralDirectPosition[] targets = new GeneralDirectPosition[transforms.length];
+        final GeneralPosition[] sources = new GeneralPosition[transforms.length];
+        final GeneralPosition[] targets = new GeneralPosition[transforms.length];
         int maxDimSource = 0;
         int maxDimTarget = 0;
         for (int i = 0; i < transforms.length; i++) {
@@ -407,8 +407,8 @@ public final class MathTransformTest {
             final int dimTarget = transforms[i].getTargetDimensions();
             if (dimSource > maxDimSource) maxDimSource = dimSource;
             if (dimTarget > maxDimTarget) maxDimTarget = dimTarget;
-            sources[i] = new GeneralDirectPosition(dimSource);
-            targets[i] = new GeneralDirectPosition(dimTarget);
+            sources[i] = new GeneralPosition(dimSource);
+            targets[i] = new GeneralPosition(dimTarget);
         }
         /*
          * Test with an arbitrary number of randoms points.
@@ -416,7 +416,7 @@ public final class MathTransformTest {
         for (int pass = 0; pass < 200; pass++) {
             for (int j = 0; j < maxDimSource; j++) {
                 final double ord = 100 * random.nextDouble();
-                for (final GeneralDirectPosition source : sources) {
+                for (final GeneralPosition source : sources) {
                     if (j < source.ordinates.length) {
                         source.ordinates[j] = ord;
                     }
@@ -435,12 +435,12 @@ public final class MathTransformTest {
                 buffer.setLength(lengthJ);
                 buffer.append(j).append("] with [");
                 final int lengthI = buffer.length();
-                final GeneralDirectPosition targetJ = targets[j];
+                final GeneralPosition targetJ = targets[j];
                 for (int i = j + 1; i < targets.length; i++) {
                     buffer.setLength(lengthI);
                     buffer.append(i).append(']');
                     final String label = buffer.toString();
-                    final GeneralDirectPosition targetI = targets[i];
+                    final GeneralPosition targetI = targets[i];
                     assertNotSame(targetJ.ordinates, targetI.ordinates);
                     for (int k = Math.min(targetJ.ordinates.length, targetI.ordinates.length);
                             --k >= 0; ) {
@@ -471,7 +471,7 @@ public final class MathTransformTest {
         final MathTransform1D direct =
                 (MathTransform1D) factory.createParameterizedTransform(parameters);
         final MathTransform1D inverse = direct.inverse();
-        final DirectPosition1D point = new DirectPosition1D();
+        final Position1D point = new Position1D();
         for (int i = 0; i < expected.length; i++) {
             final double x = input[i];
             final double y = direct.transform(x);

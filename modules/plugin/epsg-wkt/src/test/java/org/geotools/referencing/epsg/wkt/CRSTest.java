@@ -18,13 +18,13 @@ package org.geotools.referencing.epsg.wkt;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.MathTransform;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -137,8 +137,8 @@ public class CRSTest {
                         .createOperation(WGS84, WGS84);
         MathTransform math = op.getMathTransform();
 
-        DirectPosition pt1 = new GeneralDirectPosition(0.0, 0.0);
-        DirectPosition pt2 = math.transform(pt1, null);
+        Position pt1 = new GeneralPosition(0.0, 0.0);
+        Position pt2 = math.transform(pt1, null);
         Assert.assertNotNull(pt2);
 
         double[] pts = {

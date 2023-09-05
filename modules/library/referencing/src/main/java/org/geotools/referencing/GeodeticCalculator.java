@@ -32,7 +32,7 @@ import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import net.sf.geographiclib.GeodesicLine;
 import net.sf.geographiclib.GeodesicMask;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CompoundCRS;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
@@ -43,9 +43,9 @@ import org.geotools.api.referencing.datum.Datum;
 import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.TransformedPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
@@ -100,7 +100,7 @@ public class GeodeticCalculator {
      * The transform from user coordinates to geodetic coordinates used for computation, or {@code
      * null} if no transformations are required.
      */
-    private final TransformedDirectPosition userToGeodetic;
+    private final TransformedPosition userToGeodetic;
 
     /**
      * The coordinate reference system for all methods working on {@link Position} objects. If
@@ -207,7 +207,7 @@ public class GeodeticCalculator {
              *       fails with a "Bursa-Wolf parameters required" error message, then we probably
              *       have a bug somewhere.
              */
-            userToGeodetic = new TransformedDirectPosition(crs, geographicCRS, null);
+            userToGeodetic = new TransformedPosition(crs, geographicCRS, null);
         } else {
             userToGeodetic = null;
         }
@@ -320,7 +320,7 @@ public class GeodeticCalculator {
      * of {@link CoordinateFormat}.
      */
     private static String format(final Format cf, final double longitude, final double latitude) {
-        return cf.format(new GeneralDirectPosition(longitude, latitude));
+        return cf.format(new GeneralPosition(longitude, latitude));
     }
 
     ///////////////////////////////////////////////////////////////
@@ -423,7 +423,7 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.3
      */
-    public void setStartingPosition(DirectPosition position) throws TransformException {
+    public void setStartingPosition(Position position) throws TransformException {
         if (userToGeodetic != null) {
             userToGeodetic.transform(position);
             position = userToGeodetic;
@@ -452,10 +452,10 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed to user coordinates.
      * @since 2.3
      */
-    public DirectPosition getStartingPosition() throws TransformException {
-        DirectPosition position = userToGeodetic;
+    public Position getStartingPosition() throws TransformException {
+        Position position = userToGeodetic;
         if (position == null) {
-            position = new DirectPosition2D();
+            position = new Position2D();
         }
         position.setOrdinate(0, long1);
         position.setOrdinate(1, lat1);
@@ -513,7 +513,7 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.2
      */
-    public void setDestinationPosition(DirectPosition position) throws TransformException {
+    public void setDestinationPosition(Position position) throws TransformException {
         if (userToGeodetic != null) {
             userToGeodetic.transform(position);
             position = userToGeodetic;
@@ -550,13 +550,13 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed to user coordinates.
      * @since 2.2
      */
-    public DirectPosition getDestinationPosition() throws TransformException {
+    public Position getDestinationPosition() throws TransformException {
         if (!destinationValid) {
             computeDestinationPoint();
         }
-        DirectPosition position = userToGeodetic;
+        Position position = userToGeodetic;
         if (position == null) {
-            position = new DirectPosition2D();
+            position = new Position2D();
         }
         position.setOrdinate(0, long2);
         position.setOrdinate(1, lat2);

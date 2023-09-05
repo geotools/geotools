@@ -26,7 +26,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
@@ -83,7 +83,7 @@ public class TestDataUtils {
      * @param feature the feature
      * @return a position in or on the feature
      */
-    public static DirectPosition2D getPosInFeature(SimpleFeature feature) {
+    public static Position2D getPosInFeature(SimpleFeature feature) {
         if (feature == null) {
             throw new IllegalArgumentException("feature argument must not be null");
         }
@@ -113,7 +113,7 @@ public class TestDataUtils {
         }
 
         CoordinateReferenceSystem crs = feature.getFeatureType().getCoordinateReferenceSystem();
-        return new DirectPosition2D(crs, c.x, c.y);
+        return new Position2D(crs, c.x, c.y);
     }
 
     /**

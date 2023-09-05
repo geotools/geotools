@@ -92,7 +92,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.ResourceInfo;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.VariableAdapter;
@@ -733,19 +733,19 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope() {
+    public GeneralBounds getOriginalEnvelope() {
         return getOriginalEnvelope(UNSPECIFIED);
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+    public GeneralBounds getOriginalEnvelope(String coverageName) {
         coverageName = checkUnspecifiedCoverage(coverageName);
         try {
             CoverageSource source = getGridCoverageSource(coverageName);
             VariableAdapter.UnidataSpatialDomain spatialDomain =
                     (UnidataSpatialDomain) source.getSpatialDomain();
-            GeneralEnvelope generalEnvelope =
-                    new GeneralEnvelope(spatialDomain.getReferencedEnvelope());
+            GeneralBounds generalEnvelope =
+                    new GeneralBounds(spatialDomain.getReferencedEnvelope());
             generalEnvelope.setCoordinateReferenceSystem(
                     spatialDomain.getCoordinateReferenceSystem2D());
             return generalEnvelope;

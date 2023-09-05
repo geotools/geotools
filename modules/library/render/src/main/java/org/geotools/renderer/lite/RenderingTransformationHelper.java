@@ -32,6 +32,8 @@ import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -60,7 +62,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.ClippingFeatureCollection;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -195,9 +197,8 @@ public abstract class RenderingTransformationHelper {
                         // grid geometry
                         // has at least one pixel
 
-                        org.geotools.api.geometry.Envelope worldEnvelope =
-                                gridGeometry.getEnvelope();
-                        GeneralEnvelope transformed =
+                        Bounds worldEnvelope = gridGeometry.getEnvelope();
+                        GeneralBounds transformed =
                                 CRS.transform(atOriginal.inverse(), worldEnvelope);
                         int minx = (int) Math.floor(transformed.getMinimum(0));
                         int miny = (int) Math.floor(transformed.getMinimum(1));
@@ -250,7 +251,7 @@ public abstract class RenderingTransformationHelper {
                                 >= 360) {
                     // in this case, only crop if the rendering envelope is entirely inside
                     // the coverage
-                    if (coverage.getEnvelope2D().contains(renderingEnvelope)) {
+                    if (coverage.getEnvelope2D().contains((BoundingBox) renderingEnvelope)) {
                         final ParameterValueGroup param =
                                 PROCESSOR.getOperation("CoverageCrop").getParameters();
                         param.parameter("Source").setValue(coverage);
@@ -258,7 +259,7 @@ public abstract class RenderingTransformationHelper {
                         coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
                     }
                 } else {
-                    if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
+                    if (coverage.getEnvelope2D().intersects((BoundingBox) renderingEnvelope)) {
                         // the resulting coverage might be larger than the readGG envelope,
                         // shall we crop it?
                         final ParameterValueGroup param =

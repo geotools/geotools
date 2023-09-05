@@ -7,7 +7,7 @@ Envelopes are used to represent the bounds of a geometry, and are used very freq
 
 GeoTools, through virtue of reusing code, has two "Envelope" implementations to contend with:
 
-* Java ``Rectangle2D`` - we have ``Envelope2D`` which is spatial extension of the Java ``Rectangle2D`` class. Our implementation makes use of doubles to store coordinates and holds on to a ``CoordinateReferenceSystem`` allowing us to tell where the coordinates are located.
+* Java ``Rectangle2D`` - we have ``GeneralBounds`` which is spatial extension of the Java ``Rectangle2D`` class. Our implementation makes use of doubles to store coordinates and holds on to a ``CoordinateReferenceSystem`` allowing us to tell where the coordinates are located.
 
 * JTS ``Envelope`` - we have ``ReferencedEnvelope`` which is adds a ``CoordinateReferenceSystem`` to a traditional JTS Envelope. A subclass of ``ReferencedEnvelope`` is ``ReferencedEnvelope3D`` which supports a third dimension on top of the regular two dimensions. 
 
@@ -24,7 +24,7 @@ You will find other "Rectangles" around as you make use of GeoTools in a real wo
   * ``Rectangle2D.Double`` rectangle working with doubles
   * ``Rectangle2D.Float`` rectangle working with floats
 
-* ``Envelope2D`` we have a spatial specific version of ``Rectangle2D`` that implements ISO Geometry Envelope
+* ``GeneralBounds`` we have a spatial specific version of ``Rectangle2D`` that implements ISO Geometry Envelope
 
 * ``Rectangle`` the original rectangle for working on the screen, measured in integer pixels.
 
@@ -104,7 +104,7 @@ OpenGIS records a "rectangle" as a bounds along the axis mentioned by the ``Coor
 
 .. image:: /images/envelope2.PNG
 
-* ``Envelope2D`` - was introduced above; used to bridge to Java2D
+* ``GeneralBounds`` - was introduced above; used to bridge to Java2D
 * ``ReferencedEnvelope`` - was introduced above; used to bridge to JTS Geometry
 * ``GeneralEnvelope`` - allows you to record spans in multiple dimensions (think depth, height or time)
 

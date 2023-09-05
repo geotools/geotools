@@ -18,8 +18,8 @@ package org.geotools.referencing.operation.builder;
 
 import java.util.HashMap;
 import java.util.List;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.geometry.Position2D;
 
 /**
  * Implements methods for triangulation for {@linkplain
@@ -116,7 +116,7 @@ class MapTriangulationFactory {
      *     quad.
      */
     protected MappedPosition generateCoordFromNearestOne(
-            DirectPosition x, List<MappedPosition> vertices) {
+            Position x, List<MappedPosition> vertices) {
         MappedPosition nearestOne = nearestMappedCoordinate(x, vertices);
 
         double dstX =
@@ -127,9 +127,8 @@ class MapTriangulationFactory {
                 x.getCoordinate()[1]
                         + (nearestOne.getTarget().getCoordinate()[1]
                                 - nearestOne.getSource().getCoordinate()[1]);
-        DirectPosition dst =
-                new DirectPosition2D(
-                        nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
+        Position dst =
+                new Position2D(nearestOne.getTarget().getCoordinateReferenceSystem(), dstX, dstY);
 
         return new MappedPosition(x, dst);
     }
@@ -141,16 +140,15 @@ class MapTriangulationFactory {
      * @param vertices the List of MappedCoordinates.
      * @return the MappedPosition to the x Coordinate.
      */
-    protected MappedPosition nearestMappedCoordinate(
-            DirectPosition dp, List<MappedPosition> vertices) {
-        DirectPosition2D x = new DirectPosition2D(dp);
+    protected MappedPosition nearestMappedCoordinate(Position dp, List<MappedPosition> vertices) {
+        Position2D x = new Position2D(dp);
 
         // Assert.isTrue(vectors.size() > 0);
         MappedPosition nearestOne = vertices.get(0);
 
         for (MappedPosition candidate : vertices) {
-            if (((DirectPosition2D) candidate.getSource()).distance(x.toPoint2D())
-                    < ((DirectPosition2D) nearestOne.getSource()).distance(x.toPoint2D())) {
+            if (((Position2D) candidate.getSource()).distance(x.toPoint2D())
+                    < ((Position2D) nearestOne.getSource()).distance(x.toPoint2D())) {
                 nearestOne = candidate;
             }
         }

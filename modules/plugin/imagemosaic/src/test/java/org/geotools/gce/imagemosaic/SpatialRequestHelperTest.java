@@ -25,7 +25,7 @@ import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -174,7 +174,7 @@ public class SpatialRequestHelperTest extends Assert {
         ReferencedEnvelope requestedBBox = new ReferencedEnvelope(0, 180, 0, 90, sourceCRS);
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 250, 250);
         spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(requestedRasterArea, new GeneralEnvelope(requestedBBox)));
+                new GridGeometry2D(requestedRasterArea, new GeneralBounds(requestedBBox)));
 
         ///// TEST
         spatialRequestHelper.compute();
@@ -264,7 +264,7 @@ public class SpatialRequestHelperTest extends Assert {
         ReferencedEnvelope requestedBBox = new ReferencedEnvelope(0, 180, 0, 90, sourceCRS);
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 250, 250);
         spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(requestedRasterArea, new GeneralEnvelope(requestedBBox)));
+                new GridGeometry2D(requestedRasterArea, new GeneralBounds(requestedBBox)));
 
         ///// TEST
         spatialRequestHelper.compute();
@@ -347,7 +347,7 @@ public class SpatialRequestHelperTest extends Assert {
         spatialRequestHelper.setRequestedGridGeometry(
                 new GridGeometry2D(
                         new GridEnvelope2D(0, 0, 256, 256),
-                        new GeneralEnvelope(
+                        new GeneralBounds(
                                 new ReferencedEnvelope(
                                         -1.9868610903408341,
                                         -1.1430930819885086,
@@ -412,7 +412,7 @@ public class SpatialRequestHelperTest extends Assert {
         spatialRequestHelper.setAccurateResolution(false);
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 256, 256);
         CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857");
-        GeneralEnvelope requestedBBox = CRS.transform(sourceBBox, requestCRS);
+        GeneralBounds requestedBBox = CRS.transform(sourceBBox, requestCRS);
         spatialRequestHelper.setRequestedGridGeometry(
                 new GridGeometry2D(requestedRasterArea, requestedBBox));
 
@@ -432,7 +432,7 @@ public class SpatialRequestHelperTest extends Assert {
         // the source bbox and the computed one are the same
         // there might be minor differences due to multiple back and forth roundings, but we need
         // to make sure they are negligible
-        assertTrue(new GeneralEnvelope(computedBBox).equals(sourceBBox, 1E-4, true));
+        assertTrue(new GeneralBounds(computedBBox).equals(sourceBBox, 1E-4, true));
 
         // transform
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
@@ -505,7 +505,7 @@ public class SpatialRequestHelperTest extends Assert {
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 256, 256);
         CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857");
         ReferencedEnvelope requestedBBox_ = new ReferencedEnvelope(0, 180, 0, 70, sourceCRS);
-        GeneralEnvelope requestedBBox = CRS.transform(requestedBBox_, requestCRS);
+        GeneralBounds requestedBBox = CRS.transform(requestedBBox_, requestCRS);
         spatialRequestHelper.setRequestedGridGeometry(
                 new GridGeometry2D(requestedRasterArea, requestedBBox));
 
@@ -525,7 +525,7 @@ public class SpatialRequestHelperTest extends Assert {
         // the source bbox and the computed one are the same
         // there might be minor differences due to multiple back and forth roundings, but we need
         // to make sure they are negligible
-        assertTrue(new GeneralEnvelope(computedBBox).equals(requestedBBox_, 1E-4, true));
+        assertTrue(new GeneralBounds(computedBBox).equals(requestedBBox_, 1E-4, true));
 
         // transform
         AffineTransform computedG2W = spatialRequestHelper.getComputedGridToWorld();
@@ -614,7 +614,7 @@ public class SpatialRequestHelperTest extends Assert {
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 256, 256);
         CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857");
         ReferencedEnvelope requestedBBox_ = new ReferencedEnvelope(0, 180, 0, 70, sourceCRS);
-        GeneralEnvelope requestedBBox = CRS.transform(requestedBBox_, requestCRS);
+        GeneralBounds requestedBBox = CRS.transform(requestedBBox_, requestCRS);
         spatialRequestHelper.setRequestedGridGeometry(
                 new GridGeometry2D(requestedRasterArea, requestedBBox));
 
@@ -631,7 +631,7 @@ public class SpatialRequestHelperTest extends Assert {
         // the source bbox and the computed one are the same
         // there might be minor differences due to multiple back and forth roundings, but we need
         // to make sure they are negligible
-        assertTrue(new GeneralEnvelope(computedBBox).equals(finalReferencedEnvelope, 1E-4, true));
+        assertTrue(new GeneralBounds(computedBBox).equals(finalReferencedEnvelope, 1E-4, true));
 
         // computed raster area is equal to requested raster area
         Rectangle computedRasterArea = spatialRequestHelper.getComputedRasterArea();
@@ -703,7 +703,7 @@ public class SpatialRequestHelperTest extends Assert {
         spatialRequestHelper.setAccurateResolution(false);
         GridEnvelope2D requestedRasterArea = new GridEnvelope2D(0, 0, 256, 256);
         spatialRequestHelper.setRequestedGridGeometry(
-                new GridGeometry2D(requestedRasterArea, new GeneralEnvelope(sourceBBox)));
+                new GridGeometry2D(requestedRasterArea, new GeneralBounds(sourceBBox)));
 
         ///// TEST
         spatialRequestHelper.compute();

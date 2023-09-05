@@ -18,12 +18,12 @@ package org.geotools.referencing.operation.builder;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -44,10 +44,10 @@ public class MappedPosition implements Serializable {
     private static final long serialVersionUID = 3262172371858749543L;
 
     /** The source position. */
-    private final DirectPosition source;
+    private final Position source;
 
     /** The target position. */
-    private final DirectPosition target;
+    private final Position target;
 
     /**
      * An estimation of mapping accuracy in units of target CRS axis, or {@link Double#NaN} if
@@ -64,11 +64,11 @@ public class MappedPosition implements Serializable {
      */
     public MappedPosition(final int dimension) {
         if (dimension == 2) {
-            source = new DirectPosition2D();
-            target = new DirectPosition2D();
+            source = new Position2D();
+            target = new Position2D();
         } else {
-            source = new GeneralDirectPosition(dimension);
-            target = new GeneralDirectPosition(dimension);
+            source = new GeneralPosition(dimension);
+            target = new GeneralPosition(dimension);
         }
     }
 
@@ -78,7 +78,7 @@ public class MappedPosition implements Serializable {
      * @param source The original direct position.
      * @param target The associated direct position.
      */
-    public MappedPosition(final DirectPosition source, final DirectPosition target) {
+    public MappedPosition(final Position source, final Position target) {
         ensureNonNull("source", source);
         ensureNonNull("target", target);
         this.source = source;
@@ -105,16 +105,16 @@ public class MappedPosition implements Serializable {
      * returns a reference to the internal object. However users should avoid to modify directly the
      * returned position and use {@link #setSource} instead.
      */
-    public DirectPosition getSource() {
+    public Position getSource() {
         return source;
     }
 
     /** Set the source direct position to the specified value. */
-    public void setSource(final DirectPosition point) {
-        if (source instanceof DirectPosition2D) {
-            ((DirectPosition2D) source).setLocation(point);
+    public void setSource(final Position point) {
+        if (source instanceof Position2D) {
+            ((Position2D) source).setLocation(point);
         } else {
-            ((GeneralDirectPosition) source).setLocation(point);
+            ((GeneralPosition) source).setLocation(point);
         }
     }
 
@@ -123,16 +123,16 @@ public class MappedPosition implements Serializable {
      * returns a reference to the internal object. However users should avoid to modify directly the
      * returned position and use {@link #setTarget} instead.
      */
-    public DirectPosition getTarget() {
+    public Position getTarget() {
         return target;
     }
 
     /** Set the target direct position to the specified value. */
-    public void setTarget(final DirectPosition point) {
-        if (source instanceof DirectPosition2D) {
-            ((DirectPosition2D) target).setLocation(point);
+    public void setTarget(final Position point) {
+        if (source instanceof Position2D) {
+            ((Position2D) target).setLocation(point);
         } else {
-            ((GeneralDirectPosition) target).setLocation(point);
+            ((GeneralPosition) target).setLocation(point);
         }
     }
 
@@ -168,13 +168,13 @@ public class MappedPosition implements Serializable {
      *     if none. The content of this buffer will be overwritten.
      * @return The distance in units of the target CRS axis.
      */
-    final double getError(final MathTransform transform, final DirectPosition buffer)
+    final double getError(final MathTransform transform, final Position buffer)
             throws TransformException {
         return distance(transform.transform(source, buffer), target);
     }
 
     /** Returns the distance between the specified points. */
-    private static double distance(final DirectPosition source, final DirectPosition target) {
+    private static double distance(final Position source, final Position target) {
         final int otherDim = source.getDimension();
         final int dimension = target.getDimension();
         if (otherDim != dimension) {

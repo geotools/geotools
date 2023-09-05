@@ -73,7 +73,7 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
 import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -1046,14 +1046,14 @@ public final class ImageUtilities {
     }
 
     /**
-     * Builds a {@link ReferencedEnvelope} in WGS84 from a {@link GeneralEnvelope}.
+     * Builds a {@link ReferencedEnvelope} in WGS84 from a {@link GeneralBounds}.
      *
-     * @param coverageEnvelope the {@link GeneralEnvelope} to convert.
+     * @param coverageEnvelope the {@link GeneralBounds} to convert.
      * @return an instance of {@link ReferencedEnvelope} in WGS84 or <code>null</code> in case a
      *     problem during the conversion occurs.
      */
     public static ReferencedEnvelope getWGS84ReferencedEnvelope(
-            final GeneralEnvelope coverageEnvelope) {
+            final GeneralBounds coverageEnvelope) {
         Utilities.ensureNonNull("coverageEnvelope", coverageEnvelope);
         final ReferencedEnvelope refEnv = new ReferencedEnvelope(coverageEnvelope);
         try {

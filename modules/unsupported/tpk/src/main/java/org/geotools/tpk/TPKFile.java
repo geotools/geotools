@@ -32,7 +32,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -79,7 +79,7 @@ public class TPKFile {
     private String imageFormat;
 
     // holds the Geographical bounds of the map coverage
-    private Envelope bounds;
+    private Bounds bounds;
 
     // maps conf.xml//CacheInfo/TileCacheInfo/LODInfos/LODInfo/LevelID values to actual Web Map
     // Tile Service zoom levels (only used in initial open of TPK)
@@ -136,10 +136,7 @@ public class TPKFile {
      * @param imageFormat -- the image format being used
      */
     public TPKFile(
-            File theFile,
-            Map<Long, TPKZoomLevel> zoomLevelMap,
-            Envelope bounds,
-            String imageFormat) {
+            File theFile, Map<Long, TPKZoomLevel> zoomLevelMap, Bounds bounds, String imageFormat) {
         openTPK(theFile);
         this.imageFormat = imageFormat;
         this.bounds = bounds;
@@ -184,7 +181,7 @@ public class TPKFile {
      *
      * @return -- the geographical coverage of the map
      */
-    public Envelope getBounds() {
+    public Bounds getBounds() {
         if (bounds == null) {
             if (zoomLevelMap == null || zoomLevelMap.isEmpty()) {
                 throw new RuntimeException("Can't get bounds, zoomLevelMap not initialized");

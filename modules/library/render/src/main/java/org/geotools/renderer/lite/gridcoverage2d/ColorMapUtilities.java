@@ -21,8 +21,8 @@ import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import java.awt.Color;
 import java.text.MessageFormat;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.renderer.i18n.ErrorKeys;
 
 class ColorMapUtilities {
@@ -166,7 +166,7 @@ class ColorMapUtilities {
     //	}
 
     /** Ensure the specified point is one-dimensional. */
-    static void checkDimension(final DirectPosition point) {
+    static void checkDimension(final Position point) {
         final int dim = point.getDimension();
         if (dim != 1) {
             throw new MismatchedDimensionException(

@@ -33,6 +33,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.api.feature.type.Name;
+import org.geotools.api.geometry.BoundingBox;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
@@ -40,7 +41,7 @@ import org.geotools.coverage.io.Driver.DriverCapabilities;
 import org.geotools.coverage.io.driver.TestDriver;
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.DateRange;
@@ -239,7 +240,9 @@ public class DefaultClassesTest {
                 CRS.equalsIgnoreMetadata(
                         response.getCoordinateReferenceSystem(),
                         cov.getCoordinateReferenceSystem()));
-        assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains(cov.getEnvelope2D()));
+        assertTrue(
+                new ReferencedEnvelope(response.getEnvelope())
+                        .contains((BoundingBox) cov.getEnvelope2D()));
         assertEquals(response.isDataEditable(), cov.isDataEditable());
         assertSame(response.getGridGeometry(), cov.getGridGeometry());
         assertSame(response.getGridCoverage2D(), cov);
@@ -251,9 +254,8 @@ public class DefaultClassesTest {
         assertArrayEquals(response.getOptimalDataBlockSizes(), cov.getOptimalDataBlockSizes());
 
         // Evaluation of the same position
-        DirectPosition2D pos =
-                new DirectPosition2D(
-                        cov.getEnvelope2D().getCenterX(), cov.getEnvelope2D().getCenterY());
+        Position2D pos =
+                new Position2D(cov.getEnvelope2D().getCenterX(), cov.getEnvelope2D().getCenterY());
 
         assertArrayEquals(response.evaluate(pos, new byte[1]), cov.evaluate(pos, new byte[1]));
     }

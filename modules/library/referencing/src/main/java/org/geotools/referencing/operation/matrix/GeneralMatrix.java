@@ -30,7 +30,7 @@ import java.util.Locale;
 import org.ejml.UtilEjml;
 import org.ejml.data.DMatrixRMaj;
 import org.ejml.dense.row.CommonOps_DDRM;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.operation.Matrix;
@@ -213,7 +213,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param srcRegion The source region.
      * @param dstRegion The destination region.
      */
-    public GeneralMatrix(final Envelope srcRegion, final Envelope dstRegion) {
+    public GeneralMatrix(final Bounds srcRegion, final Bounds dstRegion) {
         mat = new DMatrixRMaj(dstRegion.getDimension() + 1, srcRegion.getDimension() + 1);
 
         // Next lines should be first if only Sun could fix RFE #4093999 (sigh...)
@@ -275,9 +275,9 @@ public class GeneralMatrix implements XMatrix, Serializable {
      *     srcAxis}, or if some colinear axis were found.
      */
     public GeneralMatrix(
-            final Envelope srcRegion,
+            final Bounds srcRegion,
             final AxisDirection[] srcAxis,
-            final Envelope dstRegion,
+            final Bounds dstRegion,
             final AxisDirection[] dstAxis) {
         this(srcRegion, srcAxis, dstRegion, dstAxis, true);
     }
@@ -289,9 +289,9 @@ public class GeneralMatrix implements XMatrix, Serializable {
      *     If {@code false}, then source and destination regions will be ignored and may be null.
      */
     private GeneralMatrix(
-            final Envelope srcRegion,
+            final Bounds srcRegion,
             final AxisDirection[] srcAxis,
-            final Envelope dstRegion,
+            final Bounds dstRegion,
             final AxisDirection[] dstAxis,
             final boolean validRegions) {
         this(dstAxis.length + 1, srcAxis.length + 1);
@@ -382,7 +382,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @throws MismatchedDimensionException if the envelope doesn't have the expected dimension.
      */
     private static void ensureDimensionMatch(
-            final String name, final Envelope envelope, final int dimension)
+            final String name, final Bounds envelope, final int dimension)
             throws MismatchedDimensionException {
         final int dim = envelope.getDimension();
         if (dimension != dim) {

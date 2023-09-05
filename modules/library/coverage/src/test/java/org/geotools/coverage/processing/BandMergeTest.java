@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.media.jai.PlanarImage;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
@@ -44,7 +44,7 @@ public final class BandMergeTest extends GridProcessingTestBase {
          * Get the source coverage and build the rgb version.
          */
         GridCoverage2D source = EXAMPLES.get(4);
-        Envelope originalEnvelope = source.getEnvelope();
+        Bounds originalEnvelope = source.getEnvelope();
         final List<GridCoverage2D> coverages = new ArrayList<>();
         final RenderedImage byteImage =
                 new ImageWorker(source.getRenderedImage()).rescaleToBytes().getRenderedImage();

@@ -65,7 +65,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ColorUtilities;
@@ -131,7 +131,7 @@ public final class GridCoverageRenderer {
     private final CoordinateReferenceSystem destinationCRS;
 
     /** Area we want to draw. */
-    private final GeneralEnvelope destinationEnvelope;
+    private final GeneralBounds destinationEnvelope;
 
     /** Size of the area we want to draw in pixels. */
     private final Rectangle destinationSize;
@@ -245,7 +245,7 @@ public final class GridCoverageRenderer {
                     MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
         }
         destinationEnvelope =
-                new GeneralEnvelope(new ReferencedEnvelope(envelope, this.destinationCRS));
+                new GeneralBounds(new ReferencedEnvelope(envelope, this.destinationCRS));
         // ///////////////////////////////////////////////////////////////////
         //
         // FINAL DRAWING DIMENSIONS AND RESOLUTION
@@ -490,7 +490,7 @@ public final class GridCoverageRenderer {
     /** */
     private GridCoverage2D crop(
             GridCoverage2D inputCoverage,
-            final GeneralEnvelope destinationEnvelope,
+            final GeneralBounds destinationEnvelope,
             final boolean doReprojection,
             double[] backgroundValues)
             throws FactoryException {

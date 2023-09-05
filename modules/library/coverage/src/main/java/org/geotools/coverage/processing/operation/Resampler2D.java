@@ -48,7 +48,7 @@ import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -68,7 +68,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -338,7 +338,7 @@ final class Resampler2D extends GridCoverage2D {
                  * The result may be an image with a different size.
                  */
                 if (targetGG.isDefined(GridGeometry2D.ENVELOPE_BITMASK)) {
-                    final Envelope envelope = targetGG.getEnvelope();
+                    final Bounds envelope = targetGG.getEnvelope();
                     final GridGeometry2D sourceGG = sourceCoverage.getGridGeometry();
                     final MathTransform gridToCRS;
                     switch (envelope.getDimension()) {
@@ -452,7 +452,7 @@ final class Resampler2D extends GridCoverage2D {
                      * automatically computed in such a way that it will maps to the same envelope
                      * (at least approximatively).
                      */
-                    Envelope gridRange;
+                    Bounds gridRange;
                     gridRange = toEnvelope(sourceGG.getGridRange());
                     gridRange = CRS.transform(allSteps.inverse(), gridRange);
                     targetGG =
@@ -472,9 +472,9 @@ final class Resampler2D extends GridCoverage2D {
             step3 =
                     (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER))
                             .inverse();
-            final Envelope sourceEnvelope =
+            final Bounds sourceEnvelope =
                     sourceCoverage.getEnvelope(); // Don't force this one to 2D.
-            final GeneralEnvelope targetEnvelope = CRS.transform(operation, sourceEnvelope);
+            final GeneralBounds targetEnvelope = CRS.transform(operation, sourceEnvelope);
             targetEnvelope.setCoordinateReferenceSystem(targetCRS);
             // 'targetCRS' may be different than the one set by CRS.transform(...).
             /*
@@ -506,7 +506,7 @@ final class Resampler2D extends GridCoverage2D {
             } else {
                 step1 = targetGG.getGridToCRS(CORNER);
                 if (!targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
-                    GeneralEnvelope gridRange = CRS.transform(step1.inverse(), targetEnvelope);
+                    GeneralBounds gridRange = CRS.transform(step1.inverse(), targetEnvelope);
                     // According OpenGIS specification, GridGeometry maps pixel's center.
                     targetGG =
                             new GridGeometry2D(
@@ -728,11 +728,11 @@ final class Resampler2D extends GridCoverage2D {
                         case DataBuffer.TYPE_DOUBLE:
                         case DataBuffer.TYPE_FLOAT:
                             {
-                                Envelope source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
-                                Envelope target = CRS.transform(targetGG.getEnvelope(), targetCRS);
+                                Bounds source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
+                                Bounds target = CRS.transform(targetGG.getEnvelope(), targetCRS);
                                 source = targetGG.reduce(source);
                                 target = targetGG.reduce(target);
-                                if (!(new GeneralEnvelope(source).contains(target, true))) {
+                                if (!(new GeneralBounds(source).contains(target, true))) {
                                     if (interpolation != null
                                             && !(interpolation instanceof InterpolationNearest)) {
                                         hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
@@ -1028,9 +1028,9 @@ final class Resampler2D extends GridCoverage2D {
 
     /**
      * Casts the specified grid range into an envelope. This is used before to transform the
-     * envelope using {@link CRSUtilities#transform(MathTransform, Envelope)}.
+     * envelope using {@link CRSUtilities#transform(MathTransform, Bounds)}.
      */
-    private static Envelope toEnvelope(final GridEnvelope gridRange) {
+    private static Bounds toEnvelope(final GridEnvelope gridRange) {
         final int dimension = gridRange.getDimension();
         final double[] lower = new double[dimension];
         final double[] upper = new double[dimension];
@@ -1038,7 +1038,7 @@ final class Resampler2D extends GridCoverage2D {
             lower[i] = gridRange.getLow(i);
             upper[i] = gridRange.getHigh(i) + 1;
         }
-        return new GeneralEnvelope(lower, upper);
+        return new GeneralBounds(lower, upper);
     }
 
     /**

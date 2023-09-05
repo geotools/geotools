@@ -47,8 +47,8 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.CoverageTestBase;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
@@ -116,7 +116,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
         final Rectangle2D bounds =
                 new Rectangle2D.Double(
                         -10, 30, PIXEL_SIZE * image.getWidth(), PIXEL_SIZE * image.getHeight());
-        final GeneralEnvelope envelope = new GeneralEnvelope(crs);
+        final GeneralBounds envelope = new GeneralBounds(crs);
         envelope.setRange(0, bounds.getMinX(), bounds.getMaxX());
         envelope.setRange(1, bounds.getMinY(), bounds.getMaxY());
         for (int i = envelope.getDimension(); --i >= 2; ) {
@@ -331,12 +331,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                                 return factory.create(
                                         "Float coverage",
                                         raster,
-                                        new Envelope2D(
-                                                DefaultGeographicCRS.WGS84,
-                                                35,
-                                                -41,
-                                                35 + 45,
-                                                -41 + 46),
+                                        ReferencedEnvelope.rect(35, -41, 35 + 45, -41 + 46),
                                         null,
                                         null,
                                         null,
@@ -365,12 +360,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                                 return factory.create(
                                         "UInt16 coverage",
                                         image,
-                                        new Envelope2D(
-                                                DefaultGeographicCRS.WGS84,
-                                                35,
-                                                -41,
-                                                35 + 45,
-                                                -41 + 46));
+                                        ReferencedEnvelope.rect(35, -41, 35 + 45, -41 + 46));
                             }
                     }
                     /*
@@ -386,7 +376,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                         throw new AssertionError(e);
                     }
                     final String filename = new File(path).getName();
-                    final GeneralEnvelope envelope = new GeneralEnvelope(bounds);
+                    final GeneralBounds envelope = new GeneralBounds(bounds);
                     envelope.setCoordinateReferenceSystem(crs);
                     return factory.create(filename, image, envelope, bands, null, null);
                 }

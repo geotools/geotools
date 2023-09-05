@@ -22,70 +22,69 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.Position;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 
 /**
- * Tests the {@link GeneralEnvelope} class.
+ * Tests the {@link GeneralBounds} class.
  *
  * @author Martin Desruisseaux
  */
 // code is using equals with extra parameters and semantics compared to the built-in equals
 @SuppressWarnings("PMD.SimplifiableTestAssertion")
-public final class GeneralEnvelopeTest {
+public final class GeneralBoundsTest {
 
     @Test
     public void testConstruction() {
-        GeneralEnvelope empty = new GeneralEnvelope(DefaultGeographicCRS.WGS84);
+        GeneralBounds empty = new GeneralBounds(DefaultGeographicCRS.WGS84);
         assertTrue(empty.isEmpty());
-        Envelope2D empty2d = new Envelope2D();
+        GeneralBounds empty2d = new GeneralBounds(DefaultGeographicCRS.WGS84);
         assertTrue(empty2d.isEmpty());
 
-        GeneralEnvelope world =
-                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
+        GeneralBounds world = new GeneralBounds(new double[] {-180, -90}, new double[] {180, 90});
         world.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
-        GeneralEnvelope copyWorld = new GeneralEnvelope(world); // expected to work
+        GeneralBounds copyWorld = new GeneralBounds(world); // expected to work
         assertEquals(world, copyWorld);
 
-        GeneralEnvelope copyEmpty = new GeneralEnvelope(empty); // expected to work
+        GeneralBounds copyEmpty = new GeneralBounds(empty); // expected to work
         assertEquals(empty, copyEmpty);
 
-        GeneralEnvelope nil = new GeneralEnvelope(DefaultGeographicCRS.WGS84);
+        GeneralBounds nil = new GeneralBounds(DefaultGeographicCRS.WGS84);
         nil.setToNull();
 
         assertTrue(nil.isNull());
-        GeneralEnvelope copyNil = new GeneralEnvelope(nil); // expected to work
+        GeneralBounds copyNil = new GeneralBounds(nil); // expected to work
 
         assertTrue(copyNil.isNull());
         assertEquals(nil, copyNil);
 
-        Envelope2D nil2 = new Envelope2D(nil);
-        GeneralEnvelope copyNil2 = new GeneralEnvelope((Envelope) nil2); // expected to work
+        GeneralBounds nil2 = new GeneralBounds(nil);
+        GeneralBounds copyNil2 = new GeneralBounds((Bounds) nil2); // expected to work
 
         assertTrue(copyNil2.isNull());
 
         // See http://jira.codehaus.org/browse/GEOT-3051
-        GeneralEnvelope geot3045 = new GeneralEnvelope(new double[] {0, 0}, new double[] {-1, -1});
+        GeneralBounds geot3045 = new GeneralBounds(new double[] {0, 0}, new double[] {-1, -1});
         assertTrue(geot3045.isEmpty());
 
         // See http://jira.codehaus.org/browse/GEOT-4261
-        GeneralEnvelope geot4261 = new GeneralEnvelope(2);
-        GeneralDirectPosition dp = new GeneralDirectPosition(new double[] {100.0, 200.0});
+        GeneralBounds geot4261 = new GeneralBounds(2);
+        GeneralPosition dp = new GeneralPosition(new double[] {100.0, 200.0});
         assertTrue(geot4261.isEmpty());
         geot4261.add(dp);
-        assertEquals(new GeneralEnvelope(dp, dp), geot4261);
+        assertEquals(new GeneralBounds(dp, dp), geot4261);
     }
 
-    /** Tests {@link GeneralEnvelope#equals} method. */
+    /** Tests {@link GeneralBounds#equals} method. */
     @Test
     public void testEquals() {
         /*
          * Initialize an empty envelope. The new envelope is empty and null.
          */
-        final GeneralEnvelope e1 = new GeneralEnvelope(4);
+        final GeneralBounds e1 = new GeneralBounds(4);
         assertTrue(e1.isEmpty());
         assertTrue(e1.isNull());
         assertEquals(e1.getLowerCorner(), e1.getUpperCorner());
@@ -102,7 +101,7 @@ public final class GeneralEnvelopeTest {
          * Creates a new envelope initialized with the same coordinate values. The two envelope
          * should be equals.
          */
-        final GeneralEnvelope e2 = new GeneralEnvelope(e1);
+        final GeneralBounds e2 = new GeneralBounds(e1);
         assertPositionEquals(e1.getLowerCorner(), e2.getLowerCorner());
         assertPositionEquals(e1.getUpperCorner(), e2.getUpperCorner());
         assertTrue(e1.contains(e2, true));
@@ -136,9 +135,18 @@ public final class GeneralEnvelopeTest {
     }
 
     /** Compares the specified corners. */
-    private static void assertPositionEquals(final DirectPosition p1, final DirectPosition p2) {
+    private static void assertPositionEquals(final Position p1, final Position p2) {
         assertNotSame(p1, p2);
         assertEquals(p1, p2);
         assertEquals(p1.hashCode(), p2.hashCode());
+    }
+
+    @Test
+    public void testMedian() {
+        double delta = 0.00001;
+        GeneralBounds bounds = new GeneralBounds(DefaultGeographicCRS.WGS84);
+        bounds.setEnvelope(-10, -10, 10, 10);
+        assertEquals(0.0, bounds.getMedian(0), delta);
+        assertEquals(0.0, bounds.getMedian(1), delta);
     }
 }

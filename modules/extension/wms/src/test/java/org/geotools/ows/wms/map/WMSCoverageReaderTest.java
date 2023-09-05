@@ -20,7 +20,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
@@ -211,7 +211,7 @@ public class WMSCoverageReaderTest {
     @Test
     public void test4326wms11() throws Exception {
         WMSCoverageReader reader = getReader4326wms11();
-        GeneralEnvelope original = reader.getOriginalEnvelope();
+        GeneralBounds original = reader.getOriginalEnvelope();
         CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
         assertTrue(CRS.equalsIgnoreMetadata(wgs84, original.getCoordinateReferenceSystem()));
 

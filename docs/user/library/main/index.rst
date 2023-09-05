@@ -43,7 +43,6 @@ The ``gt-main`` module is responsible for:
    function_list
    feature
    collection
-   geometry
    envelope
    jts
    shape

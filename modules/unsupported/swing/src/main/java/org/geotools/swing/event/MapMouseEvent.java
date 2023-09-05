@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.MapPane;
 
@@ -33,7 +33,7 @@ import org.geotools.swing.MapPane;
  * @version $Id$
  */
 public final class MapMouseEvent extends MouseEvent {
-    private final DirectPosition2D worldCoords;
+    private final Position2D worldCoords;
     private final boolean isWheelEvent;
     private final int wheelAmount;
 
@@ -113,8 +113,8 @@ public final class MapMouseEvent extends MouseEvent {
      *
      * @return world position
      */
-    public DirectPosition2D getWorldPos() {
-        return new DirectPosition2D(
+    public Position2D getWorldPos() {
+        return new Position2D(
                 worldCoords.getCoordinateReferenceSystem(), worldCoords.x, worldCoords.y);
     }
 
@@ -132,7 +132,7 @@ public final class MapMouseEvent extends MouseEvent {
         }
 
         double halfw = widthWorld / 2;
-        DirectPosition2D worldPos = getWorldPos();
+        Position2D worldPos = getWorldPos();
         return new ReferencedEnvelope(
                 worldPos.x - halfw,
                 worldPos.x + halfw,
@@ -175,9 +175,9 @@ public final class MapMouseEvent extends MouseEvent {
      * @param event source mouse event
      * @return position in world coordinates
      */
-    private DirectPosition2D calculateWorldPos(MapPane pane, MouseEvent event) {
+    private Position2D calculateWorldPos(MapPane pane, MouseEvent event) {
         AffineTransform tr = pane.getScreenToWorldTransform();
-        DirectPosition2D pos = new DirectPosition2D(event.getX(), event.getY());
+        Position2D pos = new Position2D(event.getX(), event.getY());
         tr.transform(pos, pos);
         pos.setCoordinateReferenceSystem(pane.getMapContent().getCoordinateReferenceSystem());
         return pos;

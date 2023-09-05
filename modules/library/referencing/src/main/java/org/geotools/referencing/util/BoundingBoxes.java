@@ -19,7 +19,7 @@ package org.geotools.referencing.util;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
 import java.util.Locale;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -53,7 +53,7 @@ public final class BoundingBoxes {
      * A set of hints used in order to fetch lenient coordinate operation factory. We accept lenient
      * transforms because {@link GeographicBoundingBox} are usually for approximative bounds (e.g.
      * the area of validity of some CRS). If a user wants accurate bounds, he should probably use an
-     * {@link Envelope} with the appropriate CRS.
+     * {@link Bounds} with the appropriate CRS.
      */
     private static final Hints LENIENT = new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
 
@@ -68,7 +68,7 @@ public final class BoundingBoxes {
      * @param envelope The source envelope.
      * @param box The target bounding box.
      */
-    public static void copy(Envelope envelope, final GeographicBoundingBoxImpl box)
+    public static void copy(Bounds envelope, final GeographicBoundingBoxImpl box)
             throws TransformException {
         final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
         if (crs != null) {

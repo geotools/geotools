@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.util.URLs;
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class TPKFileTest {
         assertEquals(2, theTPKFile.getMaxZoomLevel());
 
         // get the bounds computed from highest zoom level coverage
-        Envelope bounds = theTPKFile.getBounds();
+        Bounds bounds = theTPKFile.getBounds();
 
         // minimum longitude
         assertEquals(-180.0, bounds.getMinimum(0), 0.000001);
@@ -100,7 +100,7 @@ public class TPKFileTest {
         assertEquals(2, theTPKFile.getMaxZoomLevel());
 
         // get the bounds computed from highest zoom level coverage
-        Envelope bounds = theTPKFile.getBounds();
+        Bounds bounds = theTPKFile.getBounds();
 
         // minimum longitude
         assertEquals(-180.0, bounds.getMinimum(0), 0.000001);

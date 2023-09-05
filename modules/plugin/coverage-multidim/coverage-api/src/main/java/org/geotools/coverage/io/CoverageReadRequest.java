@@ -34,7 +34,7 @@ import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -127,7 +127,7 @@ public class CoverageReadRequest extends CoverageRequest {
         this.gridToWorldTransform = gridToWorldTrasform;
 
         // create a bbox
-        GeneralEnvelope env =
+        GeneralBounds env =
                 CRS.transform(
                         gridToWorldTrasform, new ReferencedEnvelope(rasterArea.getBounds2D(), crs));
         this.geographicArea = new ReferencedEnvelope(new ReferencedEnvelope(env), crs);

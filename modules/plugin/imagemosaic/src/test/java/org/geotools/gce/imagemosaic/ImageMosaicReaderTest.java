@@ -49,7 +49,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
@@ -112,7 +111,8 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterDescriptor;
@@ -168,8 +168,7 @@ import org.geotools.gce.imagemosaic.catalog.index.IndexerUtils;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
@@ -414,7 +413,7 @@ public class ImageMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -533,7 +532,7 @@ public class ImageMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -801,7 +800,7 @@ public class ImageMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -917,7 +916,7 @@ public class ImageMosaicReaderTest {
         final ImageMosaicReader reader = getReader(imposedEnvelopeURL, format);
 
         // check envelope
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         assertNotNull(envelope);
 
         assertEquals(-180.0, envelope.getMinimum(0), 1E-6);
@@ -975,7 +974,7 @@ public class ImageMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -1778,7 +1777,7 @@ public class ImageMosaicReaderTest {
 
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(10, 10);
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
@@ -2018,9 +2017,9 @@ public class ImageMosaicReaderTest {
         // crop
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getLowerCorner().getOrdinate(0)
                                     + oldEnvelope.getSpan(0) / 2,
@@ -2060,14 +2059,14 @@ public class ImageMosaicReaderTest {
         reader.dispose();
     }
 
-    void assertEnvelope(Envelope expected, Envelope actual, double tolerance) {
+    void assertEnvelope(Bounds expected, Bounds actual, double tolerance) {
         assertEquals(expected.getMinimum(0), actual.getMinimum(0), tolerance);
         assertEquals(expected.getMaximum(0), actual.getMaximum(0), tolerance);
         assertEquals(expected.getMinimum(1), actual.getMinimum(1), tolerance);
         assertEquals(expected.getMaximum(1), actual.getMaximum(1), tolerance);
     }
 
-    void assertContainsEnvelope(Envelope expected, Envelope contained, double tolerance) {
+    void assertContainsEnvelope(Bounds expected, Bounds contained, double tolerance) {
         assertTrue(expected.getMinimum(0) < contained.getMinimum(0) + tolerance);
         assertTrue(expected.getMaximum(0) > contained.getMaximum(0) - tolerance);
         assertTrue(expected.getMinimum(1) < contained.getMinimum(1) + tolerance);
@@ -2107,9 +2106,10 @@ public class ImageMosaicReaderTest {
         // ask to extract an area that is inside the coverage bbox, but in a hole (no data)
         final ParameterValue<GridGeometry2D> ggp =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env =
-                new Envelope2D(reader.getCoordinateReferenceSystem(), 500000, 3200000, 1000, 1000);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        ReferencedEnvelope env =
+                ReferencedEnvelope.rect(
+                        500000, 3200000, 1000, 1000, reader.getCoordinateReferenceSystem());
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         ggp.setValue(gg);
 
         // red background
@@ -2119,7 +2119,7 @@ public class ImageMosaicReaderTest {
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
         assertNotNull(coverage);
-        assertTrue(coverage.getEnvelope2D().intersects((Rectangle2D) env));
+        assertTrue(coverage.getEnvelope2D().intersects((BoundingBox) env));
 
         // and that the color is the expected one given the background values provided
         int[] pixel = new int[4];
@@ -2171,8 +2171,9 @@ public class ImageMosaicReaderTest {
         // ask to extract an area that is inside the coverage bbox, but in a hole (no data)
         final ParameterValue<GridGeometry2D> ggp =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 10, 41, 1, 1);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
+        ReferencedEnvelope env =
+                ReferencedEnvelope.rect(10, 41, 1, 1, reader.getCoordinateReferenceSystem());
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Bounds) env);
         ggp.setValue(gg);
 
         // Select 2 bands
@@ -2186,7 +2187,7 @@ public class ImageMosaicReaderTest {
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp, bands});
         assertNotNull(coverage);
-        assertTrue(coverage.getEnvelope2D().intersects((Rectangle2D) env));
+        assertTrue(coverage.getEnvelope2D().intersects((BoundingBox) env));
 
         // Since we have requested a void area (no data within the mosaic's definition area)
         // check that the returned image respects the number of components from band selection
@@ -2216,14 +2217,14 @@ public class ImageMosaicReaderTest {
         // inside the raster, and partly outside
         final ParameterValue<GridGeometry2D> ggp =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env =
-                new Envelope2D(
-                        reader.getCoordinateReferenceSystem(),
+        ReferencedEnvelope env =
+                ReferencedEnvelope.rect(
                         44887,
                         2299342,
                         646897 - 44887,
-                        3155705 - 2299342);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+                        3155705 - 2299342,
+                        reader.getCoordinateReferenceSystem());
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         ggp.setValue(gg);
 
         // red background
@@ -2233,8 +2234,8 @@ public class ImageMosaicReaderTest {
         // read and check we actually got a coverage in the requested area
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, bgp});
         assertNotNull(coverage);
-        final Envelope2D envelope2d = coverage.getEnvelope2D();
-        assertTrue(envelope2d.contains((Rectangle2D) env));
+        final ReferencedEnvelope ReferencedEnvelope = coverage.getEnvelope2D();
+        assertTrue(ReferencedEnvelope.contains((BoundingBox) env));
 
         // and that the color is the expected one given the background values provided
         int[] pixel = new int[4];
@@ -2259,9 +2260,9 @@ public class ImageMosaicReaderTest {
             // the output should be transparent
             final ParameterValue<GridGeometry2D> ggp =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 19, 45, 1, 1);
-            GridGeometry2D gg =
-                    new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
+            ReferencedEnvelope env =
+                    ReferencedEnvelope.rect(19, 45, 1, 1, reader.getCoordinateReferenceSystem());
+            GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Bounds) env);
             ggp.setValue(gg);
 
             // Setting transparency
@@ -2272,7 +2273,7 @@ public class ImageMosaicReaderTest {
             // read and check we actually got a coverage in the requested area
             GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggp, transparent});
             assertNotNull(coverage);
-            assertTrue(coverage.getEnvelope2D().contains((Rectangle2D) env));
+            assertTrue(coverage.getEnvelope2D().contains((BoundingBox) env));
 
             int[] pixel = {
                 Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE
@@ -2659,7 +2660,7 @@ public class ImageMosaicReaderTest {
         URL harvestSingleURL = fileToUrl(directory1);
         final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
         ImageMosaicReader reader = getReader(harvestSingleURL, format);
-        GeneralEnvelope singleGranuleEnvelope = reader.getOriginalEnvelope();
+        GeneralBounds singleGranuleEnvelope = reader.getOriginalEnvelope();
         // System.out.println(singleGranuleEnvelope);
 
         // now push back all the files, and harvest them
@@ -2669,17 +2670,18 @@ public class ImageMosaicReaderTest {
         reader.harvest(null, directory1, null);
 
         // the envelope should have been updated
-        GeneralEnvelope fullEnvelope = reader.getOriginalEnvelope();
+        GeneralBounds fullEnvelope = reader.getOriginalEnvelope();
         assertTrue(fullEnvelope.contains(singleGranuleEnvelope, true));
         assertTrue(fullEnvelope.getSpan(0) > singleGranuleEnvelope.getSpan(0));
         assertTrue(fullEnvelope.getSpan(1) > singleGranuleEnvelope.getSpan(1));
 
         // make a request in a bbox that's outside of the original envelope
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        Bounds env = ReferencedEnvelope.rect(10, 40, 15, 45);
         GridEnvelope2D rasterEnvelope =
                 new GridEnvelope2D(
-                        new Envelope2D(CRS.transform(mt.inverse(), env)), PixelInCell.CELL_CORNER);
+                        new ReferencedEnvelope(CRS.transform(mt.inverse(), env)),
+                        PixelInCell.CELL_CORNER);
         GridGeometry2D gg = new GridGeometry2D(rasterEnvelope, env);
         final ParameterValue<GridGeometry2D> ggParameter =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -2697,7 +2699,7 @@ public class ImageMosaicReaderTest {
                                 + "OR location = 'global_mosaic_9.png' "
                                 + "OR location = 'global_mosaic_4.png'"));
 
-        GeneralEnvelope reducedEnvelope = reader.getOriginalEnvelope();
+        GeneralBounds reducedEnvelope = reader.getOriginalEnvelope();
         assertTrue(fullEnvelope.contains(reducedEnvelope, true));
         assertTrue(reducedEnvelope.contains(singleGranuleEnvelope, true));
         assertTrue(fullEnvelope.getSpan(0) > reducedEnvelope.getSpan(0));
@@ -2748,10 +2750,11 @@ public class ImageMosaicReaderTest {
         // second reader does not have the metadata updated, but can still respond to the
         // request
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        Bounds env = ReferencedEnvelope.rect(10, 40, 15, 45);
         GridEnvelope2D rasterEnvelope =
                 new GridEnvelope2D(
-                        new Envelope2D(CRS.transform(mt.inverse(), env)), PixelInCell.CELL_CORNER);
+                        new ReferencedEnvelope(CRS.transform(mt.inverse(), env)),
+                        PixelInCell.CELL_CORNER);
         GridGeometry2D gg = new GridGeometry2D(rasterEnvelope, env);
         final ParameterValue<GridGeometry2D> ggParameter =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
@@ -3782,7 +3785,7 @@ public class ImageMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -4285,7 +4288,7 @@ public class ImageMosaicReaderTest {
         ImageMosaicReader reader = getReader(testURL, format);
 
         // create the same BBOX with strange CRS
-        final GeneralEnvelope targetBBOX = new GeneralEnvelope(reader.getOriginalEnvelope());
+        final GeneralBounds targetBBOX = new GeneralBounds(reader.getOriginalEnvelope());
         targetBBOX.setCoordinateReferenceSystem(CRS.parseWKT(strangeWGS84));
 
         // create the GridGeometry
@@ -4322,7 +4325,7 @@ public class ImageMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -4609,8 +4612,9 @@ public class ImageMosaicReaderTest {
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        GeneralEnvelope ge = CRS.transform(mt.inverse(), box);
-        GridEnvelope2D range = new GridEnvelope2D(new Envelope2D(ge), PixelInCell.CELL_CENTER);
+        GeneralBounds ge = CRS.transform(mt.inverse(), box);
+        GridEnvelope2D range =
+                new GridEnvelope2D(new ReferencedEnvelope(ge), PixelInCell.CELL_CENTER);
         gg.setValue(new GridGeometry2D(range, mt, box.getCoordinateReferenceSystem()));
 
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
@@ -4662,7 +4666,7 @@ public class ImageMosaicReaderTest {
         // reading the mosaic with its own envelope (should be empty, so the request will be emtpy)
         // this should return an empty coverage
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -4682,9 +4686,9 @@ public class ImageMosaicReaderTest {
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
-        GridGeometry2D gg2D =
-                new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        ReferencedEnvelope env =
+                ReferencedEnvelope.rect(0, 0, 1000, 1000, reader.getCoordinateReferenceSystem());
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         gg.setValue(gg2D);
         coverage = reader.read(new GeneralParameterValue[] {bkg, gg, useJai, tileSize});
         assertNull(coverage);
@@ -4765,7 +4769,7 @@ public class ImageMosaicReaderTest {
         // reading the mosaic with its own envelope (should be empty, so the request will be emtpy)
         // this should return an empty coverage
         ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
@@ -4785,9 +4789,9 @@ public class ImageMosaicReaderTest {
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
         bkg.setValue(new double[] {-9999.0});
         gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 0, 0, 1000, 1000);
-        GridGeometry2D gg2D =
-                new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Envelope) env);
+        ReferencedEnvelope env =
+                ReferencedEnvelope.rect(0, 0, 1000, 1000, reader.getCoordinateReferenceSystem());
+        GridGeometry2D gg2D = new GridGeometry2D(new GridEnvelope2D(0, 0, 100, 100), (Bounds) env);
         gg.setValue(gg2D);
         coverage = reader.read(new GeneralParameterValue[] {bkg, gg, useJai, tileSize});
         assertNull(coverage);
@@ -4982,8 +4986,8 @@ public class ImageMosaicReaderTest {
         GridCoverage2D expected = granuleReader.read(null);
 
         // check footprint is the same
-        final Envelope expectedEnvelope = expected.getEnvelope();
-        final Envelope actualEnvelope = coverage.getEnvelope();
+        final Bounds expectedEnvelope = expected.getEnvelope();
+        final Bounds actualEnvelope = coverage.getEnvelope();
         final double EPS = 1e-6;
         assertEquals(expectedEnvelope.getMinimum(0), actualEnvelope.getMinimum(0), EPS);
         assertEquals(expectedEnvelope.getMinimum(1), actualEnvelope.getMinimum(1), EPS);

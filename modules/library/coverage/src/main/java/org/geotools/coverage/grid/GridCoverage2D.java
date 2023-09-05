@@ -46,14 +46,14 @@ import org.geotools.api.coverage.PointOutsideCoverageException;
 import org.geotools.api.coverage.SampleDimension;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
-import org.geotools.api.geometry.DirectPosition;
-import org.geotools.api.geometry.Envelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
@@ -148,7 +148,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
 
     /**
      * Constructs a grid coverage with the specified {@linkplain GridGeometry2D grid geometry} and
-     * {@linkplain GridSampleDimension sample dimensions}. The {@linkplain Envelope envelope}
+     * {@linkplain GridSampleDimension sample dimensions}. The {@linkplain Bounds envelope}
      * (including the {@linkplain CoordinateReferenceSystem coordinate reference system}) is
      * inferred from the grid geometry.
      *
@@ -273,7 +273,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * coverage has some extent in other dimensions (for example a depth, or a start and end time).
      */
     @Override
-    public Envelope getEnvelope() {
+    public Bounds getEnvelope() {
         return gridGeometry.getEnvelope();
     }
 
@@ -284,7 +284,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *
      * @return The two-dimensional bounding box.
      */
-    public Envelope2D getEnvelope2D() {
+    public ReferencedEnvelope getEnvelope2D() {
         return gridGeometry.getEnvelope2D();
     }
 
@@ -344,7 +344,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * dimension is included in the vector.
      */
     @Override
-    public Object evaluate(final DirectPosition point) throws CannotEvaluateException {
+    public Object evaluate(final Position point) throws CannotEvaluateException {
         final int dataType = image.getSampleModel().getDataType();
         switch (dataType) {
             case DataBuffer.TYPE_BYTE:
@@ -373,7 +373,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     failed because the input point has invalid coordinates.
      */
     @Override
-    public byte[] evaluate(final DirectPosition coord, byte[] dest) throws CannotEvaluateException {
+    public byte[] evaluate(final Position coord, byte[] dest) throws CannotEvaluateException {
         final int[] array = evaluate(coord, (int[]) null);
         if (dest == null) {
             dest = new byte[array.length];
@@ -395,8 +395,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     failed because the input point has invalid coordinates.
      */
     @Override
-    public int[] evaluate(final DirectPosition coord, final int[] dest)
-            throws CannotEvaluateException {
+    public int[] evaluate(final Position coord, final int[] dest) throws CannotEvaluateException {
         return evaluate(gridGeometry.toPoint2D(coord), dest);
     }
 
@@ -411,7 +410,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     failed because the input point has invalid coordinates.
      */
     @Override
-    public float[] evaluate(final DirectPosition coord, final float[] dest)
+    public float[] evaluate(final Position coord, final float[] dest)
             throws CannotEvaluateException {
         return evaluate(gridGeometry.toPoint2D(coord), dest);
     }
@@ -427,7 +426,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      *     failed because the input point has invalid coordinates.
      */
     @Override
-    public double[] evaluate(final DirectPosition coord, final double[] dest)
+    public double[] evaluate(final Position coord, final double[] dest)
             throws CannotEvaluateException {
         return evaluate(gridGeometry.toPoint2D(coord), dest);
     }
@@ -590,7 +589,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
      * @return A string with pixel coordinates and pixel values at the specified location, or {@code
      *     null} if {@code coord} is outside coverage.
      */
-    public synchronized String getDebugString(final DirectPosition coord) {
+    public synchronized String getDebugString(final Position coord) {
         Point2D pixel = gridGeometry.toPoint2D(coord);
         pixel = gridGeometry.inverseTransform(pixel);
         final int x = (int) Math.round(pixel.getX());

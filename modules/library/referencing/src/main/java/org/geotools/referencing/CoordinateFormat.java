@@ -30,14 +30,15 @@ import java.util.TimeZone;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Time;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.api.referencing.datum.Datum;
 import org.geotools.api.referencing.datum.TemporalDatum;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
@@ -52,9 +53,9 @@ import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * Formats a {@linkplain org.geotools.geometry.GeneralDirectPosition direct position} in an
- * arbitrary {@linkplain CoordinateReferenceSystem coordinate reference system}. The format for each
- * ordinate is infered from the coordinate system units using the following rules:
+ * Formats a {@linkplain GeneralPosition direct position} in an arbitrary {@linkplain
+ * CoordinateReferenceSystem coordinate reference system}. The format for each ordinate is infered
+ * from the coordinate system units using the following rules:
  *
  * <ul>
  *   <li>Ordinate values in {@linkplain NonSI#DEGREE_ANGLE degrees} are formated as angles using
@@ -373,7 +374,7 @@ public class CoordinateFormat extends Format {
      * @throws IllegalArgumentException if this {@code CoordinateFormat} cannot format the given
      *     object.
      */
-    public String format(final DirectPosition point) {
+    public String format(final Position point) {
         return format(point, new StringBuffer(), null).toString();
     }
 
@@ -391,7 +392,7 @@ public class CoordinateFormat extends Format {
      *     object.
      */
     public StringBuffer format(
-            final DirectPosition point, final StringBuffer toAppendTo, final FieldPosition position)
+            final Position point, final StringBuffer toAppendTo, final FieldPosition position)
             throws IllegalArgumentException {
         final int dimension = point.getDimension();
         final CoordinateSystem cs;
@@ -466,7 +467,7 @@ public class CoordinateFormat extends Format {
      * position's dimension must matches the {@linkplain #getCoordinateReferenceSystem coordinate
      * reference system} dimension.
      *
-     * @param object The {@link DirectPosition} to format.
+     * @param object The {@link Position} to format.
      * @param toAppendTo Where the text is to be appended.
      * @param position A {@code FieldPosition} identifying a field in the formatted text, or {@code
      *     null} if none.
@@ -479,8 +480,8 @@ public class CoordinateFormat extends Format {
     public StringBuffer format(
             final Object object, final StringBuffer toAppendTo, final FieldPosition position)
             throws IllegalArgumentException {
-        if (object instanceof DirectPosition) {
-            return format((DirectPosition) object, toAppendTo, position);
+        if (object instanceof Position) {
+            return format((Position) object, toAppendTo, position);
         } else {
             throw new IllegalArgumentException(String.valueOf(object));
         }
@@ -493,7 +494,7 @@ public class CoordinateFormat extends Format {
      * @param position The position of the first character to parse.
      */
     @Override
-    public DirectPosition parseObject(final String source, final ParsePosition position) {
+    public Position parseObject(final String source, final ParsePosition position) {
         throw new UnsupportedOperationException("DirectPosition parsing not yet implemented.");
     }
 }

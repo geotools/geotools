@@ -45,7 +45,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Query;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
@@ -422,10 +422,10 @@ public class NetCDFMultiDimTest {
             throws IllegalArgumentException, IOException {
         GridCoverage2D cov = reader.read(D, pams);
 
-        assertEquals(a, ((double[]) cov.evaluate(new DirectPosition2D(-109, 41)))[0], 0.0);
-        assertEquals(b, ((double[]) cov.evaluate(new DirectPosition2D(-107, 41)))[0], 0.0);
-        assertEquals(c, ((double[]) cov.evaluate(new DirectPosition2D(-109, 40)))[0], 0.0);
-        assertEquals(d, ((double[]) cov.evaluate(new DirectPosition2D(-107, 40)))[0], 0.0);
+        assertEquals(a, ((double[]) cov.evaluate(new Position2D(-109, 41)))[0], 0.0);
+        assertEquals(b, ((double[]) cov.evaluate(new Position2D(-107, 41)))[0], 0.0);
+        assertEquals(c, ((double[]) cov.evaluate(new Position2D(-109, 40)))[0], 0.0);
+        assertEquals(d, ((double[]) cov.evaluate(new Position2D(-107, 40)))[0], 0.0);
     }
 
     private void checkNull(NetCDFReader reader, GeneralParameterValue[] pams)

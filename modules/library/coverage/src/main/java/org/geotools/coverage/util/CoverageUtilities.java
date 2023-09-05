@@ -48,8 +48,8 @@ import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -173,7 +173,7 @@ public final class CoverageUtilities {
      * @return The two-dimensional envelope.
      * @throws MismatchedDimensionException if the envelope can't be reduced to two dimensions.
      */
-    public static Envelope2D getEnvelope2D(final Coverage coverage)
+    public static ReferencedEnvelope getEnvelope2D(final Coverage coverage)
             throws MismatchedDimensionException {
         if (coverage instanceof GridCoverage2D) {
             return ((GridCoverage2D) coverage).getEnvelope2D();
@@ -188,7 +188,7 @@ public final class CoverageUtilities {
             }
         }
         // Following may thrown MismatchedDimensionException.
-        return new Envelope2D(coverage.getEnvelope());
+        return new ReferencedEnvelope(coverage.getEnvelope());
     }
 
     /**

@@ -17,7 +17,7 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.operation.MathTransform1D;
@@ -167,7 +167,7 @@ public class LinearTransform1D extends AbstractMathTransform
      * is required and {@link Double#NaN} may be a legal output value for some users.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         return new Matrix1(scale);
     }
 

@@ -25,7 +25,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterDescriptor;
 import org.geotools.api.parameter.ParameterDescriptorGroup;
 import org.geotools.api.parameter.ParameterNotFoundException;
@@ -134,7 +134,7 @@ public class NTv2Transform extends AbstractMathTransform implements MathTransfor
      * @param object The object to compare with this transform.
      * @return {@code true} if the given object is {@code this}, or a NTv2Transform with same
      *     parameter values, which would mean that given identical source position, the {@linkplain
-     *     #transform(DirectPosition,DirectPosition) transformed} position would be the same.
+     *     #transform(Position, Position) transformed} position would be the same.
      */
     @Override
     public boolean equals(final Object object) {

@@ -18,18 +18,18 @@ import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.operation.TransformException;
 
 /**
- * Represents a two-dimensional {@linkplain Envelope envelope}. This interface combines the ideas of
- * {@link GeographicBoundingBox} with those of {@link Envelope}. It provides convenience methods to
+ * Represents a two-dimensional {@linkplain Bounds envelope}. This interface combines the ideas of
+ * {@link GeographicBoundingBox} with those of {@link Bounds}. It provides convenience methods to
  * assist in accessing the formal properties of this object. Those methods (for example {@link
  * #getMinX()}) match common usage in existing libraries like {@linkplain Rectangle2D Java2D}.
  *
- * <p>This object contains no additional information beyond that provided by {@link Envelope}.
+ * <p>This object contains no additional information beyond that provided by {@link Bounds}.
  *
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.1
  */
-public interface BoundingBox extends Envelope {
+public interface BoundingBox extends Bounds {
     /**
      * Sets this bounding box to be the same as the specified box.
      *
@@ -141,7 +141,7 @@ public interface BoundingBox extends Envelope {
      * @param location The direct position to test for inclusion.
      * @return {@code true} if the given position is inside this bounds.
      */
-    boolean contains(DirectPosition location);
+    boolean contains(Position location);
 
     /**
      * Returns {@code true} if the provided location is contained by this bounding box. Note that

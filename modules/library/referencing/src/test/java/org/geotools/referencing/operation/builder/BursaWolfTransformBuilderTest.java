@@ -21,10 +21,10 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import org.geotools.api.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.transform.GeocentricTranslation;
 import org.junit.Test;
@@ -43,19 +43,15 @@ public final class BursaWolfTransformBuilderTest {
 
         List<MappedPosition> vectors = new ArrayList<>();
 
-        vectors.add(
-                new MappedPosition(
-                        new GeneralDirectPosition(R, 0, 0), new GeneralDirectPosition(R, 0, 0)));
+        vectors.add(new MappedPosition(new GeneralPosition(R, 0, 0), new GeneralPosition(R, 0, 0)));
 
         vectors.add(
                 new MappedPosition(
-                        new GeneralDirectPosition(0, cos * R, -sin * R),
-                        new GeneralDirectPosition(0, R, 0)));
+                        new GeneralPosition(0, cos * R, -sin * R), new GeneralPosition(0, R, 0)));
 
         vectors.add(
                 new MappedPosition(
-                        new GeneralDirectPosition(0, sin * R, cos * R),
-                        new GeneralDirectPosition(0, 0, R)));
+                        new GeneralPosition(0, sin * R, cos * R), new GeneralPosition(0, 0, R)));
 
         double[] points = new double[vectors.size() * 3];
 
@@ -89,8 +85,8 @@ public final class BursaWolfTransformBuilderTest {
         double R = 6370000;
         Random random = new Random(143477662);
 
-        DirectPosition ptSrc;
-        DirectPosition ptDst;
+        Position ptSrc;
+        Position ptDst;
         List<MappedPosition> vectors = new ArrayList<>();
 
         BursaWolfParameters bwp = new BursaWolfParameters(null);
@@ -110,7 +106,7 @@ public final class BursaWolfTransformBuilderTest {
 
             //   generate source points
             ptSrc =
-                    new GeneralDirectPosition(
+                    new GeneralPosition(
                             R * Math.sin(gamma) * Math.cos(alfa),
                             R * Math.sin(gamma) * Math.cos(alfa),
                             R * Math.cos(gamma));
@@ -119,7 +115,7 @@ public final class BursaWolfTransformBuilderTest {
 
             //  generates destination points
             gt.transform(ptSrc.getCoordinate(), 0, pom, 0, 1);
-            ptDst = new GeneralDirectPosition(pom);
+            ptDst = new GeneralPosition(pom);
             vectors.add(new MappedPosition(ptSrc, ptDst));
         }
 

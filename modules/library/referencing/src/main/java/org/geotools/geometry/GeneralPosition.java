@@ -20,8 +20,8 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
-import org.geotools.api.geometry.DirectPosition;
 import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.i18n.ErrorKeys;
@@ -39,7 +39,7 @@ import org.geotools.util.SuppressFBWarnings;
  *
  * <p>This particular implementation of {@code DirectPosition} is said "General" because it uses an
  * {@linkplain #ordinates array of ordinates} of an arbitrary length. If the direct position is know
- * to be always two-dimensional, then {@link DirectPosition2D} may provides a more efficient
+ * to be always two-dimensional, then {@link Position2D} may provides a more efficient
  * implementation.
  *
  * <p>Most methods in this implementation are final for performance reason.
@@ -47,12 +47,11 @@ import org.geotools.util.SuppressFBWarnings;
  * @since 2.0
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @see DirectPosition1D
- * @see DirectPosition2D
+ * @see Position1D
+ * @see Position2D
  * @see java.awt.geom.Point2D
  */
-public class GeneralDirectPosition extends AbstractDirectPosition
-        implements Serializable, Cloneable {
+public class GeneralPosition extends AbstractPosition implements Serializable, Cloneable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 9071833698385715524L;
 
@@ -69,7 +68,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @param crs The coordinate reference system to be given to this position.
      * @since 2.2
      */
-    public GeneralDirectPosition(final CoordinateReferenceSystem crs) {
+    public GeneralPosition(final CoordinateReferenceSystem crs) {
         this(crs.getCoordinateSystem().getDimension());
         this.crs = crs;
     }
@@ -80,7 +79,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @param numDim Number of dimensions.
      * @throws NegativeArraySizeException if {@code numDim} is negative.
      */
-    public GeneralDirectPosition(final int numDim) throws NegativeArraySizeException {
+    public GeneralPosition(final int numDim) throws NegativeArraySizeException {
         ordinates = new double[numDim];
     }
 
@@ -90,7 +89,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      *
      * @param ordinates The ordinate values to copy.
      */
-    public GeneralDirectPosition(final double[] ordinates) {
+    public GeneralPosition(final double[] ordinates) {
         this.ordinates = ordinates.clone();
     }
 
@@ -98,13 +97,13 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * Constructs a 2D position from the specified ordinates. Despite their name, the
      * (<var>x</var>,<var>y</var>) coordinates don't need to be oriented toward ({@linkplain
      * org.geotools.api.referencing.cs.AxisDirection#EAST East}, {@linkplain
-     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). See the {@link DirectPosition2D}
+     * org.geotools.api.referencing.cs.AxisDirection#NORTH North}). See the {@link Position2D}
      * javadoc for details.
      *
      * @param x The first ordinate value.
      * @param y The second ordinate value.
      */
-    public GeneralDirectPosition(final double x, final double y) {
+    public GeneralPosition(final double x, final double y) {
         ordinates = new double[] {x, y};
     }
 
@@ -119,7 +118,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @param y The second ordinate value.
      * @param z The third ordinate value.
      */
-    public GeneralDirectPosition(final double x, final double y, final double z) {
+    public GeneralPosition(final double x, final double y, final double z) {
         ordinates = new double[] {x, y, z};
     }
 
@@ -128,7 +127,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      *
      * @param point The position to copy.
      */
-    public GeneralDirectPosition(final Point2D point) {
+    public GeneralPosition(final Point2D point) {
         this(point.getX(), point.getY());
     }
 
@@ -138,7 +137,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @param point The position to copy.
      * @since 2.2
      */
-    public GeneralDirectPosition(final DirectPosition point) {
+    public GeneralPosition(final Position point) {
         ordinates = point.getCoordinate(); // Should already be cloned.
         crs = point.getCoordinateReferenceSystem();
     }
@@ -224,8 +223,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      * @since 2.2
      */
-    public final void setLocation(final DirectPosition position)
-            throws MismatchedDimensionException {
+    public final void setLocation(final Position position) throws MismatchedDimensionException {
         ensureDimensionMatch("position", position.getDimension(), ordinates.length);
         setCoordinateReferenceSystem(position.getCoordinateReferenceSystem());
         for (int i = 0; i < ordinates.length; i++) {
@@ -235,13 +233,13 @@ public class GeneralDirectPosition extends AbstractDirectPosition
 
     /**
      * Set this coordinate to the specified direct position. This method is identical to {@link
-     * #setLocation(DirectPosition)}, but is slightly faster in the special case of an {@code
+     * #setLocation(Position)}, but is slightly faster in the special case of an {@code
      * GeneralDirectPosition} implementation.
      *
      * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
-    public final void setLocation(final GeneralDirectPosition position)
+    public final void setLocation(final GeneralPosition position)
             throws MismatchedDimensionException {
         ensureDimensionMatch("position", position.ordinates.length, ordinates.length);
         setCoordinateReferenceSystem(position.crs);
@@ -294,7 +292,7 @@ public class GeneralDirectPosition extends AbstractDirectPosition
     /** Returns a deep copy of this position. */
     @Override
     @SuppressFBWarnings("CN_IDIOM_NO_SUPER_CALL")
-    public GeneralDirectPosition clone() {
-        return new GeneralDirectPosition(ordinates);
+    public GeneralPosition clone() {
+        return new GeneralPosition(ordinates);
     }
 }

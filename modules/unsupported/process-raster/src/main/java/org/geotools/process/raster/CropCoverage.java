@@ -23,7 +23,7 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.process.factory.DescribeParameter;
@@ -63,8 +63,8 @@ public class CropCoverage implements RasterProcess {
             // assume the geometry is in the same crs
             crs = coverage.getCoordinateReferenceSystem();
         }
-        GeneralEnvelope bounds =
-                new GeneralEnvelope(new ReferencedEnvelope(cropShape.getEnvelopeInternal(), crs));
+        GeneralBounds bounds =
+                new GeneralBounds(new ReferencedEnvelope(cropShape.getEnvelopeInternal(), crs));
 
         // force it to a collection if necessary
         GeometryCollection roi;

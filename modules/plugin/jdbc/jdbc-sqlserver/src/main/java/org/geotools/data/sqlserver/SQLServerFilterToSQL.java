@@ -120,7 +120,7 @@ public class SQLServerFilterToSQL extends FilterToSQL {
                 out.write(")");
 
                 if (filter instanceof DWithin) {
-                    out.write("<");
+                    out.write("<=");
                 } else if (filter instanceof Beyond) {
                     out.write(">");
                 } else {

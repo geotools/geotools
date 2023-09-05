@@ -47,7 +47,6 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FilteringFeatureReader;
-import org.geotools.api.data.Repository;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentEntry;

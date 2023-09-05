@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;

@@ -19,8 +19,8 @@ package org.geotools.process;
 import java.util.Map;
 import org.geotools.api.coverage.grid.GridCoverageReader;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.data.Query;
+import org.geotools.api.parameter.GeneralParameterValue;
 
 /**
  * An interface to be implemented by processes meant to be integrated as feature collection/grid

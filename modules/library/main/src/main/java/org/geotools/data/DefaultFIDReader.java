@@ -17,7 +17,6 @@
 package org.geotools.data;
 
 import java.io.IOException;
-
 import org.geotools.api.data.FIDReader;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 

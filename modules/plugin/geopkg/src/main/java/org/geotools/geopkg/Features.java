@@ -18,12 +18,12 @@ package org.geotools.geopkg;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.data.SimpleFeatureWriter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Feature utility class.

@@ -18,12 +18,12 @@ package org.geotools.process.vector;
 
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.process.ProcessException;

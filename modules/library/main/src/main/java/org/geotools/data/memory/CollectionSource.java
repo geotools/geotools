@@ -21,11 +21,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.data.Transaction;
 import org.geotools.feature.NameImpl;
 
 /**

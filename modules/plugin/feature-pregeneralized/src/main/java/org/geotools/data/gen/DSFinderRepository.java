@@ -30,11 +30,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.api.feature.type.Name;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.Repository;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.util.logging.Logging;
 

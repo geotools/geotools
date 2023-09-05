@@ -18,11 +18,11 @@ package org.geotools.data.collection;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.data.DataSourceException;
-import org.geotools.api.data.FeatureReader;
 import org.geotools.feature.FeatureIterator;
 
 /**

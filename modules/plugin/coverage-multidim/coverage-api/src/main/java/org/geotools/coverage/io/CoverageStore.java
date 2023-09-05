@@ -17,8 +17,8 @@
 package org.geotools.coverage.io;
 
 import java.util.Map;
-import org.geotools.api.util.ProgressListener;
 import org.geotools.api.data.Parameter;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * Provided read-write access to a coverage data product.

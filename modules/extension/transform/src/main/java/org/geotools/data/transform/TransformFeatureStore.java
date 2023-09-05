@@ -22,15 +22,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.identity.FeatureId;
-import org.geotools.api.data.FeatureReader;
-import org.geotools.api.data.Transaction;
-import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 

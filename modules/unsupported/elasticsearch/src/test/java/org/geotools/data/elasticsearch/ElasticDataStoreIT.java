@@ -36,8 +36,8 @@ import org.apache.http.StatusLine;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.data.DataStore;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.store.ContentFeatureSource;
 import org.junit.Test;
 

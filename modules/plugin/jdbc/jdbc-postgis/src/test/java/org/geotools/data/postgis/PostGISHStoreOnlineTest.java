@@ -24,12 +24,12 @@ import static org.junit.Assume.assumeFalse;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataUtilities;
-import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;

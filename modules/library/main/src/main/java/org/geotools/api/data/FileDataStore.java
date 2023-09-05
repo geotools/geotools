@@ -52,17 +52,11 @@ public interface FileDataStore extends DataStore {
     FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
             Filter filter, Transaction transaction) throws IOException;
 
-    /**
-     * @see DataStore#getFeatureWriter(java.lang.String,
-     *     Transaction)
-     */
+    /** @see DataStore#getFeatureWriter(java.lang.String, Transaction) */
     FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Transaction transaction)
             throws IOException;
 
-    /**
-     * @see DataStore#getFeatureWriterAppend(java.lang.String,
-     *     Transaction)
-     */
+    /** @see DataStore#getFeatureWriterAppend(java.lang.String, Transaction) */
     FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(Transaction transaction)
             throws IOException;
 }

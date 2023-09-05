@@ -18,11 +18,11 @@ package org.geotools.data.transform;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.logging.Logging;
 

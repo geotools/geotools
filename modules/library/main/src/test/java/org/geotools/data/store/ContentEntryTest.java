@@ -22,9 +22,9 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.type.Name;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.api.data.Transaction;
 import org.geotools.feature.NameImpl;
 import org.junit.Test;
 

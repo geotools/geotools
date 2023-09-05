@@ -38,9 +38,9 @@ import java.util.logging.Logger;
 import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.FileStoreFactory;
 import org.geotools.api.data.FilteringFileStoreFactory;
-import org.geotools.api.data.DataStoreFinder;
 import org.geotools.util.logging.Logging;
 
 /**

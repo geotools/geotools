@@ -22,16 +22,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.api.data.DelegatingFeatureWriter;
 import org.geotools.api.data.FeatureLock;
 import org.geotools.api.data.FeatureLockException;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.LockingManager;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.data.Transaction.State;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.data.Transaction.State;
 import org.geotools.util.SuppressFBWarnings;
 
 /**

@@ -18,15 +18,15 @@ package org.geotools.data.directory;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.identity.FeatureId;
-import org.geotools.api.data.FeatureListener;
-import org.geotools.api.data.FeatureReader;
-import org.geotools.api.data.Transaction;
-import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
 
 public class DirectoryFeatureStore extends DirectoryFeatureSource implements SimpleFeatureStore {

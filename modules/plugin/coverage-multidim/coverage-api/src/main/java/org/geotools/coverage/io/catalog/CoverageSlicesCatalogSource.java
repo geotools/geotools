@@ -18,10 +18,10 @@ package org.geotools.coverage.io.catalog;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.coverage.grid.io.GranuleSource;
-import org.geotools.api.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;

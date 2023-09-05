@@ -2,11 +2,11 @@ package org.geotools.ows.wmts.internal;
 
 import java.io.File;
 import java.net.URL;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.style.Style;
 import org.geotools.api.data.FileDataStore;
 import org.geotools.api.data.FileDataStoreFinder;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.Style;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;

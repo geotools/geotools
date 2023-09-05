@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.util.factory.Hints;
 
 /**

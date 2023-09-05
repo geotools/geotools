@@ -19,13 +19,12 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.data.DataSourceException;
 import org.geotools.data.Diff;
-import org.geotools.api.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;

@@ -18,6 +18,8 @@
 package org.geotools.swing.tool;
 
 import java.util.Collection;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
@@ -25,8 +27,6 @@ import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.api.data.FeatureSource;
-import org.geotools.api.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

@@ -21,13 +21,13 @@ import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.data.DataUtilities;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.CollectionFeatureSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.ecql.ECQL;

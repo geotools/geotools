@@ -21,9 +21,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.api.data.FeatureReader;
 
 /**
  * An iterator that wraps around a FeatureReader.

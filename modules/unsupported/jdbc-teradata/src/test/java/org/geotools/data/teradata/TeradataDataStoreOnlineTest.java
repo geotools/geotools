@@ -19,13 +19,13 @@ package org.geotools.data.teradata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.data.FeatureWriter;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.Transaction;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;

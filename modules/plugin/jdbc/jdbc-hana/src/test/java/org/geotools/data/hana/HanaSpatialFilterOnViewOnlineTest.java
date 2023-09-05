@@ -18,10 +18,10 @@ package org.geotools.data.hana;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.data.Query;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Intersects;
-import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;

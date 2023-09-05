@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.data.Parameter;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.data.Parameter;
 import org.geotools.ysld.ProcessUtil;
 
 /** Encodes a Rendering Transform, represented by an {@link Expression} as YSLD. */

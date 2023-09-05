@@ -22,18 +22,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.data.BatchFeatureEvent;
-import org.geotools.data.Diff;
 import org.geotools.api.data.FeatureEvent;
 import org.geotools.api.data.FeatureEvent.Type;
 import org.geotools.api.data.FeatureListener;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.data.Diff;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**

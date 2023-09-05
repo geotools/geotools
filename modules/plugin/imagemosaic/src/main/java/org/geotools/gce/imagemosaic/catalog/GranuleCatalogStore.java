@@ -18,13 +18,13 @@ package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;

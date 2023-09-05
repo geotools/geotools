@@ -16,8 +16,6 @@
  */
 package org.geotools.api.data;
 
-import org.geotools.api.data.Transaction;
-
 import java.io.IOException;
 import java.util.Set;
 
@@ -157,7 +155,7 @@ class AutoCommitTransaction implements Transaction {
     /**
      * Implementation of addProperty.
      *
-     * @see Transaction#addProperty(java.lang.Object, java.lang.Object)
+     * @see org.geotools.api.data.Transaction#addProperty(java.lang.Object, java.lang.Object)
      */
     @Override
     public void putProperty(Object key, Object value) {

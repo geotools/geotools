@@ -19,12 +19,12 @@ package org.geotools.vectormosaic;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Set;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.feature.NameImpl;

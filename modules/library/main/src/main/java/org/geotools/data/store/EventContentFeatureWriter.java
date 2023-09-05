@@ -17,13 +17,12 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-
+import org.geotools.api.data.BatchFeatureEvent;
 import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.data.BatchFeatureEvent;
 import org.geotools.data.DiffFeatureWriter;
-import org.geotools.api.data.Transaction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**

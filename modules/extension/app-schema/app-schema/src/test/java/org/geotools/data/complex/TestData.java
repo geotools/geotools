@@ -19,6 +19,7 @@ package org.geotools.data.complex;
 
 import java.util.LinkedList;
 import java.util.List;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -29,7 +30,6 @@ import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.data.FeatureSource;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPath;

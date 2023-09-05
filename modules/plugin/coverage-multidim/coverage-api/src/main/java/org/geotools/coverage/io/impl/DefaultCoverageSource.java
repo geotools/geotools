@@ -22,6 +22,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.ProgressListener;
@@ -32,8 +34,6 @@ import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.RasterLayout;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.RangeType;
-import org.geotools.api.data.Parameter;
-import org.geotools.api.data.ResourceInfo;
 
 /**
  * Default implementation of {@link CoverageSource}.

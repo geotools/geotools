@@ -18,7 +18,6 @@ package org.geotools.api.data;
 
 import java.io.File;
 import java.io.IOException;
-import org.geotools.api.data.DataStore;
 
 /**
  * A delegate that finds the files managed by the directory store and

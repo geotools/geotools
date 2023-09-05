@@ -29,15 +29,14 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.LockingManager;
 import org.geotools.api.data.Repository;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 
 /**

@@ -18,12 +18,12 @@ package org.geotools.gce.imagemosaic.catalog.postgis;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.transform.Definition;
 import org.geotools.data.transform.TransformFeatureStore;
 

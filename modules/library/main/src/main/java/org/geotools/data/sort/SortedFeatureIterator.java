@@ -19,12 +19,12 @@ package org.geotools.data.sort;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.api.data.SimpleFeatureReader;
 
 public class SortedFeatureIterator implements SimpleFeatureIterator {
 

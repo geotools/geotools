@@ -18,7 +18,6 @@ package org.geotools.api.data;
 
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.data.FeatureReader;
 
 /** FeatureReader for SimpleFeature content. */
 public interface SimpleFeatureReader extends FeatureReader<SimpleFeatureType, SimpleFeature> {}

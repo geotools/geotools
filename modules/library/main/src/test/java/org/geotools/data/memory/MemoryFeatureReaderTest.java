@@ -20,15 +20,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.api.data.FeatureReader;
-import org.geotools.api.data.FeatureWriter;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.Transaction;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Test;
 

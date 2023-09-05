@@ -17,16 +17,16 @@
 package org.geotools.data.ogr;
 
 import java.io.IOException;
-import org.geotools.api.feature.FeatureVisitor;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.QueryCapabilities;
 import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;

@@ -22,13 +22,13 @@ package org.geotools.referencing.cs;
 import java.util.Map;
 import javax.measure.MetricPrefix;
 import javax.measure.Unit;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.TimeCS;
+import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Measure;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.TimeCS;
-import org.opengis.util.InternationalString;
 import si.uom.SI;
 
 /**

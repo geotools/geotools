@@ -22,12 +22,12 @@ import java.util.concurrent.Callable;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * Specific {@link Callable} implementation that can be used to load the result of a request on a

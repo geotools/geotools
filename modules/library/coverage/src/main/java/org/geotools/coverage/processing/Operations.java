@@ -19,27 +19,27 @@ package org.geotools.coverage.processing;
 import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.media.jai.Interpolation;
 import javax.media.jai.Warp;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.coverage.processing.Operation;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.coverage.processing.Operation;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Convenience, type-safe, methods for applying some common operations on {@linkplain Coverage
@@ -375,9 +375,7 @@ public class Operations {
      * @since 2.5
      */
     public Coverage resample(
-            final GridCoverage source,
-            final Envelope envelope,
-            final Interpolation interpolationType)
+            final GridCoverage source, final Bounds envelope, final Interpolation interpolationType)
             throws CoverageProcessingException {
         final GridGeometry gridGeometry;
         try {
@@ -450,7 +448,7 @@ public class Operations {
      * @see org.geotools.coverage.processing.operation.Crop
      * @since 2.3
      */
-    public Coverage crop(final Coverage source, final Envelope envelope)
+    public Coverage crop(final Coverage source, final Bounds envelope)
             throws CoverageProcessingException {
         return doOperation("CoverageCrop", source, "Envelope", envelope);
     }
@@ -969,7 +967,8 @@ public class Operations {
             } catch (ParameterNotFoundException cause) {
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                Errors.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, name), name);
+                                MessageFormat.format(ErrorKeys.UNKNOW_PARAMETER_NAME_$1, name),
+                                name);
                 exception.initCause(cause);
                 throw exception;
             }

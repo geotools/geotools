@@ -3,13 +3,13 @@ package org.geotools.filter.v2_0.bindings;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.emf.common.util.UniqueEList;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 import org.w3c.dom.Document;
 
 public class SortByTypeBindingTest extends FESTestSupport {
@@ -39,7 +39,7 @@ public class SortByTypeBindingTest extends FESTestSupport {
 
     @Test
     public void testEncode() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         SortBy sortBy = ff.sort("myProperty", SortOrder.ASCENDING);
 
         UniqueEList<SortBy> list = new UniqueEList<>();

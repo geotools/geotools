@@ -17,8 +17,8 @@
 package org.geotools.data.store;
 
 import java.util.Iterator;
-import org.opengis.feature.Feature;
-import org.opengis.filter.Filter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.Filter;
 
 /**
  * Decorates a {@link org.geotools.feature.Feature} iterator with one that filters content.

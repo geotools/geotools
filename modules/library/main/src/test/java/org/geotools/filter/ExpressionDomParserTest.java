@@ -28,10 +28,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.easymock.EasyMock;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -54,7 +54,7 @@ public class ExpressionDomParserTest {
     public void filterFactoryWithSetterInjectionInvoked() throws Exception {
         ExpressionDOMParser parser = new ExpressionDOMParser();
         assertNotNull(parser);
-        FilterFactory2 filterFactoryMock = EasyMock.createNiceMock(FilterFactory2.class);
+        FilterFactory filterFactoryMock = EasyMock.createNiceMock(FilterFactory.class);
         parser.setFilterFactory(filterFactoryMock);
         LiteralExpressionImpl expectedLiteralExpr = new LiteralExpressionImpl(3);
         EasyMock.expect(filterFactoryMock.literal("3")).andReturn(expectedLiteralExpr);
@@ -65,7 +65,7 @@ public class ExpressionDomParserTest {
 
     @Test
     public void filterFactoryWithConstructorInjectionInvoked() throws Exception {
-        FilterFactory2 filterFactoryMock = EasyMock.createNiceMock(FilterFactory2.class);
+        FilterFactory filterFactoryMock = EasyMock.createNiceMock(FilterFactory.class);
         LiteralExpressionImpl expectedLiteralExpr = new LiteralExpressionImpl(3);
         ExpressionDOMParser parser = new ExpressionDOMParser(filterFactoryMock);
         assertNotNull(parser);

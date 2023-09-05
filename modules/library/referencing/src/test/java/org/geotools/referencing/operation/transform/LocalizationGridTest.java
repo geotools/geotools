@@ -21,10 +21,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.referencing.operation.builder.LocalizationGrid;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Test the {@link LocalizationGrid} implementation.

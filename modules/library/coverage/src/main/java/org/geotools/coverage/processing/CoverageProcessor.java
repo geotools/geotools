@@ -20,6 +20,7 @@ import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,13 +39,21 @@ import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.TileCache;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.processing.Operation;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Interpolator2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -55,15 +64,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.processing.Operation;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.InternationalString;
 
 /**
  * Base class for {@linkplain Coverage coverage} processor implementations.
@@ -444,8 +444,8 @@ public class CoverageProcessor {
         if (old != null && !old.equals(operation)) {
             operations.put(old.getName().trim(), old);
             throw new IllegalStateException(
-                    Errors.getResources(getLocale())
-                            .getString(ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
+                    MessageFormat.format(
+                            ErrorKeys.OPERATION_ALREADY_BOUND_$1, operation.getName()));
         }
     }
 
@@ -481,8 +481,7 @@ public class CoverageProcessor {
                 return operation;
             }
             throw new OperationNotFoundException(
-                    Errors.getResources(getLocale())
-                            .getString(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+                    MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
         }
     }
 
@@ -550,8 +549,7 @@ public class CoverageProcessor {
         } catch (ClassCastException cause) {
             final OperationNotFoundException exception =
                     new OperationNotFoundException(
-                            Errors.getResources(getLocale())
-                                    .getString(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
+                            MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, operationName));
             exception.initCause(cause);
             throw exception;
         }

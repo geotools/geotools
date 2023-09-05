@@ -20,6 +20,7 @@ package org.geotools.swing.menu;
 import java.awt.Component;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.swing.MapPane;
@@ -27,7 +28,6 @@ import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.locale.LocaleUtils;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A pop-up menu that can be used with a {@code MapPane} for coordinate reference system operations.

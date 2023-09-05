@@ -22,17 +22,17 @@ import java.util.Objects;
 
 /** @author jdeolive */
 public abstract class BinaryLogicAbstract extends AbstractFilter {
-    protected List<org.opengis.filter.Filter> children;
+    protected List<org.geotools.api.filter.Filter> children;
 
-    protected BinaryLogicAbstract(List<org.opengis.filter.Filter> children) {
+    protected BinaryLogicAbstract(List<org.geotools.api.filter.Filter> children) {
         this.children = children;
     }
     /** Returned list is unmodifieable. For a cheaper access option use visitor */
-    public List<org.opengis.filter.Filter> getChildren() {
+    public List<org.geotools.api.filter.Filter> getChildren() {
         return Collections.unmodifiableList(children);
     }
 
-    public void setChildren(List<org.opengis.filter.Filter> children) {
+    public void setChildren(List<org.geotools.api.filter.Filter> children) {
         this.children = children;
     }
 

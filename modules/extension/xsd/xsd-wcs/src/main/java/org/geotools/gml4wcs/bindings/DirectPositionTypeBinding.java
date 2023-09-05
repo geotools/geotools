@@ -19,12 +19,12 @@
 package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.api.geometry.Position;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.gml4wcs.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -72,7 +72,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return DirectPosition.class;
+        return Position.class;
     }
 
     /**
@@ -84,7 +84,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        DirectPosition dp = null;
+        Position dp = null;
 
         if ("pos".equals(instance.getName())) {
             String[] CP = instance.getText().split(" ");
@@ -94,7 +94,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
                 coordinates[c++] = Double.parseDouble(coord.trim());
             }
 
-            dp = new GeneralDirectPosition(coordinates);
+            dp = new GeneralPosition(coordinates);
         }
 
         return dp;
@@ -102,7 +102,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
-        DirectPosition dp = (DirectPosition) object;
+        Position dp = (Position) object;
 
         if (dp == null) {
             value.appendChild(
@@ -127,7 +127,7 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
 
     @Override
     public Object getProperty(Object object, QName name) {
-        DirectPosition dp = (DirectPosition) object;
+        Position dp = (Position) object;
 
         if (name.getLocalPart().equals("dimension")) {
             return dp.getDimension();

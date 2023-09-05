@@ -17,10 +17,10 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.picocontainer.MutablePicoContainer;
 
 /**

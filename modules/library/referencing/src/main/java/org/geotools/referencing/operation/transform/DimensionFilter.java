@@ -16,9 +16,13 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -26,10 +30,6 @@ import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.util.XArray;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * An utility class for the separation of {@linkplain ConcatenatedTransform concatenation} of
@@ -58,9 +58,9 @@ import org.opengis.referencing.operation.Matrix;
  * @author Simone Giannecchini
  * @todo This class is specific to Geotools implementation; it is better to avoid it if you can. It
  *     could be generalized a bit if we perform the same operations on {@link
- *     org.opengis.referencing.operation.CoordinateOperation} interfaces instead of math transforms.
- *     We should revisit this issue after grid coverage API has been revisited (since grid coverage
- *     is a user of this class).
+ *     org.geotools.api.referencing.operation.CoordinateOperation} interfaces instead of math
+ *     transforms. We should revisit this issue after grid coverage API has been revisited (since
+ *     grid coverage is a user of this class).
  * @todo This class contains a set of static methods that could be factored out in some kind of
  *     {@code org.geotools.util.SortedIntegerSet} implementation.
  */
@@ -322,7 +322,7 @@ public class DimensionFilter {
                      *
                      * TODO: provide a more accurate error message.
                      */
-                    throw new FactoryException(Errors.format(ErrorKeys.INSEPARABLE_TRANSFORM));
+                    throw new FactoryException(ErrorKeys.INSEPARABLE_TRANSFORM);
                 }
                 targetDimensions[i] = j;
             }
@@ -352,7 +352,8 @@ public class DimensionFilter {
         assert XArray.isStrictlySorted(sourceDimensions);
         if (upper > dimSource) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "sourceDimensions", upper - 1));
+                    MessageFormat.format(
+                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "sourceDimensions", upper - 1));
         }
         /*
          * Check for easiest cases: same transform, identity transform or concatenated transforms.
@@ -491,7 +492,7 @@ public class DimensionFilter {
             // to any input dimension. But in this particuler case, our matrix has such
             // dependencies. TODO: is there anything we could do about that?
         }
-        throw new FactoryException(Errors.format(ErrorKeys.INSEPARABLE_TRANSFORM));
+        throw new FactoryException(ErrorKeys.INSEPARABLE_TRANSFORM);
     }
 
     /**
@@ -518,7 +519,7 @@ public class DimensionFilter {
         assert XArray.isStrictlySorted(targetDimensions);
         if (upper > dimTarget) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "targetDimensions", upper));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "targetDimensions", upper));
         }
         if (dimOutput == dimTarget) {
             assert lower == 0 && upper == dimTarget;
@@ -628,7 +629,7 @@ public class DimensionFilter {
     private static int[] add(int[] sequence, int dimension) throws IllegalArgumentException {
         if (dimension < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
         }
         if (sequence == null) {
             return new int[] {dimension};
@@ -680,7 +681,7 @@ public class DimensionFilter {
             throws IllegalArgumentException {
         if (lower < 0 || lower >= upper) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (sequence == null) {
             sequence = series(lower, upper);
@@ -716,7 +717,7 @@ public class DimensionFilter {
             final int value = dimensions[i];
             if (value <= last) {
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimensions[" + i + ']', value));
             }
             last = value;

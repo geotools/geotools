@@ -20,13 +20,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.Collection;
+import org.geotools.api.temporal.OrdinalEra;
+import org.geotools.api.temporal.OrdinalReferenceSystem;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.OrdinalEra;
-import org.opengis.temporal.OrdinalReferenceSystem;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalReferenceSystemTest {

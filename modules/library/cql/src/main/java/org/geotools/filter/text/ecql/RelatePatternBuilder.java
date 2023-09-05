@@ -17,11 +17,11 @@
 
 package org.geotools.filter.text.ecql;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 
 /**
  * Builds a Relate Pattern function using the expressions presents in the result stack.

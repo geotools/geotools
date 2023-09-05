@@ -20,8 +20,8 @@ package org.geotools.swt.tool;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swt.event.MapMouseEvent;
 import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
@@ -80,17 +80,17 @@ public class ZoomOutTool extends AbstractZoomTool {
         }
 
         Rectangle paneArea = getMapPane().getBounds();
-        DirectPosition2D mapPos = ev.getMapPosition();
+        Position2D mapPos = ev.getMapPosition();
 
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale / zoom;
 
-        DirectPosition2D corner =
-                new DirectPosition2D(
+        Position2D corner =
+                new Position2D(
                         mapPos.getX() - 0.5d * paneArea.width / newScale,
                         mapPos.getY() + 0.5d * paneArea.height / newScale);
 
-        Envelope2D newMapArea = new Envelope2D();
+        ReferencedEnvelope newMapArea = new ReferencedEnvelope();
         newMapArea.setFrameFromCenter(mapPos, corner);
         getMapPane().setDisplayArea(newMapArea);
     }

@@ -18,10 +18,11 @@ package org.geotools.styling;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethodStrategy;
 import org.geotools.factory.CommonFactoryFinder;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
 
 /**
  * Provide an abstract base class for ContrastMethodStrategies which hold the actual implementations
@@ -42,7 +43,7 @@ public abstract class AbstractContrastMethodStrategy implements ContrastMethodSt
     /** ALGORITHM */
     public static final String ALGORITHM = "algorithm";
 
-    protected FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory2();
+    protected FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
     protected ContrastMethod method = ContrastMethod.NONE;
 

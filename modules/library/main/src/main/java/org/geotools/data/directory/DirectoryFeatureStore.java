@@ -18,16 +18,16 @@ package org.geotools.data.directory;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.feature.FeatureCollection;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.identity.FeatureId;
 
 public class DirectoryFeatureStore extends DirectoryFeatureSource implements SimpleFeatureStore {
 

@@ -23,8 +23,19 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URL;
 import java.util.prefs.Preferences;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -38,18 +49,6 @@ import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.util.Arguments;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.operation.Transformation;
 
 /**
  * Transform backed by the North American Datum Conversion grid. The North American Datum Conversion
@@ -365,7 +364,7 @@ public class NADCONTransform extends AbstractMathTransform
                     break;
                 }
                 if (--i < 0) {
-                    throw new TransformException(Errors.format(ErrorKeys.NO_CONVERGENCE));
+                    throw new TransformException(ErrorKeys.NO_CONVERGENCE);
                 }
             }
 

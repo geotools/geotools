@@ -33,13 +33,28 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DataStore;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.ServiceInfo;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.feature.type.Types;
@@ -63,21 +78,6 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKey;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 
 /**
  * A {@link DataAccess} that maps a "simple" source {@link DataStore} into a source of full Feature
@@ -96,7 +96,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
     private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<>();
 
-    private FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Flag to mark non-accessible data accesses, which should be automatically disposed of when no
@@ -371,8 +371,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Creates a <code>org.geotools.data.Query</code> that operates over the surrogate DataStore, by
-     * unrolling the <code>org.geotools.filter.Filter</code> contained in the passed <code>query
+     * Creates a <code>org.geotools.api.data.Query</code> that operates over the surrogate
+     * DataStore, by unrolling the <code>org.geotools.filter.Filter</code> contained in the passed
+     * <code>query
      * </code>, and replacing the list of required attributes by the ones of the mapped FeatureType.
      */
     public Query unrollQuery(Query query, FeatureTypeMapping mapping) {
@@ -716,7 +717,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#getInfo()
+     * @see DataAccess#getInfo()
      */
     @Override
     public ServiceInfo getInfo() {
@@ -726,7 +727,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Return the names of the target features.
      *
-     * @see org.geotools.data.DataAccess#getNames()
+     * @see DataAccess#getNames()
      */
     @Override
     public List<Name> getNames() {
@@ -738,7 +739,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#createSchema(org.opengis.feature.type.FeatureType)
+     * @see DataAccess#createSchema(org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void createSchema(FeatureType featureType) throws IOException {
@@ -748,7 +749,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Return a feature source that can be used to obtain features of a particular type.
      *
-     * @see org.geotools.data.DataAccess#getFeatureSource(org.opengis.feature.type.Name)
+     * @see DataAccess#getFeatureSource(org.geotools.api.feature.type.Name)
      */
     @Override
     public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
@@ -758,8 +759,8 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#updateSchema(org.opengis.feature.type.Name,
-     *     org.opengis.feature.type.FeatureType)
+     * @see DataAccess#updateSchema(org.geotools.api.feature.type.Name,
+     *     org.geotools.api.feature.type.FeatureType)
      */
     @Override
     public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
@@ -769,7 +770,7 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.DataAccess#removeSchema(org.opengis.feature.type.Name)
+     * @see DataAccess#removeSchema(org.geotools.api.feature.type.Name)
      */
     @Override
     public void removeSchema(Name typeName) throws IOException {

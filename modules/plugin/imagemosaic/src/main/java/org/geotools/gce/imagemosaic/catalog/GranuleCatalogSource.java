@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * A {@link GranuleSource} implementation wrapping a {@link GranuleCatalog}.

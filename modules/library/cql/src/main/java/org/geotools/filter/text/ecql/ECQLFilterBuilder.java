@@ -21,6 +21,20 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.filter.text.commons.AbstractFilterBuilder;
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.commons.IToken;
@@ -36,20 +50,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Builds the filters required by the {@link ECQLCompiler}.
@@ -508,7 +508,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     }
 
     @Override
-    public org.opengis.filter.spatial.BBOX buildBBox() throws CQLException {
+    public org.geotools.api.filter.spatial.BBOX buildBBox() throws CQLException {
 
         SpatialOperationBuilder builder =
                 new SpatialOperationBuilder(getResultStack(), getFilterFactory());
@@ -519,7 +519,7 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
     }
 
     @Override
-    public org.opengis.filter.spatial.BBOX buildBBoxWithCRS() throws CQLException {
+    public org.geotools.api.filter.spatial.BBOX buildBBoxWithCRS() throws CQLException {
 
         SpatialOperationBuilder builder =
                 new SpatialOperationBuilder(getResultStack(), getFilterFactory());

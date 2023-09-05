@@ -18,7 +18,10 @@ package org.geotools.data.hana;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -28,10 +31,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Intersects;
 
 /** @author Stefan Uhrig, SAP SE */
 public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
@@ -57,7 +56,7 @@ public class HanaSpatialFilterOnViewOnlineTest extends JDBCTestSupport {
         LinearRing shell =
                 gf.createLinearRing(sf.create(new double[] {0, 0, 4, 0, 4, 4, 0, 4, 0, 0}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Intersects intersects = ff.intersects(ff.property(aname("geom")), ff.literal(polygon));
         Query q = new Query(aname("geom"), intersects);
         int count = dataStore.getFeatureSource(tname("viewoftab")).getCount(q);

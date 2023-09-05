@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DefaultRepository;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
@@ -35,7 +36,6 @@ import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.parameter.ParameterValue;
 
 /** Tests integration between STAC store and mosaic store */
 public class STACMosaicIntegrationTest extends AbstractSTACStoreTest {

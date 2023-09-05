@@ -19,11 +19,11 @@ package org.geotools.mbstyle.expression;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /**
  * This class is an extension of the MBExpression containing the functions to support MapBox Style

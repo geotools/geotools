@@ -17,12 +17,12 @@
  */
 package org.geotools.filter.function;
 
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.VolatileFunction;
 
 /**
  * Allow access to the value of Feature.getID() as an expression

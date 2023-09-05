@@ -17,10 +17,10 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.OverlapBehaviorEnum;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.style.OverlapBehavior;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -80,7 +80,7 @@ public class SLDOverlapBehaviorBinding extends AbstractComplexBinding {
      */
     @Override
     public Class getType() {
-        return OverlapBehavior.class;
+        return OverlapBehaviorEnum.class;
     }
 
     /**
@@ -104,22 +104,22 @@ public class SLDOverlapBehaviorBinding extends AbstractComplexBinding {
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // &lt;xsd:element ref="sld:LATEST_ON_TOP"/&gt;
         if (node.hasChild("LATEST_ON_TOP")) {
-            return OverlapBehavior.LATEST_ON_TOP;
+            return OverlapBehaviorEnum.LATEST_ON_TOP;
         }
 
         // &lt;xsd:element ref="sld:EARLIEST_ON_TOP"/&gt;
         if (node.hasChild("EARLIEST_ON_TOP")) {
-            return OverlapBehavior.EARLIEST_ON_TOP;
+            return OverlapBehaviorEnum.EARLIEST_ON_TOP;
         }
 
         // &lt;xsd:element ref="sld:AVERAGE"/&gt;
         if (node.hasChild("AVERAGE")) {
-            return OverlapBehavior.AVERAGE;
+            return OverlapBehaviorEnum.AVERAGE;
         }
 
         // &lt;xsd:element ref="sld:RANDOM"/&gt;
         if (node.hasChild("RANDOM")) {
-            return OverlapBehavior.RANDOM;
+            return OverlapBehaviorEnum.RANDOM;
         }
 
         return null;

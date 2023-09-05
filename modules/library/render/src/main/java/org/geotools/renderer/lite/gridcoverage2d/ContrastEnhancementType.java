@@ -32,25 +32,24 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.media.jai.Histogram;
 import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.ContrastMethod;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.AbstractContrastMethodStrategy;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExponentialContrastMethodStrategy;
 import org.geotools.styling.LogarithmicContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.expression.Expression;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.style.ContrastMethod;
 
 /**
  * Starting with version 14.x, {@link ContrastEnhancement} can be customized to support different
@@ -132,7 +131,7 @@ public enum ContrastEnhancementType {
                                 @Override
                                 public double derivative(double value) throws TransformException {
                                     throw new UnsupportedOperationException(
-                                            Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
+                                            ErrorKeys.UNSUPPORTED_OPERATION_$1);
                                 }
 
                                 @Override
@@ -223,7 +222,7 @@ public enum ContrastEnhancementType {
                         @Override
                         public double derivative(double value) {
                             throw new UnsupportedOperationException(
-                                    Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
+                                    ErrorKeys.UNSUPPORTED_OPERATION_$1);
                         }
 
                         @Override
@@ -630,14 +629,16 @@ public enum ContrastEnhancementType {
         Expression max = parameters.get(KEY_MAX);
         if (min == null || max == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_PARAMETERS_$2, KEY_MIN, KEY_MAX));
+                    MessageFormat.format(
+                            ErrorKeys.ILLEGAL_ARGUMENT_PARAMETERS_$2, KEY_MIN, KEY_MAX));
         }
         Map<String, Object> params = new HashMap<>();
         Number minVal = min.evaluate(null, Double.class);
         Number maxVal = max.evaluate(null, Double.class);
         if (minVal == null || maxVal == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_PARAMETERS_$2, KEY_MIN, KEY_MAX));
+                    MessageFormat.format(
+                            ErrorKeys.ILLEGAL_ARGUMENT_PARAMETERS_$2, KEY_MIN, KEY_MAX));
         }
         params.put(KEY_MIN, minVal.doubleValue());
         params.put(KEY_MAX, maxVal.doubleValue());
@@ -792,7 +793,7 @@ public enum ContrastEnhancementType {
                             public double derivative(double value) throws TransformException {
 
                                 throw new UnsupportedOperationException(
-                                        Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1));
+                                        ErrorKeys.UNSUPPORTED_OPERATION_$1);
                             }
 
                             @Override
@@ -824,11 +825,11 @@ public enum ContrastEnhancementType {
             Map<String, Expression> parameters, String parameter1, String parameter2) {
         if (parameters == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, parameters));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, parameters));
         }
         if (parameters.isEmpty()) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_PARAMETERS_$2, parameter1, parameter2));
         }
     }
@@ -850,7 +851,7 @@ public enum ContrastEnhancementType {
                 return NORMALIZE_CLIP_TO_ZERO;
             }
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.UNSUPPORTED_ALGORITHM_$1, algorithmType));
+                    MessageFormat.format(ErrorKeys.UNSUPPORTED_ALGORITHM_$1, algorithmType));
         } else if (method instanceof LogarithmicContrastMethodStrategy) {
             return LOGARITHMIC;
         } else if (method instanceof ExponentialContrastMethodStrategy) {
@@ -859,7 +860,7 @@ public enum ContrastEnhancementType {
             return HISTOGRAM;
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
+                    MessageFormat.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
         }
     }
 

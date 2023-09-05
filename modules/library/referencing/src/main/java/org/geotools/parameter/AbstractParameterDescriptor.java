@@ -19,13 +19,13 @@
  */
 package org.geotools.parameter;
 
+import java.text.MessageFormat;
 import java.util.Map;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
 
 /**
  * Abstract definition of a parameter or group of parameters used by an operation method.
@@ -65,7 +65,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
      *     for this parameter group or parameter are required.
      * @param maximumOccurs The {@linkplain #getMaximumOccurs maximum number of times} that values
      *     for this parameter group or parameter are required. This value is used in order to check
-     *     the range. For {@link org.opengis.parameter.ParameterValue}, it should always be 1.
+     *     the range. For {@link org.geotools.api.parameter.ParameterValue}, it should always be 1.
      */
     protected AbstractParameterDescriptor(
             final Map<String, ?> properties, final int minimumOccurs, final int maximumOccurs) {
@@ -73,7 +73,7 @@ public abstract class AbstractParameterDescriptor extends AbstractIdentifiedObje
         this.minimumOccurs = minimumOccurs;
         if (minimumOccurs < 0 || maximumOccurs < minimumOccurs) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimumOccurs, maximumOccurs));
+                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimumOccurs, maximumOccurs));
         }
     }
 

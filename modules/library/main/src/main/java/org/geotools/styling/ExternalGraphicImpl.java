@@ -26,19 +26,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.ColorReplacement;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.Cloneable;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.ColorReplacement;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
 
 /**
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
+public class ExternalGraphicImpl
+        implements Symbol, Cloneable, org.geotools.api.style.ExternalGraphic {
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
     // org.geotools.util.logging.Logging.getLogger(ExternalGraphicImpl.class);
@@ -131,12 +134,12 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -262,8 +265,9 @@ public class ExternalGraphicImpl implements ExternalGraphic, Symbol, Cloneable {
             return null;
         } else if (item instanceof ExternalGraphicImpl) {
             return item;
-        } else if (item instanceof org.opengis.style.ExternalGraphic) {
-            org.opengis.style.ExternalGraphic graphic = (org.opengis.style.ExternalGraphic) item;
+        } else if (item instanceof org.geotools.api.style.ExternalGraphic) {
+            org.geotools.api.style.ExternalGraphic graphic =
+                    (org.geotools.api.style.ExternalGraphic) item;
             ExternalGraphicImpl copy = new ExternalGraphicImpl();
             copy.colorReplacements().addAll(graphic.getColorReplacements());
             copy.setFormat(graphic.getFormat());

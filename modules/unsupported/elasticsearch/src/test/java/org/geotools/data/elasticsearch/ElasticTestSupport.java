@@ -36,6 +36,9 @@ import java.util.Scanner;
 import java.util.TimeZone;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.temporal.object.DefaultInstant;
@@ -43,9 +46,6 @@ import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.junit.After;
 import org.junit.Before;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
 
 public class ElasticTestSupport {

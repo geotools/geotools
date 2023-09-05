@@ -26,8 +26,8 @@ import java.util.TreeMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import org.geotools.data.FileDataStoreFactorySpi;
-import org.geotools.data.FileDataStoreFinder;
+import org.geotools.api.data.FileDataStoreFactorySpi;
+import org.geotools.api.data.FileDataStoreFinder;
 
 /**
  * A file chooser dialog to get user choices for data stores.

@@ -18,8 +18,8 @@
 package org.geotools.coverage.grid.io;
 
 import java.util.List;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Image ground control points, as a list of {@link TiePoint} and their CRS

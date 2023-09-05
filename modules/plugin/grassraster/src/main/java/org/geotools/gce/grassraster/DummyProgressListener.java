@@ -16,8 +16,8 @@
  */
 package org.geotools.gce.grassraster;
 
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 
 /**
  * A dummy progress listener.

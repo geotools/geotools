@@ -21,19 +21,19 @@ package org.geotools.filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.BinaryExpression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.DivideImpl;
 import org.geotools.filter.expression.MultiplyImpl;
 import org.geotools.filter.expression.SubtractImpl;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.BinaryExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.Attributes;
 
 /**
@@ -48,7 +48,7 @@ public class ExpressionSAXParser {
 
     /** Factory to construct filters. */
     @SuppressWarnings("PMD.UnusedPrivateField")
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     private FunctionFinder functionFinder = new FunctionFinder(null);
 
@@ -81,10 +81,10 @@ public class ExpressionSAXParser {
     private boolean readChars = false;
 
     public ExpressionSAXParser() {
-        this(CommonFactoryFinder.getFilterFactory2());
+        this(CommonFactoryFinder.getFilterFactory());
     }
 
-    public ExpressionSAXParser(FilterFactory2 factory) {
+    public ExpressionSAXParser(FilterFactory factory) {
         this(null, factory);
     }
     /**
@@ -93,15 +93,15 @@ public class ExpressionSAXParser {
      * @param schema The schema for attributes (null is fine, as the code for this is not in place.
      */
     public ExpressionSAXParser(SimpleFeatureType schema) {
-        this(schema, CommonFactoryFinder.getFilterFactory2());
+        this(schema, CommonFactoryFinder.getFilterFactory());
     }
     /** Constructor injection */
-    public ExpressionSAXParser(SimpleFeatureType schema, FilterFactory2 factory) {
+    public ExpressionSAXParser(SimpleFeatureType schema, FilterFactory factory) {
         this.schema = schema;
         ff = factory;
     }
     /** Setter injection */
-    public void setFilterFactory(FilterFactory2 factory) {
+    public void setFilterFactory(FilterFactory factory) {
         ff = factory;
     }
 
@@ -379,7 +379,7 @@ public class ExpressionSAXParser {
      *     attribute, illegal expression thrown otherwise.
      * @throws IllegalFilterException if the current expression is not math, attribute, or literal.
      */
-    private static String setInitialState(org.opengis.filter.expression.Expression expression)
+    private static String setInitialState(org.geotools.api.filter.expression.Expression expression)
             throws IllegalFilterException {
         if (expression instanceof BinaryExpression) {
             return "leftValue";

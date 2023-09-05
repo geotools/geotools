@@ -19,7 +19,7 @@ package org.geotools.referencing.cs;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.opengis.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.AxisDirection;
 
 /**
  * Parses {@linkplain AxisDirection axis direction} of the kind "<cite>South along 90 deg

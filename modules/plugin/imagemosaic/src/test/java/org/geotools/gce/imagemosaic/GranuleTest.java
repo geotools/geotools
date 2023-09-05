@@ -30,10 +30,17 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -45,13 +52,6 @@ import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 
 /**
  * Testing {@link GranuleDescriptor} class.
@@ -302,7 +302,7 @@ public class GranuleTest extends Assert {
                 new ReferencedEnvelope(
                         1587997.8835, 1612003.2265, 6162000.4515, 6198002.1165, crs_EN);
         manager.spatialDomainManager.coverageBBox = mosaicBounds;
-        manager.spatialDomainManager.coverageEnvelope = new GeneralEnvelope(mosaicBounds);
+        manager.spatialDomainManager.coverageEnvelope = new GeneralBounds(mosaicBounds);
 
         // set up the request (north-east version)
         final ReferencedEnvelope requestBBoxNE =

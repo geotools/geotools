@@ -19,15 +19,15 @@ package org.geotools.filter.function.color;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
 
 public class ColorFunctionsTest {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testSaturateAbsolute() {

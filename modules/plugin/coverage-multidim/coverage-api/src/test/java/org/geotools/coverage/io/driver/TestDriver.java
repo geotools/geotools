@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
 import org.geotools.coverage.io.CoverageReadRequest;
@@ -35,12 +39,8 @@ import org.geotools.coverage.io.TestCoverageSourceDescriptor;
 import org.geotools.coverage.io.impl.DefaultCoverageSource;
 import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
 
 /**
  * @author Simone Giannecchini, GeoSolutions

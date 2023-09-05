@@ -24,15 +24,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.quality.Element;
+import org.geotools.api.metadata.quality.EvaluationMethodType;
+import org.geotools.api.metadata.quality.Result;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.quality.Element;
-import org.opengis.metadata.quality.EvaluationMethodType;
-import org.opengis.metadata.quality.Result;
-import org.opengis.util.InternationalString;
 
 /**
  * Type of test applied to the data specified by a data quality scope.
@@ -201,8 +200,7 @@ public class ElementImpl extends MetadataEntity implements Element {
             if (it.hasNext()) {
                 date2 = it.next().getTime();
                 if (it.hasNext()) {
-                    throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+                    throw new IllegalArgumentException(ErrorKeys.MISMATCHED_ARRAY_LENGTH);
                 }
             }
         }

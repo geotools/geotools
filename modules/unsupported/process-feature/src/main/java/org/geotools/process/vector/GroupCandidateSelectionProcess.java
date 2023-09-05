@@ -16,6 +16,7 @@
  */
 package org.geotools.process.vector;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,8 +26,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
-import org.geotools.coverage.processing.Operations;
-import org.geotools.data.Query;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -37,19 +45,10 @@ import org.geotools.feature.type.Types;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.SortByImpl;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
 @DescribeProcess(
@@ -58,7 +57,7 @@ import org.xml.sax.helpers.NamespaceSupport;
                 "Given a collection of features for each group defined only the feature having the MIN or MAX value for the chosen attribute will be included in the final output")
 public class GroupCandidateSelectionProcess implements VectorProcess {
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     public FeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input feature collection")
@@ -84,19 +83,20 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                     List<String> groupingAttributes) {
         try {
             if (features == null) {
-                throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
+                throw new ProcessException(
+                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
             }
             if (operationAttribute == null) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "operationAttribute"));
+                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "operationAttribute"));
             }
             if (groupingAttributes == null || groupingAttributes.isEmpty()) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "groupingAttributes"));
+                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "groupingAttributes"));
             }
             if (aggregation == null) {
                 throw new ProcessException(
-                        Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "aggregation"));
+                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "aggregation"));
             }
             Operations op = Operations.valueOf(aggregation);
             FeatureType schema = features.getSchema();
@@ -114,7 +114,7 @@ public class GroupCandidateSelectionProcess implements VectorProcess {
                     features, groupingPn, opValue, op);
         } catch (IllegalArgumentException e) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.BAD_PARAMETER_$2, "aggregation", aggregation));
+                    MessageFormat.format(ErrorKeys.BAD_PARAMETER_$2, "aggregation", aggregation));
         }
     }
 

@@ -47,6 +47,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -82,11 +83,22 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.api.data.DataAccessFactory.Param;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataAccessFactory.Param;
-import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
@@ -104,7 +116,6 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -121,16 +132,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Sparse utilities for the various mosaic classes. I use them to extract complex code from other
@@ -140,7 +141,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class Utils {
 
-    public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    public static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     private static final String DATABASE_KEY = "database";
 
@@ -1215,7 +1216,7 @@ public class Utils {
         Utilities.ensureNonNull("reader", reader);
         if (imageIndex < 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
+                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
         return new Rectangle(0, 0, reader.getWidth(imageIndex), reader.getHeight(imageIndex));
     }
 
@@ -2481,7 +2482,7 @@ public class Utils {
         return JTS.toGeometry(sourceEnvelope);
     }
 
-    private static org.opengis.geometry.Envelope getCRSEnvelope(CoordinateReferenceSystem targetCRS)
+    private static Bounds getCRSEnvelope(CoordinateReferenceSystem targetCRS)
             throws FactoryException, NoSuchAuthorityCodeException {
         if (targetCRS.getDomainOfValidity() == null) {
             Integer code = CRS.lookupEpsgCode(targetCRS, true);
@@ -2489,7 +2490,7 @@ public class Utils {
                 CRS.decode("EPSG:" + code, CRS.getAxisOrder(targetCRS) != AxisOrder.NORTH_EAST);
             }
         }
-        org.opengis.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
+        Bounds envelope = CRS.getEnvelope(targetCRS);
         return envelope;
     }
 

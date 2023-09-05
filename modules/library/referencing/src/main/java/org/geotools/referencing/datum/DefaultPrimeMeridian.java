@@ -23,10 +23,10 @@ import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
+import org.geotools.api.referencing.datum.PrimeMeridian;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.datum.PrimeMeridian;
 import si.uom.NonSI;
 
 /**

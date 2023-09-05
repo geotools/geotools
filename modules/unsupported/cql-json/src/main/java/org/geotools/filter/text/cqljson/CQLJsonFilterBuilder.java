@@ -26,6 +26,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -33,20 +38,15 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.PropertyName;
 
 final class CQLJsonFilterBuilder {
 
     /** New instance of CQLJsonFilterBuilder */
-    public CQLJsonFilterBuilder(final FilterFactory2 filterFactory) {
+    public CQLJsonFilterBuilder(final FilterFactory filterFactory) {
         this.filterFactory = filterFactory;
     }
 
-    private final FilterFactory2 filterFactory;
+    private final FilterFactory filterFactory;
 
     private static final List<String> ARITHMETIC_OPERATORS;
 

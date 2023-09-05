@@ -42,13 +42,19 @@ import javax.imageio.ImageIO;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataSourceException;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -57,12 +63,6 @@ import org.geotools.util.DateRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Testing {@link ImagePyramidReader}.
@@ -374,7 +374,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         assertNotNull(reader);
 
         // prepare a request that crosses the bounds for a really minimal part
-        GeneralEnvelope ge = reader.getOriginalEnvelope();
+        GeneralBounds ge = reader.getOriginalEnvelope();
         ReferencedEnvelope requestedEnvelope =
                 new ReferencedEnvelope(
                         ge.getMinimum(0) - 5,
@@ -417,9 +417,9 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         final ParameterValue<GridGeometry2D> gg =
                 ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelop.getLowerCorner().getOrdinate(0),
                             oldEnvelop.getLowerCorner().getOrdinate(1)
@@ -476,9 +476,9 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         final ParameterValue<GridGeometry2D> gg =
                 ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelop.getLowerCorner().getOrdinate(0),
                             oldEnvelop.getLowerCorner().getOrdinate(1)
@@ -534,9 +534,9 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         final ParameterValue<GridGeometry2D> gg =
                 ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelop.getLowerCorner().getOrdinate(0),
                             oldEnvelop.getLowerCorner().getOrdinate(1)
@@ -586,9 +586,9 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         //
         final ParameterValue<GridGeometry2D> gg =
                 ImageMosaicFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope oldEnvelop = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelop = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelop.getLowerCorner().getOrdinate(0),
                             oldEnvelop.getLowerCorner().getOrdinate(1)
@@ -689,7 +689,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -775,7 +775,7 @@ public class ImagePyramidReaderTest extends AbstractPyramidTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,

@@ -27,10 +27,10 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataAccessFinder;
+import org.geotools.api.data.DataAccessFinder;
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;
 import org.junit.Before;
-import org.opengis.feature.type.Name;
 
 public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataAccessDisposalTest {
 

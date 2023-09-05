@@ -39,14 +39,14 @@ import net.opengis.wps10.ProcessOutputsType1;
 import net.opengis.wps10.ProcessStartedType;
 import net.opengis.wps10.StatusType;
 import net.opengis.wps10.Wps10Factory;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.test.XMLTestSupport;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -165,7 +165,7 @@ public class ExecuteTest extends XMLTestSupport {
         ComplexDataType cd = in.getData().getComplexData();
         assertNotNull(cd);
         Filter filter = (Filter) cd.getData().get(0);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter expected =
                 ff.or(
                         ff.greaterOrEqual(ff.property("PERSONS"), ff.literal("10000000")),

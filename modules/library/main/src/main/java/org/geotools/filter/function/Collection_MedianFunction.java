@@ -25,6 +25,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
@@ -32,10 +36,6 @@ import org.geotools.feature.visitor.MedianVisitor;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Calculates the median value of an attribute for a given FeatureCollection and Expression.
@@ -90,9 +90,9 @@ public class Collection_MedianFunction extends FunctionExpressionImpl {
     @Override
     public void setParameters(List<Expression> args) {
         // if we see "featureMembers/*/ATTRIBUTE" change to "ATTRIBUTE"
-        org.opengis.filter.expression.Expression expr = args.get(0);
+        org.geotools.api.filter.expression.Expression expr = args.get(0);
         expr =
-                (org.opengis.filter.expression.Expression)
+                (org.geotools.api.filter.expression.Expression)
                         expr.accept(new CollectionFeatureMemberFilterVisitor(), null);
         args.set(0, expr);
         super.setParameters(args);

@@ -24,13 +24,13 @@ import java.awt.image.RenderedImage;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.AddConstDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.util.NumberRange;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
 
 // Geotools dependencies
 
@@ -71,7 +71,8 @@ import org.opengis.util.InternationalString;
  * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage, double[])
+ * @see org.geotools.coverage.processing.Operations#add(org.geotools.api.coverage.Coverage,
+ *     double[])
  * @see AddConstDescriptor
  * @todo Should operates on {@code sampleToGeophysics} transform when possible. See <A
  *     HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.

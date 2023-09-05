@@ -31,10 +31,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.operation.Projection;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.operation.Projection;
 
 /**
  * A set of EPSG authority codes. This set requires a living connection to the EPSG database. All

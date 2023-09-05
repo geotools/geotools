@@ -26,6 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.appschema.filter.expression.ToDirectPositionFunction;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.factory.CommonFactoryFinder;
@@ -43,17 +54,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This is to test functions that convert numeric values to geometry types. This is required when
@@ -66,7 +66,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     public static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GeometryFunctionsTest.class);
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private static SimpleFeature feature;
 
@@ -110,8 +110,8 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
                         pointOne,
                         pointTwo);
         Object value = function.evaluate(feature);
-        assertTrue(value instanceof DirectPosition);
-        DirectPosition pos = (DirectPosition) value;
+        assertTrue(value instanceof Position);
+        Position pos = (Position) value;
         assertEquals(CRS.toSRS(pos.getCoordinateReferenceSystem()), "EPSG:4326");
         assertEquals(pos.getDimension(), 2);
         assertEquals(pos.getOrdinate(0), 5.0, 0);
@@ -120,8 +120,8 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         // 1 point, no SRS
         function = ff.function("toDirectPosition", pointOne);
         value = function.evaluate(feature);
-        assertTrue(value instanceof DirectPosition);
-        pos = (DirectPosition) value;
+        assertTrue(value instanceof Position);
+        pos = (Position) value;
         assertNull(pos.getCoordinateReferenceSystem());
         assertEquals(pos.getDimension(), 1);
         assertEquals(pos.getOrdinate(0), 5.0, 0);

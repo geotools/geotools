@@ -16,8 +16,8 @@
  */
 package org.geotools.filter.expression;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.util.Converters;
-import org.opengis.filter.expression.Expression;
 
 //
 /**

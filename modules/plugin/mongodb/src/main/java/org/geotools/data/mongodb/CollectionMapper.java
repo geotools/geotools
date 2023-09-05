@@ -19,10 +19,10 @@ package org.geotools.data.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
 
 /**
  * A strategy for mapping a mongo collection to a feature.

@@ -20,11 +20,11 @@
 package org.geotools.referencing.operation;
 
 import java.util.Map;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.Projection;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.Projection;
 
 /**
  * A {@linkplain DefaultConversion conversion} transforming

@@ -16,7 +16,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.opengis.filter.identity.GmlObjectId;
+import org.geotools.api.filter.identity.GmlObjectId;
 
 /**
  * <!-- begin-user-doc -->

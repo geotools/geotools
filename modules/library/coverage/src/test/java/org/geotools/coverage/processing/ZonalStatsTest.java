@@ -36,6 +36,13 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import org.geotools.TestData;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -47,7 +54,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.logging.Logging;
@@ -68,13 +75,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * @author Simone Giannecchini, GeoSolutions
@@ -213,7 +213,7 @@ public class ZonalStatsTest {
                     final ParameterValueGroup param =
                             processor.getOperation("CoverageCrop").getParameters();
                     param.parameter("Source").setValue(gridCoverage2D);
-                    param.parameter("Envelope").setValue(new GeneralEnvelope(bbox));
+                    param.parameter("Envelope").setValue(new GeneralBounds(bbox));
                     final GridCoverage2D cropped = (GridCoverage2D) processor.doOperation(param);
 
                     ROI roi = null;

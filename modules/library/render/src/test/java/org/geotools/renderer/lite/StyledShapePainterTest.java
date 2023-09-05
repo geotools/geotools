@@ -23,6 +23,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.URLCheckers;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,12 +37,7 @@ import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.GraphicImpl;
-import org.geotools.styling.GraphicLegend;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.GeoTools;
 import org.junit.After;
@@ -44,8 +46,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.operation.MathTransform;
 
 public class StyledShapePainterTest {
 
@@ -160,7 +160,7 @@ public class StyledShapePainterTest {
 
     @Test
     public void testGraphicLegendRotation() throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
 
         // Load image directly from file, for comparison with painter output
@@ -233,7 +233,7 @@ public class StyledShapePainterTest {
         StyledShapePainter painter = new StyledShapePainter();
         GraphicImpl legend =
                 new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         legend.setRotation(ff.literal(0));
         legend.setOpacity(ff.literal(1));
         URL url = StreamingRenderer.class.getResource("test-data/");

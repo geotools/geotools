@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
 
 /**
  * Generates TIN with respect to delaunay criterion. It means that there are no alien vertices in
@@ -42,10 +42,10 @@ class TriangulationFactory {
      * @param pt Array of points for triangulation.
      * @throws TriangulationException when the vertices are outside of the specified quad.
      */
-    protected TriangulationFactory(Quadrilateral quad, DirectPosition... pt)
+    protected TriangulationFactory(Quadrilateral quad, Position... pt)
             throws TriangulationException {
 
-        List<DirectPosition> vertices = new ArrayList<>(Arrays.asList(pt));
+        List<Position> vertices = new ArrayList<>(Arrays.asList(pt));
 
         if (!quad.containsAll(vertices)) {
             throw new TriangulationException("Point is outside triangles");
@@ -53,7 +53,7 @@ class TriangulationFactory {
 
         this.triangles = quad.getTriangles();
 
-        for (DirectPosition vertex : vertices) {
+        for (Position vertex : vertices) {
             insertPoint(vertex);
         }
     }
@@ -151,7 +151,7 @@ class TriangulationFactory {
      * @param newVertex new vertex
      * @throws TriangulationException when {@code newVertex} is outside triangles
      */
-    public void insertPoint(DirectPosition newVertex) throws TriangulationException {
+    public void insertPoint(Position newVertex) throws TriangulationException {
         TINTriangle triangleContainingNewVertex = triangleContains(newVertex);
 
         if (triangleContainingNewVertex == null) {
@@ -172,8 +172,8 @@ class TriangulationFactory {
      */
     private List<TINTriangle> alternativeTriangles(TINTriangle ABC, TINTriangle BCD)
             throws TriangulationException {
-        ArrayList<DirectPosition> ABCvertices = new ArrayList<>();
-        ArrayList<DirectPosition> BCDvertices = new ArrayList<>();
+        ArrayList<Position> ABCvertices = new ArrayList<>();
+        ArrayList<Position> BCDvertices = new ArrayList<>();
 
         ABCvertices.add(ABC.p0);
         ABCvertices.add(ABC.p1);
@@ -182,11 +182,11 @@ class TriangulationFactory {
         BCDvertices.add(BCD.p1);
         BCDvertices.add(BCD.p2);
 
-        ArrayList<DirectPosition> sharedVertices = new ArrayList<>();
-        ArrayList<DirectPosition> unsharedVertices = new ArrayList<>();
+        ArrayList<Position> sharedVertices = new ArrayList<>();
+        ArrayList<Position> unsharedVertices = new ArrayList<>();
 
         // Finds shared and unshared vertices
-        for (DirectPosition vertex : ABCvertices) {
+        for (Position vertex : ABCvertices) {
             if (!BCDvertices.contains(vertex)) {
                 unsharedVertices.add(vertex);
             } else if (BCDvertices.contains(vertex)) {
@@ -247,7 +247,7 @@ class TriangulationFactory {
      * @param p The Coordinate to be tested
      * @return the triangle containing p, or null if there is no triangle that contains p
      */
-    private TINTriangle triangleContains(DirectPosition p) {
+    private TINTriangle triangleContains(Position p) {
         for (TINTriangle triangle : triangles) {
             if (triangle.containsOrIsVertex(p)) {
                 return triangle;

@@ -16,9 +16,8 @@
  */
 package org.geotools.referencing.operation.matrix;
 
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size. It is used primarily for supporting
@@ -78,7 +77,7 @@ public class Matrix4 extends GeneralMatrix implements XMatrix {
     public Matrix4(final Matrix matrix) {
         super(SIZE);
         if (matrix.getNumRow() != SIZE || matrix.getNumCol() != SIZE) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
+            throw new IllegalArgumentException(ErrorKeys.ILLEGAL_MATRIX_SIZE);
         }
         for (int j = 0; j < SIZE; j++) {
             for (int i = 0; i < SIZE; i++) {

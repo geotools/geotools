@@ -21,13 +21,12 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * This is a reduced copy of RenderUtilities found in the render module, to avoid adding a
@@ -74,7 +73,7 @@ public final class RendererUtilities {
         // Convert the JTS envelope and get the transform
         //
         // //
-        final Envelope2D genvelope = new Envelope2D(mapExtent);
+        final ReferencedEnvelope genvelope = new ReferencedEnvelope(mapExtent);
 
         // //
         //

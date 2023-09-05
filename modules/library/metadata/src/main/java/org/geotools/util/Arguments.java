@@ -26,10 +26,10 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 
@@ -129,7 +129,7 @@ public class Arguments {
                 default:
                     illegalArgument(
                             new IllegalArgumentException(
-                                    Errors.format(ErrorKeys.BAD_LOCALE_$1, locale)));
+                                    MessageFormat.format(ErrorKeys.BAD_LOCALE_$1, locale)));
             }
         }
         return Locale.getDefault();
@@ -180,8 +180,8 @@ public class Arguments {
                     }
                     illegalArgument(
                             new IllegalArgumentException(
-                                    Errors.getResources(locale)
-                                            .getString(ErrorKeys.MISSING_PARAMETER_VALUE_$1, arg)));
+                                    MessageFormat.format(
+                                            ErrorKeys.MISSING_PARAMETER_VALUE_$1, arg)));
                     return null;
                 }
             }
@@ -202,8 +202,7 @@ public class Arguments {
         if (value == null) {
             illegalArgument(
                     new IllegalArgumentException(
-                            Errors.getResources(locale)
-                                    .getString(ErrorKeys.MISSING_PARAMETER_$1, name)));
+                            MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name)));
         }
         return value;
     }
@@ -407,8 +406,7 @@ public class Arguments {
                 if (count >= max) {
                     illegalArgument(
                             new IllegalArgumentException(
-                                    Errors.getResources(locale)
-                                            .getString(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg)));
+                                    MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, arg)));
                 }
                 left[count++] = arg;
             }
@@ -438,9 +436,8 @@ public class Arguments {
                     if (argument.charAt(0) == forbiddenPrefix) {
                         illegalArgument(
                                 new IllegalArgumentException(
-                                        Errors.getResources(locale)
-                                                .getString(
-                                                        ErrorKeys.UNKNOW_PARAMETER_$1, argument)));
+                                        MessageFormat.format(
+                                                ErrorKeys.UNKNOW_PARAMETER_$1, argument)));
                     }
                 }
             }

@@ -21,18 +21,26 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.data.Transaction.State;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DiffFeatureReader;
 import org.geotools.data.EmptyFeatureReader;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
-import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.Transaction;
-import org.geotools.data.Transaction.State;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.store.ContentEntry;
@@ -55,14 +63,6 @@ import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 class WFSFeatureSource extends ContentFeatureSource {
 
@@ -163,7 +163,7 @@ class WFSFeatureSource extends ContentFeatureSource {
      *     query.getFilter()}, reprojected to the Query's crs, or {@code null} otherwise as it would
      *     be too expensive to calculate.
      * @see FeatureSource#getBounds(Query)
-     * @see org.geotools.data.store.ContentFeatureSource#getBoundsInternal(org.geotools.data.Query)
+     * @see org.geotools.data.store.ContentFeatureSource#getBoundsInternal(Query)
      */
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
@@ -190,7 +190,7 @@ class WFSFeatureSource extends ContentFeatureSource {
      *     FeatureCollection (since the request is performed with resultType=hits), otherwise {@code
      *     -1} as it would be too expensive to calculate.
      * @see FeatureSource#getCount(Query)
-     * @see org.geotools.data.store.ContentFeatureSource#getCountInternal(org.geotools.data.Query)
+     * @see org.geotools.data.store.ContentFeatureSource#getCountInternal(Query)
      */
     @Override
     protected int getCountInternal(Query query) throws IOException {
@@ -225,7 +225,7 @@ class WFSFeatureSource extends ContentFeatureSource {
     private void invertAxisInFilter(Query query) {
         Filter filter = query.getFilter();
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff, new GeometryFactory());
         filter = (Filter) filter.accept(visitor, null);
 
@@ -265,7 +265,7 @@ class WFSFeatureSource extends ContentFeatureSource {
 
     /**
      * @see FeatureSource#getFeatures(Query)
-     * @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(org.geotools.data.Query)
+     * @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(Query)
      */
     @Override
     @SuppressWarnings("PMD.CloseResource") // the reader is returned and managed outside

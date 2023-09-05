@@ -38,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,6 +56,26 @@ import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FileGroupProvider.FileGroup;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -64,17 +85,12 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultFileResourceInfo;
 import org.geotools.data.DefaultFileServiceInfo;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.DefaultServiceInfo;
-import org.geotools.data.FileGroupProvider.FileGroup;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -85,22 +101,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * This class is a first attempt for providing a way to get more informations out of a single 2D
@@ -141,7 +141,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     protected CoordinateReferenceSystem crs = null;
 
     /** Envelope read from file */
-    protected GeneralEnvelope originalEnvelope = null;
+    protected GeneralBounds originalEnvelope = null;
 
     /** Coverage name */
     protected String coverageName = "geotools_coverage";
@@ -234,7 +234,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         //
         if (input == null) {
             final IOException ex =
-                    new IOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "input"));
+                    new IOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "input"));
             throw new DataSourceException(ex);
         }
         this.source = input;
@@ -315,14 +315,14 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readP an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
+     * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      */
     protected Integer setReadParams(
             OverviewPolicy overviewPolicy,
             ImageReadParam readP,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
         return setReadParams(coverageName, overviewPolicy, readP, requestedEnvelope, requestedDim);
@@ -343,7 +343,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
      *     overviews level upon request.
      * @param readP an instance of {@link ImageReadParam} for setting the subsampling factors.
-     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
+     * @param requestedEnvelope the {@link GeneralBounds} we are requesting.
      * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      */
@@ -351,7 +351,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
             String coverageName,
             OverviewPolicy overviewPolicy,
             ImageReadParam readP,
-            GeneralEnvelope requestedEnvelope,
+            GeneralBounds requestedEnvelope,
             Rectangle requestedDim)
             throws IOException, TransformException {
 
@@ -754,7 +754,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return coverageFactory.create(
                 coverageName,
                 image,
-                new GeneralEnvelope(getOriginalEnvelope(coverageName)),
+                new GeneralBounds(getOriginalEnvelope(coverageName)),
                 bands,
                 null,
                 null);
@@ -774,7 +774,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      * @param envelope the GeneralEnvelope
      */
     protected static final double[] getResolution(
-            GeneralEnvelope envelope, Rectangle2D dim, CoordinateReferenceSystem crs)
+            GeneralBounds envelope, Rectangle2D dim, CoordinateReferenceSystem crs)
             throws DataSourceException {
         double[] requestedRes = null;
         try {
@@ -833,9 +833,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -844,9 +844,9 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
     public CoordinateReferenceSystem getCoordinateReferenceSystem(String coverageName) {
@@ -859,27 +859,27 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
-    public GeneralEnvelope getOriginalEnvelope() {
+    public GeneralBounds getOriginalEnvelope() {
         return getOriginalEnvelope(coverageName);
     }
 
     /**
-     * Retrieves the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * Retrieves the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      *
-     * @return the {@link GeneralEnvelope} for this {@link AbstractGridCoverage2DReader}.
+     * @return the {@link GeneralBounds} for this {@link AbstractGridCoverage2DReader}.
      */
     @Override
-    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+    public GeneralBounds getOriginalEnvelope(String coverageName) {
         if (!checkName(coverageName)) {
             throw new IllegalArgumentException(
                     "The specified coverageName " + coverageName + "is not supported");
         }
-        return new GeneralEnvelope(originalEnvelope);
+        return new GeneralBounds(originalEnvelope);
     }
 
     /**
@@ -979,13 +979,13 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return getMetadataNames();
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getMetadataNames() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getMetadataNames() */
     @Override
     public String[] getMetadataNames() {
         return null;
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getMetadataValue(java.lang.String) */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getMetadataValue(java.lang.String) */
     @Override
     public String getMetadataValue(final String name) {
         return getMetadataValue(coverageName, name);
@@ -1000,7 +1000,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
         return null;
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getGridCoverageCount() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getGridCoverageCount() */
     @Override
     public int getGridCoverageCount() {
         return 1;

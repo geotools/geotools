@@ -25,7 +25,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.CoordinateFormat;
 import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
@@ -37,7 +38,6 @@ import org.geotools.referencing.datum.DefaultTemporalDatum;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.geometry.MismatchedDimensionException;
 
 /**
  * Tests formatting done by the {@link org.geotools.referencing.CoordinateFormat} class.
@@ -110,15 +110,15 @@ public final class FormatTest {
         final CoordinateFormat format = new CoordinateFormat(Locale.FRANCE);
         format.setCoordinateReferenceSystem(crs);
         format.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
-        final GeneralDirectPosition position =
-                new GeneralDirectPosition(new double[] {23.78, -12.74, 127.9, 3.2});
+        final GeneralPosition position =
+                new GeneralPosition(new double[] {23.78, -12.74, 127.9, 3.2});
         format.setDatePattern("dd MM yyyy");
         assertEquals("23°46,8'E 12°44,4'S 127,9\u00A0m 04 01 2003", format.format(position));
         /*
          * Try a point with wrong dimension.
          */
-        final GeneralDirectPosition wrong =
-                new GeneralDirectPosition(new double[] {23.78, -12.74, 127.9, 3.2, 8.5});
+        final GeneralPosition wrong =
+                new GeneralPosition(new double[] {23.78, -12.74, 127.9, 3.2, 8.5});
         try {
             assertNotNull(format.format(wrong));
             fail("Excepted a mismatched dimension exception.");

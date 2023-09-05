@@ -21,7 +21,9 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.util.Arrays;
 import javax.swing.JLabel;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.swing.MapPane;
@@ -30,8 +32,6 @@ import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.locale.LocaleUtils;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A status bar item that displays the world coordinates of the mouse cursor position.
@@ -123,7 +123,7 @@ public class JCoordsStatusBarItem extends StatusBarItem {
      *
      * @param p world position
      */
-    private void displayCoords(DirectPosition2D p) {
+    private void displayCoords(Position2D p) {
         label.setText(String.format(numFormat, p.getX(), p.getY()));
         ensureMinLabelWidth();
     }
@@ -189,14 +189,14 @@ public class JCoordsStatusBarItem extends StatusBarItem {
      *
      * @param env the map extent (may be {@code null})
      */
-    private void setIntegerLen(Envelope env) {
+    private void setIntegerLen(Bounds env) {
         int len = -1;
         if (env != null) {
             // Try to get a valid extent for the CRS and use this to
             // determine num coordinate digits
             CoordinateReferenceSystem crs = env.getCoordinateReferenceSystem();
             if (crs != null) {
-                Envelope validExtent = CRS.getEnvelope(crs);
+                Bounds validExtent = CRS.getEnvelope(crs);
                 if (validExtent != null) {
                     len = getMaxIntegerLen(validExtent);
                 }
@@ -221,7 +221,7 @@ public class JCoordsStatusBarItem extends StatusBarItem {
      * @param env the envelope
      * @return maximum number of digits
      */
-    private int getMaxIntegerLen(Envelope env) {
+    private int getMaxIntegerLen(Bounds env) {
         int len = integerPartLen(env.getMinimum(0));
         len = Math.max(len, integerPartLen(env.getMinimum(1)));
         len = Math.max(len, integerPartLen(env.getMaximum(0)));

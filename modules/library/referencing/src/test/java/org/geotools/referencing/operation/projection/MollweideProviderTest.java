@@ -22,11 +22,11 @@ package org.geotools.referencing.operation.projection;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
 
 /** @author Marco Peters */
 public class MollweideProviderTest {

@@ -19,14 +19,14 @@ package org.geotools.data.mysql;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTemporalFilterOnlineTest;
 import org.geotools.util.Converters;
-import org.opengis.feature.simple.SimpleFeature;
 
 public class MySQLTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest {
 

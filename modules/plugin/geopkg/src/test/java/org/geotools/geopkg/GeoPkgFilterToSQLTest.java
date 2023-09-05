@@ -19,18 +19,18 @@ package org.geotools.geopkg;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsLike;
 
 public class GeoPkgFilterToSQLTest extends SQLFilterTestSupport {
 
-    private static FilterFactory2 ff;
+    private static FilterFactory ff;
 
     private GeoPkgDialect dialect;
 
@@ -41,7 +41,7 @@ public class GeoPkgFilterToSQLTest extends SQLFilterTestSupport {
     @Override
     @Before
     public void setUp() throws IllegalAttributeException, SchemaException {
-        ff = CommonFactoryFinder.getFilterFactory2();
+        ff = CommonFactoryFinder.getFilterFactory();
         dialect = new GeoPkgDialect(null);
         filterToSql = new GeoPkgFilterToSQL(dialect);
         writer = new StringWriter();

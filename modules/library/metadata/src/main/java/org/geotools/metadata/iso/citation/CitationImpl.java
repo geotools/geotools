@@ -21,16 +21,14 @@ package org.geotools.metadata.iso.citation;
 
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.citation.PresentationForm;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.IdentifierImpl;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.citation.CitationDate;
-import org.opengis.metadata.citation.PresentationForm;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.citation.Series;
-import org.opengis.util.InternationalString;
 
 /**
  * Standardized resource reference.
@@ -52,9 +50,6 @@ public class CitationImpl extends MetadataEntity implements Citation {
      * an alternative title for "Digital Chart of the World.
      */
     private Collection<InternationalString> alternateTitles;
-
-    /** Reference date for the cited resource. */
-    private Collection<CitationDate> dates;
 
     /** Version of the cited resource. */
     private InternationalString edition;
@@ -79,12 +74,6 @@ public class CitationImpl extends MetadataEntity implements Citation {
 
     /** Mode in which the resource is represented, or an empty string if none. */
     private Collection<PresentationForm> presentationForm;
-
-    /**
-     * Information about the series, or aggregate dataset, of which the dataset is a part. May be
-     * {@code null} if none.
-     */
-    private Series series;
 
     /**
      * Other information required to complete the citation that is not recorded elsewhere. May be
@@ -194,17 +183,6 @@ public class CitationImpl extends MetadataEntity implements Citation {
         alternateTitles = copyCollection(newValues, alternateTitles, InternationalString.class);
     }
 
-    /** Returns the reference date for the cited resource. */
-    @Override
-    public Collection<CitationDate> getDates() {
-        return dates = nonNullCollection(dates, CitationDate.class);
-    }
-
-    /** Set the reference date for the cited resource. */
-    public void setDates(final Collection<? extends CitationDate> newValues) {
-        dates = copyCollection(newValues, dates, CitationDate.class);
-    }
-
     /** Returns the version of the cited resource. */
     @Override
     public InternationalString getEdition() {
@@ -278,24 +256,6 @@ public class CitationImpl extends MetadataEntity implements Citation {
     /** Set the mode in which the resource is represented, or an empty string if none. */
     public void setPresentationForm(final Collection<? extends PresentationForm> newValues) {
         presentationForm = copyCollection(newValues, presentationForm, PresentationForm.class);
-    }
-
-    /**
-     * Returns the information about the series, or aggregate dataset, of which the dataset is a
-     * part. Returns {@code null} if none.
-     */
-    @Override
-    public Series getSeries() {
-        return series;
-    }
-
-    /**
-     * Set the information about the series, or aggregate dataset, of which the dataset is a part.
-     * Set to {@code null} if none.
-     */
-    public void setSeries(final Series newValue) {
-        checkWritePermission();
-        series = newValue;
     }
 
     /**

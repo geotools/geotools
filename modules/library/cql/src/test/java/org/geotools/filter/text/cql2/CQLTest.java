@@ -19,6 +19,24 @@ package org.geotools.filter.text.cql2;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
@@ -38,24 +56,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.DistanceBufferOperator;
-import org.opengis.filter.temporal.Before;
-import org.opengis.referencing.FactoryException;
 
 /**
  * CQL Test
@@ -314,6 +314,6 @@ public class CQLTest {
     private Literal getWgs84PointLiteral() throws FactoryException {
         Point p = new GeometryFactory().createPoint(new Coordinate(1, 2));
         p.setUserData(CRS.decode("EPSG:4326", true));
-        return CommonFactoryFinder.getFilterFactory2().literal(p);
+        return CommonFactoryFinder.getFilterFactory().literal(p);
     }
 }

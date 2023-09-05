@@ -7,19 +7,19 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.List;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.filter.function.RecodeFunction;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.Graphic;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.LinePlacement;
-import org.opengis.style.Mark;
 import si.uom.SI;
 
 public class CookbookLineTest extends AbstractStyleTest {

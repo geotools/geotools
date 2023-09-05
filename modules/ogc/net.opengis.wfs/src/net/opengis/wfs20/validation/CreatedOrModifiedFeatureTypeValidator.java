@@ -6,7 +6,7 @@ package net.opengis.wfs20.validation;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.FeatureId;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs20.CreatedOrModifiedFeatureType}.

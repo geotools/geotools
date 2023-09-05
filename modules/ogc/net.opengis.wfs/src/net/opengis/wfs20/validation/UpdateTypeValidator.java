@@ -10,7 +10,7 @@ import net.opengis.wfs20.PropertyType;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs20.UpdateType}.

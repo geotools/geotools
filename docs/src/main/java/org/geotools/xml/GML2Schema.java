@@ -12,8 +12,8 @@
 package org.geotools.xml;
 
 import java.util.List;
+import org.geotools.api.feature.Feature;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.feature.Feature;
 
 /**
  * The following is a placeholder simply to make a UML Diagram.

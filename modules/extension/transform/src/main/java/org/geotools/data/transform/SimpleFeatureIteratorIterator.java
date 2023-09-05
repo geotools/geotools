@@ -17,8 +17,8 @@
 package org.geotools.data.transform;
 
 import java.util.Iterator;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Turns a {@link SimpleFeatureIterator} into a Iterator<SimpleFeature>

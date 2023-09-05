@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.geopkg.TileMatrix;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
 
 /**
  * GeoPackage Process Request. Object representation of the XML submitted to the GeoPackage process.

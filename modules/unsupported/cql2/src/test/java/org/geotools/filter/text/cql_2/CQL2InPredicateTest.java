@@ -19,11 +19,11 @@ package org.geotools.filter.text.cql_2;
 import java.util.LinkedList;
 import java.util.List;
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Or;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQLINPredicateTest;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Or;
 
 /** Same as ECQL it seems */
 public class CQL2InPredicateTest extends ECQLINPredicateTest {

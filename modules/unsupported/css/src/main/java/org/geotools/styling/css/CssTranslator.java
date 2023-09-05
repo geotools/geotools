@@ -40,6 +40,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.brewer.styling.builder.ChannelSelectionBuilder;
 import org.geotools.brewer.styling.builder.ColorMapBuilder;
 import org.geotools.brewer.styling.builder.ColorMapEntryBuilder;
@@ -64,13 +76,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.Value.MultiValue;
@@ -91,11 +96,6 @@ import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.styling.SLDTransformer;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.Style;
 
 /**
  * Transforms a GeoCSS into an equivalent GeoTools {@link Style} object
@@ -151,7 +151,7 @@ public class CssTranslator {
             Integer.valueOf(
                     System.getProperty("org.geotools.css." + DIRECTIVE_AUTO_THRESHOLD, "100"));
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     /** Matches the title tag inside a rule comment */
     static final Pattern TITLE_PATTERN = Pattern.compile("^.*@title\\s*(?:\\:\\s*)?(.+)\\s*$");
@@ -1450,7 +1450,7 @@ public class CssTranslator {
     }
 
     private String wrapColorMapAttribute(Expression expression) {
-        if (expression instanceof org.opengis.filter.expression.Literal) {
+        if (expression instanceof org.geotools.api.filter.expression.Literal) {
             // return expression as simple String
             return expression.toString();
         } else {
@@ -1652,11 +1652,11 @@ public class CssTranslator {
 
     /** Returns true if the expression is a constant value zero */
     private boolean isZero(Expression expression) {
-        if (!(expression instanceof org.opengis.filter.expression.Literal)) {
+        if (!(expression instanceof org.geotools.api.filter.expression.Literal)) {
             return false;
         }
-        org.opengis.filter.expression.Literal l =
-                (org.opengis.filter.expression.Literal) expression;
+        org.geotools.api.filter.expression.Literal l =
+                (org.geotools.api.filter.expression.Literal) expression;
         return l.evaluate(null, Double.class) == 0;
     }
 
@@ -2083,7 +2083,7 @@ public class CssTranslator {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
         NamedLayer layer = styleFactory.createNamedLayer();
-        layer.addStyle((org.geotools.styling.Style) style);
+        layer.addStyle((org.geotools.api.style.Style) style);
         sld.layers().add(layer);
         SLDTransformer tx = new SLDTransformer();
         tx.setIndentation(2);

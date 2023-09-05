@@ -18,8 +18,24 @@ package org.geotools.coverage.util;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -29,10 +45,9 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
@@ -44,20 +59,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A set of utilities methods for interactions between {@link GridCoverage} and {@link Feature}.
@@ -71,8 +72,8 @@ public final class FeatureUtilities {
 
     static FeatureTypeFactory typeFactory;
     static FeatureFactory featureFactory;
-    public static final FilterFactory2 DEFAULT_FILTER_FACTORY =
-            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    public static final FilterFactory DEFAULT_FILTER_FACTORY =
+            CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     public static final PropertyName GRID_PROPERTY_NAME = DEFAULT_FILTER_FACTORY.property("grid");
     public static final PropertyName PARAMS_PROPERTY_NAME =
             DEFAULT_FILTER_FACTORY.property("params");
@@ -101,6 +102,23 @@ public final class FeatureUtilities {
      */
     private static Polygon getPolygon(final Rectangle2D rect) {
         return getPolygon(rect, 0);
+    }
+    /**
+     * Returns the polygon surrounding the specified rectangle. Code lifted from ArcGridDataSource
+     * (temporary).
+     */
+    private static Polygon getPolygon(final BoundingBox bounds) {
+        final PrecisionModel pm = new PrecisionModel();
+        final GeometryFactory gf = new GeometryFactory(pm, 0);
+        final Coordinate[] coord = {
+            new Coordinate(bounds.getMinX(), bounds.getMinY()),
+            new Coordinate(bounds.getMaxX(), bounds.getMinY()),
+            new Coordinate(bounds.getMaxX(), bounds.getMaxY()),
+            new Coordinate(bounds.getMinX(), bounds.getMaxY()),
+            new Coordinate(bounds.getMinX(), bounds.getMinY())
+        };
+        final LinearRing ring = gf.createLinearRing(coord);
+        return new Polygon(ring, null, gf);
     }
 
     /**
@@ -184,11 +202,11 @@ public final class FeatureUtilities {
         final Rectangle2D rect = gridCoverageReader.getOriginalEnvelope().toRectangle2D();
         final CoordinateReferenceSystem sourceCrs =
                 CRS.getHorizontalCRS(gridCoverageReader.getCoordinateReferenceSystem());
-        if (sourceCrs == null)
+        if (sourceCrs == null) {
+            final Object arg0 = gridCoverageReader.getCoordinateReferenceSystem();
             throw new UnsupportedOperationException(
-                    Errors.format(
-                            ErrorKeys.CANT_SEPARATE_CRS_$1,
-                            gridCoverageReader.getCoordinateReferenceSystem()));
+                    MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
+        }
 
         final Coordinate[] coord = new Coordinate[5];
         coord[0] = new Coordinate(rect.getMinX(), rect.getMinY());
@@ -303,7 +321,7 @@ public final class FeatureUtilities {
      * Convert the crop envelope into a polygon and the use the world-to-grid transform to get a ROI
      * for the source coverage.
      */
-    public static Polygon getPolygon(final GeneralEnvelope env, final GeometryFactory gf)
+    public static Polygon getPolygon(final GeneralBounds env, final GeometryFactory gf)
             throws IllegalStateException, MismatchedDimensionException {
         final Rectangle2D rect = env.toRectangle2D();
         final Coordinate[] coord = {

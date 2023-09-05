@@ -18,9 +18,9 @@
 package org.geotools.data.complex.feature.type;
 
 import java.util.Map;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author Gabriel Roldan

@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
 
 /**
  * A simplifying filter visitor that caches the results, to avoid repeating their computation over

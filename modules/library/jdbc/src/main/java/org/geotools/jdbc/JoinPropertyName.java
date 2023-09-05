@@ -17,8 +17,8 @@
 
 package org.geotools.jdbc;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Property name that knows what feature type it comes from.

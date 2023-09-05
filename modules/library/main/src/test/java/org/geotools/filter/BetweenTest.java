@@ -24,6 +24,9 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -32,9 +35,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.PropertyIsBetween;
 
 /**
  * tests for between filters.
@@ -104,7 +104,7 @@ public class BetweenTest {
 
     @Test
     public void testEquals() throws Exception {
-        org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        org.geotools.api.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyIsBetween f1 = ff.between(ff.property("abc"), ff.literal(10), ff.literal(20));
         PropertyIsBetween f2 = ff.between(ff.property("efg"), ff.literal(10), ff.literal(20));
         PropertyIsBetween f3 = ff.between(ff.property("abc"), ff.literal(10), ff.literal(20));

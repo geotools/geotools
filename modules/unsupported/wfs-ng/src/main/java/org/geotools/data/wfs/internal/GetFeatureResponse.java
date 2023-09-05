@@ -17,12 +17,12 @@
 package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
 
 public class GetFeatureResponse extends WFSResponse {
 

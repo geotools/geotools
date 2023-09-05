@@ -20,8 +20,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsArrayContainingInAnyOrder;
 import org.junit.Test;

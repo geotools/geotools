@@ -20,11 +20,11 @@ package org.geotools.data.complex.feature.xpath;
 import java.util.Map;
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.identity.Identifier;
 import org.xml.sax.Attributes;
 
 /**

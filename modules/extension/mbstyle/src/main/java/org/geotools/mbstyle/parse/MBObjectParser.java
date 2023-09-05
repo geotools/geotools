@@ -22,20 +22,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.StyleFactory2;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Helper class used to perform JSON traversal of {@link JSONObject} and perform Expression and
@@ -74,8 +74,8 @@ public class MBObjectParser {
     /** Wrapper class (used to provide better error messages). */
     final Class<?> context;
 
-    final FilterFactory2 ff;
-    final StyleFactory2 sf;
+    final FilterFactory ff;
+    final StyleFactory sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
 
     /**
@@ -85,8 +85,8 @@ public class MBObjectParser {
      */
     public MBObjectParser(Class<?> context) {
         this.context = context;
-        this.sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory();
-        this.ff = CommonFactoryFinder.getFilterFactory2();
+        this.sf = (StyleFactory) CommonFactoryFinder.getStyleFactory();
+        this.ff = CommonFactoryFinder.getFilterFactory();
     }
 
     /**
@@ -99,9 +99,9 @@ public class MBObjectParser {
         this.context = context;
         sf =
                 parse == null
-                        ? (StyleFactory2) CommonFactoryFinder.getStyleFactory()
+                        ? (StyleFactory) CommonFactoryFinder.getStyleFactory()
                         : parse.getStyleFactory();
-        ff = parse == null ? CommonFactoryFinder.getFilterFactory2() : parse.getFilterFactory();
+        ff = parse == null ? CommonFactoryFinder.getFilterFactory() : parse.getFilterFactory();
     }
 
     //
@@ -110,12 +110,12 @@ public class MBObjectParser {
     // These methods throw a validation error if tag is not available
     //
     /** Shared FilterFactory */
-    public FilterFactory2 getFilterFactory() {
+    public FilterFactory getFilterFactory() {
         return this.ff;
     }
 
     /** Shared StyleFactory */
-    public StyleFactory2 getStyleFactory() {
+    public StyleFactory getStyleFactory() {
         return sf;
     }
 

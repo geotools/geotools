@@ -19,9 +19,9 @@ package org.geotools.data.memory;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.store.ContentEntry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Entry used to store features (of a single FeatureType).

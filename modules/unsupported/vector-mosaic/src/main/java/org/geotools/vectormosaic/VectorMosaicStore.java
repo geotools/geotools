@@ -23,17 +23,17 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.geotools.data.DataStore;
-import org.geotools.data.Repository;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Repository;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
 
 /** {@link DataStore} for a vector mosaic. */
 public class VectorMosaicStore extends ContentDataStore {

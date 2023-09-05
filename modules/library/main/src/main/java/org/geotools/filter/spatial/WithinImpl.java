@@ -16,11 +16,11 @@
  */
 package org.geotools.filter.spatial;
 
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.Within;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Within;
 
 public class WithinImpl extends AbstractPreparedGeometryFilter implements Within {
 

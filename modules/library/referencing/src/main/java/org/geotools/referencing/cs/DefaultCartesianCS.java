@@ -19,19 +19,19 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Map;
 import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.measure.Measure;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
 
 /**
  * A 1-, 2-, or 3-dimensional coordinate system. Gives the position of points relative to orthogonal
@@ -230,7 +230,7 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
                 final double angle = DefaultCoordinateSystemAxis.getAngle(axis0, axis1);
                 if (Math.abs(Math.abs(angle) - 90) > DirectionAlongMeridian.EPS) {
                     throw new IllegalArgumentException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.NON_PERPENDICULAR_AXIS_$2,
                                     axis0.name(),
                                     axis1.name()));

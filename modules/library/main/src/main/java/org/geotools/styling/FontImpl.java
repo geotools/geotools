@@ -22,11 +22,12 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
 
 /**
  * Provides a Java representation of the Font element of an SLD.
@@ -171,11 +172,11 @@ public class FontImpl implements Font, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
-    static FontImpl cast(org.opengis.style.Font font) {
+    static FontImpl cast(org.geotools.api.style.Font font) {
         if (font == null) {
             return null;
         } else if (font instanceof FontImpl) {

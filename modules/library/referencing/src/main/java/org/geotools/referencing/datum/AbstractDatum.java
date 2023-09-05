@@ -22,21 +22,21 @@ package org.geotools.referencing.datum;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.util.InternationalString;
 
 /**
  * Specifies the relationship of a coordinate system to the earth, thus creating a {@linkplain
- * org.opengis.referencing.crs.CoordinateReferenceSystem coordinate reference system}. A datum uses
- * a parameter or set of parameters that determine the location of the origin of the coordinate
+ * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system}. A datum
+ * uses a parameter or set of parameters that determine the location of the origin of the coordinate
  * reference system. Each datum subtype can be associated with only specific types of {@linkplain
- * org.opengis.referencing.cs.AbstractCS coordinate systems}.
+ * org.geotools.api.referencing.cs.AbstractCS coordinate systems}.
  *
  * <p>A datum can be defined as a set of real points on the earth that have coordinates. The
  * definition of the datum may also include the temporal behavior (such as the rate of change of the

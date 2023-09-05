@@ -65,6 +65,20 @@ import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -75,7 +89,6 @@ import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
-import org.geotools.data.Query;
 import org.geotools.data.directory.DirectoryDataStore;
 import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
@@ -88,7 +101,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
@@ -106,19 +119,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.sort.SortOrder;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import ucar.nc2.Variable;
 
 /**
@@ -177,7 +177,7 @@ public class NetCDFMosaicReaderTest {
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("O3", true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -304,7 +304,7 @@ public class NetCDFMosaicReaderTest {
             time.setValue(Arrays.asList(parseTimeStamp(t2)));
             GridCoverage2D coverage2 = reader.read(params);
 
-            DirectPosition center = reader.getOriginalEnvelope().getMedian();
+            Position center = reader.getOriginalEnvelope().getMedian();
             float[] v1 = (float[]) coverage1.evaluate(center);
             float[] v2 = (float[]) coverage2.evaluate(center);
             assertNotEquals(v1[0], v2[0], 0f);
@@ -471,7 +471,7 @@ public class NetCDFMosaicReaderTest {
 
             // check we have the 4 granules we expect
             GranuleSource source = reader.getGranules(name, true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -705,7 +705,7 @@ public class NetCDFMosaicReaderTest {
         try {
 
             GranuleSource source = reader.getGranules(name, true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -740,7 +740,7 @@ public class NetCDFMosaicReaderTest {
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("NO2", true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -797,7 +797,7 @@ public class NetCDFMosaicReaderTest {
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("O3", true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -937,7 +937,7 @@ public class NetCDFMosaicReaderTest {
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("O3", true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.ASCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -1107,7 +1107,7 @@ public class NetCDFMosaicReaderTest {
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("NO2", true);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             Query q = new Query(Query.ALL);
             q.setSortBy(ff.sort("time", SortOrder.DESCENDING));
             SimpleFeatureCollection granules = source.getGranules(q);
@@ -1217,7 +1217,7 @@ public class NetCDFMosaicReaderTest {
             assertTrue(
                     CRS.equalsIgnoreMetadata(
                             DefaultGeographicCRS.WGS84, reader.getCoordinateReferenceSystem()));
-            GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
+            GeneralBounds envelope = reader.getOriginalEnvelope("NO2");
             assertEquals(-360, envelope.getMinimum(0), 0d);
             assertEquals(360, envelope.getMaximum(0), 0d);
             assertEquals(-180, envelope.getMinimum(1), 0d);
@@ -1425,7 +1425,7 @@ public class NetCDFMosaicReaderTest {
                     CRS.equalsIgnoreMetadata(
                             DefaultGeographicCRS.WGS84,
                             reader.getCoordinateReferenceSystem("NO2")));
-            GeneralEnvelope envelope = reader.getOriginalEnvelope("NO2");
+            GeneralBounds envelope = reader.getOriginalEnvelope("NO2");
             assertEquals(-360, envelope.getMinimum(0), 0d);
             assertEquals(360, envelope.getMaximum(0), 0d);
             assertEquals(-180, envelope.getMinimum(1), 0d);
@@ -1524,7 +1524,7 @@ public class NetCDFMosaicReaderTest {
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope(name);
+        final GeneralBounds envelope = reader.getOriginalEnvelope(name);
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange(name).getSpan(0) / 2.0,

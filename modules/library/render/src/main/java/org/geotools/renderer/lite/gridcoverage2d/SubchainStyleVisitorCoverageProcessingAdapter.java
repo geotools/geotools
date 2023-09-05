@@ -19,12 +19,11 @@ package org.geotools.renderer.lite.gridcoverage2d;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
 
 /**
  * Helper class that implements a subchain.
@@ -92,8 +91,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
      */
     protected void setSink(CoverageProcessingNode sink) {
         GridCoverageRendererUtilities.ensureNotNull(sink, "sink");
-        if (this.sink != null)
-            throw new IllegalStateException(Errors.format(ErrorKeys.SINK_ALREADY_SET));
+        if (this.sink != null) throw new IllegalStateException(ErrorKeys.SINK_ALREADY_SET);
         this.sink = sink;
     }
 

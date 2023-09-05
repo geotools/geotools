@@ -24,14 +24,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.util.ProgressListener;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.Expression;
-import org.opengis.util.ProgressListener;
 
 /** Group features by one or several attributes and applies an aggregator visitor to each group. */
 public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {

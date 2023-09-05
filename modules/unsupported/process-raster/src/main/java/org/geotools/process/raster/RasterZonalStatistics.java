@@ -25,6 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import javax.media.jai.ROI;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -36,7 +46,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
@@ -55,16 +65,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A process computing zonal statistics based on a raster data set and a set of polygonal zones of
@@ -177,7 +177,7 @@ public class RasterZonalStatistics implements RasterProcess {
 
     /** An iterator computing statistics as we go */
     static class RasterZonalStatisticsIterator implements SimpleFeatureIterator {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         SimpleFeatureIterator zones;
 
@@ -357,7 +357,7 @@ public class RasterZonalStatistics implements RasterProcess {
                  */
                 ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
                 param.parameter("Source").setValue(dataCoverage);
-                param.parameter("Envelope").setValue(new GeneralEnvelope(geometryEnvelope));
+                param.parameter("Envelope").setValue(new GeneralBounds(geometryEnvelope));
                 cropped = (GridCoverage2D) PROCESSOR.doOperation(param);
 
                 // transform the geometry to raster space so that we can use it as a ROI source

@@ -17,11 +17,11 @@
 package org.geotools.xlink;
 
 import java.util.Collections;
+import org.geotools.api.feature.type.AttributeType;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.xs.XSSchema;
-import org.opengis.feature.type.AttributeType;
 
 public class XLINKSchema extends SchemaImpl {
 

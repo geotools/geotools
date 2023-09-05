@@ -22,6 +22,7 @@ import it.geosolutions.jaiext.classbreaks.Classification;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.Set;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.BandSelectDescriptor;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
@@ -37,13 +39,11 @@ import org.geotools.process.classify.ClassificationStats;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.geotools.renderer.i18n.Errors;
 import org.jaitools.media.jai.zonalstats.Result;
 import org.jaitools.media.jai.zonalstats.ZonalStats;
 import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
-import org.opengis.util.ProgressListener;
 
 /**
  * Process that classifies vector data into "classes" using one of the following methods:
@@ -94,7 +94,8 @@ public class CoverageClassStats implements RasterProcess {
         // initial checks/defaults
         //
         if (coverage == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
+            throw new ProcessException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "coverage"));
         }
 
         if (classes == null) {
@@ -103,7 +104,7 @@ public class CoverageClassStats implements RasterProcess {
 
         if (classes < 1) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
         }
 
         RenderedImage sourceImage = coverage.getRenderedImage();
@@ -115,7 +116,8 @@ public class CoverageClassStats implements RasterProcess {
 
         final int numBands = sourceImage.getSampleModel().getNumBands();
         if (band < 0 || band >= numBands) {
-            throw new ProcessException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
+            throw new ProcessException(
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "band", band));
         }
 
         if (numBands > 1) {

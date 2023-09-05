@@ -19,14 +19,14 @@ package org.geotools.process.raster;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.ProgressListener;
 
 /**
  * Add two coverages together (pixel by pixel). Output pixel[i][j] = source0CoveragePixel[i][j] +

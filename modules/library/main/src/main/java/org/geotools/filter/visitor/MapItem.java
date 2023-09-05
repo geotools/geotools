@@ -16,8 +16,7 @@
  */
 package org.geotools.filter.visitor;
 
-import org.opengis.annotation.XmlElement;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * This function recodes values from a property or expression into corresponding values of arbitrary
@@ -27,7 +26,6 @@ import org.opengis.filter.expression.Expression;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("MapItem")
 public interface MapItem extends Expression {
 
     /**
@@ -38,7 +36,6 @@ public interface MapItem extends Expression {
      *
      * @return Expression
      */
-    @XmlElement("Value")
     Expression getValue();
 
     /**
@@ -46,6 +43,5 @@ public interface MapItem extends Expression {
      *
      * @return double
      */
-    @XmlElement("Data")
     double getData();
 }

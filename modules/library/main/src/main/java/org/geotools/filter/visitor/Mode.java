@@ -17,8 +17,6 @@
 
 package org.geotools.filter.visitor;
 
-import org.opengis.annotation.XmlElement;
-
 /**
  * Interpolation mode used by interpolate function.
  *
@@ -26,7 +24,6 @@ import org.opengis.annotation.XmlElement;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("Mode")
 public enum Mode {
     LINEAR,
     COSINE,

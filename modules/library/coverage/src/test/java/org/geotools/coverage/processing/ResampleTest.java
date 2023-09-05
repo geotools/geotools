@@ -42,6 +42,18 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 import org.geotools.TestData;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -49,9 +61,9 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.operation.Extrema;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.referencing.CRS;
@@ -64,18 +76,6 @@ import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Visual test of the "Resample" operation. A remote sensing image is projected from a fitted
@@ -325,11 +325,11 @@ public final class ResampleTest extends GridProcessingTestBase {
         RenderedImage image = ImageIO.read(world);
 
         final CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
-        Envelope2D envelope = new Envelope2D(wgs84, -180, -90, 360, 180);
+        ReferencedEnvelope envelope = ReferencedEnvelope.rect(-180, -90, 360, 180, wgs84);
         GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
 
         // crop, we cannot reproject it fully to the google projection
-        final Envelope2D cropEnvelope = new Envelope2D(wgs84, -180, -80, 360, 160);
+        final ReferencedEnvelope cropEnvelope = ReferencedEnvelope.rect(-180, -80, 360, 160, wgs84);
         GridCoverage2D gcCropWorld =
                 (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
 
@@ -355,11 +355,11 @@ public final class ResampleTest extends GridProcessingTestBase {
         RenderedImage image = ImageIO.read(world);
 
         final CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
-        Envelope2D envelope = new Envelope2D(wgs84, -180, -90, 360, 180);
+        ReferencedEnvelope envelope = ReferencedEnvelope.rect(-180, -90, 360, 180, wgs84);
         GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
 
         // crop, we cannot reproject it fully to the google projection
-        final Envelope2D cropEnvelope = new Envelope2D(wgs84, -180, -80, 360, 160);
+        final ReferencedEnvelope cropEnvelope = ReferencedEnvelope.rect(-180, -80, 360, 160, wgs84);
         GridCoverage2D gcCropWorld =
                 (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
 
@@ -425,11 +425,11 @@ public final class ResampleTest extends GridProcessingTestBase {
         CoordinateReferenceSystem wgs84LatLon = CRS.decode("EPSG:4326");
         final GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(null);
         GridCoverage2D coverage =
-                factory.create("translated", ti, new Envelope2D(wgs84LatLon, 3, 5, 6, 8));
+                factory.create("translated", ti, ReferencedEnvelope.rect(3, 5, 6, 8, wgs84LatLon));
 
         // verify we're good
         int[] pixel = new int[3];
-        coverage.evaluate((DirectPosition) new DirectPosition2D(4, 6), pixel);
+        coverage.evaluate((Position) new Position2D(4, 6), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(255, pixel[1]);
         assertEquals(0, pixel[2]);
@@ -439,7 +439,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         GridGeometry gg =
                 new GridGeometry2D(
                         new GridEnvelope2D(-10, -10, 5, 5),
-                        (Envelope) new Envelope2D(wgs84LonLat, 5, 3, 8, 6));
+                        (Bounds) ReferencedEnvelope.rect(5, 3, 8, 6, wgs84LonLat));
         GridCoverage2D flipped =
                 (GridCoverage2D)
                         Operations.DEFAULT.resample(
@@ -449,7 +449,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                                 Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
         // before the fix the pixel would have been black
-        flipped.evaluate((DirectPosition) new DirectPosition2D(6, 4), pixel);
+        flipped.evaluate((Position) new Position2D(6, 4), pixel);
         assertEquals(0, pixel[0]);
         assertEquals(255, pixel[1]);
         assertEquals(0, pixel[2]);

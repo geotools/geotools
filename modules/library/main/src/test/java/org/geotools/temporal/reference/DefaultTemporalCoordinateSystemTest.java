@@ -21,6 +21,9 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Date;
+import org.geotools.api.temporal.TemporalCoordinate;
+import org.geotools.api.temporal.TemporalCoordinateSystem;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.object.DefaultTemporalCoordinate;
@@ -28,9 +31,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.TemporalCoordinate;
-import org.opengis.temporal.TemporalCoordinateSystem;
-import org.opengis.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalCoordinateSystemTest {

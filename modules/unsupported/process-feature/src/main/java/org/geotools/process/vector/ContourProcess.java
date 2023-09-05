@@ -16,6 +16,8 @@
  */
 package org.geotools.process.vector;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
@@ -23,8 +25,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.util.ProgressListener;
 
 /** @author ian */
 @DescribeProcess(title = "Contours", description = "Computes contours over the point features.")

@@ -28,7 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.apache.commons.lang3.ArrayUtils;
-import org.geotools.data.FileDataStore;
+import org.geotools.api.data.FileDataStore;
+import org.geotools.api.style.Font;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -36,7 +38,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.Font;
 import org.geotools.styling.SLD;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.swing.JMapFrame;
@@ -45,7 +46,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
-import org.opengis.util.ProgressListener;
 
 /** @author ian */
 public class ContourProcessTest {

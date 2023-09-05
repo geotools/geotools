@@ -30,26 +30,39 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureLock;
+import org.geotools.api.data.FeatureLockException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureLock;
-import org.geotools.data.FeatureLockException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.FeatureWriter;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.MaxFeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ReTypeFeatureReader;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.Transaction;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureReader;
 import org.geotools.data.crs.ReprojectFeatureReader;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
@@ -67,19 +80,6 @@ import org.geotools.filter.function.Collection_UniqueFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Abstract implementation of FeatureSource.
@@ -387,7 +387,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
             // don't compute the bounds of the features that are modified or removed in the diff
             Iterator<String> i = diff.getModified().keySet().iterator();
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
             Set<FeatureId> modifiedFids = new HashSet<>();
             while (i.hasNext()) {
@@ -509,7 +509,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
                 // consider removed features that satisfy the filter
                 it = diff.getModified().values().iterator();
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                 Set<FeatureId> modifiedFids = new HashSet<>();
                 int modifiedPostCount = 0;
                 while (it.hasNext()) {
@@ -781,8 +781,8 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      */
     public void accepts(
             Query query,
-            org.opengis.feature.FeatureVisitor visitor,
-            org.opengis.util.ProgressListener progress)
+            org.geotools.api.feature.FeatureVisitor visitor,
+            org.geotools.api.util.ProgressListener progress)
             throws IOException {
 
         query = DataUtilities.simplifyFilter(query);

@@ -17,9 +17,9 @@
 package org.geotools.filter;
 
 import java.util.Objects;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Defines a null filter, which checks to see if an attribute is null.
@@ -29,9 +29,9 @@ import org.opengis.filter.expression.Expression;
  */
 public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {
     /** The null check value, which must be an attribute expression. */
-    private org.opengis.filter.expression.Expression nullCheck = null;
+    private org.geotools.api.filter.expression.Expression nullCheck = null;
 
-    protected NullFilterImpl(org.opengis.filter.expression.Expression expresion) {
+    protected NullFilterImpl(org.geotools.api.filter.expression.Expression expresion) {
         setExpression(expresion);
     }
 

@@ -18,9 +18,9 @@ package org.geotools.filter;
 
 import static org.junit.Assert.assertThrows;
 
+import org.geotools.api.filter.expression.Function;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
 
 /**
  * Unit test for AndFunction

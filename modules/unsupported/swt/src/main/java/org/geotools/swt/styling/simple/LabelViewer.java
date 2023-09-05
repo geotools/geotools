@@ -28,19 +28,19 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.PointPlacement;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.PointPlacement;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.swt.utils.Messages;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.Expression;
 
 /**
  * Allows editing/viewing of a Style Layer Descriptor "TextSymbolizer".

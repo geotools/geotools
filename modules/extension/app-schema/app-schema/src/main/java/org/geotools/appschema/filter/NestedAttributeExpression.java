@@ -22,6 +22,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.appschema.jdbc.NamespaceAwareAttributeRenameVisitor;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
@@ -35,11 +40,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.xlink.XLINK;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
 
 /**
  * This class represents a list of expressions broken up from a single XPath expression that is

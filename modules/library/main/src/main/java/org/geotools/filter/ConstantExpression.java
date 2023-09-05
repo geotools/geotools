@@ -19,11 +19,10 @@ package org.geotools.filter;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.Date;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Literal;
 
 /**
  * The Expression class is not immutable!
@@ -52,10 +51,6 @@ public class ConstantExpression implements Literal, Cloneable {
         this.value = value;
     }
 
-    public Object evaluate(SimpleFeature feature) {
-        return getValue();
-    }
-
     @Override
     public Object evaluate(Object object) {
         return getValue();
@@ -73,10 +68,6 @@ public class ConstantExpression implements Literal, Cloneable {
 
     public void setValue(Object constant) {
         throw new UnsupportedOperationException("Default value is immutable");
-    }
-
-    public short getType() {
-        return type;
     }
 
     @Override

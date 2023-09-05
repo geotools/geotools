@@ -18,15 +18,15 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.EqualAreaListVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Breaks a SimpleFeatureCollection into classes with (roughtly) equal total items area in each
@@ -36,7 +36,7 @@ import org.opengis.filter.expression.Literal;
  */
 public class EqualAreaFunction extends AbstractQuantityClassificationFunction {
 
-    private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public static FunctionName NAME =
             new FunctionNameImpl(

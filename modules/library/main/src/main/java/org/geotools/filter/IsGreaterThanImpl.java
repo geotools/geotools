@@ -16,9 +16,9 @@
  */
 package org.geotools.filter;
 
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.expression.Expression;
 
 /** @author jdeolive */
 public class IsGreaterThanImpl extends MultiCompareFilterImpl implements PropertyIsGreaterThan {

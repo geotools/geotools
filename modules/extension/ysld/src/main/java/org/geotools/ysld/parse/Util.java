@@ -25,18 +25,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
 import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.Ysld;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /** Parsing utilities */
 public class Util {

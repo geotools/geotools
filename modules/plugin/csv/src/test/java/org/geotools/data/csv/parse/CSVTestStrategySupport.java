@@ -7,8 +7,8 @@ package org.geotools.data.csv.parse;
 
 import static org.junit.Assert.assertEquals;
 
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
 
 public class CSVTestStrategySupport {
 

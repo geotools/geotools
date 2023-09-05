@@ -13,6 +13,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.temporal.Period;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.StreamingParser;
@@ -21,8 +23,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.temporal.Period;
 import org.w3c.dom.Document;
 
 public class GML3ParsingTest {

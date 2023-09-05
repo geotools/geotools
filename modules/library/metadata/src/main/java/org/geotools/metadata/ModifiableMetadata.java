@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.util.CheckedHashSet;
 import org.geotools.util.UnmodifiableArrayList;
@@ -182,8 +181,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      *   <li>Otherwise, if the object is a {@linkplain Collection collection}, then the content is
      *       copied into a new collection of similar type, with values replaced by their
      *       unmodifiable variant.
-     *   <li>Otherwise, if the object implements the {@link org.opengis.util.Cloneable} interface,
-     *       then a clone is returned.
+     *   <li>Otherwise, if the object implements the {@link org.geotools.api.util.Cloneable}
+     *       interface, then a clone is returned.
      *   <li>Otherwise, the object is assumed immutable and returned unchanged.
      * </ul>
      *
@@ -246,8 +245,8 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
         /*
          * CASE 4 - The object is cloneable.
          */
-        if (object instanceof org.opengis.util.Cloneable) {
-            return ((org.opengis.util.Cloneable) object).clone();
+        if (object instanceof org.geotools.api.util.Cloneable) {
+            return ((org.geotools.api.util.Cloneable) object).clone();
         }
         /*
          * CASE 5 - Any other case. The object is assumed immutable and returned unchanged.
@@ -279,7 +278,7 @@ public abstract class ModifiableMetadata extends AbstractMetadata implements Clo
      */
     protected void checkWritePermission() throws UnmodifiableMetadataException {
         if (!isModifiable()) {
-            throw new UnmodifiableMetadataException(Errors.format(ErrorKeys.UNMODIFIABLE_METADATA));
+            throw new UnmodifiableMetadataException(ErrorKeys.UNMODIFIABLE_METADATA);
         }
         unmodifiable = null;
     }

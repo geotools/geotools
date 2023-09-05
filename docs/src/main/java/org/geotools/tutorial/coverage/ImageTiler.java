@@ -14,6 +14,9 @@ package org.geotools.tutorial.coverage;
 
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
@@ -21,13 +24,9 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.gce.geotiff.GeoTiffFormat;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Arguments;
 import org.geotools.util.factory.Hints;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Simple tiling of a coverage based simply on the number vertical/horizontal tiles desired and
@@ -138,7 +137,7 @@ public class ImageTiler {
      * @return the cropped coverage
      */
     // docs start cropping
-    private GridCoverage2D cropCoverage(GridCoverage2D gridCoverage, Envelope envelope) {
+    private GridCoverage2D cropCoverage(GridCoverage2D gridCoverage, Bounds envelope) {
         CoverageProcessor processor = CoverageProcessor.getInstance();
 
         // An example of manually creating the operation and parameters we want
@@ -163,7 +162,7 @@ public class ImageTiler {
      * @return tile envelope
      */
     // docs start make envelope
-    private Envelope getTileEnvelope(
+    private Bounds getTileEnvelope(
             double coverageMinX,
             double coverageMinY,
             double geographicTileWidth,
@@ -199,11 +198,11 @@ public class ImageTiler {
         // docs end load coverage
 
         // docs start envelope
-        Envelope2D coverageEnvelope = gridCoverage.getEnvelope2D();
-        double coverageMinX = coverageEnvelope.getBounds().getMinX();
-        double coverageMaxX = coverageEnvelope.getBounds().getMaxX();
-        double coverageMinY = coverageEnvelope.getBounds().getMinY();
-        double coverageMaxY = coverageEnvelope.getBounds().getMaxY();
+        ReferencedEnvelope coverageEnvelope = gridCoverage.getEnvelope2D();
+        double coverageMinX = coverageEnvelope.getMinX();
+        double coverageMaxX = coverageEnvelope.getMaxX();
+        double coverageMinY = coverageEnvelope.getMinY();
+        double coverageMaxY = coverageEnvelope.getMaxY();
 
         int htc =
                 this.getNumberOfHorizontalTiles() != null
@@ -231,7 +230,7 @@ public class ImageTiler {
 
                 System.out.println("Processing tile at indices i: " + i + " and j: " + j);
                 // create the envelope of the tile
-                Envelope envelope =
+                Bounds envelope =
                         getTileEnvelope(
                                 coverageMinX,
                                 coverageMinY,

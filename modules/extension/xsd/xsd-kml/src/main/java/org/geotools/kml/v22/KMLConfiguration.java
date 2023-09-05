@@ -18,6 +18,7 @@
 
 package org.geotools.kml.v22;
 
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.StyleMap;
@@ -53,7 +54,6 @@ import org.geotools.kml.v22.bindings.ExtendedDataTypeBinding;
 import org.geotools.kml.v22.bindings.SchemaDataTypeBinding;
 import org.geotools.kml.v22.bindings.SchemaTypeBinding;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;

@@ -27,7 +27,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.imagemosaic.acceptors.ColorCheckAcceptor;
 import org.geotools.gce.imagemosaic.acceptors.DefaultGranuleAcceptorFactory;
@@ -43,7 +44,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.filter.Filter;
 
 /** Testing that granule collectors correctly get configured and initialized */
 public class DefaultSubmosaicProducerSPITest {

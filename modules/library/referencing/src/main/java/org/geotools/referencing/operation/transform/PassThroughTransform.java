@@ -17,19 +17,19 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-import org.geotools.geometry.GeneralDirectPosition;
+import java.text.MessageFormat;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Transform which passes through a subset of ordinates to another transform. This allows transforms
@@ -84,14 +84,14 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
             final int numTrailingOrdinates) {
         if (firstAffectedOrdinate < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "firstAffectedOrdinate",
                             firstAffectedOrdinate));
         }
         if (numTrailingOrdinates < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "numTrailingOrdinates",
                             numTrailingOrdinates));
@@ -132,14 +132,14 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
             final int numTrailingOrdinates) {
         if (firstAffectedOrdinate < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "firstAffectedOrdinate",
                             firstAffectedOrdinate));
         }
         if (numTrailingOrdinates < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "numTrailingOrdinates",
                             numTrailingOrdinates));
@@ -293,19 +293,19 @@ public class PassThroughTransform extends AbstractMathTransform implements Seria
 
     /** Gets the derivative of this transform at a point. */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         final int nSkipped = firstAffectedOrdinate + numTrailingOrdinates;
         final int transDim = subTransform.getSourceDimensions();
         final int pointDim = point.getDimension();
         if (pointDim != transDim + nSkipped) {
             throw new MismatchedDimensionException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.MISMATCHED_DIMENSION_$3,
                             "point",
                             pointDim,
                             transDim + nSkipped));
         }
-        final GeneralDirectPosition subPoint = new GeneralDirectPosition(transDim);
+        final GeneralPosition subPoint = new GeneralPosition(transDim);
         for (int i = 0; i < transDim; i++) {
             subPoint.ordinates[i] = point.getOrdinate(i + firstAffectedOrdinate);
         }

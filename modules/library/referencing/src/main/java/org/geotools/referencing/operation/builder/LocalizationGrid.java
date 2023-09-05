@@ -28,14 +28,14 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpGrid;
 import javax.media.jai.WarpPolynomial;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.operation.transform.WarpTransform2D;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * A factory for {@link MathTransform2D} backed by a <cite>grid of localization</cite>. A grid of
@@ -129,7 +129,7 @@ import org.opengis.referencing.operation.MathTransform2D;
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)
  * @author Alessio Fabiani
- * @see org.opengis.referencing.crs.DerivedCRS
+ * @see org.geotools.api.referencing.crs.DerivedCRS
  */
 public class LocalizationGrid implements Serializable {
     /**

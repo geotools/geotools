@@ -18,17 +18,17 @@
 package org.geotools.appschema.feature;
 
 import java.util.logging.Logger;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.feature.AttributeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.GeometryDescriptorImpl;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
 
 /**
  * Builder for attributes.

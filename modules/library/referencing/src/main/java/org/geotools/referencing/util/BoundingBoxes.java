@@ -17,26 +17,26 @@
 package org.geotools.referencing.util;
 
 import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.util.Locale;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.TransformPathNotFoundException;
 import org.geotools.util.factory.Hints;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Provides convenience methods for {@linkplain GeographicBoundingBox geographic bounding boxes}.
@@ -53,7 +53,7 @@ public final class BoundingBoxes {
      * A set of hints used in order to fetch lenient coordinate operation factory. We accept lenient
      * transforms because {@link GeographicBoundingBox} are usually for approximative bounds (e.g.
      * the area of validity of some CRS). If a user wants accurate bounds, he should probably use an
-     * {@link Envelope} with the appropriate CRS.
+     * {@link Bounds} with the appropriate CRS.
      */
     private static final Hints LENIENT = new Hints(Hints.LENIENT_DATUM_SHIFT, Boolean.TRUE);
 
@@ -68,7 +68,7 @@ public final class BoundingBoxes {
      * @param envelope The source envelope.
      * @param box The target bounding box.
      */
-    public static void copy(Envelope envelope, final GeographicBoundingBoxImpl box)
+    public static void copy(Bounds envelope, final GeographicBoundingBoxImpl box)
             throws TransformException {
         final CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
         if (crs != null) {
@@ -83,7 +83,7 @@ public final class BoundingBoxes {
                     operation = factory.createOperation(crs, standardCRS);
                 } catch (FactoryException exception) {
                     throw new TransformPathNotFoundException(
-                            Errors.format(ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception));
+                            MessageFormat.format(ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception));
                 }
                 envelope = CRS.transform(operation, envelope);
             }

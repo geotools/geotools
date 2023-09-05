@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataAccessFactory;
-import org.geotools.data.Parameter;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataAccessFactory;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 
 /**
  * Sample implementation of a {@link DataAccessFactory} for testing.
@@ -59,7 +59,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Are these parameters for us?
      *
-     * @see org.geotools.data.DataAccessFactory#canProcess(java.util.Map)
+     * @see DataAccessFactory#canProcess(java.util.Map)
      */
     @Override
     public boolean canProcess(Map<String, ?> params) {
@@ -69,7 +69,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Create a {@link SampleDataAccess}.
      *
-     * @see org.geotools.data.DataAccessFactory#createDataStore(java.util.Map)
+     * @see DataAccessFactory#createDataStore(java.util.Map)
      */
     @Override
     public DataAccess<? extends FeatureType, ? extends Feature> createDataStore(
@@ -80,7 +80,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Need to implement this.
      *
-     * @see org.geotools.data.DataAccessFactory#getDescription()
+     * @see DataAccessFactory#getDescription()
      */
     @Override
     public String getDescription() {
@@ -91,7 +91,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Need to implement this.
      *
-     * @see org.geotools.data.DataAccessFactory#getDisplayName()
+     * @see DataAccessFactory#getDisplayName()
      */
     @Override
     public String getDisplayName() {
@@ -102,7 +102,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Need to implement this.
      *
-     * @see org.geotools.data.DataAccessFactory#getParametersInfo()
+     * @see DataAccessFactory#getParametersInfo()
      */
     @Override
     public Param[] getParametersInfo() {
@@ -113,7 +113,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Returns true, as this implementation is always available.
      *
-     * @see org.geotools.data.DataAccessFactory#isAvailable()
+     * @see DataAccessFactory#isAvailable()
      */
     @Override
     public boolean isAvailable() {

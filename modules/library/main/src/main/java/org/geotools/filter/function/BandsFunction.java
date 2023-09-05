@@ -17,11 +17,11 @@
 package org.geotools.filter.function;
 
 import java.awt.image.RenderedImage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.filter.capability.FunctionName;
 
 /**
  * Return the number of bands of the evaluation context, which is supposed to be a coverage, or an

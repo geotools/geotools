@@ -27,8 +27,12 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -36,14 +40,10 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
 
 public class FillTest {
     private static final long TIME = 40000;
@@ -230,11 +230,11 @@ public class FillTest {
 
     @Test
     public void testGEOT3111() throws Exception {
-        FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
         Symbolizer sym =
                 sf.createPolygonSymbolizer(
-                        Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
+                        StrokeImpl.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
         Style style = SLD.wrapSymbolizers(sym);
 
         MapContent mc = new MapContent();

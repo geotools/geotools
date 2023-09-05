@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.PointPlacement;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.PointPlacement;
 
 public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> {
     private Expression rotation;

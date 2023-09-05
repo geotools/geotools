@@ -16,9 +16,9 @@
  */
 package org.geotools.styling.css;
 
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Not;
 import org.geotools.filter.visitor.AbstractFilterVisitor;
-import org.opengis.filter.And;
-import org.opengis.filter.Not;
 
 /**
  * Computes a "complexity" of a filter by counting how many simple filters are in it
@@ -35,7 +35,7 @@ class FilterComplexityVisitor extends AbstractFilterVisitor {
     }
 
     @Override
-    public Object visit(org.opengis.filter.Or filter, Object data) {
+    public Object visit(org.geotools.api.filter.Or filter, Object data) {
         count += filter.getChildren().size();
         return super.visit(filter, data);
     }

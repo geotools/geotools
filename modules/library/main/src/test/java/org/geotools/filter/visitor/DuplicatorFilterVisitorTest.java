@@ -18,19 +18,18 @@ package org.geotools.filter.visitor;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.InternalFunction;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.expression.InternalVolatileFunction;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.InternalFunction;
 
 /**
  * Unit test for DuplicatorFilterVisitor.
@@ -56,7 +55,7 @@ public class DuplicatorFilterVisitorTest {
 
         And oldFilter = fac.and(filters);
         // duplicate it
-        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory2) fac);
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory) fac);
         Filter newFilter = (Filter) oldFilter.accept(visitor, null);
 
         // compare it
@@ -82,7 +81,7 @@ public class DuplicatorFilterVisitorTest {
         Expression internalFunction = new TestInternalFunction();
         Filter filter = fac.isNull(internalFunction);
 
-        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory2) fac);
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory) fac);
         Filter newFilter = (Filter) filter.accept(visitor, null);
 
         Assert.assertTrue(newFilter instanceof PropertyIsNull);

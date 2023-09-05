@@ -17,12 +17,12 @@
  */
 package org.geotools.process.raster;
 
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.GeodeticCalculator;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
 
 /**
  * Used to calculate an estimate for the Grid Convergence Angle at a point within a 2D Coordinate
@@ -111,7 +111,7 @@ final class GridConvergenceAngleCalc {
      * @return double containing grid convergence angle, as described in documentation for the
      *     class.
      */
-    public double getConvergenceAngle(DirectPosition2D position) throws Exception {
+    public double getConvergenceAngle(Position2D position) throws Exception {
 
         //
         // Check to make sure the coordinate reference system for the
@@ -177,7 +177,7 @@ final class GridConvergenceAngleCalc {
         // except move "up" 1 unit along the "up" axis.
         //
 
-        DirectPosition2D endingPosition = new DirectPosition2D((DirectPosition) position);
+        Position2D endingPosition = new Position2D((Position) position);
         endingPosition.setOrdinate(upAxisDimension, position.getOrdinate(upAxisDimension) + 1);
         geoCalc.setDestinationPosition(endingPosition);
 

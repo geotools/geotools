@@ -17,6 +17,9 @@
 package org.geotools.data;
 
 import java.util.List;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.FileResourceInfo;
+import org.geotools.api.data.Query;
 
 /**
  * Default implementation of {@link FileResourceInfo}. It simply returns a {@link

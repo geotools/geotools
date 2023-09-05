@@ -18,10 +18,10 @@ package org.geotools.ows.wms.request;
 
 import java.awt.Dimension;
 import java.util.Properties;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.data.ows.Request;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
-import org.opengis.geometry.Envelope;
 
 /**
  * Construct a WMS getMap request.
@@ -187,7 +187,7 @@ public interface GetMapRequest extends Request {
     public void setBBox(String bbox);
 
     /** Sets the BBOX and SRS information from the provided Envelope (such as a CRSEnvelope). */
-    public void setBBox(Envelope box);
+    public void setBBox(Bounds box);
 
     /**
      * From the Web Map Service Implementation Specification: "The required FORMAT parameter states

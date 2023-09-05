@@ -23,17 +23,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.FactoryException;
 
 /**
  * Loads and caches NTv2 grid files. Thisthat incorporates a soft cache mechanism to keep grids in
@@ -132,7 +132,8 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
                 File file = URLs.urlToFile(url);
 
                 if (!file.exists() || !file.canRead()) {
-                    throw new IOException(Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
+                    throw new IOException(
+                            MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, file));
                 }
 
                 try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {

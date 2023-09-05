@@ -54,13 +54,9 @@ Interfaces for Concepts and Ideas
 
 Formally these interfaces come from three locations:
 
-* ``gt-opengis`` - interfaces backed by ISO and OGC standards (as explained in the Use of Standards page).
 * JTS Topology Suite - geometry library implementing the Simple Features for SQL (SFSQL) OGC standard.
 * ``gt-main`` - interfaces provided by GeoTools.
 
-We also have one stalled work in progress:
-
-* ``gt-opengis`` has a set of ISO19107 geometry interfaces (anyone interested in curves and 3D?)
 
 These interfaces represent spatial concepts and data structures in your application and are suitable
 for use in method signatures.
@@ -149,7 +145,7 @@ In GeoTools we use a ``FactoryFinder`` to look for a factory implementation on t
 
 Here is a quick example showing how to create and use a Filter::
   
-  FilterFactory2 factory = CommonFactoryFinder.getFilterFactory2( null );
+  FilterFactory factory = CommonFactoryFinder.getFilterFactory( null );
   Filter filter = factory.less( factory.property( "size" ), factory.literal( 2 ) );
   
   if( filter.evaulate( feature )){
@@ -158,7 +154,7 @@ Here is a quick example showing how to create and use a Filter::
 
 In this example we:
 
-1. Found an object which implements the GeoAPI ``FilterFactory2`` interface using a ``FactoryFinder``.
+1. Found an object which implements the GeoAPI ``FilterFactory`` interface using a ``FactoryFinder``.
    
    (``CommonFactoryFinder`` gave us ``FilterFactoryImpl`` in this case)
 2. Used the Factory to produce our Instance.

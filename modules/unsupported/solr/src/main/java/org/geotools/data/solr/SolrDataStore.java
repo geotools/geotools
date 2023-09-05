@@ -37,7 +37,14 @@ import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldTypeInfo;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.solr.SolrUtils.ExtendedFieldSchemaInfo;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
@@ -49,13 +56,6 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 
 /**
  * Datastore implementation for SOLR document <br>
@@ -243,7 +243,7 @@ public class SolrDataStore extends ContentDataStore {
 
     @Override
     public FilterFactory getFilterFactory() {
-        return CommonFactoryFinder.getFilterFactory2();
+        return CommonFactoryFinder.getFilterFactory();
     }
 
     /**

@@ -26,10 +26,24 @@ import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
-import org.geotools.geometry.GeneralDirectPosition;
+import java.text.MessageFormat;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform1D;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.ShapeUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -41,20 +55,6 @@ import org.geotools.referencing.wkt.Formattable;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.metadata.Identifier;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.TransformException;
 import si.uom.NonSI;
 import si.uom.SI;
 
@@ -148,7 +148,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      */
     private static String constructMessage(
             final String argument, final int dimension, final int expected) {
-        return Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, argument, dimension, expected);
+        return MessageFormat.format(
+                ErrorKeys.MISMATCHED_DIMENSION_$3, argument, dimension, expected);
     }
 
     /**
@@ -189,8 +190,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * implementation delegates to {@link #transform(double[],int,double[],int,int)}.
      */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst)
-            throws TransformException {
+    public Position transform(final Position ptSrc, Position ptDst) throws TransformException {
         int dimPoint = ptSrc.getDimension();
         final int dimSource = getSourceDimensions();
         final int dimTarget = getTargetDimensions();
@@ -226,8 +226,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
              * that the destination will be the Geotools implementation, write directly into the
              * 'ordinates' array.
              */
-            final GeneralDirectPosition destination;
-            ptDst = destination = new GeneralDirectPosition(dimTarget);
+            final GeneralPosition destination;
+            ptDst = destination = new GeneralPosition(dimTarget);
             final double[] source;
             if (dimSource <= dimTarget) {
                 source = destination.ordinates;
@@ -508,7 +508,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
     /**
      * Gets the derivative of this transform at a point. The default implementation always throw an
      * exception. Subclasses that implement the {@link MathTransform2D} interface should override
-     * this method. Other subclasses should override {@link #derivative(DirectPosition)} instead.
+     * this method. Other subclasses should override {@link #derivative(Position)} instead.
      *
      * @param point The coordinate point where to evaluate the derivative.
      * @return The derivative at the specified point as a 2&times;2 matrix.
@@ -521,7 +521,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (dimSource != 2) {
             throw new MismatchedDimensionException(constructMessage("point", 2, dimSource));
         }
-        throw new TransformException(Errors.format(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
+        throw new TransformException(ErrorKeys.CANT_COMPUTE_DERIVATIVE);
     }
 
     /**
@@ -545,7 +545,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         final int dimSource = getSourceDimensions();
         if (point == null) {
             if (dimSource == 2) {
@@ -567,7 +567,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
                 return new Matrix1(((MathTransform1D) this).derivative(point.getOrdinate(0)));
             }
         }
-        throw new TransformException(Errors.format(ErrorKeys.CANT_COMPUTE_DERIVATIVE));
+        throw new TransformException(ErrorKeys.CANT_COMPUTE_DERIVATIVE);
     }
 
     /**
@@ -580,7 +580,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
         if (isIdentity()) {
             return this;
         }
-        throw new NoninvertibleTransformException(Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+        throw new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
     }
 
     /**
@@ -630,8 +630,8 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
      *
      * @param object The object to compare with this transform.
      * @return {@code true} if the given object is a transform of the same class and if, given
-     *     identical source position, the {@linkplain #transform(DirectPosition,DirectPosition)
-     *     transformed} position would be the equals.
+     *     identical source position, the {@linkplain #transform(Position, Position) transformed}
+     *     position would be the equals.
      */
     @Override
     public boolean equals(final Object object) {
@@ -676,7 +676,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
         }
     }
 
@@ -808,8 +808,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
             return m;
         } catch (SingularMatrixException exception) {
             NoninvertibleTransformException e =
-                    new NoninvertibleTransformException(
-                            Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+                    new NoninvertibleTransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
             e.initCause(exception);
             throw e;
         }
@@ -887,7 +886,7 @@ public abstract class AbstractMathTransform extends Formattable implements MathT
          * inverse of the matrix returned by the enclosing math transform.
          */
         @Override
-        public Matrix derivative(final DirectPosition point) throws TransformException {
+        public Matrix derivative(final Position point) throws TransformException {
             return invert(AbstractMathTransform.this.derivative(this.transform(point, null)));
         }
 

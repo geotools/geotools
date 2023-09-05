@@ -21,6 +21,9 @@ package org.geotools.referencing.crs;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.referencing.crs.EngineeringCRS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.datum.EngineeringDatum;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.AbstractReferenceSystem;
@@ -28,9 +31,6 @@ import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.datum.DefaultEngineeringDatum;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.referencing.crs.EngineeringCRS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.datum.EngineeringDatum;
 import si.uom.SI;
 
 /**
@@ -44,14 +44,14 @@ import si.uom.SI;
  * <TABLE CELLPADDING='6' BORDER='1'>
  * <TR BGCOLOR="#EEEEFF"><TH NOWRAP>Used with CS type(s)</TH></TR>
  * <TR><TD>
- *   {@link org.opengis.referencing.cs.CartesianCS    Cartesian},
- *   {@link org.opengis.referencing.cs.AffineCS       Affine},
- *   {@link org.opengis.referencing.cs.EllipsoidalCS  Ellipsoidal},
- *   {@link org.opengis.referencing.cs.SphericalCS    Spherical},
- *   {@link org.opengis.referencing.cs.CylindricalCS  Cylindrical},
- *   {@link org.opengis.referencing.cs.PolarCS        Polar},
- *   {@link org.opengis.referencing.cs.VerticalCS     Vertical},
- *   {@link org.opengis.referencing.cs.LinearCS       Linear}
+ *   {@link org.geotools.api.referencing.cs.CartesianCS    Cartesian},
+ *   {@link org.geotools.api.referencing.cs.AffineCS       Affine},
+ *   {@link org.geotools.api.referencing.cs.EllipsoidalCS  Ellipsoidal},
+ *   {@link org.geotools.api.referencing.cs.SphericalCS    Spherical},
+ *   {@link org.geotools.api.referencing.cs.CylindricalCS  Cylindrical},
+ *   {@link org.geotools.api.referencing.cs.PolarCS        Polar},
+ *   {@link org.geotools.api.referencing.cs.VerticalCS     Vertical},
+ *   {@link org.geotools.api.referencing.cs.LinearCS       Linear}
  * </TD></TR></TABLE>
  *
  * @since 2.1

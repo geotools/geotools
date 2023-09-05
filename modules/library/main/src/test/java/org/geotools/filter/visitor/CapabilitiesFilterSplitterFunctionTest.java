@@ -16,19 +16,19 @@
  */
 package org.geotools.filter.visitor;
 
+import static org.geotools.api.filter.Filter.EXCLUDE;
+import static org.geotools.api.filter.Filter.INCLUDE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.opengis.filter.Filter.EXCLUDE;
-import static org.opengis.filter.Filter.INCLUDE;
 
 import java.util.Arrays;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.Capabilities;
 import org.geotools.filter.function.math.FilterFunction_abs;
 import org.geotools.filter.function.math.FilterFunction_max;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Test case where only specific functions are supported.

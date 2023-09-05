@@ -16,7 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /** Metadata about a table column used to carry information through the type mapping process. */
 public class ColumnMetadata {

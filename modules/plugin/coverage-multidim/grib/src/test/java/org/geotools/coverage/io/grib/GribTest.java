@@ -28,6 +28,13 @@ import java.util.Date;
 import java.util.List;
 import javax.imageio.spi.ImageReaderSpi;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.DerivedCRS;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -38,8 +45,8 @@ import org.geotools.coverage.io.netcdf.NetCDFDriver;
 import org.geotools.coverage.io.netcdf.NetCDFReader;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -48,13 +55,6 @@ import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.DerivedCRS;
-import org.opengis.referencing.operation.MathTransform;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
@@ -262,13 +262,12 @@ public class GribTest extends Assert {
             // Expanding the envelope
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope(coverageName);
-            final GeneralEnvelope newEnvelope = new GeneralEnvelope(originalEnvelope);
+            final GeneralBounds originalEnvelope = reader.getOriginalEnvelope(coverageName);
+            final GeneralBounds newEnvelope = new GeneralBounds(originalEnvelope);
             newEnvelope.setCoordinateReferenceSystem(
                     reader.getCoordinateReferenceSystem(coverageName));
             newEnvelope.add(
-                    new DirectPosition2D(
-                            newEnvelope.getMinimum(0) - 10, newEnvelope.getMinimum(1) - 10));
+                    new Position2D(newEnvelope.getMinimum(0) - 10, newEnvelope.getMinimum(1) - 10));
 
             // Selecting the same gridRange
             GridEnvelope gridRange = reader.getOriginalGridRange(coverageName);

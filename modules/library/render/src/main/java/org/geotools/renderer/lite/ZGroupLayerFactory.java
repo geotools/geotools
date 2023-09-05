@@ -20,18 +20,18 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.SLDStyleFactory;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
 
 /**
  * Builds {@link ZGroupLayer} instances from a MapContent using {@link
@@ -110,7 +110,8 @@ class ZGroupLayerFactory {
         String currentGroupId = previousGroup != null ? previousGroup.getGroupId() : null;
         List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
         for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
-            String groupName = fts.getOptions().get(FeatureTypeStyle.SORT_BY_GROUP);
+            String groupName =
+                    fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
             if (!(groupName == currentGroupId
                             || (groupName != null && groupName.equals(currentGroupId)))
                     && !featureTypeStyles.isEmpty()) {
@@ -203,21 +204,23 @@ class ZGroupLayerFactory {
         if (layer.getStyle() != null) {
             for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
                 Map<String, String> options = fts.getOptions();
-                String groupName = options.get(FeatureTypeStyle.SORT_BY_GROUP);
+                String groupName =
+                        options.get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP);
                 if (groupName != null && !groupName.trim().isEmpty()) {
                     hasGroup = true;
                     if (checkValid) {
                         if (fts.getTransformation() != null) {
                             throw new IllegalArgumentException(
                                     "Invalid "
-                                            + FeatureTypeStyle.SORT_BY_GROUP
+                                            + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
                                             + " usage in layer "
                                             + layer.getTitle()
                                             + ": cannot be mixed with rendering transformations");
-                        } else if (options.get(FeatureTypeStyle.SORT_BY) == null) {
+                        } else if (options.get(org.geotools.api.style.FeatureTypeStyle.SORT_BY)
+                                == null) {
                             throw new IllegalArgumentException(
                                     "Invalid "
-                                            + FeatureTypeStyle.SORT_BY_GROUP
+                                            + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
                                             + " usage in layer "
                                             + layer.getTitle()
                                             + ": the corresponding sortBy vendor option is missing");
@@ -229,7 +232,7 @@ class ZGroupLayerFactory {
         if (hasGroup && !(layer instanceof FeatureLayer)) {
             throw new IllegalArgumentException(
                     "Invalid "
-                            + FeatureTypeStyle.SORT_BY_GROUP
+                            + org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP
                             + " usage in layer "
                             + layer.getTitle()
                             + ": can only be applied to vector layers");

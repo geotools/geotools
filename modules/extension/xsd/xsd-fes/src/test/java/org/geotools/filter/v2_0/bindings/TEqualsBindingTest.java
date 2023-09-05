@@ -8,19 +8,19 @@ import java.util.Iterator;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.MultiValuedFilter.MatchAction;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.temporal.TEquals;
+import org.geotools.api.temporal.Period;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.temporal.TEquals;
-import org.opengis.temporal.Period;
 import org.w3c.dom.Document;
 
 public class TEqualsBindingTest extends FESTestSupport {
@@ -70,7 +70,7 @@ public class TEqualsBindingTest extends FESTestSupport {
      */
     @Test
     public void testPropertyEqualsMatchEncoding() throws Exception {
-        FilterFactory2 ff = new FilterFactoryImpl();
+        FilterFactory ff = new FilterFactoryImpl();
         Filter filter = ff.equal(ff.property("prop"), ff.literal("abc"), true, MatchAction.ANY);
         Configuration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);

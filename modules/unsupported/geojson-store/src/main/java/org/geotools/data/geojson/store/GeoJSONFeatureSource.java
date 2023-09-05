@@ -18,8 +18,13 @@ package org.geotools.data.geojson.store;
 
 import java.io.IOException;
 import java.util.Collections;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -28,11 +33,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.filter.Filter;
 
 public class GeoJSONFeatureSource extends ContentFeatureSource {
     /** Should we read just the first feature to extract the Schema */

@@ -19,11 +19,11 @@ package org.geotools.swt.tool;
 
 import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 
 /**
  * Abstract base class for helper classes used by {@code InfoTool} to query {@code MapLayers}.
@@ -68,7 +68,7 @@ public abstract class InfoToolHelper<T> {
      * @return data of type {@code T} as defined by the sub-class
      * @see #isValid()
      */
-    public abstract T getInfo(DirectPosition2D pos, Object... params) throws Exception;
+    public abstract T getInfo(Position2D pos, Object... params) throws Exception;
 
     /**
      * Query if this helper has a reference to a {@code MapContext} and {@code MapLayer}.

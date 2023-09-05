@@ -30,14 +30,19 @@ import javax.imageio.ImageIO;
 import javax.mail.internet.ContentType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.brewer.styling.builder.NamedLayerBuilder;
 import org.geotools.brewer.styling.builder.StyleBuilder;
 import org.geotools.brewer.styling.builder.StyledLayerDescriptorBuilder;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClientFinder;
 import org.geotools.http.commons.MultithreadedHttpClient;
@@ -55,18 +60,13 @@ import org.geotools.ows.wms.response.GetStylesResponse;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * This test case assume you have a default GeoServer 2.2 installed on 127.0.0.1 (ie localhost).
@@ -354,7 +354,7 @@ public class LocalGeoServerOnlineTest extends WMSOnlineTestSupport {
     private GetMapRequest generateGetMap(
             WebMapServer wms2, Layer layer, CoordinateReferenceSystem crs) {
         layer.clearCache();
-        GeneralEnvelope envelope = wms2.getEnvelope(layer, crs);
+        GeneralBounds envelope = wms2.getEnvelope(layer, crs);
         Assert.assertFalse(envelope.isEmpty() || envelope.isNull() || envelope.isInfinite());
         Assert.assertNotNull("Envelope " + CRS.toSRS(crs), envelope);
 

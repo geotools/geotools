@@ -20,9 +20,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.appschema.util.IndexQueryUtils;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.complex.IndexIdIterator.IndexFeatureIdIterator;
 import org.geotools.data.complex.IndexIdIterator.IndexUniqueVisitorIterator;
 import org.geotools.data.complex.IndexQueryManager.QueryIndexCoverage;
@@ -34,13 +41,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
 
 /**
  * Base class for Indexed Iterators
@@ -51,7 +51,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
 
     private static int MAX_FEATURES_ROUND = 100;
 
-    protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
     protected final AppSchemaDataAccess store;
     protected final FeatureTypeMapping mapping;
@@ -98,7 +98,7 @@ public abstract class IndexedMappingFeatureIterator implements IMappingFeatureIt
     protected SortBy[] unrollSortBy(SortBy[] sortArray) {
         if (sortArray == null) return null;
         ArrayList<SortBy> unrolledSorts = new ArrayList<>();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         for (SortBy aSort : sortArray) {
             SortBy newSort =
                     ff.sort(

@@ -19,11 +19,11 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 
 /**
  * Tests the {@link ProjectiveTransform2D} classes.

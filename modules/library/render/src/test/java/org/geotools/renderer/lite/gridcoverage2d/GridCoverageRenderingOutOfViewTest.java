@@ -26,6 +26,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.media.jai.Interpolation;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.RasterSymbolizer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.image.WorldImageReader;
@@ -36,16 +42,10 @@ import org.geotools.map.MapContent;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.GridCoverageRendererTest;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.RasterSymbolizerImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GridCoverageRenderingOutOfViewTest {
 

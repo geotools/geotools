@@ -18,25 +18,25 @@ package org.geotools.referencing.operation.builder;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.text.MessageFormat;
 import java.util.Arrays;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Utilities;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * A helper class for building <var>n</var>-dimensional {@linkplain AffineTransform affine
- * transform} mapping {@linkplain GridEnvelope grid ranges} to {@linkplain Envelope envelopes}. The
+ * transform} mapping {@linkplain GridEnvelope grid ranges} to {@linkplain Bounds envelopes}. The
  * affine transform will be computed automatically from the information specified by the {@link
  * #setGridRange setGridRange} and {@link #setEnvelope setEnvelope} methods, which are mandatory.
  * All other setter methods are optional hints about the affine transform to be created. This
@@ -114,7 +114,7 @@ public class GridToEnvelopeMapper {
     private GridEnvelope gridRange;
 
     /** The envelope, or {@code null} if not yet specified. */
-    private Envelope envelope;
+    private Bounds envelope;
 
     /**
      * Whatever the {@code gridToCRS} transform will maps pixel center or corner. The default value
@@ -148,7 +148,7 @@ public class GridToEnvelopeMapper {
      * @throws MismatchedDimensionException if the grid range and the envelope doesn't have
      *     consistent dimensions.
      */
-    public GridToEnvelopeMapper(final GridEnvelope gridRange, final Envelope userRange)
+    public GridToEnvelopeMapper(final GridEnvelope gridRange, final Bounds userRange)
             throws MismatchedDimensionException {
         ensureNonNull("gridRange", gridRange);
         ensureNonNull("userRange", userRange);
@@ -156,7 +156,7 @@ public class GridToEnvelopeMapper {
         final int userDim = userRange.getDimension();
         if (userDim != gridDim) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, gridDim, userDim));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, gridDim, userDim));
         }
         this.gridRange = gridRange;
         this.envelope = userRange;
@@ -166,13 +166,14 @@ public class GridToEnvelopeMapper {
     private static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
     /** Makes sure that the specified objects have the same dimension. */
     private static void ensureDimensionMatch(
-            final GridEnvelope gridRange, final Envelope envelope, final boolean checkingRange) {
+            final GridEnvelope gridRange, final Bounds envelope, final boolean checkingRange) {
         if (gridRange != null && envelope != null) {
             final String label;
             final int dim1, dim2;
@@ -187,7 +188,7 @@ public class GridToEnvelopeMapper {
             }
             if (dim1 != dim2) {
                 throw new MismatchedDimensionException(
-                        Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, label, dim1, dim2));
+                        MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$3, label, dim1, dim2));
             }
         }
     }
@@ -240,7 +241,7 @@ public class GridToEnvelopeMapper {
     public GridEnvelope getGridRange() throws IllegalStateException {
         if (gridRange == null) {
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "gridRange"));
+                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "gridRange"));
         }
         return gridRange;
     }
@@ -266,10 +267,10 @@ public class GridToEnvelopeMapper {
      * @return The envelope.
      * @throws IllegalStateException if the envelope has not yet been defined.
      */
-    public Envelope getEnvelope() throws IllegalStateException {
+    public Bounds getEnvelope() throws IllegalStateException {
         if (envelope == null) {
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "envelope"));
+                    MessageFormat.format(ErrorKeys.MISSING_PARAMETER_VALUE_$1, "envelope"));
         }
         return envelope;
     }
@@ -280,7 +281,7 @@ public class GridToEnvelopeMapper {
      *
      * @param envelope The new envelope.
      */
-    public void setEnvelope(final Envelope envelope) {
+    public void setEnvelope(final Bounds envelope) {
         ensureNonNull("envelope", envelope);
         ensureDimensionMatch(gridRange, envelope, false);
         if (!Utilities.equals(this.envelope, envelope)) {
@@ -487,7 +488,7 @@ public class GridToEnvelopeMapper {
     public MathTransform createTransform() throws IllegalStateException {
         if (transform == null) {
             final GridEnvelope gridRange = getGridRange();
-            final Envelope userRange = getEnvelope();
+            final Bounds userRange = getEnvelope();
             final boolean swapXY = getSwapXY();
             final boolean[] reverse = getReverseAxis();
             final PixelInCell gridType = getPixelAnchor();
@@ -504,7 +505,7 @@ public class GridToEnvelopeMapper {
                 translate = 0.0;
             } else {
                 throw new IllegalStateException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "gridType", gridType));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "gridType", gridType));
             }
             final Matrix matrix = MatrixFactory.create(dimension + 1);
             for (int i = 0; i < dimension; i++) {
@@ -543,6 +544,6 @@ public class GridToEnvelopeMapper {
         if (transform instanceof AffineTransform) {
             return (AffineTransform) transform;
         }
-        throw new IllegalStateException(Errors.format(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+        throw new IllegalStateException(ErrorKeys.NOT_AN_AFFINE_TRANSFORM);
     }
 }

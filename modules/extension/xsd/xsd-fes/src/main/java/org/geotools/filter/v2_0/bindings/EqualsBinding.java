@@ -17,10 +17,10 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.v1_0.OGCEqualsBinding;
 import org.geotools.filter.v2_0.FES;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
 
 /**
  * Binding object for the element http://www.opengis.net/fes/2.0:Equals.
@@ -38,7 +38,7 @@ import org.opengis.filter.FilterFactory2;
  */
 public class EqualsBinding extends OGCEqualsBinding {
 
-    public EqualsBinding(FilterFactory2 filterFactory, GeometryFactory geometryFactory) {
+    public EqualsBinding(FilterFactory filterFactory, GeometryFactory geometryFactory) {
         super(filterFactory, geometryFactory);
     }
 

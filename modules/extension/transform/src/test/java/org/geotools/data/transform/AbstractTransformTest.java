@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -16,8 +18,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.junit.BeforeClass;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class AbstractTransformTest {
 
@@ -29,7 +29,7 @@ public abstract class AbstractTransformTest {
 
     static CoordinateReferenceSystem WGS84;
 
-    static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @BeforeClass
     public static void setup() throws Exception {

@@ -25,12 +25,21 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageReadParam;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
@@ -38,15 +47,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A RasterManager allows to handle granules, decimation, overviews and spatial properties of a
@@ -314,7 +314,7 @@ class RasterManager {
         //
         // ////////////////////////////////////////////////////////////////////////
         /** The base envelope read from file */
-        GeneralEnvelope coverageEnvelope = null;
+        GeneralBounds coverageEnvelope = null;
 
         double[] coverageFullResolution;
         /** WGS84 envelope 2D for this coverage */
@@ -341,7 +341,7 @@ class RasterManager {
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
-                final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
+                final GeneralBounds bbox = CRS.transform(transform, coverageEnvelope);
                 bbox.setCoordinateReferenceSystem(coverageCRS2D);
                 coverageBBox = new ReferencedEnvelope(bbox);
             } else {
@@ -368,7 +368,7 @@ class RasterManager {
     /** The CRS of the input coverage */
     private CoordinateReferenceSystem coverageCRS;
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     /** The coverage factory producing a {@link GridCoverage} from an image */
     private GridCoverageFactory coverageFactory;
@@ -490,7 +490,7 @@ class RasterManager {
         return coverageCRS;
     }
 
-    public GeneralEnvelope getCoverageEnvelope() {
+    public GeneralBounds getCoverageEnvelope() {
         return coverageEnvelope;
     }
 

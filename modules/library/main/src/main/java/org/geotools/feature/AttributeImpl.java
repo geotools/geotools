@@ -16,14 +16,14 @@
  */
 package org.geotools.feature;
 
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.filter.identity.Identifier;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.filter.identity.Identifier;
 
 /**
  * Simple, mutable class to store attributes.

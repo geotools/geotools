@@ -26,18 +26,18 @@ import java.util.List;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Repository;
+import org.geotools.api.feature.type.Name;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
-import org.geotools.data.Query;
-import org.geotools.data.Repository;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions SAS

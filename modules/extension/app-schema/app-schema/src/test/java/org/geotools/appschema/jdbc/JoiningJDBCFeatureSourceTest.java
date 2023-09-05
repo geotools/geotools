@@ -25,7 +25,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.data.oracle.OracleDialect;
 import org.geotools.data.postgis.PostGISDialect;
@@ -39,12 +41,10 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKey;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
 
 public class JoiningJDBCFeatureSourceTest {
 
-    private FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     @Test
     public void testMultipleIds() throws Exception {

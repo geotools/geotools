@@ -20,6 +20,12 @@ package org.geotools.filter.text.cql2;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
@@ -29,12 +35,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.Filter;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Literal parser test

@@ -35,11 +35,16 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.Query;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.MosaicElement;
@@ -50,7 +55,6 @@ import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -61,11 +65,6 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * SubmosaicProducer that can handle reprojecting its contents into the target mosaic CRS. This
@@ -97,7 +96,7 @@ class ReprojectingSubmosaicProducer extends BaseSubmosaicProducer {
             boolean dryRun) {
         super(response, dryRun);
         this.targetCRS = rasterManager.getConfiguration().getCrs();
-        Envelope2D requestedBounds = request.getRequestedBounds();
+        ReferencedEnvelope requestedBounds = request.getRequestedBounds();
         if (rasterManager.getConfiguration().getCatalogConfigurationBean().isHeterogeneousCRS()
                 && requestedBounds != null) {
             CoordinateReferenceSystem crs = requestedBounds.getCoordinateReferenceSystem();

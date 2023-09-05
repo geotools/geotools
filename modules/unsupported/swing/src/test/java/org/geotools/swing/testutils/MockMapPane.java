@@ -22,6 +22,8 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.swing.MapPane;
@@ -30,8 +32,6 @@ import org.geotools.swing.event.MapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseListener;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Mock map pane class for testing in a headless environment.
@@ -67,7 +67,7 @@ public class MockMapPane extends JPanel implements MapPane {
     }
 
     @Override
-    public void setDisplayArea(Envelope envelope) {
+    public void setDisplayArea(Bounds envelope) {
         CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
         if (crs == null) {
             // assume that it is the current CRS

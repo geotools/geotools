@@ -16,13 +16,13 @@
  */
 package org.geotools.referencing.factory;
 
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Version;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests the {@link org.geotools.referencing.factory.URN_AuthorityFactory} with EPSG codes.

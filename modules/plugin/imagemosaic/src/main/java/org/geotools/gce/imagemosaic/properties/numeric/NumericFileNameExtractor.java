@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.util.NumericConverterFactory;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.Converter;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
 
 abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
         extends RegExPropertiesCollector {

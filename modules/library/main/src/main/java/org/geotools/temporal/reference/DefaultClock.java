@@ -17,13 +17,13 @@
 package org.geotools.temporal.reference;
 
 import java.util.Collection;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.temporal.Calendar;
+import org.geotools.api.temporal.Clock;
+import org.geotools.api.temporal.ClockTime;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.temporal.Calendar;
-import org.opengis.temporal.Clock;
-import org.opengis.temporal.ClockTime;
-import org.opengis.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultClock extends DefaultTemporalReferenceSystem implements Clock {

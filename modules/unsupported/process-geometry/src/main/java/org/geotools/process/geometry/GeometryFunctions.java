@@ -20,6 +20,7 @@ package org.geotools.process.geometry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
@@ -37,7 +38,6 @@ import org.locationtech.jts.geom.util.LineStringExtracter;
 import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A set of static functions providing the implementation of processes exposed by the {@link

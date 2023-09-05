@@ -16,12 +16,12 @@
  */
 package org.geotools.referencing;
 
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.factory.MockCRSAuthorityFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Testing the creation of CRS when more than one factory have the same authority responding on the

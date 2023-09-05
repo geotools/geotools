@@ -20,6 +20,14 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Collections;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.Disjoint;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -28,14 +36,6 @@ import org.geotools.filter.expression.SubtractImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.Disjoint;
 
 /**
  * Unit test for testing filters equals method.
@@ -50,7 +50,7 @@ public class FilterEqualsTest {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(FilterEqualsTest.class);
 
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private Expression testExp1;
     private Expression testExp2;
     private Expression testExp3;
@@ -183,8 +183,8 @@ public class FilterEqualsTest {
         Assert.assertEquals(bFilter2, bFilter1);
         tFilter1 =
                 ff.equals(
-                        org.opengis.filter.expression.Expression.NIL,
-                        org.opengis.filter.expression.Expression.NIL);
+                        org.geotools.api.filter.expression.Expression.NIL,
+                        org.geotools.api.filter.expression.Expression.NIL);
         assertNotEquals(bFilter2, tFilter1);
         bFilter2.setExpression2(new LiteralExpressionImpl(Integer.valueOf(65)));
         assertNotEquals(bFilter2, bFilter1);
@@ -238,8 +238,8 @@ public class FilterEqualsTest {
         PropertyIsEqualTo cFilter1 = ff.equals(testExp1, testExp2);
         PropertyIsEqualTo cFilter2 = ff.equals(testExp2, testExp4);
 
-        org.opengis.filter.Filter logFilter1 = ff.and(cFilter1, cFilter2);
-        org.opengis.filter.Filter logFilter2 = ff.and(cFilter1, cFilter2);
+        org.geotools.api.filter.Filter logFilter1 = ff.and(cFilter1, cFilter2);
+        org.geotools.api.filter.Filter logFilter2 = ff.and(cFilter1, cFilter2);
         Assert.assertEquals(logFilter1, logFilter2);
 
         logFilter1 = ff.not(cFilter2);

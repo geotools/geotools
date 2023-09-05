@@ -17,9 +17,9 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Mark;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;

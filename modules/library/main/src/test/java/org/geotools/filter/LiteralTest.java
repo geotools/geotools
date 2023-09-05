@@ -23,14 +23,14 @@ import static org.junit.Assert.assertNotEquals;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Tests the literal expressions.

@@ -33,8 +33,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import org.geotools.TestData;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -45,19 +53,10 @@ import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
 import org.geotools.renderer.style.ExternalGraphicFactory;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.json.simple.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Tests for {@link SpriteGraphicFactory}.
@@ -75,8 +74,6 @@ import org.opengis.filter.FilterFactory;
 public class MapboxSpriteTest {
 
     protected SpriteGraphicFactory mgf = new SpriteGraphicFactory();
-
-    JSONParser jsonParser = new JSONParser();
 
     private static final long DISPLAY_TIME = 5000;
 

@@ -21,13 +21,13 @@ package org.geotools.referencing.crs;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.referencing.crs.VerticalCRS;
+import org.geotools.api.referencing.cs.VerticalCS;
+import org.geotools.api.referencing.datum.VerticalDatum;
 import org.geotools.referencing.AbstractReferenceSystem; // For javadoc
 import org.geotools.referencing.cs.DefaultVerticalCS;
 import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.referencing.crs.VerticalCRS;
-import org.opengis.referencing.cs.VerticalCS;
-import org.opengis.referencing.datum.VerticalDatum;
 
 /**
  * A 1D coordinate reference system used for recording heights or depths. Vertical CRSs make use of

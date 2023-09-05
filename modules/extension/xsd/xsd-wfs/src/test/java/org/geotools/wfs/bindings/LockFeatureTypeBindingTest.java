@@ -26,13 +26,13 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.AllSomeType;
 import net.opengis.wfs.LockFeatureType;
 import net.opengis.wfs.LockType;
+import org.geotools.api.filter.Id;
 import org.geotools.gml3.GML;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.Id;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

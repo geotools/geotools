@@ -2,40 +2,30 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.ImageOutline;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.styling.AbstractStyleVisitor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
 
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
@@ -48,17 +38,6 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     List<Style> styles = new ArrayList<>();
 
     List<StyledLayer> layers = new ArrayList<>();
-
-    @Override
-    public void visit(StyledLayerDescriptor sld) {
-        for (StyledLayer sl : sld.getStyledLayers()) {
-            if (sl instanceof UserLayer) {
-                ((UserLayer) sl).accept(this);
-            } else if (sl instanceof NamedLayer) {
-                ((NamedLayer) sl).accept(this);
-            }
-        }
-    }
 
     @Override
     public void visit(NamedLayer layer) {
@@ -77,9 +56,6 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     }
 
     @Override
-    public void visit(FeatureTypeConstraint ftc) {}
-
-    @Override
     public void visit(Style style) {
         styles.add(style);
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
@@ -90,9 +66,7 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
 
     @Override
     public void visit(Rule rule) {
-        for (Symbolizer symbolizer : rule.symbolizers()) {
-            symbolizers.add(symbolizer);
-        }
+        symbolizers.addAll(rule.symbolizers());
     }
 
     @Override
@@ -134,19 +108,7 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     public void visit(Mark mark) {}
 
     @Override
-    public void visit(ExternalGraphic exgr) {}
-
-    @Override
     public void visit(PointPlacement pp) {}
-
-    @Override
-    public void visit(AnchorPoint ap) {}
-
-    @Override
-    public void visit(Displacement dis) {}
-
-    @Override
-    public void visit(LinePlacement lp) {}
 
     @Override
     public void visit(Halo halo) {}
@@ -155,23 +117,11 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     public void visit(ColorMap colorMap) {}
 
     @Override
-    public void visit(ColorMapEntry colorMapEntry) {}
-
-    @Override
-    public void visit(ContrastEnhancement contrastEnhancement) {}
-
-    @Override
     public void visit(ImageOutline outline) {}
 
     @Override
     public void visit(ChannelSelection cs) {}
 
     @Override
-    public void visit(OverlapBehavior ob) {}
-
-    @Override
     public void visit(SelectedChannelType sct) {}
-
-    @Override
-    public void visit(ShadedRelief sr) {}
 }

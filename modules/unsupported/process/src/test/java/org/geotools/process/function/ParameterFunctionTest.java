@@ -6,10 +6,10 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Function;
 
 public class ParameterFunctionTest {
 

@@ -24,17 +24,17 @@ import static org.junit.Assume.assumeFalse;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Function;
 
 public class PostGISHStoreOnlineTest extends JDBCTestSupport {
 
@@ -138,7 +138,7 @@ public class PostGISHStoreOnlineTest extends JDBCTestSupport {
         // Simply test that the MapGet Filter Function will also work against returned
         // HSTORE objects which, at the end, are basically maps.
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("hstoretest"));
-        FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Function f = ff.function("mapGet", ff.property("mapping"), ff.literal("key2"));
         PropertyIsEqualTo filter = ff.equals(f, ff.literal("value2"));

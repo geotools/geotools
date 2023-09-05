@@ -26,17 +26,17 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.datum.PrimeMeridian;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.datum.PrimeMeridian;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * Defines the location and precise orientation in 3-dimensional space of a defined ellipsoid (or

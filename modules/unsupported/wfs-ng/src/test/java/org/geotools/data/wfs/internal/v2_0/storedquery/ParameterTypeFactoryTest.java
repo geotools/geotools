@@ -30,6 +30,7 @@ import net.opengis.wfs20.ParameterExpressionType;
 import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.Wfs20Factory;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.data.wfs.internal.v2_0.FeatureTypeInfoImpl;
 import org.geotools.filter.FilterFactoryImpl;
@@ -38,7 +39,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.opengis.filter.Filter;
 
 @RunWith(Parameterized.class)
 public class ParameterTypeFactoryTest {

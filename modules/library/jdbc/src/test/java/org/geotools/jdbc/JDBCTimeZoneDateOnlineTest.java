@@ -22,11 +22,11 @@ import static org.junit.Assert.assertEquals;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.store.ContentFeatureSource;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 
 /** Base class for online tests of JDBC time zone handling. */
 public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {

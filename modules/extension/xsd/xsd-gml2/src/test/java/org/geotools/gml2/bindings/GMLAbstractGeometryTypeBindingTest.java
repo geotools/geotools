@@ -19,13 +19,13 @@ package org.geotools.gml2.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
 public class GMLAbstractGeometryTypeBindingTest extends GMLTestSupport {

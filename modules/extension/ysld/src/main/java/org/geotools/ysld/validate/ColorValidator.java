@@ -18,9 +18,9 @@
 package org.geotools.ysld.validate;
 
 import java.awt.Color;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.ysld.parse.Util;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 /** Validator for Colors */

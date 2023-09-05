@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
@@ -25,13 +26,23 @@ import javax.measure.UnitConverter;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Time;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffUoMCodes;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -54,17 +65,6 @@ import org.geotools.referencing.operation.projection.TransverseMercator;
 import org.geotools.referencing.operation.projection.WorldVanDerGrintenI;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.util.CRSUtilities;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationMethod;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
@@ -279,7 +279,8 @@ public final class CRS2GeoTiffMetadataAdapter {
         // getting the linear unit
         final Unit<?> unit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
         if (unit != null && !SI.METRE.isCompatible(unit)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
         @SuppressWarnings("unchecked")
         Unit<Length> linearUnit = (Unit<Length>) unit;

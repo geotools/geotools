@@ -18,14 +18,14 @@ package org.geotools.data.crs;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * ForceCoordinateSystemFeatureReader provides a CoordinateReferenceSystem for FeatureTypes.
@@ -93,7 +93,7 @@ public class ForceCoordinateSystemFeatureReader
         this.reader = reader;
     }
 
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public SimpleFeatureType getFeatureType() {
         if (reader == null) {
@@ -105,7 +105,7 @@ public class ForceCoordinateSystemFeatureReader
         return builder.getFeatureType();
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
@@ -119,7 +119,7 @@ public class ForceCoordinateSystemFeatureReader
         return SimpleFeatureBuilder.retype(next, builder);
     }
 
-    /** @see org.geotools.data.FeatureReader#hasNext() */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() throws IOException {
         if (reader == null) {
@@ -129,7 +129,7 @@ public class ForceCoordinateSystemFeatureReader
         return reader.hasNext();
     }
 
-    /** @see org.geotools.data.FeatureReader#close() */
+    /** @see FeatureReader#close() */
     @Override
     public void close() throws IOException {
         if (reader == null) {

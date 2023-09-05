@@ -20,6 +20,23 @@ package org.geotools.data.solr;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.Contains;
+import org.geotools.api.filter.spatial.Crosses;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Disjoint;
+import org.geotools.api.filter.spatial.Equals;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.spatial.Overlaps;
+import org.geotools.api.filter.spatial.Touches;
+import org.geotools.api.filter.spatial.Within;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.util.FeatureStreams;
@@ -28,24 +45,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.And;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.Crosses;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Disjoint;
-import org.opengis.filter.spatial.Equals;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Overlaps;
-import org.opengis.filter.spatial.Touches;
-import org.opengis.filter.spatial.Within;
 import si.uom.SI;
 
 public class SolrGeometryTest extends SolrTestSupport {
@@ -59,7 +58,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testPolygonLimitSplittedFilter() throws Exception {
         init();
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls =
@@ -85,7 +84,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testCrossesFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 2, 2}, 2));
@@ -100,7 +99,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testNotCrossesFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 1, 1}, 2));
@@ -111,7 +110,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testEqualFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {3, 2, 6, 2, 6, 7, 3, 7, 3, 2}, 2));
@@ -126,7 +125,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testDisjointFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {0, 0}, 2));
@@ -152,7 +151,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testTouchesFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
@@ -167,7 +166,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testWithinFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {0, 0, 0, 6, 6, 6, 6, 0, 0, 0}, 2));
@@ -182,7 +181,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testOverlapsFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls =
@@ -198,7 +197,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testIntersectsFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {6, 6, 7, 6, 7, 7, 6, 7, 6, 6}, 2));
@@ -213,7 +212,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testContainsFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Polygon ls = gf.createPolygon(sf.create(new double[] {2, 2, 3, 2, 3, 3, 2, 3, 2, 2}, 2));
@@ -228,7 +227,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testDWithinFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
@@ -248,7 +247,7 @@ public class SolrGeometryTest extends SolrTestSupport {
 
     public void testBeyondFilter() throws Exception {
         init("not-active");
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
@@ -273,7 +272,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         assertNotNull(gd);
         assertEquals("geo2", gd.getLocalName());
 
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         BBOX bbox = ff.bbox("geo2", 6.5, 23.5, 7.5, 24.5, "EPSG:4326");
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(1, features.size());

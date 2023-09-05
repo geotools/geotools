@@ -24,9 +24,9 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.geotools.data.DataAccessFactory.Param;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.FileDataStoreFinder;
+import org.geotools.api.data.DataAccessFactory.Param;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.FileDataStoreFinder;
 import org.geotools.util.URLs;
 
 /**

@@ -24,28 +24,28 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
+import java.text.MessageFormat;
 import java.util.Map;
 import javax.measure.Unit;
 import javax.media.jai.ImageFunction;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.util.CaselessStringKey;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.GridSampleDimension;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A factory for {@linkplain GridCoverage2D grid coverage} objects. This factory expects various
@@ -59,7 +59,7 @@ import org.opengis.referencing.operation.MathTransform;
  *       image}, <strong>or</strong> an {@linkplain ImageFunction image function},
  *       <strong>or</strong> a matrix of kind {@code float[][]}.
  *   <li>A ({@linkplain CoordinateReferenceSystem coordinate reference system} - {@linkplain
- *       MathTransform transform}) pair, <strong>or</strong> an {@linkplain Envelope envelope},
+ *       MathTransform transform}) pair, <strong>or</strong> an {@linkplain Bounds envelope},
  *       <strong>or</strong> a {@linkplain GridGeometry2D grid geometry}. The envelope is easier to
  *       use, while the transform provides more control.
  *   <li>Information about each {@linkplain GridSampleDimension sample dimensions} (often called
@@ -72,8 +72,8 @@ import org.opengis.referencing.operation.MathTransform;
  * </ul>
  *
  * <p>The {@linkplain CoordinateReferenceSystem coordinate reference system} is inferred from the
- * supplied {@linkplain Envelope envelope} or {@linkplain GridGeometry2D grid geometry} parameters.
- * If those parameters do not have CRS information, then this factory fallback on a {@linkplain
+ * supplied {@linkplain Bounds envelope} or {@linkplain GridGeometry2D grid geometry} parameters. If
+ * those parameters do not have CRS information, then this factory fallback on a {@linkplain
  * #getDefaultCRS default CRS}.
  *
  * <p>Every {@code create} methods will ultimately delegate their work to a master {@link
@@ -154,7 +154,8 @@ public class GridCoverageFactory extends AbstractFactory {
                 return DefaultEngineeringCRS.CARTESIAN_3D;
             default:
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
+                        MessageFormat.format(
+                                ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
         }
     }
 
@@ -179,7 +180,7 @@ public class GridCoverageFactory extends AbstractFactory {
             final Map<?, ?> properties) {
         final MathTransform transform = gridGeometry.getGridToCRS2D();
         if (!(transform instanceof AffineTransform)) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NOT_AN_AFFINE_TRANSFORM));
+            throw new IllegalArgumentException(ErrorKeys.NOT_AN_AFFINE_TRANSFORM);
         }
         final AffineTransform at = (AffineTransform) transform;
         if (at.getShearX() != 0 || at.getShearY() != 0) {
@@ -209,7 +210,7 @@ public class GridCoverageFactory extends AbstractFactory {
     }
 
     /**
-     * Constructs a grid coverage from the specified matrix and {@linkplain Envelope envelope}. A
+     * Constructs a grid coverage from the specified matrix and {@linkplain Bounds envelope}. A
      * default color palette is built from the minimal and maximal values found in the matrix.
      *
      * @param name The grid coverage name.
@@ -220,7 +221,7 @@ public class GridCoverageFactory extends AbstractFactory {
      * @since 2.2
      */
     public GridCoverage2D create(
-            final CharSequence name, final float[][] matrix, final Envelope envelope) {
+            final CharSequence name, final float[][] matrix, final Bounds envelope) {
         int width = 0;
         int height = matrix.length;
         for (final float[] row : matrix) {
@@ -251,7 +252,7 @@ public class GridCoverageFactory extends AbstractFactory {
 
     /**
      * Constructs a grid coverage from the specified {@linkplain WritableRaster raster} and
-     * {@linkplain Envelope envelope}. A default color palette is built from the minimal and maximal
+     * {@linkplain Bounds envelope}. A default color palette is built from the minimal and maximal
      * values found in the raster.
      *
      * @param name The grid coverage name.
@@ -261,13 +262,13 @@ public class GridCoverageFactory extends AbstractFactory {
      * @return The new grid coverage.
      */
     public GridCoverage2D create(
-            final CharSequence name, final WritableRaster raster, final Envelope envelope) {
+            final CharSequence name, final WritableRaster raster, final Bounds envelope) {
         return create(name, raster, envelope, null, null, null, null, null);
     }
 
     /**
      * Constructs a grid coverage from the specified {@linkplain WritableRaster raster} and
-     * {@linkplain Envelope envelope}.
+     * {@linkplain Bounds envelope}.
      *
      * <p>See the {@code #create(CharSequence, RenderedImage, Envelope, GridSampleDimension[],
      * GridCoverage[], Map)} rendered image variant for a note on heuristic rules applied by this
@@ -300,7 +301,7 @@ public class GridCoverageFactory extends AbstractFactory {
     public GridCoverage2D create(
             final CharSequence name,
             final WritableRaster raster,
-            final Envelope envelope,
+            final Bounds envelope,
             final double[] minValues,
             final double[] maxValues,
             final Unit<?> units,
@@ -364,8 +365,8 @@ public class GridCoverageFactory extends AbstractFactory {
 
     /**
      * Constructs a grid coverage from the specified {@linkplain WritableRaster raster} and
-     * {@linkplain Envelope envelope}. This convenience constructor performs the same assumptions on
-     * axis order than the {@linkplain #create(CharSequence, RenderedImage, Envelope,
+     * {@linkplain Bounds envelope}. This convenience constructor performs the same assumptions on
+     * axis order than the {@linkplain #create(CharSequence, RenderedImage, Bounds,
      * GridSampleDimension[], GridCoverage[], Map) rendered image variant}.
      *
      * <p>The {@linkplain CoordinateReferenceSystem coordinate reference system} is inferred from
@@ -386,7 +387,7 @@ public class GridCoverageFactory extends AbstractFactory {
     public GridCoverage2D create(
             final CharSequence name,
             final WritableRaster raster,
-            final Envelope envelope,
+            final Bounds envelope,
             GridSampleDimension[] bands) {
         if (bands == null) {
             bands = RenderedSampleDimension.create(name, raster, null, null, null, null, null);
@@ -430,7 +431,7 @@ public class GridCoverageFactory extends AbstractFactory {
 
     /**
      * Constructs a grid coverage from the specified {@linkplain RenderedImage image} and
-     * {@linkplain Envelope envelope}. A default set of {@linkplain GridSampleDimension sample
+     * {@linkplain Bounds envelope}. A default set of {@linkplain GridSampleDimension sample
      * dimensions} is used. The {@linkplain CoordinateReferenceSystem coordinate reference system}
      * is inferred from the supplied envelope.
      *
@@ -445,13 +446,13 @@ public class GridCoverageFactory extends AbstractFactory {
      * @since 2.2
      */
     public GridCoverage2D create(
-            final CharSequence name, final RenderedImage image, final Envelope envelope) {
+            final CharSequence name, final RenderedImage image, final Bounds envelope) {
         return create(name, image, envelope, null, null, null);
     }
 
     /**
      * Constructs a grid coverage from the specified {@linkplain RenderedImage image} and
-     * {@linkplain Envelope envelope}. An {@linkplain AffineTransform affine transform} will be
+     * {@linkplain Bounds envelope}. An {@linkplain AffineTransform affine transform} will be
      * computed automatically from the specified envelope using heuristic rules described below.
      *
      * <p>This convenience constructor assumes that axis order in the supplied image matches exactly
@@ -488,7 +489,7 @@ public class GridCoverageFactory extends AbstractFactory {
     public GridCoverage2D create(
             final CharSequence name,
             final RenderedImage image,
-            Envelope envelope,
+            Bounds envelope,
             final GridSampleDimension[] bands,
             final GridCoverage[] sources,
             final Map<?, ?> properties) {
@@ -497,7 +498,7 @@ public class GridCoverageFactory extends AbstractFactory {
          * If no CRS were specified, a default one is used.
          */
         if (envelope.getCoordinateReferenceSystem() == null) {
-            final GeneralEnvelope e = new GeneralEnvelope(envelope);
+            final GeneralBounds e = new GeneralBounds(envelope);
             e.setCoordinateReferenceSystem(getDefaultCRS(e.getDimension()));
             envelope = e;
         }
@@ -542,7 +543,7 @@ public class GridCoverageFactory extends AbstractFactory {
 
     /**
      * Constructs a grid coverage from the specified {@linkplain RenderedImage image} and
-     * {@linkplain GridGeometry2D grid geometry}. The {@linkplain Envelope envelope} (including the
+     * {@linkplain GridGeometry2D grid geometry}. The {@linkplain Bounds envelope} (including the
      * {@linkplain CoordinateReferenceSystem coordinate reference system}) is inferred from the grid
      * geometry.
      *

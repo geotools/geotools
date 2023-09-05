@@ -19,16 +19,16 @@ package org.geotools.se.v1_1.bindings;
 import java.net.URI;
 import javax.swing.Icon;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.ExternalMark;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.ResourceLocator;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDMarkBinding;
-import org.geotools.styling.ExternalMark;
-import org.geotools.styling.Mark;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Mark.

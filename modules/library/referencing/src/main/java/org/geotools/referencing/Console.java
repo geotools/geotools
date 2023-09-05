@@ -20,17 +20,25 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringTokenizer;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.Measure;
 import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.AbstractCRS;
@@ -39,14 +47,6 @@ import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Preprocessor;
 import org.geotools.util.Arguments;
 import org.geotools.util.TableWriter;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A console for executing CRS operations from the command line. Instructions are read from the
@@ -129,7 +129,7 @@ public class Console extends AbstractConsole {
     private CoordinateReferenceSystem sourceCRS, targetCRS;
 
     /** Source and target coordinate points, or {@code null} if not yet determined. */
-    private DirectPosition sourcePosition, targetPosition;
+    private Position sourcePosition, targetPosition;
 
     /** The math transform, or {@code null} if not yet determined. */
     private MathTransform transform;
@@ -380,11 +380,11 @@ public class Console extends AbstractConsole {
                     // -------------------------------
                     if (key1.equalsIgnoreCase("pt")) {
                         if (key0.equalsIgnoreCase("source")) {
-                            sourcePosition = new GeneralDirectPosition(parseVector(value));
+                            sourcePosition = new GeneralPosition(parseVector(value));
                             return;
                         }
                         if (key0.equalsIgnoreCase("target")) {
-                            targetPosition = new GeneralDirectPosition(parseVector(value));
+                            targetPosition = new GeneralPosition(parseVector(value));
                             if (tolerance != null && sourcePosition != null) {
                                 update();
                                 if (transform != null) {
@@ -397,7 +397,8 @@ public class Console extends AbstractConsole {
                 }
             }
         }
-        throw new ParseException(Errors.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
+        throw new ParseException(
+                MessageFormat.format(ErrorKeys.ILLEGAL_INSTRUCTION_$1, instruction), 0);
     }
 
     /** Executes the "{@code print crs}" instruction. */
@@ -459,8 +460,8 @@ public class Console extends AbstractConsole {
     @SuppressWarnings("PMD.CloseResource")
     private void printPts() throws FactoryException, TransformException, IOException {
         update();
-        DirectPosition transformedSource = null;
-        DirectPosition transformedTarget = null;
+        Position transformedSource = null;
+        Position transformedTarget = null;
         String targetException = null;
         if (transform != null) {
             if (sourcePosition != null) {
@@ -472,9 +473,8 @@ public class Console extends AbstractConsole {
                 } catch (NoninvertibleTransformException exception) {
                     targetException = exception.getLocalizedMessage();
                     if (sourcePosition != null) {
-                        final GeneralDirectPosition p;
-                        transformedTarget =
-                                p = new GeneralDirectPosition(sourcePosition.getDimension());
+                        final GeneralPosition p;
+                        transformedTarget = p = new GeneralPosition(sourcePosition.getDimension());
                         Arrays.fill(p.ordinates, Double.NaN);
                     }
                 }
@@ -518,7 +518,7 @@ public class Console extends AbstractConsole {
      * @param point The point to print, or {@code null} if none.
      * @throws IOException if an error occured while writting to the output stream.
      */
-    private void print(final DirectPosition point, final TableWriter table) throws IOException {
+    private void print(final Position point, final TableWriter table) throws IOException {
         if (point != null) {
             table.nextColumn();
             table.write("  (");
@@ -537,8 +537,8 @@ public class Console extends AbstractConsole {
     /** Print the distance between two points using the specified CRS. */
     private void printDistance(
             final CoordinateReferenceSystem crs,
-            final DirectPosition position1,
-            final DirectPosition position2,
+            final Position position1,
+            final Position position2,
             final TableWriter table)
             throws IOException {
         if (position1 == null) {
@@ -590,12 +590,12 @@ public class Console extends AbstractConsole {
      *     expected dimension.
      */
     protected void test() throws TransformException, MismatchedDimensionException {
-        final DirectPosition transformedSource = transform.transform(sourcePosition, null);
+        final Position transformedSource = transform.transform(sourcePosition, null);
         final int sourceDim = transformedSource.getDimension();
         final int targetDim = targetPosition.getDimension();
         if (sourceDim != targetDim) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, targetDim));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, targetDim));
         }
         for (int i = 0; i < sourceDim; i++) {
             // Use '!' for catching NaN.
@@ -649,7 +649,7 @@ public class Console extends AbstractConsole {
             final Number result = numberFormat.parse(token, position);
             if (position.getIndex() != token.length()) {
                 throw new ParseException(
-                        Errors.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token),
+                        MessageFormat.format(ErrorKeys.UNPARSABLE_NUMBER_$1, token),
                         position.getErrorIndex());
             }
             values[i] = result.doubleValue();
@@ -675,7 +675,8 @@ public class Console extends AbstractConsole {
      */
     private static ParseException unexpectedArgument(final String instruction) {
         return new ParseException(
-                Errors.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction), 0);
+                MessageFormat.format(ErrorKeys.UNEXPECTED_ARGUMENT_FOR_INSTRUCTION_$1, instruction),
+                0);
     }
 
     /**

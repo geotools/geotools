@@ -22,9 +22,9 @@ package org.geotools.referencing.cs;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
 
 /**
  * A coordinate system made of two or more independent coordinate systems.

@@ -26,15 +26,23 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.data.wfs.online.WFSOnlineTestSupport;
@@ -48,14 +56,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.FeatureId;
 
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
@@ -85,7 +85,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         };
         LinearRing shell = gf.createLinearRing(coordinates);
         Polygon polygon = gf.createPolygon(shell, null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
     }
 
@@ -147,8 +147,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         SimpleFeatureSource fs = wfs.getFeatureSource(testType.FEATURETYPENAME);
 
         Id startingFeatures = createFidFilter(fs);
-        FilterFactory2 filterFac =
-                CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         try {
             GeometryFactory gf = new GeometryFactory();
             MultiPolygon mp =
@@ -217,7 +216,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     private Id createFidFilter(SimpleFeatureSource fs) throws IOException {
         try (SimpleFeatureIterator iter = fs.getFeatures().features()) {
-            FilterFactory2 ffac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+            FilterFactory ffac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
             Set<FeatureId> fids = new HashSet<>();
             while (iter.hasNext()) {
                 String id = iter.next().getID();

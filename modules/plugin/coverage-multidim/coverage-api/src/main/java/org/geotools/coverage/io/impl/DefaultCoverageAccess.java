@@ -24,18 +24,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageStore;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.metadata.MetadataNode;
-import org.geotools.data.Parameter;
-import org.geotools.data.ServiceInfo;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
-import org.opengis.util.ProgressListener;
 
 /**
  * Default implementation of {@link CoverageAccess}.

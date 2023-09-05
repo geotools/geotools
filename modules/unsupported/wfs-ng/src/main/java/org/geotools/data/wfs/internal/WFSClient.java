@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.Request;
@@ -48,8 +50,6 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.util.Version;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.XMLHandlerHints;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -431,7 +431,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
      *
      * @return a two-element array where the first element is the supported filter and the second
      *     the one to post-process
-     * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.opengis.filter.Filter)
+     * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.geotools.api.filter.Filter)
      */
     public Filter[] splitFilters(QName typeName, Filter filter) {
         return getStrategy().splitFilters(typeName, filter);

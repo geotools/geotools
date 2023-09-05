@@ -17,8 +17,8 @@
 package org.geotools.feature.type;
 
 import java.util.logging.Level;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Defines required attributes for Annotations.

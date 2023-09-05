@@ -18,10 +18,10 @@ package org.geotools.mbstyle.function;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Converts the input value to a number, if possible. If the input is null or false, the result is

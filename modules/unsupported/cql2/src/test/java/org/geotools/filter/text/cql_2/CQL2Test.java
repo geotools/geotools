@@ -22,6 +22,25 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Color;
 import java.util.List;
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.temporal.After;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.filter.temporal.During;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
@@ -31,26 +50,6 @@ import org.geotools.filter.text.ecql.FilterECQLSample;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.Before;
-import org.opengis.filter.temporal.During;
 
 /** Changes since ECQL: see the other tests, nothing new here. */
 public class CQL2Test {
@@ -317,7 +316,7 @@ public class CQL2Test {
 
     @Test
     public void testDivideEncode() throws Exception {
-        final FilterFactory2 filterFactory2 = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory filterFactory2 = CommonFactoryFinder.getFilterFactory();
         final Filter javaFilter =
                 filterFactory2.less(
                         filterFactory2.divide(
@@ -330,7 +329,7 @@ public class CQL2Test {
     @Test
     public void testQuotedComparison() throws Exception {
         Filter filter = CQL2.toFilter("\"a\"=\"b\"");
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         final Filter expected = ff.equal(ff.property("a"), ff.property("b"), false);
         assertEquals(expected, filter);
     }
@@ -342,7 +341,7 @@ public class CQL2Test {
         String actual = CQL2.toCQL2(expr);
         assertEquals("color literals", expected, actual);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Function function =
                 ff.function(

@@ -16,25 +16,25 @@
  */
 package org.geotools.coverage.processing;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.IdentifiedObject;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.IdentifiedObject;
 
 /**
  * An operation working on {@link GridCoverage2D} sources.
@@ -111,7 +111,7 @@ public abstract class Operation2D extends AbstractOperation {
         Utilities.ensureNonNull("sourceNames", sourceNames);
         Utilities.ensureNonNull("sources", sources);
         if (sources.length != sourceNames.length) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.MISMATCHED_ARRAY_LENGTH));
+            throw new IllegalArgumentException(ErrorKeys.MISMATCHED_ARRAY_LENGTH);
         }
         for (int i = 0; i < sourceNames.length; i++) {
             Object candidate = parameters.parameter(sourceNames[i]).getValue();
@@ -121,7 +121,7 @@ public abstract class Operation2D extends AbstractOperation {
             }
             if (!(candidate instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_CLASS_$2,
                                 Classes.getClass(candidate),
                                 GridCoverage2D.class),

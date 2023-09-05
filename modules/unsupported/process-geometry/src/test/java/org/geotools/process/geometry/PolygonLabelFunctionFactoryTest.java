@@ -20,16 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 /** @author ian */
 public class PolygonLabelFunctionFactoryTest {
@@ -51,7 +51,7 @@ public class PolygonLabelFunctionFactoryTest {
 
     @Test
     public void testFactory() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         PropertyName geom = ff.property("the_geom");
         Literal d = ff.literal(1.0);
         Function func = ff.function("labelPoint", new Expression[] {geom, d});

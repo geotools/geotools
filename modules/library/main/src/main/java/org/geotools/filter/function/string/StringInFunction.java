@@ -18,8 +18,8 @@ package org.geotools.filter.function.string;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionImpl;
-import org.opengis.filter.capability.FunctionName;
 
 @SuppressWarnings("unchecked")
 public class StringInFunction extends FunctionImpl {

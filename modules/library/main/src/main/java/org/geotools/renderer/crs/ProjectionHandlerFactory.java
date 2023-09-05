@@ -16,9 +16,9 @@
  */
 package org.geotools.renderer.crs;
 
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Builds {@link ProjectionHandler} instances WARNING: this API is not finalized and is meant to be

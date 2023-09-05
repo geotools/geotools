@@ -20,7 +20,7 @@ package org.geotools.data.shapefile.index;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-import org.geotools.data.CloseableIterator;
+import org.geotools.api.data.CloseableIterator;
 import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.QuadTree;
 import org.geotools.data.shapefile.index.quadtree.StoreException;

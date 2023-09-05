@@ -16,10 +16,10 @@
  */
 package org.geotools.brewer.styling.builder;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.opengis.filter.FilterFactory2;
 
 abstract class AbstractSLDBuilder<T> implements Builder<T> {
 
@@ -27,7 +27,7 @@ abstract class AbstractSLDBuilder<T> implements Builder<T> {
 
     protected AbstractSLDBuilder<?> parent;
 
-    protected static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
+    protected static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
 
     protected boolean unset = false;
 

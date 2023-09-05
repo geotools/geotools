@@ -16,13 +16,13 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.referencing.wkt.Symbols;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Test the ESRI NamedIdentifier aliases for several projections

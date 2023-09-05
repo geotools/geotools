@@ -18,15 +18,15 @@ package org.geotools.xml.filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.NotImpl;
 import org.geotools.xml.XMLHandlerHints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 public class FilterCompliancePreProcessorTest {
 
@@ -35,7 +35,7 @@ public class FilterCompliancePreProcessorTest {
 
     @Test
     public void testSingleNOTHighCompliance() throws Exception {
-        FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
         FilterCompliancePreProcessor compliancePreProcessor =
                 new FilterCompliancePreProcessor(XMLHandlerHints.VALUE_FILTER_COMPLIANCE_HIGH);
         Filter not = ff2.not(ff2.isNull(ff2.property("GM_CODE")));
@@ -47,7 +47,7 @@ public class FilterCompliancePreProcessorTest {
 
     @Test
     public void testNestedNOTHighCompliance() throws Exception {
-        FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
 
         List<String> attrs = new ArrayList<>();
         attrs.add("gm_naam");

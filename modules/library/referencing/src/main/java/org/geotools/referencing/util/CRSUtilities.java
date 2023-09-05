@@ -19,16 +19,34 @@ package org.geotools.referencing.util;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.measure.Unit;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.crs.CompoundCRS;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeneralDerivedCRS;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.measure.AngleFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -36,24 +54,6 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.util.Classes;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeneralDerivedCRS;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A set of static methods working on OpenGIS&reg; {@linkplain CoordinateReferenceSystem coordinate
@@ -192,8 +192,9 @@ public final class CRSUtilities {
             CoordinateReferenceSystem crs, int lower, int upper) {
         int dimension = crs.getCoordinateSystem().getDimension();
         if (lower < 0 || lower > upper || upper > dimension) {
+            final Object arg0 = lower < 0 ? lower : upper;
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, lower < 0 ? lower : upper));
+                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, arg0));
         }
         while (lower != 0 || upper != dimension) {
             final List<CoordinateReferenceSystem> c = getComponents(crs);
@@ -232,9 +233,9 @@ public final class CRSUtilities {
             while (crs.getCoordinateSystem().getDimension() != 2) {
                 final List<CoordinateReferenceSystem> c = getComponents(crs);
                 if (c == null) {
+                    final Object arg0 = crs.getName();
                     throw new TransformException(
-                            Errors.format(
-                                    ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, crs.getName()));
+                            MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, arg0));
                 }
                 crs = c.get(0);
             }
@@ -368,13 +369,13 @@ public final class CRSUtilities {
      * @throws TransformException if the transformation failed.
      * @since 2.3
      */
-    public static DirectPosition deltaTransform(
-            final MathTransform transform, final DirectPosition origin, final DirectPosition source)
+    public static Position deltaTransform(
+            final MathTransform transform, final Position origin, final Position source)
             throws TransformException {
         final int sourceDim = transform.getSourceDimensions();
         final int targetDim = transform.getTargetDimensions();
-        DirectPosition P1 = new GeneralDirectPosition(sourceDim);
-        DirectPosition P2 = new GeneralDirectPosition(sourceDim);
+        Position P1 = new GeneralPosition(sourceDim);
+        Position P2 = new GeneralPosition(sourceDim);
         for (int i = 0; i < sourceDim; i++) {
             final double c = origin.getOrdinate(i);
             final double d = source.getOrdinate(i) * 0.5;
@@ -445,9 +446,10 @@ public final class CRSUtilities {
         final StringBuffer buffer = new StringBuffer();
         final CoordinateReferenceSystem crs2D = CRS.getHorizontalCRS(crs);
         if (crs2D == null) {
+            final Object arg0 = crs.getName();
             exception =
                     new UnsupportedOperationException(
-                            Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, crs.getName()));
+                            MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, arg0));
         } else
             try {
                 if (!CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs2D)) {

@@ -19,8 +19,8 @@
  */
 package org.geotools.metadata.iso;
 
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
 
 /**
  * Value uniquely identifying an object within a namespace.

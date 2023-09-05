@@ -16,8 +16,8 @@
  */
 package org.geotools.referencing.factory.wms;
 
+import org.geotools.api.metadata.citation.Citation;
 import org.geotools.metadata.iso.citation.Citations;
-import org.opengis.metadata.citation.Citation;
 
 /**
  * Similar to the OGC CRS factory, but with a different authority name, designed to support URNs

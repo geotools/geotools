@@ -32,14 +32,14 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.api.feature.Attribute;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Property;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.xsd.ComplexBinding;
 import org.geotools.xsd.Encoder;
 import org.geotools.xsd.PropertyExtractor;
 import org.geotools.xsd.Schemas;
-import org.opengis.feature.Attribute;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Property;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Element;
 

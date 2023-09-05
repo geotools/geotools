@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.DateRange;
 import org.geotools.util.DateTimeParser;
 import org.geotools.util.DateTimeParser.FormatAndPrecision;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 class TimestampFileNameExtractor extends RegExPropertiesCollector {

@@ -16,11 +16,11 @@
  */
 package org.geotools.appschema.jdbc;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.appschema.filter.NestedAttributeExpression;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Renames the specified attribute to a new target name, preserving the namespace context.
@@ -43,7 +43,7 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
      * Creates a copy of the input {@link NestedAttributeExpression} with renamed attributes.
      *
      * @param expression the expression to visit
-     * @param extraData if an instance of {@link FilterFactory2} is passed, it is used to build the
+     * @param extraData if an instance of {@link FilterFactory} is passed, it is used to build the
      *     returned expression
      * @return a new {@link NestedAttributeExpression} expression with renamed attributes
      */
@@ -59,7 +59,7 @@ public class NamespaceAwareAttributeRenameVisitor extends DuplicatingFilterVisit
      * Creates a copy of the input {@link PropertyName} expression with renamed attributes.
      *
      * @param expression the expression to visit
-     * @param extraData if an instance of {@link FilterFactory2} is passed, it is used to build the
+     * @param extraData if an instance of {@link FilterFactory} is passed, it is used to build the
      *     returned expression
      * @return a new {@link PropertyName} expression with renamed attributes
      */

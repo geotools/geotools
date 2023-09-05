@@ -10,9 +10,13 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Style;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -20,15 +24,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
 
 public class GeometryTransformationTest {
     private static final long TIME = 2000;
@@ -144,7 +144,7 @@ public class GeometryTransformationTest {
         PointSymbolizer ps =
                 (PointSymbolizer)
                         style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         ps.setGeometry(ff.function("convert", ff.property("wkt"), ff.literal(Point.class)));
 
         // setup the map

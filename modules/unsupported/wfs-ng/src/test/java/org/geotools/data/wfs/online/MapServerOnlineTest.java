@@ -26,11 +26,17 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import org.geotools.data.DataStore;
-import org.geotools.data.Query;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
@@ -40,12 +46,6 @@ import org.geotools.util.factory.GeoTools;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MapServerOnlineTest {
 
@@ -161,7 +161,7 @@ public class MapServerOnlineTest {
         } else {
             env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
         }
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("msGeometry"), env);
         Query query = new Query();
         query.setTypeName(typeName);
@@ -206,7 +206,7 @@ public class MapServerOnlineTest {
                 new ReferencedEnvelope(
                         4773438.659659, 648995.437355, 4773439.659659001, 648996.437355001, crs);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("Geometry"), env);
         Query query = new Query();
         query.setTypeName(typeName);

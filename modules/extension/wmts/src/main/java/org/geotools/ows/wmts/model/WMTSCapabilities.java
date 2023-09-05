@@ -46,6 +46,9 @@ import net.opengis.wmts.v_1.TileMatrixSetType;
 import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.URLTemplateType;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.OperationType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -60,9 +63,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Represents a base object for a WMTS getCapabilities response.

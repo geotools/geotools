@@ -22,15 +22,15 @@ package org.geotools.metadata.iso.citation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import net.opengis.ows11.ResponsiblePartySubsetType;
+import org.geotools.api.metadata.citation.Contact;
+import org.geotools.api.metadata.citation.OnLineFunction;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.metadata.citation.ResponsibleParty;
+import org.geotools.api.metadata.citation.Role;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.citation.Contact;
-import org.opengis.metadata.citation.OnLineFunction;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.citation.Role;
-import org.opengis.util.InternationalString;
 
 /**
  * Identification of, and means of communication with, person(s) and organizations associated with

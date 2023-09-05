@@ -31,5 +31,5 @@ public interface FilterHandler extends ContentHandler {
      *
      * @param filter The filter constructed by the factories.
      */
-    void filter(org.opengis.filter.Filter filter);
+    void filter(org.geotools.api.filter.Filter filter);
 }

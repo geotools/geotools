@@ -21,6 +21,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.net.URL;
 import javax.imageio.spi.ImageReaderSpi;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -30,8 +32,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 public class GranuleDescriptorTest {
 
@@ -51,7 +51,7 @@ public class GranuleDescriptorTest {
 
         new GranuleDescriptor(feature, null, null, null, PathType.ABSOLUTE, "location", "/tmp") {
             protected void init(
-                    org.opengis.geometry.BoundingBox granuleBBOX,
+                    org.geotools.api.geometry.BoundingBox granuleBBOX,
                     java.net.URL granuleUrl,
                     javax.imageio.spi.ImageReaderSpi suggestedSPI,
                     org.geotools.coverage.grid.io.footprint.MultiLevelROI roiProvider,

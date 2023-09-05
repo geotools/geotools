@@ -17,9 +17,9 @@
 
 package org.geotools.filter.text.cql2;
 
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.text.commons.AbstractCompilerFactory;
 import org.geotools.filter.text.commons.ICompiler;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Provides an implementation of CQLCompiler
@@ -30,7 +30,7 @@ import org.opengis.filter.FilterFactory;
 final class CQLCompilerFactory extends AbstractCompilerFactory {
 
     /* (non-Javadoc)
-     * @see org.geotools.filter.text.commons.AbstractCompilerFactory#createCompiler(java.lang.String, org.opengis.filter.FilterFactory)
+     * @see org.geotools.filter.text.commons.AbstractCompilerFactory#createCompiler(java.lang.String, org.geotools.api.filter.FilterFactory)
      */
     @Override
     protected ICompiler createCompiler(final String predicate, final FilterFactory filterFactory) {

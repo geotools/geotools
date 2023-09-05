@@ -17,8 +17,8 @@
 package org.geotools.renderer.style;
 
 import javax.swing.Icon;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 
 /** Symbol handler for an external symbolizers. */
 public interface ExternalGraphicFactory {

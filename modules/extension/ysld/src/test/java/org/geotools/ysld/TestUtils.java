@@ -32,17 +32,17 @@ import static org.hamcrest.Matchers.nullValue;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.regex.Pattern;
-import org.geotools.styling.Rule;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.Rule;
 import org.geotools.ysld.parse.ScaleRange;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.NilExpression;
-import org.opengis.filter.expression.PropertyName;
 
 public enum TestUtils {
     ;

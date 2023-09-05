@@ -19,12 +19,12 @@ import net.opengis.cat.csw20.QueryType;
 import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.ResultType;
 import org.eclipse.emf.common.util.EList;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 
 public class CSWGetRecordsTest {
 

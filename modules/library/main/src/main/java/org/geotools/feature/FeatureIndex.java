@@ -16,7 +16,7 @@
  */
 package org.geotools.feature;
 
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * An Index is built up around a FeatureCollection, using one of the attributes in the

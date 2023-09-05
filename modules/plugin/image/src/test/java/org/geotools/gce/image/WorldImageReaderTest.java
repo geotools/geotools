@@ -31,25 +31,24 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.FileGroupProvider.FileGroup;
+import org.geotools.api.data.FileServiceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.data.CloseableIterator;
-import org.geotools.data.FileGroupProvider.FileGroup;
-import org.geotools.data.FileServiceInfo;
-import org.geotools.data.ServiceInfo;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
 
 /**
  * TestCase subclass for testing readingb capabilities
@@ -93,13 +92,13 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         final File file = TestData.file(this, "box_gcp.tif");
         WorldImageReader wiReader = new WorldImageReader(file);
         assertEquals(AbstractGridFormat.getDefaultCRS(), wiReader.getCoordinateReferenceSystem());
-        GeneralEnvelope ge = wiReader.getOriginalEnvelope();
+        GeneralBounds ge = wiReader.getOriginalEnvelope();
         assertEquals(0, ge.getMinimum(0), 1d);
         assertEquals(0, ge.getMinimum(1), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
         assertEquals(300, ge.getSpan(0), 1d);
         GridCoverage2D gc = wiReader.read(null);
-        Envelope2D envelope = gc.getEnvelope2D();
+        ReferencedEnvelope envelope = gc.getEnvelope2D();
         assertEquals(0, envelope.getMinimum(0), 1d);
         assertEquals(0, envelope.getMinimum(1), 1d);
         assertEquals(300, envelope.getSpan(0), 1d);
@@ -263,7 +262,7 @@ public class WorldImageReaderTest extends WorldImageBaseTestCase {
         // prepare to read an overview
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 64.0,

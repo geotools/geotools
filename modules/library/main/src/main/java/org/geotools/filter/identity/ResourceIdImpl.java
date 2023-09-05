@@ -17,10 +17,10 @@
 package org.geotools.filter.identity;
 
 import java.util.Date;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.ResourceId;
+import org.geotools.api.filter.identity.Version;
 import org.geotools.util.Utilities;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.ResourceId;
-import org.opengis.filter.identity.Version;
 
 /**
  * Implementation of {@link ResourceId} used for Query.

@@ -24,9 +24,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -35,7 +36,6 @@ import org.geotools.swing.testutils.TestDataUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Unit tests for FeatureLayerHelper.
@@ -84,8 +84,8 @@ public class FeatureLayerHelperTest {
         helper.setLayer(layer);
 
         ReferencedEnvelope bounds = layer.getBounds();
-        DirectPosition2D pos =
-                new DirectPosition2D(
+        Position2D pos =
+                new Position2D(
                         bounds.getCoordinateReferenceSystem(),
                         bounds.getMinX() - 1,
                         bounds.getMinY() - 1);
@@ -117,7 +117,7 @@ public class FeatureLayerHelperTest {
     }
 
     private void assertGetInfo(SimpleFeature feature) throws Exception {
-        DirectPosition2D pos = TestDataUtils.getPosInFeature(feature);
+        Position2D pos = TestDataUtils.getPosInFeature(feature);
         InfoToolResult info = helper.getInfo(pos);
         assertFalse(info.getNumFeatures() < 1);
 

@@ -11,7 +11,7 @@ import javax.xml.namespace.QName;
 import net.opengis.fes20.FilterType;
 
 import org.eclipse.emf.common.util.EList;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * <!-- begin-user-doc -->

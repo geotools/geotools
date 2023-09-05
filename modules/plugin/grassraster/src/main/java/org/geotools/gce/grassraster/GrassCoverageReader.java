@@ -32,6 +32,16 @@ import javax.imageio.ImageReadParam;
 import javax.media.jai.BorderExtenderConstant;
 import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -47,24 +57,13 @@ import org.geotools.gce.grassraster.core.color.JGrassColorTable;
 import org.geotools.gce.grassraster.format.GrassCoverageFormat;
 import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageReaderSpi;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.coverage.grid.Format;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.ProgressListener;
 
 /**
  * Coverage Reader class for reading GRASS raster maps.
@@ -121,7 +120,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
                 JGrassRegion fileRegion = jgMapEnvironment.getFileRegion();
                 org.locationtech.jts.geom.Envelope env = fileRegion.getEnvelope();
                 originalEnvelope =
-                        new GeneralEnvelope(
+                        new GeneralBounds(
                                 new ReferencedEnvelope(
                                         env.getMinX(),
                                         env.getMaxX(),
@@ -215,7 +214,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
          * the envelope that was requested, i.e. what has to be given back in
          * terms of bounds and resolution.
          */
-        Envelope requestedRegionEnvelope = null;
+        Bounds requestedRegionEnvelope = null;
         /*
          * the read region, i.e. the requested region without the parts east and
          * south of the file region. (since they would produce negative origin)
@@ -297,12 +296,12 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
              */
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
             requestedRegionEnvelope =
-                    new Envelope2D(
-                            crs,
+                    ReferencedEnvelope.rect(
                             requestedWest,
                             requestedSouth,
                             requestedEast - requestedWest,
-                            requestedNorth - requestedSouth);
+                            requestedNorth - requestedSouth,
+                            crs);
 
             /*
              * the real world deltas
@@ -401,12 +400,12 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             int ymax = (int) Math.ceil((fileNorth - requestedSouth) * scaleY - EPS);
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
             requestedRegionEnvelope =
-                    new Envelope2D(
-                            crs,
+                    ReferencedEnvelope.rect(
                             requestedWest,
                             requestedSouth,
                             requestedEast - requestedWest,
-                            requestedNorth - requestedSouth);
+                            requestedNorth - requestedSouth,
+                            crs);
 
             /*
              * define the subsampling values. This done starting from the
@@ -678,7 +677,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
 
-        GeneralEnvelope requestedEnvelope = null;
+        GeneralBounds requestedEnvelope = null;
         Rectangle dim = null;
         // OverviewPolicy overviewPolicy = null;
         if (params != null) {
@@ -687,7 +686,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    requestedEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    requestedEnvelope = new GeneralBounds((Bounds) gg.getEnvelope2D());
                     dim = gg.getGridRange2D().getBounds();
                     continue;
                 }
@@ -698,9 +697,9 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader
             }
         }
         if (requestedEnvelope != null && dim != null) {
-            DirectPosition lowerCorner = requestedEnvelope.getLowerCorner();
+            Position lowerCorner = requestedEnvelope.getLowerCorner();
             double[] westSouth = lowerCorner.getCoordinate();
-            DirectPosition upperCorner = requestedEnvelope.getUpperCorner();
+            Position upperCorner = requestedEnvelope.getUpperCorner();
             double[] eastNorth = upperCorner.getCoordinate();
             JGrassRegion region =
                     new JGrassRegion(

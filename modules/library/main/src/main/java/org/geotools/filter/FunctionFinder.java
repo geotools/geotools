@@ -22,14 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Isolate function lookup code from Factory implementation(s).
@@ -38,7 +38,7 @@ import org.opengis.filter.expression.Literal;
  *
  * <ul>
  *   <li>org.geotools.filter.Function
- *   <li>org.opengis.filter.expression.Function
+ *   <li>org.geotools.api.filter.expression.Function
  * </ul>
  *
  * This is done as a proper utility class that accepts Hints.

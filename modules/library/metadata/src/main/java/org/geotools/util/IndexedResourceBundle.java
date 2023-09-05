@@ -31,8 +31,8 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.logging.Logging;
-import org.opengis.util.InternationalString;
 
 /**
  * {@link ResourceBundle} implementation using integers instead of strings for resource keys.

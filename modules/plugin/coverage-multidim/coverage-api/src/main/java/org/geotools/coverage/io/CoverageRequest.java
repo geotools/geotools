@@ -17,9 +17,9 @@
 package org.geotools.coverage.io;
 
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.type.Name;
 
 /**
  * @author Simone Giannecchini, GeoSolutions
@@ -94,7 +94,7 @@ public abstract class CoverageRequest {
         return name;
     }
 
-    /** @see org.geotools.coverage.io.CoverageRequest#setName(org.opengis.feature.type.Name) */
+    /** @see org.geotools.coverage.io.CoverageRequest#setName(org.geotools.api.feature.type.Name) */
     public void setName(Name name) {
         this.name = name;
     }

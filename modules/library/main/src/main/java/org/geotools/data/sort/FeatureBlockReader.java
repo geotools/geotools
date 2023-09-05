@@ -18,7 +18,7 @@ package org.geotools.data.sort;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Reads the features stored in the specified block of a {@link RandomAccessFile}

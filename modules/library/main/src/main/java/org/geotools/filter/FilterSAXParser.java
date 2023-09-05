@@ -20,6 +20,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.spatial.BBOXImpl;
 import org.geotools.filter.spatial.BeyondImpl;
@@ -32,10 +36,6 @@ import org.geotools.filter.spatial.IntersectsImpl;
 import org.geotools.filter.spatial.OverlapsImpl;
 import org.geotools.filter.spatial.TouchesImpl;
 import org.geotools.filter.spatial.WithinImpl;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import org.xml.sax.Attributes;
 
 /**
@@ -65,22 +65,22 @@ public class FilterSAXParser {
 
     /** factory for creating filters. */
     @SuppressWarnings("PMD.UnusedPrivateField")
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     /** the Attributes of the filter (only applicable to LIKE filters, I think) */
     private Map<String, Object> attributes = new HashMap<>();
 
     /** Constructor which flags the operator as between. */
     public FilterSAXParser() {
-        this(CommonFactoryFinder.getFilterFactory2());
+        this(CommonFactoryFinder.getFilterFactory());
     }
     /** Constructor injdection */
-    public FilterSAXParser(FilterFactory2 factory) {
+    public FilterSAXParser(FilterFactory factory) {
         ff = factory;
     }
 
     /** Setter injection */
-    public void setFilterFactory(FilterFactory2 factory) {
+    public void setFilterFactory(FilterFactory factory) {
         ff = factory;
     }
     /**

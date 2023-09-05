@@ -20,6 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -35,11 +40,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.ProgressListener;
 
 /** Test ForceCoordinateSystemFeatureResults feature collection wrapper. */
 public class ReprojectFeatureResultsTest {
@@ -91,7 +91,7 @@ public class ReprojectFeatureResultsTest {
     @Test
     public void testMaxVisitorDelegation() throws Exception {
         MaxVisitor visitor =
-                new MaxVisitor(CommonFactoryFinder.getFilterFactory2().property("value"));
+                new MaxVisitor(CommonFactoryFinder.getFilterFactory().property("value"));
         assertOptimalVisit(visitor);
     }
 

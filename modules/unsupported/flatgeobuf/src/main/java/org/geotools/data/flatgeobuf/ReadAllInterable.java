@@ -20,8 +20,8 @@ import com.google.common.io.LittleEndianDataInputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.simple.SimpleFeature;
 import org.wololo.flatgeobuf.HeaderMeta;
 
 final class ReadAllInterable implements Iterable<SimpleFeature> {

@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.temporal.Begins;
+import org.geotools.api.temporal.Period;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.junit.Test;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.temporal.Begins;
-import org.opengis.temporal.Period;
 
 public class BeginsBindingTest extends FESTestSupport {
     @Test

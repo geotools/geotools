@@ -21,11 +21,11 @@ import static org.junit.Assert.fail;
 
 import java.util.TimeZone;
 import org.geootols.filter.text.cql_2.CQL2;
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.FilterCQLSample;
 import org.geotools.filter.text.ecql.ECQLComparisonPredicateTest;
 import org.junit.Test;
-import org.opengis.filter.Filter;
 
 /**
  * Several things changed here:

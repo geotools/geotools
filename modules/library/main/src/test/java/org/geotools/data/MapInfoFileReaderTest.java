@@ -6,11 +6,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
 import java.util.List;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.operation.builder.MappedPosition;
 import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Test For MapInfoFileReader

@@ -31,13 +31,13 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.test.OnlineTestCase;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
 
 public abstract class SolrTestSupport extends OnlineTestCase {
 

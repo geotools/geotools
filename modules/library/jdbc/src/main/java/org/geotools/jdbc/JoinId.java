@@ -17,9 +17,9 @@
 package org.geotools.jdbc;
 
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.identity.Identifier;
 import org.geotools.filter.FidFilterImpl;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.identity.Identifier;
 
 /**
  * Id filter that knows what feature type it comes from.

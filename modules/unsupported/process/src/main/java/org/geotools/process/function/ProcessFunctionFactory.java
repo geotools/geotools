@@ -23,18 +23,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
 import org.geotools.process.RenderingProcess;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /**
  * A bridge between the process world and the filter function world: any process returning a single
@@ -136,7 +136,7 @@ public class ProcessFunctionFactory implements FunctionFactory {
                             Map<String, Parameter<?>> parameterInfo =
                                     factory.getParameterInfo(processName);
                             List<String> argumentNames = new ArrayList<>(parameterInfo.keySet());
-                            List<org.opengis.parameter.Parameter<?>> args =
+                            List<org.geotools.api.parameter.Parameter<?>> args =
                                     new ArrayList<>(argumentNames.size());
                             for (String argumentName : argumentNames) {
                                 args.add(parameterInfo.get(argumentName));

@@ -18,14 +18,14 @@ package org.geotools.feature.collection;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterVisitor;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterVisitor;
 
 public class SubFeatureCollectionTest extends DataTestCase {
     DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);

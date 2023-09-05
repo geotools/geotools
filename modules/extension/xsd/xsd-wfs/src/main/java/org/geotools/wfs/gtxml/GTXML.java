@@ -20,9 +20,9 @@ package org.geotools.wfs.gtxml;
 
 import java.io.IOException;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.xsd.Configuration;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Operates as a front end to GTXML parser/encoder services.

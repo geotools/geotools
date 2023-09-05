@@ -18,10 +18,10 @@ package org.geotools.data.shapefile.fid;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.util.URLs;
 import org.junit.Test;
 

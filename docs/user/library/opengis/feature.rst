@@ -5,8 +5,8 @@ The Feature class is used to represents "something that can be drawn on a map".
 
 References:
 
-* `org.opengis.feature <http://docs.geotools.org/stable/javadocs/org/opengis/feature/package-summary.html>`_ (javadocs)
-* `org.opengis.feature.simple <http://docs.geotools.org/stable/javadocs/org/opengis/feature/simple/package-summary.html>`_
+* `org.geotools.api.feature <http://docs.geotools.org/stable/javadocs/org/geotools/api/feature/package-summary.html>`_ (javadocs)
+* `org.geotools.api.feature.simple <http://docs.geotools.org/stable/javadocs/org/geotools/api/feature/simple/package-summary.html>`_
 * :doc:`../main/feature` gt-main feature code examples
 
 Data Structure

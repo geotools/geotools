@@ -19,8 +19,8 @@ package org.geotools.ogcapi;
 import java.io.IOException;
 import java.net.URL;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.xml.styling.SLDParser;
 
 public class StyleType {

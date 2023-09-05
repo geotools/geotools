@@ -27,6 +27,31 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLessThanOrEqualTo;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.BinaryExpression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.temporal.After;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.filter.temporal.During;
+import org.geotools.api.filter.temporal.TEquals;
+import org.geotools.api.temporal.Period;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -36,32 +61,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.BinaryExpression;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.spatial.DistanceBufferOperator;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.Before;
-import org.opengis.filter.temporal.During;
-import org.opengis.filter.temporal.TEquals;
-import org.opengis.temporal.Period;
 
 /**
  * This abstract class provides the common behavior to build the filters for the related semantic
@@ -249,8 +248,9 @@ public abstract class AbstractFilterBuilder {
         final String ESCAPE = "\\";
 
         try {
-            org.opengis.filter.expression.Expression pattern = this.resultStack.popExpression();
-            org.opengis.filter.expression.Expression expr = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression pattern =
+                    this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression expr = this.resultStack.popExpression();
 
             PropertyIsLike f =
                     filterFactory.like(
@@ -270,7 +270,8 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsNull buildPropertyIsNull() throws CQLException {
         try {
-            org.opengis.filter.expression.Expression property = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression property =
+                    this.resultStack.popExpression();
 
             PropertyIsNull filter = filterFactory.isNull(property);
 
@@ -291,9 +292,9 @@ public abstract class AbstractFilterBuilder {
      */
     public PropertyIsBetween buildBetween() throws CQLException {
         try {
-            org.opengis.filter.expression.Expression sup = this.resultStack.popExpression();
-            org.opengis.filter.expression.Expression inf = this.resultStack.popExpression();
-            org.opengis.filter.expression.Expression expr = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression sup = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression inf = this.resultStack.popExpression();
+            org.geotools.api.filter.expression.Expression expr = this.resultStack.popExpression();
 
             PropertyIsBetween filter = filterFactory.between(expr, inf, sup);
 
@@ -324,8 +325,8 @@ public abstract class AbstractFilterBuilder {
 
         PropertyName property = this.resultStack.popPropertyName();
 
-        org.opengis.filter.expression.Expression[] args =
-                new org.opengis.filter.expression.Expression[1];
+        org.geotools.api.filter.expression.Expression[] args =
+                new org.geotools.api.filter.expression.Expression[1];
         args[0] = filterFactory.literal(property);
 
         Function function = filterFactory.function("PropertyExists", args);
@@ -658,8 +659,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -671,8 +672,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -685,8 +686,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -701,7 +702,7 @@ public abstract class AbstractFilterBuilder {
 
         PropertyName property = this.resultStack.popPropertyName();
 
-        FilterFactory2 ff = (FilterFactory2) filterFactory;
+        FilterFactory ff = (FilterFactory) filterFactory;
         Expression[] args = {property, geometry, pattern};
 
         Function function = filterFactory.function("relatePattern", args);
@@ -725,8 +726,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -738,8 +739,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -752,8 +753,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -766,8 +767,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -780,20 +781,20 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.overlaps(property, geom);
     }
 
-    public org.opengis.filter.spatial.BBOX buildBBox() throws CQLException {
+    public org.geotools.api.filter.spatial.BBOX buildBBox() throws CQLException {
 
         return buildBbox(null);
     }
 
-    public org.opengis.filter.spatial.BBOX buildBBoxWithCRS() throws CQLException {
+    public org.geotools.api.filter.spatial.BBOX buildBBoxWithCRS() throws CQLException {
 
         String crs = this.resultStack.popStringValue();
         assert crs != null;
@@ -801,7 +802,7 @@ public abstract class AbstractFilterBuilder {
         return buildBbox(crs);
     }
 
-    private org.opengis.filter.spatial.BBOX buildBbox(final String crs) throws CQLException {
+    private org.geotools.api.filter.spatial.BBOX buildBbox(final String crs) throws CQLException {
 
         double maxY = this.resultStack.popDoubleValue();
         double maxX = this.resultStack.popDoubleValue();
@@ -811,7 +812,7 @@ public abstract class AbstractFilterBuilder {
         PropertyName property = this.resultStack.popPropertyName();
         String strProperty = property.getPropertyName();
 
-        org.opengis.filter.spatial.BBOX bbox =
+        org.geotools.api.filter.spatial.BBOX bbox =
                 filterFactory.bbox(strProperty, minX, minY, maxX, maxY, crs);
         return bbox;
     }
@@ -826,8 +827,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -844,8 +845,8 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory2 ff =
-                (FilterFactory2)
+        FilterFactory ff =
+                (FilterFactory)
                         filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
@@ -858,9 +859,9 @@ public abstract class AbstractFilterBuilder {
      * @return PeriodNode
      */
     public PeriodNode buildPeriodBetweenDates() throws CQLException {
-        org.opengis.filter.expression.Literal end = this.resultStack.popLiteral();
+        org.geotools.api.filter.expression.Literal end = this.resultStack.popLiteral();
 
-        org.opengis.filter.expression.Literal begin = this.resultStack.popLiteral();
+        org.geotools.api.filter.expression.Literal begin = this.resultStack.popLiteral();
 
         PeriodNode period = PeriodNode.createPeriodDateAndDate(begin, end);
 
@@ -902,9 +903,10 @@ public abstract class AbstractFilterBuilder {
      *
      * @return Literal
      */
-    public org.opengis.filter.expression.Literal buildDurationExpression(final IToken token) {
+    public org.geotools.api.filter.expression.Literal buildDurationExpression(final IToken token) {
         String duration = token.toString();
-        org.opengis.filter.expression.Literal literalDuration = filterFactory.literal(duration);
+        org.geotools.api.filter.expression.Literal literalDuration =
+                filterFactory.literal(duration);
 
         return literalDuration;
     }
@@ -944,9 +946,9 @@ public abstract class AbstractFilterBuilder {
         Result node = this.resultStack.popResult();
         PeriodNode period = (PeriodNode) node.getBuilt();
 
-        org.opengis.filter.expression.Literal begin = period.getBeginning();
+        org.geotools.api.filter.expression.Literal begin = period.getBeginning();
 
-        org.opengis.filter.expression.Expression property = resultStack.popExpression();
+        org.geotools.api.filter.expression.Expression property = resultStack.popExpression();
 
         PropertyIsGreaterThanOrEqualTo filter = filterFactory.greaterOrEqual(property, begin);
 
@@ -962,9 +964,9 @@ public abstract class AbstractFilterBuilder {
         Result node = this.resultStack.popResult();
         PeriodNode period = (PeriodNode) node.getBuilt();
 
-        org.opengis.filter.expression.Literal date = period.getEnding();
+        org.geotools.api.filter.expression.Literal date = period.getEnding();
 
-        org.opengis.filter.expression.Expression property = this.resultStack.popExpression();
+        org.geotools.api.filter.expression.Expression property = this.resultStack.popExpression();
 
         PropertyIsGreaterThan filter = filterFactory.greater(property, date);
 
@@ -975,9 +977,9 @@ public abstract class AbstractFilterBuilder {
     public PropertyIsLessThan buildPropertyIsLTFirsDate() throws CQLException {
         PeriodNode period = this.resultStack.popPeriodNode();
 
-        org.opengis.filter.expression.Literal date = period.getBeginning();
+        org.geotools.api.filter.expression.Literal date = period.getBeginning();
 
-        org.opengis.filter.expression.Expression property = this.resultStack.popExpression();
+        org.geotools.api.filter.expression.Expression property = this.resultStack.popExpression();
 
         PropertyIsLessThan filter = filterFactory.less(property, date);
 
@@ -988,9 +990,9 @@ public abstract class AbstractFilterBuilder {
     public PropertyIsLessThanOrEqualTo buildPropertyIsLTELastDate() throws CQLException {
         PeriodNode period = this.resultStack.popPeriodNode();
 
-        org.opengis.filter.expression.Literal date = period.getEnding();
+        org.geotools.api.filter.expression.Literal date = period.getEnding();
 
-        org.opengis.filter.expression.Expression property = this.resultStack.popExpression();
+        org.geotools.api.filter.expression.Expression property = this.resultStack.popExpression();
 
         PropertyIsLessThanOrEqualTo filter = filterFactory.lessOrEqual(property, date);
 

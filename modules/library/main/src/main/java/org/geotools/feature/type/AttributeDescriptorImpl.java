@@ -17,11 +17,11 @@
 package org.geotools.feature.type;
 
 import java.util.Map;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
 
 public class AttributeDescriptorImpl extends PropertyDescriptorImpl implements AttributeDescriptor {
 

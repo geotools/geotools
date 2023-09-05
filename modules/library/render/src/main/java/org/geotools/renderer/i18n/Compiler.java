@@ -34,7 +34,7 @@ public final class Compiler {
     private static final File SOURCE_DIRECTORY = new File("./src/main");
 
     /** The resources to process. */
-    private static final Class[] RESOURCES_TO_PROCESS = {Errors.class, Vocabulary.class};
+    private static final Class[] RESOURCES_TO_PROCESS = {Vocabulary.class};
 
     /** Do not allows instantiation of this class. */
     private Compiler() {}

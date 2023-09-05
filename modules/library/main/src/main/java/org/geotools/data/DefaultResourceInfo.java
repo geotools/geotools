@@ -19,8 +19,9 @@ package org.geotools.data;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Default implementation of ResourceInfo; a simple java bean.

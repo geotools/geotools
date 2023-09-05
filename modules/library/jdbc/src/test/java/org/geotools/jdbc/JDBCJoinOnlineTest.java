@@ -26,22 +26,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.data.Join;
+import org.geotools.api.data.Join.Type;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Join;
-import org.geotools.data.Join.Type;
-import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.sort.SortOrder;
 
 public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
@@ -512,7 +511,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
     void doTestSpatialJoin(boolean exposePrimaryKeys) throws Exception {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
         q.setPropertyNames(Arrays.asList(aname("geometry"), aname("intProperty")));
         q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));

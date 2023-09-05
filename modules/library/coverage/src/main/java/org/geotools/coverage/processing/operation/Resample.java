@@ -17,18 +17,30 @@
 package org.geotools.coverage.processing.operation;
 
 import java.awt.Dimension;
+import java.text.MessageFormat;
 import javax.media.jai.Interpolation;
 import javax.media.jai.operator.AffineDescriptor;
 import javax.media.jai.operator.WarpDescriptor;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.Operation2D;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -36,18 +48,6 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Resample a grid coverage using a different grid geometry. This operation provides the following
@@ -72,9 +72,9 @@ import org.opengis.referencing.operation.TransformException;
  *
  * <p><strong>Geotools extension:</strong><br>
  * The {@code "Resample"} operation use the default {@link
- * org.opengis.referencing.operation.CoordinateOperationFactory} for creating a transformation from
- * the source to the destination coordinate reference systems. If a custom factory is desired, it
- * may be supplied as a rendering hint with the {@link
+ * org.geotools.api.referencing.operation.CoordinateOperationFactory} for creating a transformation
+ * from the source to the destination coordinate reference systems. If a custom factory is desired,
+ * it may be supplied as a rendering hint with the {@link
  * org.geotools.util.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be
  * supplied to {@link org.geotools.coverage.processing.DefaultProcessor} at construction time.
  *
@@ -107,14 +107,14 @@ import org.opengis.referencing.operation.TransformException;
  *   </tr>
  *   <tr>
  *     <td>{@code "CoordinateReferenceSystem"}</td>
- *     <td>{@link org.opengis.referencing.crs.CoordinateReferenceSystem}</td>
+ *     <td>{@link org.geotools.api.referencing.crs.CoordinateReferenceSystem}</td>
  *     <td>Same as source grid coverage</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>
  *   </tr>
  *   <tr>
  *     <td>{@code "GridGeometry"}</td>
- *     <td>{@link org.opengis.coverage.grid.GridGeometry}</td>
+ *     <td>{@link org.geotools.api.coverage.grid.GridGeometry}</td>
  *     <td>(automatic)</td>
  *     <td align="center">N/A</td>
  *     <td align="center">N/A</td>
@@ -254,8 +254,9 @@ public class Resample extends Operation2D {
                     (hints instanceof Hints) ? hints : new Hints(hints),
                     bgValues);
         } catch (FactoryException | TransformException exception) {
+            final Object arg0 = source.getName();
             throw new CannotReprojectException(
-                    Errors.format(ErrorKeys.CANT_REPROJECT_$1, source.getName()), exception);
+                    MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, arg0), exception);
         }
     }
 
@@ -272,7 +273,7 @@ public class Resample extends Operation2D {
      * @throws TransformException If a transformation was required and failed.
      * @since 2.5
      */
-    public static GridGeometry computeGridGeometry(final GridCoverage source, final Envelope target)
+    public static GridGeometry computeGridGeometry(final GridCoverage source, final Bounds target)
             throws TransformException {
         final CoordinateReferenceSystem targetCRS = target.getCoordinateReferenceSystem();
         final CoordinateReferenceSystem sourceCRS = source.getCoordinateReferenceSystem();
@@ -307,12 +308,12 @@ public class Resample extends Operation2D {
              * this time with the target envelope.
              */
             try {
-                final GeneralEnvelope transformed =
+                final GeneralBounds transformed =
                         CRS.transform(
                                 CRS.getCoordinateOperationFactory(true)
                                         .createOperation(targetCRS, reducedCRS),
                                 target);
-                final Envelope reduced;
+                final Bounds reduced;
                 final MathTransform gridToCRS;
                 if (reducedCRS == sourceCRS) {
                     reduced = source.getEnvelope();

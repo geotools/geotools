@@ -17,7 +17,13 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.TestData;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
@@ -31,12 +37,6 @@ import org.geotools.http.MockHttpResponse;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -63,7 +63,7 @@ public class WFSContentComplexFeatureSourceTest {
 
     private static final String GEOM_FIELD_NAME = "posisjon";
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     private static final String DEFAULT_SRS = "urn:ogc:def:crs:EPSG::4258";
 
@@ -173,7 +173,7 @@ public class WFSContentComplexFeatureSourceTest {
         ReferencedEnvelope actualReprojected = actual.transform(utm33, true);
         assertEnvelope(actualReprojected, envelopeReprojected);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Query filteredQuery =
                 new Query(STED, ff.bbox("posisjon", 60.0, 20.0, 61.0, 21.0, DEFAULT_SRS));
         ReferencedEnvelope envelopeFilter =

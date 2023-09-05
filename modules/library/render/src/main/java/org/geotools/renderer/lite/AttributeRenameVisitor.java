@@ -16,10 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
 
 /**
  * Renames the specified attribute to a new target name

@@ -16,7 +16,7 @@
  */
 package org.geotools.feature.collection;
 
-import org.opengis.feature.FeatureVisitor;
+import org.geotools.api.feature.FeatureVisitor;
 
 /**
  * An abstract class to reduce the amount of work needed when working with FeatureVisitor.
@@ -25,7 +25,7 @@ import org.opengis.feature.FeatureVisitor;
  *
  * <pre><code>
  * features.accepts(new AbstractFeatureVisitor(){
- *     public void visit( org.opengis.feature.Feature feature ) {
+ *     public void visit( org.geotools.api.feature.Feature feature ) {
  *         bounds.include(feature.getBounds());
  *     }
  * }, null);

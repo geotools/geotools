@@ -26,9 +26,13 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.namespace.QName;
-import org.geotools.data.DataAccess;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.ServiceInfo;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.data.complex.feature.type.FeatureTypeRegistry;
 import org.geotools.data.complex.util.EmfComplexFeatureReader;
@@ -38,10 +42,6 @@ import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xsd.SchemaIndex;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
 
 /**
  * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore &

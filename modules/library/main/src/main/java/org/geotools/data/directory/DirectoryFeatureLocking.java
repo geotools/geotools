@@ -17,10 +17,10 @@
 package org.geotools.data.directory;
 
 import java.io.IOException;
-import org.geotools.data.FeatureLock;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureLocking;
-import org.opengis.filter.Filter;
+import org.geotools.api.data.FeatureLock;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureLocking;
+import org.geotools.api.filter.Filter;
 
 public class DirectoryFeatureLocking extends DirectoryFeatureStore implements SimpleFeatureLocking {
 

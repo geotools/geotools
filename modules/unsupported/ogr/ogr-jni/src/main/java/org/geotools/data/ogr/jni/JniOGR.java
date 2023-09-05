@@ -71,10 +71,10 @@ import org.gdal.ogr.Geometry;
 import org.gdal.ogr.Layer;
 import org.gdal.ogr.ogr;
 import org.gdal.osr.SpatialReference;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.ogr.OGR;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Version;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 @SuppressWarnings({"PMD.UseArrayListInsteadOfVector", "PMD.ReplaceVectorWithList"})
 public class JniOGR implements OGR {

@@ -11,7 +11,7 @@
  */
 package org.geotools.cql;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * This class maintains set of common functions used in the CQL and ECQL examples

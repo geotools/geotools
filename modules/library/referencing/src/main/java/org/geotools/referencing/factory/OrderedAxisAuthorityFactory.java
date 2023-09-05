@@ -16,11 +16,11 @@
  */
 package org.geotools.referencing.factory;
 
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CSAuthorityFactory;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CSAuthorityFactory;
 
 /**
  * An authority factory which delegates all the work to an other factory, and reorder the axis in

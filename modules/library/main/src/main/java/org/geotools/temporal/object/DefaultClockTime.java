@@ -17,10 +17,10 @@
 package org.geotools.temporal.object;
 
 import java.util.Arrays;
+import org.geotools.api.temporal.ClockTime;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 import org.geotools.util.Utilities;
-import org.opengis.temporal.ClockTime;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.TemporalReferenceSystem;
 
 /**
  * A data type that shall be used to identify a temporal position within a day. Because {@linkplain

@@ -16,11 +16,11 @@
  */
 package org.geotools.map;
 
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.style.Style;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.styling.Style;
 
 /**
  * Layer responsible for raster content.
@@ -49,7 +49,7 @@ public abstract class RasterLayer extends StyleLayer {
      * FetureSource representation of raster contents (in case a vector based renderer wishes to
      * draw a polygon outline).
      * <p>
-     * This method uses {@link DataUtilities#source(org.opengis.feature.simple.SimpleFeature[]) to
+     * This method uses {@link DataUtilities#source(org.geotools.api.feature.simple.SimpleFeature[]) to
      * wrap up the result of {@link #toFeatureCollection()}
      */
     @Override

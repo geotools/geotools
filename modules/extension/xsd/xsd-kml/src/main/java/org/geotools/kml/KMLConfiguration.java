@@ -16,6 +16,7 @@
  */
 package org.geotools.kml;
 
+import org.geotools.api.style.StyleFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.kml.bindings.BoundaryTypeBinding;
 import org.geotools.kml.bindings.ColorBinding;
@@ -46,7 +47,6 @@ import org.geotools.kml.bindings.RegionTypeBinding;
 import org.geotools.kml.bindings.StyleTypeBinding;
 import org.geotools.kml.v22.SchemaRegistry;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;

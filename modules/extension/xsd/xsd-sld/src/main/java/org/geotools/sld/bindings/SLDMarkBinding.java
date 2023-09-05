@@ -20,16 +20,16 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Mark;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactory;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.ResourceLocator;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.util.logging.Logging;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**

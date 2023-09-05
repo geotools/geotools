@@ -13,12 +13,12 @@ package org.geotools.tutorial.csv3;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.tutorial.csv3.parse.CSVIterator;
 import org.geotools.tutorial.csv3.parse.CSVStrategy;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 

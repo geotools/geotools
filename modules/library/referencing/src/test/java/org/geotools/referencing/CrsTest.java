@@ -25,8 +25,16 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Set;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -34,14 +42,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests the {@link CRS} utilities methods.
@@ -154,14 +154,14 @@ public final class CrsTest {
         final MathTransform crsTransform = CRS.findMathTransform(WGS84, mapCRS, true);
         assertFalse(crsTransform.isIdentity());
 
-        final GeneralEnvelope firstEnvelope =
-                new GeneralEnvelope(new double[] {-124, 42}, new double[] {-122, 43});
+        final GeneralBounds firstEnvelope =
+                new GeneralBounds(new double[] {-124, 42}, new double[] {-122, 43});
         firstEnvelope.setCoordinateReferenceSystem(WGS84);
 
-        final GeneralEnvelope transformedEnvelope = CRS.transform(crsTransform, firstEnvelope);
+        final GeneralBounds transformedEnvelope = CRS.transform(crsTransform, firstEnvelope);
         transformedEnvelope.setCoordinateReferenceSystem(mapCRS);
 
-        final GeneralEnvelope oldEnvelope =
+        final GeneralBounds oldEnvelope =
                 CRS.transform(crsTransform.inverse(), transformedEnvelope);
         oldEnvelope.setCoordinateReferenceSystem(WGS84);
 
@@ -180,12 +180,12 @@ public final class CrsTest {
         final MathTransform crsTransform = CRS.findMathTransform(WGS84, WGS84Altered, true);
         assertTrue(crsTransform.isIdentity());
 
-        final GeneralEnvelope firstEnvelope =
-                new GeneralEnvelope(new double[] {-124, 42}, new double[] {-122, 43});
+        final GeneralBounds firstEnvelope =
+                new GeneralBounds(new double[] {-124, 42}, new double[] {-122, 43});
         firstEnvelope.setCoordinateReferenceSystem(WGS84);
 
         // this triggered a assertion error in GEOT-2934
-        Envelope transformed = CRS.transform(firstEnvelope, WGS84Altered);
+        Bounds transformed = CRS.transform(firstEnvelope, WGS84Altered);
 
         // check the envelope is what we expect
         assertEquals(transformed.getCoordinateReferenceSystem(), WGS84Altered);
@@ -210,11 +210,11 @@ public final class CrsTest {
                                 + "AXIS[\"Longitude\", EAST], "
                                 + "AXIS[\"Latitude\", NORTH]]");
         // bounds from geotiff
-        GeneralEnvelope geotiff = new GeneralEnvelope(source);
-        geotiff.add(new DirectPosition2D(source, -179.9, -90.0));
-        geotiff.add(new DirectPosition2D(source, 180.0, 89.9));
+        GeneralBounds geotiff = new GeneralBounds(source);
+        geotiff.add(new Position2D(source, -179.9, -90.0));
+        geotiff.add(new Position2D(source, 180.0, 89.9));
 
-        Envelope transformed = CRS.transform(geotiff, target);
+        Bounds transformed = CRS.transform(geotiff, target);
         assertNotNull(transformed);
         assertTrue("clipped y", transformed.getUpperCorner().getOrdinate(1) > 88.0);
         assertTrue("clipped y", transformed.getLowerCorner().getOrdinate(1) < -88.0);
@@ -382,10 +382,10 @@ public final class CrsTest {
                         + "  AUTHORITY[\"EPSG\",\"32632\"]]";
         CoordinateReferenceSystem utm32n = CRS.parseWKT(wkt);
 
-        GeneralEnvelope envelope = new GeneralEnvelope(utm32n);
+        GeneralBounds envelope = new GeneralBounds(utm32n);
         envelope.setEnvelope(895817.968, 4439270.710, 1081186.865, 4617454.766);
         // used to throw an exception here
-        GeneralEnvelope transformed = CRS.transform(envelope, wgs84);
+        GeneralBounds transformed = CRS.transform(envelope, wgs84);
         assertEquals(13.63, transformed.getMinimum(0), 0.01);
         assertEquals(39.9, transformed.getMinimum(1), 0.01);
         assertEquals(15.96, transformed.getMaximum(0), 0.01);
@@ -487,14 +487,14 @@ public final class CrsTest {
 
             CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
             // a legit originalEnvelope in rotated pole
-            GeneralEnvelope originalEnvelope = new GeneralEnvelope(crs);
+            GeneralBounds originalEnvelope = new GeneralBounds(crs);
             originalEnvelope.setEnvelope(-9000000, -9000000, 900000, 9000000);
             // back to wgs84
-            GeneralEnvelope wgs84Envelope = CRS.transform(originalEnvelope, WGS84);
+            GeneralBounds wgs84Envelope = CRS.transform(originalEnvelope, WGS84);
             // System.out.println(wgs84Envelope);
             // and then again in target crs, the result should contain the input, but not taking
             // into account the origin in -150, it ended up not doing so
-            GeneralEnvelope transformed = CRS.transform(wgs84Envelope, crs);
+            GeneralBounds transformed = CRS.transform(wgs84Envelope, crs);
             // System.out.println(transformed);
             assertTrue(transformed.contains(originalEnvelope, true));
         } finally {
@@ -580,9 +580,9 @@ public final class CrsTest {
 
         CoordinateOperation op =
                 CRS.getCoordinateOperationFactory(false).createOperation(WGS84, crs);
-        GeneralEnvelope envelope = new GeneralEnvelope(WGS84);
+        GeneralBounds envelope = new GeneralBounds(WGS84);
         envelope.setEnvelope(-180, -90, 180, 90);
-        GeneralEnvelope transformed = CRS.transform(op, envelope);
+        GeneralBounds transformed = CRS.transform(op, envelope);
 
         // used to miss large parts of the world, given the fragile math of the azeq
         // testing only that its not missing significant parts

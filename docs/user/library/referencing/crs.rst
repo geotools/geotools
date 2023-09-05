@@ -230,7 +230,7 @@ Transforming a Geometry
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 A ``MathTransform``, as generated above, can be used by bashing away at the interface and feeding
-it ``DirectPosition`` objects one at a time.
+it ``Position`` objects one at a time.
 
 Or you could break out the JTS utility class where this work has been done for you::
   

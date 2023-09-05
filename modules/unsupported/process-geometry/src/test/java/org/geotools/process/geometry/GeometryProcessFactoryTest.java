@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.ProcessException;
 import org.geotools.process.ProcessFactory;
@@ -16,8 +18,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.operation.buffer.BufferParameters;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
 
 public class GeometryProcessFactoryTest {
 

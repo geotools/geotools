@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.styling.AnchorPoint;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
 
 /**
  * AnchorPoint allows you specify which part of a graphic indicates the location.
@@ -105,22 +105,12 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     }
 
     @Override
-    public AnchorPointBuilder reset(AnchorPoint anchorPoint) {
-        if (anchorPoint == null) {
-            return reset();
-        }
-        x = anchorPoint.getAnchorPointX();
-        y = anchorPoint.getAnchorPointY();
-        unset = false;
-        return this;
-    }
-
-    @Override
     public AnchorPointBuilder unset() {
         return (AnchorPointBuilder) super.unset();
     }
 
-    public AnchorPointBuilder reset(org.opengis.style.AnchorPoint anchorPoint) {
+    @Override
+    public AnchorPointBuilder reset(org.geotools.api.style.AnchorPoint anchorPoint) {
         if (anchorPoint == null) {
             return unset();
         }

@@ -18,9 +18,8 @@
 package org.geotools.filter.visitor;
 
 import java.util.List;
-import org.opengis.annotation.XmlElement;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
 
 /**
  * Recoding: Transformation of discrete values to any other values. This is needed when integers
@@ -34,7 +33,6 @@ import org.opengis.filter.expression.Function;
  *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
-@XmlElement("Recode")
 public interface Recode extends Function {
 
     /**
@@ -42,7 +40,6 @@ public interface Recode extends Function {
      *
      * @return Expression
      */
-    @XmlElement("LookupValue")
     Expression getLookupValue();
 
     /** See {@link MapItem} for details. */

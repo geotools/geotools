@@ -17,8 +17,8 @@
 package org.geotools.feature.visitor;
 
 import java.util.Set;
+import org.geotools.api.filter.Id;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.opengis.filter.Id;
 
 /**
  * Gather up all FeatureId strings into a provided HashSet.

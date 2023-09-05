@@ -19,11 +19,11 @@ package org.geotools.referencing.cs;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.CoordinateSystem;
 import si.uom.SI;
 
 /**

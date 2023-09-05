@@ -20,11 +20,16 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import java.io.IOException;
 import java.util.Collections;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.data.mongodb.MongoFeature;
 import org.geotools.data.mongodb.MongoGeometryBuilder;
 import org.geotools.data.mongodb.MongoTestSetup;
 import org.geotools.data.mongodb.MongoTestSupport;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
@@ -32,11 +37,6 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 public abstract class MongoComplexUtilitiesTest extends MongoTestSupport {
 

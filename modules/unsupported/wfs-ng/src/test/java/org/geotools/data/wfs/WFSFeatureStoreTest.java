@@ -27,9 +27,15 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureCollection;
@@ -49,12 +55,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
 
 public class WFSFeatureStoreTest {
 
@@ -95,7 +95,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testAddFeaturesAutoCommit() throws Exception {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
@@ -140,7 +140,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testRemoveFeaturesAutoCommit() throws Exception {
 
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
@@ -161,7 +161,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testUpdateFeaturesAutoCommit() throws Exception {
 
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
@@ -183,7 +183,7 @@ public class WFSFeatureStoreTest {
     @Test
     public void testTransaction() throws Exception {
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         ContentFeatureSource source =
                 (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);

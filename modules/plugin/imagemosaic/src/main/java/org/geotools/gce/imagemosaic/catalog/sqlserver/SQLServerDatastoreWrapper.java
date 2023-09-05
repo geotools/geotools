@@ -26,15 +26,15 @@ import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
 import org.apache.commons.beanutils.BeanUtils;
-import org.geotools.data.DataStore;
-import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.gce.imagemosaic.catalog.oracle.DataStoreWrapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Specific SQLServer implementation for a {@link DataStoreWrapper} */
 public class SQLServerDatastoreWrapper extends DataStoreWrapper {

@@ -24,18 +24,18 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 import javax.media.jai.ImageLayout;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
-import org.geotools.geometry.GeneralEnvelope;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
+import org.geotools.geometry.GeneralBounds;
 
 /**
  * Provides access to named GridCoverage2D (along with any context information) from a persistent
@@ -129,23 +129,23 @@ public interface GridCoverage2DReader extends GridCoverageReader {
     public static final String PAM_DATASET = "PamDataset";
 
     /**
-     * Return the original {@link GeneralEnvelope} for the default coverage served by the underlying
+     * Return the original {@link GeneralBounds} for the default coverage served by the underlying
      * store.
      *
-     * @return the original {@link GeneralEnvelope} for the default coverage served by the
-     *     underlying store.
+     * @return the original {@link GeneralBounds} for the default coverage served by the underlying
+     *     store.
      */
-    GeneralEnvelope getOriginalEnvelope();
+    GeneralBounds getOriginalEnvelope();
 
     /**
-     * Return the original {@link GeneralEnvelope} for the specified coverageName.
+     * Return the original {@link GeneralBounds} for the specified coverageName.
      *
      * @param coverageName the name of the coverage to work on.
-     * @return the original {@link GeneralEnvelope} for the specified coverageName.
+     * @return the original {@link GeneralBounds} for the specified coverageName.
      * @throws NullPointerException if the specified coverageName is <code>null</code>
      * @throws IllegalArgumentException if the specified coverageName does not exist
      */
-    GeneralEnvelope getOriginalEnvelope(String coverageName);
+    GeneralBounds getOriginalEnvelope(String coverageName);
 
     /**
      * Retrieves the {@link CoordinateReferenceSystem} associated to the default coverage for this

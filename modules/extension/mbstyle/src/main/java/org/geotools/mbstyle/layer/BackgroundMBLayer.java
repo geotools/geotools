@@ -20,16 +20,16 @@ package org.geotools.mbstyle.layer;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.SemanticType;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.SemanticType;
 
 /**
  * The background color or pattern of the map.

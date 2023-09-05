@@ -17,14 +17,14 @@
 package org.geotools.map;
 
 import java.util.logging.Level;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.Style;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Style;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Layer used to draw a raster {@link GridCoverage2DReader}.
@@ -113,7 +113,7 @@ public class GridReaderLayer extends RasterLayer {
     public ReferencedEnvelope getBounds() {
         if (reader != null) {
             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
-            GeneralEnvelope envelope = reader.getOriginalEnvelope();
+            GeneralBounds envelope = reader.getOriginalEnvelope();
             if (envelope != null) {
                 return new ReferencedEnvelope(envelope);
             } else if (crs != null) {

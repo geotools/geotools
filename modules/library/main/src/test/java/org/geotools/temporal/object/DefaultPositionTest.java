@@ -22,12 +22,12 @@ import static org.junit.Assert.assertNotEquals;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
+import org.geotools.api.temporal.Position;
+import org.geotools.api.temporal.TemporalPosition;
+import org.geotools.api.util.InternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Position;
-import org.opengis.temporal.TemporalPosition;
-import org.opengis.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultPositionTest {

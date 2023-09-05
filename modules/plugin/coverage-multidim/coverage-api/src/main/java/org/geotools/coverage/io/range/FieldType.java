@@ -18,9 +18,9 @@ package org.geotools.coverage.io.range;
 
 import java.util.Set;
 import javax.measure.Quantity;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 
 /**
  * A {@link net.opengis.wcs11.FieldType} describes a measure/observation/forecast of a certain
@@ -42,9 +42,9 @@ import org.opengis.util.InternationalString;
 public interface FieldType {
 
     /**
-     * Get the {@link FieldType} {@link org.opengis.feature.type.Name}
+     * Get the {@link FieldType} {@link org.geotools.api.feature.type.Name}
      *
-     * @return {@link org.opengis.feature.type.Name} of the {@link FieldType}
+     * @return {@link org.geotools.api.feature.type.Name} of the {@link FieldType}
      */
     public Name getName();
 

@@ -19,9 +19,9 @@ package org.geotools.referencing.operation.builder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.Position2D;
 
 /**
  * A triangle, with special methods for use with RubberSheetTransform.
@@ -32,13 +32,13 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 class TINTriangle extends Polygon {
     /** The first vertex. */
-    public DirectPosition p0;
+    public Position p0;
 
     /** The second vertex. */
-    public DirectPosition p1;
+    public Position p1;
 
     /** The third vertex. */
-    public DirectPosition p2;
+    public Position p2;
 
     private final List<TINTriangle> adjacentTriangles = new ArrayList<>();
 
@@ -49,7 +49,7 @@ class TINTriangle extends Polygon {
      * @param p1 another vertex
      * @param p2 another vertex
      */
-    protected TINTriangle(DirectPosition p0, DirectPosition p1, DirectPosition p2) {
+    protected TINTriangle(Position p0, Position p1, Position p2) {
         super(p0, p1, p2, p0);
         this.p0 = p0;
         this.p1 = p1;
@@ -63,7 +63,7 @@ class TINTriangle extends Polygon {
      */
     protected Circle getCircumCicle() {
         // DirectPosition center = new DirectPosition2D();
-        List<DirectPosition> reducedVertices = reduce();
+        List<Position> reducedVertices = reduce();
 
         CoordinateReferenceSystem crs = reducedVertices.get(1).getCoordinateReferenceSystem();
 
@@ -78,13 +78,13 @@ class TINTriangle extends Polygon {
                 (0.5 * (((x1 * x1) + (y1 * y1)) - (x1 * x2) - (y1 * y2))) / ((y1 * x2) - (x1 * y2));
 
         // t = Math.abs(t);
-        DirectPosition2D center =
-                new DirectPosition2D(
+        Position2D center =
+                new Position2D(
                         crs,
                         (x2 / 2) - (t * y2) + p0.getCoordinate()[0],
                         (y2 / 2) + (t * x2) + p0.getCoordinate()[1]);
 
-        return new Circle(center.getDirectPosition(), center.distance(new DirectPosition2D(p0)));
+        return new Circle(center.getDirectPosition(), center.distance(new Position2D(p0)));
     }
 
     /**
@@ -93,7 +93,7 @@ class TINTriangle extends Polygon {
      * @param newVertex the split point (must be inside triangle).
      * @return three Triangles created by splitting this TINTriangle at a newVertex.
      */
-    public List<TINTriangle> subTriangles(DirectPosition newVertex) {
+    public List<TINTriangle> subTriangles(Position newVertex) {
         ArrayList<TINTriangle> triangles = new ArrayList<>();
         TINTriangle trigA = new TINTriangle(p0, p1, newVertex);
         TINTriangle trigB = new TINTriangle(p1, p2, newVertex);

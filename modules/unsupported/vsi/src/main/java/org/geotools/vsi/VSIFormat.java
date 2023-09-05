@@ -19,10 +19,10 @@ package org.geotools.vsi;
 import it.geosolutions.imageio.plugins.vrt.VRTImageReaderSpi;
 import java.io.IOException;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.geometry.MismatchedDimensionException;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.geometry.MismatchedDimensionException;
 
 public final class VSIFormat extends BaseGDALGridFormat implements Format {
 

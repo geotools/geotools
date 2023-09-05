@@ -19,13 +19,13 @@ package org.geotools.referencing.operation.builder;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Map;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * This provides the transformation method based on RubberSheeting (also known as Billinear
@@ -49,7 +49,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
 
     /**
      * The HashMap where the keys are the original {@link Polygon} and values are {@link
-     * #org.opengis.referencing.operation.MathTransform}.
+     * #org.geotools.api.referencing.operation.MathTransform}.
      */
     private Map<TINTriangle, Object> trianglesToKeysMap;
 
@@ -58,7 +58,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      *
      * @param trianglesToAffineTransform The HashMap where the keys are the original {@linkplain
      *     org.geotools.referencing.operation.builder.algorithm.TINTriangle} and values are
-     *     {@linkplain org.opengis.referencing.operation.MathTransform}.
+     *     {@linkplain org.geotools.api.referencing.operation.MathTransform}.
      */
     public RubberSheetTransform(Map<TINTriangle, Object> trianglesToAffineTransform) {
         this.trianglesToKeysMap = trianglesToAffineTransform;
@@ -108,15 +108,15 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     }
 
     /* (non-Javadoc)
-     * @see org.opengis.referencing.operation.MathTransform#transform(double[], int, double[], int, int)
+     * @see org.geotools.api.referencing.operation.MathTransform#transform(double[], int, double[], int, int)
      */
     @Override
     public void transform(double[] srcPts, int srcOff, final double[] dstPt, int dstOff, int numPts)
             throws TransformException {
         for (int i = srcOff; i < numPts; i++) {
-            Point2D pos = new DirectPosition2D(srcPts[2 * i], srcPts[(2 * i) + 1]);
+            Point2D pos = new Position2D(srcPts[2 * i], srcPts[(2 * i) + 1]);
 
-            TINTriangle triangle = searchTriangle((DirectPosition) pos);
+            TINTriangle triangle = searchTriangle((Position) pos);
 
             AffineTransform AT = (AffineTransform) trianglesToKeysMap.get(triangle);
 
@@ -134,7 +134,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      * @return Triangle containing p
      * @throws TransformException if points are outside the area of TIN.
      */
-    private TINTriangle searchTriangle(DirectPosition p) throws TransformException {
+    private TINTriangle searchTriangle(Position p) throws TransformException {
         /* Optimization for finding triangles.
          * Assuming the point are close to each other -
          * so why not to check if next point is in the same triangle as previous one.

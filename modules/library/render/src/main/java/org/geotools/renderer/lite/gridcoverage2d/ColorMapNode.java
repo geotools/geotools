@@ -25,26 +25,26 @@ import java.awt.Color;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.SampleDimensionType;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.SampleDimensionType;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
 
 /**
  * This {@link CoverageProcessingNode} is responsible for visiting the supplied {@link
@@ -148,7 +148,8 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
                 if (!cm.hasAlpha() && cm.getNumColorComponents() != 2) {
                     // let's check, it might
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
+                            MessageFormat.format(
+                                    ErrorKeys.BAD_BAND_NUMBER_$1, Integer.valueOf(numSD)));
                 }
             }
             // /////////////////////////////////////////////////////////////////////

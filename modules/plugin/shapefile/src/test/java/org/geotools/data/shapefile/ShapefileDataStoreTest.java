@@ -54,19 +54,31 @@ import java.util.TreeSet;
 import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -94,19 +106,6 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @version $Id$
@@ -136,7 +135,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     static final String RUSSIAN = "shapes/rus-windows-1251.shp";
     static final String UTF8 = "shapes/wgs1snt.shp";
     static final String SPECIAL_CHAR_NAME = "test-data/special-characters/Åéìòù.shp";
-    static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private ShapefileDataStore store;
 
     @Override
@@ -491,7 +490,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         assertFalse(selection.isEmpty());
 
         // try with filter and no attributes
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
 
         query.setFilter(ff.bbox(ff.property(geomName), bounds));
@@ -511,7 +510,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureSource fs = ds.getFeatureSource();
 
         // build a query that extracts no geom but uses a bbox filter
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Query q = new Query();
         q.setPropertyNames("STATE_NAME", "PERSONS");
         ReferencedEnvelope queryBounds =
@@ -541,7 +540,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Set<String> expectedFids = new LinkedHashSet<>();
         final Filter fidFilter;
         try (SimpleFeatureIterator indexIter = features.features()) {
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Set<FeatureId> fids = new HashSet<>();
             while (indexIter.hasNext()) {
                 SimpleFeature newFeature = indexIter.next();
@@ -588,7 +587,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         GeometryFactory geometryFactory = new GeometryFactory();
         Coordinate coordinate = new Coordinate(-99.0, 38.0);
         Point p = geometryFactory.createPoint(coordinate);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         final Filter testFilter = ff.intersects(ff.literal(p), ff.property("the_geom"));
         // System.out.println(testFilter);
         // = featureSource.getFeatures();
@@ -601,7 +600,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             ShapefileDataStore baselineDS,
             ReferencedEnvelope newBounds)
             throws FactoryRegistryException, IllegalFilterException, IOException {
-        FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
         String geometryName = indexedDS.getSchema().getGeometryDescriptor().getLocalName();
 
         Filter filter = fac.bbox(fac.property(geometryName), newBounds);
@@ -881,7 +880,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                     (SimpleFeatureStore)
                             s.getFeatureSource(s.getSchema().getTypeName(), transaction);
 
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             Query query = new Query(s.getSchema().getTypeName());
             for (int i = 0; i < 3; i++) {
                 query.setFilter(ff.equal(ff.property("b"), ff.literal(i), true));
@@ -1419,7 +1418,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
             // execute Query that returns all features
 
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
             SimpleFeatureType schema = featureSource.getSchema();
             String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
 
@@ -1702,7 +1701,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             invalidFid1 = "_" + features.next().getID();
             invalidFid2 = features.next().getID() + "abc";
         }
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Set<Identifier> ids = new HashSet<>();
         ids.add(ff.featureId(validFid1));
         ids.add(ff.featureId(validFid2));
@@ -1866,7 +1865,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         SimpleFeatureSource featureSource = ds.getFeatureSource();
         SimpleFeatureType schema = featureSource.getSchema();
         Query query = new Query(schema.getTypeName());
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         String geomName = schema.getGeometryDescriptor().getName().getLocalPart();
         ReferencedEnvelope bounds = featureSource.getBounds();
         // before it was working with / 2, that is, point bbox, now it does not, accuracy issue

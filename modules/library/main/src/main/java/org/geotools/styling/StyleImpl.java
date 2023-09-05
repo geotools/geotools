@@ -22,9 +22,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.Cloneable;
 import org.geotools.util.Utilities;
-import org.opengis.style.Description;
-import org.opengis.util.Cloneable;
 
 /**
  * Implementation of style.
@@ -32,7 +38,7 @@ import org.opengis.util.Cloneable;
  * @author James Macgill, CCG
  * @version $Id$
  */
-public class StyleImpl implements org.geotools.styling.Style, Cloneable {
+public class StyleImpl implements Style, Cloneable {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
@@ -54,7 +60,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     }
 
     public FeatureTypeStyle[] getFeatureTypeStyles() {
-        FeatureTypeStyle[] ret = {new FeatureTypeStyleImpl()};
+        FeatureTypeStyle[] ret = {(FeatureTypeStyle) new FeatureTypeStyleImpl()};
 
         if ((featureTypeStyles != null) && (!featureTypeStyles.isEmpty())) {
             if (LOGGER.isLoggable(Level.FINE))
@@ -77,7 +83,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     }
 
     @Override
-    public void setDefaultSpecification(org.geotools.styling.Symbolizer defaultSymbolizer) {
+    public void setDefaultSpecification(Symbolizer defaultSymbolizer) {
         this.defaultSymbolizer = defaultSymbolizer;
     }
 
@@ -123,7 +129,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
      * Clones the Style. Creates deep copy clone of the style.
      *
      * @return the Clone of the style.
-     * @see org.geotools.styling.Style#clone()
+     * @see Style
      */
     @Override
     public Object clone() {
@@ -203,7 +209,7 @@ public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
+    public Object accept(TraversingStyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 

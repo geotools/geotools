@@ -27,9 +27,16 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataAccessFinder;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataAccessFinder;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -41,14 +48,6 @@ import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -157,7 +156,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
         URL file = getClass().getResource("/test-data/minoc_lithology_mapping.properties");
         assertNotNull(file);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Function function =
                 ff.function(
                         "Vocab", ff.literal("1LIST"), ff.literal(URLs.urlToFile(file).getPath()));
@@ -170,7 +169,7 @@ public class VocabFunctionsTest extends AppSchemaTestSupport {
 
     @Test
     public void testNoVocabFunction() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Function function = ff.function("Vocab", ff.literal("a"), ff.literal("urn:1234"));
 
         try {

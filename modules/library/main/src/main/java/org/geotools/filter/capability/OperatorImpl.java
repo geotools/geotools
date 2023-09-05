@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.capability;
 
-import org.opengis.filter.capability.Operator;
+import org.geotools.api.filter.capability.Operator;
 
 /**
  * Implementation of the Operator interface.

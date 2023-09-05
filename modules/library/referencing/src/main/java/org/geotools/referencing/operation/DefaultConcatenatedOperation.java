@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,22 +28,21 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.metadata.quality.PositionalAccuracy;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.ConcatenatedOperation;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.SingleOperation;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Classes;
 import org.geotools.util.UnmodifiableArrayList;
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.SingleOperation;
-import org.opengis.referencing.operation.Transformation;
 
 /**
  * An ordered sequence of two or more single coordinate operations. The sequence of operations is
@@ -192,7 +192,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                 expand(cops.toArray(new CoordinateOperation[cops.size()]), target, factory, false);
             } else {
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_CLASS_$2,
                                 Classes.getClass(op),
                                 SingleOperation.class));
@@ -208,7 +208,8 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
                     final int dim2 = next.getCoordinateSystem().getDimension();
                     if (dim1 != dim2) {
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+                                MessageFormat.format(
+                                        ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
                     }
                 }
             }
@@ -230,7 +231,8 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
             final int size = target.size();
             if (size <= 1) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.MISSING_PARAMETER_$1, "operations[" + size + ']'));
+                        MessageFormat.format(
+                                ErrorKeys.MISSING_PARAMETER_$1, "operations[" + size + ']'));
             }
         }
         return transform;

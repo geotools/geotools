@@ -18,8 +18,8 @@ package org.geotools.xsd.impl;
 
 import org.eclipse.xsd.XSDFeature;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.api.feature.ComplexAttribute;
 import org.geotools.xsd.impl.BindingWalker.Visitor;
-import org.opengis.feature.ComplexAttribute;
 import org.picocontainer.MutablePicoContainer;
 
 /**

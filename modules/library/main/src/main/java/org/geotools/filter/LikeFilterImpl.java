@@ -20,8 +20,8 @@ import com.google.re2j.Matcher;
 import com.google.re2j.Pattern;
 import java.util.Collection;
 import java.util.Objects;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.PropertyIsLike;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.PropertyIsLike;
 
 /**
  * Defines a like filter, which checks to see if an attribute matches a REGEXP.
@@ -32,7 +32,7 @@ import org.opengis.filter.PropertyIsLike;
 public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
 
     /** The attribute value, which must be an attribute expression. */
-    private org.opengis.filter.expression.Expression attribute = null;
+    private org.geotools.api.filter.expression.Expression attribute = null;
 
     /** The (limited) REGEXP pattern. */
     private String pattern = null;
@@ -239,7 +239,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public LikeFilterImpl(
-            org.opengis.filter.expression.Expression expr,
+            org.geotools.api.filter.expression.Expression expr,
             String pattern,
             String wildcardMulti,
             String wildcardSingle,
@@ -257,7 +257,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     }
 
     public LikeFilterImpl(
-            org.opengis.filter.expression.Expression expr,
+            org.geotools.api.filter.expression.Expression expr,
             String pattern,
             String wildcardMulti,
             String wildcardSingle,
@@ -278,11 +278,11 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
      * subclasses.
      */
     @Override
-    public org.opengis.filter.expression.Expression getExpression() {
+    public org.geotools.api.filter.expression.Expression getExpression() {
         return attribute;
     }
 
-    public void setExpression(org.opengis.filter.expression.Expression e) {
+    public void setExpression(org.geotools.api.filter.expression.Expression e) {
         this.attribute = e;
     }
 
@@ -389,7 +389,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     /**
      * Getter for property wildcardMulti
      *
-     * @see org.opengis.filter.PropertyIsLike#getWildCard().
+     * @see org.geotools.api.filter.PropertyIsLike#getWildCard().
      */
     @Override
     public String getWildCard() {
@@ -399,7 +399,7 @@ public class LikeFilterImpl extends AbstractFilter implements PropertyIsLike {
     /**
      * Getter for property wildcardSingle.
      *
-     * @see org.opengis.filter.PropertyIsLike#getSingleChar()().
+     * @see org.geotools.api.filter.PropertyIsLike#getSingleChar()().
      */
     @Override
     public String getSingleChar() {

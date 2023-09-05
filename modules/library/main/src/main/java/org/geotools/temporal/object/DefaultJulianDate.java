@@ -16,9 +16,9 @@
  */
 package org.geotools.temporal.object;
 
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.JulianDate;
-import org.opengis.temporal.TemporalReferenceSystem;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.JulianDate;
+import org.geotools.api.temporal.TemporalReferenceSystem;
 
 /**
  * The Julian day numbering system is a temporal coordinate system that has its origin at noon on 1

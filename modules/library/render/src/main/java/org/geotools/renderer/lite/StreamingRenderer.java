@@ -63,15 +63,49 @@ import java.util.stream.Stream;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.GeometryAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.factory.CommonFactoryFinder;
@@ -121,15 +155,7 @@ import org.geotools.renderer.style.MarkAlongLine;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.StyleAttributeExtractor;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
 import org.geotools.styling.RuleImpl;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.MapRenderingSelectorStyleVisitor;
@@ -143,32 +169,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.feature.Feature;
-import org.opengis.feature.GeometryAttribute;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.style.LineSymbolizer;
-import org.opengis.style.PolygonSymbolizer;
 
 /**
  * A streaming implementation of the GTRenderer interface.
@@ -231,8 +231,7 @@ public class StreamingRenderer implements GTRenderer {
     int error = 0;
 
     /** Filter factory for creating bounding box filters */
-    protected static final FilterFactory2 filterFactory =
-            CommonFactoryFinder.getFilterFactory2(null);
+    protected static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     protected static final StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
 
@@ -1063,7 +1062,7 @@ public class StreamingRenderer implements GTRenderer {
      * paint(Graphics2D, Rectangle, AffineTransform)</code>. It is package protected just to allow
      * unit testing it.
      *
-     * @param envelope the spatial extent which is the target area of the rendering process
+     * @param mapCRS the spatial extent which is the target area of the rendering process
      * @return the set of features resulting from <code>currLayer</code> after querying its feature
      *     source
      * @throws IllegalFilterException if something goes wrong constructing the bbox filter
@@ -1665,7 +1664,7 @@ public class StreamingRenderer implements GTRenderer {
             if (filtersToDS.size() > maxFilters) return;
 
             // or together all the filters
-            org.opengis.filter.Filter ruleFiltersCombined;
+            org.geotools.api.filter.Filter ruleFiltersCombined;
             if (filtersToDS.size() == 1) {
                 ruleFiltersCombined = filtersToDS.get(0);
             } else {
@@ -2043,8 +2042,11 @@ public class StreamingRenderer implements GTRenderer {
                                     fts.getTransformation());
                 }
                 lfts.composite = composite;
-                if (FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(
-                        fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE))) {
+                if (org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST.equals(
+                        fts.getOptions()
+                                .get(
+                                        org.geotools.api.style.FeatureTypeStyle
+                                                .KEY_EVALUATION_MODE))) {
                     lfts.matchFirst = true;
                 }
 
@@ -3202,7 +3204,7 @@ public class StreamingRenderer implements GTRenderer {
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
      */
-    private org.opengis.referencing.crs.CoordinateReferenceSystem findGeometryCS(
+    private org.geotools.api.referencing.crs.CoordinateReferenceSystem findGeometryCS(
             Feature f, Symbolizer s) {
         if (s == null) {
             if (f != null) {
@@ -3233,7 +3235,7 @@ public class StreamingRenderer implements GTRenderer {
     }
 
     /** Finds the CRS of the specified attribute (or uses the default geometry instead) */
-    org.opengis.referencing.crs.CoordinateReferenceSystem getAttributeCRS(
+    org.geotools.api.referencing.crs.CoordinateReferenceSystem getAttributeCRS(
             PropertyName geomName, FeatureType schema) {
         if (geomName == null || "".equals(geomName.getPropertyName())) {
             GeometryDescriptor geom = schema.getGeometryDescriptor();
@@ -3634,7 +3636,7 @@ public class StreamingRenderer implements GTRenderer {
             return shape;
         }
 
-        /** @throws org.opengis.referencing.operation.NoninvertibleTransformException */
+        /** @throws org.geotools.api.referencing.operation.NoninvertibleTransformException */
         private Decimator getDecimator(MathTransform mathTransform) {
             // returns a decimator that does nothing if the currently set generalization
             // distance is zero (no generalization desired) or if the datastore has
@@ -3651,7 +3653,7 @@ public class StreamingRenderer implements GTRenderer {
                                         screenSize,
                                         generalizationDistance);
                     else decimator = new Decimator(null, screenSize, generalizationDistance);
-                } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
+                } catch (org.geotools.api.referencing.operation.NoninvertibleTransformException e) {
                     decimator = new Decimator(null, screenSize, generalizationDistance);
                 }
 

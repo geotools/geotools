@@ -18,9 +18,11 @@ package org.geotools.coverage;
 
 import java.awt.Color;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
+import org.geotools.api.referencing.operation.MathTransform1D;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
@@ -28,8 +30,6 @@ import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.util.InternationalString;
 
 /**
  * A category delimited by a range of values. A category may be either <em>qualitative</em> or
@@ -320,9 +320,10 @@ public class Category implements Serializable {
          * except for the legal case catched by the "if" block just above.
          */
         if (!(minimum <= maximum) || Double.isInfinite(minimum) || Double.isInfinite(maximum)) {
+            final Object arg0 = range.getMinValue();
+            final Object arg1 = range.getMaxValue();
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.BAD_RANGE_$2, range.getMinValue(), range.getMaxValue()));
+                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, arg0, arg1));
         }
     }
 
@@ -534,7 +535,8 @@ public class Category implements Serializable {
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

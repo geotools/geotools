@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,8 +27,49 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.measure.Unit;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CompoundCRS;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.DerivedCRS;
+import org.geotools.api.referencing.crs.EngineeringCRS;
+import org.geotools.api.referencing.crs.GeocentricCRS;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ImageCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.crs.TemporalCRS;
+import org.geotools.api.referencing.crs.VerticalCRS;
+import org.geotools.api.referencing.cs.CSAuthorityFactory;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.CylindricalCS;
+import org.geotools.api.referencing.cs.EllipsoidalCS;
+import org.geotools.api.referencing.cs.PolarCS;
+import org.geotools.api.referencing.cs.SphericalCS;
+import org.geotools.api.referencing.cs.TimeCS;
+import org.geotools.api.referencing.cs.VerticalCS;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.DatumAuthorityFactory;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.EngineeringDatum;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.datum.ImageDatum;
+import org.geotools.api.referencing.datum.PrimeMeridian;
+import org.geotools.api.referencing.datum.TemporalDatum;
+import org.geotools.api.referencing.datum.VerticalDatum;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
@@ -38,48 +80,6 @@ import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.OptionalFactory;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.DerivedCRS;
-import org.opengis.referencing.crs.EngineeringCRS;
-import org.opengis.referencing.crs.GeocentricCRS;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ImageCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.crs.TemporalCRS;
-import org.opengis.referencing.crs.VerticalCRS;
-import org.opengis.referencing.cs.CSAuthorityFactory;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.CylindricalCS;
-import org.opengis.referencing.cs.EllipsoidalCS;
-import org.opengis.referencing.cs.PolarCS;
-import org.opengis.referencing.cs.SphericalCS;
-import org.opengis.referencing.cs.TimeCS;
-import org.opengis.referencing.cs.VerticalCS;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.DatumAuthorityFactory;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.EngineeringDatum;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.datum.ImageDatum;
-import org.opengis.referencing.datum.PrimeMeridian;
-import org.opengis.referencing.datum.TemporalDatum;
-import org.opengis.referencing.datum.VerticalDatum;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.util.InternationalString;
 
 /**
  * An authority factory which delegates {@linkplain CoordinateReferenceSystem CRS}, {@linkplain
@@ -501,7 +501,8 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         if (caller == null) {
             return null;
         }
-        throw new FactoryException(Errors.format(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1, caller));
+        throw new FactoryException(
+                MessageFormat.format(ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1, caller));
     }
 
     /**
@@ -1061,7 +1062,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
      */
     private FactoryException missingFactory(final Class category, final String code) {
         return new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.FACTORY_NOT_FOUND_$1, category),
+                MessageFormat.format(ErrorKeys.FACTORY_NOT_FOUND_$1, category),
                 Citations.getIdentifier(getAuthority()),
                 trimAuthority(code));
     }
@@ -1075,7 +1076,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
         try {
             return getAuthorityFactory(null);
         } catch (FactoryException cause) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.UNDEFINED_PROPERTY), cause);
+            throw new IllegalStateException(ErrorKeys.UNDEFINED_PROPERTY, cause);
         }
     }
 
@@ -1107,7 +1108,7 @@ public class AuthorityFactoryAdapter extends AbstractAuthorityFactory implements
             f = getCoordinateOperationAuthorityFactory(code);
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "type", type));
         }
         return type.cast(f);
     }

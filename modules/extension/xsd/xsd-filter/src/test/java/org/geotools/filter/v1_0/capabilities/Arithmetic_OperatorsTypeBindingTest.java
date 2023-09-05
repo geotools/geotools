@@ -23,9 +23,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.capability.ArithmeticOperators;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.capability.ArithmeticOperators;
 import org.w3c.dom.Document;
 
 public class Arithmetic_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {

@@ -16,9 +16,9 @@
  */
 package org.geotools.mbstyle.expression;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
-import org.opengis.filter.expression.Expression;
 
 /** This class is here to get zoom level properties from a map */
 public class MBZoom extends MBExpression {

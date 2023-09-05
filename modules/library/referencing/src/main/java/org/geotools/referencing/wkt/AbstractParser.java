@@ -23,17 +23,17 @@ import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Base class for <cite>Well Know Text</cite> (WKT) parser.
@@ -110,7 +110,7 @@ public abstract class AbstractParser extends Format {
     public void setAuthority(final Citation authority) {
         if (authority == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
         }
         getFormatter().setAuthority(authority);
     }
@@ -301,7 +301,8 @@ public abstract class AbstractParser extends Format {
                 reportError(err, line, exception.getErrorOffset());
             }
         } catch (InvalidParameterValueException exception) {
-            err.print(Errors.format(ErrorKeys.IN_$1, exception.getParameterName()));
+            final Object arg0 = exception.getParameterName();
+            err.print(MessageFormat.format(ErrorKeys.IN_$1, arg0));
             err.print(' ');
             err.println(exception.getLocalizedMessage());
         }
@@ -320,7 +321,7 @@ public abstract class AbstractParser extends Format {
             if (formatter.warning != null) {
                 return formatter.warning;
             }
-            return Errors.format(
+            return MessageFormat.format(
                     ErrorKeys.INVALID_WKT_FORMAT_$1, formatter.getUnformattableClass());
         }
         return null;

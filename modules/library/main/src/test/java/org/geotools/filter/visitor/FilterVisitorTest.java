@@ -19,16 +19,16 @@ package org.geotools.filter.visitor;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.IdCollectorFilterVisitor;
 import org.geotools.feature.visitor.IdFinderFilterVisitor;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * This test checks that our filter visitor examples on the wiki are in working order.
@@ -44,7 +44,7 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class FilterVisitorTest {
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /** Example located on the wiki */
     @Test

@@ -33,6 +33,16 @@ import java.util.logging.Logger;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.JAI;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -41,14 +51,11 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.PrjFileReader;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -56,13 +63,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Base class for GridCoverage data access
@@ -455,8 +455,8 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
                 MathTransform tempTransform =
                         PixelTranslation.translate(
                                 raster2Model, PixelInCell.CELL_CENTER, PixelInCell.CELL_CORNER);
-                final Envelope gridRange = new GeneralEnvelope((GridEnvelope2D) originalGridRange);
-                final GeneralEnvelope coverageEnvelope = CRS.transform(tempTransform, gridRange);
+                final Bounds gridRange = new GeneralBounds((GridEnvelope2D) originalGridRange);
+                final GeneralBounds coverageEnvelope = CRS.transform(tempTransform, gridRange);
                 originalEnvelope = coverageEnvelope;
                 return;
             } catch (TransformException | IOException | IllegalStateException e) {

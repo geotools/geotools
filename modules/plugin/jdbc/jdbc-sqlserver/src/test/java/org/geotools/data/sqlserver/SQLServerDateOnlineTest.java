@@ -24,16 +24,16 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import microsoft.sql.DateTimeOffset;
+import org.geotools.api.data.FeatureStore;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.jdbc.JDBCDateOnlineTest;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.identity.FeatureId;
 
 public class SQLServerDateOnlineTest extends JDBCDateOnlineTest {
 

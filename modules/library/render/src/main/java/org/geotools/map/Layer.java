@@ -23,17 +23,17 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.style.FeatureTypeStyle;
 
 /**
  * A Layer to be rendered.
@@ -228,8 +228,8 @@ public abstract class Layer {
     }
 
     /**
-     * Set the title of this layer. A {@link LayerEvent} is fired if the new title is different from
-     * the previous one.
+     * Set the title of this layer. A { LayerEvent} is fired if the new title is different from the
+     * previous one.
      *
      * @param title The title of this layer.
      */

@@ -16,8 +16,8 @@
  */
 package org.geotools.util;
 
+import java.text.MessageFormat;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 
 /**
  * Throws when an operation can't use arbitrary implementation of an interface, and a given instance
@@ -47,7 +47,7 @@ public class UnsupportedImplementationException extends UnsupportedOperationExce
      * @param classe The unexpected implementation class.
      */
     public UnsupportedImplementationException(final Class<?> classe) {
-        super(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, classe));
+        super(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, classe));
     }
 
     /**
@@ -57,6 +57,6 @@ public class UnsupportedImplementationException extends UnsupportedOperationExce
      * @param cause The cause for the exception.
      */
     public UnsupportedImplementationException(final Class<?> classe, final Exception cause) {
-        super(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, classe), cause);
+        super(MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, classe), cause);
     }
 }

@@ -22,6 +22,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryType;
 import org.geotools.data.solr.SolrSpatialStrategy.BBoxStrategy;
 import org.geotools.data.solr.SolrSpatialStrategy.DefaultStrategy;
 import org.geotools.feature.NameImpl;
@@ -30,9 +33,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
 
 public class SolrSpatialStrategyTest {
 

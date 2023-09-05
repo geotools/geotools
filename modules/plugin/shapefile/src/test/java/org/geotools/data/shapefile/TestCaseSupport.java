@@ -26,13 +26,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.geotools.TestData;
-import org.geotools.data.CloseableIterator;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.FilterFactory2;
 
 /**
  * Base class for test suite. This class is not abstract for the purpose of {@link
@@ -63,7 +63,7 @@ public class TestCaseSupport {
     static final String RUSSIAN = "shapes/rus-windows-1251.shp";
 
     /** References a known test file provided by sample data. */
-    static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     /**
      * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply

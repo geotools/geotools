@@ -27,10 +27,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataAccessFactory;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataAccessFactory;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Parameter;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPClient;
@@ -40,15 +43,13 @@ import org.geotools.util.KVP;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.xml.XMLHandlerHints;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
 import org.xml.sax.EntityResolver;
 
 /**
  * The factory responsible for creating WFSDataAccess objects based on their capabilities and the
  * configuration file used. This file is included as a candidate for DataAccessFinder by virtue of
  * the fact that its name is present in the file gt-wfs-ng > src/main/resources > META-INF >
- * services > org.geotools.data.DataAccessFactory.
+ * services > org.geotools.api.data.DataAccessFactory.
  *
  * @author Adam Brown (Curtin University of Technology)
  */
@@ -655,7 +656,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     /**
      * Returns the set of parameter descriptors needed to connect to a WFS.
      *
-     * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
+     * @see DataStoreFactorySpi#getParametersInfo()
      * @see #URL
      * @see #NAMESPACE
      * @see #PROTOCOL

@@ -22,6 +22,9 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
 import java.util.GregorianCalendar;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.TemporalCoordinate;
+import org.geotools.api.temporal.TemporalCoordinateSystem;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.reference.DefaultTemporalCoordinateSystem;
@@ -29,9 +32,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.TemporalCoordinate;
-import org.opengis.temporal.TemporalCoordinateSystem;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalCoordinateTest {

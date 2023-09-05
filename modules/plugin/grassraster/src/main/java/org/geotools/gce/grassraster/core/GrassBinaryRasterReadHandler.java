@@ -41,6 +41,9 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ComponentSampleModelJAI;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.iterator.RectIter;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.gce.grassraster.DummyProgressListener;
 import org.geotools.gce.grassraster.GrassBinaryImageReader;
 import org.geotools.gce.grassraster.JGrassConstants;
@@ -53,9 +56,6 @@ import org.geotools.gce.grassraster.core.color.JlsTokenizer;
 import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.ProgressListener;
 
 /**
  * Grass binary data input/ouput handler.

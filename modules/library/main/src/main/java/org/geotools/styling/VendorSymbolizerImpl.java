@@ -18,8 +18,10 @@ package org.geotools.styling;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TraversingStyleVisitor;
 
 /**
  * ExtensioSymbolizer capturing a vendor specific extension.
@@ -31,7 +33,8 @@ import org.opengis.style.StyleVisitor;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class VendorSymbolizerImpl extends AbstractSymbolizer implements ExtensionSymbolizer {
+public class VendorSymbolizerImpl extends AbstractSymbolizer
+        implements org.geotools.api.style.ExtensionSymbolizer, Symbolizer {
 
     private String extensionName;
     private Map<String, Expression> parameters = new HashMap<>();
@@ -63,14 +66,14 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
         return true;
     }
 
-    static VendorSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
+    static VendorSymbolizerImpl cast(org.geotools.api.style.Symbolizer symbolizer) {
         if (symbolizer == null) {
             return null;
         } else if (symbolizer instanceof VendorSymbolizerImpl) {
             return (VendorSymbolizerImpl) symbolizer;
-        } else if (symbolizer instanceof org.opengis.style.ExtensionSymbolizer) {
-            org.opengis.style.ExtensionSymbolizer extensionSymbolizer =
-                    (org.opengis.style.ExtensionSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.geotools.api.style.ExtensionSymbolizer) {
+            org.geotools.api.style.ExtensionSymbolizer extensionSymbolizer =
+                    (org.geotools.api.style.ExtensionSymbolizer) symbolizer;
             VendorSymbolizerImpl copy = new VendorSymbolizerImpl();
             copy.setDescription(extensionSymbolizer.getDescription());
             copy.setGeometryPropertyName(extensionSymbolizer.getGeometryPropertyName());
@@ -99,12 +102,12 @@ public class VendorSymbolizerImpl extends AbstractSymbolizer implements Extensio
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 }

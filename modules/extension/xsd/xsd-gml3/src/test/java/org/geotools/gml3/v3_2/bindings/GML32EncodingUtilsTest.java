@@ -28,6 +28,7 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFeature;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.v3_2.GML;
@@ -36,7 +37,6 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Test GML 3.2 encoding utilities. Most of the work is delegate on {@link GMLEncodingUtils}. */
 public class GML32EncodingUtilsTest {

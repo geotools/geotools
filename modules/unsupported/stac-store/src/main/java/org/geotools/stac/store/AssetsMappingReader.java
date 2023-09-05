@@ -19,12 +19,12 @@ package org.geotools.stac.store;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.SimpleFeatureReader;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.geojson.GeoJSONReader;
-import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Maps the "assets" extra property into a legit attribute (assumes the {@link

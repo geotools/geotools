@@ -16,9 +16,9 @@
  */
 package org.geotools.vectormosaic;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentState;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 public class VectorMosaicState extends ContentState {
 

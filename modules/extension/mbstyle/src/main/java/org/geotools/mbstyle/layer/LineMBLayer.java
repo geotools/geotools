@@ -23,6 +23,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
@@ -30,20 +41,9 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.measure.Units;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.GraphicFill;
-import org.opengis.style.SemanticType;
-import org.opengis.style.Symbolizer;
 
 /**
  * MBLayer wrapper for "line" layers.
@@ -537,7 +537,7 @@ public class LineMBLayer extends MBLayer {
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
         MBStyleTransformer transformer = new MBStyleTransformer(parse);
         List<Symbolizer> symbolizers = new ArrayList<>();
-        org.geotools.styling.Stroke stroke =
+        org.geotools.api.style.Stroke stroke =
                 sf.stroke(
                         lineColor(),
                         lineOpacity(),
@@ -596,7 +596,7 @@ public class LineMBLayer extends MBLayer {
         symbolizers.add(ls);
 
         MBFilter filter = getFilter();
-        List<org.opengis.style.Rule> rules = new ArrayList<>();
+        List<org.geotools.api.style.Rule> rules = new ArrayList<>();
 
         Rule rule =
                 sf.rule(

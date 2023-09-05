@@ -19,8 +19,8 @@ package org.geotools.sld.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.style.PointPlacement;
 import org.geotools.filter.Filters;
-import org.geotools.styling.PointPlacement;
 import org.junit.Test;
 
 public class SLDPointPlacementBindingTest extends SLDTestSupport {

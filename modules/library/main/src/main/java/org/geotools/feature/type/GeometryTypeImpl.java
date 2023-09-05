@@ -18,12 +18,12 @@ package org.geotools.feature.type;
 
 import java.util.List;
 import java.util.Objects;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.InternationalString;
 
 /** AttributeType for hold geometry implementations, maintains CRS information. */
 public class GeometryTypeImpl extends AttributeTypeImpl implements GeometryType {

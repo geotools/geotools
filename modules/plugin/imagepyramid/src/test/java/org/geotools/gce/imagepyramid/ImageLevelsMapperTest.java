@@ -32,20 +32,20 @@ import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Properties;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /** Test the resolutionLevel-to-ImageMosaicReader mapping machinery. */
 public class ImageLevelsMapperTest extends AbstractPyramidTest {
@@ -96,7 +96,7 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         // Read a reduced view of the RGB coverage
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         GridEnvelope2D gridRange =
                 new GridEnvelope2D(((GridEnvelope2D) reader.getOriginalGridRange()).getBounds());
         final Dimension dim = new Dimension();
@@ -116,8 +116,8 @@ public class ImageLevelsMapperTest extends AbstractPyramidTest {
         assertEquals(4, gridEnvelope.getSpan(1), DELTA);
 
         // test on expanded Envelope (Double the size of the envelope)
-        final GeneralEnvelope doubleEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds doubleEnvelope =
+                new GeneralBounds(
                         new double[] {
                             envelope.getLowerCorner().getOrdinate(0),
                             envelope.getLowerCorner().getOrdinate(1)

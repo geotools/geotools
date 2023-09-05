@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -34,8 +36,6 @@ import org.geotools.data.vpf.VPFFeatureSource;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
 
 /**
  * A data store for VPF files. Any file can be retrieved from here. If you want joins (for example

@@ -20,48 +20,48 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.factory.Hints;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.metadata.Identifier;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A class to handle coverage requests to a reader for a single 2D layer..
@@ -118,9 +118,9 @@ class RasterLayerRequest {
 
     private MathTransform destinationToSourceTransform;
 
-    private GeneralEnvelope requestedBBOXInCoverageGeographicCRS;
+    private GeneralBounds requestedBBOXInCoverageGeographicCRS;
 
-    private GeneralEnvelope approximateRequestedBBoInNativeCRS;
+    private GeneralBounds approximateRequestedBBoInNativeCRS;
 
     private Dimension tileDimensions;
 
@@ -197,7 +197,7 @@ class RasterLayerRequest {
                 if (value == null) continue;
                 final GridGeometry2D gg = (GridGeometry2D) value;
 
-                requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
+                requestedBBox = new ReferencedEnvelope((Bounds) gg.getEnvelope2D());
                 requestedRasterArea = gg.getGridRange2D().getBounds();
                 requestedGridToWorld = (AffineTransform) gg.getGridToCRS2D();
                 continue;
@@ -305,7 +305,7 @@ class RasterLayerRequest {
                 return;
             }
 
-            requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
+            requestedBBox = new ReferencedEnvelope((Bounds) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
             requestedGridToWorld = (AffineTransform) gg.getGridToCRS2D();
             return;
@@ -470,7 +470,7 @@ class RasterLayerRequest {
                 requestedBBox =
                         new ReferencedEnvelope(
                                 CRS.transform(
-                                        tempTransform, new GeneralEnvelope(requestedRasterArea)));
+                                        tempTransform, new GeneralBounds(requestedRasterArea)));
 
             } catch (MismatchedDimensionException | TransformException e) {
                 throw new DataSourceException("Unable to inspect request CRS", e);
@@ -566,8 +566,7 @@ class RasterLayerRequest {
                 destinationRasterArea =
                         new GeneralGridEnvelope(
                                         CRS.transform(
-                                                requestedWorldToGrid,
-                                                new GeneralEnvelope(cropBBox)),
+                                                requestedWorldToGrid, new GeneralBounds(cropBBox)),
                                         PixelInCell.CELL_CORNER,
                                         false)
                                 .toRectangle();
@@ -579,7 +578,7 @@ class RasterLayerRequest {
             // reproject the crop bbox back and then crop, notice that we are imposing
             //
             try {
-                final GeneralEnvelope cropBBOXInRequestCRS =
+                final GeneralBounds cropBBOXInRequestCRS =
                         CRS.transform(cropBBox, requestedBBox.getCoordinateReferenceSystem());
                 cropBBOXInRequestCRS.setCoordinateReferenceSystem(
                         requestedBBox.getCoordinateReferenceSystem());
@@ -742,11 +741,12 @@ class RasterLayerRequest {
                             };
                 }
             } else
-                // should not happen
+            // should not happen
+            {
+                final Object arg0 = requestedGridToWorld.toString();
                 throw new UnsupportedOperationException(
-                        Errors.format(
-                                ErrorKeys.UNSUPPORTED_OPERATION_$1,
-                                requestedGridToWorld.toString()));
+                        MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, arg0));
+            }
 
             // leave
             return;
@@ -785,7 +785,7 @@ class RasterLayerRequest {
             // now transform the requested envelope to source crs
             if (destinationToSourceTransform != null
                     && !destinationToSourceTransform.isIdentity()) {
-                final GeneralEnvelope temp =
+                final GeneralBounds temp =
                         CRS.transform(
                                 requestedBBox, rasterManager.spatialDomainManager.coverageCRS2D);
                 temp.setCoordinateReferenceSystem(rasterManager.spatialDomainManager.coverageCRS2D);
@@ -852,7 +852,7 @@ class RasterLayerRequest {
                         rasterManager.spatialDomainManager.coverageGeographicCRS2D);
             }
             if (requestedBBOXInCoverageGeographicCRS == null)
-                requestedBBOXInCoverageGeographicCRS = new GeneralEnvelope(requestCRS);
+                requestedBBOXInCoverageGeographicCRS = new GeneralBounds(requestCRS);
 
             // STEP 2 intersection with the geographic bbox for this coverage
             if (!requestedBBOXInCoverageGeographicCRS.intersects(

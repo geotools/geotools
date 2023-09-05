@@ -38,24 +38,24 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.mbtiles.MBTilesFile;
 import org.geotools.mbtiles.MBTilesMetadata;
 import org.geotools.mbtiles.MBTilesTile;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MBTilesReader extends AbstractGridCoverage2DReader {
 
@@ -93,7 +93,7 @@ public class MBTilesReader extends AbstractGridCoverage2DReader {
             } catch (Exception e) {
                 bounds = null;
             }
-            originalEnvelope = new GeneralEnvelope(bounds == null ? WORLD_ENVELOPE : bounds);
+            originalEnvelope = new GeneralBounds(bounds == null ? WORLD_ENVELOPE : bounds);
 
             long maxZoom;
             try {

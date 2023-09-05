@@ -45,21 +45,32 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.dbcp.DelegatingConnection;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureReader;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureWriter;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureWriter;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
@@ -76,16 +87,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.sqlite.Function;
 import org.sqlite.SQLiteConfig;
 
@@ -1095,7 +1096,7 @@ public class GeoPackage implements Closeable {
                 if (srid != null) {
                     CoordinateReferenceSystem crs = getCRS(srid);
                     if (crs != null) {
-                        org.opengis.geometry.Envelope env = CRS.getEnvelope(crs);
+                        Bounds env = CRS.getEnvelope(crs);
                         if (env != null) {
                             minx = env.getMinimum(0);
                             miny = env.getMinimum(1);
@@ -1254,7 +1255,7 @@ public class GeoPackage implements Closeable {
     }
 
     static ReferencedEnvelope findBounds(GridCoverage2D raster) {
-        org.opengis.geometry.Envelope e = raster.getEnvelope();
+        Bounds e = raster.getEnvelope();
         return new ReferencedEnvelope(
                 e.getMinimum(0),
                 e.getMaximum(0),
@@ -1263,9 +1264,9 @@ public class GeoPackage implements Closeable {
                 raster.getCoordinateReferenceSystem());
     }
 
-    static GeneralEnvelope toGeneralEnvelope(ReferencedEnvelope e) {
-        GeneralEnvelope ge =
-                new GeneralEnvelope(
+    static GeneralBounds toGeneralEnvelope(ReferencedEnvelope e) {
+        GeneralBounds ge =
+                new GeneralBounds(
                         new double[] {e.getMinX(), e.getMinY()},
                         new double[] {e.getMaxX(), e.getMaxY()});
         ge.setCoordinateReferenceSystem(e.getCoordinateReferenceSystem());

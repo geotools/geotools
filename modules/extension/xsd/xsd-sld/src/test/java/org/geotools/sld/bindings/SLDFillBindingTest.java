@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.awt.Color;
-import org.geotools.styling.Fill;
+import org.geotools.api.style.Fill;
 import org.junit.Test;
 
 public class SLDFillBindingTest extends SLDTestSupport {

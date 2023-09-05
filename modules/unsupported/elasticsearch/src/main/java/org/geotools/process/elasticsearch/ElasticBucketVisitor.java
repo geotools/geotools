@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Feature;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
 
 /** Visitor to generate Elastic aggregate buckets or native queries */
 public class ElasticBucketVisitor implements FeatureAttributeVisitor {

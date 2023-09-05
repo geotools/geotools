@@ -29,8 +29,9 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 import org.geotools.data.elasticsearch.date.ElasticsearchDateConverter;
 import org.geotools.data.store.ContentDataStore;
@@ -40,7 +41,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.type.Name;
 
 /** A data store for an Elasticsearch index containing geo_point or geo_shape types. */
 public class ElasticDataStore extends ContentDataStore {

@@ -25,7 +25,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiTask;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -86,7 +86,7 @@ public class MapMouseEventTest extends GraphicsTestBase {
         tr.transform(p, p);
 
         createEvent(x, y);
-        DirectPosition2D pos = mapEv.getWorldPos();
+        Position2D pos = mapEv.getWorldPos();
 
         assertEquals(p.getX(), pos.x, TOL);
         assertEquals(p.getY(), pos.y, TOL);

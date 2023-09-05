@@ -16,6 +16,9 @@
  */
 package org.geotools.renderer.crs;
 
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -27,9 +30,6 @@ import org.geotools.referencing.operation.projection.MapProjection.AbstractProvi
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Returns a {@link ProjectionHandler} for the {@link LambertConformal} projection that will cut

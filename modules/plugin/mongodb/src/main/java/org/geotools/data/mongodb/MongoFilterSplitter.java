@@ -17,6 +17,15 @@
 package org.geotools.data.mongodb;
 
 import org.apache.commons.lang3.StringUtils;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.filter.FilterCapabilities;
@@ -24,15 +33,6 @@ import org.geotools.filter.visitor.ClientTransactionAccessor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.spatial.DWithin;
 
 public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
 

@@ -21,10 +21,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.digester.Digester;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
-import org.geotools.data.DataAccess;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.complex.AppSchemaDataAccess;
 import org.geotools.data.complex.DataAccessMappingFeatureIterator;
 import org.geotools.data.complex.FeatureTypeMapping;
@@ -41,13 +48,6 @@ import org.geotools.data.solr.SolrDataStore;
 import org.geotools.data.solr.SolrFeatureSource;
 import org.geotools.filter.expression.AbstractExpressionVisitor;
 import org.geotools.util.Converters;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 
 /**
  * This class covers \ uses the available App-Schema extension points to make Apache Solr usable in

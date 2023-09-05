@@ -22,7 +22,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
-import org.geotools.styling.Rule;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.Rule;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
@@ -30,7 +31,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Renderers a small Glyph used to represent a Map Layer in a legend.

@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.function.math;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Function;
 
 public class ModuloFunctionTest {
 
@@ -32,7 +32,7 @@ public class ModuloFunctionTest {
     @Before
     public void setUp() throws Exception {
 
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         functionName = ModuloFunction.NAME.getName();
     }
 

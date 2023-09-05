@@ -29,9 +29,9 @@ import static java.lang.Math.hypot;
 import static java.lang.Math.sin;
 
 import java.awt.geom.Point2D;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * The polar case of the {@link Orthographic} projection. Only the spherical form is given here.

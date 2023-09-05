@@ -18,12 +18,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.xsd.Configuration;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
 

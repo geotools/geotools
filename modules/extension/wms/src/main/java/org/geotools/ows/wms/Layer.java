@@ -28,7 +28,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.logging.Logger;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.ows.wms.xml.Attribution;
 import org.geotools.ows.wms.xml.Dimension;
 import org.geotools.ows.wms.xml.Extent;
@@ -36,10 +40,6 @@ import org.geotools.ows.wms.xml.MetadataURL;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Nested list of zero or more map Layers offered by this server. It contains only fields for
@@ -89,7 +89,7 @@ public class Layer implements Comparable<Layer> {
      */
     private CRSEnvelope latLonBoundingBox = null;
 
-    /** A list of type org.opengis.layer.Style */
+    /** A list of type org.geotools.api.layer.Style */
     private List<StyleImpl> styles;
 
     /** Indicates if this layer responds to a GetFeatureInfo query */
@@ -144,7 +144,7 @@ public class Layer implements Comparable<Layer> {
      * This is where we try and go from our rather lame CRSEnvelope data structure to an actual
      * ReferencedEnvelope with a real CoordinateReferenceSystem.
      */
-    private Map<CoordinateReferenceSystem, Envelope> envelopeCache =
+    private Map<CoordinateReferenceSystem, Bounds> envelopeCache =
             Collections.synchronizedMap(new WeakHashMap<>());
 
     private List<MetadataURL> metadataURL;
@@ -441,8 +441,8 @@ public class Layer implements Comparable<Layer> {
      * Accumulates all of the styles specified for this layer and all styles inherited from its
      * ancestors. No duplicates are returned.
      *
-     * <p>The List that is returned is of type List<org.opengis.layer.Style>. Before 2.2-RC0 it was
-     * of type List<java.lang.String>.
+     * <p>The List that is returned is of type List<org.geotools.api.layer.Style>. Before 2.2-RC0 it
+     * was of type List<java.lang.String>.
      *
      * @return List of all styles for this layer and its ancestors
      */
@@ -736,12 +736,12 @@ public class Layer implements Comparable<Layer> {
      *
      * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
-    public GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
+    public GeneralBounds getEnvelope(CoordinateReferenceSystem crs) {
         if (crs == null) {
             return null;
         }
         // Check the cache!
-        GeneralEnvelope found = (GeneralEnvelope) envelopeCache.get(crs);
+        GeneralBounds found = (GeneralBounds) envelopeCache.get(crs);
         if (found != null) {
             return found;
         }
@@ -775,13 +775,13 @@ public class Layer implements Comparable<Layer> {
         }
 
         if (tempBBox != null) {
-            GeneralEnvelope env;
+            GeneralBounds env;
             try {
-                Envelope fixed = CRS.transform(tempBBox, crs);
-                env = new GeneralEnvelope(fixed);
+                Bounds fixed = CRS.transform(tempBBox, crs);
+                env = new GeneralBounds(fixed);
             } catch (TransformException e) {
                 env =
-                        new GeneralEnvelope(
+                        new GeneralBounds(
                                 new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
                                 new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
                 env.setCoordinateReferenceSystem(crs);

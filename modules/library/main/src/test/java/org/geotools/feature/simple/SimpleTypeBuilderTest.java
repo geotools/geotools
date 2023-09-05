@@ -17,6 +17,11 @@
 package org.geotools.feature.simple;
 
 import java.util.Collections;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.feature.type.Schema;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.SchemaImpl;
@@ -26,11 +31,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Schema;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class SimpleTypeBuilderTest {
 

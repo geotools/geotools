@@ -33,7 +33,7 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * KMLDataStore implementation

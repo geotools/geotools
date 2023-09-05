@@ -17,7 +17,8 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.opengis.feature.type.AttributeDescriptor;
+import org.geotools.api.data.AttributeWriter;
+import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
  * Provides ...
@@ -54,7 +55,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.AttributeWriter#close()
+     * @see org.geotools.api.data.AttributeWriter#close()
      */
     @Override
     public void close() throws IOException {
@@ -88,7 +89,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.AttributeWriter#write(int, java.lang.Object)
+     * @see org.geotools.api.data.AttributeWriter#write(int, java.lang.Object)
      */
     @Override
     public void write(int position, Object attribute) throws IOException {

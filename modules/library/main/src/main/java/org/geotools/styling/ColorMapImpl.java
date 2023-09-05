@@ -18,9 +18,11 @@ package org.geotools.styling;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.util.Utilities;
-import org.opengis.filter.expression.Function;
-import org.opengis.style.StyleVisitor;
 
 /**
  * A simple implementation of the color map interface.
@@ -28,10 +30,10 @@ import org.opengis.style.StyleVisitor;
  * @author iant
  * @author aaime
  */
-public class ColorMapImpl implements ColorMap {
+public class ColorMapImpl implements org.geotools.api.style.ColorMap {
     private final Function function;
     private List<ColorMapEntry> list = new ArrayList<>();
-    private int type = ColorMap.TYPE_RAMP;
+    private int type = org.geotools.api.style.ColorMap.TYPE_RAMP;
     private boolean extendedColors;
 
     public ColorMapImpl() {
@@ -66,14 +68,15 @@ public class ColorMapImpl implements ColorMap {
     /** @see org.geotools.styling.ColorMap#setType(int) */
     @Override
     public void setType(int type) {
-        if ((type < TYPE_RAMP) || (type > TYPE_VALUES)) {
+        if ((type < org.geotools.api.style.ColorMap.TYPE_RAMP)
+                || (type > org.geotools.api.style.ColorMap.TYPE_VALUES)) {
             throw new IllegalArgumentException();
         }
         this.type = type;
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
@@ -93,7 +96,7 @@ public class ColorMapImpl implements ColorMap {
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -134,7 +137,7 @@ public class ColorMapImpl implements ColorMap {
         return false;
     }
 
-    static ColorMapImpl cast(org.opengis.style.ColorMap colorMap) {
+    static ColorMapImpl cast(org.geotools.api.style.ColorMap colorMap) {
         if (colorMap == null) {
             return null;
         } else if (colorMap instanceof ColorMapImpl) {

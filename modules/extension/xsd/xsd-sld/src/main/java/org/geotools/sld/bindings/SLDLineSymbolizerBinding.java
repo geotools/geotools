@@ -17,15 +17,15 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 import org.picocontainer.MutablePicoContainer;
 
 /**

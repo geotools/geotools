@@ -28,18 +28,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessException;
 import org.geotools.process.Processors;
 import org.geotools.util.Converters;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /**
  * A wrapper allowing a {@link Process} with a single output to be called as a {@link Function}.
@@ -85,7 +85,7 @@ public class ProcessFunction implements Function {
         this.fallbackValue = fallbackValue;
 
         // build the function name
-        List<org.opengis.parameter.Parameter<?>> inputParams = new ArrayList<>();
+        List<org.geotools.api.parameter.Parameter<?>> inputParams = new ArrayList<>();
         Map<String, Parameter<?>> parameterInfo = Processors.getParameterInfo(processName);
         if (parameterInfo instanceof LinkedHashMap) {
             // predictable order so we can assume parameter order
@@ -99,13 +99,13 @@ public class ProcessFunction implements Function {
             for (String pn : paramNames) {
                 // we do not specify the parameter type to avoid validation issues with the
                 // different positional/named conventions
-                org.opengis.parameter.Parameter param =
+                org.geotools.api.parameter.Parameter param =
                         FunctionNameImpl.parameter(pn, Object.class, 0, 1);
                 inputParams.add(param);
             }
         }
         Map<String, Parameter<?>> resultParams = Processors.getResultInfo(processName, null);
-        org.opengis.parameter.Parameter result = resultParams.values().iterator().next();
+        org.geotools.api.parameter.Parameter result = resultParams.values().iterator().next();
         functionName = new FunctionNameImpl(name, result, inputParams);
     }
 

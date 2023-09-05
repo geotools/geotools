@@ -22,6 +22,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.DelegateHTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -37,9 +40,6 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.test.OnlineTestCase;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author ian */
 public class WMTSMapLayerOnlineTest extends OnlineTestCase {
@@ -112,7 +112,7 @@ public class WMTSMapLayerOnlineTest extends OnlineTestCase {
 
     /**
      * Test method for {@link
-     * WMTSMapLayer#isNativelySupported(org.opengis.referencing.crs.CoordinateReferenceSystem)}.
+     * WMTSMapLayer#isNativelySupported(org.geotools.api.referencing.crs.CoordinateReferenceSystem)}.
      */
     @Test
     public void testIsNativelySupported() throws NoSuchAuthorityCodeException, FactoryException {

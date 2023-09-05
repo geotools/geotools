@@ -133,7 +133,6 @@ public class Indexer {
 
     protected Indexer.MultipleBandsDimensions multipleBandsDimensions;
 
-    @XmlElement(required = true)
     protected Indexer.Datastore datastore;
 
     protected Indexer.Collectors collectors;

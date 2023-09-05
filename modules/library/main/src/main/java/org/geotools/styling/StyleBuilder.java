@@ -18,21 +18,45 @@ package org.geotools.styling;
 
 import java.awt.Color;
 import java.util.Arrays;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * An utility class designed to ease style building with convenience methods.
@@ -62,7 +86,7 @@ public class StyleBuilder {
     public static final String FONT_WEIGHT_BOLD = "bold";
 
     private StyleFactory sf;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     /** use the default StyleFactory and FilterFactory */
     public StyleBuilder() {
@@ -95,7 +119,7 @@ public class StyleBuilder {
      */
     public StyleBuilder(StyleFactory styleFactory, FilterFactory filterFactory) {
         this.sf = styleFactory;
-        this.ff = (FilterFactory2) filterFactory;
+        this.ff = (FilterFactory) filterFactory;
     }
 
     /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
@@ -113,7 +137,7 @@ public class StyleBuilder {
 
     /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
     public void setFilterFactory(FilterFactory factory) {
-        ff = (FilterFactory2) factory;
+        ff = (FilterFactory) factory;
     }
 
     /**
@@ -121,7 +145,7 @@ public class StyleBuilder {
      *
      * @return the FilterFactory being used
      */
-    public FilterFactory2 getFilterFactory() {
+    public FilterFactory getFilterFactory() {
         return ff;
     }
 

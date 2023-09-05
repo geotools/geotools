@@ -21,13 +21,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.RemoteOWS;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyledLayer;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 
 /**
  * Encodes a {@link StyledLayerDescriptor} as YSLD. Handles top-level elements such a name and

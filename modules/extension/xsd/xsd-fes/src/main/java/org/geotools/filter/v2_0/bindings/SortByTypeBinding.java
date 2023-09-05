@@ -18,8 +18,8 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import org.eclipse.emf.common.util.UniqueEList;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.v2_0.FES;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SortByType.

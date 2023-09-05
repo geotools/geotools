@@ -16,8 +16,8 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
+import org.geotools.api.geometry.Position;
+import org.geotools.geometry.Position2D;
 
 /**
  * DirectPosition associated with another DirectPosition.
@@ -26,12 +26,12 @@ import org.opengis.geometry.DirectPosition;
  * @version $Id$
  * @author Jan Jezek
  */
-class ExtendedPosition extends DirectPosition2D {
+class ExtendedPosition extends Position2D {
     /** */
     private static final long serialVersionUID = 4400395722009854165L;
 
     /** Coordinate associated with original coordinate. */
-    private DirectPosition mappedposition;
+    private Position mappedposition;
 
     /**
      * Creates a MappedPosition
@@ -39,7 +39,7 @@ class ExtendedPosition extends DirectPosition2D {
      * @param c the original DirectPosition.
      * @param mappedposition the associated DirectPosition.
      */
-    public ExtendedPosition(DirectPosition c, DirectPosition mappedposition) {
+    public ExtendedPosition(Position c, Position mappedposition) {
         super(c);
         this.mappedposition = mappedposition;
     }
@@ -49,7 +49,7 @@ class ExtendedPosition extends DirectPosition2D {
      *
      * @return this coordinate's associated coordinate
      */
-    public DirectPosition getMappedposition() {
+    public Position getMappedposition() {
         return mappedposition;
     }
 
@@ -58,7 +58,7 @@ class ExtendedPosition extends DirectPosition2D {
      *
      * @param mappedCoordinate Coordinate to be mapped to the existing one.
      */
-    public void setMappedposition(DirectPosition mappedCoordinate) {
+    public void setMappedposition(Position mappedCoordinate) {
         this.mappedposition = mappedCoordinate;
     }
 }

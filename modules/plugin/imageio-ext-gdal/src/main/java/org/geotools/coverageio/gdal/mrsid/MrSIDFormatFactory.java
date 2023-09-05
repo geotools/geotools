@@ -19,9 +19,9 @@ package org.geotools.coverageio.gdal.mrsid;
 import it.geosolutions.imageio.plugins.mrsid.MrSIDImageReaderSpi;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.coverage.grid.Format;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
-import org.opengis.coverage.grid.Format;
 
 /**
  * Implementation of the {@link Format} service provider interface for MrSID files.

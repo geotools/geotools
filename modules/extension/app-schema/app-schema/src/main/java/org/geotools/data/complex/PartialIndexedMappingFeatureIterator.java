@@ -19,11 +19,11 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.complex.IndexQueryManager.PartialIndexQueryManager;
-import org.opengis.feature.Feature;
-import org.opengis.filter.Filter;
 
 /**
  * MappingFeatureIterator with partial index query support

@@ -18,13 +18,13 @@ package org.geotools.filter;
 
 import java.util.Collections;
 import java.util.Date;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.parameter.Parameter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.parameter.Parameter;
 
 public class FunctionImplTest {
 

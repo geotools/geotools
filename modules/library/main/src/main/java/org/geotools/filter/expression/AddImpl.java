@@ -17,12 +17,12 @@
 package org.geotools.filter.expression;
 
 import java.util.Collection;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.filter.Filters;
 import org.geotools.filter.MathExpressionImpl;
 import org.geotools.util.Utilities;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
 
 /**
  * Implementation of Add expression.

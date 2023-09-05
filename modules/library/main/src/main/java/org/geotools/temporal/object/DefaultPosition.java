@@ -20,16 +20,16 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.geotools.api.temporal.CalendarDate;
+import org.geotools.api.temporal.DateAndTime;
+import org.geotools.api.temporal.JulianDate;
+import org.geotools.api.temporal.OrdinalPosition;
+import org.geotools.api.temporal.Position;
+import org.geotools.api.temporal.TemporalCoordinate;
+import org.geotools.api.temporal.TemporalPosition;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.temporal.CalendarDate;
-import org.opengis.temporal.DateAndTime;
-import org.opengis.temporal.JulianDate;
-import org.opengis.temporal.OrdinalPosition;
-import org.opengis.temporal.Position;
-import org.opengis.temporal.TemporalCoordinate;
-import org.opengis.temporal.TemporalPosition;
-import org.opengis.util.InternationalString;
 
 /**
  * A union class that consists of one of the data types listed as its attributes. Date, Time, and

@@ -21,11 +21,11 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Calendar;
 import java.util.Date;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultPeriodTest {

@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigInteger;
 import java.net.URL;
 import net.opengis.wfs.GetGmlObjectType;
+import org.geotools.api.filter.identity.GmlObjectId;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml3.GML;
 import org.geotools.test.TestData;
@@ -30,7 +31,6 @@ import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.identity.GmlObjectId;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

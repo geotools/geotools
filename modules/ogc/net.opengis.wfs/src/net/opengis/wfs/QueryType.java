@@ -14,8 +14,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.util.FeatureMap;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 
 /**
  * <!-- begin-user-doc -->
@@ -130,7 +130,7 @@ public interface QueryType extends EObject {
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>Function</em>' attribute list.
 	 * @see net.opengis.wfs.WFSPackage#getQueryType_Function()
-	 * @model type="org.opengis.filter.expression.Function"
+	 * @model type="org.geotools.api.filter.expression.Function"
 	 */
 	EList getFunction();
 
@@ -178,7 +178,7 @@ public interface QueryType extends EObject {
 	 * @return the value of the '<em>Sort By</em>' attribute.
 	 * @see #setSortBy(Object)
 	 * @see net.opengis.wfs.WFSPackage#getQueryType_SortBy()
-	 * @model type="org.opengis.filter.sort.SortBy"
+	 * @model type="org.geotools.api.filter.sort.SortBy"
 	 */
 	EList getSortBy();
 

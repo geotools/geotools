@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.geotools.api.referencing.datum.VerticalDatumType;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -44,7 +45,6 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.junit.Test;
-import org.opengis.referencing.datum.VerticalDatumType;
 import si.uom.SI;
 
 /**

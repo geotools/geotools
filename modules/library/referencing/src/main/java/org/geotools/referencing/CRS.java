@@ -21,6 +21,7 @@ import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,12 +34,45 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.metadata.extent.GeographicExtent;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CompoundCRS;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeneralDerivedCRS;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.crs.TemporalCRS;
+import org.geotools.api.referencing.crs.VerticalCRS;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.EllipsoidalCS;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.Projection;
+import org.geotools.api.referencing.operation.SingleOperation;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -66,49 +100,12 @@ import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.Geometry;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.extent.BoundingPolygon;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.metadata.extent.GeographicExtent;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeneralDerivedCRS;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.crs.TemporalCRS;
-import org.opengis.referencing.crs.VerticalCRS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.EllipsoidalCS;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.referencing.operation.SingleOperation;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Simple utility class for making use of the {@linkplain CoordinateReferenceSystem coordinate
- * reference system} and associated {@linkplain org.opengis.referencing.Factory} implementations.
- * This utility class is made up of static final functions. This class is not a factory or a
- * builder. It makes use of the GeoAPI factory interfaces provided by {@link
+ * reference system} and associated {@linkplain org.geotools.api.referencing.Factory}
+ * implementations. This utility class is made up of static final functions. This class is not a
+ * factory or a builder. It makes use of the GeoAPI factory interfaces provided by {@link
  * ReferencingFactoryFinder}.
  *
  * <p>The following methods may be added in a future version:
@@ -560,7 +557,7 @@ public final class CRS {
      *
      * <code>
      * FactoryFinder.{@linkplain ReferencingFactoryFinder#getCRSFactory getCRSFactory}(null).{@linkplain
-     * org.opengis.referencing.crs.CRSFactory#createFromWKT createFromWKT}(wkt);
+     * org.geotools.api.referencing.crs.CRSFactory#createFromWKT createFromWKT}(wkt);
      * </code>
      *
      * </blockquote>
@@ -579,95 +576,64 @@ public final class CRS {
      * if unknown.
      *
      * <p>This method fetchs the {@linkplain CoordinateReferenceSystem#getDomainOfValidity domain of
-     * validity} associated with the given CRS. Only {@linkplain GeographicExtent geographic
-     * extents} of kind {@linkplain BoundingPolygon bounding polygon} are taken in account. If none
-     * are found, then the {@linkplain #getGeographicBoundingBox geographic bounding boxes} are used
-     * as a fallback.
+     * validity} associated with the given CRS. {@linkplain #getGeographicBoundingBox geographic
+     * bounding boxes} are used as a fallback.
      *
      * <p>The returned envelope is expressed in terms of the specified CRS.
      *
      * @param crs The coordinate reference system, or {@code null}.
      * @return The envelope in terms of the specified CRS, or {@code null} if none.
      * @see #getGeographicBoundingBox
-     * @see org.geotools.geometry.GeneralEnvelope#normalize
+     * @see GeneralBounds#normalize
      * @since 2.2
      */
-    public static Envelope getEnvelope(final CoordinateReferenceSystem crs) {
-        Envelope envelope = null;
-        GeneralEnvelope merged = null;
-        if (crs != null) {
-            final Extent domainOfValidity = crs.getDomainOfValidity();
-            if (domainOfValidity != null) {
-                for (final GeographicExtent extent : domainOfValidity.getGeographicElements()) {
-                    if (Boolean.FALSE.equals(extent.getInclusion())) {
-                        continue;
-                    }
-                    if (extent instanceof BoundingPolygon) {
-                        for (final Geometry geometry : ((BoundingPolygon) extent).getPolygons()) {
-                            final Envelope candidate = geometry.getEnvelope();
-                            if (candidate != null) {
-                                final CoordinateReferenceSystem sourceCRS =
-                                        candidate.getCoordinateReferenceSystem();
-                                if (sourceCRS == null || equalsIgnoreMetadata(sourceCRS, crs)) {
-                                    if (envelope == null) {
-                                        envelope = candidate;
-                                    } else {
-                                        if (merged == null) {
-                                            envelope = merged = new GeneralEnvelope(envelope);
-                                        }
-                                        merged.add(envelope);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    public static Bounds getEnvelope(final CoordinateReferenceSystem crs) {
+        Bounds envelope = null;
+        GeneralBounds merged = null;
+
         /*
-         * If no envelope was found, uses the geographic bounding box as a fallback. We will need to transform it from WGS84 to the supplied CRS. This
+         * Use the geographic bounding box. We will need to transform it from WGS84 to the supplied CRS. This
          * step was not required in the previous block because the later selected only envelopes in the right CRS.
          */
-        if (envelope == null) {
-            final GeographicBoundingBox bounds = getGeographicBoundingBox(crs);
-            if (bounds != null && !Boolean.FALSE.equals(bounds.getInclusion())) {
-                envelope =
-                        merged =
-                                new GeneralEnvelope(
-                                        new double[] {
-                                            bounds.getWestBoundLongitude(),
-                                            bounds.getSouthBoundLatitude()
-                                        },
-                                        new double[] {
-                                            bounds.getEastBoundLongitude(),
-                                            bounds.getNorthBoundLatitude()
-                                        });
+        final GeographicBoundingBox bounds = getGeographicBoundingBox(crs);
+        if (bounds != null && !Boolean.FALSE.equals(bounds.getInclusion())) {
+            envelope =
+                    merged =
+                            new GeneralBounds(
+                                    new double[] {
+                                        bounds.getWestBoundLongitude(),
+                                        bounds.getSouthBoundLatitude()
+                                    },
+                                    new double[] {
+                                        bounds.getEastBoundLongitude(),
+                                        bounds.getNorthBoundLatitude()
+                                    });
+            /*
+             * We do not assign WGS84 inconditionnaly to the geographic bounding box, because it is not defined to be on a particular datum; it is
+             * only approximative bounds. We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS 84 only if we found none.
+             */
+            final SingleCRS targetCRS = getHorizontalCRS(crs);
+            final GeographicCRS sourceCRS = CRSUtilities.getStandardGeographicCRS2D(targetCRS);
+            merged.setCoordinateReferenceSystem(sourceCRS);
+            try {
+                envelope = transform(envelope, targetCRS);
+            } catch (TransformException exception) {
                 /*
-                 * We do not assign WGS84 inconditionnaly to the geographic bounding box, because it is not defined to be on a particular datum; it is
-                 * only approximative bounds. We try to get the GeographicCRS from the user-supplied CRS and fallback on WGS 84 only if we found none.
+                 * The envelope is probably outside the range of validity for this CRS. It should not occurs, since the envelope is supposed to
+                 * describe the CRS area of validity. Logs a warning and returns null, since it is a legal return value according this method
+                 * contract.
                  */
-                final SingleCRS targetCRS = getHorizontalCRS(crs);
-                final GeographicCRS sourceCRS = CRSUtilities.getStandardGeographicCRS2D(targetCRS);
-                merged.setCoordinateReferenceSystem(sourceCRS);
-                try {
-                    envelope = transform(envelope, targetCRS);
-                } catch (TransformException exception) {
-                    /*
-                     * The envelope is probably outside the range of validity for this CRS. It should not occurs, since the envelope is supposed to
-                     * describe the CRS area of validity. Logs a warning and returns null, since it is a legal return value according this method
-                     * contract.
-                     */
-                    envelope = null;
-                    unexpectedException("getEnvelope", exception);
-                }
-                /*
-                 * If transform(...) created a new envelope, its CRS is already targetCRS so it doesn't matter if 'merged' is not anymore the right
-                 * instance. If 'transform' returned the envelope unchanged, the 'merged' reference still valid and we want to ensure that it have the
-                 * user-supplied CRS.
-                 */
-                merged.setCoordinateReferenceSystem(targetCRS);
+                envelope = null;
+                unexpectedException("getEnvelope", exception);
             }
+            /*
+             * If transform(...) created a new envelope, its CRS is already targetCRS so it doesn't matter if 'merged' is not anymore the right
+             * instance. If 'transform' returned the envelope unchanged, the 'merged' reference still valid and we want to ensure that it have the
+             * user-supplied CRS.
+             */
+            merged.setCoordinateReferenceSystem(targetCRS);
         }
+
         return envelope;
     }
 
@@ -1207,7 +1173,7 @@ public final class CRS {
                 return Integer.parseInt(code);
             } catch (NumberFormatException e) {
                 throw new FactoryException(
-                        Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, identifier), e);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, identifier), e);
             }
         }
         return null;
@@ -1365,7 +1331,7 @@ public final class CRS {
 
     /**
      * Transforms the given envelope to the specified CRS. If the given envelope is null, or the
-     * {@linkplain Envelope#getCoordinateReferenceSystem envelope CRS} is null, or the given target
+     * {@linkplain Bounds#getCoordinateReferenceSystem envelope CRS} is null, or the given target
      * CRS is null, or the transform {@linkplain MathTransform#isIdentity is identity}, then the
      * envelope is returned unchanged. Otherwise a new transformed envelope is returned.
      *
@@ -1383,9 +1349,8 @@ public final class CRS {
      * @throws TransformException If a transformation was required and failed.
      * @since 2.5
      */
-    public static GeneralEnvelope transform(
-            Envelope envelope, final CoordinateReferenceSystem targetCRS)
-            throws TransformException {
+    public static GeneralBounds transform(
+            Bounds envelope, final CoordinateReferenceSystem targetCRS) throws TransformException {
         if (envelope != null && targetCRS != null) {
             final CoordinateReferenceSystem sourceCRS = envelope.getCoordinateReferenceSystem();
             if (sourceCRS != null) {
@@ -1395,14 +1360,13 @@ public final class CRS {
                     try {
                         operation = factory.createOperation(sourceCRS, targetCRS);
                     } catch (FactoryException exception) {
-                        throw new TransformException(
-                                Errors.format(ErrorKeys.CANT_TRANSFORM_ENVELOPE), exception);
+                        throw new TransformException(ErrorKeys.CANT_TRANSFORM_ENVELOPE, exception);
                     }
                     if (!operation.getMathTransform().isIdentity()) {
                         envelope = transform(operation, envelope);
                     } else if (!equalsIgnoreMetadata(
                             envelope.getCoordinateReferenceSystem(), targetCRS)) {
-                        GeneralEnvelope tx = new GeneralEnvelope(envelope);
+                        GeneralBounds tx = new GeneralBounds(envelope);
                         tx.setCoordinateReferenceSystem(targetCRS);
                         envelope = tx;
                     }
@@ -1410,7 +1374,7 @@ public final class CRS {
                 assert equalsIgnoreMetadata(envelope.getCoordinateReferenceSystem(), targetCRS);
             }
         }
-        return GeneralEnvelope.toGeneralEnvelope(envelope);
+        return GeneralBounds.toGeneralEnvelope(envelope);
     }
 
     /**
@@ -1421,27 +1385,27 @@ public final class CRS {
      * <p>Note that this method can not handle the case where the envelope contains the North or
      * South pole, or when it cross the &plusmn;180° longitude, because {@linkplain MathTransform
      * math transforms} do not carry suffisient informations. For a more robust envelope
-     * transformation, use {@link #transform(CoordinateOperation, Envelope)} instead.
+     * transformation, use {@link #transform(CoordinateOperation, Bounds)} instead.
      *
      * @param transform The transform to use.
      * @param envelope Envelope to transform, or {@code null}. This envelope will not be modified.
      * @return The transformed envelope, or {@code null} if {@code envelope} was null.
      * @throws TransformException if a transform failed.
      * @since 2.4
-     * @see #transform(CoordinateOperation, Envelope)
+     * @see #transform(CoordinateOperation, Bounds)
      */
-    public static GeneralEnvelope transform(final MathTransform transform, final Envelope envelope)
+    public static GeneralBounds transform(final MathTransform transform, final Bounds envelope)
             throws TransformException {
         return transform(transform, envelope, null);
     }
 
     /**
-     * Implementation of {@link #transform(MathTransform, Envelope)} with the opportunity to save
-     * the projected center coordinate. If {@code targetPt} is non-null, then this method will set
-     * it to the center of the source envelope projected to the target CRS.
+     * Implementation of {@link #transform(MathTransform, Bounds)} with the opportunity to save the
+     * projected center coordinate. If {@code targetPt} is non-null, then this method will set it to
+     * the center of the source envelope projected to the target CRS.
      */
-    static GeneralEnvelope transform(
-            final MathTransform transform, final Envelope envelope, GeneralDirectPosition targetPt)
+    static GeneralBounds transform(
+            final MathTransform transform, final Bounds envelope, GeneralPosition targetPt)
             throws TransformException {
         if (envelope == null) {
             return null;
@@ -1452,7 +1416,7 @@ public final class CRS {
              * supposed to be. Even if an identity transform often imply that the target CRS is the same one than the source CRS, it is not always the
              * case. The metadata may be differents, or the transform may be a datum shift without Bursa-Wolf parameters, etc.
              */
-            final GeneralEnvelope e = new GeneralEnvelope(envelope);
+            final GeneralBounds e = new GeneralBounds(envelope);
             e.setCoordinateReferenceSystem(null);
             if (targetPt != null) {
                 for (int i = envelope.getDimension(); --i >= 0; ) {
@@ -1466,20 +1430,20 @@ public final class CRS {
          */
         final int sourceDim = transform.getSourceDimensions();
         if (envelope.getDimension() != sourceDim) {
+            final Object arg1 = envelope.getDimension();
             throw new MismatchedDimensionException(
-                    Errors.format(
-                            ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, envelope.getDimension()));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, sourceDim, arg1));
         }
         int coordinateNumber = 0;
-        GeneralEnvelope transformed = null;
+        GeneralBounds transformed = null;
         if (targetPt == null) {
-            targetPt = new GeneralDirectPosition(transform.getTargetDimensions());
+            targetPt = new GeneralPosition(transform.getTargetDimensions());
         }
         /*
          * Before to run the loops, we must initialize the coordinates to the minimal values. This coordinates will be updated in the 'switch'
          * statement inside the 'while' loop.
          */
-        final GeneralDirectPosition sourcePt = new GeneralDirectPosition(sourceDim);
+        final GeneralPosition sourcePt = new GeneralPosition(sourceDim);
         for (int i = sourceDim; --i >= 0; ) {
             sourcePt.setOrdinate(i, envelope.getMinimum(i));
         }
@@ -1495,7 +1459,7 @@ public final class CRS {
             if (transformed != null) {
                 transformed.add(targetPt);
             } else {
-                transformed = new GeneralEnvelope(targetPt, targetPt);
+                transformed = new GeneralBounds(targetPt, targetPt);
             }
             /*
              * Get the next point's coordinates. The 'coordinateNumber' variable should be seen as a number in base 5 where the number of digits is
@@ -1548,14 +1512,36 @@ public final class CRS {
      * @return The transformed envelope, or {@code null} if {@code envelope} was null.
      * @throws TransformException if a transform failed.
      * @since 2.4
-     * @see #transform(MathTransform, Envelope)
+     * @see #transform(MathTransform, Bounds)
      */
-    public static GeneralEnvelope transform(
-            final CoordinateOperation operation, final Envelope envelope)
-            throws TransformException {
+    public static GeneralBounds transform(
+            final CoordinateOperation operation, final Bounds envelope) throws TransformException {
         return EnvelopeReprojector.transform(operation, envelope);
     }
 
+    /**
+     * Transforms an rectangular envelope using the given {@linkplain MathTransform math transform}.
+     * The transformation is only approximative. Note that the returned envelope may not have the
+     * same number of dimensions than the original envelope.
+     *
+     * <p>Note that this method can not handle the case where the envelope contains the North or
+     * South pole, or when it cross the &plusmn;180° longitude, because {@linkplain MathTransform
+     * math transforms} do not carry suffisient informations. For a more robust envelope
+     * transformation, use {@link #transform(CoordinateOperation, Bounds)} instead.
+     *
+     * @param transform The transform to use.
+     * @param rectangle Rectangle to transform, or {@code null}. This rectangle will not be
+     *     modified.
+     * @return The transformed rectangle, or {@code null} if {@code rectangle} was null.
+     * @throws TransformException if a transform failed.
+     * @since 30
+     * @see #transform(CoordinateOperation, Rectangle2D, Rectangle2D)
+     */
+    public static Rectangle2D transform(
+            final MathTransform2D transform, final Rectangle2D rectangle)
+            throws TransformException {
+        return transform(transform, rectangle, (Rectangle2D) null);
+    }
     /**
      * Transforms a rectangular envelope using the given {@linkplain MathTransform math transform}.
      * The transformation is only approximative. Invoking this method is equivalent to invoking the
@@ -1647,13 +1633,19 @@ public final class CRS {
         }
         // Attempt the 'equalsEpsilon' assertion only if source and destination are not same and
         // if the target envelope is Float or Double (this assertion doesn't work with integers).
+
         assert (destination == envelope
                                 || !(destination instanceof Rectangle2D.Double
                                         || destination instanceof Rectangle2D.Float))
                         || XRectangle2D.equalsEpsilon(
                                 destination,
-                                transform(transform, new Envelope2D(null, envelope))
-                                        .toRectangle2D())
+                                transform(
+                                        transform,
+                                        new Rectangle2D.Double(
+                                                envelope.getMinX(),
+                                                envelope.getMinY(),
+                                                envelope.getMaxX(),
+                                                envelope.getMaxY())))
                 : destination;
         return destination;
     }
@@ -1693,7 +1685,7 @@ public final class CRS {
             return null;
         }
 
-        GeneralEnvelope result = transform(operation, new GeneralEnvelope(envelope));
+        GeneralBounds result = transform(operation, new GeneralBounds(envelope));
         if (destination == null) {
             return result.toRectangle2D();
         } else {

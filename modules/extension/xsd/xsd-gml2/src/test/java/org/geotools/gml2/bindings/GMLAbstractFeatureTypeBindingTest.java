@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.TEST;
 import org.geotools.gml2.TestConfiguration;
@@ -27,7 +28,6 @@ import org.geotools.xsd.Binding;
 import org.geotools.xsd.Configuration;
 import org.junit.Test;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -25,17 +25,17 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.Viewer;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Base class for tests on {@link AbstractCoverage} subclasses.
@@ -96,20 +96,20 @@ public class CoverageTestBase {
     }
 
     /**
-     * Returns the envelope of the given coverage as a {@link GeneralEnvelope} implementation.
+     * Returns the envelope of the given coverage as a {@link GeneralBounds} implementation.
      *
      * @param coverage The coverage for which to get the envelope.
      * @return The envelope of the given coverage (never {@code null}).
      */
-    protected static GeneralEnvelope getGeneralEnvelope(final Coverage coverage) {
-        final Envelope envelope = coverage.getEnvelope();
+    protected static GeneralBounds getGeneralEnvelope(final Coverage coverage) {
+        final Bounds envelope = coverage.getEnvelope();
         assertNotNull(envelope);
         assertEquals(
                 coverage.getCoordinateReferenceSystem(), envelope.getCoordinateReferenceSystem());
-        if (coverage instanceof GeneralEnvelope) {
-            return (GeneralEnvelope) envelope;
+        if (coverage instanceof GeneralBounds) {
+            return (GeneralBounds) envelope;
         } else {
-            return new GeneralEnvelope(envelope);
+            return new GeneralBounds(envelope);
         }
     }
 

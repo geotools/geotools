@@ -17,12 +17,17 @@
 package org.geotools.process.vector;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -32,7 +37,6 @@ import org.geotools.filter.function.JenksNaturalBreaksFunction;
 import org.geotools.filter.function.QuantileFunction;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.process.ProcessException;
 import org.geotools.process.classify.ClassificationMethod;
 import org.geotools.process.classify.ClassificationStats;
@@ -44,10 +48,6 @@ import org.geotools.util.logging.Logging;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
 import org.jaitools.numeric.StreamingSampleStats;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.util.ProgressListener;
 
 /**
  * Process that classifies vector data into "classes" using one of the following methods:
@@ -98,10 +98,12 @@ public class FeatureClassStats implements VectorProcess {
         // initial checks/defaults
         //
         if (features == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
+            throw new ProcessException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "features"));
         }
         if (attribute == null) {
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "attribute"));
+            throw new ProcessException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "attribute"));
         }
         PropertyDescriptor property = features.getSchema().getDescriptor(attribute);
         if (property == null) {
@@ -117,7 +119,7 @@ public class FeatureClassStats implements VectorProcess {
 
         if (classes < 1) {
             throw new ProcessException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "classes", classes));
         }
 
         // other defaults

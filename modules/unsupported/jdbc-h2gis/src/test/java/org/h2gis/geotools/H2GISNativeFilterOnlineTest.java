@@ -16,8 +16,8 @@
  */
 package org.h2gis.geotools;
 
+import org.geotools.api.filter.NativeFilter;
 import org.geotools.jdbc.JDBCNativeFilterOnlineTest;
-import org.opengis.filter.NativeFilter;
 
 public final class H2GISNativeFilterOnlineTest extends JDBCNativeFilterOnlineTest {
 

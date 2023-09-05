@@ -19,6 +19,7 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.kml.Folder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.v22.KML;
@@ -26,7 +27,6 @@ import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.simple.SimpleFeature;
 import org.picocontainer.MutablePicoContainer;
 
 public class FolderBinding extends AbstractComplexBinding {

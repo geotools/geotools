@@ -16,26 +16,26 @@
  */
 package org.geotools.geometry;
 
-import static org.opengis.metadata.spatial.PixelOrientation.CENTER;
-import static org.opengis.metadata.spatial.PixelOrientation.LOWER_LEFT;
-import static org.opengis.metadata.spatial.PixelOrientation.LOWER_RIGHT;
-import static org.opengis.metadata.spatial.PixelOrientation.UPPER_LEFT;
-import static org.opengis.metadata.spatial.PixelOrientation.UPPER_RIGHT;
-import static org.opengis.metadata.spatial.PixelOrientation.valueOf;
+import static org.geotools.api.metadata.spatial.PixelOrientation.CENTER;
+import static org.geotools.api.metadata.spatial.PixelOrientation.LOWER_LEFT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.LOWER_RIGHT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.UPPER_LEFT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.UPPER_RIGHT;
+import static org.geotools.api.metadata.spatial.PixelOrientation.valueOf;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * The translation to apply for different values of {@link PixelOrientation}.
@@ -123,7 +123,7 @@ public final class PixelTranslation implements Serializable {
             return null;
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
     }
 
@@ -152,7 +152,7 @@ public final class PixelTranslation implements Serializable {
             return -0.5;
         } else {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
     }
 
@@ -182,7 +182,7 @@ public final class PixelTranslation implements Serializable {
         final PixelTranslation offset = ORIENTATIONS.get(anchor);
         if (offset == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "anchor", anchor));
         }
         return offset;
     }
@@ -303,7 +303,7 @@ public final class PixelTranslation implements Serializable {
     private static IllegalArgumentException illegalDimension(
             final String name, final Object dimension) {
         return new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, dimension));
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, dimension));
     }
 
     /** Returns a string representation of this pixel translation. */

@@ -57,7 +57,7 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 
-import org.opengis.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridEnvelope;
 import org.w3.xlink.XlinkPackage;
 
 /**

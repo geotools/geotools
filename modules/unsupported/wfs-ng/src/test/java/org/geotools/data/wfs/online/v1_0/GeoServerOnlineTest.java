@@ -20,6 +20,8 @@ package org.geotools.data.wfs.online.v1_0;
 import static org.geotools.data.wfs.WFSTestData.GEOS_STATES_11;
 
 import java.util.Collections;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.factory.CommonFactoryFinder;
@@ -28,8 +30,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
@@ -59,7 +59,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         };
         LinearRing shell = gf.createLinearRing(coordinates);
         Polygon polygon = gf.createPolygon(shell, null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
     }
 }

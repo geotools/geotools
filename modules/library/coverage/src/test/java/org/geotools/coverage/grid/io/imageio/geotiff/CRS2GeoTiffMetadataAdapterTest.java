@@ -18,11 +18,11 @@ package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class CRS2GeoTiffMetadataAdapterTest {
 

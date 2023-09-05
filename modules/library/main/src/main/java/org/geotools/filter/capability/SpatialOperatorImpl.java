@@ -19,8 +19,8 @@ package org.geotools.filter.capability;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import org.opengis.filter.capability.GeometryOperand;
-import org.opengis.filter.capability.SpatialOperator;
+import org.geotools.api.filter.capability.GeometryOperand;
+import org.geotools.api.filter.capability.SpatialOperator;
 
 /**
  * Implementation of the SpatialOperator interface.

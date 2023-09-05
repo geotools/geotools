@@ -19,27 +19,27 @@
  */
 package org.geotools.referencing.crs;
 
+import java.text.MessageFormat;
 import java.util.Map;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeneralDerivedCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.Projection;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.DefaultConversion;
 import org.geotools.referencing.operation.DefaultOperation;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefiningConversion; // For javadoc
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeneralDerivedCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.Projection;
 
 /**
  * A coordinate reference system that is defined by its coordinate {@linkplain Conversion
@@ -60,9 +60,10 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
 
     /**
      * Key for the <code>{@value}</code> property to be given to the constructor. The value should
-     * be one of <code>{@linkplain org.opengis.referencing.operation.PlanarProjection}.class</code>,
-     * <code>{@linkplain org.opengis.referencing.operation.CylindricalProjection}.class</code> or
-     * <code>{@linkplain org.opengis.referencing.operation.ConicProjection}.class</code>.
+     * be one of <code>{@linkplain org.geotools.api.referencing.operation.PlanarProjection}.class
+     * </code>, <code>
+     * {@linkplain org.geotools.api.referencing.operation.CylindricalProjection}.class</code> or
+     * <code>{@linkplain org.geotools.api.referencing.operation.ConicProjection}.class</code>.
      *
      * <p>This is a Geotools specific property used as a hint for creating a {@linkplain Projection
      * projection} of proper type from a {@linkplain DefiningConversion defining conversion}. In
@@ -263,7 +264,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
         if ((dim1 = dimSource) != (dim2 = base.getCoordinateSystem().getDimension())
                 || (dim1 = dimTarget) != (dim2 = derivedCS.getDimension())) {
             throw new MismatchedDimensionException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, dim1, dim2));
         }
     }
 

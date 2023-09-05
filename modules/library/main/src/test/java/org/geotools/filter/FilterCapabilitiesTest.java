@@ -17,20 +17,20 @@
 package org.geotools.filter;
 
 import java.util.logging.Logger;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
 
 /**
  * Unit test for FilterCapabilities.
@@ -43,12 +43,12 @@ public class FilterCapabilitiesTest {
             org.geotools.util.logging.Logging.getLogger(FilterCapabilitiesTest.class);
 
     /** Feature on which to preform tests */
-    private org.opengis.filter.Filter gFilter;
+    private org.geotools.api.filter.Filter gFilter;
 
-    private org.opengis.filter.Filter compFilter;
-    private org.opengis.filter.Filter logFilter;
+    private org.geotools.api.filter.Filter compFilter;
+    private org.geotools.api.filter.Filter logFilter;
     private FilterCapabilities capabilities;
-    private FilterFactory2 fact = CommonFactoryFinder.getFilterFactory2();
+    private FilterFactory fact = CommonFactoryFinder.getFilterFactory();
 
     boolean setup = false;
 
@@ -101,7 +101,7 @@ public class FilterCapabilitiesTest {
 
     @Test
     public void testFullySupports() {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         try {
             logFilter = ff.and(gFilter, compFilter);
             Assert.assertTrue(capabilities.fullySupports(compFilter));

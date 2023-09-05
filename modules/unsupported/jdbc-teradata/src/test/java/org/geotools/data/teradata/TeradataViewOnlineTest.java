@@ -21,17 +21,17 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.spatial.BBOX;
 
 public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
@@ -62,13 +62,12 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
         // this will use the index but since the index is empty, it will return 0 (despite actually
         // intersecting)
-        BBOX bbox =
-                CommonFactoryFinder.getFilterFactory2(null).bbox("geom", -20, -20, 20, 20, null);
+        BBOX bbox = CommonFactoryFinder.getFilterFactory(null).bbox("geom", -20, -20, 20, 20, null);
         assertEquals(0, query(bbox));
 
         // the filter will not use the index since this is essentially a table scan
         // due to the size of the bbox versus world bounds
-        bbox = CommonFactoryFinder.getFilterFactory2(null).bbox("geom", -179, -89, 179, 89, null);
+        bbox = CommonFactoryFinder.getFilterFactory(null).bbox("geom", -179, -89, 179, 89, null);
         assertEquals(1, query(bbox));
     }
 

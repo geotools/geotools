@@ -2,6 +2,10 @@ package org.geotools.renderer.lite;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -11,10 +15,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.geometry.Envelope;
 
 /**
  * A test rendering transformation that returns the center of the provided coverage
@@ -34,7 +34,7 @@ public class CoverageCenterFunction extends FunctionExpressionImpl {
     public Object evaluate(Object gc) {
         GridCoverage2D coverage = (GridCoverage2D) gc;
 
-        Envelope env = coverage.getEnvelope();
+        Bounds env = coverage.getEnvelope();
         GeometryFactory gf = new GeometryFactory();
         Point center = gf.createPoint(new Coordinate(env.getMedian(0), env.getMedian(1)));
 

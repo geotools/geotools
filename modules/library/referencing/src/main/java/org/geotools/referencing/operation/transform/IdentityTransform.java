@@ -18,15 +18,15 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * The identity transform. The data are only copied without any transformation. This class is used
@@ -140,7 +140,7 @@ public class IdentityTransform extends AbstractMathTransform
      * is the same everywhere.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) {
+    public Matrix derivative(final Position point) {
         return MatrixFactory.create(dimension);
     }
 
@@ -151,10 +151,10 @@ public class IdentityTransform extends AbstractMathTransform
      * @since 2.2
      */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, final DirectPosition ptDst) {
+    public Position transform(final Position ptSrc, final Position ptDst) {
         if (ptSrc.getDimension() == dimension) {
             if (ptDst == null) {
-                return new GeneralDirectPosition(ptSrc);
+                return new GeneralPosition(ptSrc);
             }
             if (ptDst.getDimension() == dimension) {
                 for (int i = 0; i < dimension; i++) {

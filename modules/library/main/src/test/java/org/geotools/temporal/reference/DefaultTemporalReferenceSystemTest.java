@@ -24,6 +24,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.extent.TemporalExtent;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.temporal.TemporalReferenceSystem;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.ExtentImpl;
 import org.geotools.metadata.iso.extent.TemporalExtentImpl;
@@ -32,12 +38,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.extent.TemporalExtent;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.temporal.TemporalReferenceSystem;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalReferenceSystemTest {

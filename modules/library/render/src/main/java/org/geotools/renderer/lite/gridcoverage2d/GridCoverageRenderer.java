@@ -31,6 +31,7 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +45,19 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.SelectedChannelType;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -51,13 +65,12 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -68,23 +81,10 @@ import org.geotools.renderer.composite.BlendComposite.BlendingMode;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A helper class for rendering {@link GridCoverage} objects.
@@ -131,7 +131,7 @@ public final class GridCoverageRenderer {
     private final CoordinateReferenceSystem destinationCRS;
 
     /** Area we want to draw. */
-    private final GeneralEnvelope destinationEnvelope;
+    private final GeneralBounds destinationEnvelope;
 
     /** Size of the area we want to draw in pixels. */
     private final Rectangle destinationSize;
@@ -242,10 +242,10 @@ public final class GridCoverageRenderer {
         this.destinationCRS = destinationCRS;
         if (this.destinationCRS == null) {
             throw new TransformException(
-                    Errors.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
+                    MessageFormat.format(ErrorKeys.CANT_SEPARATE_CRS_$1, this.destinationCRS));
         }
         destinationEnvelope =
-                new GeneralEnvelope(new ReferencedEnvelope(envelope, this.destinationCRS));
+                new GeneralBounds(new ReferencedEnvelope(envelope, this.destinationCRS));
         // ///////////////////////////////////////////////////////////////////
         //
         // FINAL DRAWING DIMENSIONS AND RESOLUTION
@@ -490,7 +490,7 @@ public final class GridCoverageRenderer {
     /** */
     private GridCoverage2D crop(
             GridCoverage2D inputCoverage,
-            final GeneralEnvelope destinationEnvelope,
+            final GeneralBounds destinationEnvelope,
             final boolean doReprojection,
             double[] backgroundValues)
             throws FactoryException {
@@ -888,8 +888,7 @@ public final class GridCoverageRenderer {
 
     /**
      * Paint this grid coverage. The caller must ensure that <code>graphics</code> has an affine
-     * transform mapping "real world" coordinates in the coordinate system given by {@link
-     * #getCoordinateSystem}.
+     * transform mapping "real world" coordinates in the coordinate system given by
      *
      * @param graphics the {@link Graphics2D} context in which to paint.
      * @throws UnsupportedOperationException if the transformation from grid to coordinate system in
@@ -923,11 +922,12 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+            throw new NullPointerException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
         }
         if (gridCoverage == null) {
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverage"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverage"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))
@@ -963,11 +963,12 @@ public final class GridCoverageRenderer {
         // Initial checks
         //
         if (graphics == null) {
-            throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
+            throw new NullPointerException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "graphics"));
         }
         if (gridCoverageReader == null) {
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverageReader"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "gridCoverageReader"));
         }
 
         if (LOGGER.isLoggable(Level.FINE))

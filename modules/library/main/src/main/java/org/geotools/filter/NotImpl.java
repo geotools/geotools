@@ -17,9 +17,9 @@
 package org.geotools.filter;
 
 import java.util.ArrayList;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.Not;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.Not;
 
 /** @author jdeolive */
 public class NotImpl extends LogicFilterImpl implements Not {

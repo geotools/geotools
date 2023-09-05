@@ -16,13 +16,18 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ExternalMark;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
 
 /**
  * Default implementation of Mark.
@@ -31,7 +36,7 @@ import org.opengis.util.Cloneable;
  * @author Johann Sorel (Geomatys)
  * @version $Id$
  */
-public class MarkImpl implements Mark, Cloneable {
+public class MarkImpl implements Mark, Cloneable, Symbol {
 
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
@@ -120,7 +125,7 @@ public class MarkImpl implements Mark, Cloneable {
      * @param fill New value of property fill.
      */
     @Override
-    public void setFill(org.opengis.style.Fill fill) {
+    public void setFill(org.geotools.api.style.Fill fill) {
         this.fill = FillImpl.cast(fill);
     }
 
@@ -130,7 +135,7 @@ public class MarkImpl implements Mark, Cloneable {
      * @param stroke New value of property stroke.
      */
     @Override
-    public void setStroke(org.opengis.style.Stroke stroke) {
+    public void setStroke(org.geotools.api.style.Stroke stroke) {
         this.stroke = StrokeImpl.cast(stroke);
     }
 
@@ -155,12 +160,12 @@ public class MarkImpl implements Mark, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -169,7 +174,7 @@ public class MarkImpl implements Mark, Cloneable {
      *
      * <p>Only the fill and stroke are cloned since Expressions should be immutable.
      *
-     * @see org.geotools.styling.Mark#clone()
+     * @see org.geotools.api.style.Mark
      */
     @Override
     public Object clone() {
@@ -279,7 +284,7 @@ public class MarkImpl implements Mark, Cloneable {
     }
 
     @Override
-    public void setExternalMark(org.opengis.style.ExternalMark external) {
+    public void setExternalMark(org.geotools.api.style.ExternalMark external) {
         this.external = ExternalMarkImpl.cast(external);
     }
 

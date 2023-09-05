@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * <!-- begin-user-doc -->

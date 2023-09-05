@@ -12,14 +12,18 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.factory.Hints;
@@ -27,10 +31,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 /** @author kbyte */
 public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
@@ -103,7 +103,7 @@ public abstract class JDBCUuidOnlineTest extends JDBCTestSupport {
         SimpleFeatureStore featureStore =
                 (SimpleFeatureStore) dataStore.getFeatureSource(tname("guid"));
 
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Filter filter = ff.equals(ff.property(aname("uuidProperty")), ff.literal(uuid1));
 

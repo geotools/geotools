@@ -17,10 +17,10 @@
 
 package org.geootols.filter.text.cql_2;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Function;
 
 /**
  * Abstract class for function builder. Copied from gt-cql, should be removed once the modules are

@@ -22,13 +22,13 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
-import org.geotools.data.Parameter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
 
 /** Base Implementation for the {@link Driver} interface. */
 public class DefaultDriver implements Driver {

@@ -17,16 +17,21 @@
 package org.geotools.styling;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
 
 /**
  * Provides a Java representation of the Stroke object in an SLD document. A stroke defines how a
@@ -115,7 +120,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     @Override
     public float[] getDashArray() {
         if (dashArray == null) {
-            return Stroke.DEFAULT.getDashArray();
+            return DEFAULT.getDashArray();
         }
         float[] values = new float[dashArray.size()];
         int index = 0;
@@ -156,7 +161,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     @Override
     public List<Expression> dashArray() {
         if (dashArray == null) {
-            return Stroke.DEFAULT.dashArray();
+            return DEFAULT.dashArray();
         }
         return dashArray;
     }
@@ -185,7 +190,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     @Override
     public Expression getDashOffset() {
         if (dashOffset == null) {
-            return Stroke.DEFAULT.getDashOffset();
+            return DEFAULT.getDashOffset();
         }
 
         return dashOffset;
@@ -212,7 +217,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      * @return The graphic to use as a stipple fill. If null, then no Stipple fill should be used.
      */
     @Override
-    public GraphicImpl getGraphicFill() {
+    public Graphic getGraphicFill() {
         return fillGraphic;
     }
 
@@ -224,7 +229,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *     be used.
      */
     @Override
-    public void setGraphicFill(org.opengis.style.Graphic fillGraphic) {
+    public void setGraphicFill(org.geotools.api.style.Graphic fillGraphic) {
         if (this.fillGraphic == fillGraphic) {
             return;
         }
@@ -243,7 +248,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *     used.
      */
     @Override
-    public GraphicImpl getGraphicStroke() {
+    public Graphic getGraphicStroke() {
         return strokeGraphic;
     }
 
@@ -259,7 +264,7 @@ public class StrokeImpl implements Stroke, Cloneable {
      *     should be used.
      */
     @Override
-    public void setGraphicStroke(org.opengis.style.Graphic strokeGraphic) {
+    public void setGraphicStroke(org.geotools.api.style.Graphic strokeGraphic) {
         if (this.strokeGraphic == strokeGraphic) {
             return;
         }
@@ -276,7 +281,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     public Expression getLineCap() {
         if (lineCap == null) {
             // ConstantExpression.constant("miter")
-            return Stroke.DEFAULT.getLineCap();
+            return DEFAULT.getLineCap();
         }
         return lineCap;
     }
@@ -305,7 +310,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     public Expression getLineJoin() {
         if (lineCap == null) {
             // ConstantExpression.constant("miter")
-            return Stroke.DEFAULT.getLineJoin();
+            return DEFAULT.getLineJoin();
         }
         return lineJoin;
     }
@@ -337,7 +342,7 @@ public class StrokeImpl implements Stroke, Cloneable {
     @Override
     public Expression getOpacity() {
         if (lineCap == null) {
-            return Stroke.DEFAULT.getOpacity();
+            return DEFAULT.getOpacity();
         }
         return opacity;
     }
@@ -406,12 +411,12 @@ public class StrokeImpl implements Stroke, Cloneable {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -420,8 +425,6 @@ public class StrokeImpl implements Stroke, Cloneable {
      *
      * <p>The clone is a deep copy of the original, except for the expression values which are
      * immutable.
-     *
-     * @see org.geotools.styling.Stroke#clone()
      */
     @Override
     public Object clone() {
@@ -550,7 +553,7 @@ public class StrokeImpl implements Stroke, Cloneable {
         return true;
     }
 
-    static StrokeImpl cast(org.opengis.style.Stroke stroke) {
+    static StrokeImpl cast(org.geotools.api.style.Stroke stroke) {
         if (stroke == null) {
             return null;
         } else if (stroke instanceof StrokeImpl) {
@@ -570,4 +573,120 @@ public class StrokeImpl implements Stroke, Cloneable {
             return copy;
         }
     }
+
+    public static Stroke DEFAULT =
+            new ConstantStroke() {
+                @Override
+                public Expression getColor() {
+                    return ConstantExpression.BLACK;
+                }
+
+                @Override
+                public Expression getWidth() {
+                    return ConstantExpression.ONE;
+                }
+
+                @Override
+                public Expression getOpacity() {
+                    return ConstantExpression.ONE;
+                }
+
+                @Override
+                public Expression getLineJoin() {
+                    return ConstantExpression.constant("miter");
+                }
+
+                @Override
+                public Expression getLineCap() {
+                    return ConstantExpression.constant("butt");
+                }
+
+                @Override
+                public float[] getDashArray() {
+                    return null;
+                }
+
+                @Override
+                public List<Expression> dashArray() {
+                    return null;
+                }
+
+                @Override
+                public Expression getDashOffset() {
+                    return ConstantExpression.ZERO;
+                }
+
+                @Override
+                public Graphic getGraphicFill() {
+                    return GraphicImpl.DEFAULT;
+                }
+
+                @Override
+                public Graphic getGraphicStroke() {
+                    return GraphicImpl.NULL;
+                }
+
+                @Override
+                public Object clone() {
+                    return this; // we are constant
+                }
+            };
+    /**
+     * Null Stroke capturing the defaults indicated by the standard.
+     *
+     * <p>This is a NullObject, it purpose is to prevent client code from having to do null
+     * checking.
+     */
+    public static final Stroke NULL =
+            new ConstantStroke() {
+                @Override
+                public Expression getColor() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getWidth() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getOpacity() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getLineJoin() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getLineCap() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public float[] getDashArray() {
+                    return new float[] {};
+                }
+
+                @Override
+                public List<Expression> dashArray() {
+                    return Collections.emptyList();
+                }
+
+                @Override
+                public Expression getDashOffset() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Graphic getGraphicFill() {
+                    return GraphicImpl.NULL;
+                }
+
+                @Override
+                public Graphic getGraphicStroke() {
+                    return GraphicImpl.NULL;
+                }
+            };
 }

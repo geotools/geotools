@@ -27,7 +27,7 @@ import net.opengis.ows11.OnlineResourceType;
 import net.opengis.ows11.ServiceIdentificationType;
 import net.opengis.ows11.ServiceProviderType;
 import net.opengis.wfs20.WFSCapabilitiesType;
-import org.geotools.data.ServiceInfo;
+import org.geotools.api.data.ServiceInfo;
 import org.geotools.data.wfs.WFSServiceInfo;
 
 /**

@@ -17,10 +17,10 @@
 
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Split an HTTP URI into its parts for {@link HTTP_URI_AuthorityFactory}. Must be immutable so
@@ -87,6 +87,6 @@ final class HTTP_URI_Parser extends URI_Parser {
             }
         }
         throw new NoSuchAuthorityCodeException(
-                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, uriText), AUTHORITY, uriText);
+                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, uriText), AUTHORITY, uriText);
     }
 }

@@ -16,47 +16,6 @@
  */
 package org.geotools.renderer.label;
 
-import static org.geotools.styling.TextSymbolizer.ALLOW_OVERRUNS_KEY;
-import static org.geotools.styling.TextSymbolizer.AUTO_WRAP_KEY;
-import static org.geotools.styling.TextSymbolizer.CONFLICT_RESOLUTION_KEY;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_ALLOW_OVERRUNS;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_AUTO_WRAP;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_CONFLICT_RESOLUTION;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_FOLLOW_LINE;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_FONT_SHRINK_SIZE_MIN;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_FORCE_LEFT_TO_RIGHT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_GOODNESS_OF_FIT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_LABEL_ALL_GROUP;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_LABEL_REPEAT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_MAX_ANGLE_DELTA;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_PARTIALS;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_POLYGONALIGN;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_REMOVE_OVERLAPS;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_SPACE_AROUND;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_STRIKETHROUGH_TEXT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_UNDERLINE_TEXT;
-import static org.geotools.styling.TextSymbolizer.DEFAULT_WORD_SPACING;
-import static org.geotools.styling.TextSymbolizer.DISPLACEMENT_MODE_KEY;
-import static org.geotools.styling.TextSymbolizer.FOLLOW_LINE_KEY;
-import static org.geotools.styling.TextSymbolizer.FONT_SHRINK_SIZE_MIN;
-import static org.geotools.styling.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY;
-import static org.geotools.styling.TextSymbolizer.GOODNESS_OF_FIT_KEY;
-import static org.geotools.styling.TextSymbolizer.GRAPHIC_PLACEMENT_KEY;
-import static org.geotools.styling.TextSymbolizer.LABEL_ALL_GROUP_KEY;
-import static org.geotools.styling.TextSymbolizer.LABEL_REPEAT_KEY;
-import static org.geotools.styling.TextSymbolizer.MAX_ANGLE_DELTA_KEY;
-import static org.geotools.styling.TextSymbolizer.MAX_DISPLACEMENT_KEY;
-import static org.geotools.styling.TextSymbolizer.MIN_GROUP_DISTANCE_KEY;
-import static org.geotools.styling.TextSymbolizer.PARTIALS_KEY;
-import static org.geotools.styling.TextSymbolizer.POLYGONALIGN_KEY;
-import static org.geotools.styling.TextSymbolizer.REMOVE_OVERLAPS_KEY;
-import static org.geotools.styling.TextSymbolizer.SPACE_AROUND_KEY;
-import static org.geotools.styling.TextSymbolizer.STRIKETHROUGH_TEXT_KEY;
-import static org.geotools.styling.TextSymbolizer.UNDERLINE_TEXT_KEY;
-import static org.geotools.styling.TextSymbolizer.WORD_SPACING_KEY;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -80,6 +39,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer.GraphicPlacement;
+import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
@@ -90,10 +55,6 @@ import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.TextStyle2D;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer.DisplacementMode;
-import org.geotools.styling.TextSymbolizer.GraphicPlacement;
-import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
@@ -112,9 +73,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.prep.PreparedGeometry;
 import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Default LabelCache Implementation.
@@ -353,7 +311,9 @@ public class LabelCacheImpl implements LabelCache {
                 return; // dont label something with nothing!
             }
             double priorityValue = getPriority(symbolizer, feature);
-            boolean group = voParser.getBooleanOption(symbolizer, TextSymbolizer.GROUP_KEY, false);
+            boolean group =
+                    voParser.getBooleanOption(
+                            symbolizer, org.geotools.api.style.TextSymbolizer.GROUP_KEY, false);
             LabelCacheItem item =
                     buildLabelCacheItem(
                             layerId, symbolizer, feature, shape, scaleRange, label, priorityValue);
@@ -401,29 +361,58 @@ public class LabelCacheImpl implements LabelCache {
         LabelCacheItem item = new LabelCacheItem(layerId, textStyle, shape, label, symbolizer);
         item.setPriority(priorityValue);
         item.setSpaceAround(
-                voParser.getIntOption(symbolizer, SPACE_AROUND_KEY, DEFAULT_SPACE_AROUND));
+                voParser.getIntOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_SPACE_AROUND));
         item.setMaxDisplacement(
-                voParser.getIntOption(symbolizer, MAX_DISPLACEMENT_KEY, DEFAULT_MAX_DISPLACEMENT));
+                voParser.getIntOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.MAX_DISPLACEMENT_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_DISPLACEMENT));
         item.setMinGroupDistance(
                 voParser.getIntOption(
-                        symbolizer, MIN_GROUP_DISTANCE_KEY, DEFAULT_MIN_GROUP_DISTANCE));
-        item.setRepeat(voParser.getIntOption(symbolizer, LABEL_REPEAT_KEY, DEFAULT_LABEL_REPEAT));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.MIN_GROUP_DISTANCE_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_MIN_GROUP_DISTANCE));
+        item.setRepeat(
+                voParser.getIntOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_LABEL_REPEAT));
         item.setLabelAllGroup(
                 voParser.getBooleanOption(
-                        symbolizer, LABEL_ALL_GROUP_KEY, DEFAULT_LABEL_ALL_GROUP));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.LABEL_ALL_GROUP_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_LABEL_ALL_GROUP));
         item.setRemoveGroupOverlaps(
                 voParser.getBooleanOption(
-                        symbolizer, REMOVE_OVERLAPS_KEY, DEFAULT_REMOVE_OVERLAPS));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.REMOVE_OVERLAPS_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_REMOVE_OVERLAPS));
         item.setAllowOverruns(
-                voParser.getBooleanOption(symbolizer, ALLOW_OVERRUNS_KEY, DEFAULT_ALLOW_OVERRUNS));
+                voParser.getBooleanOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.ALLOW_OVERRUNS_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_ALLOW_OVERRUNS));
         item.setFollowLineEnabled(
-                voParser.getBooleanOption(symbolizer, FOLLOW_LINE_KEY, DEFAULT_FOLLOW_LINE));
+                voParser.getBooleanOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_FOLLOW_LINE));
         double maxAngleDelta =
-                voParser.getDoubleOption(symbolizer, MAX_ANGLE_DELTA_KEY, DEFAULT_MAX_ANGLE_DELTA);
+                voParser.getDoubleOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.MAX_ANGLE_DELTA_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_MAX_ANGLE_DELTA);
         item.setMaxAngleDelta(Math.toRadians(maxAngleDelta));
         // follow line and write don't work toghether, disable it while we wait for a fix
         if (!item.isFollowLineEnabled()) {
-            item.setAutoWrap(voParser.getIntOption(symbolizer, AUTO_WRAP_KEY, DEFAULT_AUTO_WRAP));
+            item.setAutoWrap(
+                    voParser.getIntOption(
+                            symbolizer,
+                            org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
+                            org.geotools.api.style.TextSymbolizer.DEFAULT_AUTO_WRAP));
         } else {
             // at fine level cause it would show up for every label with this setup
             LOGGER.log(
@@ -433,38 +422,64 @@ public class LabelCacheImpl implements LabelCache {
         }
         item.setForceLeftToRightEnabled(
                 voParser.getBooleanOption(
-                        symbolizer, FORCE_LEFT_TO_RIGHT_KEY, DEFAULT_FORCE_LEFT_TO_RIGHT));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_FORCE_LEFT_TO_RIGHT));
         item.setConflictResolutionEnabled(
                 voParser.getBooleanOption(
-                        symbolizer, CONFLICT_RESOLUTION_KEY, DEFAULT_CONFLICT_RESOLUTION));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_CONFLICT_RESOLUTION));
         item.setGoodnessOfFit(
-                voParser.getDoubleOption(symbolizer, GOODNESS_OF_FIT_KEY, DEFAULT_GOODNESS_OF_FIT));
+                voParser.getDoubleOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.GOODNESS_OF_FIT_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_GOODNESS_OF_FIT));
         item.setPolygonAlign(
                 (PolygonAlignOptions)
-                        voParser.getEnumOption(symbolizer, POLYGONALIGN_KEY, DEFAULT_POLYGONALIGN));
+                        voParser.getEnumOption(
+                                symbolizer,
+                                org.geotools.api.style.TextSymbolizer.POLYGONALIGN_KEY,
+                                org.geotools.api.style.TextSymbolizer.DEFAULT_POLYGONALIGN));
         item.setGraphicsResize(
                 (GraphicResize)
                         voParser.getEnumOption(symbolizer, "graphic-resize", GraphicResize.NONE));
         item.setGraphicMargin(voParser.getGraphicMargin(symbolizer, "graphic-margin"));
         item.setPartialsEnabled(
-                voParser.getBooleanOption(symbolizer, PARTIALS_KEY, DEFAULT_PARTIALS));
+                voParser.getBooleanOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.PARTIALS_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_PARTIALS));
         item.setTextUnderlined(
-                voParser.getBooleanOption(symbolizer, UNDERLINE_TEXT_KEY, DEFAULT_UNDERLINE_TEXT));
+                voParser.getBooleanOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.UNDERLINE_TEXT_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_UNDERLINE_TEXT));
         item.setTextStrikethrough(
                 voParser.getBooleanOption(
-                        symbolizer, STRIKETHROUGH_TEXT_KEY, DEFAULT_STRIKETHROUGH_TEXT));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.STRIKETHROUGH_TEXT_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_STRIKETHROUGH_TEXT));
         item.setWordSpacing(
-                voParser.getDoubleOption(symbolizer, WORD_SPACING_KEY, DEFAULT_WORD_SPACING));
+                voParser.getDoubleOption(
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.WORD_SPACING_KEY,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_WORD_SPACING));
         item.setDisplacementAngles(
-                voParser.getDisplacementAngles(symbolizer, DISPLACEMENT_MODE_KEY));
+                voParser.getDisplacementAngles(
+                        symbolizer, org.geotools.api.style.TextSymbolizer.DISPLACEMENT_MODE_KEY));
 
         item.setFontShrinkSizeMin(
                 voParser.getIntOption(
-                        symbolizer, FONT_SHRINK_SIZE_MIN, DEFAULT_FONT_SHRINK_SIZE_MIN));
+                        symbolizer,
+                        org.geotools.api.style.TextSymbolizer.FONT_SHRINK_SIZE_MIN,
+                        org.geotools.api.style.TextSymbolizer.DEFAULT_FONT_SHRINK_SIZE_MIN));
         item.setGraphicPlacement(
                 (GraphicPlacement)
                         voParser.getEnumOption(
-                                symbolizer, GRAPHIC_PLACEMENT_KEY, GraphicPlacement.LABEL));
+                                symbolizer,
+                                org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY,
+                                org.geotools.api.style.TextSymbolizer.GraphicPlacement.LABEL));
         return item;
     }
 
@@ -1405,21 +1420,37 @@ public class LabelCacheImpl implements LabelCache {
                     double dy = radius * Math.sin(Math.toRadians(angle));
 
                     double[] anchorPointCandidates = {0.5, 0.5};
-                    if (angle == DisplacementMode.NE.getAngle()) {
+                    if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.NE
+                                    .getAngle()) {
                         anchorPointCandidates = RIGHT_UP_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.SE.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.SE
+                                    .getAngle()) {
                         anchorPointCandidates = RIGHT_DOWN_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.N.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.N
+                                    .getAngle()) {
                         anchorPointCandidates = VERTICAL_UP_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.S.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.S
+                                    .getAngle()) {
                         anchorPointCandidates = VERTICAL_DOWN_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.NW.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.NW
+                                    .getAngle()) {
                         anchorPointCandidates = LEFT_UP_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.SW.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.SW
+                                    .getAngle()) {
                         anchorPointCandidates = LEFT_DOWN_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.E.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.E
+                                    .getAngle()) {
                         anchorPointCandidates = HORIZONTAL_LEFT_ANCHOR_CANDIDATES;
-                    } else if (angle == DisplacementMode.W.getAngle()) {
+                    } else if (angle
+                            == org.geotools.api.style.TextSymbolizer.DisplacementMode.W
+                                    .getAngle()) {
                         anchorPointCandidates = HORIZONTAL_RIGHT_ANCHOR_CANDIDATES;
                     }
 
@@ -1585,7 +1616,8 @@ public class LabelCacheImpl implements LabelCache {
 
         AffineTransform tx = null;
         boolean allowShrinking =
-                labelItem.getFontShrinkSizeMin() > DEFAULT_FONT_SHRINK_SIZE_MIN
+                labelItem.getFontShrinkSizeMin()
+                                > org.geotools.api.style.TextSymbolizer.DEFAULT_FONT_SHRINK_SIZE_MIN
                         && labelItem.getFontShrinkSizeMin() < textStyle.getFont().getSize();
         int shrinkSize =
                 allowShrinking ? labelItem.getFontShrinkSizeMin() : textStyle.getFont().getSize();

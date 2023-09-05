@@ -19,9 +19,14 @@ package org.geotools.coverage.processing.operation;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.NullOpImage;
 import javax.media.jai.OpImage;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -29,15 +34,10 @@ import org.geotools.coverage.processing.Operation2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.util.Classes;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * Operation applied only on image's colors. This operation work only for source image using an
@@ -83,7 +83,7 @@ abstract class IndexColorOperation extends Operation2D {
             if (!(candidate instanceof IndexColorModel)) {
                 // Current implementation supports only sources that use an index color model.
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_CLASS_$2,
                                 Classes.getClass(candidate),
                                 IndexColorModel.class));

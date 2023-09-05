@@ -17,8 +17,8 @@
 package org.geotools.coverage.grid.io.footprint;
 
 import java.io.IOException;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * A {@link MultiLevelROIProvider} implementation used for returning {@link MultiLevelROIGeometry}s

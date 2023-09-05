@@ -43,6 +43,16 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -58,12 +68,10 @@ import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.Query;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
@@ -76,14 +84,6 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a requestCoverage is
@@ -109,7 +109,7 @@ class NetCDFResponse extends CoverageResponse {
     private static final GridCoverageFactory COVERAGE_FACTORY = new GridCoverageFactory();
 
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     private ReferencedEnvelope targetBBox;
 
@@ -496,7 +496,7 @@ class NetCDFResponse extends CoverageResponse {
      * @throws TransformException In case transformation fails during the process.
      */
     private void initRasterBounds() throws TransformException {
-        final GeneralEnvelope tempRasterBounds = CRS.transform(finalWorldToGridCorner, targetBBox);
+        final GeneralBounds tempRasterBounds = CRS.transform(finalWorldToGridCorner, targetBBox);
         rasterBounds = tempRasterBounds.toRectangle2D().getBounds();
 
         // SG using the above may lead to problems since the reason is that may be a little (1 px)
@@ -846,7 +846,7 @@ class NetCDFResponse extends CoverageResponse {
             iw.affine(finalRaster2Model, interpolation, noData);
             return iw.getRenderedImage();
 
-        } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
+        } catch (org.geotools.api.referencing.operation.NoninvertibleTransformException e) {
             if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
                 LOGGER.log(
                         java.util.logging.Level.WARNING,

@@ -29,7 +29,7 @@ public class BoundsVisitor implements FeatureCalc {
     ReferencedEnvelope bounds = new ReferencedEnvelope();
 
     @Override
-    public void visit(org.opengis.feature.Feature feature) {
+    public void visit(org.geotools.api.feature.Feature feature) {
         bounds.include(feature.getBounds());
     }
 

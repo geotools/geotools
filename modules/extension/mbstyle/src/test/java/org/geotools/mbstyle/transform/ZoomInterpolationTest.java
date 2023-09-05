@@ -2,6 +2,7 @@ package org.geotools.mbstyle.transform;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.parse.MBFunction;
@@ -9,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
 
 public class ZoomInterpolationTest {
 

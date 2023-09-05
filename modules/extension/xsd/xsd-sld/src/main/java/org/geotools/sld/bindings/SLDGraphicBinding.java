@@ -18,15 +18,15 @@ package org.geotools.sld.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbol;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbol;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.AnchorPoint;
-import org.opengis.style.Displacement;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.api.style.TextSymbolizer;
 import org.junit.Test;
 
 public class SLDTextSymbolizerBindingTest extends SLDTestSupport {

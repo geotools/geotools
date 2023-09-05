@@ -24,6 +24,10 @@ import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -31,10 +35,6 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests the SelectSampleDimension operation.
@@ -52,7 +52,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = EXAMPLES.get(2);
-        final Envelope envelope = source.getEnvelope();
+        final Bounds envelope = source.getEnvelope();
         final RenderedImage rgbImage =
                 new ImageWorker(source.getRenderedImage())
                         .forceComponentColorModel()
@@ -90,7 +90,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = EXAMPLES.get(2);
-        final Envelope envelope = source.getEnvelope();
+        final Bounds envelope = source.getEnvelope();
         final RenderedImage rgbImage =
                 new ImageWorker(source.getRenderedImage())
                         .forceComponentColorModel()
@@ -157,7 +157,7 @@ public final class BandSelectTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = EXAMPLES.get(4);
-        final Envelope envelope = source.getEnvelope();
+        final Bounds envelope = source.getEnvelope();
         final RenderedImage rgbImage =
                 new ImageWorker(source.getRenderedImage())
                         .forceComponentColorModel()

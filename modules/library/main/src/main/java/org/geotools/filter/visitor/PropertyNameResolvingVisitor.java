@@ -16,9 +16,9 @@
  */
 package org.geotools.filter.visitor;
 
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.expression.PropertyName;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.expression.PropertyName;
 
 /**
  * Resolves all property name references in a filter against a particular feature type.

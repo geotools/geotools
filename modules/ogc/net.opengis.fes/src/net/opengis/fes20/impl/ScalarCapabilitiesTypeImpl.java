@@ -19,9 +19,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.opengis.annotation.Specification;
-import org.opengis.annotation.UML;
-import org.opengis.filter.capability.ArithmeticOperators;
+import org.geotools.api.annotation.Specification;
+import org.geotools.api.annotation.UML;
+import org.geotools.api.filter.capability.ArithmeticOperators;
 
 /**
  * <!-- begin-user-doc -->
@@ -257,7 +257,7 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
     }
 
     @Override
-    @UML(identifier = "arithmeticOperators", specification = Specification.UNSPECIFIED)
+    
     public ArithmeticOperators getArithmeticOperators() {
         return null;
     }

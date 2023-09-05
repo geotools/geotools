@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.StyledLayerDescriptor" 
+  <interface id="7" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.style.StyledLayerDescriptor"
     project="gt-api" file="/gt-api/src/main/java/org/geotools/styling/StyledLayerDescriptor.java" binary="false">    
     <position x="-56" y="126" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -8,7 +8,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.StyledLayer" project="gt-api" 
+  <interface id="8" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.style.StyledLayer" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/StyledLayer.java" binary="false">    
     <position x="240" y="122" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -16,7 +16,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.FeatureTypeConstraint" 
+  <interface id="9" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.style.FeatureTypeConstraint"
     project="gt-api" file="/gt-api/src/main/java/org/geotools/styling/FeatureTypeConstraint.java" binary="false">    
     <position x="103" y="593" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -24,7 +24,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </interface>  
-  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.geotools.styling.UserLayer" project="gt-api" 
+  <interface id="12" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.style.UserLayer" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/styling/UserLayer.java" binary="false">    
     <position x="240" y="323" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      

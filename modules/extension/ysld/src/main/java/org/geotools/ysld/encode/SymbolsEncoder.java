@@ -17,11 +17,11 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.GraphicalSymbol;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
 
 /** Encodes a {@link GraphicalSymbol} as YSLD. */
 public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {

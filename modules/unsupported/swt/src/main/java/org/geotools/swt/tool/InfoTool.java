@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -38,8 +38,8 @@ import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
 import org.geotools.swt.utils.Utils;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
 
 /**
  * A cursor tool to retrieve information about features that the user clicks on with the mouse.
@@ -114,7 +114,7 @@ public class InfoTool extends CursorTool {
             return;
         }
 
-        DirectPosition2D pos = ev.getMapPosition();
+        Position2D pos = ev.getMapPosition();
         report(pos);
 
         MapContent context = getMapPane().getMapContent();
@@ -218,7 +218,7 @@ public class InfoTool extends CursorTool {
      *
      * @param pos mouse click position (world coords)
      */
-    private void report(DirectPosition2D pos) {
+    private void report(Position2D pos) {
         createReporter();
 
         reporter.append(String.format("Pos \nx=%.4f \ny=%.4f\n\n", pos.x, pos.y));

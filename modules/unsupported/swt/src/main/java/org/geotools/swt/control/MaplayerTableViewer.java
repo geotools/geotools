@@ -34,18 +34,18 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.StyleLayer;
-import org.geotools.styling.Style;
+import org.geotools.api.style.Style;
 import org.geotools.swt.SwtMapPane;
 import org.geotools.swt.styling.SimpleStyleConfigurator;
 import org.geotools.swt.utils.ImageCache;
 import org.geotools.swt.utils.Utils;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * A {@link TableViewer table viewer} for {@link Layer map layers}.

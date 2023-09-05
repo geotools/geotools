@@ -23,13 +23,13 @@ import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.util.Arrays;
 import org.apache.commons.lang3.tuple.Pair;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.stac.client.SearchQuery;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
 
 public class SearchQueryBuilderTest extends AbstractSTACStoreTest {
 

@@ -18,11 +18,11 @@ package org.geotools.data.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Convert String to CRS classes.

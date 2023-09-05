@@ -22,6 +22,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -35,22 +46,11 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.source.MBSource;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * MapBox Style implemented as wrapper around parsed JSON file.
@@ -448,7 +448,7 @@ public class MBStyle {
 
         if (background != null) {
             // attach to the first layer if possible
-            FilterFactory2 ff = parse.getFilterFactory();
+            FilterFactory ff = parse.getFilterFactory();
             if (sld.getStyledLayers().length > 0) {
                 NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
                 Style firstStyle = layer.getStyles()[0];
@@ -469,7 +469,7 @@ public class MBStyle {
             StyleFactory sf,
             StyledLayerDescriptor sld,
             BackgroundMBLayer background,
-            FilterFactory2 ff) {
+            FilterFactory ff) {
         // Background does not use a source; construct a user later with a world extent
         // inline feature so that we still have a valid SLD.
         UserLayer userLayer = sf.createUserLayer();

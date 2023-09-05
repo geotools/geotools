@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.TestWFSClient;
@@ -28,7 +29,6 @@ import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.ows.ServiceException;
 import org.junit.Test;
-import org.opengis.filter.Filter;
 
 public class StrategyTest {
 

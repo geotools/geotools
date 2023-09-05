@@ -26,8 +26,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.ejml.MatrixDimensionException;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -40,15 +48,6 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.SingularMatrixException;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
 import si.uom.NonSI;
 
 /**
@@ -385,7 +384,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      */
     @Override
     public Matrix derivative(final Point2D point) {
-        return derivative((DirectPosition) null);
+        return derivative((Position) null);
     }
 
     /**
@@ -393,7 +392,7 @@ public class ProjectiveTransform extends AbstractMathTransform
      * the same everywhere.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) {
+    public Matrix derivative(final Position point) {
         final GeneralMatrix matrix = getGeneralMatrix();
         matrix.setSize(numRow - 1, numCol - 1);
         return matrix;
@@ -483,7 +482,7 @@ public class ProjectiveTransform extends AbstractMathTransform
                         | IllegalArgumentException
                         | MatrixDimensionException exception) {
                     throw new NoninvertibleTransformException(
-                            Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
+                            ErrorKeys.NONINVERTIBLE_TRANSFORM, exception);
                 }
                 inverse = createInverse(matrix);
                 inverse.inverse = this;

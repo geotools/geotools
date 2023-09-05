@@ -18,11 +18,11 @@ package org.geotools.stac.store;
 
 import java.util.Date;
 import java.util.Optional;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Several parts of GeoTools build simple comparisons for temporal filters, CQL2 uses dedicated

@@ -26,10 +26,10 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.media.jai.iterator.RectIter;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.gce.grassraster.DummyProgressListener;
 import org.geotools.gce.grassraster.JGrassRegion;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.util.ProgressListener;
 
 /**
  * Write compressed JGrass rasters to disk

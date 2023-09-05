@@ -17,6 +17,9 @@
 package org.geotools.data;
 
 import java.util.List;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.FileServiceInfo;
+import org.geotools.api.data.Query;
 
 /**
  * Default implementation of {@link FileServiceInfo}. It simply returns a {@link

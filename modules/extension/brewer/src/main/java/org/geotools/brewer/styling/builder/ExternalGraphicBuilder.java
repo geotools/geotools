@@ -21,9 +21,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.Icon;
-import org.geotools.styling.ExternalGraphic;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.ColorReplacement;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.ColorReplacement;
+import org.geotools.api.style.ExternalGraphic;
 
 public class ExternalGraphicBuilder extends AbstractStyleBuilder<ExternalGraphic> {
     private Icon inline;

@@ -18,12 +18,14 @@ package org.geotools.data.wfs.internal.v1_x;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.wfs.internal.GetParser;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
 
 /**
  * Adapts a {@link GetParser<SimpleFeature>} to the geotools {@link FeatureReader} interface, being
@@ -31,7 +33,7 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author Gabriel Roldan (TOPP)
  * @since 2.5.x
- * @see WFSDataStore#getFeatureReader(org.geotools.data.Query, org.geotools.data.Transaction)
+ * @see WFSDataStore#getFeatureReader(Query, Transaction)
  */
 class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 

@@ -20,13 +20,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.geotools.api.feature.type.AttributeType;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
-import org.opengis.feature.type.AttributeType;
 
 /**
  * Test ReferenceTypeBinding.

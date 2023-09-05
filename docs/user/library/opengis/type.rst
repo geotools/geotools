@@ -10,7 +10,7 @@ FeatureType is used when:
 
 References:
 
-* `org.opengis.feature.type <http://docs.geotools.org/stable/javadocs/org/opengis/feature/type/package-summary.html>`_
+* `org.geotools.api.feature.type <http://docs.geotools.org/stable/javadocs/org/geotools/api/feature/type/package-summary.html>`_
 * ISO19107
 * OGC General Feature Model
 * `OGC Reference Model <http://portal.opengeospatial.org/files/?artifact_id=890>`_

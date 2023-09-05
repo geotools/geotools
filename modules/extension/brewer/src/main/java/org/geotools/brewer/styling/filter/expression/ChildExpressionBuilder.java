@@ -16,8 +16,8 @@
  */
 package org.geotools.brewer.styling.filter.expression;
 
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.brewer.styling.builder.Builder;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Child expression builder; suitable for use collecting function parameters and binary expression

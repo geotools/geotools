@@ -22,13 +22,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.stream.Stream;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
-import org.opengis.feature.type.Name;
 
 /**
  * Factory and utility methods for {@link ProcessExecutor}, and {@link Process} classes defined in

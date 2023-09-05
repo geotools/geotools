@@ -22,10 +22,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.util.InternationalString;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.util.InternationalString;
 
 /**
  * A replacement for {@link AttributeTypeImpl} with lazy evaluation of super type, so types can be
@@ -91,13 +91,13 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
      */
     public abstract AttributeType buildSuper();
 
-    /** @see org.opengis.feature.type.AttributeType#isIdentified() */
+    /** @see org.geotools.api.feature.type.AttributeType#isIdentified() */
     @Override
     public boolean isIdentified() {
         return identified;
     }
 
-    /** @see org.opengis.feature.type.AttributeType#getSuper() */
+    /** @see org.geotools.api.feature.type.AttributeType#getSuper() */
     @Override
     public AttributeType getSuper() {
         if (superType == null) {
@@ -106,37 +106,37 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
         return superType;
     }
 
-    /** @see org.opengis.feature.type.PropertyType#getName() */
+    /** @see org.geotools.api.feature.type.PropertyType#getName() */
     @Override
     public Name getName() {
         return name;
     }
 
-    /** @see org.opengis.feature.type.PropertyType#getBinding() */
+    /** @see org.geotools.api.feature.type.PropertyType#getBinding() */
     @Override
     public Class<?> getBinding() {
         return binding;
     }
 
-    /** @see org.opengis.feature.type.PropertyType#isAbstract() */
+    /** @see org.geotools.api.feature.type.PropertyType#isAbstract() */
     @Override
     public boolean isAbstract() {
         return isAbstract;
     }
 
-    /** @see org.opengis.feature.type.PropertyType#getRestrictions() */
+    /** @see org.geotools.api.feature.type.PropertyType#getRestrictions() */
     @Override
     public List<Filter> getRestrictions() {
         return restrictions;
     }
 
-    /** @see org.opengis.feature.type.PropertyType#getDescription() */
+    /** @see org.geotools.api.feature.type.PropertyType#getDescription() */
     @Override
     public InternationalString getDescription() {
         return description;
     }
 
-    /** @see org.opengis.feature.type.PropertyType#getUserData() */
+    /** @see org.geotools.api.feature.type.PropertyType#getUserData() */
     @Override
     public Map<Object, Object> getUserData() {
         return userData;

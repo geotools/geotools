@@ -22,10 +22,10 @@ package org.geotools.metadata.iso.citation;
 import java.net.URI;
 import java.net.URISyntaxException;
 import net.opengis.ows11.OnlineResourceType;
+import org.geotools.api.metadata.citation.OnLineFunction;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.citation.OnLineFunction;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about on-line sources from which the dataset, specification, or community profile

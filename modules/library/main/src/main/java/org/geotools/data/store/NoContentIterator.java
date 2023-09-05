@@ -18,7 +18,7 @@ package org.geotools.data.store;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * This iterator is used to indicate that contents could not be aquired.

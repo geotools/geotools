@@ -29,6 +29,106 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+GeoTools 30.x
+-------------
+
+This update contains a major breaking change to the GeoTools library refactoring to remove the ``org.opengis`` pacakage.
+
+The ``gt-opengis`` module has been renamed, change your dependency to:
+
+.. code-block:: xml
+
+   <dependency>
+       <groupId>org.geotools</groupId>
+       <artifactId>gt-api</artifactId>
+       <version>${geotools.version}</version>
+   </dependency>
+
+Unfortunately we could not maintain a deprecation cycle for this change and have provided an update script to assist.
+
+Remove OpenGIS and Cleanup GeoTools API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The package ``org.opengis`` has changed ``org.geotools.api``.
+
+To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is provided:
+
+1. Download Ant script :download:`remove-opengis.xml <files/remove-opengis.xml>` included with this documentation.
+
+2. The default ``update`` target will update your Java code and ``META-INF/services``:
+
+   Use the absolute path for project.dir:
+
+   .. code-block:: bash
+    
+      ant -f remove-opengis.xml -Dproject.dir=(absolute path to your project directory)
+
+   Or copy :file:`remove-opengis.xml` file into  your project directory and run:
+
+   .. code-block:: bash
+
+      ant -f remove-opengis.xml
+
+3. We have done our best to with this update script but it is not perfect - known issues:
+
+   * Double check use of geometry Position and temporal Position which have the same classname in different packages
+   * Clean up unused or duplicate imports
+   * You may need to re-run code formatters
+
+ISO Geometry
+^^^^^^^^^^^^
+
+The **org.opengis.geometry** interfaces (for ``Point``, ``Curve`` and ``Surface`` and supporting classes) were no longer in use.
+
+The direct use of **JTS Topology Suite** ``Geometry`` is now used throughout the library. Previously Object was used
+requiring a cast to Geometry.
+
+.. code-block:: java
+
+   // cast to Geometry no longer needed
+   Geometry geometry = feature.getDefaultGeometry();
+
+
+DirectPosition and GeneralEnvelope cleanup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The **org.opengis.geometry** and **org.opengis.geometry.coordinates** interfaces for positions, envelopes and bounding
+boxes have been revised as part of their refactor to **org.geotools.api**.
+
+===============================================  ===============================================================
+GeoAPI Preflight / OpenGIS                       GeoTools 30.x API
+===============================================  ===============================================================
+org.opengis.geometry.BoundingBox                 org.geotools.api.geometry.BoundingBox
+org.opengis.geometry.BoundingBox3D               org.geotools.api.geometry.BoundingBox3D
+org.opengis.geometry.DirectPosition              org.geotools.api.geometry.Position
+org.opengis.geometry.Envelope                    org.geotools.api.geometry.Bounds
+org.opengis.geometry.coordinates.PointArray      java.util.List<Position>
+org.opengis.geometry.coordinates.Position        org.geotools.api.geometry.Position
+===============================================  ===============================================================
+
+===============================================  ===============================================================
+GeoTools 29.x Implementation                     GeoTools 30.x Implementation
+===============================================  ===============================================================
+org.geotools.geometry.AbstractDirectPosition     org.geotools.api.geometry.AbstractPosition
+org.geotools.geometry.AbstractEnvelope           org.geotools.api.geometry.AbstractBounds
+org.geotools.geometry.DirectPosition1D           org.geotools.api.geometry.Position1D
+org.geotools.geometry.DirectPosition2D           org.geotools.api.geometry.Position2D
+org.geotools.geometry.DirectPosition3D           org.geotools.api.geometry.Position3D
+org.geotools.geometry.Envelope2D                 org.geotools.geometry.jts.ReferencedEnvelope
+org.geotools.geometry.GeneralDirectPosition      org.geotools.api.geometry.GeneralPosition
+org.geotools.geometry.GeneralEnvelope            org.geotools.api.geometry.GeneralBounds
+===============================================  ===============================================================
+
+For the most part these changes are method compatible, attempting common replacements:
+
+* Replace ``ReferencedEnvelope.create(Envelope,CoordinateReferenceSystem)`` with ``ReferencedEnvelope.envelope(Envelope,CoordinateReferenceSystem)``
+
+* Replace constructor ``Envelope2D(crs,x,y,width,height)`` with ``ReferencedEnvelope.rect(x,y,width,height,crs)``
+
+* Replace ``Envelope2D.equals(Envelope2D)`` with ``ReferencedEnvelope.boundsEquals2D(Bounds,double)``
+
+* Replace ``Envelope`` field access ``x``,``y``,``width``,``height`` with appropriate methods (example ``ReferencedEnvelope.getMinX()``)
+
 GeoTools 29.x
 -------------
 
@@ -52,7 +152,7 @@ Log4JLoggingFactory migrated to Reload4J
 
 We have changed to testing ``Log4JLoggingFactory`` against `reload4j project <https://reload4j.qos.ch/>`__.
 
-The Log4J 1.2 API has been `retired from Apache<https://logging.apache.org/log4j/1.2/>`__`, and the API is now maintained by the Reload4J project:
+The Log4J 1.2 API has been `retired from Apache <https://logging.apache.org/log4j/1.2/>`__, and the API is now maintained by the Reload4J project:
 
 .. code-block:: xml
 
@@ -1465,9 +1565,9 @@ This is shown in the code example below with the ``maxx`` variable.
 
 As far as switching over to the new classes, the equivalence are as follows:
 
-1. Replace ``GridRange2D`` with ``GridEnvelope2D``
+1. Replace ``GridRange2D`` with ``GridGeneralBounds``
 
-   Notice that now ``GridEnvelope2D`` is a Java2D ``Rectangle`` and that it is also mutable!
+   Notice that now ``GridGeneralBounds`` is a Java2D ``Rectangle`` and that it is also mutable!
 2. Replace ``GeneralGridRange`` with ``GeneralGridEnvelope``
 
 There are a few more caveats, which we are showing here below.
@@ -1503,9 +1603,9 @@ BEFORE:
         final int w = originalGridRange.getSpan(0);
         final int maxx = originalGridRange.getHigh(0)+1;
 
-        import org.geotools.coverage.grid.GridEnvelope2D;
+        import org.geotools.coverage.grid.GridGeneralBounds;
         final Rectangle actualDim = new Rectangle(0, 0, hrWidth, hrHeight);
-        final GridEnvelope2D originalGridRange2D = new GridEnvelope2D(actualDim);
+        final GridGeneralBounds originalGridRange2D = new GridGeneralBounds(actualDim);
         final int w = originalGridRange2D.getSpan(0);
         final int maxx = originalGridRange2D.getHigh(0)+1;
         final Rectangle rect = (Rectangle)originalGridRange2D.clone();

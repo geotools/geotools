@@ -32,7 +32,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.LockingManager" project="gt-api" 
+  <interface id="5" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.LockingManager" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/LockingManager.java" binary="false">    
     <position x="68" y="268" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      

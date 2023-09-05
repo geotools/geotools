@@ -20,10 +20,10 @@ import it.geosolutions.jaiext.classifier.ConstantColorMapElement;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
 import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import java.awt.Color;
+import java.text.MessageFormat;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
 
 class ColorMapUtilities {
 
@@ -43,7 +43,8 @@ class ColorMapUtilities {
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 
@@ -165,11 +166,11 @@ class ColorMapUtilities {
     //	}
 
     /** Ensure the specified point is one-dimensional. */
-    static void checkDimension(final DirectPosition point) {
+    static void checkDimension(final Position point) {
         final int dim = point.getDimension();
         if (dim != 1) {
             throw new MismatchedDimensionException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.MISMATCHED_DIMENSION_$2,
                             Integer.valueOf(1),
                             Integer.valueOf(dim)));
@@ -193,21 +194,28 @@ class ColorMapUtilities {
                 // the no data element must be a linear transform mapping to a single value
                 if (!(preservingElements[i] instanceof ConstantColorMapElement))
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, preservingElements));
+                            MessageFormat.format(
+                                    ErrorKeys.ILLEGAL_ARGUMENT_$1, (Object) preservingElements));
                 final ConstantColorMapElement nc = (ConstantColorMapElement) preservingElements[i];
-                if (nc.getColors().length != 1)
+                if (nc.getColors().length != 1) {
+                    final Object arg0 = nc.getColors();
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, nc.getColors()));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
+                }
                 if (i == 0) {
                     outval = nc.getOutputMaximum();
                     color = nc.getColors()[0];
                 } else {
-                    if (compare(outval, nc.getOutputMaximum()) != 0)
+                    if (compare(outval, nc.getOutputMaximum()) != 0) {
+                        final Object arg0 = nc.getColors();
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, nc.getColors()));
-                    if (!color.equals(nc.getColors()[0]))
+                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
+                    }
+                    if (!color.equals(nc.getColors()[0])) {
+                        final Object arg0 = nc.getColors();
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, nc.getColors()));
+                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, arg0));
+                    }
                 }
             }
         }

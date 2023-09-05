@@ -16,9 +16,9 @@
  */
 package org.geotools.data.complex.filter;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.opengis.filter.Filter;
 
 /**
  * Detects which AND/OR filter (BinaryLogicOperator) is the parent operator of indexed filter(s).

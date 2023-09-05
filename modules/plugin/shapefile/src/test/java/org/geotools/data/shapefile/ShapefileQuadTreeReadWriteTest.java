@@ -28,24 +28,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.TestData;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.FeatureId;
 
 /**
  * @version $Id$
@@ -77,7 +77,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         ShapefileDataStoreFactory fac = new ShapefileDataStoreFactory();
         ShapefileDataStore ds = (ShapefileDataStore) createDataStore(fac, f.toURI().toURL(), true);
         Query q = new Query(ds.getTypeNames()[0]);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         q.setFilter(ff.bbox("the_geom", -62, -61, 23, 22, null));
         assertEquals(0, ds.getFeatureSource().getFeatures(q).size());
         ds.dispose();
@@ -226,8 +226,8 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
         ShapefileDataStore ds = (ShapefileDataStore) fac.createDataStore(params);
 
-        FilterFactory2 ff =
-                (FilterFactory2) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+        FilterFactory ff =
+                (FilterFactory) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
         FeatureId featureId = ff.featureId("streams.84");
         Id filter = ff.id(Collections.singleton(featureId));

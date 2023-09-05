@@ -45,17 +45,18 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.xml.bind.JAXBException;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
-import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -70,7 +71,6 @@ import org.geotools.jdbc.Index;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Converts NetCDF slice H2 indexes towards a centralized database approach */
 public class H2Migrator {

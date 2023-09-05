@@ -29,6 +29,19 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -39,8 +52,7 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
-import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -49,18 +61,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.util.factory.Hints;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.Identifier;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A class to handle coverage requests to a reader.
@@ -83,7 +83,7 @@ class RasterLayerRequest {
     //
     // ////////////////////////////////////////////////////////////////////////
     /** The base envelope read from file */
-    private GeneralEnvelope coverageEnvelope = null;
+    private GeneralBounds coverageEnvelope = null;
 
     /** The base envelope 2D */
     private ReferencedEnvelope coverageBBox;
@@ -226,7 +226,7 @@ class RasterLayerRequest {
                 return;
             }
 
-            requestedBBox = new ReferencedEnvelope((Envelope) gg.getEnvelope2D());
+            requestedBBox = new ReferencedEnvelope((Bounds) gg.getEnvelope2D());
             requestedRasterArea = gg.getGridRange2D().getBounds();
             return;
         }
@@ -443,7 +443,7 @@ class RasterLayerRequest {
     private Rectangle getCropRegion() throws TransformException {
         final MathTransform gridToWorldTransform = getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         final MathTransform worldToGridTransform = gridToWorldTransform.inverse();
-        final GeneralEnvelope rasterArea = CRS.transform(worldToGridTransform, requestedBBox);
+        final GeneralBounds rasterArea = CRS.transform(worldToGridTransform, requestedBBox);
         final Rectangle2D ordinates = rasterArea.toRectangle2D();
         // THIS IS FUNDAMENTAL IN ORDER TO AVOID PROBLEMS WHEN DOING TILING
         return ordinates.getBounds();
@@ -612,7 +612,7 @@ class RasterLayerRequest {
         assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
         if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
             final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
-            final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
+            final GeneralBounds bbox = CRS.transform(transform, coverageEnvelope);
             bbox.setCoordinateReferenceSystem(coverageCRS2D);
             coverageBBox = new ReferencedEnvelope(bbox);
         } else {
@@ -701,7 +701,7 @@ class RasterLayerRequest {
             //
             ////
             if (!CRS.equalsIgnoreMetadata(requestedBBoxCRS2D, coverageCRS2D)) {
-                final GeneralEnvelope temp = CRS.transform(requestedBBox, coverageCRS2D);
+                final GeneralBounds temp = CRS.transform(requestedBBox, coverageCRS2D);
                 temp.setCoordinateReferenceSystem(coverageCRS2D);
                 requestedBBox = new ReferencedEnvelope(temp);
             } else
@@ -780,7 +780,7 @@ class RasterLayerRequest {
                 new ReferencedEnvelope(
                         approximateWGS84requestedBBox.intersection(coverageGeographicBBox),
                         DefaultGeographicCRS.WGS84);
-        final GeneralEnvelope approximateRequestedBBoInNativeCRS =
+        final GeneralBounds approximateRequestedBBoInNativeCRS =
                 CRS.transform(approximateWGS84requestedBBox, coverageCRS2D);
         approximateRequestedBBoInNativeCRS.setCoordinateReferenceSystem(coverageCRS2D);
         requestedBBox = new ReferencedEnvelope(approximateRequestedBBoInNativeCRS);
@@ -844,7 +844,7 @@ class RasterLayerRequest {
     }
 
     /** @uml.property name="coverageEnvelope" */
-    public GeneralEnvelope getCoverageEnvelope() {
+    public GeneralBounds getCoverageEnvelope() {
         return coverageEnvelope;
     }
 

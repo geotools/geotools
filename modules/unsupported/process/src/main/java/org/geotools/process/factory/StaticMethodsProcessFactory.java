@@ -19,9 +19,9 @@ package org.geotools.process.factory;
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 import org.geotools.feature.NameImpl;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
 
 /**
  * Grabbed from Geotools and generalized a bit, should go back into GeoTools once improved enough.

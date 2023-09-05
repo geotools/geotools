@@ -19,8 +19,8 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertEquals;
 
 import java.util.logging.Logger;
+import org.geotools.api.filter.expression.Expression;
 import org.junit.Test;
-import org.opengis.filter.expression.Expression;
 
 public class ClassificationFunctionTest extends FunctionTestSupport {
 

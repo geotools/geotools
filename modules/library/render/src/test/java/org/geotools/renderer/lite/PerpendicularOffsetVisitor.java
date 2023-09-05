@@ -16,10 +16,10 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.styling.LinePlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.styling.LinePlacementImpl;
-import org.geotools.styling.Style;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**

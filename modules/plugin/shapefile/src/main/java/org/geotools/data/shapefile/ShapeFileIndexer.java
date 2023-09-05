@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.shapefile.ShapefileIndexerBoundsHelper.BoundsReader;
 import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.ShpFileType;
@@ -48,7 +49,6 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.util.ProgressListener;
 
 /**
  * Utility class for Shapefile spatial indexing

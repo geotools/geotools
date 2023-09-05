@@ -25,15 +25,20 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -45,18 +50,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 public class CatalogSliceTest extends Assert {
 
     private H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
 
-    private final FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+    private final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     static final PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
 

@@ -18,27 +18,27 @@ package org.geotools.coverage.grid.io;
 
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.data.DataSourceException;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Class that supports readers in computing the proper reading resolution for a given grid geometry
@@ -74,8 +74,7 @@ public class ReadResolutionCalculator {
             double[] fullResolution)
             throws FactoryException {
         Utilities.ensureNonNull("gridGeometry", requestedGridGeometry);
-        this.requestedBBox =
-                new ReferencedEnvelope((Envelope) requestedGridGeometry.getEnvelope2D());
+        this.requestedBBox = new ReferencedEnvelope((Bounds) requestedGridGeometry.getEnvelope2D());
         this.requestedRasterArea = requestedGridGeometry.getGridRange2D().getBounds();
         this.requestedGridToWorld = (AffineTransform) requestedGridGeometry.getGridToCRS2D();
         this.fullResolution = fullResolution;
@@ -134,10 +133,9 @@ public class ReadResolutionCalculator {
                 }
             } else {
                 // should not happen
+                final Object arg0 = requestedGridToWorld.toString();
                 throw new UnsupportedOperationException(
-                        Errors.format(
-                                ErrorKeys.UNSUPPORTED_OPERATION_$1,
-                                requestedGridToWorld.toString()));
+                        MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, arg0));
             }
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.INFO))
@@ -182,7 +180,7 @@ public class ReadResolutionCalculator {
         }
         double resX = XAffineTransform.getScaleX0(requestedGridToWorld);
         double resY = XAffineTransform.getScaleY0(requestedGridToWorld);
-        GeneralEnvelope cropBboxTarget =
+        GeneralBounds cropBboxTarget =
                 CRS.transform(readBBox, requestedBBox.getCoordinateReferenceSystem());
         final int NPOINTS = 36;
         double[] points = new double[NPOINTS * 2];
@@ -237,8 +235,8 @@ public class ReadResolutionCalculator {
             double y0 = requestedBBox.getMedian(1);
             double x1 = x0 + fullRes[0];
             double y1 = y0 + fullRes[1];
-            GeneralEnvelope envelope =
-                    new GeneralEnvelope(new double[] {x0, y0}, new double[] {x1, y1});
+            GeneralBounds envelope =
+                    new GeneralBounds(new double[] {x0, y0}, new double[] {x1, y1});
             envelope = CRS.transform(destinationToSourceTransform, envelope);
             GridToEnvelopeMapper mapper =
                     new GridToEnvelopeMapper(new GridEnvelope2D(0, 0, 1, 1), envelope);

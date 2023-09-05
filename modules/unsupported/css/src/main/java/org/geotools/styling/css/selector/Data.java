@@ -18,19 +18,19 @@ package org.geotools.styling.css.selector;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.util.FilterSpecificityExtractor;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 public class Data extends Selector {
 
-    public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    public static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public static Selector combineAnd(List<Data> selectors, Object ctx) {
         if (selectors.size() == 1) {
@@ -44,7 +44,7 @@ public class Data extends Selector {
             featureType = selector.featureType;
         }
 
-        org.opengis.filter.And and = FF.and(filters);
+        org.geotools.api.filter.And and = FF.and(filters);
         SimplifyingFilterVisitor visitor;
         if (ctx instanceof SimplifyingFilterVisitor) {
             visitor = (SimplifyingFilterVisitor) ctx;

@@ -30,9 +30,13 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.StatisticsOpImage;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -45,12 +49,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * This class is the root class for the Statistics operations based on {@link JAI}'s {@link
@@ -179,7 +177,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
      * @param parameters The {@link ParameterValueGroup} to be copied.
      * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
      * @see
-     *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.opengis.parameter.ParameterValueGroup)
+     *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.geotools.api.parameter.ParameterValueGroup)
      */
     @Override
     protected ParameterBlockJAI prepareParameters(ParameterValueGroup parameters) {
@@ -232,7 +230,7 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
             //
             // //
             final CoordinateReferenceSystem crs = source.getCoordinateReferenceSystem2D();
-            final Envelope2D envelope = source.getEnvelope2D();
+            final ReferencedEnvelope envelope = source.getEnvelope2D();
 
             // /////////////////////////////////////////////////////////////////////
             //
@@ -249,12 +247,21 @@ public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 
                 // build the new one that spans over the requested area
                 // NOTE:
-                final DirectPosition2D LLC = new DirectPosition2D(crs, envelope.x, envelope.y);
-                LLC.setCoordinateReferenceSystem(crs);
-                final DirectPosition2D URC =
-                        new DirectPosition2D(crs, envelope.x + xPeriod, envelope.y + yPeriod);
-                URC.setCoordinateReferenceSystem(crs);
-                final Envelope2D shrinkedEnvelope = new Envelope2D(LLC, URC);
+                //                final Position2D LLC = new Position2D(crs, envelope.x,
+                // envelope.y);
+                //                LLC.setCoordinateReferenceSystem(crs);
+                //                final Position2D URC =
+                //                        new Position2D(crs, envelope.x + xPeriod, envelope.y +
+                // yPeriod);
+                //                URC.setCoordinateReferenceSystem(crs);
+
+                final ReferencedEnvelope shrinkedEnvelope =
+                        new ReferencedEnvelope(
+                                envelope.getMinX(),
+                                envelope.getMinX() + xPeriod,
+                                envelope.getMinY(),
+                                envelope.getMinY() + yPeriod,
+                                crs);
 
                 // transform back into raster space
                 final Rectangle2D transformedEnv =

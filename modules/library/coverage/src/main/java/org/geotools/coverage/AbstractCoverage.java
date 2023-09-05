@@ -36,6 +36,7 @@ import java.awt.image.renderable.RenderableImage;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Array;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,12 +54,23 @@ import javax.media.jai.PropertySourceImpl;
 import javax.media.jai.TiledImage;
 import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.iterator.WritableRectIter;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.coverage.CannotEvaluateException;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.PointOutsideCoverageException;
+import org.geotools.api.coverage.SampleDimension;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.Record;
+import org.geotools.api.util.RecordType;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -66,18 +78,6 @@ import org.geotools.util.Classes;
 import org.geotools.util.LineWriter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.CannotEvaluateException;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.PointOutsideCoverageException;
-import org.opengis.coverage.SampleDimension;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.util.InternationalString;
-import org.opengis.util.Record;
-import org.opengis.util.RecordType;
 
 /**
  * Base class of all coverage type. The essential property of coverage is to be able to generate a
@@ -187,11 +187,11 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * This is the CRS used when accessing a coverage or grid coverage with the {@code
      * evaluate(...)} methods. This coordinate reference system is usually different than coordinate
      * system of the grid. It is the target coordinate reference system of the {@link
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS gridToCRS} math transform.
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS gridToCRS} math transform.
      *
      * <p>Grid coverage can be accessed (re-projected) with new coordinate reference system with the
-     * {@link org.opengis.coverage.processing.GridCoverageProcessor} component. In this case, a new
-     * instance of a grid coverage is created.
+     * {@link org.geotools.api.coverage.processing.GridCoverageProcessor} component. In this case, a
+     * new instance of a grid coverage is created.
      *
      * @return The coordinate reference system used when accessing a coverage or grid coverage with
      *     the {@code evaluate(...)} methods.
@@ -223,7 +223,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @return The bounding box for the coverage domain in coordinate system coordinates.
      */
     @Override
-    public Envelope getEnvelope() {
+    public Bounds getEnvelope() {
         return CRS.getEnvelope(crs);
     }
 
@@ -258,7 +258,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                 type = type.getComponentType();
             }
         }
-        return Errors.format(ErrorKeys.CANT_CONVERT_FROM_TYPE_$1, type);
+        return MessageFormat.format(ErrorKeys.CANT_CONVERT_FROM_TYPE_$1, type);
     }
 
     /**
@@ -279,7 +279,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      * @since 2.3
      */
     @Override
-    public Set<Record> evaluate(final DirectPosition p, final Collection<String> list) {
+    public Set<Record> evaluate(final Position p, final Collection<String> list) {
         throw unsupported();
     }
 
@@ -303,7 +303,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     constraint if appropriate.
      */
     @Override
-    public boolean[] evaluate(final DirectPosition coord, boolean[] dest)
+    public boolean[] evaluate(final Position coord, boolean[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -340,7 +340,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     if appropriate.
      */
     @Override
-    public byte[] evaluate(final DirectPosition coord, byte[] dest)
+    public byte[] evaluate(final Position coord, byte[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -377,7 +377,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     if appropriate.
      */
     @Override
-    public int[] evaluate(final DirectPosition coord, int[] dest)
+    public int[] evaluate(final Position coord, int[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -414,7 +414,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     if appropriate.
      */
     @Override
-    public float[] evaluate(final DirectPosition coord, float[] dest)
+    public float[] evaluate(final Position coord, float[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -451,7 +451,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
      *     constraint if appropriate.
      */
     @Override
-    public double[] evaluate(final DirectPosition coord, double[] dest)
+    public double[] evaluate(final Position coord, double[] dest)
             throws PointOutsideCoverageException, CannotEvaluateException {
         final Object array = evaluate(coord);
         try {
@@ -521,8 +521,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * coverage. By default, all ordinates are initialized to 0. Subclasses should set the
          * desired values in their constructor if needed.
          */
-        protected final GeneralDirectPosition coordinate =
-                new GeneralDirectPosition(getDimension());
+        protected final GeneralPosition coordinate = new GeneralPosition(getDimension());
 
         /**
          * Constructs a renderable image.
@@ -534,7 +533,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             super(null, AbstractCoverage.this);
             this.xAxis = xAxis;
             this.yAxis = yAxis;
-            final Envelope envelope = getEnvelope();
+            final Bounds envelope = getEnvelope();
             bounds =
                     new Rectangle2D.Double(
                             envelope.getMinimum(xAxis), envelope.getMinimum(yAxis),
@@ -647,8 +646,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             final double boundsHeight = bounds.getHeight();
             if (!(width > 0)) { // Use '!' in order to catch NaN
                 if (!(height > 0)) {
-                    throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.UNSPECIFIED_IMAGE_SIZE));
+                    throw new IllegalArgumentException(ErrorKeys.UNSPECIFIED_IMAGE_SIZE);
                 }
                 width = (int) Math.round(height * (boundsWidth / boundsHeight));
             } else if (!(height > 0)) {
@@ -748,7 +746,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                  */
                 // Clones the coordinate point in order to allow multi-thread
                 // invocation.
-                final GeneralDirectPosition coordinate = new GeneralDirectPosition(this.coordinate);
+                final GeneralPosition coordinate = new GeneralPosition(this.coordinate);
                 final TiledImage tiled =
                         new TiledImage(
                                 gridBounds.x,
@@ -792,7 +790,8 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
                         assert (y == gridBounds.y + gridBounds.height);
                     } catch (NoninvertibleTransformException exception) {
                         throw new IllegalArgumentException(
-                                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "context"), exception);
+                                MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "context"),
+                                exception);
                     }
                 image = tiled;
             }
@@ -826,8 +825,8 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
         protected RenderContext createRenderContext(
                 final Rectangle2D gridBounds, final RenderingHints hints) {
             final GeneralMatrix matrix;
-            final GeneralEnvelope srcEnvelope = new GeneralEnvelope(bounds);
-            final GeneralEnvelope dstEnvelope = new GeneralEnvelope(gridBounds);
+            final GeneralBounds srcEnvelope = new GeneralBounds(bounds);
+            final GeneralBounds dstEnvelope = new GeneralBounds(gridBounds);
             if (crs != null) {
                 final CoordinateSystem cs = crs.getCoordinateSystem();
                 final AxisDirection[] axis = {
@@ -874,7 +873,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             int index = 0;
             float[] buffer = null;
             // Clones the coordinate point in order to allow multi-thread invocation.
-            final GeneralDirectPosition coordinate = new GeneralDirectPosition(this.coordinate);
+            final GeneralPosition coordinate = new GeneralPosition(this.coordinate);
             coordinate.ordinates[1] = startY;
             for (int j = 0; j < countY; j++) {
                 coordinate.ordinates[0] = startX;
@@ -892,7 +891,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * automatically invoked at rendering time for populating an image tile, providing that the
          * rendered image is created using the "{@link ImageFunctionDescriptor ImageFunction}"
          * operator and the image type is {@code double}. The default implementation invokes {@link
-         * AbstractCoverage#evaluate(DirectPosition,double[])} recursively.
+         * AbstractCoverage#evaluate(Position,double[])} recursively.
          */
         @Override
         public void getElements(
@@ -908,7 +907,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
             int index = 0;
             double[] buffer = null;
             // Clones the coordinate point in order to allow multi-thread invocation.
-            final GeneralDirectPosition coordinate = new GeneralDirectPosition(this.coordinate);
+            final GeneralPosition coordinate = new GeneralPosition(this.coordinate);
             coordinate.ordinates[1] = startY;
             for (int j = 0; j < countY; j++) {
                 coordinate.ordinates[0] = startX;
@@ -1026,7 +1025,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
         out.write("[\"");
         out.write(String.valueOf(getName()));
         out.write('"');
-        final Envelope envelope = getEnvelope();
+        final Bounds envelope = getEnvelope();
         if (envelope != null) {
             out.write(", ");
             out.write(envelope.toString());

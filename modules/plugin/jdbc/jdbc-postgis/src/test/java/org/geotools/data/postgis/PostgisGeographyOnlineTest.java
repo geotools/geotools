@@ -23,8 +23,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.RenderingHints;
 import java.sql.Connection;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -41,12 +47,6 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.DWithin;
 
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
@@ -101,7 +101,7 @@ public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
         Geometry[] geometries = {point};
         GeometryCollection geometry = new GeometryCollection(geometries, factory);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyName geomName = ff.property(aname("geo"));
         Literal lit = ff.literal(geometry);

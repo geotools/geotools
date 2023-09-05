@@ -18,6 +18,17 @@ package org.geotools.filter.text.ecql;
 
 import java.io.StringReader;
 import java.util.List;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.temporal.After;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.filter.temporal.During;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.commons.Result;
@@ -27,17 +38,6 @@ import org.geotools.filter.text.generated.parsers.ECQLParser;
 import org.geotools.filter.text.generated.parsers.Node;
 import org.geotools.filter.text.generated.parsers.ParseException;
 import org.geotools.filter.text.generated.parsers.TokenMgrError;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.spatial.DistanceBufferOperator;
-import org.opengis.filter.temporal.After;
-import org.opengis.filter.temporal.Before;
-import org.opengis.filter.temporal.During;
 
 /**
  * ECQLCompiler
@@ -473,10 +473,10 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         return null;
     }
 
-    private org.opengis.filter.expression.BinaryExpression buildBinaryExpression(int nodeType)
+    private org.geotools.api.filter.expression.BinaryExpression buildBinaryExpression(int nodeType)
             throws CQLException {
 
-        org.opengis.filter.expression.BinaryExpression expr = null;
+        org.geotools.api.filter.expression.BinaryExpression expr = null;
 
         switch (nodeType) {
             case JJTADDNODE:
@@ -578,7 +578,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         return filter;
     }
 
-    private org.opengis.filter.spatial.BBOX buildBBox(int nodeType) throws CQLException {
+    private org.geotools.api.filter.spatial.BBOX buildBBox(int nodeType) throws CQLException {
 
         if (nodeType == JJTROUTINEINVOCATION_GEOOP_BBOX_SRS_NODE) {
             return this.builder.buildBBoxWithCRS();
@@ -613,8 +613,8 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         return filter;
     }
 
-    private org.opengis.filter.Filter buildBeforeOrDuring() throws CQLException {
-        org.opengis.filter.Filter filter = null;
+    private org.geotools.api.filter.Filter buildBeforeOrDuring() throws CQLException {
+        org.geotools.api.filter.Filter filter = null;
 
         Result node = this.builder.peekResult();
 

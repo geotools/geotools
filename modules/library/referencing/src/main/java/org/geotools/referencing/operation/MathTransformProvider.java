@@ -16,34 +16,34 @@
  */
 package org.geotools.referencing.operation;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Operation;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.Projection;
+import org.geotools.api.util.GenericName;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.Parameters;
 import org.geotools.referencing.operation.transform.MathTransformProxy;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.XArray;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.util.GenericName;
 
 /**
  * An {@linkplain DefaultOperationMethod operation method} capable to creates a {@linkplain
@@ -118,9 +118,10 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
 
     /**
      * Returns the operation type. It may be <code>
-     * {@linkplain org.opengis.referencing.operation.Operation}.class</code>, <code>
-     * {@linkplain org.opengis.referencing.operation.Conversion}.class</code>, <code>
-     * {@linkplain org.opengis.referencing.operation.Projection}.class</code>, <cite>etc</cite>.
+     * {@linkplain org.geotools.api.referencing.operation.Operation}.class</code>, <code>
+     * {@linkplain org.geotools.api.referencing.operation.Conversion}.class</code>, <code>
+     * {@linkplain org.geotools.api.referencing.operation.Projection}.class</code>,
+     * <cite>etc</cite>.
      *
      * <p>The default implementation returns {@code Operation.class}. Subclass should overrides this
      * methods and returns the appropriate OpenGIS interface type (<strong>not</strong> the
@@ -237,7 +238,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
     protected static Map<String, Object> toMap(final ReferenceIdentifier... identifiers) {
         ensureNonNull("identifiers", identifiers);
         if (identifiers.length == 0) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.EMPTY_ARRAY));
+            throw new IllegalArgumentException(ErrorKeys.EMPTY_ARRAY);
         }
         int idCount = 0;
         int aliasCount = 0;
@@ -330,7 +331,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                     continue;
                 } else {
                     throw new InvalidParameterNameException(
-                            Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
+                            MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
                 }
             }
             /*
@@ -343,7 +344,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
             } catch (ParameterNotFoundException cause) {
                 final InvalidParameterNameException exception =
                         new InvalidParameterNameException(
-                                Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name), name);
+                                MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, name),
+                                name);
                 exception.initCause(cause);
                 throw exception;
             }
@@ -357,7 +359,7 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
                 target.setValue((double[]) v, unit);
             } else {
                 throw new InvalidParameterValueException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, v), name, v);
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, name, v), name, v);
             }
         }
     }

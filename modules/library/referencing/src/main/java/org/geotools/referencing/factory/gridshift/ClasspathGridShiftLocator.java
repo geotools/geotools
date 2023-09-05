@@ -17,9 +17,9 @@
 package org.geotools.referencing.factory.gridshift;
 
 import java.net.URL;
+import org.geotools.api.metadata.citation.Citation;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.AbstractFactory;
-import org.opengis.metadata.citation.Citation;
 
 /**
  * Default grid shift file locator, looks up grids in the classpath

@@ -8,7 +8,7 @@ package net.opengis.cat.csw20;
 
 import net.opengis.ows10.CapabilitiesBaseType;
 
-import org.opengis.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.FilterCapabilities;
 
 /**
  * <!-- begin-user-doc -->

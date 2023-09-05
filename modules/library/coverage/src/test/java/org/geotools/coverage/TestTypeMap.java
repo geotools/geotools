@@ -22,8 +22,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.SampleModel;
+import org.geotools.api.coverage.SampleDimensionType;
 import org.junit.Test;
-import org.opengis.coverage.SampleDimensionType;
 
 /**
  * Testing {@link TypeMap} class.

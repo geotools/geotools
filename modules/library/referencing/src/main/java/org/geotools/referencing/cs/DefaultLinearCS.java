@@ -20,10 +20,10 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.LinearCS;
 import org.geotools.measure.Measure;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.LinearCS;
 
 /**
  * A one-dimensional coordinate system that consists of the points that lie on the single axis

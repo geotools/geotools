@@ -25,7 +25,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.math.XMath;
 
 /**
@@ -82,8 +81,7 @@ public class XAffineTransform extends AffineTransform {
      * @throws UnsupportedOperationException if this affine transform is immutable.
      */
     protected void checkPermission() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM));
+        throw new UnsupportedOperationException(ErrorKeys.UNMODIFIABLE_AFFINE_TRANSFORM);
     }
 
     /** Checks for {@linkplain #checkPermission permission} before translating this transform. */
@@ -337,7 +335,7 @@ public class XAffineTransform extends AffineTransform {
      * @param dest Rectangle in which to place the result. If null, a new rectangle will be created.
      * @return The direct transform of the {@code bounds} rectangle.
      * @see org.geotools.referencing.CRS#transform(
-     *     org.opengis.referencing.operation.MathTransform2D, Rectangle2D, Rectangle2D)
+     *     org.geotools.api.referencing.operation.MathTransform2D, Rectangle2D, Rectangle2D)
      */
     public static Rectangle2D transform(
             final AffineTransform transform, final Rectangle2D bounds, final Rectangle2D dest) {

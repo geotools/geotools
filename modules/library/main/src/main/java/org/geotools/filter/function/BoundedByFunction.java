@@ -18,13 +18,13 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.feature.Feature;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.geometry.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /** A function returning the bounds of a feature (including all geometries) */
 public class BoundedByFunction extends FunctionImpl {

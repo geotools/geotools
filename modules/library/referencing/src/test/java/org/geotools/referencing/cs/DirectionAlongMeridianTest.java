@@ -20,8 +20,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.referencing.cs.AxisDirection;
 import org.junit.Test;
-import org.opengis.referencing.cs.AxisDirection;
 
 /**
  * Tests the {@link DirectionAlongMeridian} class.

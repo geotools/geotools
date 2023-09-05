@@ -19,12 +19,12 @@ package org.geotools.kml.bindings;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
 
 public class DocumentTypeBindingTest extends KMLTestSupport {
 

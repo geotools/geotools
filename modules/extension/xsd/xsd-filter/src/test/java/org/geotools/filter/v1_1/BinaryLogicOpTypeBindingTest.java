@@ -18,11 +18,11 @@ package org.geotools.filter.v1_1;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.Or;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Or;
 import org.w3c.dom.Document;
 
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {

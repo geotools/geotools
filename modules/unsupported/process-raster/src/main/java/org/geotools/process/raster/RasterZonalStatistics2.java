@@ -26,6 +26,8 @@ import java.awt.image.RenderedImage;
 import java.util.List;
 import javax.media.jai.JAI;
 import javax.media.jai.operator.NullDescriptor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
@@ -36,8 +38,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * This class wraps the "ZonalStats2" OperationJAI and executes the selected operation with the

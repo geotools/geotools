@@ -20,7 +20,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.opengis.parameter.Parameter;
+import org.geotools.api.parameter.Parameter;
 
 /**
  * DescribeProcess information for publication by DEMProcessFactory.

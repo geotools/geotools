@@ -17,7 +17,7 @@
 package org.geotools.data.shapefile;
 
 import java.util.Comparator;
-import org.opengis.filter.identity.Identifier;
+import org.geotools.api.filter.identity.Identifier;
 
 /**
  * Compares two filter identifiers

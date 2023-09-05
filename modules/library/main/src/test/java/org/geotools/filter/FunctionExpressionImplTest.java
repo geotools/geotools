@@ -27,20 +27,20 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Divide;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.Multiply;
+import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.Subtract;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.Multiply;
-import org.opengis.filter.expression.NilExpression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.expression.Subtract;
 
 /**
  * @author Gabriel Roldan, Axios Engineering
@@ -283,7 +283,7 @@ public class FunctionExpressionImplTest {
 
     private List<Class<?>> loadFunctionClasses() throws IOException, ClassNotFoundException {
         final String spiDefinitionResource =
-                "/META-INF/services/org.opengis.filter.expression.Function";
+                "/META-INF/services/org.geotools.api.filter.expression.Function";
         try (InputStream in = getClass().getResourceAsStream(spiDefinitionResource)) {
             if (in == null) {
                 throw new FileNotFoundException(spiDefinitionResource);

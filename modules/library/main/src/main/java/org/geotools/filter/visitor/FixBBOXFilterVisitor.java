@@ -16,14 +16,14 @@
  */
 package org.geotools.filter.visitor;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Visit the BBOX filter elements and make sure they are valid.
@@ -108,7 +108,7 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
         }
         if (clipped) {
             // the bbox was clipped!
-            FilterFactory2 ff = getFactory(extraData);
+            FilterFactory ff = getFactory(extraData);
             return ff.bbox(
                     filter.getExpression1(),
                     ff.literal(new ReferencedEnvelope(minx, maxx, miny, maxy, crs)));

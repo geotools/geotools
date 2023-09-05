@@ -17,6 +17,7 @@
 package org.geotools.coverage.processing;
 
 import it.geosolutions.jaiext.JAIExt;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,19 +25,18 @@ import java.util.Set;
 import java.util.logging.Logger;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * This class is the root class for the Maths operations. It provides basic capabilities for
@@ -151,7 +151,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
                     || ((Collection) srcCoverages).isEmpty()
                     || !(((Collection) srcCoverages).iterator().next() instanceof GridCoverage2D)) {
                 throw new InvalidParameterValueException(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "sources"),
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, "sources"),
                         "sources",
                         srcCoverages);
             }

@@ -30,6 +30,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -38,17 +49,6 @@ import org.geotools.util.Arguments;
 import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.geotools.util.XArray;
-import org.opengis.metadata.Identifier;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
 
 /**
  * Format {@linkplain ParameterDescriptorGroup parameter descriptors} or {@linkplain

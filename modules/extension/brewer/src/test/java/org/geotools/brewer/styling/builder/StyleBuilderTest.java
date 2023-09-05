@@ -9,31 +9,31 @@ import static org.junit.Assert.assertNull;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Map;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Description;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.style.Halo;
 
 public class StyleBuilderTest {
 
-    FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     public void example() {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
@@ -86,8 +86,8 @@ public class StyleBuilderTest {
                 builder.featureTypeStyle()
                         .featureTypeName("Feature")
                         .option(
-                                FeatureTypeStyle.KEY_EVALUATION_MODE,
-                                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
+                                org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE,
+                                org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
                         .rule();
         rule.point().graphic().mark().name("circle");
 
@@ -97,8 +97,8 @@ public class StyleBuilderTest {
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals(1, fts.getOptions().size());
         assertEquals(
-                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
-                fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+                org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
+                fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
 
     @Test

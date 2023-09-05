@@ -21,15 +21,15 @@ package org.geotools.referencing.operation;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationMethod;
 
 /**
  * A conversion used for the definition of a {@linkplain
- * org.opengis.referencing.crs.GeneralDerivedCRS derived CRS} (including projections). This
+ * org.geotools.api.referencing.crs.GeneralDerivedCRS derived CRS} (including projections). This
  * conversion has no source and target CRS, and no math transform. Those elements are created by the
  * derived CRS itself.
  *
@@ -37,7 +37,7 @@ import org.opengis.referencing.operation.OperationMethod;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Matthias Basler
- * @see org.opengis.referencing.operation.CoordinateOperationFactory#createDefiningConversion
+ * @see org.geotools.api.referencing.operation.CoordinateOperationFactory#createDefiningConversion
  */
 public class DefiningConversion extends DefaultConversion {
     /** Serial number for interoperability with different versions. */

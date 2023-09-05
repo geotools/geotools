@@ -17,6 +17,7 @@
 package org.geotools.filter.v2_0;
 
 import net.opengis.fes20.Fes20Factory;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.v1_1.SortOrderTypeBinding;
 import org.geotools.filter.v2_0.bindings.AfterBinding;
@@ -91,7 +92,6 @@ import org.geotools.filter.v2_0.bindings._LogicalOperatorsBinding;
 import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
 import org.geotools.xsd.Configuration;
-import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**

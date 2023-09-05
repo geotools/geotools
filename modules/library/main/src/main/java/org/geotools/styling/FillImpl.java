@@ -16,19 +16,82 @@
  */
 package org.geotools.styling;
 
+import java.awt.Color;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.Cloneable;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.GeoTools;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.StyleVisitor;
-import org.opengis.util.Cloneable;
 
 /**
  * @version $Id$
  * @author James Macgill, CCG
  */
 public class FillImpl implements Fill, Cloneable {
+    public static final Fill DEFAULT =
+            new ConstantFill() {
+                private void cannotModifyConstant() {
+                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
+                }
+
+                final Expression COLOR = ConstantExpression.color(new Color(128, 128, 128));
+                final Expression BGCOLOR = ConstantExpression.color(new Color(255, 255, 255, 0));
+                final Expression OPACITY = ConstantExpression.ONE;
+
+                @Override
+                public Expression getColor() {
+                    return COLOR;
+                }
+
+                @Override
+                public Expression getOpacity() {
+                    return OPACITY;
+                }
+
+                @Override
+                public Graphic getGraphicFill() {
+                    return null;
+                }
+
+                @Override
+                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+                    cannotModifyConstant();
+                    return null;
+                }
+            };
+    public static final Fill NULL =
+            new ConstantFill() {
+                private void cannotModifyConstant() {
+                    throw new UnsupportedOperationException("Constant Stroke may not be modified");
+                }
+
+                @Override
+                public Expression getColor() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Expression getOpacity() {
+                    return ConstantExpression.NULL;
+                }
+
+                @Override
+                public Graphic getGraphicFill() {
+                    return GraphicImpl.NULL;
+                }
+
+                @Override
+                public Object accept(TraversingStyleVisitor visitor, Object extraData) {
+                    cannotModifyConstant();
+                    return null;
+                }
+            };
     private FilterFactory filterFactory;
     private Expression color = null;
     private Expression opacity = null;
@@ -49,8 +112,8 @@ public class FillImpl implements Fill, Cloneable {
 
     /**
      * This parameter gives the solid color that will be used for a Fill.<br>
-     * The color value is RGB-encoded using two hexidecimal digits per primary-color component, in
-     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexidecimal digits between A
+     * The color value is RGB-encoded using two hexadecimal digits per primary-color component, in
+     * the order Red, Green, Blue, prefixed with the hash (#) sign. The hexadecimal digits between A
      * and F may be in either upper or lower case. For example, full red is encoded as "#ff0000"
      * (with no quotation marks). The default color is defined to be 50% gray ("#808080").
      *
@@ -127,7 +190,7 @@ public class FillImpl implements Fill, Cloneable {
      *     used.
      */
     @Override
-    public org.geotools.styling.Graphic getGraphicFill() {
+    public Graphic getGraphicFill() {
         return graphicFill;
     }
 
@@ -137,26 +200,22 @@ public class FillImpl implements Fill, Cloneable {
      * @param graphicFill New value of property graphic.
      */
     @Override
-    public void setGraphicFill(org.opengis.style.Graphic graphicFill) {
+    public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
         if (this.graphicFill == graphicFill) return;
         this.graphicFill = GraphicImpl.cast(graphicFill);
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
-    /**
-     * Returns a clone of the FillImpl.
-     *
-     * @see org.geotools.styling.Fill#clone()
-     */
+    /** Returns a clone of the FillImpl. */
     @Override
     public Object clone() {
         try {
@@ -218,7 +277,7 @@ public class FillImpl implements Fill, Cloneable {
         return false;
     }
 
-    static FillImpl cast(org.opengis.style.Fill fill) {
+    static FillImpl cast(org.geotools.api.style.Fill fill) {
         if (fill == null) {
             return null;
         } else if (fill instanceof FillImpl) {
@@ -229,6 +288,42 @@ public class FillImpl implements Fill, Cloneable {
             copy.graphicFill = GraphicImpl.cast(fill.getGraphicFill());
             copy.opacity = fill.getOpacity();
             return copy;
+        }
+    }
+
+    public abstract static class ConstantFill implements Fill {
+        private void cannotModifyConstant() {
+            throw new UnsupportedOperationException("Constant Fill may not be modified");
+        }
+
+        @Override
+        public void setColor(Expression color) {
+            cannotModifyConstant();
+        }
+
+        public void setBackgroundColor(Expression backgroundColor) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setOpacity(Expression opacity) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void setGraphicFill(org.geotools.api.style.Graphic graphicFill) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public void accept(StyleVisitor visitor) {
+            cannotModifyConstant();
+        }
+
+        @Override
+        public Object accept(TraversingStyleVisitor visitor, Object data) {
+            cannotModifyConstant();
+            return null;
         }
     }
 }

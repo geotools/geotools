@@ -16,9 +16,9 @@
  */
 package org.geotools.mbstyle.function;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
 
 /**
  * MapBox Expression function that returns {@link java.lang.Boolean#FALSE} if two expressions are

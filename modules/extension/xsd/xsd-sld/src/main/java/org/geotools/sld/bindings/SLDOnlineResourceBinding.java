@@ -19,7 +19,7 @@ package org.geotools.sld.bindings;
 import java.net.URI;
 import java.net.URL;
 import javax.xml.namespace.QName;
-import org.geotools.styling.ResourceLocator;
+import org.geotools.api.style.ResourceLocator;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

@@ -18,9 +18,10 @@ package org.geotools.brewer.styling.builder;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Stroke;
-import org.opengis.filter.expression.Expression;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Stroke;
+import org.geotools.styling.StrokeImpl;
 
 public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this);
@@ -67,7 +68,7 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         }
         Stroke stroke = strokeBuilder.build();
         if (stroke == null) {
-            stroke = Stroke.DEFAULT;
+            stroke = StrokeImpl.DEFAULT;
         }
         LineSymbolizer ls = sf.createLineSymbolizer(stroke, null);
         if (geometry != null) {
@@ -97,21 +98,8 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     }
 
     @Override
-    public LineSymbolizerBuilder reset(LineSymbolizer original) {
-        if (original == null) {
-            return unset();
-        }
-        geometry = original.getGeometry();
-        strokeBuilder.reset(original.getStroke());
-        uom = original.getUnitOfMeasure();
-        perpendicularOffset = original.getPerpendicularOffset();
-        return this;
-    }
+    public LineSymbolizerBuilder reset(org.geotools.api.style.LineSymbolizer original) {
 
-    public LineSymbolizerBuilder reset(org.opengis.style.LineSymbolizer original) {
-        if (original instanceof LineSymbolizer) {
-            return reset((LineSymbolizer) original);
-        }
         if (original == null) {
             return unset();
         }

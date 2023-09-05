@@ -26,6 +26,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +35,22 @@ import java.util.logging.Level;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.PropertySource;
 import javax.media.jai.ROI;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.PixelTranslation;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
@@ -49,15 +58,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.Utilities;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.InternationalString;
 
 /**
  * A set of utilities methods for the Grid Coverage package. Those methods are not really rigorous;
@@ -161,7 +161,7 @@ public final class CoverageUtilities {
             returnedCRS = CRS.getHorizontalCRS(coverage.getCoordinateReferenceSystem());
         if (returnedCRS == null)
             throw new TransformException(
-                    Errors.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, returnedCRS));
+                    MessageFormat.format(ErrorKeys.CANT_REDUCE_TO_TWO_DIMENSIONS_$1, returnedCRS));
         return returnedCRS;
     }
 
@@ -173,7 +173,7 @@ public final class CoverageUtilities {
      * @return The two-dimensional envelope.
      * @throws MismatchedDimensionException if the envelope can't be reduced to two dimensions.
      */
-    public static Envelope2D getEnvelope2D(final Coverage coverage)
+    public static ReferencedEnvelope getEnvelope2D(final Coverage coverage)
             throws MismatchedDimensionException {
         if (coverage instanceof GridCoverage2D) {
             return ((GridCoverage2D) coverage).getEnvelope2D();
@@ -188,7 +188,7 @@ public final class CoverageUtilities {
             }
         }
         // Following may thrown MismatchedDimensionException.
-        return new Envelope2D(coverage.getEnvelope());
+        return new ReferencedEnvelope(coverage.getEnvelope());
     }
 
     /**
@@ -282,7 +282,8 @@ public final class CoverageUtilities {
         // minimal checks
         if (coverage == null) {
             throw new NullPointerException(
-                    Errors.format(ErrorKeys.NULL_PARAMETER_$2, "coverage", "GridCoverage2D"));
+                    MessageFormat.format(
+                            ErrorKeys.NULL_PARAMETER_$2, "coverage", "GridCoverage2D"));
         }
 
         // try to get the GC_NODATA double value from the coverage property
@@ -509,7 +510,7 @@ public final class CoverageUtilities {
                 return Float.valueOf(Float.NaN);
             default:
                 throw new IllegalAccessError(
-                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dataType", dataType));
+                        MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dataType", dataType));
         }
     }
 

@@ -37,7 +37,7 @@
   <!--     Modules included in the build                           -->
   <!-- =========================================================== -->
   <modules>
-    <module>opengis</module>
+    <module>api</module>
     <module>sample-data</module>
     <module>metadata</module>
     <module>referencing</module>

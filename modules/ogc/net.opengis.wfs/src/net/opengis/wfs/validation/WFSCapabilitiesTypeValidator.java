@@ -7,7 +7,7 @@ package net.opengis.wfs.validation;
 import net.opengis.wfs.FeatureTypeListType;
 import net.opengis.wfs.GMLObjectTypeListType;
 
-import org.opengis.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.FilterCapabilities;
 
 /**
  * A sample validator interface for {@link net.opengis.wfs.WFSCapabilitiesType}.

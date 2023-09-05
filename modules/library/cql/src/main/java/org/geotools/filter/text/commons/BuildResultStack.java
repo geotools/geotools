@@ -19,17 +19,17 @@ package org.geotools.filter.text.commons;
 import java.util.Date;
 import java.util.EmptyStackException;
 import java.util.Stack;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.Position;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.Position;
 
 /**
  * Holds the results of the building process in a stack
@@ -67,13 +67,13 @@ public final class BuildResultStack {
         return stack.pop();
     }
 
-    public org.opengis.filter.expression.Expression popExpression() throws CQLException {
+    public org.geotools.api.filter.expression.Expression popExpression() throws CQLException {
         Result item = null;
 
         try {
             item = stack.pop();
 
-            return (org.opengis.filter.expression.Expression) item.getBuilt();
+            return (org.geotools.api.filter.expression.Expression) item.getBuilt();
         } catch (ClassCastException cce) {
             throw new CQLException("Expecting Expression", item.getToken(), cce, this.cqlSource);
         } catch (EmptyStackException ese) {

@@ -20,9 +20,9 @@
 package org.geotools.metadata.iso.extent;
 
 import java.util.Date;
+import org.geotools.api.metadata.extent.TemporalExtent;
+import org.geotools.api.temporal.TemporalPrimitive;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.extent.TemporalExtent;
-import org.opengis.temporal.TemporalPrimitive;
 
 /**
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)
@@ -97,7 +97,7 @@ public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent
      *
      * @since 2.4
      */
-    // No implementing class for {@linkplain org.opengis.temporal.TemporalPrimitive}
+    // No implementing class for {@linkplain org.geotools.api.temporal.TemporalPrimitive}
     @Override
     public TemporalPrimitive getExtent() {
         return extent;

@@ -33,13 +33,13 @@ import static java.lang.Math.tan;
 import static java.lang.Math.toDegrees;
 
 import java.awt.geom.Point2D;
+import java.text.MessageFormat;
 import java.util.Collection;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.measure.Latitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * Lambert Conical Conformal Projection. Areas and shapes are deformed as one moves away from
@@ -153,11 +153,10 @@ public abstract class LambertConformal extends MapProjection {
         }
         // Compute constants
         if (abs(phi1 + phi2) < EPSILON) {
+            final Object arg0 = new Latitude(toDegrees(phi1));
+            final Object arg1 = new Latitude(toDegrees(phi2));
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ANTIPODE_LATITUDES_$2,
-                            new Latitude(toDegrees(phi1)),
-                            new Latitude(toDegrees(phi2))));
+                    MessageFormat.format(ErrorKeys.ANTIPODE_LATITUDES_$2, arg0, arg1));
         }
         final double cosphi1 = cos(phi1);
         final double sinphi1 = sin(phi1);

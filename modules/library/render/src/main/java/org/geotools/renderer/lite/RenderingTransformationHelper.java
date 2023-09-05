@@ -26,6 +26,26 @@ import java.awt.image.RenderedImage;
 import java.io.IOException;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -35,38 +55,20 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.ClippingFeatureCollection;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Helper class that transforms the input data via rendering transformations. Rolled out so that it
@@ -75,7 +77,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public abstract class RenderingTransformationHelper {
 
-    private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     private static final CoverageProcessor PROCESSOR = CoverageProcessor.getInstance();
 
@@ -195,8 +197,8 @@ public abstract class RenderingTransformationHelper {
                         // grid geometry
                         // has at least one pixel
 
-                        org.opengis.geometry.Envelope worldEnvelope = gridGeometry.getEnvelope();
-                        GeneralEnvelope transformed =
+                        Bounds worldEnvelope = gridGeometry.getEnvelope();
+                        GeneralBounds transformed =
                                 CRS.transform(atOriginal.inverse(), worldEnvelope);
                         int minx = (int) Math.floor(transformed.getMinimum(0));
                         int miny = (int) Math.floor(transformed.getMinimum(1));
@@ -249,7 +251,7 @@ public abstract class RenderingTransformationHelper {
                                 >= 360) {
                     // in this case, only crop if the rendering envelope is entirely inside
                     // the coverage
-                    if (coverage.getEnvelope2D().contains(renderingEnvelope)) {
+                    if (coverage.getEnvelope2D().contains((BoundingBox) renderingEnvelope)) {
                         final ParameterValueGroup param =
                                 PROCESSOR.getOperation("CoverageCrop").getParameters();
                         param.parameter("Source").setValue(coverage);
@@ -257,7 +259,7 @@ public abstract class RenderingTransformationHelper {
                         coverage = (GridCoverage2D) PROCESSOR.doOperation(param);
                     }
                 } else {
-                    if (coverage.getEnvelope2D().intersects(renderingEnvelope)) {
+                    if (coverage.getEnvelope2D().intersects((BoundingBox) renderingEnvelope)) {
                         // the resulting coverage might be larger than the readGG envelope,
                         // shall we crop it?
                         final ParameterValueGroup param =

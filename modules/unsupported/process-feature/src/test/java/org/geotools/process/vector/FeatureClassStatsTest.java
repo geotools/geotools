@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -30,7 +31,6 @@ import org.geotools.process.vector.FeatureClassStats.Results;
 import org.jaitools.numeric.Statistic;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 public class FeatureClassStatsTest {
 

@@ -32,7 +32,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import javax.measure.MetricPrefix;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
@@ -41,10 +45,6 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.operation.TransformException;
 import si.uom.SI;
 
 /**
@@ -154,13 +154,13 @@ public final class GeodeticCalculatorTest {
 
         final double x = 45;
         final double y = 30;
-        calculator.setStartingPosition(new DirectPosition2D(x, y));
+        calculator.setStartingPosition(new Position2D(x, y));
         Point2D point = calculator.getStartingGeographicPoint();
         assertEquals(y, point.getX(), 1E-5);
         assertEquals(x, point.getY(), 1E-5);
 
         calculator.setDirection(10, 100);
-        DirectPosition position = calculator.getDestinationPosition();
+        Position position = calculator.getDestinationPosition();
         point = calculator.getDestinationGeographicPoint();
         assertEquals(point.getX(), position.getOrdinate(1), 1E-5);
         assertEquals(point.getY(), position.getOrdinate(0), 1E-5);

@@ -17,9 +17,9 @@
  */
 package org.geotools.filter.function.math;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
 
 /**
  * Allow access to the value of Math.PI as an expression

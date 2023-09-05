@@ -21,21 +21,21 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer.TextAnchor;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Responsible for traverse {@link MBStyle} and generating {@link StyledLayerDescriptor}.
@@ -44,7 +44,7 @@ import org.opengis.filter.expression.Literal;
  */
 public class MBStyleTransformer {
 
-    private final FilterFactory2 ff;
+    private final FilterFactory ff;
 
     private final StyleFactory sf;
 

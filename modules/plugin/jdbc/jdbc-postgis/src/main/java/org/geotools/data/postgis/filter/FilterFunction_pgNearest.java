@@ -16,11 +16,11 @@
  */
 package org.geotools.data.postgis.filter;
 
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.VolatileFunction;
-import org.opengis.geometry.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * NEAREST function implementation for Postgis <br>

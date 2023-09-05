@@ -21,10 +21,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
 
 /**
  * A {@link ConnectionLifecycleListener} that executes custom SQL commands on connection grab and
@@ -61,7 +61,7 @@ import org.opengis.filter.expression.Expression;
  */
 public class SessionCommandsListener implements ConnectionLifecycleListener {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private Expression sqlOnBorrow;
 

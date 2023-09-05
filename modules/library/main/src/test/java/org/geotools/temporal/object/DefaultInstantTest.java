@@ -22,12 +22,12 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.Position;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.Position;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultInstantTest {

@@ -10,7 +10,7 @@ import javax.xml.namespace.QName;
 
 import org.eclipse.emf.ecore.EObject;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * <!-- begin-user-doc -->

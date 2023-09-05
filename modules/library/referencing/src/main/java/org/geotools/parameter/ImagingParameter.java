@@ -17,15 +17,15 @@
 package org.geotools.parameter;
 
 import java.net.URI;
+import java.text.MessageFormat;
 import javax.measure.Unit;
 import javax.media.jai.ParameterList;
+import org.geotools.api.parameter.InvalidParameterTypeException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.InvalidParameterTypeException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
 
 /**
  * A particular parameter in a JAI's {@link ParameterList}.
@@ -56,9 +56,10 @@ final class ImagingParameter<T> extends AbstractParameter implements ParameterVa
 
     /** Returns the exception to be throws for an operation on a wrong parameter type. */
     private InvalidParameterTypeException invalidType(final ClassCastException cause) {
+        final Object arg0 = getType();
         final InvalidParameterTypeException exception =
                 new InvalidParameterTypeException(
-                        Errors.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, getType()),
+                        MessageFormat.format(ErrorKeys.ILLEGAL_OPERATION_FOR_VALUE_CLASS_$1, arg0),
                         getName(descriptor));
         exception.initCause(cause);
         return exception;

@@ -23,23 +23,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.identity.Identifier;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
+import org.geotools.api.filter.spatial.Contains;
+import org.geotools.api.filter.spatial.Crosses;
+import org.geotools.api.filter.spatial.Overlaps;
+import org.geotools.api.filter.spatial.Touches;
+import org.geotools.api.filter.spatial.Within;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Feature;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.opengis.filter.spatial.Contains;
-import org.opengis.filter.spatial.Crosses;
-import org.opengis.filter.spatial.Overlaps;
-import org.opengis.filter.spatial.Touches;
-import org.opengis.filter.spatial.Within;
 
 /**
  * A FeatureReader that considers differences.
@@ -110,13 +112,13 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         }
     }
 
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public T getFeatureType() {
         return reader.getFeatureType();
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     @Override
     public F next() throws IOException, IllegalAttributeException, NoSuchElementException {
         if (hasNext()) {
@@ -129,7 +131,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         throw new NoSuchElementException("No more Feature exists");
     }
 
-    /** @see org.geotools.data.FeatureReader#hasNext() */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() throws IOException {
         if (next != null) {
@@ -171,7 +173,7 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
         return next != null;
     }
 
-    /** @see org.geotools.data.FeatureReader#close() */
+    /** @see FeatureReader#close() */
     @Override
     public void close() throws IOException {
         if (reader != null) {
@@ -249,14 +251,14 @@ public class DiffFeatureReader<T extends FeatureType, F extends Feature>
     }
 
     protected Envelope extractBboxForSpatialIndexQuery(BinarySpatialOperator filter) {
-        org.opengis.filter.expression.Expression leftGeom = filter.getExpression1();
-        org.opengis.filter.expression.Expression rightGeom = filter.getExpression2();
+        org.geotools.api.filter.expression.Expression leftGeom = filter.getExpression1();
+        org.geotools.api.filter.expression.Expression rightGeom = filter.getExpression2();
 
         Object g;
-        if (leftGeom instanceof org.opengis.filter.expression.Literal) {
-            g = ((org.opengis.filter.expression.Literal) leftGeom).getValue();
+        if (leftGeom instanceof org.geotools.api.filter.expression.Literal) {
+            g = ((org.geotools.api.filter.expression.Literal) leftGeom).getValue();
         } else {
-            g = ((org.opengis.filter.expression.Literal) rightGeom).getValue();
+            g = ((org.geotools.api.filter.expression.Literal) rightGeom).getValue();
         }
 
         Envelope envelope = null;

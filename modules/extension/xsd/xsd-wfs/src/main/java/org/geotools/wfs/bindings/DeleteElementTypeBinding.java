@@ -19,11 +19,11 @@ package org.geotools.wfs.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.DeleteElementType;
 import net.opengis.wfs.WfsFactory;
+import org.geotools.api.filter.Filter;
 import org.geotools.wfs.WFS;
 import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.Filter;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:DeleteElementType.

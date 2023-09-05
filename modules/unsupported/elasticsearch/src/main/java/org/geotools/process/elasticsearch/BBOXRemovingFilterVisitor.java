@@ -16,9 +16,9 @@
  */
 package org.geotools.process.elasticsearch;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.spatial.BBOX;
 
 class BBOXRemovingFilterVisitor extends DuplicatingFilterVisitor {
 

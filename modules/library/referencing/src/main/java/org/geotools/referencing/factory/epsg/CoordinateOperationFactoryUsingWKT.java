@@ -20,12 +20,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
@@ -38,13 +45,6 @@ import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
 /**
  * Authority factory that holds user-defined {@linkplain CoordinateOperation Coordinate Operations}.
@@ -164,7 +164,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
             URL url = getDefinitionsURL();
             if (url == null) {
                 throw new FactoryNotFoundException(
-                        Errors.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
+                        MessageFormat.format(ErrorKeys.FILE_DOES_NOT_EXIST_$1, FILENAME));
             }
             final Iterator<? extends Identifier> ids = getAuthority().getIdentifiers().iterator();
             final String authority = ids.hasNext() ? ids.next().getCode() : "EPSG";
@@ -179,7 +179,8 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
             return new PropertyCoordinateOperationAuthorityFactory(
                     factories, this.getAuthority(), url);
         } catch (IOException exception) {
-            throw new FactoryException(Errors.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
+            throw new FactoryException(
+                    MessageFormat.format(ErrorKeys.CANT_READ_$1, FILENAME), exception);
         }
     }
 

@@ -19,14 +19,14 @@ package org.geotools.process.elasticsearch;
 import com.github.davidmoten.geo.GeoHash;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
 
 class GridCoverageUtil {
 
@@ -40,12 +40,12 @@ class GridCoverageUtil {
         return (GridCoverage2D) ops.scale(coverage, xScale, yScale, 0, 0);
     }
 
-    public static GridCoverage2D crop(GridCoverage2D coverage, Envelope envelope) {
+    public static GridCoverage2D crop(GridCoverage2D coverage, Bounds envelope) {
         final CoverageProcessor processor = new CoverageProcessor();
 
         final ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
 
-        final GeneralEnvelope crop = new GeneralEnvelope(envelope);
+        final GeneralBounds crop = new GeneralBounds(envelope);
         param.parameter("Source").setValue(coverage);
         param.parameter("Envelope").setValue(crop);
 

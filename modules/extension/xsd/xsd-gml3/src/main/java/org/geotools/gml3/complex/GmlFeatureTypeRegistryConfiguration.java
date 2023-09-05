@@ -29,6 +29,8 @@ import org.eclipse.xsd.XSDAttributeUseCategory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
 import org.geotools.feature.type.Types;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
@@ -40,8 +42,6 @@ import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 import org.geotools.xsd.complex.FeatureTypeRegistryConfiguration;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.Schema;
 
 /**
  * Feature Type Registry Configuration for GML. Depending on the schema type different version of

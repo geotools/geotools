@@ -23,13 +23,13 @@ import java.util.Collection;
 import java.util.Collections;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.Schema;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.complex.FeatureTypeRegistryConfiguration;
 import org.junit.Test;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.Schema;
 
 public class FeatureTypeRegistryTest {
     private static final Name PolygonPropertyType =

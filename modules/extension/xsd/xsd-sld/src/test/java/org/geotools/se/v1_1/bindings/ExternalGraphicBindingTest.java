@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.geotools.api.style.ExternalGraphic;
 import org.geotools.se.v1_1.SE;
 import org.geotools.se.v1_1.SETestSupport;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
 import org.w3c.dom.Element;

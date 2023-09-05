@@ -24,8 +24,9 @@ import java.awt.geom.Point2D;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swt.event.MapMouseEvent;
 import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
@@ -70,7 +71,7 @@ public class ZoomInTool extends AbstractZoomTool {
 
         cursor = CursorManager.getInstance().getZoominCursor();
 
-        startDragPos = new DirectPosition2D();
+        startDragPos = new Position2D();
         dragged = false;
     }
 
@@ -92,7 +93,7 @@ public class ZoomInTool extends AbstractZoomTool {
             return;
         }
 
-        startDragPos = new DirectPosition2D();
+        startDragPos = new Position2D();
         startDragPos.setLocation(e.getMapPosition());
     }
 
@@ -123,7 +124,7 @@ public class ZoomInTool extends AbstractZoomTool {
     /**
      * If the mouse was dragged, determines the bounds of the box that the user defined and passes
      * this to the mapPane's {@link
-     * org.geotools.swing.JMapPane#setDisplayArea(org.opengis.geometry.Envelope) } method
+     * org.geotools.swing.JMapPane#setDisplayArea(Bounds) } method
      *
      * @param ev the mouse event
      */
@@ -135,7 +136,7 @@ public class ZoomInTool extends AbstractZoomTool {
         }
 
         if (dragged) {
-            Envelope2D env = new Envelope2D();
+            ReferencedEnvelope env = new ReferencedEnvelope();
             env.setFrameFromDiagonal(startDragPos, ev.getMapPosition());
             dragged = false;
             getMapPane().setDisplayArea(env);
@@ -145,12 +146,12 @@ public class ZoomInTool extends AbstractZoomTool {
             double scale = getMapPane().getWorldToScreenTransform().getScaleX();
             double newScale = scale * zoom;
 
-            DirectPosition2D corner =
-                    new DirectPosition2D(
+            Position2D corner =
+                    new Position2D(
                             startDragPos.getX() - 0.5d * paneArea.width / newScale,
                             startDragPos.getY() + 0.5d * paneArea.height / newScale);
 
-            Envelope2D newMapArea = new Envelope2D();
+            ReferencedEnvelope newMapArea = new ReferencedEnvelope();
             newMapArea.setFrameFromCenter(startDragPos, corner);
             getMapPane().setDisplayArea(newMapArea);
         }

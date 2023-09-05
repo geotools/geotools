@@ -25,13 +25,13 @@ import java.util.Collection;
 import java.util.Map;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.AddDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseMathOperationJAI;
 import org.geotools.util.NumberRange;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.util.InternationalString;
 
 /**
  * Create a new coverage as the sum of two source coverages by doing pixel by pixel addition:
@@ -69,8 +69,8 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 8.x
- * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage,
- *     org.opengis.coverage.Coverage)
+ * @see org.geotools.coverage.processing.Operations#add(org.geotools.api.coverage.Coverage,
+ *     org.geotools.api.coverage.Coverage)
  * @see Add
  */
 public class Add extends BaseMathOperationJAI {

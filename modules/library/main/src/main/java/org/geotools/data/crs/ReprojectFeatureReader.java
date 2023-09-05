@@ -20,9 +20,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DelegatingFeatureReader;
-import org.geotools.data.FeatureReader;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DelegatingFeatureReader;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.OperationNotFoundException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -30,16 +40,6 @@ import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationNotFoundException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * ReprojectFeatureReader provides a reprojection for FeatureTypes.
@@ -172,7 +172,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#getFeatureType()
+     * @see FeatureReader#getFeatureType()
      */
     @Override
     public SimpleFeatureType getFeatureType() {
@@ -188,7 +188,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#next()
+     * @see FeatureReader#next()
      */
     @Override
     public SimpleFeature next()
@@ -234,7 +234,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#hasNext()
+     * @see FeatureReader#hasNext()
      */
     @Override
     public boolean hasNext() throws IOException {
@@ -250,7 +250,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#close()
+     * @see FeatureReader#close()
      */
     @Override
     public void close() throws IOException {

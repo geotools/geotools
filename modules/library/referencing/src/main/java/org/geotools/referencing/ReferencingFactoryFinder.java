@@ -23,6 +23,19 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Predicate;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.Factory;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CRSFactory;
+import org.geotools.api.referencing.cs.CSAuthorityFactory;
+import org.geotools.api.referencing.cs.CSFactory;
+import org.geotools.api.referencing.datum.DatumAuthorityFactory;
+import org.geotools.api.referencing.datum.DatumFactory;
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransformFactory;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.factory.gridshift.GridShiftLocator;
 import org.geotools.util.Arguments;
@@ -33,19 +46,6 @@ import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.Factory;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.cs.CSAuthorityFactory;
-import org.opengis.referencing.cs.CSFactory;
-import org.opengis.referencing.datum.DatumAuthorityFactory;
-import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransformFactory;
 
 /**
  * Defines static methods used to access the application's default {@linkplain Factory factory}
@@ -59,7 +59,7 @@ import org.opengis.referencing.operation.MathTransformFactory;
  *
  * <blockquote>
  *
- * <pre>META-INF/services/org.opengis.referencing.datum.DatumFactory</pre>
+ * <pre>META-INF/services/org.geotools.api.referencing.datum.DatumFactory</pre>
  *
  * </blockquote>
  *

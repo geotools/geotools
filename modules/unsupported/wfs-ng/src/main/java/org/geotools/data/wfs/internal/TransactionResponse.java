@@ -17,7 +17,7 @@
 package org.geotools.data.wfs.internal;
 
 import java.util.List;
-import org.opengis.filter.identity.FeatureId;
+import org.geotools.api.filter.identity.FeatureId;
 
 public interface TransactionResponse {
 

@@ -21,9 +21,9 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
 
 /**
  * URL encodes a string.

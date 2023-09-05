@@ -25,13 +25,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortBy;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /** @author jamesm */
@@ -43,7 +44,7 @@ public class QueryTest {
         Assert.assertNotNull(query);
     }
 
-    /** Test of getPropertyNames method, of class org.geotools.data.Query. */
+    /** Test of getPropertyNames method, of class org.geotools.api.data.Query. */
     @Test
     public void testPropertyNames() {
         // System.out.println("testPropertyNames");
@@ -72,10 +73,10 @@ public class QueryTest {
         Assert.assertNotNull(query.getPropertyNames());
     }
 
-    /** Test of set/getProperties method, of class org.geotools.data.Query. */
+    /** Test of set/getProperties method, of class org.geotools.api.data.Query. */
     @Test
     public void testProperties() {
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         // System.out.println("testProperties");
         Query query = new Query();
@@ -110,7 +111,7 @@ public class QueryTest {
         Assert.assertNotNull(query.getProperties());
     }
 
-    /** Test of retrieveAllProperties method, of class org.geotools.data.Query. */
+    /** Test of retrieveAllProperties method, of class org.geotools.api.data.Query. */
     @Test
     public void testRetrieveAllProperties() {
         // System.out.println("testRetrieveAllProperties");
@@ -132,7 +133,7 @@ public class QueryTest {
         Assert.assertTrue(query.retrieveAllProperties());
     }
 
-    /** Test of getMaxFeatures method, of class org.geotools.data.Query. */
+    /** Test of getMaxFeatures method, of class org.geotools.api.data.Query. */
     @Test
     public void testMaxFeatures() {
         // System.out.println("testMaxFeatures");
@@ -143,7 +144,7 @@ public class QueryTest {
         Assert.assertEquals(5, query.getMaxFeatures());
     }
 
-    /** Test of getFilter method, of class org.geotools.data.Query. */
+    /** Test of getFilter method, of class org.geotools.api.data.Query. */
     @Test
     public void testFilter() {
         // System.out.println("testGetFilter");
@@ -155,7 +156,7 @@ public class QueryTest {
         Assert.assertEquals(Filter.INCLUDE, query.getFilter());
     }
 
-    /** Test of getTypeName method, of class org.geotools.data.Query. */
+    /** Test of getTypeName method, of class org.geotools.api.data.Query. */
     @Test
     public void testTypeName() {
         Query query = new Query();
@@ -168,7 +169,7 @@ public class QueryTest {
         Assert.assertEquals("mytype", query.getTypeName());
     }
 
-    /** Test of getHandle method, of class org.geotools.data.Query. */
+    /** Test of getHandle method, of class org.geotools.api.data.Query. */
     @Test
     public void testHandle() {
         // System.out.println("testGetHandle");
@@ -178,7 +179,7 @@ public class QueryTest {
         Assert.assertEquals("myquery", query.getHandle());
     }
 
-    /** Test of getVersion method, of class org.geotools.data.Query. */
+    /** Test of getVersion method, of class org.geotools.api.data.Query. */
     @Test
     public void testVersion() {
         // System.out.println("testGetVersion");
@@ -186,7 +187,7 @@ public class QueryTest {
         Assert.assertNull(query.getVersion());
     }
 
-    /** Test of toString method, of class org.geotools.data.Query. */
+    /** Test of toString method, of class org.geotools.api.data.Query. */
     @Test
     public void testToString() {
         // System.out.println("testToString");

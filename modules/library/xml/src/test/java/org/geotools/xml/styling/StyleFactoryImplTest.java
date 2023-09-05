@@ -21,38 +21,39 @@ import java.lang.reflect.Method;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.FillImpl;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Capture the default values produce by the style factory in order to capture any regressions as we
@@ -192,8 +193,8 @@ public class StyleFactoryImplTest {
         Assert.assertNotNull("Failed to build fill", f);
 
         f = styleFactory.createFill(null);
-        Assert.assertEquals(f.getColor(), Fill.DEFAULT.getColor());
-        Assert.assertSame(f.getColor(), Fill.DEFAULT.getColor());
+        Assert.assertEquals(f.getColor(), FillImpl.DEFAULT.getColor());
+        Assert.assertSame(f.getColor(), FillImpl.DEFAULT.getColor());
     }
 
     /** Test of createMark method, of class org.geotools.styling.StyleFactoryImpl. */
@@ -253,7 +254,7 @@ public class StyleFactoryImplTest {
         Expression rotation = filterFactory.literal(145.0);
         Graphic g =
                 styleFactory.createGraphic(
-                        externalGraphics, marks, symbols, opacity, size, rotation);
+                        externalGraphics, marks, (Symbol[]) symbols, opacity, size, rotation);
 
         Assert.assertNotNull("failed to build graphic ", g);
     }
@@ -342,7 +343,7 @@ public class StyleFactoryImplTest {
     @Test
     public void testBuggyStyleCopy() throws Exception {
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Random rand = new Random();
 
         Stroke stroke = sf.createStroke(ff.literal("#8024d0"), ff.literal(rand.nextInt(10) + 1));

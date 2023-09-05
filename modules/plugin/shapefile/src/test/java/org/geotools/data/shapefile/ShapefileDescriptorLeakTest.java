@@ -28,7 +28,9 @@ import java.nio.BufferUnderflowException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -37,8 +39,6 @@ import org.geotools.util.factory.GeoTools;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.spatial.BBOX;
 
 public class ShapefileDescriptorLeakTest {
 

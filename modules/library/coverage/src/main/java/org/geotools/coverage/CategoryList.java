@@ -21,14 +21,15 @@ import java.awt.image.DataBuffer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Objects;
 import javax.measure.Unit;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.wkt.UnformattableObjectException;
@@ -36,7 +37,6 @@ import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
-import org.opengis.util.InternationalString;
 
 /**
  * An immutable list of categories. Categories are sorted by their sample values. Overlapping ranges
@@ -185,7 +185,7 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
                         }
                     }
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.RANGE_OVERLAP_$4, args));
+                            MessageFormat.format(ErrorKeys.RANGE_OVERLAP_$4, (Object) args));
                 }
                 // Checks if there is a gap between this category and the previous one.
                 if (!Double.isNaN(minimum) && minimum != previous.getRange().getMaximum(false)) {
@@ -400,9 +400,9 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     /**
      * Returns the range of values in this category list. This is the union of the range of values
      * of every categories, excluding {@code NaN} values. A {@link NumberRange} object give more
-     * informations than {@link org.opengis.CV_SampleDimension#getMinimum} and {@link
-     * org.opengis.CV_SampleDimension#getMaximum} since it contains also the type (integer, float,
-     * etc.) and inclusion/exclusion informations.
+     * informations than {@link org.geotools.api.CV_SampleDimension#getMinimum} and {@link
+     * org.geotools.api.CV_SampleDimension#getMaximum} since it contains also the type (integer,
+     * float, etc.) and inclusion/exclusion informations.
      *
      * @return The range of values. May be {@code null} if this category list has no quantitative
      *     category.

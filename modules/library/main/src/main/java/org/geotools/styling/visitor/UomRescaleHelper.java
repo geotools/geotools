@@ -21,11 +21,11 @@ package org.geotools.styling.visitor;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.measure.Units;
 import org.geotools.util.Converters;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 

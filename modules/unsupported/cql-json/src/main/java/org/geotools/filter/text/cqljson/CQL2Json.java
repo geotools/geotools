@@ -19,11 +19,11 @@ package org.geotools.filter.text.cqljson;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.text.cql2.CQLException;
 import org.locationtech.jts.io.ParseException;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
 
 /**
  * <b>OGC API CQL2-Json</b>. This class presents the operations available to convert filters into

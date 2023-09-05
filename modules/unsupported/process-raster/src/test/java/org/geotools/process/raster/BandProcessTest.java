@@ -31,12 +31,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.jai.Registry;
 import org.geotools.test.TestData;
@@ -48,11 +53,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * This class is used for testing the processes operating on the bands: BandMerge and BandSelect.
@@ -140,10 +140,10 @@ public class BandProcessTest {
         Assert.assertEquals(2, merged.getNumSampleDimensions());
 
         // Input Coverage BBOX
-        Envelope2D sourceEnv = coverage1.getEnvelope2D();
+        ReferencedEnvelope sourceEnv = coverage1.getEnvelope2D();
 
         // Merged Coverage BBOX
-        Envelope2D mergedEnv = merged.getEnvelope2D();
+        ReferencedEnvelope mergedEnv = merged.getEnvelope2D();
 
         // Ensure same BBOX
         assertEqualBBOX(sourceEnv, mergedEnv);
@@ -216,10 +216,10 @@ public class BandProcessTest {
         Assert.assertEquals(2, merged.getNumSampleDimensions());
 
         // Input Coverage BBOX
-        Envelope2D sourceEnv = coverage1.getEnvelope2D();
+        ReferencedEnvelope sourceEnv = coverage1.getEnvelope2D();
 
         // Merged Coverage BBOX
-        Envelope2D mergedEnv = merged.getEnvelope2D();
+        ReferencedEnvelope mergedEnv = merged.getEnvelope2D();
 
         // Ensure same BBOX
         assertEqualBBOX(sourceEnv, mergedEnv);
@@ -301,10 +301,10 @@ public class BandProcessTest {
         // Checks on the new Coverage
         Assert.assertEquals(2, merged.getNumSampleDimensions());
         // Ensure that the final Envelope is expanded
-        Envelope2D cov1Env = coverage1.getEnvelope2D();
-        Envelope2D cov3Env = coverage3.getEnvelope2D();
+        ReferencedEnvelope cov1Env = coverage1.getEnvelope2D();
+        ReferencedEnvelope cov3Env = coverage3.getEnvelope2D();
         // Global coverage creation
-        Envelope2D globalEnv = new Envelope2D(cov1Env);
+        ReferencedEnvelope globalEnv = new ReferencedEnvelope(cov1Env);
         globalEnv.include(cov3Env);
 
         assertEqualBBOX(globalEnv, merged.getEnvelope2D());
@@ -371,16 +371,16 @@ public class BandProcessTest {
     }
 
     /** Method for checking that two bounding box are equals */
-    private void assertEqualBBOX(Envelope2D sourceEnv, Envelope2D dstEnv) {
-        double srcX = sourceEnv.x;
-        double srcY = sourceEnv.y;
-        double srcW = sourceEnv.width;
-        double srcH = sourceEnv.height;
+    private void assertEqualBBOX(ReferencedEnvelope sourceEnv, ReferencedEnvelope dstEnv) {
+        double srcX = sourceEnv.getMinX();
+        double srcY = sourceEnv.getMinY();
+        double srcW = sourceEnv.getWidth();
+        double srcH = sourceEnv.getHeight();
 
-        double dstX = dstEnv.x;
-        double dstY = dstEnv.y;
-        double dstW = dstEnv.width;
-        double dstH = dstEnv.height;
+        double dstX = dstEnv.getMinX();
+        double dstY = dstEnv.getMinY();
+        double dstW = dstEnv.getWidth();
+        double dstH = dstEnv.getHeight();
 
         Assert.assertEquals(srcX, dstX, TOLERANCE);
         Assert.assertEquals(srcY, dstY, TOLERANCE);
@@ -403,7 +403,7 @@ public class BandProcessTest {
     /** Method for creating the ROI to test */
     private Geometry createGeometry(GridCoverage2D coverage) {
         // Selection of the Envelope associated to the Coverage
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
 
         // Geometry creation
         GeometryFactory fact = new GeometryFactory();

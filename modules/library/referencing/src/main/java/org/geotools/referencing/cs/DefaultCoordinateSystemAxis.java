@@ -19,6 +19,7 @@
  */
 package org.geotools.referencing.cs;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale; // For javadoc
@@ -28,8 +29,11 @@ import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.RangeMeaning;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -37,25 +41,21 @@ import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.NameFactory;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.RangeMeaning;
-import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
 
 /**
  * Definition of a coordinate system axis. This is used to label axes, and indicate the orientation.
- * See {@linkplain org.opengis.referencing.cs#AxisNames axis name constraints}.
+ * See {@linkplain org.geotools.api.referencing.cs#AxisNames axis name constraints}.
  *
  * <p>In some case, the axis name is constrained by ISO 19111 depending on the {@linkplain
- * org.opengis.referencing.crs.CoordinateReferenceSystem coordinate reference system} type. These
- * constraints are identified in the javadoc by "<cite>ISO 19111 name is...</cite>" sentences. This
- * constraint works in two directions; for example the names "<cite>geodetic latitude</cite>" and
- * "<cite>geodetic longitude</cite>" shall be used to designate the coordinate axis names associated
- * with a {@linkplain org.opengis.referencing.crs.GeographicCRS geographic coordinate reference
- * system}. Conversely, these names shall not be used in any other context.
+ * org.geotools.api.referencing.crs.CoordinateReferenceSystem coordinate reference system} type.
+ * These constraints are identified in the javadoc by "<cite>ISO 19111 name is...</cite>" sentences.
+ * This constraint works in two directions; for example the names "<cite>geodetic latitude</cite>"
+ * and "<cite>geodetic longitude</cite>" shall be used to designate the coordinate axis names
+ * associated with a {@linkplain org.geotools.api.referencing.crs.GeographicCRS geographic
+ * coordinate reference system}. Conversely, these names shall not be used in any other context.
  *
  * @since 2.1
  * @version $Id$
@@ -89,7 +89,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for geodetic longitudes in a {@linkplain
-     * org.opengis.referencing.crs.GeographicCRS geographic CRS}.
+     * org.geotools.api.referencing.crs.GeographicCRS geographic CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#EAST East} and units are
      * {@linkplain NonSI#DEGREE_ANGLE decimal degrees}.
@@ -113,7 +113,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for geodetic latitudes in a {@linkplain
-     * org.opengis.referencing.crs.GeographicCRS geographic CRS}.
+     * org.geotools.api.referencing.crs.GeographicCRS geographic CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#NORTH North} and units are
      * {@linkplain NonSI#DEGREE_ANGLE decimal degrees}.
@@ -175,7 +175,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * The default axis for height values above the ellipsoid in a {@linkplain
-     * org.opengis.referencing.crs.GeographicCRS geographic CRS}.
+     * org.geotools.api.referencing.crs.GeographicCRS geographic CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#UP up} and units are {@linkplain
      * SI#METER metres}.
@@ -256,8 +256,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
     }
 
     /**
-     * Default axis info for radius in a {@linkplain org.opengis.referencing.crs.GeocentricCRS
-     * geocentric CRS} using {@linkplain org.opengis.referencing.cs.SphericalCS spherical CS}.
+     * Default axis info for radius in a {@linkplain org.geotools.api.referencing.crs.GeocentricCRS
+     * geocentric CRS} using {@linkplain org.geotools.api.referencing.cs.SphericalCS spherical CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#UP up} and units are {@linkplain
      * SI#METER metres}.
@@ -278,8 +278,9 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     VocabularyKeys.GEOCENTRIC_RADIUS, "r", AxisDirection.UP, SI.METRE);
 
     /**
-     * Default axis info for longitudes in a {@linkplain org.opengis.referencing.crs.GeocentricCRS
-     * geocentric CRS} using {@linkplain org.opengis.referencing.crs.SphericalCS spherical CS}.
+     * Default axis info for longitudes in a {@linkplain
+     * org.geotools.api.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
+     * org.geotools.api.referencing.crs.SphericalCS spherical CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#EAST East} and units are
      * {@linkplain NonSI#DEGREE_ANGLE decimal degrees}.
@@ -302,8 +303,9 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     NonSI.DEGREE_ANGLE);
 
     /**
-     * Default axis info for latitudes in a {@linkplain org.opengis.referencing.crs.GeocentricCRS
-     * geocentric CRS} using {@linkplain org.opengis.referencing.cs.SphericalCS spherical CS}.
+     * Default axis info for latitudes in a {@linkplain
+     * org.geotools.api.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
+     * org.geotools.api.referencing.cs.SphericalCS spherical CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#NORTH North} and units are
      * {@linkplain NonSI#DEGREE_ANGLE decimal degrees}.
@@ -327,7 +329,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for <var>x</var> values in a {@linkplain
-     * org.opengis.referencing.cs.CartesianCS cartesian CS}.
+     * org.geotools.api.referencing.cs.CartesianCS cartesian CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#EAST East} and units are
      * {@linkplain SI#METER metres}.
@@ -347,7 +349,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for <var>y</var> values in a {@linkplain
-     * org.opengis.referencing.cs.CartesianCS cartesian CS}.
+     * org.geotools.api.referencing.cs.CartesianCS cartesian CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#NORTH North} and units are
      * {@linkplain SI#METER metres}.
@@ -367,7 +369,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for <var>z</var> values in a {@linkplain
-     * org.opengis.referencing.cs.CartesianCS cartesian CS}.
+     * org.geotools.api.referencing.cs.CartesianCS cartesian CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#UP up} and units are {@linkplain
      * SI#METER metres}.
@@ -381,8 +383,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for <var>x</var> values in a {@linkplain
-     * org.opengis.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
-     * org.opengis.referencing.cs.CartesianCS cartesian CS}.
+     * org.geotools.api.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
+     * org.geotools.api.referencing.cs.CartesianCS cartesian CS}.
      *
      * <p>Increasing ordinates values go toward prime meridian and units are {@linkplain SI#METER
      * metres}.
@@ -399,8 +401,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for <var>y</var> values in a {@linkplain
-     * org.opengis.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
-     * org.opengis.referencing.cs.CartesianCS cartesian CS}.
+     * org.geotools.api.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
+     * org.geotools.api.referencing.cs.CartesianCS cartesian CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#EAST East} and units are
      * {@linkplain SI#METER metres}.
@@ -417,8 +419,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for <var>z</var> values in a {@linkplain
-     * org.opengis.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
-     * org.opengis.referencing.cs.CartesianCS cartesian CS}.
+     * org.geotools.api.referencing.crs.GeocentricCRS geocentric CRS} using {@linkplain
+     * org.geotools.api.referencing.cs.CartesianCS cartesian CS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#NORTH North} and units are
      * {@linkplain SI#METER metres}.
@@ -435,7 +437,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for Easting values in a {@linkplain
-     * org.opengis.referencing.crs.ProjectedCRS projected CRS}.
+     * org.geotools.api.referencing.crs.ProjectedCRS projected CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#EAST East} and units are
      * {@linkplain SI#METER metres}.
@@ -455,7 +457,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for Westing values in a {@linkplain
-     * org.opengis.referencing.crs.ProjectedCRS projected CRS}.
+     * org.geotools.api.referencing.crs.ProjectedCRS projected CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#WEST West} and units are
      * {@linkplain SI#METER metres}.
@@ -478,7 +480,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for Northing values in a {@linkplain
-     * org.opengis.referencing.crs.ProjectedCRS projected CRS}.
+     * org.geotools.api.referencing.crs.ProjectedCRS projected CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#NORTH North} and units are
      * {@linkplain SI#METER metres}.
@@ -498,7 +500,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
 
     /**
      * Default axis info for Southing values in a {@linkplain
-     * org.opengis.referencing.crs.ProjectedCRS projected CRS}.
+     * org.geotools.api.referencing.crs.ProjectedCRS projected CRS}.
      *
      * <p>Increasing ordinates values go {@linkplain AxisDirection#SOUTH South} and units are
      * {@linkplain SI#METER metres}.
@@ -520,7 +522,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
     }
 
     /**
-     * A default axis for time values in a {@linkplain org.opengis.referencing.cs.TimeCS time CS}.
+     * A default axis for time values in a {@linkplain org.geotools.api.referencing.cs.TimeCS time
+     * CS}.
      *
      * <p>Increasing time go toward {@linkplain AxisDirection#FUTURE future} and units are
      * {@linkplain SI#DAY days}.
@@ -531,9 +534,9 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             new DefaultCoordinateSystemAxis(VocabularyKeys.TIME, "t", AxisDirection.FUTURE, SI.DAY);
 
     /**
-     * A default axis for column indices in a {@linkplain org.opengis.coverage.grid.GridCoverage
-     * grid coverage}. Increasing values go toward {@linkplain AxisDirection#COLUMN_POSITIVE
-     * positive column number}.
+     * A default axis for column indices in a {@linkplain
+     * org.geotools.api.coverage.grid.GridCoverage grid coverage}. Increasing values go toward
+     * {@linkplain AxisDirection#COLUMN_POSITIVE positive column number}.
      *
      * <p>The abbreviation is lower case "<var>i</var>".
      */
@@ -542,9 +545,9 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     VocabularyKeys.COLUMN, "i", AxisDirection.COLUMN_POSITIVE, AbstractUnit.ONE);
 
     /**
-     * A default axis for row indices in a {@linkplain org.opengis.coverage.grid.GridCoverage grid
-     * coverage}. Increasing values go toward {@linkplain AxisDirection#ROW_POSITIVE positive row
-     * number}.
+     * A default axis for row indices in a {@linkplain org.geotools.api.coverage.grid.GridCoverage
+     * grid coverage}. Increasing values go toward {@linkplain AxisDirection#ROW_POSITIVE positive
+     * row number}.
      *
      * <p>The abbreviation is lower case "<var>j</var>".
      */
@@ -717,7 +720,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("rangeMeaning", rangeMeaning);
         if (!(minimum < maximum)) { // Use '!' for catching NaN
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
+                    MessageFormat.format(ErrorKeys.BAD_RANGE_$2, minimum, maximum));
         }
     }
 
@@ -963,7 +966,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
             return candidate;
         }
         throw new NoSuchElementException(
-                Errors.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
+                MessageFormat.format(ErrorKeys.UNKNOW_AXIS_DIRECTION_$1, direction));
     }
 
     /**
@@ -1180,7 +1183,8 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
                     maximum,
                     rangeMeaning);
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
+        throw new IllegalArgumentException(
+                MessageFormat.format(ErrorKeys.INCOMPATIBLE_UNIT_$1, newUnit));
     }
 
     /**

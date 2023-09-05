@@ -24,8 +24,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
@@ -33,16 +42,6 @@ import org.geotools.referencing.operation.matrix.Matrix2;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.operation.Transformation;
 
 /**
  * Transform a set of coordinate points using a grid of localization. Input coordinates are index in
@@ -523,12 +522,11 @@ final class LocalizationGridTransform2D extends AbstractMathTransform
                 return;
             }
         } catch (NoninvertibleTransformException exception) {
-            final TransformException e =
-                    new TransformException(Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM));
+            final TransformException e = new TransformException(ErrorKeys.NONINVERTIBLE_TRANSFORM);
             e.initCause(exception);
             throw e;
         }
-        throw new TransformException(Errors.format(ErrorKeys.NO_CONVERGENCE));
+        throw new TransformException(ErrorKeys.NO_CONVERGENCE);
     }
 
     /**

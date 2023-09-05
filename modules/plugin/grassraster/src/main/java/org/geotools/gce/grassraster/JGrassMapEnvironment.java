@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.gce.grassraster.core.color.AttributeTable;
 import org.geotools.gce.grassraster.core.color.AttributeTable.CellAttribute;
 import org.geotools.gce.grassraster.core.color.JGrassColorTable;
@@ -36,9 +39,6 @@ import org.geotools.gce.grassraster.core.color.JlsTokenizer;
 import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageReaderSpi;
 import org.geotools.referencing.CRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * Represents the structure around a map inside a grass database.

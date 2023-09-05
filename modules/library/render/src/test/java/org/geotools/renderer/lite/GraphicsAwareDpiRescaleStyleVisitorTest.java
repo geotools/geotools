@@ -5,31 +5,31 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.PointSymbolizer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.visitor.RescaleStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
 import org.geotools.util.URLs;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 public class GraphicsAwareDpiRescaleStyleVisitorTest {
 
     private StyleBuilder sb;
-    private FilterFactory2 ff;
+    private FilterFactory ff;
 
     @Before
     public void setup() {
         sb = new StyleBuilder();
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
     }
 
     @Test

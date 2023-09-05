@@ -24,7 +24,45 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayer;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Filters;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
@@ -34,14 +72,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
-import org.opengis.style.SemanticType;
 
 /**
  * Utility class that provides static helper methods for common operations on GeoTools styling
@@ -173,7 +203,7 @@ public class SLD {
         Stroke stroke = symbolizer.getStroke();
 
         if (stroke == null) {
-            stroke = sf.createStroke(ff.literal(colour), Stroke.DEFAULT.getWidth());
+            stroke = sf.createStroke(ff.literal(colour), StrokeImpl.DEFAULT.getWidth());
             symbolizer.setStroke(stroke);
 
         } else {
@@ -530,7 +560,7 @@ public class SLD {
 
     /**
      * Retrieves the color of the first Mark in a PointSymbolizer object. This method is identical
-     * to {@linkplain #color(org.geotools.styling.PointSymbolizer)}.
+     * to {@linkplain #color(PointSymbolizer)}.
      *
      * <p>If you are using something fun like symbols you will need to do your own thing.
      *
@@ -573,7 +603,8 @@ public class SLD {
 
                 Stroke stroke = mark.getStroke();
                 if (stroke == null) {
-                    stroke = sf.createStroke(ff.literal(Color.BLACK), Stroke.DEFAULT.getWidth());
+                    stroke =
+                            sf.createStroke(ff.literal(Color.BLACK), StrokeImpl.DEFAULT.getWidth());
                     mark.setStroke(stroke);
                 }
 
@@ -967,7 +998,7 @@ public class SLD {
         Expression colourExp = ff.literal(colour);
         Stroke stroke = symbolizer.getStroke();
         if (stroke == null) {
-            stroke = sf.createStroke(colourExp, Stroke.DEFAULT.getWidth());
+            stroke = sf.createStroke(colourExp, StrokeImpl.DEFAULT.getWidth());
             symbolizer.setStroke(stroke);
         } else {
             stroke.setColor(ff.literal(colour));
@@ -1047,12 +1078,12 @@ public class SLD {
      */
     public static double opacity(Fill fill) {
         if (fill == null) {
-            fill = Fill.DEFAULT;
+            fill = FillImpl.DEFAULT;
         }
 
         Expression opacityExp = fill.getOpacity();
         if (opacityExp == null) {
-            opacityExp = Fill.DEFAULT.getOpacity();
+            opacityExp = FillImpl.DEFAULT.getOpacity();
         }
 
         return Filters.asDouble(opacityExp);
@@ -1907,7 +1938,7 @@ public class SLD {
      */
     public static Style createPolygonStyle(Color outlineColor, Color fillColor, float opacity) {
         Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(1.0f));
-        Fill fill = Fill.NULL;
+        Fill fill = FillImpl.NULL;
         if (fillColor != null) {
             fill = sf.createFill(ff.literal(fillColor), ff.literal(opacity));
         }
@@ -1929,7 +1960,7 @@ public class SLD {
     public static Style createPolygonStyle(
             Color outlineColor, Color fillColor, float opacity, String labelField, Font labelFont) {
         Stroke stroke = sf.createStroke(ff.literal(outlineColor), ff.literal(1.0f));
-        Fill fill = Fill.NULL;
+        Fill fill = FillImpl.NULL;
         if (fillColor != null) {
             fill = sf.createFill(ff.literal(fillColor), ff.literal(opacity));
         }
@@ -2043,7 +2074,7 @@ public class SLD {
             Font labelFont) {
 
         Stroke stroke = sf.createStroke(ff.literal(lineColor), ff.literal(1.0f));
-        Fill fill = Fill.NULL;
+        Fill fill = FillImpl.NULL;
         if (fillColor != null) {
             fill = sf.createFill(ff.literal(fillColor), ff.literal(opacity));
         }

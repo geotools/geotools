@@ -19,9 +19,9 @@
  */
 package org.geotools.referencing.operation;
 
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
 
 /**
  * Interface for linear {@link MathTransform}s. A linear transform can be express as an affine

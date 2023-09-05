@@ -24,6 +24,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -33,14 +37,10 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.junit.Assert;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions
@@ -112,9 +112,9 @@ public final class MrSIDTest extends GDALTestCase {
         final int originalW = gc.getRenderedImage().getWidth();
         final int originalH = gc.getRenderedImage().getHeight();
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
-        final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope reducedEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds originalEnvelope = reader.getOriginalEnvelope();
+        final GeneralBounds reducedEnvelope =
+                new GeneralBounds(
                         new double[] {
                             originalEnvelope.getLowerCorner().getOrdinate(0),
                             originalEnvelope.getLowerCorner().getOrdinate(1)

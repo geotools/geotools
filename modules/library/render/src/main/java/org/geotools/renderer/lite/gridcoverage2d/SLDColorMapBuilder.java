@@ -25,18 +25,18 @@ import it.geosolutions.jaiext.piecewise.PiecewiseUtilities;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import java.awt.Color;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.RasterSymbolizer;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.style.ExpressionExtractor;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.RasterSymbolizer;
 import org.geotools.util.SuppressFBWarnings;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Builder facility for creating a {@link LinearColorMap} using elements from {@link
@@ -137,8 +137,7 @@ public class SLDColorMapBuilder {
         // Do we already have a liner color map?
         //
         // /////////////////////////////////////////////////////////////////////
-        if (this.colorMap != null)
-            throw new IllegalStateException(Errors.format(ErrorKeys.ILLEGAL_STATE));
+        if (this.colorMap != null) throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
     }
 
     /**
@@ -162,7 +161,7 @@ public class SLDColorMapBuilder {
         //
         /////
         if (LinearColorMapType.validateColorMapTye(this.linearColorMapType))
-            throw new IllegalStateException(Errors.format(ErrorKeys.ILLEGAL_STATE));
+            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
 
         ////
         //
@@ -171,7 +170,7 @@ public class SLDColorMapBuilder {
         /////
         if (!LinearColorMapType.validateColorMapTye(colorMapType))
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "colorMapType",
                             Integer.toString(colorMapType)));
@@ -215,7 +214,7 @@ public class SLDColorMapBuilder {
         if (this.numberColorMapEntries == -1
                 || linearColorMapType == -1
                 || numberColorMapEntries < colormapElements.size() + 1)
-            throw new IllegalStateException(Errors.format(ErrorKeys.ILLEGAL_STATE));
+            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
 
         ////
         //
@@ -270,7 +269,7 @@ public class SLDColorMapBuilder {
             ////
 
             switch (linearColorMapType) {
-                case ColorMap.TYPE_RAMP:
+                case org.geotools.api.style.ColorMap.TYPE_RAMP:
                     colormapElements.add(
                             LinearColorMapElement.create(
                                     label,
@@ -278,10 +277,10 @@ public class SLDColorMapBuilder {
                                     RangeFactory.create(Double.NEGATIVE_INFINITY, false, q, false),
                                     0));
                     break;
-                case ColorMap.TYPE_VALUES:
+                case org.geotools.api.style.ColorMap.TYPE_VALUES:
                     colormapElements.add(LinearColorMapElement.create(label, newColorValue, q, 0));
                     break;
-                case ColorMap.TYPE_INTERVALS:
+                case org.geotools.api.style.ColorMap.TYPE_INTERVALS:
                     colormapElements.add(
                             LinearColorMapElement.create(
                                     label,
@@ -291,11 +290,12 @@ public class SLDColorMapBuilder {
                     break;
                 default:
                     // should not happen
+                    final Object arg1 = Double.toString(opacityValue);
                     throw new IllegalArgumentException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.ILLEGAL_ARGUMENT_$2,
                                     "ColorMapTransform.type",
-                                    Double.toString(opacityValue),
+                                    arg1,
                                     Integer.valueOf(linearColorMapType)));
             }
 
@@ -324,7 +324,7 @@ public class SLDColorMapBuilder {
                 Range valueRange = RangeFactory.create(previousMax, true, q, false);
 
                 switch (linearColorMapType) {
-                    case ColorMap.TYPE_RAMP:
+                    case org.geotools.api.style.ColorMap.TYPE_RAMP:
                         Color[] colors = {lastColorValue, newColorValue};
                         int previousMaximum = previous.getOutputRange().getMax().intValue();
                         // the piecewise machinery will complain if we have different colors
@@ -344,22 +344,23 @@ public class SLDColorMapBuilder {
                                 LinearColorMapElement.create(
                                         label, colors, valueRange, sampleRange));
                         break;
-                    case ColorMap.TYPE_VALUES:
+                    case org.geotools.api.style.ColorMap.TYPE_VALUES:
                         colormapElements.add(
                                 LinearColorMapElement.create(
                                         label, newColorValue, q, newColorMapElementIndex));
                         break;
-                    case ColorMap.TYPE_INTERVALS:
+                    case org.geotools.api.style.ColorMap.TYPE_INTERVALS:
                         colormapElements.add(
                                 LinearColorMapElement.create(
                                         label, newColorValue, valueRange, newColorMapElementIndex));
                         break;
                     default:
+                        final Object arg1 = Double.toString(opacityValue);
                         throw new IllegalArgumentException(
-                                Errors.format(
+                                MessageFormat.format(
                                         ErrorKeys.ILLEGAL_ARGUMENT_$2,
                                         "ColorMapTransform.type",
-                                        Double.toString(opacityValue),
+                                        arg1,
                                         Integer.valueOf(linearColorMapType)));
                 }
             }
@@ -379,7 +380,7 @@ public class SLDColorMapBuilder {
         // //
         if (numberColorMapEntries == 1 && linearColorMapType != ColorMap.TYPE_VALUES)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "colormap entries", "1"));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "colormap entries", "1"));
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -387,7 +388,7 @@ public class SLDColorMapBuilder {
         //
         // /////////////////////////////////////////////////////////////////////
         numberOfColorMapElements = numberColorMapEntries;
-        if (linearColorMapType == ColorMap.TYPE_RAMP) {
+        if (linearColorMapType == org.geotools.api.style.ColorMap.TYPE_RAMP) {
 
             // //
             //
@@ -517,7 +518,7 @@ public class SLDColorMapBuilder {
         }
         if ((opacityValue.doubleValue() - 1) > 0 || opacityValue.doubleValue() < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Opacity", opacityValue));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Opacity", opacityValue));
         }
         return opacityValue.doubleValue();
     }
@@ -567,7 +568,7 @@ public class SLDColorMapBuilder {
      */
     public SLDColorMapBuilder setExtendedColors(boolean extendedColors) {
         if (this.numberColorMapEntries != -1)
-            throw new IllegalStateException(Errors.format(ErrorKeys.ILLEGAL_STATE));
+            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
         checkIfColorMapCreated();
         this.extendedColors = extendedColors;
         return this;
@@ -595,10 +596,10 @@ public class SLDColorMapBuilder {
     public SLDColorMapBuilder setNumberColorMapEntries(final int numberColorMapEntries) {
         checkIfColorMapCreated();
         if (this.numberColorMapEntries != -1)
-            throw new IllegalStateException(Errors.format(ErrorKeys.ILLEGAL_STATE));
+            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
         if (numberColorMapEntries <= 0 || numberColorMapEntries > (extendedColors ? 65536 : 256))
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2,
                             "numberColorMapEntries",
                             Integer.toString(numberColorMapEntries)));
@@ -625,7 +626,7 @@ public class SLDColorMapBuilder {
     /** */
     public LinearColorMap buildLinearColorMap() {
         if (this.numberColorMapEntries == -1)
-            throw new IllegalStateException(Errors.format(ErrorKeys.ILLEGAL_STATE));
+            throw new IllegalStateException(ErrorKeys.ILLEGAL_STATE);
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -640,7 +641,7 @@ public class SLDColorMapBuilder {
         //
         // /////////////////////////////////////////////////////////////////////
         LinearColorMapElement last = this.colormapElements.get(this.colormapElements.size() - 1);
-        if (linearColorMapType == ColorMap.TYPE_RAMP) {
+        if (linearColorMapType == org.geotools.api.style.ColorMap.TYPE_RAMP) {
 
             // //
             //

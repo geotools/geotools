@@ -16,6 +16,8 @@
  */
 package org.geotools.wfs.v2_0;
 
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml2.simple.FeatureCollectionEncoderDelegate;
 import org.geotools.gml2.simple.GMLWriter;
@@ -23,8 +25,6 @@ import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.simple.GML32FeatureCollectionEncoderDelegate;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xsd.Encoder;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;

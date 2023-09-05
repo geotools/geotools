@@ -17,16 +17,15 @@
 package org.geotools.referencing.wkt;
 
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
-import org.geotools.util.logging.LoggedFormat;
 
 /**
  * An element in a <cite>Well Know Text</cite> (WKT). A {@code Element} is made of {@link String},
@@ -256,7 +255,8 @@ public final class Element {
      */
     private ParseException unparsableString(final String text, final ParsePosition position) {
         final int errorIndex = position.getErrorIndex();
-        String message = LoggedFormat.formatUnparsable(text, position.getIndex(), errorIndex, null);
+        position.getIndex();
+        String message = "Cannot parse '" + text + "', error at index " + errorIndex + ".";
         message = complete(message);
         return trim("unparsableString", new ParseException(message, errorIndex));
     }
@@ -272,7 +272,7 @@ public final class Element {
                 "missingCharacter",
                 new ParseException(
                         complete(
-                                Errors.format(
+                                MessageFormat.format(
                                         ErrorKeys.MISSING_CHARACTER_$1, Character.valueOf(c))),
                         position));
     }
@@ -290,7 +290,8 @@ public final class Element {
         return trim(
                 "missingParameter",
                 new ParseException(
-                        complete(Errors.format(ErrorKeys.MISSING_PARAMETER_$1, key)), error));
+                        complete(MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, key)),
+                        error));
     }
 
     /**
@@ -301,7 +302,7 @@ public final class Element {
      */
     private String complete(String message) {
         if (keyword != null) {
-            message = Errors.format(ErrorKeys.IN_$1, keyword) + ' ' + message;
+            message = MessageFormat.format(ErrorKeys.IN_$1, keyword) + ' ' + message;
         }
         return message;
     }
@@ -377,7 +378,9 @@ public final class Element {
                 final Number number = (Number) object;
                 if (number instanceof Float || number instanceof Double) {
                     throw new ParseException(
-                            complete(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, key, number)),
+                            complete(
+                                    MessageFormat.format(
+                                            ErrorKeys.ILLEGAL_ARGUMENT_$2, key, number)),
                             offset);
                 }
                 return number.intValue();
@@ -520,7 +523,7 @@ public final class Element {
     public void close() throws ParseException {
         if (list != null && !list.isEmpty()) {
             throw new ParseException(
-                    complete(Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, list.get(0))),
+                    complete(MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, list.get(0))),
                     offset + keyword.length());
         }
     }

@@ -50,7 +50,6 @@ For more information on the standards covered by the library as whole: :ref:`sta
    feature
    filter
    coverage
-   geometry
    cs
    se
    progress

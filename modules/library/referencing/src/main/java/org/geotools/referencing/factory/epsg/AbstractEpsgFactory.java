@@ -46,6 +46,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -66,9 +67,55 @@ import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.quality.EvaluationMethodType;
+import org.geotools.api.metadata.quality.PositionalAccuracy;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.crs.CRSFactory;
+import org.geotools.api.referencing.crs.CompoundCRS;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeneralDerivedCRS;
+import org.geotools.api.referencing.crs.GeocentricCRS;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.crs.SingleCRS;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CSFactory;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.EllipsoidalCS;
+import org.geotools.api.referencing.cs.SphericalCS;
+import org.geotools.api.referencing.cs.VerticalCS;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.DatumFactory;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.EngineeringDatum;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.datum.PrimeMeridian;
+import org.geotools.api.referencing.datum.VerticalDatum;
+import org.geotools.api.referencing.datum.VerticalDatumType;
+import org.geotools.api.referencing.operation.ConcatenatedOperation;
+import org.geotools.api.referencing.operation.Conversion;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.OperationMethod;
+import org.geotools.api.referencing.operation.Projection;
+import org.geotools.api.referencing.operation.Transformation;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -104,53 +151,6 @@ import org.geotools.util.Version;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.quality.EvaluationMethodType;
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeneralDerivedCRS;
-import org.opengis.referencing.crs.GeocentricCRS;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CSFactory;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.EllipsoidalCS;
-import org.opengis.referencing.cs.SphericalCS;
-import org.opengis.referencing.cs.VerticalCS;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.EngineeringDatum;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.datum.PrimeMeridian;
-import org.opengis.referencing.datum.VerticalDatum;
-import org.opengis.referencing.datum.VerticalDatumType;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.referencing.operation.Transformation;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
 import si.uom.NonSI;
 import si.uom.SI;
 
@@ -550,7 +550,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final String table = metadata.getTableName(columnFault);
             result.close();
             throw new FactoryException(
-                    Errors.format(ErrorKeys.NULL_VALUE_IN_TABLE_$3, code, column, table));
+                    MessageFormat.format(ErrorKeys.NULL_VALUE_IN_TABLE_$3, code, column, table));
         }
         return str.trim();
     }
@@ -605,7 +605,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             final String table = metadata.getTableName(columnIndex);
             result.close();
             throw new FactoryException(
-                    Errors.format(ErrorKeys.NULL_VALUE_IN_TABLE_$3, code, column, table));
+                    MessageFormat.format(ErrorKeys.NULL_VALUE_IN_TABLE_$3, code, column, table));
         }
     }
 
@@ -694,7 +694,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         if (oldValue.equals(newValue)) {
             return oldValue;
         }
-        throw new FactoryException(Errors.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
+        throw new FactoryException(MessageFormat.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
     }
 
     /**
@@ -864,7 +864,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     if (present) {
                         if (index >= 0) {
                             throw new FactoryException(
-                                    Errors.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
+                                    MessageFormat.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
                         }
                         index = (i < 0) ? lastObjectType : i;
                         if (isPrimaryKey) {
@@ -1036,7 +1036,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                             final String column = result.getMetaData().getColumnName(3);
                             result.close();
                             throw new FactoryException(
-                                    Errors.format(ErrorKeys.NULL_VALUE_IN_TABLE_$3, code, column));
+                                    MessageFormat.format(
+                                            ErrorKeys.NULL_VALUE_IN_TABLE_$3, code, column));
                         } else {
                             // We only have semiMinorAxis defined -> it's OK
                             ellipsoid =
@@ -1425,7 +1426,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         datum = factory.createEngineeringDatum(properties);
                     } else {
                         result.close();
-                        throw new FactoryException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+                        throw new FactoryException(
+                                MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
                     }
                     returnValue = ensureSingleton(datum, returnValue, code);
                     if (exit) {
@@ -1590,7 +1592,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
         }
         if (i != axis.length) {
             throw new FactoryException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, axis.length, i));
+                    MessageFormat.format(ErrorKeys.MISMATCHED_DIMENSION_$2, axis.length, i));
         }
         return axis;
     }
@@ -1709,12 +1711,14 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         }
                     } else {
                         result.close();
-                        throw new FactoryException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+                        throw new FactoryException(
+                                MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
                     }
                     if (cs == null) {
                         result.close();
                         throw new FactoryException(
-                                Errors.format(ErrorKeys.UNEXPECTED_DIMENSION_FOR_CS_$1, type));
+                                MessageFormat.format(
+                                        ErrorKeys.UNEXPECTED_DIMENSION_FOR_CS_$1, type));
                     }
                     returnValue = ensureSingleton(cs, returnValue, code);
                 }
@@ -1895,7 +1899,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         } else {
                             result.close();
                             throw new FactoryException(
-                                    Errors.format(
+                                    MessageFormat.format(
                                             ErrorKeys.ILLEGAL_COORDINATE_SYSTEM_FOR_CRS_$2,
                                             cs.getClass(),
                                             GeocentricCRS.class));
@@ -1918,7 +1922,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      * ---------------------------------------------------------------------- */
                     else {
                         result.close();
-                        throw new FactoryException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+                        throw new FactoryException(
+                                MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
                     }
                     returnValue = ensureSingleton(crs, returnValue, code);
                     if (exit) {
@@ -2122,7 +2127,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                      */
                     final NoSuchIdentifierException e =
                             new NoSuchIdentifierException(
-                                    Errors.format(ErrorKeys.CANT_SET_PARAMETER_VALUE_$1, name),
+                                    MessageFormat.format(
+                                            ErrorKeys.CANT_SET_PARAMETER_VALUE_$1, name),
                                     name);
                     e.initCause(exception);
                     throw e;
@@ -2137,7 +2143,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     }
                 } catch (InvalidParameterValueException exception) {
                     throw new FactoryException(
-                            Errors.format(ErrorKeys.CANT_SET_PARAMETER_VALUE_$1, name), exception);
+                            MessageFormat.format(ErrorKeys.CANT_SET_PARAMETER_VALUE_$1, name),
+                            exception);
                 }
             }
         }
@@ -2601,10 +2608,11 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                                 }
                             } catch (ParameterNotFoundException exception) {
                                 result.close();
+                                final Object arg0 = method.getName().getCode();
                                 throw new FactoryException(
-                                        Errors.format(
+                                        MessageFormat.format(
                                                 ErrorKeys.GEOTOOLS_EXTENSION_REQUIRED_$1,
-                                                method.getName().getCode(),
+                                                arg0,
                                                 exception));
                             }
                         /*
@@ -2619,7 +2627,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                         } else {
                             result.close();
                             throw new FactoryException(
-                                    Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
+                                    MessageFormat.format(ErrorKeys.UNKNOW_TYPE_$1, type));
                         }
                         final MathTransform mt =
                                 factories
@@ -2853,14 +2861,14 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     /** Constructs an exception for recursive calls. */
     private static FactoryException recursiveCall(
             final Class<? extends IdentifiedObject> type, final String code) {
-        return new FactoryException(Errors.format(ErrorKeys.RECURSIVE_CALL_$2, type, code));
+        return new FactoryException(MessageFormat.format(ErrorKeys.RECURSIVE_CALL_$2, type, code));
     }
 
     /** Constructs an exception for a database failure. */
     private static FactoryException databaseFailure(
             final Class<? extends Object> type, final String code, final SQLException cause) {
         return new FactoryException(
-                Errors.format(ErrorKeys.DATABASE_FAILURE_$2, type, code), cause);
+                MessageFormat.format(ErrorKeys.DATABASE_FAILURE_$2, type, code), cause);
     }
 
     /**
@@ -3121,7 +3129,8 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 parameters.ppm = value;
                 break;
             default:
-                throw new FactoryException(Errors.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, code));
+                throw new FactoryException(
+                        MessageFormat.format(ErrorKeys.UNEXPECTED_PARAMETER_$1, code));
         }
     }
 

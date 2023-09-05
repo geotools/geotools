@@ -17,15 +17,15 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.geometry.Envelope;
 
 /** Default granule handling */
 public class DefaultGranuleHandler implements GranuleHandler {
@@ -55,7 +55,7 @@ public class DefaultGranuleHandler implements GranuleHandler {
                     inputFeatureType,
                     mosaicConfiguration);
         } else {
-            Envelope coverageEnvelope = inputReader.getOriginalEnvelope();
+            Bounds coverageEnvelope = inputReader.getOriginalEnvelope();
             targetFeature.setAttribute(
                     targetFeatureType.getGeometryDescriptor().getLocalName(),
                     GEOM_FACTORY.toGeometry(new ReferencedEnvelope(coverageEnvelope)));

@@ -24,7 +24,7 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.swing.dialog.JTextReporter;
@@ -102,7 +102,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      */
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
-        DirectPosition2D pos = ev.getWorldPos();
+        Position2D pos = ev.getWorldPos();
         createReporter();
         report(pos);
 
@@ -175,7 +175,7 @@ public class InfoTool extends CursorTool implements TextReporterListener {
      *
      * @param pos mouse click position in world coordinates
      */
-    private void report(DirectPosition2D pos) {
+    private void report(Position2D pos) {
         textReporterConnection.append(String.format("Pos x=%.4f y=%.4f\n", pos.x, pos.y));
     }
 

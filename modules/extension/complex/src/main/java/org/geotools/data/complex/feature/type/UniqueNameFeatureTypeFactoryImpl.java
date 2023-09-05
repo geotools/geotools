@@ -19,15 +19,15 @@ package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.List;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.util.InternationalString;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.util.InternationalString;
 
 /**
  * A specialisation of {@link FeatureTypeFactoryImpl} that returns {@link UniqueNameFeatureTypeImpl}
@@ -47,10 +47,10 @@ public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
      * FeatureTypeImpl}.
      *
      * @see
-     *     org.geotools.feature.type.FeatureTypeFactoryImpl#createFeatureType(org.opengis.feature.type.Name,
-     *     java.util.Collection, org.opengis.feature.type.GeometryDescriptor, boolean,
-     *     java.util.List, org.opengis.feature.type.AttributeType,
-     *     org.opengis.util.InternationalString)
+     *     org.geotools.feature.type.FeatureTypeFactoryImpl#createFeatureType(org.geotools.api.feature.type.Name,
+     *     java.util.Collection, org.geotools.api.feature.type.GeometryDescriptor, boolean,
+     *     java.util.List, org.geotools.api.feature.type.AttributeType,
+     *     org.geotools.api.util.InternationalString)
      */
     @Override
     public FeatureType createFeatureType(

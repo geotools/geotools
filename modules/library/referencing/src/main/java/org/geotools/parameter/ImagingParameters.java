@@ -18,6 +18,7 @@ package org.geotools.parameter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -29,19 +30,18 @@ import javax.media.jai.ParameterList;
 import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.ParameterListImpl;
 import javax.media.jai.util.Range;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterNameException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterNameException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * Wraps a JAI's {@link ParameterList}. Any change to a {@linkplain #parameter parameter value} in
@@ -72,7 +72,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
      * ParameterBlockJAI}. The {@linkplain ParameterBlockJAI#getSources sources} must be handled
      * separatly, because the source type for a JAI operator (typically {@link
      * java.awt.image.RenderedImage}) is not the same than the source type for a coverage operation
-     * (typically {@link org.opengis.coverage.GridCoverage}).
+     * (typically {@link org.geotools.api.coverage.GridCoverage}).
      */
     public final ParameterList parameters;
 
@@ -231,13 +231,10 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
                 if (i != j) {
                     final ParameterDescriptor d = (ParameterDescriptor) values[i].getDescriptor();
                     if (AbstractIdentifiedObject.nameMatches(d, name)) {
+                        final Object arg0 = d.getName().getCode();
                         throw new InvalidParameterNameException(
-                                Errors.format(
-                                        ErrorKeys.PARAMETER_NAME_CLASH_$4,
-                                        d.getName().getCode(),
-                                        j,
-                                        name,
-                                        i),
+                                MessageFormat.format(
+                                        ErrorKeys.PARAMETER_NAME_CLASH_$4, arg0, j, name, i),
                                 name);
                     }
                 }
@@ -291,7 +288,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
             }
         }
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /**
@@ -301,7 +298,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     @Override
     public List<ParameterValueGroup> groups(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /**
@@ -311,7 +308,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
     @Override
     public ParameterValueGroup addGroup(final String name) throws ParameterNotFoundException {
         throw new ParameterNotFoundException(
-                Errors.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
+                MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, name), name);
     }
 
     /** Compares the specified object with this parameter group for equality. */

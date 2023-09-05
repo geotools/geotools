@@ -17,7 +17,7 @@
 
 package org.geotools.data.complex.xml;
 
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

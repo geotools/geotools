@@ -28,13 +28,24 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.DerivedCRS;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Projection;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCRSAuthorityFactory;
 import org.geotools.coverage.io.netcdf.crs.NetCDFCoordinateReferenceSystemType;
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
 import org.geotools.coverage.io.netcdf.crs.ProjectionBuilder;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.CRS;
@@ -51,17 +62,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.DerivedCRS;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Projection;
 
 /**
  * Testing NetCDF Projection management machinery
@@ -375,8 +375,8 @@ public class NetCDFCRSTest {
             assertEquals(names[0], "sample1");
             assertEquals(names[1], "sample2");
 
-            GeneralEnvelope envelope1 = reader.getOriginalEnvelope("sample1");
-            GeneralEnvelope envelope2 = reader.getOriginalEnvelope("sample2");
+            GeneralBounds envelope1 = reader.getOriginalEnvelope("sample1");
+            GeneralBounds envelope2 = reader.getOriginalEnvelope("sample2");
 
             // Check the envelopes are different
             assertEquals(52000, envelope1.getMinimum(0), DELTA);
@@ -430,8 +430,8 @@ public class NetCDFCRSTest {
             assertEquals(names[0], "sample1");
             assertEquals(names[1], "sample2");
 
-            GeneralEnvelope envelope1 = reader.getOriginalEnvelope("sample1");
-            GeneralEnvelope envelope2 = reader.getOriginalEnvelope("sample2");
+            GeneralBounds envelope1 = reader.getOriginalEnvelope("sample1");
+            GeneralBounds envelope2 = reader.getOriginalEnvelope("sample2");
 
             // Check the envelopes are different
             assertEquals(52000, envelope1.getMinimum(0), DELTA);
@@ -500,7 +500,7 @@ public class NetCDFCRSTest {
         assertEquals(CUSTOM_EPSG_KM, crs.getIdentifiers().iterator().next().getCode());
         assertTrue(
                 "km".equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
-        GeneralEnvelope originalEnvelope =
+        GeneralBounds originalEnvelope =
                 reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
         assertEquals(COORDINATE_IN_KM, originalEnvelope.getMaximum(0), DELTA);
     }
@@ -518,7 +518,7 @@ public class NetCDFCRSTest {
                 reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
         assertEquals(CUSTOM_EPSG_M, crs.getIdentifiers().iterator().next().getCode());
         assertTrue("m".equalsIgnoreCase(crs.getCoordinateSystem().getAxis(0).getUnit().toString()));
-        GeneralEnvelope originalEnvelope =
+        GeneralBounds originalEnvelope =
                 reader.getOriginalEnvelope(reader.getGridCoverageNames()[0]);
         assertEquals(COORDINATE_IN_METERS, originalEnvelope.getMaximum(0), DELTA);
     }

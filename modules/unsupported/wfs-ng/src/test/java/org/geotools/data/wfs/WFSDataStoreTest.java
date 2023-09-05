@@ -36,6 +36,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.DescribeFeatureTypeResponse;
@@ -45,8 +47,6 @@ import org.geotools.feature.NameImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.Name;
 
 public class WFSDataStoreTest {
 

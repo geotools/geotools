@@ -32,9 +32,9 @@ import static java.lang.Math.tan;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Mercator Cylindrical Projection. The parallels and the meridians are straight lines and cross at

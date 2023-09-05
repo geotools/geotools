@@ -23,6 +23,7 @@ import java.awt.RenderingHints;
 import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,6 +41,20 @@ import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.coverage.Coverage;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -48,7 +63,6 @@ import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.CRS;
@@ -60,20 +74,6 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.Coverage;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.InternationalString;
 
 /**
  * Wraps a JAI's {@link OperationDescriptor} for interoperability with <A
@@ -206,7 +206,8 @@ public class OperationJAI extends Operation2D {
             return operation;
         }
 
-        throw new OperationNotFoundException(Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+        throw new OperationNotFoundException(
+                MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
     }
 
     /** Ensures that the specified class is assignable to {@link RenderedImage}. */
@@ -281,7 +282,7 @@ public class OperationJAI extends Operation2D {
         resampleToCommonGeometry(sources, null, null, hints);
         GridCoverage2D coverage = sources[PRIMARY_SOURCE_INDEX];
         final CoordinateReferenceSystem crs = coverage.getCoordinateReferenceSystem2D();
-        // TODO: remove the cast when we will be allowed to compile for J2SE 1.5.
+
         final MathTransform2D gridToCRS = coverage.getGridGeometry().getGridToCRS2D();
         for (int i = 0; i < sources.length; i++) {
             if (sources[i] == null) {
@@ -291,8 +292,7 @@ public class OperationJAI extends Operation2D {
             if (!CRS.equalsIgnoreMetadata(crs, source.getCoordinateReferenceSystem2D())
                     || !CRS.equalsIgnoreMetadata(
                             gridToCRS, source.getGridGeometry().getGridToCRS2D())) {
-                throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY));
+                throw new IllegalArgumentException(ErrorKeys.INCOMPATIBLE_GRID_GEOMETRY);
             }
             block.setSource(source.getRenderedImage(), i);
         }
@@ -521,9 +521,9 @@ public class OperationJAI extends Operation2D {
                         toTarget = factory.createConcatenatedTransform(toTarget, step);
                     }
                 } catch (FactoryException exception) {
+                    final Object arg0 = source.getName();
                     throw new CannotReprojectException(
-                            Errors.format(ErrorKeys.CANT_REPROJECT_$1, source.getName()),
-                            exception);
+                            MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, arg0), exception);
                 }
             }
             final GridGeometry2D targetGeom = new GridGeometry2D(null, toTarget, targetCRS);

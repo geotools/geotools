@@ -25,6 +25,10 @@ import java.util.Properties;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.referencing.CRS;
@@ -33,10 +37,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 /** @author Richard Gould */
 public abstract class AbstractGetMapRequest extends AbstractWMSRequest implements GetMapRequest {
@@ -240,13 +240,13 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
     }
     /** Sets BBOX and SRS using the provided Envelope. */
     @Override
-    public void setBBox(Envelope envelope) {
+    public void setBBox(Bounds envelope) {
         String version = properties.getProperty(VERSION);
         boolean forceXY = version == null || !version.startsWith("1.3");
         String srsName = CRS.toSRS(envelope.getCoordinateReferenceSystem());
 
         CoordinateReferenceSystem crs = toServerCRS(srsName, forceXY);
-        Envelope bbox;
+        Bounds bbox;
         try {
             bbox = CRS.transform(envelope, crs);
         } catch (TransformException e) {

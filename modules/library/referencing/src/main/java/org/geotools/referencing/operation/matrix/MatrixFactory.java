@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.operation.matrix;
 
-import org.opengis.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.Matrix;
 
 /**
  * Static utility methods for creating matrix. This factory selects one of the {@link Matrix1},
@@ -58,11 +58,11 @@ public final class MatrixFactory {
      * diagonal <var>j==i</var> are set to 1.
      *
      * @param numRow For an affine transform, this is the number of {@linkplain
-     *     org.opengis.referencing.operation.MathTransform#getTargetDimensions target dimensions} +
-     *     1.
+     *     org.geotools.api.referencing.operation.MathTransform#getTargetDimensions target
+     *     dimensions} + 1.
      * @param numCol For an affine transform, this is the number of {@linkplain
-     *     org.opengis.referencing.operation.MathTransform#getSourceDimensions source dimensions} +
-     *     1.
+     *     org.geotools.api.referencing.operation.MathTransform#getSourceDimensions source
+     *     dimensions} + 1.
      * @return An identity matrix of the given size.
      */
     public static XMatrix create(final int numRow, final int numCol) {

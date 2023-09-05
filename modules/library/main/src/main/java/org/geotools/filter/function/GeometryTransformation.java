@@ -16,13 +16,12 @@
  */
 package org.geotools.filter.function;
 
+import org.geotools.api.filter.expression.Function;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Symbolizer;
-import org.opengis.filter.expression.Function;
 
 /**
  * This interface can be implemented by geometry transformation functions that whish to be used in
- * the {@link Symbolizer} geometry property.
+ * the {@link } geometry property.
  *
  * <p>It gives the renderer a hint of what area should be queried given a certain rendering area
  *

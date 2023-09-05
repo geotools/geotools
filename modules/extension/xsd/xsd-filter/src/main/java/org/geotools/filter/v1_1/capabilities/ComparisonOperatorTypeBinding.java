@@ -17,12 +17,12 @@
 package org.geotools.filter.v1_1.capabilities;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.Operator;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.Binding;
 import org.geotools.xsd.InstanceComponent;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.capability.Operator;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:ComparisonOperatorType.

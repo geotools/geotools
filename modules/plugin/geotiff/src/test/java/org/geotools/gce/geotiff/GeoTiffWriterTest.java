@@ -31,6 +31,19 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -43,7 +56,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.T
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
@@ -56,19 +69,6 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.InternationalString;
-import org.opengis.util.ProgressListener;
 
 /** @author Simone Giannecchini */
 public class GeoTiffWriterTest extends Assert {
@@ -171,7 +171,7 @@ public class GeoTiffWriterTest extends Assert {
                             .toString());
         }
         final CoordinateReferenceSystem sourceCRS = gc.getCoordinateReferenceSystem2D();
-        final GeneralEnvelope sourceEnvelope = (GeneralEnvelope) gc.getEnvelope();
+        final GeneralBounds sourceEnvelope = (GeneralBounds) gc.getEnvelope();
         final GridGeometry2D sourcedGG = gc.getGridGeometry();
         final MathTransform sourceG2W = sourcedGG.getGridToCRS(PixelInCell.CELL_CENTER);
 
@@ -192,8 +192,8 @@ public class GeoTiffWriterTest extends Assert {
         double yc = sourceEnvelope.getMedian(1);
         double xl = sourceEnvelope.getSpan(0);
         double yl = sourceEnvelope.getSpan(1);
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {xc - xl / 4.0, yc - yl / 4.0},
                         new double[] {xc + xl / 4.0, yc + yl / 4.0});
         final CoverageProcessor processor = CoverageProcessor.getInstance();
@@ -211,7 +211,7 @@ public class GeoTiffWriterTest extends Assert {
         final GridGeometry2D croppedGG = cropped.getGridGeometry();
         final GridEnvelope croppedGR = croppedGG.getGridRange();
         final MathTransform croppedG2W = croppedGG.getGridToCRS(PixelInCell.CELL_CENTER);
-        final GeneralEnvelope croppedEnvelope = (GeneralEnvelope) cropped.getEnvelope();
+        final GeneralBounds croppedEnvelope = (GeneralBounds) cropped.getEnvelope();
         assertEquals("min x do not match after crop", 29, croppedGR.getLow(0));
         assertEquals("min y do not match after crop", 30, croppedGR.getLow(1));
         assertEquals("max x do not match after crop", 90, croppedGR.getHigh(0) + 1);
@@ -223,8 +223,8 @@ public class GeoTiffWriterTest extends Assert {
                 sourceG2W,
                 croppedG2W);
         // check that the envelope is correct
-        final GeneralEnvelope expectedEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds expectedEnvelope =
+                new GeneralBounds(
                         croppedGR,
                         PixelInCell.CELL_CENTER,
                         croppedG2W,
@@ -347,9 +347,12 @@ public class GeoTiffWriterTest extends Assert {
         // check coverage and crs
         assertNotNull(coverageMercator);
         assertNotNull(coverageMercator.getCoordinateReferenceSystem());
-        assertTrue(CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), googleCRS));
-        assertEquals(
-                coverage.getEnvelope2D().getFrame(), coverageMercator.getEnvelope2D().getFrame());
+        assertTrue(
+                "crs check",
+                CRS.equalsIgnoreMetadata(coverage.getCoordinateReferenceSystem(), googleCRS));
+        assertTrue(
+                "envelope values check",
+                coverage.getEnvelope2D().boundsEquals2D(coverageMercator.getEnvelope2D(), 0.0));
         reader.dispose();
         coverage.dispose(true);
         coverage.dispose(true);
@@ -595,7 +598,7 @@ public class GeoTiffWriterTest extends Assert {
         // switching axes
         final CoordinateReferenceSystem latLon4267 = CRS.decode("EPSG:4267");
         assertEquals(CRS.getAxisOrder(latLon4267), AxisOrder.NORTH_EAST);
-        final GeneralEnvelope envelope = CRS.transform(coverage.getEnvelope(), latLon4267);
+        final GeneralBounds envelope = CRS.transform(coverage.getEnvelope(), latLon4267);
         envelope.setCoordinateReferenceSystem(latLon4267);
 
         coverage =
@@ -618,7 +621,7 @@ public class GeoTiffWriterTest extends Assert {
         assertEquals(ri.getWidth(), 120);
         assertEquals(ri.getHeight(), 121);
         assertTrue(
-                ((GeneralEnvelope) gc.getEnvelope())
+                ((GeneralBounds) gc.getEnvelope())
                         .equals(
                                 coverage.getEnvelope(),
                                 XAffineTransform.getScaleX0(g2w) * 1E-1,

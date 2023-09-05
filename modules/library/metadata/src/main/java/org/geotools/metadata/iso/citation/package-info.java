@@ -16,7 +16,7 @@
  */
 /**
  * {@linkplain org.geotools.metadata.iso.citation.CitationImpl Citation} implementation. An
- * explanation for this package is provided in the {@linkplain org.opengis.metadata.citation
+ * explanation for this package is provided in the {@linkplain org.geotools.api.metadata.citation
  * OpenGIS&reg; javadoc}. The remaining discussion on this page is specific to the Geotools
  * implementation.
  */

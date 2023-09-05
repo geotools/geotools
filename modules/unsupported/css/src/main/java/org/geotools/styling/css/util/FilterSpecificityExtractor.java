@@ -18,13 +18,13 @@ package org.geotools.styling.css.util;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_property;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.expression.VolatileFunction;
 
 /**
  * A subclass of {@link FilterAttributeExtractor} that computes a specificity score for the filter.
@@ -42,7 +42,7 @@ public class FilterSpecificityExtractor extends DefaultFilterVisitor {
     }
 
     @Override
-    public Object visit(org.opengis.filter.expression.Function expression, Object data) {
+    public Object visit(org.geotools.api.filter.expression.Function expression, Object data) {
         super.visit(expression, data);
         if (expression instanceof VolatileFunction) {
             // the volatile function is assumed to be the same as a property, since it returns

@@ -28,14 +28,17 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.ows.AbstractOpenWebService;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesResponse;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
@@ -56,8 +59,6 @@ import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.xml.XMLHandlerHints;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WebMapServer is a class representing a WMS. It is used to access the Capabilities document and
@@ -205,7 +206,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
 
         LayerInfo(Layer layer) {
             this.layer = layer;
-            org.opengis.geometry.Envelope env = null;
+            Bounds env = null;
             CoordinateReferenceSystem crs = null;
 
             if (layer.getBoundingBoxes().isEmpty()) {
@@ -609,7 +610,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      *
      * @return an Envelope containing a valid bounding box, or null if none are found
      */
-    public GeneralEnvelope getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
+    public GeneralBounds getEnvelope(Layer layer, CoordinateReferenceSystem crs) {
         return layer.getEnvelope(crs);
     }
 }

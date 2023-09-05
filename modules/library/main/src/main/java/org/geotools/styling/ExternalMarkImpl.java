@@ -17,15 +17,15 @@
 package org.geotools.styling;
 
 import javax.swing.Icon;
-import org.opengis.metadata.citation.OnLineResource;
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.metadata.citation.OnLineResource;
+import org.geotools.api.style.TraversingStyleVisitor;
 
 /**
  * Default implementation of ExternalMark.
  *
  * @version $Id$
  */
-public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
+public class ExternalMarkImpl implements org.geotools.api.style.ExternalMark {
 
     private OnLineResource onlineResource;
     private Icon inlineContent;
@@ -69,7 +69,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
     }
 
     @Override
-    public Object accept(StyleVisitor visitor, Object extraData) {
+    public Object accept(TraversingStyleVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
 
@@ -93,7 +93,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
         this.onlineResource = resource;
     }
 
-    static ExternalMarkImpl cast(org.opengis.style.ExternalMark mark) {
+    static ExternalMarkImpl cast(org.geotools.api.style.ExternalMark mark) {
         if (mark == null) {
             return null;
         } else if (mark instanceof ExternalMarkImpl) {

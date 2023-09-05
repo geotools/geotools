@@ -66,6 +66,22 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -76,16 +92,14 @@ import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
-import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.DecoratingDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.image.util.ImageUtilities;
@@ -104,20 +118,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /** Testing whether a simple mosaic correctly has its elements reprojected */
 public class HeterogenousCRSTest {
@@ -655,7 +655,7 @@ public class HeterogenousCRSTest {
 
         // getting the expected bounds (more or less)
         double EPS = 0.5d / 110; // pixel size is 1km, use half a pixel tolerance
-        GeneralEnvelope envelope = imReader.getOriginalEnvelope();
+        GeneralBounds envelope = imReader.getOriginalEnvelope();
 
         assertEquals(expected.getMinX(), envelope.getMinimum(0), EPS);
         assertEquals(expected.getMaxX(), envelope.getMaximum(0), EPS);
@@ -858,8 +858,8 @@ public class HeterogenousCRSTest {
 
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         CoordinateReferenceSystem utmZone32N = CRS.decode("EPSG:32632", true);
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {150000, 600000}, new double[] {850000, 1200000});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {150000, 600000}, new double[] {850000, 1200000});
         envelope.setCoordinateReferenceSystem(utmZone32N);
         GridEnvelope2D gridRange = new GridEnvelope2D(0, 0, 700, 600);
 
@@ -1099,7 +1099,7 @@ public class HeterogenousCRSTest {
         assertThat(dryRunQuery.getFilter(), Matchers.instanceOf(BBOX.class));
         // data access query, also attribute filtering and sorting present
         Query dataQuery = queries.get(size - 2);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         assertArrayEquals(
                 new SortBy[] {ff.sort("crs", SortOrder.ASCENDING)}, dataQuery.getSortBy());
         assertThat(dataQuery.getFilter(), Matchers.instanceOf(And.class));

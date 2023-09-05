@@ -147,7 +147,7 @@ You can connect to a Web Feature Server via the DataStore API; the connection pa
   String geomName = schema.getDefaultGeometry().getLocalName();
   Envelope bbox = new Envelope( -100.0, -70, 25, 40 );
   
-  FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2( GeoTools.getDefaultHints() );
+  FilterFactory ff = CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() );
   Object polygon = JTS.toGeometry( bbox );
   Intersects filter = ff.intersects( ff.property( geomName ), ff.literal( polygon ) );
   

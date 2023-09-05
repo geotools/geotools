@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.metadata.citation.Citation;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.junit.Test;
-import org.opengis.metadata.citation.Citation;
 
 /**
  * Tests the {@link MetadataStandard} class.

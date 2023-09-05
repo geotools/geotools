@@ -17,13 +17,13 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDLineSymbolizerBinding;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Binding object for the element http://www.opengis.net/se:LineSymbolizer.

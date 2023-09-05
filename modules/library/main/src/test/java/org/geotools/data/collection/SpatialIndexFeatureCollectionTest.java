@@ -21,6 +21,10 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
@@ -32,20 +36,16 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 /** @author ian */
 public class SpatialIndexFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
     private static final Logger LOGGER = Logger.getLogger("SpatialIndexFeatureCollectionTest");
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Test method for {@link
-     * org.geotools.data.collection.SpatialIndexFeatureCollection#subCollection(org.opengis.filter.Filter)}.
+     * org.geotools.data.collection.SpatialIndexFeatureCollection#subCollection(org.geotools.api.filter.Filter)}.
      */
     @Test
     public void testSimpleSubCollection() {

@@ -19,10 +19,10 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import org.geotools.api.filter.expression.Function;
 import org.junit.Test;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.expression.Function;
 
 public class GeometryFunctionTest extends FunctionTestSupport {
 

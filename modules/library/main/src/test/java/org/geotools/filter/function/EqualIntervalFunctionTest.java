@@ -21,6 +21,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,23 +35,18 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 /** @author James */
 public class EqualIntervalFunctionTest extends FunctionTestSupport {
 
-    private static final org.opengis.filter.FilterFactory ff =
+    private static final org.geotools.api.filter.FilterFactory ff =
             CommonFactoryFinder.getFilterFactory(null);
 
     /** Test of getName method, of class org.geotools.filter.functions.EqualIntervalFunction. */
     @Test
     public void testInstance() {
         Function equInt =
-                ff.function("EqualInterval", org.opengis.filter.expression.Expression.NIL);
+                ff.function("EqualInterval", org.geotools.api.filter.expression.Expression.NIL);
         assertNotNull(equInt);
         assertEquals("test get name", "EqualInterval", equInt.getName());
     }
@@ -102,7 +102,7 @@ public class EqualIntervalFunctionTest extends FunctionTestSupport {
     /** FIXME: Please for the love on binpop */
     @Test
     public void testEvaulateWithStrings() throws Exception {
-        org.opengis.filter.expression.Expression function =
+        org.geotools.api.filter.expression.Expression function =
                 ff.function("EqualInterval", ff.property("group"), ff.literal(5));
         Classifier classifier = (Classifier) function.evaluate(featureCollection);
         assertNotNull(classifier);

@@ -23,24 +23,24 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Set;
-import org.geotools.data.DataAccess;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
-import org.geotools.data.ResourceInfo;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCFeatureSource;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
 
 /**
  * A FeatureSource that uses a {@linkplain org.geotools.data.complex.FeatureTypeMapping} to perform
@@ -213,14 +213,14 @@ public class MappingFeatureSource implements FeatureSource<FeatureType, Feature>
     /**
      * Not a supported operation.
      *
-     * @see org.geotools.data.FeatureSource#getSupportedHints()
+     * @see FeatureSource#getSupportedHints()
      */
     @Override
     public Set<RenderingHints.Key> getSupportedHints() {
         return Collections.emptySet();
     }
 
-    /** @see org.geotools.data.FeatureSource#getQueryCapabilities() */
+    /** @see FeatureSource#getQueryCapabilities() */
     @Override
     public QueryCapabilities getQueryCapabilities() {
         return mapping.getSource().getQueryCapabilities();

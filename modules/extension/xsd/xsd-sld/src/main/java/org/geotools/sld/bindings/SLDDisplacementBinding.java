@@ -17,12 +17,12 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.StyleFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -22,13 +22,16 @@ package org.geotools.xml.styling;
  */
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.Stroke;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.Stroke;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.ComplexType;
@@ -48,9 +51,6 @@ import org.geotools.xml.styling.sldComplexTypes2._OnlineResource;
 import org.geotools.xml.styling.sldComplexTypes2._PointPlacement;
 import org.geotools.xml.styling.sldComplexTypes2._PolygonSymbolizer;
 import org.geotools.xml.styling.sldComplexTypes2._Rule;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.ContrastMethod;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -224,7 +224,7 @@ public class sldComplexTypes {
                     symbol.setMethod(ContrastMethod.HISTOGRAM); // (Graphic)value[i].getValue()
 
                 if (elems[GAMMAVALUE].getName().equals(e.getName())) {
-                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                    FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                     symbol.setGammaValue(
                             ff.literal(((Double) elementValue.getValue()).doubleValue()));
                 }

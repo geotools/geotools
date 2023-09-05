@@ -22,12 +22,12 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.renderer.style.ExternalGraphicFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.eastwood.ChartEngine;
 import org.jfree.eastwood.Parameters;
-import org.opengis.feature.Feature;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Parses Google charts like requests into various kinds of charts.

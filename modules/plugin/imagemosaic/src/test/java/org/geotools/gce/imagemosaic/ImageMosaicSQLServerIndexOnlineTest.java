@@ -39,26 +39,26 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 import org.apache.commons.io.FileUtils;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.util.FeatureUtilities;
-import org.geotools.data.Query;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.sqlserver.SQLServerDatastoreWrapper;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.test.TestData;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
 
 /** Testing using a SQLServer database for storing the index for the ImageMosaic */
 public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
@@ -189,7 +189,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             // limit yourself to reading just a bit of it
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+            final GeneralBounds envelope = reader.getOriginalEnvelope();
             final Dimension dim = new Dimension();
             dim.setSize(
                     reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -499,7 +499,7 @@ public class ImageMosaicSQLServerIndexOnlineTest extends OnlineTestCase {
             // limit yourself to reading just a bit of it
             final ParameterValue<GridGeometry2D> gg =
                     AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-            final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+            final GeneralBounds envelope = reader.getOriginalEnvelope();
             final Dimension dim = new Dimension();
             dim.setSize(
                     reader.getOriginalGridRange().getSpan(0) / 2.0,

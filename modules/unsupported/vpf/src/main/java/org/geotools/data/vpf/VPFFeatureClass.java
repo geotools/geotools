@@ -36,6 +36,17 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.InternationalString;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.readers.AreaGeometryFactory;
@@ -51,17 +62,6 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AnnotationFeatureType;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.InternationalString;
 
 /**
  * A VPF feature class. Note that feature classes may contain one or more feature types. However,
@@ -737,17 +737,17 @@ public class VPFFeatureClass implements SimpleFeatureType {
     }
 
     @Override
-    public org.opengis.feature.type.AttributeType getType(Name name) {
+    public org.geotools.api.feature.type.AttributeType getType(Name name) {
         return featureType.getType(name);
     }
 
     @Override
-    public org.opengis.feature.type.AttributeType getType(String name) {
+    public org.geotools.api.feature.type.AttributeType getType(String name) {
         return featureType.getType(name);
     }
 
     @Override
-    public org.opengis.feature.type.AttributeType getType(int index) {
+    public org.geotools.api.feature.type.AttributeType getType(int index) {
         return featureType.getType(index);
     }
 
@@ -782,7 +782,7 @@ public class VPFFeatureClass implements SimpleFeatureType {
     }
 
     @Override
-    public org.opengis.feature.type.AttributeType getSuper() {
+    public org.geotools.api.feature.type.AttributeType getSuper() {
         return featureType.getSuper();
     }
 

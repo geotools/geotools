@@ -17,7 +17,7 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Graphic;
+import org.geotools.api.style.Graphic;
 
 /** Encodes a {@link Graphic} as YSLD. */
 public class GraphicEncoder extends YsldEncodeHandler<Graphic> {

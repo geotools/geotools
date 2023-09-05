@@ -21,10 +21,10 @@ package org.geotools.referencing;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.referencing.ReferenceSystem;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.Utilities;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.referencing.ReferenceSystem;
-import org.opengis.util.InternationalString;
 
 /**
  * Description of a spatial and temporal reference system used by a dataset.

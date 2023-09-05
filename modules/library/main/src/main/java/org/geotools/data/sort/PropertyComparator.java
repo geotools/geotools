@@ -16,7 +16,7 @@
  */
 package org.geotools.data.sort;
 
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * Compares two feature based on an attribute value

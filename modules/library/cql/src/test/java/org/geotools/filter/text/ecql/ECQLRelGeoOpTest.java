@@ -17,6 +17,12 @@
 
 package org.geotools.filter.text.ecql;
 
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.FilterFunction_buffer;
 import org.geotools.filter.text.commons.CompilerUtil;
@@ -25,12 +31,6 @@ import org.geotools.filter.text.cql2.CQLRelGeoOpTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.DistanceBufferOperator;
 
 /**
  * Relation geo operation

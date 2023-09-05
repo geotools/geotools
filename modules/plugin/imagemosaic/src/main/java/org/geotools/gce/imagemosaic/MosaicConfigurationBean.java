@@ -22,11 +22,11 @@ import java.awt.image.SampleModel;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import org.apache.commons.beanutils.BeanUtils;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Utilities;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Very simple bean to hold the configuration of the mosaic.

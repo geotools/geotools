@@ -21,15 +21,15 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.MultiValuedFilter.MatchAction;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Unit test for LiteralDemultiplyingFilter.
@@ -38,7 +38,7 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class LiteralDemultiplyingFilterVisitorTest {
 
-    static final FilterFactory2 fac = CommonFactoryFinder.getFilterFactory2(null);
+    static final FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testBinaryComparisonFilter() throws IllegalFilterException {

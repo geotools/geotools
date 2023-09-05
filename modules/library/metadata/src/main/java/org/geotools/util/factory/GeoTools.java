@@ -30,6 +30,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -54,7 +55,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 import javax.xml.parsers.SAXParser;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Arguments;
 import org.geotools.util.Classes;
 import org.geotools.util.NullEntityResolver;
@@ -261,8 +261,8 @@ public final class GeoTools {
      * assigned to the {@link Hints#ENCODE_EWKT} hint.
      *
      * <p>This setting specifies if geometries with {@link
-     * org.opengis.referencing.crs.CoordinateReferenceSystem} in the user data shall be encoded as
-     * EWKT or not.
+     * org.geotools.api.referencing.crs.CoordinateReferenceSystem} in the user data shall be encoded
+     * as EWKT or not.
      *
      * @see Hints#ENCODE_EWKT
      * @see #getDefaultHints
@@ -372,7 +372,7 @@ public final class GeoTools {
         final RenderingHints.Key old = bindings.putIfAbsent(property, key);
         if (old != null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "property", property));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "property", property));
         }
     }
 

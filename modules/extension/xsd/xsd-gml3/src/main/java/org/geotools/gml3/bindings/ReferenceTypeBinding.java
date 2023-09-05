@@ -17,12 +17,12 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.Property;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.Property;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

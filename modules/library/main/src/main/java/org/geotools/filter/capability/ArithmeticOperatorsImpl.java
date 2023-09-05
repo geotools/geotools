@@ -16,8 +16,8 @@
  */
 package org.geotools.filter.capability;
 
-import org.opengis.filter.capability.ArithmeticOperators;
-import org.opengis.filter.capability.Functions;
+import org.geotools.api.filter.capability.ArithmeticOperators;
+import org.geotools.api.filter.capability.Functions;
 
 /**
  * Implementation of the ArithmeticOperators interface.

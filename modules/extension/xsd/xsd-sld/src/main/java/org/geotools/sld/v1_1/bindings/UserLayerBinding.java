@@ -16,14 +16,14 @@
  */
 package org.geotools.sld.v1_1.bindings;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.UserLayer;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.UserLayer;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:UserLayer.

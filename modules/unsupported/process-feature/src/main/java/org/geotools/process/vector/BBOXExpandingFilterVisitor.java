@@ -17,10 +17,10 @@
  */
 package org.geotools.process.vector;
 
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.BBOX;
 
 /**
  * A {@link DuplicatingFilterVisitor} which expands the {@link BBOX} of the filter by given

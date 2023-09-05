@@ -56,5 +56,5 @@ The format of that pyramid.properties file is magic, while we can look at the ja
   LevelsNum=6
   
   #envelope for this pyramid
-  Envelope2D=13.398228477973406,43.591366397808976 13.537912459169803,43.67121274528585
+  GeneralBounds=13.398228477973406,43.591366397808976 13.537912459169803,43.67121274528585
   

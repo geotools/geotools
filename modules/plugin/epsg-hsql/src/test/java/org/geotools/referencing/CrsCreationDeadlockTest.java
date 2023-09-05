@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
 import org.junit.Test;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
 
 public class CrsCreationDeadlockTest {
 

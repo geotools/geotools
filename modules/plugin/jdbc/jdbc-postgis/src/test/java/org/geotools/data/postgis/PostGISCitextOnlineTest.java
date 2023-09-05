@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.sql.DataSource;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 
 public class PostGISCitextOnlineTest extends JDBCTestSupport {
 

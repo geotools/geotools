@@ -25,15 +25,17 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.FileResourceInfo;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
 import org.geotools.coverage.util.FeatureUtilities;
-import org.geotools.data.CloseableIterator;
 import org.geotools.data.DefaultResourceInfo;
-import org.geotools.data.FileResourceInfo;
-import org.geotools.data.Query;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -41,8 +43,6 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.URLs;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
 
 /** {@link FileResourceInfo} implementation for NetCDF. */
 class NetCDFFileResourceInfo extends DefaultResourceInfo implements FileResourceInfo {

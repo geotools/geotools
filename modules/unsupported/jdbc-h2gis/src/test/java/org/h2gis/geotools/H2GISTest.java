@@ -31,12 +31,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.GeometryType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
@@ -65,18 +76,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Erwan Bocher */
 class H2GISTest extends H2GISTestSetup {
@@ -259,7 +258,7 @@ class H2GISTest extends H2GISTestSetup {
 
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
         SimpleFeatureCollection features = fs.getFeatures(Filter.INCLUDE);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function sum = ff.function("Collection_Sum", ff.property("FID"));
         Object value = sum.evaluate(features);
         assertEquals(6L, value);
@@ -279,7 +278,7 @@ class H2GISTest extends H2GISTestSetup {
         SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
         Filter filter = CQL.toFilter("FID >2");
         SimpleFeatureCollection features = fs.getFeatures(filter);
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function sum = ff.function("Collection_Sum", ff.property("FID"));
         Object value = sum.evaluate(features);
         assertEquals(3L, value);
@@ -330,7 +329,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(1, 'Green Forest', 'POINT(5 5)');"
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POINT(200 220)');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POINT(90 130)');");
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Intersects is =
                 ff.intersects(ff.property("THE_GEOM"), ff.literal(wKTReader.read("POINT(5 5)")));
         FeatureCollection<?, ?> fc = ds.getFeatureSource("LANDCOVER").getFeatures(is);

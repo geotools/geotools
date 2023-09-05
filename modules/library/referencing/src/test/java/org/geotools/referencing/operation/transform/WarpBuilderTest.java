@@ -22,25 +22,25 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.OperationNotFoundException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.OperationNotFoundException;
-import org.opengis.referencing.operation.TransformException;
 
 public class WarpBuilderTest {
     @BeforeClass
@@ -56,22 +56,22 @@ public class WarpBuilderTest {
                 CRS.parseWKT(
                         "PROJCS[\"WGS 84 / UTM zone 32N\",   GEOGCS[\"WGS 84\",     DATUM[\"World Geodetic System 1984\",       SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],       AUTHORITY[\"EPSG\",\"6326\"]],     PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],     UNIT[\"degree\", 0.017453292519943295],     AXIS[\"Geodetic longitude\", EAST],     AXIS[\"Geodetic latitude\", NORTH],     AUTHORITY[\"EPSG\",\"4326\"]],   PROJECTION[\"Transverse_Mercator\", AUTHORITY[\"EPSG\",\"9807\"]],   PARAMETER[\"central_meridian\", 9.0],   PARAMETER[\"latitude_of_origin\", 0.0],   PARAMETER[\"scale_factor\", 0.9996],   PARAMETER[\"false_easting\", 500000.0],   PARAMETER[\"false_northing\", 0.0],   UNIT[\"m\", 1.0],   AXIS[\"Easting\", EAST],   AXIS[\"Northing\", NORTH],   AUTHORITY[\"EPSG\",\"32632\"]]");
         Rectangle screen = new Rectangle(0, 0, 512, 512);
-        GeneralEnvelope env = new GeneralEnvelope(new double[] {9 - 40, 0}, new double[] {9, 40});
+        GeneralBounds env = new GeneralBounds(new double[] {9 - 40, 0}, new double[] {9, 40});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, utm32n, screen, new int[] {32, 32}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {9 - 20, 0}, new double[] {9, 20});
+        env = new GeneralBounds(new double[] {9 - 20, 0}, new double[] {9, 20});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, utm32n, screen, new int[] {8, 16}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {9 - 10, 0}, new double[] {9, 10});
+        env = new GeneralBounds(new double[] {9 - 10, 0}, new double[] {9, 10});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, utm32n, screen, new int[] {4, 8}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {9 - 5, 0}, new double[] {9, 5});
+        env = new GeneralBounds(new double[] {9 - 5, 0}, new double[] {9, 5});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, utm32n, screen, new int[] {2, 2}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {9 - 5, 0}, new double[] {9, 5});
+        env = new GeneralBounds(new double[] {9 - 5, 0}, new double[] {9, 5});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(
-                new GeneralEnvelope(new double[] {9 - 2, 0}, new double[] {9, 2}),
+                new GeneralBounds(new double[] {9 - 2, 0}, new double[] {9, 2}),
                 WGS84,
                 utm32n,
                 screen,
@@ -86,32 +86,32 @@ public class WarpBuilderTest {
                 CRS.parseWKT(
                         "PROJCS[\"WGS 84 / Antarctic Polar Stereographic\",   GEOGCS[\"WGS 84\",     DATUM[\"World Geodetic System 1984\",       SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],       AUTHORITY[\"EPSG\",\"6326\"]],     PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],     UNIT[\"degree\", 0.017453292519943295],     AXIS[\"Geodetic longitude\", EAST],     AXIS[\"Geodetic latitude\", NORTH],     AUTHORITY[\"EPSG\",\"4326\"]],   PROJECTION[\"Polar Stereographic (variant B)\", AUTHORITY[\"EPSG\",\"9829\"]],   PARAMETER[\"central_meridian\", 0.0],   PARAMETER[\"Standard_Parallel_1\", -71.0],   PARAMETER[\"false_easting\", 0.0],   PARAMETER[\"false_northing\", 0.0],   UNIT[\"m\", 1.0],   AXIS[\"Easting\", \"North along 90 deg East\"],   AXIS[\"Northing\", \"North along 0 deg\"],   AUTHORITY[\"EPSG\",\"3031\"]]");
         Rectangle screen = new Rectangle(0, 0, 512, 512);
-        GeneralEnvelope env = new GeneralEnvelope(new double[] {-10, -90}, new double[] {10, -85});
+        GeneralBounds env = new GeneralBounds(new double[] {-10, -90}, new double[] {10, -85});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {16, 16}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {-10, -90}, new double[] {10, -70});
+        env = new GeneralBounds(new double[] {-10, -90}, new double[] {10, -70});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {32, 16}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {-10, -90}, new double[] {10, -45});
+        env = new GeneralBounds(new double[] {-10, -90}, new double[] {10, -45});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {64, 8}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {-10, -90}, new double[] {10, 0});
+        env = new GeneralBounds(new double[] {-10, -90}, new double[] {10, 0});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {128, 8}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {80, -90}, new double[] {110, 0});
+        env = new GeneralBounds(new double[] {80, -90}, new double[] {110, 0});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {32, 32}, new boolean[] {false, true});
-        env = new GeneralEnvelope(new double[] {-110, -90}, new double[] {-80, 0});
+        env = new GeneralBounds(new double[] {-110, -90}, new double[] {-80, 0});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {32, 32}, new boolean[] {false, true});
         // less than a unit, but still valid, and in a place with high deformation
-        env = new GeneralEnvelope(new double[] {-110, -109.1}, new double[] {-80, -79.9});
+        env = new GeneralBounds(new double[] {-110, -109.1}, new double[] {-80, -79.9});
         env.setCoordinateReferenceSystem(WGS84);
         assertRowCols(env, WGS84, polar, screen, new int[] {16, 32}, new boolean[] {false, true});
     }
 
     private void assertRowCols(
-            GeneralEnvelope sourceEnvelope,
+            GeneralBounds sourceEnvelope,
             CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem targetCRS,
             Rectangle screen,
@@ -123,7 +123,7 @@ public class WarpBuilderTest {
                 (MathTransform2D)
                         CRS.findMathTransform(
                                 CRS.getHorizontalCRS(sourceCRS), CRS.getHorizontalCRS(targetCRS));
-        Envelope targetEnvelope = transformEnvelope(sourceEnvelope, targetCRS);
+        Bounds targetEnvelope = transformEnvelope(sourceEnvelope, targetCRS);
 
         AffineTransform at = worldToScreenTransform(targetEnvelope, screen, reverse);
         MathTransform2D screenTransform = new AffineTransform2D(at);
@@ -143,10 +143,10 @@ public class WarpBuilderTest {
     /**/
 
     private AffineTransform worldToScreenTransform(
-            Envelope mapExtent, Rectangle paintArea, boolean[] reverse)
+            Bounds mapExtent, Rectangle paintArea, boolean[] reverse)
             throws NoninvertibleTransformException {
-        GeneralEnvelope gridRange =
-                new GeneralEnvelope(
+        GeneralBounds gridRange =
+                new GeneralBounds(
                         new double[] {0, 0},
                         new double[] {paintArea.getWidth(), paintArea.getHeight()});
         final Matrix matrix = MatrixFactory.create(2 + 1);
@@ -170,25 +170,24 @@ public class WarpBuilderTest {
         return ((AffineTransform) ProjectiveTransform.create(matrix)).createInverse();
     }
 
-    private GeneralEnvelope transformEnvelope(
-            GeneralEnvelope env, CoordinateReferenceSystem targetCRS)
+    private GeneralBounds transformEnvelope(GeneralBounds env, CoordinateReferenceSystem targetCRS)
             throws TransformException, OperationNotFoundException, FactoryException {
         CoordinateOperationFactory coordinateOperationFactory =
                 CRS.getCoordinateOperationFactory(true);
 
         final CoordinateOperation operation =
                 coordinateOperationFactory.createOperation(WGS84, targetCRS);
-        final GeneralEnvelope transformed = CRS.transform(operation, env);
+        final GeneralBounds transformed = CRS.transform(operation, env);
         transformed.setCoordinateReferenceSystem(targetCRS);
         final MathTransform transform = operation.getMathTransform();
-        GeneralEnvelope target = new GeneralEnvelope(transformed);
+        GeneralBounds target = new GeneralBounds(transformed);
         transform(env, target, transform, 5);
         return target;
     }
 
-    private Envelope transform(
-            final GeneralEnvelope sourceEnvelope,
-            GeneralEnvelope targetEnvelope,
+    private Bounds transform(
+            final GeneralBounds sourceEnvelope,
+            GeneralBounds targetEnvelope,
             final MathTransform transform,
             int npoints)
             throws TransformException {
@@ -226,7 +225,7 @@ public class WarpBuilderTest {
         }
 
         for (int t = 0; t < offset; ) {
-            targetEnvelope.add(new DirectPosition2D(coordinates[t++], coordinates[t++]));
+            targetEnvelope.add(new Position2D(coordinates[t++], coordinates[t++]));
         }
 
         return targetEnvelope;

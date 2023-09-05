@@ -27,6 +27,11 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
@@ -35,16 +40,11 @@ import org.geotools.renderer.lite.StreamingRendererTest;
 import org.geotools.renderer.style.FontCache;
 import org.junit.After;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 /** Test the {@link ExponentialFunction}, {@link ZoomLevelFunction} and {@link CSSFunction}. */
 public class MBFunctionFactoryTest {
 
-    public static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    public static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @After
     public void cleanup() {

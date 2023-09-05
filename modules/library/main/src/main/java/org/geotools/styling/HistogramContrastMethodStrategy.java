@@ -16,7 +16,7 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.style.ContrastMethod;
 
 /** @author iant */
 public class HistogramContrastMethodStrategy extends AbstractContrastMethodStrategy {

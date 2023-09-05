@@ -13,6 +13,12 @@ import net.opengis.wfs.InsertElementType;
 import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.UpdateElementType;
 import net.opengis.wfs.WfsFactory;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
@@ -24,12 +30,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -48,7 +48,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     @SuppressWarnings("unchecked")
     public void encodeUpdate() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
         GeometryFactory geomfac = new GeometryFactory(new PrecisionModel(10));
 
         UpdateElementType update = wfsfac.createUpdateElementType();
@@ -140,7 +140,7 @@ public class WFSEncodingTest extends XmlTestSupport {
     @Test
     public void encodeDelete() throws IOException, SAXException, TransformerException {
         WfsFactory wfsfac = WfsFactory.eINSTANCE;
-        FilterFactory2 filterfac = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterfac = CommonFactoryFinder.getFilterFactory();
 
         DeleteElementType delete = wfsfac.createDeleteElementType();
         delete.setFilter(filterfac.id(filterfac.featureId("someid")));

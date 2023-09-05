@@ -20,12 +20,12 @@ import it.geosolutions.imageio.plugins.mrsid.MrSIDImageReaderSpi;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javax.imageio.ImageReader;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.data.DataSourceException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
-import org.geotools.data.DataSourceException;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
 
 /**
  * This class can read a MrSID data source and create a {@link GridCoverage2D} from the data.
@@ -185,7 +185,7 @@ public final class MrSIDReader extends BaseGDALGridCoverage2DReader implements G
         //    }
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getFormat() */
     @Override
     public Format getFormat() {
         return new MrSIDFormat();

@@ -18,7 +18,7 @@ package org.geotools.ows.wms;
 
 import java.net.URL;
 import java.util.List;
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /** @author Richard Gould */
 public class StyleImpl {

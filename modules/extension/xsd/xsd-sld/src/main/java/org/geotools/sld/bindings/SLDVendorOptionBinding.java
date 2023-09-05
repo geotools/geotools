@@ -17,11 +17,11 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.sld.CssParameter;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:VendorOption.

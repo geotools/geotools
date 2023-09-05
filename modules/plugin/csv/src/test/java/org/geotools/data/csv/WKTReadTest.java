@@ -9,16 +9,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.FileDataStore;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.opengis.feature.simple.SimpleFeature;
 
 public class WKTReadTest {
 

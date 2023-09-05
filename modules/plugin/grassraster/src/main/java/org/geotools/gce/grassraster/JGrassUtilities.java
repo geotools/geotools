@@ -40,22 +40,22 @@ import javax.media.jai.iterator.RandomIterFactory;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
 import javax.media.jai.iterator.WritableRandomIter;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A facade of often used methods by the JGrass engine
@@ -510,7 +510,7 @@ public class JGrassUtilities {
 
     public static JGrassRegion getJGrassRegionFromGridCoverage(GridCoverage2D gridCoverage2D)
             throws InvalidGridGeometryException, TransformException {
-        Envelope2D env = gridCoverage2D.getEnvelope2D();
+        ReferencedEnvelope env = gridCoverage2D.getEnvelope2D();
         GridEnvelope2D worldToGrid = gridCoverage2D.getGridGeometry().worldToGrid(env);
 
         double xRes = env.getWidth() / worldToGrid.getWidth();
@@ -562,7 +562,7 @@ public class JGrassUtilities {
             boolean matrixIsRowCol) {
         WritableRaster writableRaster = createWritableRasterFromMatrix(dataMatrix, matrixIsRowCol);
 
-        Envelope2D writeEnvelope = new Envelope2D(crs, w, s, e - w, n - s);
+        ReferencedEnvelope writeEnvelope = ReferencedEnvelope.rect(w, s, e - w, n - s, crs);
         GridCoverageFactory factory =
                 CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
 

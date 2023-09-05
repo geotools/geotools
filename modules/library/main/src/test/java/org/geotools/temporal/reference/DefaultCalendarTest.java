@@ -22,6 +22,14 @@ import static org.junit.Assert.assertNotEquals;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.geotools.api.temporal.Calendar;
+import org.geotools.api.temporal.CalendarDate;
+import org.geotools.api.temporal.CalendarEra;
+import org.geotools.api.temporal.Clock;
+import org.geotools.api.temporal.ClockTime;
+import org.geotools.api.temporal.DateAndTime;
+import org.geotools.api.temporal.IndeterminateValue;
+import org.geotools.api.temporal.JulianDate;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.object.DefaultCalendarDate;
@@ -35,14 +43,6 @@ import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.Calendar;
-import org.opengis.temporal.CalendarDate;
-import org.opengis.temporal.CalendarEra;
-import org.opengis.temporal.Clock;
-import org.opengis.temporal.ClockTime;
-import org.opengis.temporal.DateAndTime;
-import org.opengis.temporal.IndeterminateValue;
-import org.opengis.temporal.JulianDate;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarTest {

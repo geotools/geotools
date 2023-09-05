@@ -47,6 +47,30 @@ import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.sort.SortOrder;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -64,8 +88,6 @@ import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
@@ -86,7 +108,7 @@ import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFac
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactoryFinder;
 import org.geotools.gce.imagemosaic.properties.CRSExtractor;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
@@ -100,28 +122,6 @@ import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.sort.SortOrder;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.Identifier;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
@@ -181,7 +181,7 @@ public class RasterManager implements Cloneable {
         //
         // ////////////////////////////////////////////////////////////////////////
         /** The base envelope read from file */
-        GeneralEnvelope coverageEnvelope = null;
+        GeneralBounds coverageEnvelope = null;
 
         double[] coverageFullResolution;
 
@@ -198,7 +198,7 @@ public class RasterManager implements Cloneable {
         GridEnvelope gridEnvelope;
 
         public SpatialDomainManager(
-                final GeneralEnvelope envelope,
+                final GeneralBounds envelope,
                 final GridEnvelope2D coverageGridrange,
                 final CoordinateReferenceSystem crs,
                 final MathTransform coverageGridToWorld2D,
@@ -235,7 +235,7 @@ public class RasterManager implements Cloneable {
             assert coverageCRS2D.getCoordinateSystem().getDimension() == 2;
             if (coverageCRS.getCoordinateSystem().getDimension() != 2) {
                 final MathTransform transform = CRS.findMathTransform(coverageCRS, coverageCRS2D);
-                final GeneralEnvelope bbox = CRS.transform(transform, coverageEnvelope);
+                final GeneralBounds bbox = CRS.transform(transform, coverageEnvelope);
                 coverageBBox = ReferencedEnvelope.create(bbox, coverageCRS2D);
             } else {
                 // it is already a bbox
@@ -887,7 +887,7 @@ public class RasterManager implements Cloneable {
 
     String name;
 
-    Envelope imposedEnvelope;
+    Bounds imposedEnvelope;
 
     MosaicConfigurationBean configuration;
 
@@ -1016,7 +1016,7 @@ public class RasterManager implements Cloneable {
                             Query query = new Query(typeName);
                             String crsAttribute = getCrsAttribute();
                             query.setPropertyNames(Arrays.asList(crsAttribute));
-                            FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                            FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
                             query.setFilter(
                                     ff.equals(
                                             ff.property(crsAttribute),
@@ -1550,12 +1550,12 @@ public class RasterManager implements Cloneable {
 
         // we might have an imposed bbox
         CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
-        GeneralEnvelope originalEnvelope = null;
+        GeneralBounds originalEnvelope = null;
 
         if (imposedEnvelope == null) {
-            originalEnvelope = new GeneralEnvelope(bounds);
+            originalEnvelope = new GeneralBounds(bounds);
         } else {
-            originalEnvelope = new GeneralEnvelope(imposedEnvelope);
+            originalEnvelope = new GeneralBounds(imposedEnvelope);
             originalEnvelope.setCoordinateReferenceSystem(crs);
         }
 
@@ -1800,7 +1800,7 @@ public class RasterManager implements Cloneable {
                         targetBounds.getUpperCorner().getOrdinate(1) - 0.5 * highestRes[1]);
         reprojected.spatialDomainManager =
                 new SpatialDomainManager(
-                        new GeneralEnvelope(targetBounds),
+                        new GeneralBounds(targetBounds),
                         originalGridRange,
                         granuleCRS,
                         raster2Model,
@@ -1851,7 +1851,7 @@ public class RasterManager implements Cloneable {
 
         Object granuleCRSCode =
                 Utils.getAttribute(templateDescriptor.getOriginator(), crsAttribute);
-        FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+        FilterFactory ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
         PropertyIsEqualTo crsFilter =
                 ff.equal(ff.property(crsAttribute), ff.literal(granuleCRSCode), false);
 

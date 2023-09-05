@@ -23,11 +23,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
 
 /** The well known contents of the metadata table */
 public class MBTilesMetadata {
@@ -81,7 +81,7 @@ public class MBTilesMetadata {
 
     protected t_format format;
 
-    protected Envelope bounds;
+    protected Bounds bounds;
 
     protected String attribution;
 
@@ -133,11 +133,11 @@ public class MBTilesMetadata {
         this.format = format;
     }
 
-    public Envelope getBounds() {
+    public Bounds getBounds() {
         return bounds;
     }
 
-    public void setBounds(Envelope bounds) {
+    public void setBounds(Bounds bounds) {
         this.bounds = bounds;
     }
 

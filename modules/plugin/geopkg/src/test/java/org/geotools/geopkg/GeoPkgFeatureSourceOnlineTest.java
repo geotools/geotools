@@ -18,12 +18,12 @@ package org.geotools.geopkg;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsLike;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsLike;
 
 public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
@@ -54,7 +54,7 @@ public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
      */
     @Override
     public void testLikeFilter() throws Exception {
-        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
         //        PropertyIsLike caseSensitiveLike =
         //                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
         PropertyIsLike caseInsensitiveLike =

@@ -22,14 +22,14 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.transform.TransformerException;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.util.factory.Hints;
 import org.geotools.xml.filter.FilterTransformer;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
 
 /**
  * <b>Extended Contextual Query Language (ECQL)</b> is an extension of <b>CQL</b>. This class

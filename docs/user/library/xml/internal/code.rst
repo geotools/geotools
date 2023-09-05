@@ -224,7 +224,7 @@ The following configuration parameters apply only to the ``generate`` goal:
     <bindingConstructorArguments>
       <bindingConstructorArgument>
         <name>filterFactory</name>
-        <value>org.opengis.filter.FilterFactory</value>
+        <value>org.geotools.api.filter.FilterFactory</value>
       </bindingConstructorArgument>
       <bindingConstructorArgument>
         <name>geometryFactory</name>

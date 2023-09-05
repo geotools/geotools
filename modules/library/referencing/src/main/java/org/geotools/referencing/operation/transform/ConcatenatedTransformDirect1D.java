@@ -16,9 +16,9 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.MathTransform1D;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 
 /**
  * Concatenated transform where both transforms are one-dimensional.

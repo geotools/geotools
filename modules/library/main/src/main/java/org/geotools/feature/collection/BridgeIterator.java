@@ -19,9 +19,9 @@ package org.geotools.feature.collection;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
+import org.geotools.api.feature.Feature;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.Feature;
 
 /**
  * A closeable iterator wrapped around a provided feature iterator.

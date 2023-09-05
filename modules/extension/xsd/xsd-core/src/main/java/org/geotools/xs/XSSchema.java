@@ -25,12 +25,12 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ProfileImpl;
 import org.geotools.feature.type.SchemaImpl;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
 
 /**
  * Schema for XML simple types.

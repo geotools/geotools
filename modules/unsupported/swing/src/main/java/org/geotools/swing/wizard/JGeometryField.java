@@ -23,12 +23,12 @@ import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.swing.wizard.JWizard.Controller;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** Text field for filling in a Geometry parameter using WKT. */
 public class JGeometryField extends ParamField {

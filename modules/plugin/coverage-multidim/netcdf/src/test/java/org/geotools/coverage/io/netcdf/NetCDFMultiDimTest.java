@@ -36,13 +36,16 @@ import java.util.TimeZone;
 import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.archiver.tar.TarGZipUnArchiver;
 import org.codehaus.plexus.logging.console.ConsoleLoggerManager;
+import org.geotools.api.data.Query;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.data.Query;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
@@ -52,9 +55,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
 
 /**
  * @author Niels Charlier
@@ -422,10 +422,10 @@ public class NetCDFMultiDimTest {
             throws IllegalArgumentException, IOException {
         GridCoverage2D cov = reader.read(D, pams);
 
-        assertEquals(a, ((double[]) cov.evaluate(new DirectPosition2D(-109, 41)))[0], 0.0);
-        assertEquals(b, ((double[]) cov.evaluate(new DirectPosition2D(-107, 41)))[0], 0.0);
-        assertEquals(c, ((double[]) cov.evaluate(new DirectPosition2D(-109, 40)))[0], 0.0);
-        assertEquals(d, ((double[]) cov.evaluate(new DirectPosition2D(-107, 40)))[0], 0.0);
+        assertEquals(a, ((double[]) cov.evaluate(new Position2D(-109, 41)))[0], 0.0);
+        assertEquals(b, ((double[]) cov.evaluate(new Position2D(-107, 41)))[0], 0.0);
+        assertEquals(c, ((double[]) cov.evaluate(new Position2D(-109, 40)))[0], 0.0);
+        assertEquals(d, ((double[]) cov.evaluate(new Position2D(-107, 40)))[0], 0.0);
     }
 
     private void checkNull(NetCDFReader reader, GeneralParameterValue[] pams)

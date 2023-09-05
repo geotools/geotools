@@ -68,6 +68,9 @@ import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.emf.ecore.EObject;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.AbstractWFSStrategy;
@@ -96,9 +99,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.ConfigurationMetadataKey;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xsd.Configuration;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.capability.FilterCapabilities;
 
 /** */
 public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {

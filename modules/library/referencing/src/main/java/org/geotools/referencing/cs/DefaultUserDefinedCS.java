@@ -20,8 +20,8 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.UserDefinedCS;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.UserDefinedCS;
 
 /**
  * A two- or three-dimensional coordinate system that consists of any combination of coordinate axes

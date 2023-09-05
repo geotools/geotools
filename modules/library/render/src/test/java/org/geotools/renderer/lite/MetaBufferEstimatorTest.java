@@ -21,18 +21,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.Style;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
+import org.geotools.styling.StrokeImpl;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.NilExpression;
 
 public class MetaBufferEstimatorTest extends DataTestCase {
 
@@ -170,7 +170,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
     @Test
     public void testNullStroke() throws Exception {
         StyleBuilder sb = new StyleBuilder();
-        LineSymbolizer ls = sb.createLineSymbolizer(Stroke.NULL);
+        LineSymbolizer ls = sb.createLineSymbolizer(StrokeImpl.NULL);
         Style style = sb.createStyle(ls);
 
         MetaBufferEstimator estimator = new MetaBufferEstimator();
@@ -185,7 +185,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         Mark mark = sb.createMark("square");
         mark.setStroke(null);
         Graphic graphic = sb.createGraphic(null, mark, null);
-        FilterFactory2 ff = sb.getFilterFactory();
+        FilterFactory ff = sb.getFilterFactory();
         graphic.setSize(ff.function("env", ff.literal("test")));
         PointSymbolizer ps = sb.createPointSymbolizer(graphic);
         Style style = sb.createStyle(ps);

@@ -22,6 +22,9 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageTestBase;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -29,9 +32,6 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.factory.Hints;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Base class for grid processing tests. This class provides a few convenience methods performing

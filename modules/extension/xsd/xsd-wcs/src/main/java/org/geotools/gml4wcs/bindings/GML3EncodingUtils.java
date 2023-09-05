@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.Position2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
@@ -32,8 +34,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Utility class for gml3 encoding.
@@ -41,9 +41,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
 public class GML3EncodingUtils {
-    static DirectPosition[] positions(LineString line) {
+    static Position[] positions(LineString line) {
         CoordinateSequence coordinates = line.getCoordinateSequence();
-        DirectPosition[] dps = new DirectPosition[coordinates.size()];
+        Position[] dps = new Position[coordinates.size()];
 
         double x;
         double y;
@@ -51,7 +51,7 @@ public class GML3EncodingUtils {
         for (int i = 0; i < dps.length; i++) {
             x = coordinates.getOrdinate(i, 0);
             y = coordinates.getOrdinate(i, 1);
-            dps[i] = new DirectPosition2D(x, y);
+            dps[i] = new Position2D(x, y);
         }
 
         return dps;

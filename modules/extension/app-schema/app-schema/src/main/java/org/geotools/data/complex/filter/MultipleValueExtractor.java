@@ -19,9 +19,9 @@ package org.geotools.data.complex.filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.data.complex.config.MultipleValue;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.opengis.filter.expression.PropertyName;
 
 public class MultipleValueExtractor extends FilterAttributeExtractor {
 

@@ -20,8 +20,8 @@
 package org.geotools.data.collection;
 
 import java.util.List;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * Verify TreeSetFeatureCollection is conforming to the FeatureCollection api contract.

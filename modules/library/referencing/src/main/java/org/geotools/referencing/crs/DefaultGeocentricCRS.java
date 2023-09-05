@@ -22,16 +22,16 @@ package org.geotools.referencing.crs;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.Unit;
+import org.geotools.api.referencing.crs.GeocentricCRS;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.cs.SphericalCS;
+import org.geotools.api.referencing.datum.GeodeticDatum;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractReferenceSystem;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.cs.DefaultSphericalCS;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.wkt.Formatter;
-import org.opengis.referencing.crs.GeocentricCRS;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.cs.SphericalCS;
-import org.opengis.referencing.datum.GeodeticDatum;
 
 /**
  * A 3D coordinate reference system with the origin at the approximate centre of mass of the earth.

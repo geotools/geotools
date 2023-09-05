@@ -17,13 +17,13 @@
 package org.geotools.data.mongodb;
 
 import java.util.Collections;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.spatial.DWithinImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.spatial.DWithin;
 
 public class MongoFilterSplitterTest {
 

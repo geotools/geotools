@@ -16,7 +16,7 @@
  */
 package org.geotools.vectormosaic;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 public class FilterTracker {
     private Filter delegateFilter;

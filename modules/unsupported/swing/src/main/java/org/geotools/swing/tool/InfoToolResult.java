@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.Name;
 
 /**
  * Used by {@code InfoToolHelper} classes to pass feature data to the parent {@code InfoTool}

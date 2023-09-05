@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.data.DefaultRepository;
 import org.junit.Assert;
 import org.junit.Test;

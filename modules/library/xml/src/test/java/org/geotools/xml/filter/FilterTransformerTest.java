@@ -22,6 +22,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;
 import org.geotools.test.xml.XmlTestSupport;
@@ -29,15 +33,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xmlunit.diff.Diff;
 
 public class FilterTransformerTest extends XmlTestSupport {
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     FilterTransformer transform = new FilterTransformer();
 

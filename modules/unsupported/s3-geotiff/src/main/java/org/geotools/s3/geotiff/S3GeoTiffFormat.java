@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
@@ -34,7 +35,6 @@ import org.geotools.parameter.ParameterGroup;
 import org.geotools.s3.S3Connector;
 import org.geotools.s3.S3ImageInputStreamImpl;
 import org.geotools.util.factory.Hints;
-import org.opengis.parameter.GeneralParameterDescriptor;
 
 /**
  * Just a basic wrapper around GeoTiffFormat in order to support GeoTiff over S3. Hopefully this

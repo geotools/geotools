@@ -19,15 +19,15 @@ package org.geotools.mbstyle.function;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;
 import org.geotools.util.Converters;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Generate an output by interpolating between stops just less than and just greater than the
@@ -45,7 +45,7 @@ import org.opengis.filter.expression.Expression;
  * @author Jody Garnett (Boundless)
  */
 public class ExponentialFunction extends FunctionImpl {
-    private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
+    private static final FilterFactory ff2 = CommonFactoryFinder.getFilterFactory(null);
     public static final FunctionName NAME;
 
     static {

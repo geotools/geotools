@@ -18,18 +18,18 @@ package org.geotools.process.function;
 
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.Parameter;
-import org.geotools.data.Query;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.data.Query;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessException;
 import org.geotools.process.RenderingProcess;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.parameter.GeneralParameterValue;
 
 /**
  * A function wrapping a {@link Process} with a single output. All inputs to the function are

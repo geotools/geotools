@@ -19,21 +19,21 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Logger;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.Factory;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.logging.Logging;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.Factory;
 
 /**
  * Base class for all factories in the referencing module. Factories can be grouped in two
@@ -41,14 +41,14 @@ import org.opengis.referencing.Factory;
  *
  * <ul>
  *   <li>
- *       <p>{@linkplain org.opengis.referencing.AuthorityFactory Authority factories} creates
+ *       <p>{@linkplain org.geotools.api.referencing.AuthorityFactory Authority factories} creates
  *       objects from a compact string defined by an authority. <br>
  *       <em>These classes are working as "builders": they hold the definition or recipies used to
  *       construct an objet.</em>
  *   <li>
- *       <p>{@linkplain org.opengis.referencing.ObjectFactory Object factories} allows applications
- *       to make objects that cannot be created by an authority factory. This factory is very
- *       flexible, whereas the authority factory is easier to use. <br>
+ *       <p>{@linkplain org.geotools.api.referencing.ObjectFactory Object factories} allows
+ *       applications to make objects that cannot be created by an authority factory. This factory
+ *       is very flexible, whereas the authority factory is easier to use. <br>
  *       <em>These classes are working as "Factories": they provide a series of {@code create}
  *       methods that can be used like a constructor.</em>
  * </ul>
@@ -114,7 +114,7 @@ public class ReferencingFactory extends AbstractFactory implements Factory {
             throws InvalidParameterValueException {
         if (object == null) {
             throw new InvalidParameterValueException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name), name, object);
         }
     }
 

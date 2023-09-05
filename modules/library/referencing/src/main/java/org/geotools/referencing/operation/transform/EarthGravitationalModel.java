@@ -25,10 +25,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.StringTokenizer;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
@@ -37,15 +46,6 @@ import org.geotools.parameter.Parameter;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.operation.Transformation;
 
 /**
  * Transforms vertical coordinates using coefficients from the <A
@@ -233,12 +233,11 @@ public final class EarthGravitationalModel extends VerticalTransform {
                          *   - NumberFormatException       if a number can't be parsed.
                          *   - IndexOutOfBoundsException   if 'n' or 'm' values are illegal.
                          */
+                        final Object arg1 = in.getLineNumber();
                         final IOException exception =
                                 new IOException(
-                                        Errors.format(
-                                                ErrorKeys.BAD_LINE_IN_FILE_$2,
-                                                filename,
-                                                in.getLineNumber()));
+                                        MessageFormat.format(
+                                                ErrorKeys.BAD_LINE_IN_FILE_$2, filename, arg1));
                         exception.initCause(
                                 cause); // TODO: Inline when we will be allowed to target Java 6.
                         throw exception;
@@ -434,7 +433,8 @@ public final class EarthGravitationalModel extends VerticalTransform {
             try {
                 mt.load(filename);
             } catch (IOException e) {
-                throw new FactoryException(Errors.format(ErrorKeys.CANT_READ_$1, filename), e);
+                throw new FactoryException(
+                        MessageFormat.format(ErrorKeys.CANT_READ_$1, filename), e);
             }
             return mt;
         }

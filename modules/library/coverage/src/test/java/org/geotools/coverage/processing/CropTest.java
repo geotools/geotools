@@ -38,6 +38,12 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -45,9 +51,8 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
@@ -67,12 +72,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests the crop operation.
@@ -111,9 +110,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
 
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
                             oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
@@ -199,9 +198,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = coverage;
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
                             oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
@@ -211,7 +210,7 @@ public final class CropTest extends GridProcessingTestBase {
                             oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 5 / 8
                         });
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());
-        Envelope2D env2D = new Envelope2D(cropEnvelope);
+        ReferencedEnvelope env2D = new ReferencedEnvelope(cropEnvelope);
 
         /*
          * Do the crop without conserving the envelope.
@@ -352,9 +351,9 @@ public final class CropTest extends GridProcessingTestBase {
          * width and tall 1/4 of the original height.
          */
         final CoverageProcessor processor = CoverageProcessor.getInstance();
-        final Envelope oldEnvelope = rotated.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = rotated.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) * 3 / 8,
                             oldEnvelope.getMinimum(1) + oldEnvelope.getSpan(1) * 3 / 8
@@ -410,9 +409,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = coverage;
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
                             oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
@@ -565,9 +564,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = coverage;
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
                             oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
@@ -650,9 +649,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = coverage;
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getMinimum(0) /*+ oldEnvelope.getSpan(0) * 3 / 8*/,
                             oldEnvelope.getMinimum(1) /*+ oldEnvelope.getSpan(1) * 3 / 8*/
@@ -718,9 +717,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = coverage;
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)},
                         new double[] {
                             oldEnvelope.getMinimum(0) + oldEnvelope.getSpan(0) / 4,
@@ -796,7 +795,7 @@ public final class CropTest extends GridProcessingTestBase {
         Byte[] red = {(byte) 255, 0, 0};
         RenderedOp image =
                 ConstantDescriptor.create(Float.valueOf(40), Float.valueOf(37), red, null);
-        final Envelope envelope =
+        final Bounds envelope =
                 new ReferencedEnvelope(-1d, 1d, -1d, 1d, DefaultGeographicCRS.WGS84);
         /*
          * Get the source coverage and build the cropped envelope.
@@ -839,7 +838,7 @@ public final class CropTest extends GridProcessingTestBase {
         // Ensure the pixels are RED
         byte[] result = new byte[3];
         // Upper Left
-        cropped.evaluate(new DirectPosition2D(0d, 0d), result);
+        cropped.evaluate(new Position2D(0d, 0d), result);
         assertEquals((byte) red[0], result[0]);
         assertEquals((byte) red[1], result[1]);
         assertEquals((byte) red[2], result[2]);
@@ -858,9 +857,9 @@ public final class CropTest extends GridProcessingTestBase {
          * Get the source coverage and build the cropped envelope.
          */
         final GridCoverage2D source = coverage;
-        final Envelope oldEnvelope = source.getEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final Bounds oldEnvelope = source.getEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {oldEnvelope.getMinimum(0), oldEnvelope.getMinimum(1)},
                         new double[] {oldEnvelope.getMaximum(0), oldEnvelope.getMaximum(1)});
         cropEnvelope.setCoordinateReferenceSystem(oldEnvelope.getCoordinateReferenceSystem());

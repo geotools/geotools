@@ -19,7 +19,7 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeographyTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * 

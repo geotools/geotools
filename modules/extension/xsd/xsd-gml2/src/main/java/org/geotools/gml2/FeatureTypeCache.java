@@ -17,8 +17,8 @@
 package org.geotools.gml2;
 
 import java.util.concurrent.ConcurrentHashMap;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 
 /** Holds a cache of FeatureTypes by Name. */
 public class FeatureTypeCache {

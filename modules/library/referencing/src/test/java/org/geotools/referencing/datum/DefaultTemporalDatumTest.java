@@ -27,9 +27,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
+import org.geotools.api.referencing.datum.TemporalDatum;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.referencing.datum.TemporalDatum;
 
 /**
  * Tests the {@link DefaultTemporalDatum} class.

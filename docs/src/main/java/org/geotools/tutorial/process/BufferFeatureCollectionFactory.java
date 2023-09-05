@@ -12,10 +12,10 @@
 package org.geotools.tutorial.process;
 
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.util.InternationalString;
 import org.geotools.process.feature.FeatureToFeatureProcessFactory;
 import org.geotools.text.Text;
-import org.opengis.util.InternationalString;
 
 /**
  * Factory for process which buffers an entire feature collection.

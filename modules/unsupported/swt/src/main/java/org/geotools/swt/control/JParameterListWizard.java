@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.jface.wizard.Wizard;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.util.URLs;
 
 /**

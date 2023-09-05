@@ -18,17 +18,17 @@ package org.geotools.data.mysql;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
 
 public class MySQLFilterToSQLTest extends SQLFilterTestSupport {
 
-    private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     private MySQLFilterToSQL filterToSql;
 

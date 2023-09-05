@@ -17,11 +17,11 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.filter.v1_0.OGCPropertyIsNullTypeBinding;
 import org.geotools.filter.v2_0.FES;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:PropertyIsNullType.

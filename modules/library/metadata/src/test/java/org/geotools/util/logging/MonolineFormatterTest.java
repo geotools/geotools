@@ -37,7 +37,7 @@ public final class MonolineFormatterTest {
             "org.geotools.core",
             "org.geotools.resources",
             "org.geotools.referencing",
-            "org.opengis.referencing" // Non-geotools logger should not be affected.
+            "org.geotools.api.referencing" // Non-geotools logger should not be affected.
         };
         for (String namespace : namespaces) {
             // System.out.println();

@@ -23,10 +23,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.feature.SchemaException;
-import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * This class is not completely implemented due to a decision that the VPFDataStore shall correspond

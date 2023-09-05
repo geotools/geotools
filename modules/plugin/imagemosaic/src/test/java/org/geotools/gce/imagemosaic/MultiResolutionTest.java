@@ -24,6 +24,12 @@ import java.io.File;
 import java.io.IOException;
 import javax.media.jai.Interpolation;
 import org.geotools.TestData;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -31,19 +37,13 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 public class MultiResolutionTest {
 
@@ -55,7 +55,7 @@ public class MultiResolutionTest {
         // which is the code our case failed on
         // the idea is to create a 5x5 test sample image
         GridEnvelope originalRange = reader.getOriginalGridRange();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         CoordinateReferenceSystem nativeCRS = envelope.getCoordinateReferenceSystem();
         // final ParameterValueGroup readParams = format.getReadParameters();
         // final Map parameters = CoverageUtils.getParametersKVP(readParams);
@@ -70,8 +70,8 @@ public class MultiResolutionTest {
         // build the corresponding envelope
         final MathTransform gridToWorldCorner =
                 reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        final GeneralEnvelope testEnvelope =
-                CRS.transform(gridToWorldCorner, new GeneralEnvelope(testRange.getBounds()));
+        final GeneralBounds testEnvelope =
+                CRS.transform(gridToWorldCorner, new GeneralBounds(testRange.getBounds()));
         testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));
@@ -91,7 +91,7 @@ public class MultiResolutionTest {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(folder.getRoot());
         GridEnvelope originalRange = reader.getOriginalGridRange();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
@@ -124,7 +124,7 @@ public class MultiResolutionTest {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(folder.getRoot());
         GridEnvelope originalRange = reader.getOriginalGridRange();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
@@ -176,7 +176,7 @@ public class MultiResolutionTest {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(folder.getRoot());
         GridEnvelope originalRange = reader.getOriginalGridRange();
-        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        GeneralBounds envelope = reader.getOriginalEnvelope();
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 

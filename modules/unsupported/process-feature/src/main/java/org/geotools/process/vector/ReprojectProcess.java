@@ -17,13 +17,13 @@
  */
 package org.geotools.process.vector;
 
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Will reproject the features to another CRS. Can also be used to force a known CRS onto a dataset

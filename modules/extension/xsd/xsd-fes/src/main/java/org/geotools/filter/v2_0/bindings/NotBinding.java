@@ -17,14 +17,14 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.BinaryComparisonOperator;
+import org.geotools.api.filter.BinaryLogicOperator;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.filter.v1_0.OGCNotBinding;
 import org.geotools.filter.v2_0.FES;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Not;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.spatial.BinarySpatialOperator;
 
 /**
  * Binding object for the element http://www.opengis.net/fes/2.0:Not.

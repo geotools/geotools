@@ -17,7 +17,7 @@
 package org.geotools.filter;
 
 import java.util.logging.Logger;
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Implements Filter interface, with constants and default behaviors for methods.

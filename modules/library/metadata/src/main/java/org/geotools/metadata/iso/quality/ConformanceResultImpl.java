@@ -19,9 +19,11 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.citation.Citation;
-import org.opengis.metadata.quality.ConformanceResult;
-import org.opengis.util.InternationalString;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.metadata.quality.ConformanceResult;
+import org.geotools.api.metadata.quality.Result;
+import org.geotools.api.util.InternationalString;
+import org.geotools.metadata.iso.MetadataEntity;
 
 /**
  * Information about the outcome of evaluating the obtained value (or set of values) against a
@@ -32,7 +34,7 @@ import org.opengis.util.InternationalString;
  * @author Touraïvane
  * @since 2.1
  */
-public class ConformanceResultImpl extends ResultImpl implements ConformanceResult {
+public class ConformanceResultImpl extends MetadataEntity implements ConformanceResult, Result {
 
     /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = 6429932577869033286L;

@@ -59,6 +59,18 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FileGroupProvider;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Projection;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -73,11 +85,9 @@ import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Scale;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.FileGroupProvider;
 import org.geotools.data.PrjFileReader;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
@@ -93,16 +103,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Projection;
 
 /**
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
@@ -420,7 +420,7 @@ public class GeoTiffReaderTest {
                 destCoverage.getGridGeometry().getGridRange());
         assertTrue(
                 "Envelope comparison failed:" + toString,
-                ((GeneralEnvelope) coverage.getGridGeometry().getEnvelope())
+                ((GeneralBounds) coverage.getGridGeometry().getEnvelope())
                         .equals(destCoverage.getGridGeometry().getEnvelope(), eps, false));
         coverage.dispose(true);
         destCoverage.dispose(true);
@@ -575,7 +575,7 @@ public class GeoTiffReaderTest {
 
         // Evaluate results
         byte[] results = new byte[3];
-        DirectPosition2D position = new DirectPosition2D();
+        Position2D position = new Position2D();
         // Should be 0
         position.setLocation(-87.517, 25.302);
         results = coverage.evaluate(position, results);
@@ -626,7 +626,7 @@ public class GeoTiffReaderTest {
         // Define a GridGeometry in order to reduce the output
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 4,
@@ -704,7 +704,7 @@ public class GeoTiffReaderTest {
 
         // Evaluate results
         byte[] results = new byte[3];
-        DirectPosition2D position = new DirectPosition2D();
+        Position2D position = new Position2D();
         // Should be 0
         position.setLocation(-87.517, 25.302);
         results = coverage.evaluate(position, results);
@@ -844,7 +844,7 @@ public class GeoTiffReaderTest {
         // Define a GridGeometry in order to reduce the output
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 2.0,
@@ -893,7 +893,7 @@ public class GeoTiffReaderTest {
         checkCoverageROI(coverage);
         // Evaluate results
         byte[] results = new byte[3];
-        DirectPosition2D position = new DirectPosition2D();
+        Position2D position = new Position2D();
         // Should be 0
         position.setLocation(-87.517, 25.25);
         results = coverage.evaluate(position, results);
@@ -1056,7 +1056,7 @@ public class GeoTiffReaderTest {
 
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 64.0,
@@ -1135,7 +1135,7 @@ public class GeoTiffReaderTest {
         // read from reader
         final ParameterValue<GridGeometry2D> gg =
                 AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final GeneralBounds envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
         dim.setSize(
                 reader.getOriginalGridRange().getSpan(0) / 64.0,

@@ -28,26 +28,26 @@ import org.eclipse.swt.widgets.Shell;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.Layer;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
 import org.geotools.styling.SLD;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.swt.control.ExceptionMonitor;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
@@ -55,11 +55,11 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.style.ContrastMethod;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.PropertyDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.ContrastMethod;
 
 /**
  * Utilities class.
@@ -78,10 +78,10 @@ public class Utils {
     /** The default {@link StyleBuilder} to use. */
     public static StyleBuilder sb = new StyleBuilder(styleFactory, filterFactory);
 
-    private static final Class<?> BASE_GRID_CLASS = org.opengis.coverage.grid.GridCoverage.class;
+    private static final Class<?> BASE_GRID_CLASS = org.geotools.api.coverage.grid.GridCoverage.class;
 
     private static final Class<?> BASE_READER_CLASS =
-            org.opengis.coverage.grid.GridCoverageReader.class;
+            org.geotools.api.coverage.grid.GridCoverageReader.class;
 
     /**
      * Sets the location of the shell to the center of the screen.

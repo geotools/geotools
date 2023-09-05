@@ -40,6 +40,10 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -47,7 +51,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.metadata.i18n.Vocabulary;
@@ -58,10 +62,6 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A RasterLayerResponse. An instance of this class is produced everytime a requestCoverage is
@@ -99,7 +99,7 @@ class RasterLayerResponse {
     private MathTransform raster2Model;
 
     /** The base envelope related to the input coverage */
-    private GeneralEnvelope coverageEnvelope;
+    private GeneralBounds coverageEnvelope;
 
     /** The CRS of the input coverage */
     private CoordinateReferenceSystem coverageCRS;
@@ -416,12 +416,7 @@ class RasterLayerResponse {
         }
 
         return coverageFactory.create(
-                coverageName,
-                image,
-                new GeneralEnvelope(coverageEnvelope),
-                bands,
-                null,
-                properties);
+                coverageName, image, new GeneralBounds(coverageEnvelope), bands, null, properties);
     }
 
     /**

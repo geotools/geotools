@@ -17,16 +17,16 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform1D;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.Matrix1;
 import org.geotools.referencing.operation.matrix.Matrix2;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A one dimensional, linear transform. Input values <var>x</var> are converted into output values
@@ -167,7 +167,7 @@ public class LinearTransform1D extends AbstractMathTransform
      * is required and {@link Double#NaN} may be a legal output value for some users.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) throws TransformException {
+    public Matrix derivative(final Position point) throws TransformException {
         return new Matrix1(scale);
     }
 

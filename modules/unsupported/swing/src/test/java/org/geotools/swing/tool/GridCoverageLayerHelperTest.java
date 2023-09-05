@@ -23,10 +23,11 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Map;
 import java.util.Random;
 import javax.media.jai.TiledImage;
+import org.geotools.api.geometry.Position;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
@@ -36,7 +37,6 @@ import org.jaitools.imageutils.ImageUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
 
 /**
  * Unit tests for GridCoverageLayerHelper.
@@ -79,7 +79,7 @@ public class GridCoverageLayerHelperTest {
 
     @Test
     public void getInfo() throws Exception {
-        DirectPosition2D pos = new DirectPosition2D(WORLD.getCoordinateReferenceSystem());
+        Position2D pos = new Position2D(WORLD.getCoordinateReferenceSystem());
         int[] values = new int[coverage.getNumSampleDimensions()];
 
         for (int i = 0; i < NUM_TEST_POINTS; i++) {
@@ -87,7 +87,7 @@ public class GridCoverageLayerHelperTest {
             pos.y = WORLD.getMinY() + WORLD.getHeight() * rand.nextDouble();
             InfoToolResult info = helper.getInfo(pos);
 
-            coverage.evaluate((DirectPosition) pos, values);
+            coverage.evaluate((Position) pos, values);
             Map<String, Object> featureData = info.getFeatureData(0);
             for (int band = 0; band < values.length; band++) {
                 Object o = featureData.get("Band " + band);
@@ -99,8 +99,8 @@ public class GridCoverageLayerHelperTest {
 
     @Test
     public void getInfoOutsideCoverageReturnsEmptyResult() throws Exception {
-        DirectPosition2D pos =
-                new DirectPosition2D(
+        Position2D pos =
+                new Position2D(
                         WORLD.getCoordinateReferenceSystem(),
                         WORLD.getMaxX() + 1,
                         WORLD.getMaxY() + 1);

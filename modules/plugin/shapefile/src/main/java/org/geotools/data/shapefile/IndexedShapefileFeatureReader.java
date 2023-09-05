@@ -17,7 +17,8 @@
 package org.geotools.data.shapefile;
 
 import java.io.IOException;
-import org.geotools.data.CloseableIterator;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader.Row;
 import org.geotools.data.shapefile.dbf.IndexedDbaseFileReader;
@@ -26,7 +27,6 @@ import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * The indexed version of the shapefile feature reader, will only read the records specified in the

@@ -22,6 +22,18 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.NativeFilter;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -29,18 +41,6 @@ import org.geotools.util.factory.GeoTools;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.NativeFilter;
-import org.opengis.filter.Not;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -50,11 +50,11 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class DuplicateFilterVisitorTest {
 
-    private org.opengis.filter.FilterFactory2 fac;
+    private org.geotools.api.filter.FilterFactory fac;
 
     @Before
     public void setUp() throws Exception {
-        fac = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        fac = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     }
 
     @Test

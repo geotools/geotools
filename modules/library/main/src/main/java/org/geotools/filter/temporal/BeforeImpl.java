@@ -17,10 +17,10 @@
  */
 package org.geotools.filter.temporal;
 
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.temporal.Before;
-import org.opengis.temporal.RelativePosition;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.temporal.Before;
+import org.geotools.api.temporal.RelativePosition;
 
 public class BeforeImpl extends BinaryTemporalOperatorImpl implements Before {
 

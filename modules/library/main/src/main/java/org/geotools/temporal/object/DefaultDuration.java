@@ -16,7 +16,7 @@
  */
 package org.geotools.temporal.object;
 
-import org.opengis.temporal.Duration;
+import org.geotools.api.temporal.Duration;
 
 /**
  * A data type to be used for describing length or distance in the temporal dimension.

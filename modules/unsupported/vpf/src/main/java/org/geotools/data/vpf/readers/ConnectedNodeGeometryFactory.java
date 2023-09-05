@@ -19,6 +19,8 @@ package org.geotools.data.vpf.readers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.vpf.VPFFeatureClass;
 import org.geotools.data.vpf.VPFFeatureType;
 import org.geotools.data.vpf.VPFLibrary;
@@ -26,8 +28,6 @@ import org.geotools.data.vpf.file.VPFFile;
 import org.geotools.data.vpf.file.VPFFileFactory;
 import org.geotools.data.vpf.ifc.FileConstants;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Generates the geometry for a connected node based on attributes already in the feature

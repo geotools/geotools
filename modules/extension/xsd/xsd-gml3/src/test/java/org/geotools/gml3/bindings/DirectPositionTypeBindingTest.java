@@ -20,8 +20,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.geometry.DirectPosition1D;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.geometry.Position1D;
+import org.geotools.geometry.Position2D;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.junit.Test;
@@ -30,7 +31,6 @@ import org.locationtech.jts.geom.CoordinateXYM;
 import org.locationtech.jts.geom.CoordinateXYZM;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 
 public class DirectPositionTypeBindingTest extends GML3TestSupport {
@@ -39,10 +39,10 @@ public class DirectPositionTypeBindingTest extends GML3TestSupport {
         GML3MockData.element(GML.pos, document, document);
         document.getDocumentElement().appendChild(document.createTextNode("1.0"));
 
-        DirectPosition pos = (DirectPosition) parse();
+        Position pos = (Position) parse();
 
         assertNotNull(pos);
-        assertTrue(pos instanceof DirectPosition1D);
+        assertTrue(pos instanceof Position1D);
 
         assertEquals(pos.getOrdinate(0), 1.0, 0);
     }
@@ -52,10 +52,10 @@ public class DirectPositionTypeBindingTest extends GML3TestSupport {
         GML3MockData.element(GML.pos, document, document);
         document.getDocumentElement().appendChild(document.createTextNode("1.0 2.0"));
 
-        DirectPosition pos = (DirectPosition) parse();
+        Position pos = (Position) parse();
 
         assertNotNull(pos);
-        assertTrue(pos instanceof DirectPosition2D);
+        assertTrue(pos instanceof Position2D);
 
         assertEquals(pos.getOrdinate(0), 1.0, 0);
         assertEquals(pos.getOrdinate(1), 2.0, 0);

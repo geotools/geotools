@@ -55,6 +55,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.data.vpf.VPFColumn;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.exc.VPFHeaderFormatException;
@@ -74,10 +78,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateList;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 
 /**
  * This class encapsulates VPF files, serving as a factory for VPFColumns. Instances of this class
@@ -624,7 +624,7 @@ public class VPFFile {
                         || descriptor
                                 .getType()
                                 .getRestrictions()
-                                .contains(org.opengis.filter.Filter.INCLUDE)) {
+                                .contains(org.geotools.api.filter.Filter.INCLUDE)) {
                     values[inx] = readVariableSizeData(column.getTypeChar());
                 } else {
                     values[inx] =

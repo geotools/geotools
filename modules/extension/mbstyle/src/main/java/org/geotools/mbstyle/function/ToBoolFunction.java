@@ -16,9 +16,9 @@
  */
 package org.geotools.mbstyle.function;
 
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
 
 /**
  * Take an object as an argument and returns a boolean value. The result is false when then input is

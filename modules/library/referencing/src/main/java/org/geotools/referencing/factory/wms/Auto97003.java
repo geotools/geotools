@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.factory.wms;
 
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
 
 /**
  * Auto Azimuthal Equidistant ({@code AUTO:97003}). In the notation below, "<code>${var}</code>"

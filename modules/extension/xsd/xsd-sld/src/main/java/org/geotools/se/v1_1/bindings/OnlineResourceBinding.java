@@ -17,9 +17,9 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.ResourceLocator;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDOnlineResourceBinding;
-import org.geotools.styling.ResourceLocator;
 
 /**
  * Binding object for the element http://www.opengis.net/se:OnlineResource.

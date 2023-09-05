@@ -20,15 +20,15 @@ import java.awt.Rectangle;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.Arrays;
+import org.geotools.api.coverage.grid.GridCoordinates;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Classes;
-import org.opengis.coverage.grid.GridCoordinates;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * Defines a range of grid coverage coordinates.
@@ -78,7 +78,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
             final int upper = index[dimension + i];
             if (!(lower <= upper)) {
                 throw new IllegalArgumentException(
-                        Errors.format(ErrorKeys.BAD_GRID_RANGE_$3, i, lower, upper - 1));
+                        MessageFormat.format(ErrorKeys.BAD_GRID_RANGE_$3, i, lower, upper - 1));
             }
         }
     }
@@ -186,7 +186,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     private GeneralGridEnvelope(int x, int y, int width, int height, int dimension) {
         if (dimension < 2) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "dimension", dimension));
         }
         index = new int[dimension * 2];
         index[0] = x;
@@ -200,13 +200,13 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     /**
      * Casts the specified envelope into a grid envelope. This is sometime useful after an envelope
      * has been transformed from "real world" coordinates to grid coordinates using the {@linkplain
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
      * point values are rounded toward the nearest integers.
      *
      * <p><strong>Notice that highest values are interpreted as non-inclusive</strong>
      *
      * <p><b>Anchor</b><br>
-     * According OpenGIS specification, {@linkplain org.opengis.coverage.grid.GridGeometry grid
+     * According OpenGIS specification, {@linkplain org.geotools.api.coverage.grid.GridGeometry grid
      * geometry} maps pixel's center. But envelopes typically encompass all pixels. This means that
      * grid coordinates (0,0) has an envelope starting at (-0.5, -0.5). In order to revert back such
      * envelope to a grid envelope, it is necessary to add 0.5 to every coordinates (including the
@@ -215,8 +215,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.opengis.metadata.spatial.PixelOrientation} because the latter is restricted to the
-     * two-dimensional case while the former can be used for any number of dimensions.
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted
+     * to the two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
      * @param anchor Whatever envelope coordinates map to pixel center or pixel corner. Should be
@@ -225,10 +225,10 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     convention (no offset will be added).
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      * @see org.geotools.referencing.GeneralEnvelope#GeneralEnvelope(GridEnvelope, PixelInCell,
-     *     org.opengis.referencing.operation.MathTransform,
-     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *     org.geotools.api.referencing.operation.MathTransform,
+     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
-    public GeneralGridEnvelope(final Envelope envelope, final PixelInCell anchor)
+    public GeneralGridEnvelope(final Bounds envelope, final PixelInCell anchor)
             throws IllegalArgumentException {
         this(envelope, anchor, false);
     }
@@ -236,15 +236,15 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     /**
      * Casts the specified envelope into a grid envelope. This is sometime useful after an envelope
      * has been transformed from "real world" coordinates to grid coordinates using the {@linkplain
-     * org.opengis.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
+     * org.geotools.api.coverage.grid.GridGeometry#getGridToCRS grid to CRS} transform. The floating
      * point values are rounded toward the nearest integers.
      *
      * <p><b>Note about rounding mode</b><br>
-     * It would have been possible to round the {@linkplain Envelope#getMinimum minimal value}
-     * toward {@linkplain Math#floor floor} and the {@linkplain Envelope#getMaximum maximal value}
-     * toward {@linkplain Math#ceil ceil} in order to make sure that the grid envelope encompass
-     * fully the envelope - like what Java2D does when converting {@link java.awt.geom.Rectangle2D}
-     * to {@link Rectangle}). But this approach may increase by 1 or 2 units the image {@linkplain
+     * It would have been possible to round the {@linkplain Bounds#getMinimum minimal value} toward
+     * {@linkplain Math#floor floor} and the {@linkplain Bounds#getMaximum maximal value} toward
+     * {@linkplain Math#ceil ceil} in order to make sure that the grid envelope encompass fully the
+     * envelope - like what Java2D does when converting {@link java.awt.geom.Rectangle2D} to {@link
+     * Rectangle}). But this approach may increase by 1 or 2 units the image {@linkplain
      * RenderedImage#getWidth width} or {@linkplain RenderedImage#getHeight height}. For example the
      * range {@code [-0.25 ... 99.75]} (which is exactly 101 units wide) would be casted to {@code
      * [-1 ... 100]}, which is 102 units wide. This leads to unexpected results when using grid
@@ -254,7 +254,7 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * nearest integer} in this implementation.
      *
      * <p><b>Anchor</b><br>
-     * According OpenGIS specification, {@linkplain org.opengis.coverage.grid.GridGeometry grid
+     * According OpenGIS specification, {@linkplain org.geotools.api.coverage.grid.GridGeometry grid
      * geometry} maps pixel's center. But envelopes typically encompass all pixels. This means that
      * grid coordinates (0,0) has an envelope starting at (-0.5, -0.5). In order to revert back such
      * envelope to a grid envelope, it is necessary to add 0.5 to every coordinates (including the
@@ -263,8 +263,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      * specify {@link PixelInCell#CELL_CORNER}.
      *
      * <p>The convention is specified as a {@link PixelInCell} code instead than the more detailed
-     * {@link org.opengis.metadata.spatial.PixelOrientation} because the latter is restricted to the
-     * two-dimensional case while the former can be used for any number of dimensions.
+     * {@link org.geotools.api.metadata.spatial.PixelOrientation} because the latter is restricted
+     * to the two-dimensional case while the former can be used for any number of dimensions.
      *
      * @param envelope The envelope to use for initializing this grid envelope.
      * @param anchor Whatever envelope coordinates map to pixel center or pixel corner. Should be
@@ -276,11 +276,11 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
      *     always inclusive.
      * @throws IllegalArgumentException If {@code anchor} is not valid.
      * @see org.geotools.referencing.GeneralEnvelope#GeneralEnvelope(GridEnvelope, PixelInCell,
-     *     org.opengis.referencing.operation.MathTransform,
-     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *     org.geotools.api.referencing.operation.MathTransform,
+     *     org.geotools.api.referencing.crs.CoordinateReferenceSystem)
      */
     public GeneralGridEnvelope(
-            final Envelope envelope, final PixelInCell anchor, final boolean isHighIncluded)
+            final Bounds envelope, final PixelInCell anchor, final boolean isHighIncluded)
             throws IllegalArgumentException {
         final double offset = PixelTranslation.getPixelTranslation(anchor) + 0.5;
         final int dimension = envelope.getDimension();
@@ -315,7 +315,8 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
     public GeneralGridEnvelope(final int[] low, final int[] high, final boolean isHighIncluded) {
         if (low.length != high.length) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$2, low.length, high.length));
+                    MessageFormat.format(
+                            ErrorKeys.MISMATCHED_DIMENSION_$2, low.length, high.length));
         }
         index = new int[low.length + high.length];
         System.arraycopy(low, 0, index, 0, low.length);
@@ -432,11 +433,11 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
         final int newDim = upper - lower;
         if (lower < 0 || lower > curDim) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "lower", lower));
         }
         if (newDim < 0 || upper > curDim) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "upper", upper));
         }
         final GeneralGridEnvelope sub = new GeneralGridEnvelope(newDim);
         System.arraycopy(index, lower, sub.index, 0, newDim);
@@ -455,8 +456,9 @@ public class GeneralGridEnvelope implements GridEnvelope, Serializable {
         if (index.length == 4) {
             return new Rectangle(index[0], index[1], index[2] - index[0], index[3] - index[1]);
         } else {
+            final Object arg0 = getDimension();
             throw new IllegalStateException(
-                    Errors.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, getDimension()));
+                    MessageFormat.format(ErrorKeys.NOT_TWO_DIMENSIONAL_$1, arg0));
         }
     }
 

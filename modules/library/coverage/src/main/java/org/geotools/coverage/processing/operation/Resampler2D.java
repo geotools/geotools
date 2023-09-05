@@ -26,6 +26,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,6 +45,21 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.Warp;
 import javax.media.jai.WarpGrid;
 import javax.media.jai.operator.MosaicDescriptor;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationFactory;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -52,11 +68,10 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.CRS;
@@ -71,21 +86,6 @@ import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.XArray;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Implementation of the {@link Resample} operation. This implementation is provided as a separated
@@ -281,7 +281,7 @@ final class Resampler2D extends GridCoverage2D {
                 if (!CRS.equalsIgnoreMetadata(targetCRS, targetGGCRS)
                         && !CRS.findMathTransform(targetCRS, targetGGCRS).isIdentity()) {
                     throw new IllegalArgumentException(
-                            Errors.format(
+                            MessageFormat.format(
                                     ErrorKeys.ILLEGAL_ARGUMENT_$1,
                                     "TargetCRS must be compatible with TargetGG CRS"));
                 }
@@ -338,7 +338,7 @@ final class Resampler2D extends GridCoverage2D {
                  * The result may be an image with a different size.
                  */
                 if (targetGG.isDefined(GridGeometry2D.ENVELOPE_BITMASK)) {
-                    final Envelope envelope = targetGG.getEnvelope();
+                    final Bounds envelope = targetGG.getEnvelope();
                     final GridGeometry2D sourceGG = sourceCoverage.getGridGeometry();
                     final MathTransform gridToCRS;
                     switch (envelope.getDimension()) {
@@ -452,7 +452,7 @@ final class Resampler2D extends GridCoverage2D {
                      * automatically computed in such a way that it will maps to the same envelope
                      * (at least approximatively).
                      */
-                    Envelope gridRange;
+                    Bounds gridRange;
                     gridRange = toEnvelope(sourceGG.getGridRange());
                     gridRange = CRS.transform(allSteps.inverse(), gridRange);
                     targetGG =
@@ -464,7 +464,7 @@ final class Resampler2D extends GridCoverage2D {
             }
         } else {
             if (sourceCRS == null) {
-                throw new CannotReprojectException(Errors.format(ErrorKeys.UNSPECIFIED_CRS));
+                throw new CannotReprojectException(ErrorKeys.UNSPECIFIED_CRS);
             }
             final CoordinateOperation operation = factory.createOperation(sourceCRS, targetCRS);
             final boolean force2D = (sourceCRS != compatibleSourceCRS);
@@ -472,9 +472,9 @@ final class Resampler2D extends GridCoverage2D {
             step3 =
                     (force2D ? sourceGG.getGridToCRS2D(CORNER) : sourceGG.getGridToCRS(CORNER))
                             .inverse();
-            final Envelope sourceEnvelope =
+            final Bounds sourceEnvelope =
                     sourceCoverage.getEnvelope(); // Don't force this one to 2D.
-            final GeneralEnvelope targetEnvelope = CRS.transform(operation, sourceEnvelope);
+            final GeneralBounds targetEnvelope = CRS.transform(operation, sourceEnvelope);
             targetEnvelope.setCoordinateReferenceSystem(targetCRS);
             // 'targetCRS' may be different than the one set by CRS.transform(...).
             /*
@@ -506,7 +506,7 @@ final class Resampler2D extends GridCoverage2D {
             } else {
                 step1 = targetGG.getGridToCRS(CORNER);
                 if (!targetGG.isDefined(GridGeometry2D.GRID_RANGE_BITMASK)) {
-                    GeneralEnvelope gridRange = CRS.transform(step1.inverse(), targetEnvelope);
+                    GeneralBounds gridRange = CRS.transform(step1.inverse(), targetEnvelope);
                     // According OpenGIS specification, GridGeometry maps pixel's center.
                     targetGG =
                             new GridGeometry2D(
@@ -526,7 +526,7 @@ final class Resampler2D extends GridCoverage2D {
         if (!(allSteps2D instanceof MathTransform2D)) {
             // Should not happen with Geotools implementations. May happen
             // with some external implementations, but should stay unusual.
-            throw new TransformException(Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+            throw new TransformException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////
@@ -728,11 +728,11 @@ final class Resampler2D extends GridCoverage2D {
                         case DataBuffer.TYPE_DOUBLE:
                         case DataBuffer.TYPE_FLOAT:
                             {
-                                Envelope source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
-                                Envelope target = CRS.transform(targetGG.getEnvelope(), targetCRS);
+                                Bounds source = CRS.transform(sourceGG.getEnvelope(), targetCRS);
+                                Bounds target = CRS.transform(targetGG.getEnvelope(), targetCRS);
                                 source = targetGG.reduce(source);
                                 target = targetGG.reduce(target);
-                                if (!(new GeneralEnvelope(source).contains(target, true))) {
+                                if (!(new GeneralBounds(source).contains(target, true))) {
                                     if (interpolation != null
                                             && !(interpolation instanceof InterpolationNearest)) {
                                         hints.add(ImageUtilities.NN_INTERPOLATION_HINT);
@@ -992,7 +992,7 @@ final class Resampler2D extends GridCoverage2D {
         if (candidate instanceof MathTransform2D) {
             return (MathTransform2D) candidate;
         }
-        throw new FactoryException(Errors.format(ErrorKeys.NO_TRANSFORM2D_AVAILABLE));
+        throw new FactoryException(ErrorKeys.NO_TRANSFORM2D_AVAILABLE);
     }
 
     /**
@@ -1028,9 +1028,9 @@ final class Resampler2D extends GridCoverage2D {
 
     /**
      * Casts the specified grid range into an envelope. This is used before to transform the
-     * envelope using {@link CRSUtilities#transform(MathTransform, Envelope)}.
+     * envelope using {@link CRSUtilities#transform(MathTransform, Bounds)}.
      */
-    private static Envelope toEnvelope(final GridEnvelope gridRange) {
+    private static Bounds toEnvelope(final GridEnvelope gridRange) {
         final int dimension = gridRange.getDimension();
         final double[] lower = new double[dimension];
         final double[] upper = new double[dimension];
@@ -1038,7 +1038,7 @@ final class Resampler2D extends GridCoverage2D {
             lower[i] = gridRange.getLow(i);
             upper[i] = gridRange.getHigh(i) + 1;
         }
-        return new GeneralEnvelope(lower, upper);
+        return new GeneralBounds(lower, upper);
     }
 
     /**

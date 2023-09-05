@@ -18,8 +18,8 @@ package org.geotools.coverage.grid;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import org.geotools.api.coverage.grid.GridCoordinates;
 import org.geotools.util.Classes;
-import org.opengis.coverage.grid.GridCoordinates;
 
 /**
  * Holds the set of grid coordinates that specifies the location of the {@linkplain GridPoint grid

@@ -23,24 +23,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.TemporalCRS;
+import org.geotools.api.referencing.crs.VerticalCRS;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.RangeType;
-import org.geotools.data.Parameter;
-import org.geotools.data.ResourceInfo;
 import org.geotools.referencing.CRS;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.feature.type.Name;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.TransfiniteSet;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.TemporalCRS;
-import org.opengis.referencing.crs.VerticalCRS;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.util.ProgressListener;
 
 /**
  * Allows read-only access to a Coverage.
@@ -117,15 +116,14 @@ public interface CoverageSource {
     public abstract class VerticalDomain {
 
         /**
-         * A {@link Set} of {@link Envelope} element for the underlying coverage. Note that the
-         * {@link CRS} for such envelope can be <code>null</code> in case the overall spatial {@link
-         * CRS} is a non-separable 3D {@link CRS} like WGS84-3D. Otherwise, all the envelopes should
+         * A {@link Set} of {@link Bounds} element for the underlying coverage. Note that the {@link
+         * CRS} for such envelope can be <code>null</code> in case the overall spatial {@link CRS}
+         * is a non-separable 3D {@link CRS} like WGS84-3D. Otherwise, all the envelopes should
          * share the same {@link VerticalCRS}. Finally, note that the envelope should be
          * 1-dimensional. In case of single vertical value, the lower coordinate should match the
          * upper coordinate while lower and upper coordinates may be different to define vertical
          * intervals.
          *
-         * @todo consider {@link TransfiniteSet} as an alternative to {@link SortedSet}
          * @todo allow using an interval as well as a direct position
          * @todo allow transfinite sets!
          */

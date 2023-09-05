@@ -17,6 +17,7 @@
 package org.geotools.parameter;
 
 import java.lang.reflect.Array;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -27,23 +28,22 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.InvalidParameterTypeException;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.util.Classes;
 import org.geotools.util.logging.Logging;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.InvalidParameterTypeException;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
 
 /**
  * Utility class for methods helping implementing, and working with the parameter API from {@link
- * org.opengis.parameter} package.
+ * org.geotools.api.parameter} package.
  *
  * <p>
  *
@@ -113,11 +113,9 @@ public final class Parameters {
             // We require a strict equality - not type.isAssignableFrom(actual) - because in
             // the later case we could have (to be strict) to return a <? extends T> type.
             if (!type.equals(actual)) {
+                final Object arg0 = descriptor.getName().getCode();
                 throw new ClassCastException(
-                        Errors.format(
-                                ErrorKeys.BAD_PARAMETER_TYPE_$2,
-                                descriptor.getName().getCode(),
-                                actual));
+                        MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
             }
         }
         return (ParameterDescriptor) descriptor;
@@ -142,11 +140,9 @@ public final class Parameters {
             final ParameterDescriptor descriptor = value.getDescriptor();
             final Class<?> actual = descriptor.getValueClass();
             if (!type.equals(actual)) { // Same comment than cast(ParameterDescriptor)...
+                final Object arg0 = descriptor.getName().getCode();
                 throw new ClassCastException(
-                        Errors.format(
-                                ErrorKeys.BAD_PARAMETER_TYPE_$2,
-                                descriptor.getName().getCode(),
-                                actual));
+                        MessageFormat.format(ErrorKeys.BAD_PARAMETER_TYPE_$2, arg0, actual));
             }
         }
         return (ParameterValue) value;

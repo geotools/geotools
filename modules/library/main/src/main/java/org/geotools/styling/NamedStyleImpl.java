@@ -16,7 +16,9 @@
  */
 package org.geotools.styling;
 
-import org.opengis.style.StyleVisitor;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.NamedStyle;
+import org.geotools.api.style.TraversingStyleVisitor;
 
 /**
  * A NamedStyle is used to refer to a style that has a name in a WMS.
@@ -93,25 +95,25 @@ public class NamedStyleImpl extends StyleImpl implements NamedStyle {
 
     /** */
     @Override
-    public org.geotools.styling.FeatureTypeStyle[] getFeatureTypeStyles() {
-        return new org.geotools.styling.FeatureTypeStyle[0];
+    public FeatureTypeStyle[] getFeatureTypeStyles() {
+        return new FeatureTypeStyle[0];
     }
 
     /** */
     @Override
-    public void setFeatureTypeStyles(org.geotools.styling.FeatureTypeStyle[] types) {
+    public void setFeatureTypeStyles(FeatureTypeStyle[] types) {
         throw new UnsupportedOperationException();
     }
 
     /** */
     @Override
-    public void addFeatureTypeStyle(org.geotools.styling.FeatureTypeStyle type) {
+    public void addFeatureTypeStyle(FeatureTypeStyle type) {
         throw new UnsupportedOperationException();
     }
 
     /** */
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 }

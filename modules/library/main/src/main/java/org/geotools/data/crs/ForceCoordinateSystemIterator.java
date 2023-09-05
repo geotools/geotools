@@ -18,15 +18,16 @@ package org.geotools.data.crs;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * ForceCoordinateSystemFeatureReader provides a CoordinateReferenceSystem for FeatureTypes.
@@ -85,7 +86,7 @@ public class ForceCoordinateSystemIterator
         this.reader = reader;
     }
 
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     public SimpleFeatureType getFeatureType() {
         if (reader == null || builder == null) {
             throw new IllegalStateException("Reader has already been closed");
@@ -93,7 +94,7 @@ public class ForceCoordinateSystemIterator
         return builder.getFeatureType();
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     @Override
     public SimpleFeature next() throws NoSuchElementException {
         if (reader == null) {
@@ -111,7 +112,7 @@ public class ForceCoordinateSystemIterator
         }
     }
 
-    /** @see org.geotools.data.FeatureReader#hasNext() */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() {
         if (reader == null) {
@@ -125,7 +126,7 @@ public class ForceCoordinateSystemIterator
     public void remove() {
         throw new UnsupportedOperationException();
     }
-    /** @see org.geotools.data.FeatureReader#close() */
+    /** @see FeatureReader#close() */
     @Override
     public void close() {
         if (reader == null) {

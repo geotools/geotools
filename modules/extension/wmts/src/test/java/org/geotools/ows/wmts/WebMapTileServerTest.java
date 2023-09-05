@@ -31,7 +31,10 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.geotools.TestData;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.AbstractHttpClient;
 import org.geotools.http.HTTPResponse;
@@ -52,9 +55,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /** @author Emanuele Tajariol (etj at geo-solutions dot it) */
 public class WebMapTileServerTest {
@@ -83,7 +83,7 @@ public class WebMapTileServerTest {
 
         CoordinateReferenceSystem crs = CRS.decode("CRS:84");
 
-        GeneralEnvelope envelope = wmts.getEnvelope(layer, crs);
+        GeneralBounds envelope = wmts.getEnvelope(layer, crs);
         assertNotNull(envelope);
         assertEquals(-90.0, envelope.getMinimum(1), 0.0001);
         assertEquals(-180.0, envelope.getMinimum(0), 0.0001);
@@ -114,7 +114,7 @@ public class WebMapTileServerTest {
 
         CoordinateReferenceSystem crs = CRS.decode("CRS:84");
 
-        GeneralEnvelope envelope = wmts.getEnvelope(layer, crs);
+        GeneralBounds envelope = wmts.getEnvelope(layer, crs);
         assertNotNull(envelope);
         assertEquals(45.398181, envelope.getMinimum(1), 0.0001);
         assertEquals(5.140242, envelope.getMinimum(0), 0.0001);

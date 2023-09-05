@@ -19,6 +19,9 @@
 package org.geotools.kml.v22.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Schema;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.Geometries;
@@ -28,9 +31,6 @@ import org.geotools.xs.XS;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Schema;
 
 /**
  * Binding object for the type http://www.opengis.net/kml/2.2:SchemaType.

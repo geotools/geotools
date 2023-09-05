@@ -24,13 +24,12 @@ import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.EllipsoidalCS;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.EllipsoidalCS;
 import si.uom.NonSI;
 import si.uom.SI;
 
@@ -288,7 +287,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
         if (heightConverter == null) {
             update();
             if (heightConverter == null) {
-                throw new IllegalStateException(Errors.format(ErrorKeys.NOT_THREE_DIMENSIONAL_CS));
+                throw new IllegalStateException(ErrorKeys.NOT_THREE_DIMENSIONAL_CS);
             }
         }
         return heightConverter.convert(coordinates[heightAxis]);

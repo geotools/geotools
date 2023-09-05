@@ -13,10 +13,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.temporal.Instant;
+import org.geotools.api.temporal.Period;
+import org.geotools.api.temporal.TemporalPrimitive;
 import org.junit.Test;
-import org.opengis.temporal.Instant;
-import org.opengis.temporal.Period;
-import org.opengis.temporal.TemporalPrimitive;
 
 public class TEqualsImplTest extends TemporalFilterTestSupport {
 

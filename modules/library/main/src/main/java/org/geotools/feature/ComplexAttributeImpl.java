@@ -19,13 +19,13 @@ package org.geotools.feature;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.ComplexType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.identity.Identifier;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.identity.Identifier;
 
 public class ComplexAttributeImpl extends AttributeImpl implements ComplexAttribute {
 

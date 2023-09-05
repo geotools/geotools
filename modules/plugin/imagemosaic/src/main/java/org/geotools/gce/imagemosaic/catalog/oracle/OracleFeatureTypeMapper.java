@@ -16,8 +16,8 @@
  */
 package org.geotools.gce.imagemosaic.catalog.oracle;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.filter.text.cql2.CQLException;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * An Oracle specific {@link FeatureTypeMapper} instance

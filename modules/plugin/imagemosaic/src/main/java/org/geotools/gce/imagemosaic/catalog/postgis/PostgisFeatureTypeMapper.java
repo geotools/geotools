@@ -18,15 +18,15 @@ package org.geotools.gce.imagemosaic.catalog.postgis;
 
 import java.util.Map;
 import java.util.Set;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.AttributeType;
 import org.geotools.data.transform.Definition;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.gce.imagemosaic.catalog.oracle.AbstractFeatureTypeMapper;
 import org.geotools.gce.imagemosaic.catalog.oracle.FeatureTypeMapper;
 import org.geotools.jdbc.JDBCDataStore;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
 
 /**
  * A Postgis specific {@link FeatureTypeMapper} instance

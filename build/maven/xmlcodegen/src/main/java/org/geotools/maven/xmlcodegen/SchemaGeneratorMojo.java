@@ -33,11 +33,11 @@ import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.eclipse.xsd.XSDSchema;
-import org.opengis.feature.type.Schema;
+import org.geotools.api.feature.type.Schema;
 
 
 /**
- * Generates an instance of {@link org.opengis.feature.type.Schema } from an xml schema.
+ * Generates an instance of {@link org.geotools.api.feature.type.Schema } from an xml schema.
  * 
  * @goal generateSchema
  * 

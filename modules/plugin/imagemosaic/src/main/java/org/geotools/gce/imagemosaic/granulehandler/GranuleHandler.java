@@ -17,10 +17,10 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /** Handle setting the geometry of the index feature for incoming granules */
 public interface GranuleHandler {

@@ -21,9 +21,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.filter.FilterFactoryImpl;
 import org.junit.Test;
-import org.opengis.filter.expression.Function;
 
 /**
  * Unit tests for FilterFunction_lappy FilterFunction_size FilterFunction_literate

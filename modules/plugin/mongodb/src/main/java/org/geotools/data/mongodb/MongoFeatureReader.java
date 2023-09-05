@@ -21,9 +21,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import org.geotools.data.simple.SimpleFeatureReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.data.SimpleFeatureReader;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class MongoFeatureReader implements SimpleFeatureReader {
 

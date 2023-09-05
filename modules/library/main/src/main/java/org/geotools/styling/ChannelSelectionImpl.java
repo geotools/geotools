@@ -16,8 +16,11 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
 import org.geotools.util.Utilities;
-import org.opengis.style.StyleVisitor;
 
 /**
  * ChannelSelectionImpl
@@ -57,12 +60,8 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.gray = gray;
     }
 
-    public void setGrayChannel(org.opengis.style.SelectedChannelType gray) {
-        this.gray = new SelectedChannelTypeImpl(gray);
-    }
-
     @Override
-    public void setRGBChannels(SelectedChannelType[] channels) {
+    public void setRGBChannels(SelectedChannelType... channels) {
         if (channels == null) {
             red = null;
             green = null;
@@ -86,26 +85,17 @@ public class ChannelSelectionImpl implements ChannelSelection {
         this.blue = blue;
     }
 
-    public void setRGBChannels(
-            org.opengis.style.SelectedChannelType red,
-            org.opengis.style.SelectedChannelType green,
-            org.opengis.style.SelectedChannelType blue) {
-        this.red = new SelectedChannelTypeImpl(red);
-        this.green = new SelectedChannelTypeImpl(green);
-        this.blue = new SelectedChannelTypeImpl(blue);
-    }
-
     @Override
-    public Object accept(StyleVisitor visitor, Object data) {
+    public Object accept(TraversingStyleVisitor visitor, Object data) {
         return visitor.visit(this, data);
     }
 
     @Override
-    public void accept(org.geotools.styling.StyleVisitor visitor) {
+    public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
 
-    public void accept(org.opengis.style.StyleVisitor visitor) {
+    public void accept(TraversingStyleVisitor visitor) {
         visitor.visit(this, null);
     }
 
@@ -151,7 +141,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
         return false;
     }
 
-    static ChannelSelectionImpl cast(org.opengis.style.ChannelSelection channel) {
+    static ChannelSelectionImpl cast(org.geotools.api.style.ChannelSelection channel) {
         if (channel == null) {
             return null;
         } else if (channel instanceof ChannelSelectionImpl) {
@@ -161,7 +151,7 @@ public class ChannelSelectionImpl implements ChannelSelection {
             if (channel.getGrayChannel() != null) {
                 copy.setGrayChannel(channel.getGrayChannel());
             } else {
-                org.opengis.style.SelectedChannelType[] rgb = channel.getRGBChannels();
+                org.geotools.api.style.SelectedChannelType[] rgb = channel.getRGBChannels();
                 copy.setRGBChannels(rgb[0], rgb[1], rgb[2]);
             }
             return copy;

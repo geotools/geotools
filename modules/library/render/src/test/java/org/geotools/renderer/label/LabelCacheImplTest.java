@@ -16,15 +16,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.RendererBaseTest;
-import org.geotools.styling.Font;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
@@ -33,10 +37,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.mockito.Mockito;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 
 public class LabelCacheImplTest {
 
@@ -82,7 +82,7 @@ public class LabelCacheImplTest {
     @Test
     public void testSimpleGrouping() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
-        ts.getOptions().put(TextSymbolizer.GROUP_KEY, "true");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
         cache.put(
@@ -109,9 +109,9 @@ public class LabelCacheImplTest {
     @Test
     public void testGroupDifferentSymbolizers() throws Exception {
         TextSymbolizer ts1 = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
-        ts1.getOptions().put(TextSymbolizer.GROUP_KEY, "true");
+        ts1.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
         TextSymbolizer ts2 = sb.createTextSymbolizer(Color.YELLOW, (Font) null, "name");
-        ts2.getOptions().put(TextSymbolizer.GROUP_KEY, "true");
+        ts2.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
 
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
@@ -137,7 +137,7 @@ public class LabelCacheImplTest {
     public void testMinNonGrouped() throws Exception {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
         TextSymbolizer tsGroup = sb.createTextSymbolizer(Color.YELLOW, (Font) null, "name");
-        tsGroup.getOptions().put(TextSymbolizer.GROUP_KEY, "true");
+        tsGroup.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
 
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
@@ -169,7 +169,7 @@ public class LabelCacheImplTest {
         assertEquals(Arrays.asList(L1, L3), item1.getGeoms());
         LabelCacheItem item2 = labels.get(1);
         assertEquals("label1", item2.getLabel());
-        assertEquals(Arrays.asList(L2), item2.getGeoms());
+        assertEquals(Collections.singletonList(L2), item2.getGeoms());
     }
 
     @Test
@@ -272,7 +272,7 @@ public class LabelCacheImplTest {
     public void testDecimateSmallRing() throws Exception {
         Font font = sb.createFont("Bitstream Vera Sans", 12);
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
-        ts.getOptions().put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
 
         AtomicReference<Exception> exception = new AtomicReference<>(null);
         RenderListener listener =
@@ -310,8 +310,8 @@ public class LabelCacheImplTest {
         // these two right now are not compatible
         Font font = sb.createFont("Bitstream Vera Sans", 12);
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
-        ts.getOptions().put(TextSymbolizer.AUTO_WRAP_KEY, "10");
-        ts.getOptions().put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY, "10");
+        ts.getOptions().put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
 
         // put in cache
         SimpleFeature f1 = createFeature("label1", L4);

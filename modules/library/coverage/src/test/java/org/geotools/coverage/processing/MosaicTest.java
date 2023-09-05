@@ -48,6 +48,17 @@ import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.TileCache;
 import org.geotools.TestData;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -57,9 +68,8 @@ import org.geotools.coverage.processing.operation.Mosaic;
 import org.geotools.coverage.processing.operation.Mosaic.GridGeometryPolicy;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.WorldFileReader;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.referencing.CRS;
@@ -73,16 +83,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * This class tests the {@link Mosaic} operation. The tests ensures that the final {@link
@@ -234,10 +234,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(coverage2.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -254,18 +254,18 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
-                        actual.getCenterX(),
-                        actual.getCenterY());
+                        actual.getMedian(0),
+                        actual.getMedian(1));
         double nodata = CoverageUtilities.getBackgroundValues(coverage1)[0];
         double result = ((int[]) mosaic.evaluate(point))[0];
         Assert.assertEquals(nodata, result, TOLERANCE);
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMinY() + finalRes);
@@ -365,10 +365,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(coverage2.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -380,8 +380,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
                         actual.getCenterY());
@@ -390,7 +390,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMinY() + finalRes);
@@ -423,10 +423,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage3.getEnvelope2D();
+        ReferencedEnvelope expected = coverage3.getEnvelope2D();
         expected.include(coverage4.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -438,8 +438,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
                         actual.getCenterY());
@@ -449,7 +449,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMinY() + finalRes);
@@ -477,11 +477,11 @@ public class MosaicTest extends GridProcessingTestBase {
         param.parameter("Sources").setValue(sources);
 
         // Initial Bounding box
-        Envelope2D startBBOX = coverage1.getEnvelope2D();
+        ReferencedEnvelope startBBOX = coverage1.getEnvelope2D();
         startBBOX.include(coverage2.getEnvelope2D());
-        Envelope2D expected = new Envelope2D(startBBOX);
+        ReferencedEnvelope expected = new ReferencedEnvelope(startBBOX);
         Point2D pt = new Point2D.Double(startBBOX.getMaxX() + 1, startBBOX.getMaxY() + 1);
-        expected.add(pt);
+        expected.expandToInclude(pt);
         // External GridGeometry
         GridGeometry2D ggStart =
                 new GridGeometry2D(
@@ -498,7 +498,7 @@ public class MosaicTest extends GridProcessingTestBase {
         // input
 
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -509,8 +509,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertEquals(initialRes, finalRes, TOLERANCE);
 
         // Check that on the Upper Right pixel of the image there are nodata
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMaxY() - finalRes);
@@ -520,7 +520,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMinY() + finalRes);
@@ -582,10 +582,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(resampled.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -597,8 +597,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
                         actual.getCenterY());
@@ -608,7 +608,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMinY() + finalRes);
@@ -651,10 +651,10 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that the final GridCoverage BoundingBox is equal to the union of the separate
         // coverages bounding box
-        Envelope2D expected = coverage1.getEnvelope2D();
+        ReferencedEnvelope expected = coverage1.getEnvelope2D();
         expected.include(resampled.getEnvelope2D());
         // Mosaic Envelope
-        Envelope2D actual = mosaic.getEnvelope2D();
+        ReferencedEnvelope actual = mosaic.getEnvelope2D();
 
         // Check the same Bounding Box
         assertEqualBBOX(expected, actual);
@@ -666,8 +666,8 @@ public class MosaicTest extends GridProcessingTestBase {
         Assert.assertTrue(percentual < TOLERANCE);
 
         // Check that on the center of the image there are nodata
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getCenterX(),
                         actual.getCenterY());
@@ -677,7 +677,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         actual.getMinX() + finalRes,
                         actual.getMinY() + finalRes);
@@ -727,12 +727,12 @@ public class MosaicTest extends GridProcessingTestBase {
         ReferencedEnvelope re1 =
                 new ReferencedEnvelope(10, 180, -90, 90, DefaultGeographicCRS.WGS84);
         // Coverage crop for extracting the first half of the image
-        GridCoverage2D c1 = crop(test, new GeneralEnvelope(re1));
+        GridCoverage2D c1 = crop(test, new GeneralBounds(re1));
         // Envelope for the second half of the image
         ReferencedEnvelope re2 =
                 new ReferencedEnvelope(-180, -10, -90, 90, DefaultGeographicCRS.WGS84);
         // Coverage crop for extracting the second half of the image
-        GridCoverage2D c2 = crop(test, new GeneralEnvelope(re2));
+        GridCoverage2D c2 = crop(test, new GeneralBounds(re2));
 
         // Shift the first image on the right
         ReferencedEnvelope re3 =
@@ -746,19 +746,19 @@ public class MosaicTest extends GridProcessingTestBase {
         GridCoverage2D mosaic =
                 mosaic(
                         sortCoverages(Arrays.asList(c1, shifted)),
-                        new GeneralEnvelope(reUnion),
+                        new GeneralBounds(reUnion),
                         new Hints());
 
         // Ensure the mosaic Bounding box is equal to that expected
-        Envelope2D expected = new Envelope2D(reUnion);
+        ReferencedEnvelope expected = new ReferencedEnvelope(reUnion);
         assertEqualBBOX(expected, mosaic.getEnvelope2D());
 
         // Check that the final Coverage resolution is equal to that of the first coverage
         double finalRes = calculateResolution(mosaic);
 
         // Check that on the center of the image there is valid data
-        DirectPosition point =
-                new DirectPosition2D(
+        Position point =
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         expected.getCenterX(),
                         expected.getCenterY());
@@ -768,7 +768,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Left border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         expected.getMinX() + finalRes,
                         expected.getMinY() + finalRes);
@@ -777,7 +777,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Check that on the Upper Right border pixel there is valid data
         point =
-                new DirectPosition2D(
+                new Position2D(
                         mosaic.getCoordinateReferenceSystem(),
                         expected.getMaxX() - finalRes,
                         expected.getMinY() + finalRes);
@@ -799,7 +799,7 @@ public class MosaicTest extends GridProcessingTestBase {
         GridGeometry2D gg = new GridGeometry2D(gridRange, re);
 
         GridCoverage2D cStart = readInputFile("sample0");
-        GridCoverage2D cCrop = crop(cStart, new GeneralEnvelope(re));
+        GridCoverage2D cCrop = crop(cStart, new GeneralBounds(re));
 
         // Resampling of the Coverage to the defined resolution
         ParameterValueGroup paramResampling = processor.getOperation("resample").getParameters();
@@ -828,10 +828,10 @@ public class MosaicTest extends GridProcessingTestBase {
         ReferencedEnvelope reUnion =
                 new ReferencedEnvelope(-900, 540, -85, 85, DefaultGeographicCRS.WGS84);
         List<GridCoverage2D> sorted = sortCoverages(Arrays.asList(c4, c2, c, c3));
-        GridCoverage2D mosaic = mosaic(sorted, new GeneralEnvelope(reUnion), new Hints());
+        GridCoverage2D mosaic = mosaic(sorted, new GeneralBounds(reUnion), new Hints());
 
         // Ensure the mosaic Bounding box is equal to that expected
-        Envelope2D expected = new Envelope2D(reUnion);
+        ReferencedEnvelope expected = new ReferencedEnvelope(reUnion);
         assertEqualBBOX(expected, mosaic.getEnvelope2D());
 
         // Calculate the mosaic resolution
@@ -839,15 +839,14 @@ public class MosaicTest extends GridProcessingTestBase {
 
         // Ensure that no black lines are present on the border between the input images
         // Check that on the center of the image there is valid data
-        DirectPosition point =
-                new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540, -84);
+        Position point = new Position2D(mosaic.getCoordinateReferenceSystem(), -540, -84);
         double nodata = 0;
         double result = ((byte[]) mosaic.evaluate(point))[0];
         Assert.assertNotEquals(nodata, result, TOLERANCE);
-        point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540 - res, -84);
+        point = new Position2D(mosaic.getCoordinateReferenceSystem(), -540 - res, -84);
         result = ((byte[]) mosaic.evaluate(point))[0];
         Assert.assertNotEquals(nodata, result, TOLERANCE);
-        point = new DirectPosition2D(mosaic.getCoordinateReferenceSystem(), -540 + res, -84);
+        point = new Position2D(mosaic.getCoordinateReferenceSystem(), -540 + res, -84);
         result = ((byte[]) mosaic.evaluate(point))[0];
         Assert.assertNotEquals(nodata, result, TOLERANCE);
 
@@ -923,26 +922,26 @@ public class MosaicTest extends GridProcessingTestBase {
     /** Method for calculating the resolution of the input {@link GridCoverage2D} */
     private static double calculateResolution(GridCoverage2D coverage) {
         GridGeometry2D gg2D = coverage.getGridGeometry();
-        double envW = gg2D.getEnvelope2D().width;
-        double gridW = gg2D.getGridRange2D().width;
+        double envW = gg2D.getEnvelope2D().getWidth();
+        double gridW = gg2D.getGridRange2D().getWidth();
         double res = envW / gridW;
         return res;
     }
 
-    /** Method which ensures that the two {@link Envelope2D} objects are equals. */
-    private void assertEqualBBOX(Envelope2D expected, Envelope2D actual) {
-        Assert.assertEquals(expected.getX(), actual.getX(), TOLERANCE);
-        Assert.assertEquals(expected.getY(), actual.getY(), TOLERANCE);
-        Assert.assertEquals(expected.getHeight(), actual.getHeight(), TOLERANCE);
-        Assert.assertEquals(expected.getWidth(), actual.getWidth(), TOLERANCE);
+    /** Method which ensures that the two {@link BoundingBox} objects are equals. */
+    private void assertEqualBBOX(BoundingBox expected, BoundingBox actual) {
+        Assert.assertEquals(expected.getMinX(), actual.getMinX(), TOLERANCE);
+        Assert.assertEquals(expected.getMinY(), actual.getMinY(), TOLERANCE);
+        Assert.assertEquals(expected.getMaxX(), actual.getMaxX(), TOLERANCE);
+        Assert.assertEquals(expected.getMaxY(), actual.getMaxY(), TOLERANCE);
     }
 
     /** Method for cropping the input coverage with the defined envelope. */
-    private GridCoverage2D crop(GridCoverage2D gc, GeneralEnvelope envelope) {
-        final GeneralEnvelope oldEnvelope = (GeneralEnvelope) gc.getEnvelope();
+    private GridCoverage2D crop(GridCoverage2D gc, GeneralBounds envelope) {
+        final GeneralBounds oldEnvelope = (GeneralBounds) gc.getEnvelope();
         // intersect the envelopes in order to prepare for cropping the coverage
         // down to the neded resolution
-        final GeneralEnvelope intersectionEnvelope = new GeneralEnvelope(envelope);
+        final GeneralBounds intersectionEnvelope = new GeneralBounds(envelope);
         intersectionEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
         intersectionEnvelope.intersect(oldEnvelope);
 
@@ -962,7 +961,7 @@ public class MosaicTest extends GridProcessingTestBase {
 
     /** Method for mosaicking two input images and setting the final BoundingBox */
     private GridCoverage2D mosaic(
-            List<GridCoverage2D> coverages, GeneralEnvelope renderingEnvelope, Hints hints) {
+            List<GridCoverage2D> coverages, GeneralBounds renderingEnvelope, Hints hints) {
         // setup the grid geometry
         try {
             // find the intersection between the target envelope and the coverages one
@@ -1122,7 +1121,7 @@ public class MosaicTest extends GridProcessingTestBase {
         return GRID_COVERAGE_FACTORY.create(
                 "Test coverage",
                 pi,
-                new Envelope2D(DefaultEngineeringCRS.GENERIC_2D, x0, y0, width, height),
+                ReferencedEnvelope.rect(x0, y0, width, height, DefaultEngineeringCRS.GENERIC_2D),
                 null,
                 null,
                 coverageProperties);

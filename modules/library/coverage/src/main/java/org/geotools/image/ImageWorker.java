@@ -63,6 +63,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -126,13 +127,18 @@ import javax.media.jai.operator.RescaleDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.coverage.processing.OperationNotFoundException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.util.ColorUtilities;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.util.Arguments;
@@ -140,12 +146,6 @@ import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.coverage.processing.OperationNotFoundException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Helper methods for applying JAI operations on an image. The image is specified at {@linkplain
@@ -404,7 +404,8 @@ public class ImageWorker {
             return operation;
         }
 
-        throw new OperationNotFoundException(Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
+        throw new OperationNotFoundException(
+                MessageFormat.format(ErrorKeys.OPERATION_NOT_FOUND_$1, name));
     }
 
     /**
@@ -1944,12 +1945,14 @@ public class ImageWorker {
 
                 default:
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", datatype));
+                            MessageFormat.format(
+                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", datatype));
             }
 
             // did we initialized the LUT?
             if (lut == null)
-                throw new IllegalStateException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "lut"));
+                throw new IllegalStateException(
+                        MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "lut"));
             /*
              * Get the default hints, which usually contains only information about tiling.
              * If the user override the rendering hints with an explicit color model,
@@ -2070,7 +2073,8 @@ public class ImageWorker {
 
                 default:
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", dataType));
+                            MessageFormat.format(
+                                    ErrorKeys.ILLEGAL_ARGUMENT_$2, "datatype", dataType));
             }
 
             // prepare color model and sample model
@@ -2568,7 +2572,7 @@ public class ImageWorker {
     public final ImageWorker retainBands(final int numBands) {
         if (numBands <= 0) {
             throw new IndexOutOfBoundsException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numBands", numBands));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numBands", numBands));
         }
         if (getNumBands() > numBands) {
             final int[] bands = new int[numBands];
@@ -2752,7 +2756,7 @@ public class ImageWorker {
             throws IllegalStateException {
         if (transparentColor == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "transparentColor"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "transparentColor"));
         }
         final ColorModel cm = image.getColorModel();
         if (cm instanceof IndexColorModel) {
@@ -2766,7 +2770,7 @@ public class ImageWorker {
                     // Add other types here if we support them...
             }
         }
-        throw new IllegalStateException(Errors.format(ErrorKeys.UNSUPPORTED_DATA_TYPE));
+        throw new IllegalStateException(ErrorKeys.UNSUPPORTED_DATA_TYPE);
     }
 
     /**
@@ -3669,7 +3673,7 @@ public class ImageWorker {
         final String filename = output.getName();
         final int dot = filename.lastIndexOf('.');
         if (dot < 0) {
-            throw new IIOException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+            throw new IIOException(ErrorKeys.NO_IMAGE_WRITER);
         }
         final String extension = filename.substring(dot + 1).trim();
         write(output, ImageIO.getImageWritersBySuffix(extension));
@@ -3769,7 +3773,7 @@ public class ImageWorker {
             final Iterator<ImageWriter> it =
                     ImageIO.getImageWriters(new ImageTypeSpecifier(image), "PNG");
             if (!it.hasNext()) {
-                throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+                throw new IllegalStateException(ErrorKeys.NO_IMAGE_WRITER);
             }
             while (it.hasNext()) {
                 writer = it.next();
@@ -3830,7 +3834,7 @@ public class ImageWorker {
         try (ImageOutputStream memOutStream =
                 ImageIOExt.createImageOutputStream(image, destination)) {
             if (memOutStream == null) {
-                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
+                throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
             if (CLIB_PNG_IMAGE_WRITER_SPI != null
                     && originatingProvider
@@ -3897,11 +3901,11 @@ public class ImageWorker {
         forceIndexColorModelForGIF(true);
 
         if (IMAGEIO_GIF_IMAGE_WRITER_SPI == null) {
-            throw new IIOException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+            throw new IIOException(ErrorKeys.NO_IMAGE_WRITER);
         }
         try (ImageOutputStream stream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (stream == null)
-                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
+                throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             final ImageWriter writer = IMAGEIO_GIF_IMAGE_WRITER_SPI.createWriterInstance();
             final ImageWriteParam param = writer.getDefaultWriteParam();
             param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -3974,7 +3978,7 @@ public class ImageWorker {
         if (writer == null) {
             if (JDK_JPEG_IMAGE_WRITER_SPI == null) {
                 throw new IllegalStateException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.ILLEGAL_CLASS_$2, "Unable to find JDK JPEG Writer"));
             }
             writer = JDK_JPEG_IMAGE_WRITER_SPI.createWriterInstance();
@@ -3985,7 +3989,7 @@ public class ImageWorker {
 
         try (ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (outStream == null) {
-                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
+                throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
 
             iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
@@ -4073,7 +4077,7 @@ public class ImageWorker {
             LOGGER.finer("Unable to find ImageIO-Ext Tiff Writer, looking for another one");
             final Iterator<ImageWriter> it = ImageIO.getImageWritersByFormatName("TIFF");
             if (!it.hasNext()) {
-                throw new IllegalStateException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+                throw new IllegalStateException(ErrorKeys.NO_IMAGE_WRITER);
             }
             writer = it.next();
         } else {
@@ -4088,7 +4092,7 @@ public class ImageWorker {
         final ImageWriteParam iwp = writer.getDefaultWriteParam();
         try (ImageOutputStream outStream = ImageIOExt.createImageOutputStream(image, destination)) {
             if (outStream == null) {
-                throw new IIOException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
+                throw new IIOException(MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "stream"));
             }
 
             if (compression != null) {
@@ -5414,7 +5418,7 @@ public class ImageWorker {
                 return this;
             }
         }
-        throw new IIOException(Errors.format(ErrorKeys.NO_IMAGE_WRITER));
+        throw new IIOException(ErrorKeys.NO_IMAGE_WRITER);
     }
 
     /** Returns {@code true} if the specified array contains the specified type. */

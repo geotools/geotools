@@ -17,13 +17,12 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.v1_0.DistanceUnits;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -60,7 +59,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
 
     FilterFactory filterFactory2;
 
-    public MeasureTypeBinding(FilterFactory2 filterFactory) {
+    public MeasureTypeBinding(FilterFactory filterFactory) {
         this.filterFactory2 = filterFactory;
     }
 

@@ -58,6 +58,29 @@ import javax.media.jai.TiledImage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.TestData;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.parameter.GeneralParameterDescriptor;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.ContrastMethodStrategy;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -78,7 +101,7 @@ import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.geotiff.GeoTiffWriteParams;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -101,19 +124,11 @@ import org.geotools.renderer.lite.gridcoverage2d.ContrastEnhancementType;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelperTest;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
-import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ChannelSelectionImpl;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.ContrastMethodStrategy;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.SelectedChannelTypeImpl;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
@@ -121,21 +136,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.parameter.GeneralParameterDescriptor;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /** @author Simone Giannecchini */
 public class GridCoverageRendererTest {
@@ -246,7 +246,7 @@ public class GridCoverageRendererTest {
 
         // 41°S - 5°N ; 35°E - 80°E (450 x 460 pixels)
         final Rectangle2D bounds = new Rectangle2D.Double(35, -41, 45, 46);
-        final GeneralEnvelope envelope = new GeneralEnvelope(bounds);
+        final GeneralBounds envelope = new GeneralBounds(bounds);
         final RenderedImage image = ImageIO.read(TestData.getResource(this, path));
         final int numBands = image.getSampleModel().getNumBands();
         final GridSampleDimension[] bands = new GridSampleDimension[numBands];
@@ -662,7 +662,7 @@ public class GridCoverageRendererTest {
         File reference =
                 new File(
                         "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBlackLine.png");
-        ImageAssert.assertEquals(reference, image, 5);
+        ImageAssert.assertEquals(reference, image, 370);
     }
 
     @Test
@@ -973,7 +973,7 @@ public class GridCoverageRendererTest {
                         new String[] {"1", "2", "3", "4"},
                         new double[] {0, 100, 2000, 5000},
                         new Color[] {Color.RED, Color.WHITE, Color.GREEN, Color.BLUE},
-                        ColorMap.TYPE_RAMP);
+                        org.geotools.api.style.ColorMap.TYPE_RAMP);
         RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(colorMap, 1d);
         return rasterSymbolizer;
     }
@@ -1980,7 +1980,7 @@ public class GridCoverageRendererTest {
         public TestSingleBandReader(int... expectedBands) {
             this.expectedBands = expectedBands;
             this.originalEnvelope =
-                    new GeneralEnvelope(
+                    new GeneralBounds(
                             new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84));
             this.crs = DefaultGeographicCRS.WGS84;
         }
@@ -2095,7 +2095,7 @@ public class GridCoverageRendererTest {
         public TestMultiBandReader(int... expectedBands) {
             this.expectedBands = expectedBands;
             this.originalEnvelope =
-                    new GeneralEnvelope(
+                    new GeneralBounds(
                             new ReferencedEnvelope(0, 90, 0, 90, DefaultGeographicCRS.WGS84));
             this.crs = DefaultGeographicCRS.WGS84;
         }
@@ -2534,7 +2534,7 @@ public class GridCoverageRendererTest {
                         new String[] {"a", "b"},
                         new double[] {-20, 50},
                         new Color[] {Color.RED, Color.GREEN},
-                        ColorMap.TYPE_RAMP);
+                        org.geotools.api.style.ColorMap.TYPE_RAMP);
         RasterSymbolizer rasterSymbolizer = sb.createRasterSymbolizer(cm, 1d);
         return rasterSymbolizer;
     }

@@ -39,6 +39,7 @@ import javax.media.jai.Interpolation;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.apache.commons.lang3.NotImplementedException;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -62,7 +63,6 @@ import org.geotools.tile.Tile;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xsd.Parser;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

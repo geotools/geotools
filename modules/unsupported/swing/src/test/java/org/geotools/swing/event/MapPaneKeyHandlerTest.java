@@ -31,6 +31,7 @@ import org.assertj.swing.driver.FrameDriver;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.edt.GuiQuery;
 import org.assertj.swing.fixture.FrameFixture;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
@@ -39,7 +40,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opengis.geometry.Envelope;
 
 /**
  * Unit tests for MapPaneKeyHandler. Requires graphics environment.
@@ -170,7 +170,7 @@ public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame,
         }
 
         @Override
-        public void setDisplayArea(Envelope envelope) {
+        public void setDisplayArea(Bounds envelope) {
             this.env = new ReferencedEnvelope(envelope);
             latch.countDown();
         }

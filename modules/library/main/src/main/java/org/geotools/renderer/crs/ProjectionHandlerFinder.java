@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
@@ -28,8 +30,6 @@ import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Looks up the {@link ProjectionHandler} for the specified rendering area. WARNING: this API is not

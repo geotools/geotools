@@ -231,7 +231,7 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-opengis</artifactId>
+      <artifactId>gt-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -436,6 +436,30 @@
   <!-- =========================================================== -->
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/it/commons/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/log4j/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/logback/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/logging/target</directory>
+            </fileset>
+            <fileset>
+              <directory>src/it/reload4j/target</directory>
+            </fileset>
+          </filesets>
+          <followSymlinks>true</followSymlinks>
+          <failOnError>false</failOnError>
+        </configuration>
+      </plugin>
       <!-- process markdown -->
       <plugin>
         <groupId>com.ruleoftech</groupId>
@@ -494,16 +518,49 @@
           </descriptors>
         </configuration>
       </plugin>
-      <!-- no need to deploy to nexus repo -->
+      <!-- integration testing to see if packages are good -->
       <plugin>
-        <artifactId>maven-deploy-plugin</artifactId>
+        <artifactId>maven-invoker-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <!-- run exec:exec to generate output -->
+              <goal>integration-test</goal>
+              <!-- run postbuild.sh to check output -->
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <goals>
+                <goal>clean</goal>
+                <goal>compile</goal>
+                <goal>exec:exec</goal>
+                <goal>integration-test</goal>
+              </goals>
+              <verifyHookScript>postbuild.bsh</verifyHookScript>
+            </configuration>
+          </execution>
+        </executions>
         <configuration>
-          <skip>true</skip>
+          <parallelThreads>1C</parallelThreads>
+          <ignoreFailures>true</ignoreFailures>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <showErrors>true</showErrors>
+          <streamLogs>false</streamLogs>
         </configuration>
       </plugin>
       <!-- no need to install this to local repo -->
       <plugin>
         <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <!-- no need to deploy to nexus repo -->
+      <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
         <configuration>
           <skip>true</skip>
         </configuration>

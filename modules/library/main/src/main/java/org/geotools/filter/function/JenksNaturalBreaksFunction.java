@@ -24,14 +24,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
@@ -39,7 +39,7 @@ import org.opengis.filter.expression.Literal;
  * @author Ian Turton
  */
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
-    org.opengis.util.ProgressListener progress;
+    org.geotools.api.util.ProgressListener progress;
 
     private static final Logger logger = Logging.getLogger(JenksNaturalBreaksFunction.class);
 

@@ -58,9 +58,9 @@ import java.util.Map;
  * <ul>
  *   <li>
  *       <p>An application supplied a {@linkplain Hints#DATUM_FACTORY datum factory hint}, being
- *       passed to a {@linkplain org.opengis.referencing.datum.DatumAuthorityFactory datum authority
- *       factory} so that all datum created from an authority code will come from the supplied datum
- *       factory.
+ *       passed to a {@linkplain org.geotools.api.referencing.datum.DatumAuthorityFactory datum
+ *       authority factory} so that all datum created from an authority code will come from the
+ *       supplied datum factory.
  *   <li>
  *       <p>An application supplied a {@link org.geotools.feature.FeatureFactory} (ensuring all
  *       constructed features support the Eclipse's {@code IAdaptable} interface), being passed to a
@@ -106,10 +106,10 @@ public interface Factory {
      * possible.
      *
      * <p>Implementations of this method are usually quite simple. For example if a {@linkplain
-     * org.opengis.referencing.datum.DatumAuthorityFactory datum authority factory} uses an ordinary
-     * {@linkplain org.opengis.referencing.datum.DatumFactory datum factory}, its method could be
-     * implemented as below (note that we should not check if the datum factory is null, since key
-     * with null value is the expected behaviour in this case). Example:
+     * org.geotools.api.referencing.datum.DatumAuthorityFactory datum authority factory} uses an
+     * ordinary {@linkplain org.geotools.api.referencing.datum.DatumFactory datum factory}, its
+     * method could be implemented as below (note that we should not check if the datum factory is
+     * null, since key with null value is the expected behaviour in this case). Example:
      *
      * <pre><code>
      * Map hints = new HashMap();

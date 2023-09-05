@@ -18,36 +18,35 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.style.GraphicalSymbol;
 
 public class StyleExamples {
 
@@ -55,8 +54,8 @@ public class StyleExamples {
         // styleFactoryExample start
         //
         // We are using the GeoTools styleFactory that allows access to get/set methods
-        org.geotools.styling.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        org.geotools.api.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         sld.setName("sld");
@@ -134,7 +133,7 @@ public class StyleExamples {
         dotSymbols.add(sf.mark(ff.literal("circle"), null, null));
         Graphic dotGraphic = sf.graphic(dotSymbols, null, ff.literal(3), null, null, null);
         PointSymbolizer dotSymbolizer = sf.pointSymbolizer("dot", null, null, null, dotGraphic);
-        List<org.opengis.style.Symbolizer> symbolizers = new ArrayList<>();
+        List<org.geotools.api.style.Symbolizer> symbolizers = new ArrayList<>();
         symbolizers.add(dotSymbolizer);
         Filter other = null; // null will mark this rule as "other" accepting all remaining features
         Rule rule2 =
@@ -161,7 +160,7 @@ public class StyleExamples {
         //
         // We are using the GeoTools StyleBuilder that is helpful for quickly making things
         StyleBuilder builder = new StyleBuilder();
-        FilterFactory2 ff = builder.getFilterFactory();
+        FilterFactory ff = builder.getFilterFactory();
 
         // RULE 1
         // first rule to draw cities
@@ -209,7 +208,7 @@ public class StyleExamples {
     private void splatExample() {
         // splatExample start
         StyleBuilder builder = new StyleBuilder();
-        FilterFactory2 ff = builder.getFilterFactory();
+        FilterFactory ff = builder.getFilterFactory();
 
         Graphic splat = builder.createGraphic(null, builder.createMark("splat"), null);
         PointSymbolizer symbolizer = builder.createPointSymbolizer(splat);
@@ -274,7 +273,7 @@ public class StyleExamples {
     private void twoFeatureTypeStyles() {
         // twoFeatureTypeStyles start
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-        FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         Style style = styleFactory.getDefaultStyle();
 
@@ -308,7 +307,7 @@ public class StyleExamples {
         // quickPointSymbolizer start
         // "testPoint" feature type style
         StyleBuilder sb = new StyleBuilder();
-        FilterFactory2 ff = sb.getFilterFactory();
+        FilterFactory ff = sb.getFilterFactory();
 
         Mark testMark =
                 sb.createMark(sb.attributeExpression("name"), sb.createFill(Color.RED, 0.5), null);
@@ -331,7 +330,7 @@ public class StyleExamples {
         // quickTextSymbolizer start
         // "labelPoint" feature type style
         StyleBuilder sb = new StyleBuilder();
-        FilterFactory2 ff = sb.getFilterFactory();
+        FilterFactory ff = sb.getFilterFactory();
 
         // creation of the TextSymbolizer
         AnchorPoint anchorPoint =
@@ -365,7 +364,7 @@ public class StyleExamples {
     private void quickPolygonSymbolizer() {
         // quickPolygonSymbolizer start
         StyleBuilder styleBuilder = new StyleBuilder();
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         PolygonSymbolizer polygonSymbolizer = styleBuilder.createPolygonSymbolizer(Color.BLUE);
         polygonSymbolizer.getFill().setOpacity(ff.literal(0.5)); // 50% blue

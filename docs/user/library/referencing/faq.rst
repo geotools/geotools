@@ -71,7 +71,7 @@ As an example to use ``gt-epsg-hsql`` you will need::
     |  +- java3d:vecmath:jar:1.3.1:compile
     |  +- commons-pool:commons-pool:jar:1.3:compile
     |  \- org.geotools:gt2-metadata:jar:2.5-SNAPSHOT:compile
-    |     +- org.opengis:geoapi:jar:2.2-SNAPSHOT:compile
+    |     +- org.geotools.api:geoapi:jar:2.2-SNAPSHOT:compile
     |     +- javax.units:jsr108:jar:0.01:compile
     |     \- edu.oswego:concurrent:jar:1.3.4:compile
     +- org.geotools:gt2-sample-data:jar:2.5-SNAPSHOT:test
@@ -212,7 +212,7 @@ spheroid being used by your shapefile and the normal WGS84 spheroid.
 
 The ``opengis`` javadocs has some help for you here:
 
-* http://docs.geotools.org/stable/javadocs/org/opengis/referencing/doc-files/WKT.html#TOWGS84
+* http://docs.geotools.org/stable/javadocs/org/geotools/api/referencing/doc-files/WKT.html#TOWGS84
 
 Your best bet is to look up the normal EPSG code for your area; and update your ``prj``
 file to include the official definition.
@@ -220,11 +220,9 @@ file to include the official definition.
 Q: How do I Transform?
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The MathTransform interface is used to transform (or "re-project") one DirectPosition
-at a time.
+The MathTransform interface is used to transform (or "re-project") one Position at a time.
 
-You can also use the utility class **JTS** which has helper methods to transform
-a Geometry.
+You can also use the utility class **JTS** which has helper methods to transform a Geometry.
 
 Q: How to Transform a Geometry?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

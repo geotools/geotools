@@ -16,10 +16,17 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import java.text.MessageFormat;
 import java.util.Collections;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.Transformation;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.FloatParameter;
@@ -28,22 +35,15 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.util.Utilities;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.Transformation;
 import si.uom.NonSI;
 import si.uom.SI;
 
 /**
- * An affine transform applied on {@linkplain org.opengis.referencing.crs.GeocentricCRS geocentric}
- * coordinates. While "geocentric translation" is a little bit more restrictive name, it describes
- * the part which is common to all instances of this class. A rotation may also be performed in
- * addition of the translation, but the rotation sign is operation-dependent (EPSG 9606 and 9607
- * have opposite sign). This transform is used for the following operations:
+ * An affine transform applied on {@linkplain org.geotools.api.referencing.crs.GeocentricCRS
+ * geocentric} coordinates. While "geocentric translation" is a little bit more restrictive name, it
+ * describes the part which is common to all instances of this class. A rotation may also be
+ * performed in addition of the translation, but the rotation sign is operation-dependent (EPSG 9606
+ * and 9607 have opposite sign). This transform is used for the following operations:
  *
  * <p>
  *
@@ -409,11 +409,9 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 case 3:
                     break; // The dimension is a valid value.
                 default:
+                    final Object arg0 = dim.getName().getCode();
                     throw new IllegalArgumentException(
-                            Errors.format(
-                                    ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                                    dim.getName().getCode(),
-                                    dimension));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, arg0, dimension));
             }
             ensureValid(major, semiMajor);
             ensureValid(minor, semiMinor);
@@ -430,8 +428,9 @@ public class GeocentricTranslation extends ProjectiveTransform {
         /** Ensures the the specified parameter is valid. */
         private static void ensureValid(final ParameterDescriptor param, double value) {
             if (!(value > 0)) {
+                final Object arg0 = param.getName().getCode();
                 throw new IllegalStateException(
-                        Errors.format(ErrorKeys.MISSING_PARAMETER_$1, param.getName().getCode()));
+                        MessageFormat.format(ErrorKeys.MISSING_PARAMETER_$1, arg0));
             }
         }
     }

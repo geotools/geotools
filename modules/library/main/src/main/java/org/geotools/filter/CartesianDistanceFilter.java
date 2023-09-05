@@ -16,10 +16,10 @@
  */
 package org.geotools.filter;
 
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
 
 /**
  * Defines geometry filters with a distance element.
@@ -102,8 +102,8 @@ public abstract class CartesianDistanceFilter extends GeometryFilterImpl
 
         String distStr = ", distance: " + distance;
 
-        org.opengis.filter.expression.Expression leftGeometry = getExpression1();
-        org.opengis.filter.expression.Expression rightGeometry = getExpression2();
+        org.geotools.api.filter.expression.Expression leftGeometry = getExpression1();
+        org.geotools.api.filter.expression.Expression rightGeometry = getExpression2();
 
         if ((leftGeometry == null) && (rightGeometry == null)) {
             return "[ " + "null" + operator + "null" + distStr + " ]";

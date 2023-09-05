@@ -18,6 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.awt.geom.Point2D;
 import java.text.FieldPosition;
+import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,15 +27,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.media.jai.PropertySource;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.AbstractCoverage;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for GeoTools implementation of grid coverage.
@@ -130,8 +130,8 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     /**
      * Returns the source data for a grid coverage. If the {@code GridCoverage} was produced from an
      * underlying dataset, the returned list is an empty list. If the {@code GridCoverage} was
-     * produced using {@link org.opengis.coverage.grid.GridCoverageProcessor}, then it should return
-     * the source grid coverage of the one used as input to {@code GridCoverageProcessor}. In
+     * produced using {@link org.geotools.api.coverage.grid.GridCoverageProcessor}, then it should
+     * return the source grid coverage of the one used as input to {@code GridCoverageProcessor}. In
      * general the {@code getSources()} method is intended to return the original {@code
      * GridCoverage} on which it depends. This is intended to allow applications to establish what
      * {@code GridCoverage}s will be affected when others are updated, as well as to trace back to
@@ -190,8 +190,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
 
     /** Returns a localized error message for {@link IndexOutOfBoundsException}. */
     private String indexOutOfBounds(final int index) {
-        return Errors.getResources(getLocale())
-                .getString(ErrorKeys.ILLEGAL_ARGUMENT_$2, "index", index);
+        return MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "index", index);
     }
 
     /**
@@ -205,7 +204,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @since 2.5
      */
     protected String formatEvaluateError(final Point2D point, final boolean outside) {
-        return formatEvaluateError((DirectPosition) new DirectPosition2D(point), outside);
+        return formatEvaluateError((Position) new Position2D(point), outside);
     }
 
     /**
@@ -218,12 +217,11 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @return An error message.
      * @since 2.5
      */
-    protected String formatEvaluateError(final DirectPosition point, final boolean outside) {
+    protected String formatEvaluateError(final Position point, final boolean outside) {
         final Locale locale = getLocale();
-        return Errors.getResources(locale)
-                .getString(
-                        outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1,
-                        toString(point, locale));
+        return MessageFormat.format(
+                outside ? ErrorKeys.POINT_OUTSIDE_COVERAGE_$1 : ErrorKeys.CANT_EVALUATE_$1,
+                toString(point, locale));
     }
 
     /**
@@ -234,7 +232,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @return The coordinate point as a string, without '(' or ')' characters.
      */
     static String toString(final Point2D point, final Locale locale) {
-        return toString((DirectPosition) new DirectPosition2D(point), locale);
+        return toString((Position) new Position2D(point), locale);
     }
 
     /**
@@ -244,7 +242,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
      * @param locale The locale for formatting numbers.
      * @return The coordinate point as a string, without '(' or ')' characters.
      */
-    static String toString(final DirectPosition point, final Locale locale) {
+    static String toString(final Position point, final Locale locale) {
         final StringBuffer buffer = new StringBuffer();
         final FieldPosition dummy = new FieldPosition(0);
         final NumberFormat format = NumberFormat.getNumberInstance(locale);

@@ -21,10 +21,10 @@ package org.geotools.util;
 
 import java.util.Collections;
 import java.util.List;
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString;
-import org.opengis.util.NameSpace;
-import org.opengis.util.ScopedName;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString;
+import org.geotools.api.util.NameSpace;
+import org.geotools.api.util.ScopedName;
 
 /**
  * Identifier within a name space for a local object. This could be the target object of the {@link
@@ -36,7 +36,8 @@ import org.opengis.util.ScopedName;
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory
  */
-public class LocalName extends org.geotools.util.GenericName implements org.opengis.util.LocalName {
+public class LocalName extends org.geotools.util.GenericName
+        implements org.geotools.api.util.LocalName {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -5627125375582385822L;
 
@@ -59,7 +60,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * is itself a locale name, this list is always a singleton containing only {@code this}. It
      * will be built only when first needed.
      */
-    private transient List<org.opengis.util.LocalName> parsedNames;
+    private transient List<org.geotools.api.util.LocalName> parsedNames;
 
     /**
      * Constructs a local name from the specified string with no scope. If the specified name is an
@@ -110,7 +111,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * is not modifiable. The scope of a name determines where a name "starts". For instance, if a
      * name has a {@linkplain #depth depth} of two ({@code "util.GenericName"}) and is associated
      * with a {@linkplain NameSpace name space} having the name {@code "org.opengis"}, then the
-     * fully qualified name would be {@code "org.opengis.util.GenericName"}.
+     * fully qualified name would be {@code "org.geotools.api.util.GenericName"}.
      *
      * @since 2.3
      */
@@ -135,7 +136,7 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
      * this}.
      */
     @Override
-    public List<org.opengis.util.LocalName> getParsedNames() {
+    public List<org.geotools.api.util.LocalName> getParsedNames() {
         // No need to sychronize: it is not a big deal if this object is built twice.
         if (parsedNames == null) {
             parsedNames = Collections.singletonList(this);
@@ -145,13 +146,13 @@ public class LocalName extends org.geotools.util.GenericName implements org.open
 
     /** Since this object is already a local name, this method always returns {@code this}. */
     @Override
-    public org.opengis.util.LocalName head() {
+    public org.geotools.api.util.LocalName head() {
         return this;
     }
 
     /** Since this object is already a local name, this method always returns {@code this}. */
     @Override
-    public org.opengis.util.LocalName tip() {
+    public org.geotools.api.util.LocalName tip() {
         return this;
     }
 

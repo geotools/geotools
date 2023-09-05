@@ -17,13 +17,13 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Beyond;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Beyond.
@@ -40,10 +40,10 @@ import org.opengis.filter.spatial.Beyond;
  * @generated
  */
 public class OGCBeyondBinding extends AbstractComplexBinding {
-    FilterFactory2 filterFactory;
+    FilterFactory filterFactory;
     GeometryFactory geometryFactory;
 
-    public OGCBeyondBinding(FilterFactory2 filterFactory, GeometryFactory geometryFactory) {
+    public OGCBeyondBinding(FilterFactory filterFactory, GeometryFactory geometryFactory) {
         this.filterFactory = filterFactory;
         this.geometryFactory = geometryFactory;
     }

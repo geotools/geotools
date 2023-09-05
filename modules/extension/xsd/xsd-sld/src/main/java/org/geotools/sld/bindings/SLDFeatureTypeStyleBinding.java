@@ -18,16 +18,16 @@ package org.geotools.sld.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.util.InternationalString;
 import org.geotools.feature.NameImpl;
 import org.geotools.sld.CssParameter;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.opengis.style.SemanticType;
-import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 
 /**

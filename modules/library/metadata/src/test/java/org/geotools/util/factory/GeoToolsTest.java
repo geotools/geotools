@@ -32,13 +32,13 @@ import javax.media.jai.JAI;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.commons.logging.LogFactory;
+import org.geotools.api.filter.Filter;
 import org.geotools.util.NullEntityResolver;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Version;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 
 /**

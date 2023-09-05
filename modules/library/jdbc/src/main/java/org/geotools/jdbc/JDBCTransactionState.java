@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Logger;
-import org.geotools.data.Transaction;
-import org.geotools.data.Transaction.State;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.data.Transaction.State;
 
 /** Responsible for flow control; issues commit and rollback on the managed connection. */
 final class JDBCTransactionState implements State {

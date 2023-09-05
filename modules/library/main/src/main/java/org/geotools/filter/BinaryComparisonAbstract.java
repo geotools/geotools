@@ -16,12 +16,12 @@
  */
 package org.geotools.filter;
 
+import org.geotools.api.filter.MultiValuedFilter;
+import org.geotools.api.filter.MultiValuedFilter.MatchAction;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.MultiValuedFilter;
-import org.opengis.filter.MultiValuedFilter.MatchAction;
-import org.opengis.filter.expression.Expression;
 
 /**
  * Abstract implementation for binary filters.
@@ -30,7 +30,7 @@ import org.opengis.filter.expression.Expression;
  *
  * <p>For the SAX parsers setExpression1 and setExpression2 can be used to fill in the filter after
  * creation. Everyone else is asked to treat the filter as immutable and use the appropriate
- * FilterFactory2 creation method.
+ * FilterFactory creation method.
  *
  * @author Justin Deoliveira (Boundless)
  */
@@ -46,11 +46,11 @@ public abstract class BinaryComparisonAbstract extends AbstractFilter implements
         this(null, null);
     }
 
-    /** Immutable constructor for use by FilterFactory2 */
+    /** Immutable constructor for use by FilterFactory */
     protected BinaryComparisonAbstract(Expression expression1, Expression expression2) {
         this(expression1, expression2, true);
     }
-    /** Immutable constructor for use by FilterFactory2 */
+    /** Immutable constructor for use by FilterFactory */
     protected BinaryComparisonAbstract(
             Expression expression1, Expression expression2, boolean matchingCase) {
         this.expression1 = expression1;

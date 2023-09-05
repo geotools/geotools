@@ -17,10 +17,10 @@
 package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.util.factory.Hints;
-import org.opengis.filter.Filter;
 
 /**
  * API extending {@link GranuleSource} providing capabilities to add, delete and modify granules.

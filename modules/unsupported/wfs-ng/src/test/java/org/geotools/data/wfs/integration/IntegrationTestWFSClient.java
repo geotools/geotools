@@ -35,10 +35,16 @@ import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.CreatedOrModifiedFeatureType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;
-import org.geotools.data.FeatureReader;
 import org.geotools.data.ows.Request;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wfs.TestHttpResponse;
@@ -68,12 +74,6 @@ import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.identity.FeatureId;
 import org.xml.sax.EntityResolver;
 
 public class IntegrationTestWFSClient extends WFSClient {
@@ -411,7 +411,7 @@ public class IntegrationTestWFSClient extends WFSClient {
             tr.setUpdateResults(factory.createActionResultsType());
 
             if (!added.isEmpty()) {
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                 CreatedOrModifiedFeatureType inserted =
                         factory.createCreatedOrModifiedFeatureType();
                 for (String addedId : added) {
@@ -445,7 +445,7 @@ public class IntegrationTestWFSClient extends WFSClient {
             tr.setInsertResults(factory.createInsertResultsType());
 
             if (!added.isEmpty()) {
-                FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+                FilterFactory ff = CommonFactoryFinder.getFilterFactory();
                 InsertedFeatureType inserted = factory.createInsertedFeatureType();
                 tr.getInsertResults().getFeature().add(inserted);
                 for (String addedId : added) {

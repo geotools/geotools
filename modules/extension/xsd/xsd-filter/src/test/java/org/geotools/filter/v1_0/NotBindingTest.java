@@ -19,9 +19,9 @@ package org.geotools.filter.v1_0;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.filter.Not;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.Not;
 import org.w3c.dom.Document;
 
 public class NotBindingTest extends FilterTestSupport {

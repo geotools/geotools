@@ -18,10 +18,10 @@ package org.geotools.data.directory;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.data.DataStore;
-import org.geotools.data.FeatureLock;
-import org.geotools.data.LockingManager;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureLock;
+import org.geotools.api.data.LockingManager;
+import org.geotools.api.data.Transaction;
 
 /**
  * Locking manager that will delegate its work to the locking managers of the delegate data stores

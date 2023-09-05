@@ -17,10 +17,10 @@
 package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.style.OverlapBehaviorEnum;
 import org.geotools.se.v1_1.SE;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.opengis.style.OverlapBehavior;
 
 /**
  * Binding object for the element http://www.opengis.net/se:OverlapBehavior.
@@ -62,12 +62,12 @@ public class OverlapBehaviorBinding extends AbstractSimpleBinding {
 
     @Override
     public Class getType() {
-        return OverlapBehavior.class;
+        return OverlapBehaviorEnum.class;
     }
 
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        OverlapBehavior overlap = OverlapBehavior.valueOf((String) value);
+        OverlapBehaviorEnum overlap = OverlapBehaviorEnum.valueOf((String) value);
         if (overlap == null) {
             throw new IllegalArgumentException("Overlap behaviour " + value + " not supported");
         }

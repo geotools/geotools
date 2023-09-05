@@ -17,8 +17,8 @@
 package org.geotools.feature;
 
 import java.io.Serializable;
+import org.geotools.api.feature.type.Name;
 import org.geotools.util.Utilities;
-import org.opengis.feature.type.Name;
 
 /**
  * Simple implementation of Name.
@@ -41,7 +41,8 @@ import org.opengis.feature.type.Name;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  */
-public class NameImpl implements org.opengis.feature.type.Name, Serializable, Comparable<NameImpl> {
+public class NameImpl
+        implements org.geotools.api.feature.type.Name, Serializable, Comparable<NameImpl> {
     private static final long serialVersionUID = 4564070184645559899L;
 
     /** namespace / scope */

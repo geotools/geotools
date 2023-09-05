@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /** Provider used for generating a {@link MultiLevelROI} object from a granule */
 public interface MultiLevelROIProvider {

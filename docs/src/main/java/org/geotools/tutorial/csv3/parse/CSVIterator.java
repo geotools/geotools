@@ -15,8 +15,8 @@ import com.csvreader.CsvReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.tutorial.csv3.CSVFileState;
-import org.opengis.feature.simple.SimpleFeature;
 
 public class CSVIterator implements Iterator<SimpleFeature> {
 

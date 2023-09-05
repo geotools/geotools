@@ -27,6 +27,15 @@ import javax.media.jai.InterpolationNearest;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.metadata.spatial.PixelOrientation;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -36,7 +45,7 @@ import org.geotools.feature.collection.AdaptorFeatureCollection;
 import org.geotools.feature.collection.BaseSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -52,15 +61,6 @@ import org.geotools.util.factory.GeoTools;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.metadata.spatial.PixelOrientation;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransform2D;
 
 /**
  * A process that wraps a {@link GridCoverage2D} as a collection of point feature. Optional
@@ -413,10 +413,10 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
         private final Coordinate sourceCoordinate = new Coordinate();
 
         /** Position of the Point in the source CRS */
-        private DirectPosition2D sourceCRSPosition;
+        private Position2D sourceCRSPosition;
 
         /** Position of the Point in the target CRS */
-        private DirectPosition2D targetCRSPosition;
+        private Position2D targetCRSPosition;
 
         public RasterAsPointFeatureIterator(final RasterAsPointFeatureCollection fc) {
 
@@ -448,8 +448,8 @@ public class RasterAsPointCollectionProcess implements RasterProcess {
 
             // grid convergence angle manager
             if (fc.gridConvergenceAngleCorrectionNeeded) {
-                sourceCRSPosition = new DirectPosition2D();
-                targetCRSPosition = new DirectPosition2D(fc.targetCRS);
+                sourceCRSPosition = new Position2D();
+                targetCRSPosition = new Position2D(fc.targetCRS);
             }
         }
 

@@ -17,7 +17,8 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.geometry.Position2D;
 import org.geotools.gml3.GML;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
@@ -27,7 +28,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.geometry.DirectPosition;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:PointType.
@@ -112,10 +112,10 @@ public class PointTypeBinding extends AbstractComplexBinding {
      */
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        if (node.hasChild(DirectPosition.class)) {
-            DirectPosition dp = node.getChildValue(DirectPosition.class);
+        if (node.hasChild(Position.class)) {
+            Position dp = node.getChildValue(Position.class);
 
-            if (dp instanceof DirectPosition2D) {
+            if (dp instanceof Position2D) {
                 return gFactory.createPoint(new Coordinate(dp.getOrdinate(0), dp.getOrdinate(1)));
             } else {
                 return gFactory.createPoint(

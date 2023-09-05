@@ -19,18 +19,18 @@ package org.geotools.mbstyle.layer;
 
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.StyleFactory2;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.style.SemanticType;
 
 /**
  * MBLayer wrapper (around one of the MBStyle layers).
@@ -53,10 +53,10 @@ public abstract class MBLayer {
     protected final MBObjectParser parse;
 
     /** Shared filter factory */
-    protected final FilterFactory2 ff;
+    protected final FilterFactory ff;
 
     /** Shared style factory */
-    protected final StyleFactory2 sf;
+    protected final StyleFactory sf;
 
     /** JSON layer being wrapped. */
     protected final JSONObject json;

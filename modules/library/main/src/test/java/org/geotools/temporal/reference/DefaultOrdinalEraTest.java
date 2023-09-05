@@ -22,12 +22,12 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import org.geotools.api.temporal.OrdinalEra;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.temporal.OrdinalEra;
-import org.opengis.util.InternationalString;
 
 /** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalEraTest {

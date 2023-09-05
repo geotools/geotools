@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
+import org.geotools.api.style.Stroke;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.swt.utils.Messages;
 

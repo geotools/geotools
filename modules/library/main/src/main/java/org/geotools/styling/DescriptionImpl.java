@@ -16,10 +16,12 @@
  */
 package org.geotools.styling;
 
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.TraversingStyleVisitor;
+import org.geotools.api.util.InternationalString;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.util.InternationalString;
 
-public class DescriptionImpl implements Description {
+public class DescriptionImpl implements org.geotools.api.style.Description {
     private InternationalString title;
 
     private InternationalString description;
@@ -39,7 +41,7 @@ public class DescriptionImpl implements Description {
     }
 
     /** Copy constructor. */
-    public DescriptionImpl(org.opengis.style.Description description) {
+    public DescriptionImpl(org.geotools.api.style.Description description) {
         this(description.getTitle(), description.getAbstract());
     }
 
@@ -74,7 +76,7 @@ public class DescriptionImpl implements Description {
     }
 
     @Override
-    public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
+    public Object accept(TraversingStyleVisitor visitor, Object extraData) {
         return null;
     }
 
@@ -112,7 +114,7 @@ public class DescriptionImpl implements Description {
      *
      * @return DescriptionImpl from the provided description
      */
-    static DescriptionImpl cast(org.opengis.style.Description description) {
+    static DescriptionImpl cast(org.geotools.api.style.Description description) {
         if (description == null) {
             return null;
         } else if (description instanceof DescriptionImpl) {

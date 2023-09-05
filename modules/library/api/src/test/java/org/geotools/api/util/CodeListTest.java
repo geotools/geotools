@@ -1,0 +1,207 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2003-2005, Open Geospatial Consortium Inc.
+ *
+ *    All Rights Reserved. http://www.opengis.org/legal/
+ */
+package org.geotools.api.util;
+
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Logger;
+import org.junit.Test;
+
+/**
+ * Tests every {@link CodeList}.
+ *
+ * @author Martin desruisseaux (IRD)
+ */
+public final class CodeListTest {
+    /** The logger to use. */
+    private static final Logger LOGGER = Logger.getLogger("org.geotools.api");
+
+    /** Tests the instantiation of every code lists. */
+    @Test
+    public void testAll() {
+        int count = 0;
+        final Class<CodeList> base = CodeList.class;
+        final ClassScanner scanner = new ClassScanner();
+        while (scanner.hasNext()) {
+            final Class<?> candidate = scanner.next();
+            if (!base.equals(candidate) && base.isAssignableFrom(candidate)) {
+                // SimpleEnumeratioType is a special case to avoid for now.
+                final String name = candidate.getName();
+                if (name.equals("org.geotools.api.util.SimpleEnumerationType")) {
+                    continue;
+                }
+                if (name.equals("org.geotools.api.filter.sort.SortOrder")) {
+                    continue;
+                }
+                assertValid(candidate.asSubclass(CodeList.class));
+                count++;
+            }
+        }
+        LOGGER.fine("Found " + count + " code lists.");
+        if (count == 0) {
+            LOGGER.warning("No CodeList found.");
+        }
+    }
+
+    /** Ensures that the name declared in the code list match the field names. */
+    private static void assertValid(final Class<? extends CodeList> classe) {
+        Method method;
+        /*
+         * Gets the values() method, which should public and static.
+         * Then gets every CodeList instances returned by values().
+         */
+        final String className = classe.getName();
+        String fullName = className + ".values()";
+        try {
+            method = classe.getMethod("values", (Class[]) null);
+        } catch (NoSuchMethodException e) {
+            fail(fullName + " method is missing.");
+            return;
+        }
+        assertNotNull(method);
+        int modifiers = method.getModifiers();
+        assertTrue(fullName + " is not public.", Modifier.isPublic(modifiers));
+        assertTrue(fullName + " is not static.", Modifier.isStatic(modifiers));
+        final CodeList[] values;
+        try {
+            values = (CodeList[]) method.invoke(null, (Object[]) null);
+        } catch (IllegalAccessException e) {
+            fail(fullName + " is not accessible.");
+            return;
+        } catch (InvocationTargetException e) {
+            fail("Call to " + fullName + " failed.\n" + e.getTargetException());
+            return;
+        }
+        assertNotNull(fullName + " returned null.", values);
+        /*
+         * Gets the family() method, to be used when we will test every
+         * code list instances.
+         */
+        fullName = className + ".family()";
+        try {
+            method = classe.getMethod("family", (Class[]) null);
+        } catch (NoSuchMethodException e) {
+            fail(fullName + " method is missing.");
+            return;
+        }
+        assertNotNull(method);
+        modifiers = method.getModifiers();
+        assertTrue(fullName + " is not public.", Modifier.isPublic(modifiers));
+        assertFalse(fullName + " is static.", Modifier.isStatic(modifiers));
+        /*
+         * Tests every CodeList instances returned by values().
+         * Every field should be public, static and final.
+         */
+        for (final CodeList value : values) {
+            final String name = value.name();
+            fullName = className + '.' + name;
+            assertTrue(fullName + ": unexpected type.", classe.isInstance(value));
+            final Field field;
+            try {
+                field = classe.getField(name);
+            } catch (NoSuchFieldException e) {
+                final Class<? extends CodeList> valueClass = value.getClass();
+                if (!classe.equals(valueClass) && classe.isAssignableFrom(valueClass)) {
+                    // Do not fails if valueClass is a subclass of classe.
+                    continue;
+                }
+                fail(fullName + " field not found.");
+                continue;
+            }
+            assertNotNull(field);
+            modifiers = field.getModifiers();
+            assertEquals(fullName + ": unexpected name mismatch.", name, field.getName());
+            assertTrue(fullName + " is not public.", Modifier.isPublic(modifiers));
+            assertTrue(fullName + " is not static.", Modifier.isStatic(modifiers));
+            assertTrue(fullName + " is not final.", Modifier.isFinal(modifiers));
+            Object constant;
+            try {
+                constant = field.get(null);
+            } catch (IllegalAccessException e) {
+                fail(fullName + " is not accessible.");
+                continue;
+            }
+            assertSame(fullName + " is not the expected instance.", value, constant);
+            final CodeList[] family;
+            try {
+                family = (CodeList[]) method.invoke(constant, (Object[]) null);
+            } catch (IllegalAccessException e) {
+                fail(className + ".family() is not accessible.");
+                return;
+            } catch (InvocationTargetException e) {
+                fail("Call to " + className + ".family() failed.\n" + e.getTargetException());
+                return;
+            }
+            assertArrayEquals(className + ".family() mismatch.", values, family);
+        }
+        /*
+         * Gets the private VALUES field only if CodeList is the direct parent.
+         */
+        if (classe.getSuperclass().equals(CodeList.class)) {
+            fullName = className + ".VALUES";
+            final Field field;
+            try {
+                field = classe.getDeclaredField("VALUES");
+            } catch (NoSuchFieldException e) {
+                fail(fullName + " private list is missing.");
+                return;
+            }
+            modifiers = field.getModifiers();
+            assertTrue(Modifier.isStatic(modifiers));
+            assertTrue(Modifier.isFinal(modifiers));
+            assertFalse(Modifier.isPublic(modifiers));
+            assertFalse(Modifier.isProtected(modifiers));
+            field.setAccessible(true);
+            final ArrayList<?> asList;
+            try {
+                final Object candidate = field.get(null);
+                assertEquals(
+                        fullName + " is not an ArrayList.", ArrayList.class, candidate.getClass());
+                asList = (ArrayList<?>) candidate;
+            } catch (IllegalAccessException e) {
+                fail(className + ".VALUES is not accessible.");
+                return;
+            }
+            assertEquals(Arrays.asList(values), asList);
+        }
+        /*
+         * Tries to create a new element.
+         */
+        try {
+            method = classe.getMethod("valueOf", String.class);
+        } catch (NoSuchMethodException e) {
+            return;
+        }
+        final CodeList value;
+        try {
+            value = classe.cast(method.invoke(null, "Dummy"));
+        } catch (IllegalAccessException e) {
+            fail(e.toString());
+            return;
+        } catch (InvocationTargetException e) {
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            fail(e.getTargetException().toString());
+            return;
+        }
+        assertEquals("Dummy", value.name());
+    }
+}

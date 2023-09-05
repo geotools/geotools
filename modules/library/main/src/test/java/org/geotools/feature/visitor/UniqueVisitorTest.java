@@ -26,6 +26,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -33,9 +36,6 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory;
 
 public class UniqueVisitorTest {
 
@@ -43,7 +43,7 @@ public class UniqueVisitorTest {
 
     private static SimpleFeatureType uniqueValuesCountTestType;
     private static FeatureCollection featureCollection;
-    static FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
+    static FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @BeforeClass
     public static void setup() throws Exception {

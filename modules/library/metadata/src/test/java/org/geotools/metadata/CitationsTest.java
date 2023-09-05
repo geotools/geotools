@@ -25,13 +25,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Collection;
+import org.geotools.api.metadata.quality.ConformanceResult;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.junit.Test;
-import org.opengis.metadata.quality.ConformanceResult;
 
 /**
  * Tests {@link Citations} and related constants.
@@ -43,7 +42,7 @@ public final class CitationsTest {
 
     @Test
     public void testErrors() {
-        String message = Errors.format(ErrorKeys.BAD_ENTRY);
+        String message = ErrorKeys.BAD_ENTRY;
         assertNotNull(message);
     }
     /**

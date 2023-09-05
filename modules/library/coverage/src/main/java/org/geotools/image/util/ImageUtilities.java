@@ -47,6 +47,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -70,18 +71,17 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedImageAdapter;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.WritableRenderedImageAdapter;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.extent.GeographicBoundingBox;
 
 /**
  * A set of static methods working on images. Some of those methods are useful, but not really
@@ -591,7 +591,8 @@ public final class ImageUtilities {
                 }
             }
         }
-        throw new IllegalArgumentException(Errors.format(ErrorKeys.UNKNOW_INTERPOLATION_$1, type));
+        throw new IllegalArgumentException(
+                MessageFormat.format(ErrorKeys.UNKNOW_INTERPOLATION_$1, type));
     }
 
     /**
@@ -762,7 +763,7 @@ public final class ImageUtilities {
                 Arrays.fill(data.getData(i), offset, offset + size, n);
             }
         } else {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.UNSUPPORTED_DATA_TYPE));
+            throw new IllegalArgumentException(ErrorKeys.UNSUPPORTED_DATA_TYPE);
         }
     }
 
@@ -1045,14 +1046,14 @@ public final class ImageUtilities {
     }
 
     /**
-     * Builds a {@link ReferencedEnvelope} in WGS84 from a {@link GeneralEnvelope}.
+     * Builds a {@link ReferencedEnvelope} in WGS84 from a {@link GeneralBounds}.
      *
-     * @param coverageEnvelope the {@link GeneralEnvelope} to convert.
+     * @param coverageEnvelope the {@link GeneralBounds} to convert.
      * @return an instance of {@link ReferencedEnvelope} in WGS84 or <code>null</code> in case a
      *     problem during the conversion occurs.
      */
     public static ReferencedEnvelope getWGS84ReferencedEnvelope(
-            final GeneralEnvelope coverageEnvelope) {
+            final GeneralBounds coverageEnvelope) {
         Utilities.ensureNonNull("coverageEnvelope", coverageEnvelope);
         final ReferencedEnvelope refEnv = new ReferencedEnvelope(coverageEnvelope);
         try {
@@ -1084,7 +1085,7 @@ public final class ImageUtilities {
         Utilities.ensureNonNull("reader", reader);
         if (imageIndex < 0)
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
+                    MessageFormat.format(ErrorKeys.INDEX_OUT_OF_BOUNDS_$1, imageIndex));
         inStream.reset();
         reader.setInput(inStream);
         return new Rectangle(0, 0, reader.getWidth(imageIndex), reader.getHeight(imageIndex));

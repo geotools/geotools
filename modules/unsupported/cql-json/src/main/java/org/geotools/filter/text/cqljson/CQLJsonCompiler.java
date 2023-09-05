@@ -24,14 +24,14 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.filter.text.commons.ICompiler;
 import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.io.ParseException;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
 
 public class CQLJsonCompiler implements ICompiler {
 
@@ -47,7 +47,7 @@ public class CQLJsonCompiler implements ICompiler {
     private Filter filter;
 
     /** new instance of CQL Compiler */
-    public CQLJsonCompiler(final String cqlSource, final FilterFactory2 filterFactory) {
+    public CQLJsonCompiler(final String cqlSource, final FilterFactory filterFactory) {
 
         assert filterFactory != null : "filterFactory cannot be null";
 

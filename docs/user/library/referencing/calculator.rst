@@ -23,7 +23,7 @@ Distance
      :start-after: // distance start
      :end-before: // distance end
    
-  Although the above shows quickly creating a DirectPosition from a JTS Coordinate; you
+  Although the above shows quickly creating a Position from a JTS Coordinate; you
   can use the GeodedicCalculator with any two positions, internally it will transform
   the points as needed.
 

@@ -40,7 +40,9 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.map.MapBoundsEvent;
@@ -58,8 +60,6 @@ import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.event.MapPaneKeyHandler;
 import org.geotools.swing.event.MapPaneListener;
 import org.geotools.swing.tool.CursorTool;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Base class for Swing map panes. It extends Swing's {@code JPanel} class and handles window sizing
@@ -448,7 +448,7 @@ public abstract class AbstractMapPane extends JPanel
         try {
             int dx = imageOrigin.x;
             int dy = imageOrigin.y;
-            DirectPosition2D newPos = new DirectPosition2D(dx, dy);
+            Position2D newPos = new Position2D(dx, dy);
             mapContent.getViewport().getScreenToWorld().transform(newPos, newPos);
 
             ReferencedEnvelope env = new ReferencedEnvelope(mapContent.getViewport().getBounds());
@@ -555,7 +555,7 @@ public abstract class AbstractMapPane extends JPanel
 
     /** {@inheritDoc} */
     @Override
-    public void setDisplayArea(Envelope envelope) {
+    public void setDisplayArea(Bounds envelope) {
         paramsLock.writeLock().lock();
         try {
             if (envelope == null) {
@@ -579,7 +579,7 @@ public abstract class AbstractMapPane extends JPanel
      *
      * @param envelope requested display area
      */
-    protected void doSetDisplayArea(Envelope envelope) {
+    protected void doSetDisplayArea(Bounds envelope) {
         if (mapContent != null) {
             CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
             if (crs == null) {

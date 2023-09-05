@@ -26,6 +26,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
@@ -46,11 +51,6 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.util.ProgressListener;
 
 /**
  * Computes various attribute statistics over vector data sets.
@@ -273,7 +273,7 @@ public class AggregateProcess implements VectorProcess {
         return factory.property(features.getSchema().getDescriptor(aggAttribute).getLocalName());
     }
 
-    private org.opengis.filter.expression.Function getArea2(
+    private org.geotools.api.filter.expression.Function getArea2(
             SimpleFeatureCollection features, String attribute, FilterFactory factory) {
         PropertyName property =
                 factory.property(features.getSchema().getDescriptor(attribute).getLocalName());

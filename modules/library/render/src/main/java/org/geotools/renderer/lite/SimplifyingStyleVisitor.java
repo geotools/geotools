@@ -17,16 +17,17 @@
 package org.geotools.renderer.lite;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
-import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.FeatureTypeStyleImpl;
-import org.geotools.styling.Rule;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
- * A style visitor returning a simplified copy of the style, in particular, simplfying filters and
+ * A style visitor returning a simplified copy of the style, in particular, simplifying filters and
  * the expressions used in symbolizer properties, when they are found to be static within the
  * context of the current rendering evaluation. It's used inside {@link StreamingRenderer} to
  * simplify the styles before they are used for the current render.
@@ -40,7 +41,7 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
     SimplifyingStyleVisitor() {
         super(
                 CommonFactoryFinder.getStyleFactory(null),
-                CommonFactoryFinder.getFilterFactory2(null),
+                CommonFactoryFinder.getFilterFactory(null),
                 new SimplifyingFilterVisitor());
     }
 
@@ -51,13 +52,13 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
 
         List<Rule> rulesCopy =
                 fts.rules().stream()
-                        .filter(r -> r != null)
+                        .filter(Objects::nonNull)
                         .map(
                                 r -> {
                                     r.accept(this);
                                     return !pages.isEmpty() ? (Rule) pages.pop() : null;
                                 })
-                        .filter(r -> r != null)
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList());
 
         copy.rules().clear();

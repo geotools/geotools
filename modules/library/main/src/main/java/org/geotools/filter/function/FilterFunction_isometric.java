@@ -24,6 +24,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.FilterFunction_offset.OffsetOrdinateFilter;
@@ -36,7 +37,6 @@ import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.filter.capability.FunctionName;
 
 public class FilterFunction_isometric extends FunctionExpressionImpl
         implements GeometryTransformation {

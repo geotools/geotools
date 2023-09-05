@@ -17,13 +17,13 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-import org.geotools.data.DataStore;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.sort.SortBy;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.sort.SortBy;
 
 /**
  * Test the paging behaviour of {@link ContentFeatureSource}. To establish inter-page consistency,

@@ -32,9 +32,9 @@ import java.util.StringJoiner;
 import java.util.logging.Level;
 import javax.xml.ws.http.HTTPException;
 import org.geotools.data.DefaultResourceInfo;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.ResourceInfo;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ResourceInfo;
 import org.geotools.data.arcgisrest.schema.catalog.Dataset;
 import org.geotools.data.arcgisrest.schema.webservice.Count;
 import org.geotools.data.arcgisrest.schema.webservice.Extent;
@@ -46,12 +46,12 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.SimpleInternationalString;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Source of features for the ArcGIS ReST API

@@ -29,34 +29,34 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.Repository;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.sort.SortBy;
 import org.geotools.data.DefaultResourceInfo;
-import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureListenerManager;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
-import org.geotools.data.Repository;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.Transaction;
 import org.geotools.data.gen.info.Generalization;
 import org.geotools.data.gen.info.GeneralizationInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.sort.SortBy;
 
 /**
  * @author Christian Mueller
@@ -283,7 +283,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.data.FeatureSource#getQueryCapabilities() A query capabilitiy is supported
+     * @see org.geotools.api.data.FeatureSource#getQueryCapabilities() A query capabilitiy is supported
      *      only if ALL backend feature sources support it
      */
     @Override
@@ -346,7 +346,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.data.FeatureSource#getSchema() Schema derived from base feature schema 1)
+     * @see org.geotools.api.data.FeatureSource#getSchema() Schema derived from base feature schema 1)
      *      all generalized geom attributes removed 2) the default gemoetry propery is taken from
      *      the config
      */
@@ -399,7 +399,7 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.data.FeatureSource#getSupportedHints() Calculates the supported hints as
+     * @see org.geotools.api.data.FeatureSource#getSupportedHints() Calculates the supported hints as
      *      intersection of the the generalized features and adds Hints.GEOMETRY_DISTANCE
      */
     @Override

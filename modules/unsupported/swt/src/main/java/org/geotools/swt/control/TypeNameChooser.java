@@ -18,7 +18,7 @@ package org.geotools.swt.control;
 
 import java.io.IOException;
 import javax.swing.JOptionPane;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 
 public class TypeNameChooser {
 

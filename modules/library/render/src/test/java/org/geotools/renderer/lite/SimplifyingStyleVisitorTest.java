@@ -18,10 +18,10 @@ package org.geotools.renderer.lite;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
 import org.junit.Test;
 
 public class SimplifyingStyleVisitorTest {

@@ -26,14 +26,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.capability.FilterCapabilities;
 import org.geotools.data.ows.Specification;
 import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.util.Version;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xsd.Configuration;
-import org.opengis.filter.Filter;
-import org.opengis.filter.capability.FilterCapabilities;
 
 /**
  * Facade interface to interact with a WFS instance.
@@ -122,7 +122,7 @@ public abstract class WFSStrategy extends Specification {
      *
      * @return a two-element array where the first element is the supported filter and the second
      *     the one to post-process
-     * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.opengis.filter.Filter)
+     * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.geotools.api.filter.Filter)
      */
     public abstract Filter[] splitFilters(QName typeName, Filter filter);
 

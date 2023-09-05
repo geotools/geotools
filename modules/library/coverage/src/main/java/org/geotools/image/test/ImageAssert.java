@@ -147,12 +147,25 @@ public class ImageAssert {
                 if (overwrite) {
                     ImageIO.write(actualImage, "PNG", expectedFile);
                 } else {
-                    throw new AssertionError(
-                            "Images are visibly different, found "
-                                    + comparator.getMismatchCount()
-                                    + " different pixels, against a threshold of "
-                                    + threshold
-                                    + "\nYou can add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
+                    if (comparator.getMismatchCount() == Integer.MAX_VALUE)
+                        throw new AssertionError(
+                                "Images are different sizes, found "
+                                        + actualImage.getWidth()
+                                        + "x"
+                                        + actualImage.getHeight()
+                                        + " size, while expecting "
+                                        + expectedImage.getWidth()
+                                        + "x"
+                                        + expectedImage.getHeight()
+                                        + " size."
+                                        + "\nYou can add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
+                    else
+                        throw new AssertionError(
+                                "Images are visibly different, found "
+                                        + comparator.getMismatchCount()
+                                        + " different pixels, against a threshold of "
+                                        + threshold
+                                        + "\nYou can add -Dorg.geotools.image.test.interactive=true to show a dialog comparing them (requires GUI support)");
                 }
             } else {
                 LOGGER.fine(

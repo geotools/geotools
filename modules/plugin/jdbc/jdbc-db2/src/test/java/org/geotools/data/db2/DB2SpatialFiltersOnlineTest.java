@@ -19,7 +19,13 @@ package org.geotools.data.db2;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Beyond;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -30,13 +36,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.PrecisionModel;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Beyond;
-import org.opengis.filter.spatial.DWithin;
 
 public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
@@ -70,7 +69,7 @@ public class DB2SpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
         // For DB2, we must use the following line of code
         MultiLineString ml = gf.createMultiLineString(geometries);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
         PropertyName p = ff.property(aname("geom"));
         Literal collect = ff.literal(ml);

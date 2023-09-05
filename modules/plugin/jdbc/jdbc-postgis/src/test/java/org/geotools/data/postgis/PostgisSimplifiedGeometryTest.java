@@ -21,7 +21,7 @@ package org.geotools.data.postgis;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;

@@ -33,9 +33,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.geotools.api.data.FeatureLock;
+import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.filter.Filter;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureLock;
-import org.geotools.data.Transaction;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
@@ -45,9 +48,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.mockito.Mockito;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.Filter;
 
 /**
  * Tests for GEOT-4792: optimizations for JDBCDataStore ensureAuthorization.
@@ -123,7 +123,7 @@ public class EnsureAuthorizationTest {
         configureMetadata();
 
         dataStore = new JDBCDataStore();
-        dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory2());
+        dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory());
         dataStore.setSQLDialect(createBasicSQLDialect());
 
         MockDataSource dataSource = new MockDataSource();

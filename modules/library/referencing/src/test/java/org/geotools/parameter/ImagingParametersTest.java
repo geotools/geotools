@@ -33,12 +33,12 @@ import javax.media.jai.OperationRegistry;
 import javax.media.jai.ParameterList;
 import javax.media.jai.RegistryElementDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.util.GenericName;
 import org.geotools.metadata.iso.citation.Citations;
 import org.junit.Test;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.util.GenericName;
 
 /**
  * Tests the wrapper for JAI's parameters.

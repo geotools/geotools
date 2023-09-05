@@ -22,6 +22,7 @@ import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,6 +34,8 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -40,13 +43,10 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.util.InternationalString;
 
 /**
  * This {@link BandMergeNode} wraps a {@link JAI} {@link BandMergeDescriptor} operation for usage
@@ -139,7 +139,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
             // //
             if (size != 3 && size != 1) {
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.INVALID_NUMBER_OF_SOURCES_$1, Integer.valueOf(size)));
             }
 
@@ -191,7 +191,8 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                     layout.setColorModel(cm);
                 } else if (!gg.equals(gridGeometry))
                     throw new IllegalArgumentException(
-                            Errors.format(ErrorKeys.MUST_SHARE_GRIDGEOMETRY_$1, "BandMerge"));
+                            MessageFormat.format(
+                                    ErrorKeys.MUST_SHARE_GRIDGEOMETRY_$1, "BandMerge"));
 
                 // //
                 //
@@ -274,7 +275,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements CoverageProces
                             properties);
         }
         throw new IllegalStateException(
-                Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, "BandMergeNode"));
+                MessageFormat.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, "BandMergeNode"));
     }
 
     /** If specified, the result of the bandMerge will contain the alpha channel. */

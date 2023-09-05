@@ -17,9 +17,9 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.v1_0.OGCPropertyIsBetweenTypeBinding;
 import org.geotools.filter.v2_0.FES;
-import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:PropertyIsBetweenType.

@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,9 +25,22 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import org.geotools.geometry.GeometryFactoryFinder;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.IdentifiedObject;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.cs.CSAuthorityFactory;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.DatumAuthorityFactory;
+import org.geotools.api.referencing.operation.CoordinateOperation;
+import org.geotools.api.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -35,21 +49,6 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.GenericName;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryRegistryException;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.CSAuthorityFactory;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.DatumAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.util.InternationalString;
 
 /**
  * An authority factory that delegates the object creation to an other factory determined from the
@@ -124,8 +123,7 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
      * fallbacks}, to be tried in iteration order only if the first acceptable factory failed to
      * create the requested object.
      *
-     * @param factories A set of user-specified factories to try before to delegate to {@link
-     *     GeometryFactoryFinder}.
+     * @param factories A set of user-specified factories to try
      */
     public ManyAuthoritiesFactory(final Collection<? extends AuthorityFactory> factories) {
         super(NORMAL_PRIORITY);
@@ -430,9 +428,8 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
     }
 
     /**
-     * Searchs for a factory of the given type. This method first search in user-supplied factories.
-     * If no user factory is found, then this method request for a factory using {@link
-     * GeometryFactoryFinder}. The authority name is inferred from the specified code.
+     * Searches for a factory of the given type. This method will search in user-supplied factories.
+     * The authority name is inferred from the specified code.
      *
      * @param type The interface to be implemented.
      * @param code The code of the object to create.
@@ -506,9 +503,9 @@ public class ManyAuthoritiesFactory extends AuthorityFactoryAdapter
         final String message;
         if (authority == null) {
             authority = Vocabulary.format(VocabularyKeys.UNKNOWN);
-            message = Errors.format(ErrorKeys.MISSING_AUTHORITY_$1, code);
+            message = MessageFormat.format(ErrorKeys.MISSING_AUTHORITY_$1, code);
         } else {
-            message = Errors.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
+            message = MessageFormat.format(ErrorKeys.UNKNOW_AUTHORITY_$1, authority);
         }
         final NoSuchAuthorityCodeException exception =
                 new NoSuchAuthorityCodeException(message, authority, code);

@@ -39,11 +39,12 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.feature.type.Name;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.grid.io.FileSystemFileSetManager;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -66,7 +67,6 @@ import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.type.Name;
 
 /**
  * A class used to store any auxiliary indexing information such as the low level indexer definition

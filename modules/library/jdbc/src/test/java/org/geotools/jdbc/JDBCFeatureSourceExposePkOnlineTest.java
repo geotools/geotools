@@ -20,8 +20,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Tests data reading when we expose primary keys as attributes

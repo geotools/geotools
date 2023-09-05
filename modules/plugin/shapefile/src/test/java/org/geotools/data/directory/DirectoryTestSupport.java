@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Collections;
 import org.geotools.TestData;
+import org.geotools.api.data.FileStoreFactory;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.junit.After;
 

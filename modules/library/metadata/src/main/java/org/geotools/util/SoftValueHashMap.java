@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.lang.ref.SoftReference;
+import java.text.MessageFormat;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -31,7 +32,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -117,7 +117,8 @@ public class SoftValueHashMap<K, V> extends AbstractMap<K, V> {
     /** Ensures that the specified value is non-null. */
     private static void ensureNotNull(final Object value) throws IllegalArgumentException {
         if (value == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "value"));
         }
     }
 

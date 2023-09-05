@@ -23,7 +23,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.Set;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
@@ -40,9 +43,6 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.Tile;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author Richard Gould
@@ -144,7 +144,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         assertNotNull("test server doesn't have topp:states", layer);
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
 
-        GeneralEnvelope envelope = wms.getEnvelope(layer, crs);
+        GeneralBounds envelope = wms.getEnvelope(layer, crs);
         assertNotNull(envelope);
         // <ows:LowerCorner>-134.731422 24.955967</ows:LowerCorner>
         // <ows:UpperCorner>-66.969849 49.371735</ows:UpperCorner>

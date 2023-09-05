@@ -16,11 +16,11 @@
  */
 package org.geotools.filter.capability;
 
-import org.opengis.filter.capability.FilterCapabilities;
-import org.opengis.filter.capability.IdCapabilities;
-import org.opengis.filter.capability.ScalarCapabilities;
-import org.opengis.filter.capability.SpatialCapabilities;
-import org.opengis.filter.capability.TemporalCapabilities;
+import org.geotools.api.filter.capability.FilterCapabilities;
+import org.geotools.api.filter.capability.IdCapabilities;
+import org.geotools.api.filter.capability.ScalarCapabilities;
+import org.geotools.api.filter.capability.SpatialCapabilities;
+import org.geotools.api.filter.capability.TemporalCapabilities;
 
 /**
  * Implementation of the FilterCapabilities interface.

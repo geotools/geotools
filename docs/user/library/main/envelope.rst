@@ -7,7 +7,7 @@ Envelopes are used to represent the bounds of a geometry, and are used very freq
 
 GeoTools, through virtue of reusing code, has two "Envelope" implementations to contend with:
 
-* Java ``Rectangle2D`` - we have ``Envelope2D`` which is spatial extension of the Java ``Rectangle2D`` class. Our implementation makes use of doubles to store coordinates and holds on to a ``CoordinateReferenceSystem`` allowing us to tell where the coordinates are located.
+* Java ``Rectangle2D`` - we have ``GeneralBounds`` which is spatial extension of the Java ``Rectangle2D`` class. Our implementation makes use of doubles to store coordinates and holds on to a ``CoordinateReferenceSystem`` allowing us to tell where the coordinates are located.
 
 * JTS ``Envelope`` - we have ``ReferencedEnvelope`` which is adds a ``CoordinateReferenceSystem`` to a traditional JTS Envelope. A subclass of ``ReferencedEnvelope`` is ``ReferencedEnvelope3D`` which supports a third dimension on top of the regular two dimensions. 
 
@@ -24,7 +24,7 @@ You will find other "Rectangles" around as you make use of GeoTools in a real wo
   * ``Rectangle2D.Double`` rectangle working with doubles
   * ``Rectangle2D.Float`` rectangle working with floats
 
-* ``Envelope2D`` we have a spatial specific version of ``Rectangle2D`` that implements ISO Geometry Envelope
+* ``GeneralBounds`` we have a spatial specific version of ``Rectangle2D`` that implements ISO Geometry Envelope
 
 * ``Rectangle`` the original rectangle for working on the screen, measured in integer pixels.
 
@@ -34,8 +34,8 @@ ReferencedEnvelope
 ``ReferencedEnvelope`` is all of these:
 
 * ``org.locationtech.jts.geom.Envelope`` - as defined by the JTS Topology System ( a Simple Feature for SQL concept)
-* ``org.opengis.geometry.BoundingBox`` - 2D bounds as defined by the ISO 19107 Geometry
-* ``org.opengis.geometry.Envelope`` - captures 3D bounds as defined by ISO 19107 Geometry.
+* ``org.geotools.api.geometry.BoundingBox`` - 2D bounds as defined by the ISO 19107 Geometry
+* ``org.geotools.api.geometry.Envelope`` - captures 3D bounds as defined by ISO 19107 Geometry.
 
 Note that in order to support 3D bounds (and use a 3D Coordinate Reference System) we must create an instance of the child class ``ReferencedEnvelope3D`` (see below).
 
@@ -80,7 +80,7 @@ ReferencedEnvelope3D
 ``ReferencedEnvelope3D`` is all of these:
 
 * ``ReferencedEnvelope`` including all parent classes and interfaces
-* ``org.opengis.geometry.BoundingBox3D`` - 3D bounds as defined by the ISO 19107 Geometry
+* ``org.geotools.api.geometry.BoundingBox3D`` - 3D bounds as defined by the ISO 19107 Geometry
 
 This is the class to use when you want to represent a 3D bounds in GeoTools. The constructor expects the input in ``xMin,xMax,yMin,yMax,zMin,zMax`` order and expects a 3D CRS:
 
@@ -104,7 +104,7 @@ OpenGIS records a "rectangle" as a bounds along the axis mentioned by the ``Coor
 
 .. image:: /images/envelope2.PNG
 
-* ``Envelope2D`` - was introduced above; used to bridge to Java2D
+* ``GeneralBounds`` - was introduced above; used to bridge to Java2D
 * ``ReferencedEnvelope`` - was introduced above; used to bridge to JTS Geometry
 * ``GeneralEnvelope`` - allows you to record spans in multiple dimensions (think depth, height or time)
 

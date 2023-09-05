@@ -17,12 +17,11 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.TextSymbolizer2;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.TextSymbolizer;
 
 /** Encodes a {@link TextSymbolizer} as YSLD. */
 public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
@@ -39,8 +38,8 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         inline(new HaloEncoder(text.getHalo()));
         inline(new FontEncoder(text.getFont()));
         inline(new PlacementEncoder(text.getLabelPlacement()));
-        if (text instanceof TextSymbolizer2) {
-            inline(new GraphicEncoder(((TextSymbolizer2) text).getGraphic(), false));
+        if (text instanceof TextSymbolizer) {
+            inline(new GraphicEncoder(((TextSymbolizer) text).getGraphic(), false));
         }
         super.encode(text);
     }

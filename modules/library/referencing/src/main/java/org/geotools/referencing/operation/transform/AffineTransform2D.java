@@ -19,10 +19,17 @@ package org.geotools.referencing.operation.transform;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.text.MessageFormat;
 import java.util.prefs.Preferences;
-import org.geotools.geometry.GeneralDirectPosition;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.Matrix;
+import org.geotools.api.referencing.operation.NoninvertibleTransformException;
+import org.geotools.api.util.Cloneable;
+import org.geotools.geometry.GeneralPosition;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.Matrix2;
 import org.geotools.referencing.operation.matrix.Matrix3;
@@ -31,13 +38,6 @@ import org.geotools.referencing.util.Formattable;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.referencing.wkt.Symbols;
 import org.geotools.util.Utilities;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.util.Cloneable;
 
 /**
  * Transforms two-dimensional coordinate points using an affine transform. This class both extends
@@ -108,14 +108,15 @@ public class AffineTransform2D extends XAffineTransform
 
     /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
-    public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst) {
+    public Position transform(final Position ptSrc, Position ptDst) {
         if (ptDst == null) {
-            ptDst = new GeneralDirectPosition(2);
+            ptDst = new GeneralPosition(2);
         } else {
             final int dimension = ptDst.getDimension();
             if (dimension != 2) {
                 throw new MismatchedDimensionException(
-                        Errors.format(ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
+                        MessageFormat.format(
+                                ErrorKeys.MISMATCHED_DIMENSION_$3, "ptDst", dimension, 2));
             }
         }
         final double[] array = ptSrc.getCoordinate();
@@ -158,7 +159,7 @@ public class AffineTransform2D extends XAffineTransform
      * the same everywhere.
      */
     @Override
-    public Matrix derivative(final DirectPosition point) {
+    public Matrix derivative(final Position point) {
         return derivative((Point2D) null);
     }
 

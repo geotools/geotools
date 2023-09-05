@@ -19,8 +19,8 @@
  */
 package org.geotools.metadata.iso.quality;
 
+import org.geotools.api.metadata.quality.Result;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.quality.Result;
 
 /**
  * Type of test applied to the data specified by a data quality scope.

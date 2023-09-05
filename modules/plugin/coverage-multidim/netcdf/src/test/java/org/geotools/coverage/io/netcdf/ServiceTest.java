@@ -25,14 +25,14 @@ import java.util.Set;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.impl.CoverageIO;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.test.TestData;
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Class for testing availability of NetCDF format factory

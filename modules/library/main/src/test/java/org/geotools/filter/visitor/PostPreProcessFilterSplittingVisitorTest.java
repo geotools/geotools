@@ -22,23 +22,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.PropertyIsNull;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_geometryType;
 import org.geotools.filter.function.JsonPointerFunction;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.spatial.BBOX;
 
 public class PostPreProcessFilterSplittingVisitorTest
         extends AbstractPostPreProcessFilterSplittingVisitorTests {
@@ -442,8 +442,8 @@ public class PostPreProcessFilterSplittingVisitorTest
         caps.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         caps.addType(JsonPointerFunction.class);
         caps.addType(And.class);
-        Filter memoryOne = ff.crosses(null, null);
-        Filter memoryTwo = ff.crosses(null, null);
+        Filter memoryOne = ff.crosses((String) null, null);
+        Filter memoryTwo = ff.crosses((String) null, null);
         Filter otherFilter =
                 ff.equal(
                         ff.function("jsonPointer", ff.literal("/pointer"), ff.property("property")),

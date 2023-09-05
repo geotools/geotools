@@ -21,11 +21,11 @@ package org.geotools.referencing.crs;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.referencing.crs.ImageCRS;
+import org.geotools.api.referencing.cs.AffineCS;
+import org.geotools.api.referencing.cs.CartesianCS;
+import org.geotools.api.referencing.datum.ImageDatum;
 import org.geotools.referencing.AbstractReferenceSystem;
-import org.opengis.referencing.crs.ImageCRS;
-import org.opengis.referencing.cs.AffineCS;
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.datum.ImageDatum;
 
 /**
  * An engineering coordinate reference system applied to locations in images. Image coordinate

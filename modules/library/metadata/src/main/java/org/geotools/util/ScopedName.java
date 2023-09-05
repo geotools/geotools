@@ -22,15 +22,15 @@ package org.geotools.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale; // For javadoc
-import org.opengis.util.GenericName;
-import org.opengis.util.InternationalString; // For javadoc
-import org.opengis.util.LocalName;
-import org.opengis.util.NameSpace;
+import org.geotools.api.util.GenericName;
+import org.geotools.api.util.InternationalString; // For javadoc
+import org.geotools.api.util.LocalName;
+import org.geotools.api.util.NameSpace;
 
 /**
  * Fully qualified identifier for an object. A {@code ScopedName} contains a {@link LocalName} as
  * {@linkplain #asLocalName head} and a {@linkplain GenericName}, which may be a {@link LocalName}
- * or an other {@link org.opengis.util.ScopedName}.
+ * or an other {@link org.geotools.api.util.ScopedName}.
  *
  * @since 2.1
  * @version $Id$
@@ -38,7 +38,7 @@ import org.opengis.util.NameSpace;
  * @see NameFactory
  */
 public class ScopedName extends org.geotools.util.GenericName
-        implements org.opengis.util.ScopedName {
+        implements org.geotools.api.util.ScopedName {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7664125655784137729L;
 
@@ -215,7 +215,7 @@ public class ScopedName extends org.geotools.util.GenericName
      * @todo Not yet implemented.
      */
     @Override
-    public org.opengis.util.ScopedName push(GenericName scope) {
+    public org.geotools.api.util.ScopedName push(GenericName scope) {
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 

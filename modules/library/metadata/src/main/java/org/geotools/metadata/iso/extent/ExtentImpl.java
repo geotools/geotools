@@ -20,14 +20,13 @@
 package org.geotools.metadata.iso.extent;
 
 import java.util.Collection;
+import org.geotools.api.metadata.extent.Extent;
+import org.geotools.api.metadata.extent.GeographicBoundingBox;
+import org.geotools.api.metadata.extent.GeographicExtent;
+import org.geotools.api.metadata.extent.TemporalExtent;
+import org.geotools.api.metadata.extent.VerticalExtent;
+import org.geotools.api.util.InternationalString;
 import org.geotools.metadata.iso.MetadataEntity;
-import org.opengis.metadata.extent.BoundingPolygon;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.extent.GeographicBoundingBox;
-import org.opengis.metadata.extent.GeographicExtent;
-import org.opengis.metadata.extent.TemporalExtent;
-import org.opengis.metadata.extent.VerticalExtent;
-import org.opengis.util.InternationalString;
 
 /**
  * Information about spatial, vertical, and temporal extent. This interface has four optional
@@ -143,9 +142,6 @@ public class ExtentImpl extends MetadataEntity implements Extent {
                 final GeographicBoundingBox bounds;
                 if (element instanceof GeographicBoundingBox) {
                     bounds = (GeographicBoundingBox) element;
-                } else if (element instanceof BoundingPolygon) {
-                    // TODO: iterates through all polygons and invoke Polygon.getEnvelope();
-                    continue;
                 } else {
                     continue;
                 }

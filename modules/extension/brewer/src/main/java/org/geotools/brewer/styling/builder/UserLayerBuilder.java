@@ -18,11 +18,11 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.DataStore;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.Style;
-import org.geotools.styling.UserLayer;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.UserLayer;
 
 public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
@@ -91,7 +91,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
             return unset();
         }
 
-        inlineFeatureDataStore = other.getInlineFeatureDatastore();
+        inlineFeatureDataStore = (DataStore) other.getInlineFeatureDatastore();
         inlineFeatureType = other.getInlineFeatureType();
         remoteOWS.reset(other.getRemoteOWS());
         featureTypeConstraint.clear();

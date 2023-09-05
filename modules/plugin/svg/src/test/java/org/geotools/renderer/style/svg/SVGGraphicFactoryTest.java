@@ -35,6 +35,8 @@ import javax.swing.Icon;
 import org.apache.batik.bridge.TextNode;
 import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.ows.MockURLChecker;
 import org.geotools.data.ows.URLCheckerException;
 import org.geotools.data.ows.URLCheckers;
@@ -46,8 +48,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Literal;
 import org.xml.sax.SAXException;
 
 public class SVGGraphicFactoryTest {

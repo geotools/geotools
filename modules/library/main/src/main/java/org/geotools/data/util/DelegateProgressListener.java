@@ -16,13 +16,13 @@
  */
 package org.geotools.data.util;
 
-import org.opengis.util.InternationalString;
+import org.geotools.api.util.InternationalString;
 
 /** Base class for progress listeners that delegate to other progress listeners */
-public class DelegateProgressListener implements org.opengis.util.ProgressListener {
-    protected org.opengis.util.ProgressListener delegate;
+public class DelegateProgressListener implements org.geotools.api.util.ProgressListener {
+    protected org.geotools.api.util.ProgressListener delegate;
 
-    public DelegateProgressListener(org.opengis.util.ProgressListener progress) {
+    public DelegateProgressListener(org.geotools.api.util.ProgressListener progress) {
         if (progress == null) progress = new NullProgressListener();
         this.delegate = progress;
     }
@@ -83,7 +83,7 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
         delegate.warningOccurred(source, location, warning);
     }
 
-    public org.opengis.util.ProgressListener getDelegate() {
+    public org.geotools.api.util.ProgressListener getDelegate() {
         return delegate;
     }
 }

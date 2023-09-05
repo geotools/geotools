@@ -16,40 +16,40 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.text.MessageFormat;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.ImageOutline;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.OverlapBehavior;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleVisitor;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
-import org.geotools.styling.ContrastEnhancement;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.ImageOutline;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
-import org.geotools.styling.OverlapBehavior;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Rule;
-import org.geotools.styling.SelectedChannelType;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyleVisitor;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
 
 /**
  * Simple empty implementation for the {@link StyleVisitor} interface.
@@ -67,342 +67,351 @@ public class StyleVisitorAdapter implements StyleVisitor {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.StyledLayerDescriptor)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.StyledLayerDescriptor)
      */
     @Override
     public void visit(StyledLayerDescriptor sld) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(StyledLayerDescriptor)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(StyledLayerDescriptor)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.NamedLayer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.NamedLayer)
      */
     @Override
     public void visit(NamedLayer layer) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(NamedLayer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(NamedLayer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.UserLayer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.UserLayer)
      */
     @Override
     public void visit(UserLayer layer) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(UserLayer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(UserLayer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeConstraint)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.FeatureTypeConstraint)
      */
     @Override
     public void visit(FeatureTypeConstraint ftc) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeConstraint)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeConstraint)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Style)
      */
     @Override
     public void visit(Style style) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Style)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Style)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Rule)
      */
     @Override
     public void visit(Rule rule) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Rule)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Rule)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.FeatureTypeStyle)
      */
     @Override
     public void visit(FeatureTypeStyle fts) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeStyle)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(FeatureTypeStyle)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Fill)
      */
     @Override
     public void visit(Fill fill) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Fill)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Fill)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Stroke)
      */
     @Override
     public void visit(Stroke stroke) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Stroke)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Stroke)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Symbolizer)
      */
     @Override
     public void visit(Symbolizer sym) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Symbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Symbolizer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.PointSymbolizer)
      */
     @Override
     public void visit(PointSymbolizer ps) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointSymbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointSymbolizer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.LineSymbolizer)
      */
     @Override
     public void visit(LineSymbolizer line) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LineSymbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LineSymbolizer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.PolygonSymbolizer)
      */
     @Override
     public void visit(PolygonSymbolizer poly) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PolygonSymbolizer)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PolygonSymbolizer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.TextSymbolizer)
      */
     @Override
     public void visit(TextSymbolizer text) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(TextSymbolizer)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(TextSymbolizer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.RasterSymbolizer)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.RasterSymbolizer)
      */
     @Override
     public void visit(RasterSymbolizer raster) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(RasterSymbolizer)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(RasterSymbolizer)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Graphic)
      */
     @Override
     public void visit(Graphic gr) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Graphic)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Graphic)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Mark)
      */
     @Override
     public void visit(Mark mark) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Mark)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Mark)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ExternalGraphic)
      */
     @Override
     public void visit(ExternalGraphic exgr) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ExternalGraphic)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ExternalGraphic)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.PointPlacement)
      */
     @Override
     public void visit(PointPlacement pp) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointPlacement)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(PointPlacement)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.AnchorPoint)
      */
     @Override
     public void visit(AnchorPoint ap) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(AnchorPoint)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(AnchorPoint)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Displacement)
      */
     @Override
     public void visit(Displacement dis) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Displacement)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Displacement)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.LinePlacement)
      */
     @Override
     public void visit(LinePlacement lp) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LinePlacement)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(LinePlacement)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.Halo)
      */
     @Override
     public void visit(Halo halo) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Halo)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(Halo)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ColorMap)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ColorMap)
      */
     @Override
     public void visit(ColorMap colorMap) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapTransform)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapTransform)"));
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ColorMapEntry)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ColorMapEntry)
      */
     @Override
     public void visit(ColorMapEntry colorMapEntry) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapEntry)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ColorMapEntry)"));
     }
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ContrastEnhancement)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ContrastEnhancement)
      */
     @Override
     public void visit(ContrastEnhancement ce) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ContrastEnhancement)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ContrastEnhancement)"));
     }
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ChannelSelection)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ChannelSelection)
      */
     @Override
     public void visit(ChannelSelection cs) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ChannelSelection)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ChannelSelection)"));
     }
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.SelectedChannelType)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.SelectedChannelType)
      */
     @Override
     public void visit(SelectedChannelType sct) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(SelectedChannelType)"));
+                MessageFormat.format(
+                        ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(SelectedChannelType)"));
     }
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.OverlapBehavior)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.OverlapBehavior)
      */
     @Override
     public void visit(OverlapBehavior ob) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(OverlapBehavior)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(OverlapBehavior)"));
     }
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ShadedRelief)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ShadedRelief)
      */
     @Override
     public void visit(ShadedRelief sr) {
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ShadedRelief)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ShadedRelief)"));
     }
 
     /*
      * (non-Javadoc)
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ImageOutline)
+     * @see org.geotools.api.style.StyleVisitor#visit(org.geotools.api.style.ImageOutline)
      */
     @Override
     public void visit(ImageOutline io) {
 
         throw new UnsupportedOperationException(
-                Errors.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ImageOutline)"));
+                MessageFormat.format(ErrorKeys.UNSUPPORTED_OPERATION_$1, "visit(ImageOutline)"));
     }
 }

@@ -19,12 +19,21 @@ package org.geotools.coverage.grid;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.api.util.Cloneable;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.PixelTranslation;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -33,15 +42,6 @@ import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.coverage.grid.GridGeometry;
-import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.util.Cloneable;
 
 /**
  * Describes the valid range of grid coordinates and the math transform to transform grid
@@ -54,8 +54,8 @@ import org.opengis.util.Cloneable;
  *       usually inferred from the {@linkplain RenderedImage rendered image} size.
  *   <li>An optional "grid to CRS" {@linkplain MathTransform transform}, which may be inferred from
  *       the grid range and the envelope.
- *   <li>An optional {@linkplain Envelope envelope}, which may be inferred from the grid range and
- *       the "grid to CRS" transform.
+ *   <li>An optional {@linkplain Bounds envelope}, which may be inferred from the grid range and the
+ *       "grid to CRS" transform.
  *   <li>An optional {@linkplain CoordinateReferenceSystem coordinate reference system} to be given
  *       to the envelope.
  * </ul>
@@ -146,7 +146,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *
      * @since 2.2
      */
-    GeneralEnvelope envelope;
+    GeneralBounds envelope;
 
     /**
      * The math transform (usually an affine transform), or {@code null} if none. This math
@@ -175,7 +175,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         gridRange = gm.gridRange; // Do not clone; we assume it is safe to share.
         gridToCRS = gm.gridToCRS;
         cornerToCRS = gm.cornerToCRS;
-        envelope = new GeneralEnvelope(gm.envelope);
+        envelope = new GeneralBounds(gm.envelope);
         envelope.setCoordinateReferenceSystem(crs);
     }
 
@@ -198,7 +198,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             gridRange = other.getGridRange();
             gridToCRS = other.getGridToCRS();
             if (gridRange != null && gridToCRS != null) {
-                envelope = new GeneralEnvelope(gridRange, PixelInCell.CELL_CENTER, gridToCRS, null);
+                envelope = new GeneralBounds(gridRange, PixelInCell.CELL_CENTER, gridToCRS, null);
             } else {
                 envelope = null;
             }
@@ -262,9 +262,9 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             cornerToCRS = gridToCRS;
         }
         if (gridRange != null && gridToCRS != null) {
-            envelope = new GeneralEnvelope(gridRange, anchor, gridToCRS, crs);
+            envelope = new GeneralBounds(gridRange, anchor, gridToCRS, crs);
         } else if (crs != null) {
-            envelope = new GeneralEnvelope(crs);
+            envelope = new GeneralBounds(crs);
             envelope.setToNull();
         } else {
             envelope = null;
@@ -273,9 +273,9 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
 
     /**
      * Casts the specified grid range into an envelope. This is used before to transform the
-     * envelope using {@link CRSUtilities#transform(MathTransform, Envelope)}.
+     * envelope using {@link CRSUtilities#transform(MathTransform, Bounds)}.
      */
-    private static Envelope toEnvelope(final GridEnvelope gridRange) {
+    private static Bounds toEnvelope(final GridEnvelope gridRange) {
         final int dimension = gridRange.getDimension();
         final double[] lower = new double[dimension];
         final double[] upper = new double[dimension];
@@ -283,7 +283,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             lower[i] = gridRange.getLow(i);
             upper[i] = gridRange.getHigh(i) + 1;
         }
-        return new GeneralEnvelope(lower, upper);
+        return new GeneralBounds(lower, upper);
     }
 
     /**
@@ -321,7 +321,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     public GeneralGridGeometry(
             final PixelInCell anchor,
             final MathTransform gridToCRS,
-            final Envelope envelope,
+            final Bounds envelope,
             final boolean gridMaxInclusive,
             final boolean preserveGridToCRS)
             throws MismatchedDimensionException, IllegalArgumentException {
@@ -334,17 +334,17 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
             this.gridRange = null;
             return;
         }
-        this.envelope = new GeneralEnvelope(envelope);
+        this.envelope = new GeneralBounds(envelope);
         if (gridToCRS == null) {
             this.gridRange = null;
             return;
         }
-        final GeneralEnvelope transformed;
+        final GeneralBounds transformed;
         try {
             transformed = org.geotools.referencing.CRS.transform(cornerToCRS.inverse(), envelope);
         } catch (TransformException exception) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)),
+                    MessageFormat.format(ErrorKeys.BAD_TRANSFORM_$1, Classes.getClass(gridToCRS)),
                     exception);
         }
 
@@ -359,7 +359,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         // do we need to ajust the gridToCRS or the envelope?
         if (preserveGridToCRS) {
             // preserve firdToCrs
-            GeneralEnvelope tempEnvelope;
+            GeneralBounds tempEnvelope;
             try {
                 tempEnvelope = CRS.transform(getGridToCRS(), toEnvelope(gridRange));
             } catch (Throwable e) {
@@ -397,8 +397,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
                                 Math.min(
                                         XAffineTransform.getScaleX0(transform),
                                         XAffineTransform.getScaleY0(transform));
-                        final GeneralEnvelope tempEnvelope =
-                                CRS.transform(tr, toEnvelope(gridRange));
+                        final GeneralBounds tempEnvelope = CRS.transform(tr, toEnvelope(gridRange));
                         tempEnvelope.setCoordinateReferenceSystem(
                                 envelope.getCoordinateReferenceSystem());
                         if (LOGGER.isLoggable(Level.FINE)
@@ -437,13 +436,13 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @since 2.5
      */
     public GeneralGridGeometry(
-            final PixelInCell anchor, final MathTransform gridToCRS, final Envelope envelope)
+            final PixelInCell anchor, final MathTransform gridToCRS, final Bounds envelope)
             throws MismatchedDimensionException, IllegalArgumentException {
         this(anchor, gridToCRS, envelope, false, false);
     }
 
     /**
-     * Constructs a new grid geometry from an {@linkplain Envelope envelope}. An {@linkplain
+     * Constructs a new grid geometry from an {@linkplain Bounds envelope}. An {@linkplain
      * java.awt.geom.AffineTransform affine transform} will be computed automatically from the
      * specified envelope using heuristic rules described in {@link GridToEnvelopeMapper} javadoc.
      * More specifically, heuristic rules are applied for:
@@ -464,7 +463,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *     consistent dimensions.
      * @since 2.2
      */
-    public GeneralGridGeometry(final GridEnvelope gridRange, final Envelope userRange)
+    public GeneralGridGeometry(final GridEnvelope gridRange, final Bounds userRange)
             throws MismatchedDimensionException {
         this(gridRange, userRange, null, false, true);
     }
@@ -472,13 +471,13 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     /** Implementation of heuristic constructors. */
     GeneralGridGeometry(
             final GridEnvelope gridRange,
-            final Envelope userRange,
+            final Bounds userRange,
             final boolean[] reverse,
             final boolean swapXY,
             final boolean automatic)
             throws MismatchedDimensionException {
         this.gridRange = clone(gridRange);
-        this.envelope = new GeneralEnvelope(userRange);
+        this.envelope = new GeneralBounds(userRange);
         final GridToEnvelopeMapper mapper = new GridToEnvelopeMapper(gridRange, userRange);
         if (!automatic) {
             mapper.setReverseAxis(reverse);
@@ -546,7 +545,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      *     false}).
      * @see GridGeometry2D#getEnvelope2D
      */
-    public Envelope getEnvelope() throws InvalidGridGeometryException {
+    public Bounds getEnvelope() throws InvalidGridGeometryException {
         if (envelope != null && !envelope.isNull()) {
             assert isDefined(ENVELOPE_BITMASK);
             return envelope.clone();
@@ -583,7 +582,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     /**
      * Returns the transform from grid coordinates to real world earth coordinates. The transform is
      * often an affine transform. The coordinate reference system of the real world coordinates is
-     * given by {@link org.opengis.coverage.Coverage#getCoordinateReferenceSystem}.
+     * given by {@link org.geotools.api.coverage.Coverage#getCoordinateReferenceSystem}.
      *
      * <p><strong>Note:</strong> OpenGIS requires that the transform maps <em>pixel centers</em> to
      * real world coordinates. This is different from some other systems that map pixel's upper left
@@ -616,7 +615,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
      * @throws InvalidGridGeometryException if this grid geometry has no transform (i.e. <code>
      *     {@linkplain #isDefined isDefined}({@linkplain #GRID_TO_CRS_BITMASK})</code> returned
      *     {@code false}).
-     * @see GridGeometry2D#getGridToCRS(org.opengis.referencing.datum.PixelInCell)
+     * @see GridGeometry2D#getGridToCRS(org.geotools.api.referencing.datum.PixelInCell)
      * @since 2.3
      */
     public MathTransform getGridToCRS(final PixelInCell anchor)
@@ -656,7 +655,7 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
         if ((bitmask & ~(CRS_BITMASK | ENVELOPE_BITMASK | GRID_RANGE_BITMASK | GRID_TO_CRS_BITMASK))
                 != 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "bitmask", bitmask));
         }
         return ((bitmask & CRS_BITMASK) == 0
                         || (envelope != null && envelope.getCoordinateReferenceSystem() != null))
@@ -721,7 +720,8 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     static void ensureNonNull(final String name, final Object object)
             throws IllegalArgumentException {
         if (object == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+            throw new IllegalArgumentException(
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 }

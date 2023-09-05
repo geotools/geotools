@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.parse.Util;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
 /**
  * Encodes a single style object as YSLD

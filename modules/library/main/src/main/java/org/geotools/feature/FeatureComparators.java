@@ -16,7 +16,7 @@
  */
 package org.geotools.feature;
 
-import org.opengis.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeature;
 
 /**
  * A utility class for creating simple Comparators for Features.

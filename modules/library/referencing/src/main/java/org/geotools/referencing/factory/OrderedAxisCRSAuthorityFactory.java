@@ -19,18 +19,17 @@ package org.geotools.referencing.factory;
 import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.EASTING;
 import static org.geotools.referencing.cs.DefaultCoordinateSystemAxis.NORTHING;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Comparator;
 import javax.measure.Unit;
+import org.geotools.api.referencing.crs.CRSAuthorityFactory;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
@@ -93,7 +92,7 @@ import systems.uom.common.USCustomary;
  * (<var>longitude</var>, <var>latitude</var>) order just appears to be the default one.
  *
  * <p>This class implements {@link CRSAuthorityFactory} only. For an implementation that supports
- * also {@link org.opengis.referencing.cs.CSAuthorityFactory}, see {@link
+ * also {@link org.geotools.api.referencing.cs.CSAuthorityFactory}, see {@link
  * OrderedAxisAuthorityFactory}.
  *
  * @since 2.2
@@ -250,7 +249,7 @@ public class OrderedAxisCRSAuthorityFactory extends TransformedAuthorityFactory
             if (previous != length) {
                 // TODO: Use the localized version of 'getName' in GeoAPI 2.1
                 throw new IllegalArgumentException(
-                        Errors.format(
+                        MessageFormat.format(
                                 ErrorKeys.COLINEAR_AXIS_$2,
                                 axisOrder[previous].name(),
                                 axisOrder[i].name()));

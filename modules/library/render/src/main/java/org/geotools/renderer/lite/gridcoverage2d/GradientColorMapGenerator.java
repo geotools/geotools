@@ -22,16 +22,16 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
 import org.geotools.data.util.ColorConverterFactory;
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ColorMapEntryImpl;
 import org.geotools.styling.ColorMapImpl;
 import org.geotools.util.Converter;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
-import org.opengis.filter.FilterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -126,12 +126,12 @@ public class GradientColorMapGenerator {
         colorMap.addColorMapEntry(startEntry);
 
         if (intervals) {
-            colorMap.setType(ColorMap.TYPE_INTERVALS);
+            colorMap.setType(org.geotools.api.style.ColorMap.TYPE_INTERVALS);
             for (int i = 1; i < numEntries - 1; i += 2) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }
         } else {
-            colorMap.setType(ColorMap.TYPE_RAMP);
+            colorMap.setType(org.geotools.api.style.ColorMap.TYPE_RAMP);
             for (int i = 0; i < numEntries - 1; i++) {
                 colorMap.addColorMapEntry(entries[i].getColorMapEntry(min, range));
             }

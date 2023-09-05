@@ -35,21 +35,20 @@ import static java.lang.Math.toDegrees;
 
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterNotFoundException;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.operation.CylindricalProjection;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.operation.CylindricalProjection;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Transverse Mercator Projection (EPSG code 9807). This is a cylindrical projection, in which the
@@ -418,7 +417,7 @@ public class TransverseMercator extends MapProjection {
             return getZone(-52.5, -3);
         }
         // unknown
-        throw new IllegalStateException(Errors.format(ErrorKeys.UNKNOW_PROJECTION_TYPE));
+        throw new IllegalStateException(ErrorKeys.UNKNOW_PROJECTION_TYPE);
     }
 
     /**
@@ -440,7 +439,7 @@ public class TransverseMercator extends MapProjection {
             return getCentralMedirian(-52.5, -3);
         }
         // unknown
-        throw new IllegalStateException(Errors.format(ErrorKeys.UNKNOW_PROJECTION_TYPE));
+        throw new IllegalStateException(ErrorKeys.UNKNOW_PROJECTION_TYPE);
     }
 
     /** Returns a hash value for this projection. */

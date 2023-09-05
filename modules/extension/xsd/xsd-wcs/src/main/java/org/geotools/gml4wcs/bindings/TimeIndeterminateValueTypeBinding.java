@@ -19,10 +19,10 @@
 package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.temporal.IndeterminateValue;
 import org.geotools.gml4wcs.GML;
 import org.geotools.xsd.AbstractSimpleBinding;
 import org.geotools.xsd.InstanceComponent;
-import org.opengis.temporal.IndeterminateValue;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:TimeIndeterminateValueType.

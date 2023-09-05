@@ -17,12 +17,12 @@
 package org.geotools.data.vpf.util;
 
 import java.util.HashMap;
+import org.geotools.api.geometry.Position;
 import org.geotools.data.vpf.VPFLogger;
 import org.geotools.data.vpf.io.RowField;
 import org.geotools.data.vpf.io.TripletId;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opengis.geometry.DirectPosition;
 
 /*
  * EdgeData.java
@@ -44,8 +44,8 @@ public class EdgeData extends HashMap<Object, Object> {
                 Coordinate[] c = null;
                 if (value instanceof RowField) {
                     value = ((RowField) value).getValue();
-                    if (value instanceof DirectPosition[]) {
-                        DirectPosition[] coords = (DirectPosition[]) value;
+                    if (value instanceof Position[]) {
+                        Position[] coords = (Position[]) value;
                         c = new Coordinate[coords.length];
                         double[] c_pair = null;
                         for (int i = 0; i < coords.length; i++) {

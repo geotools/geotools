@@ -19,8 +19,8 @@ package org.geotools.sld.bindings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.geotools.api.style.ChannelSelection;
 import org.geotools.filter.function.EnvFunction;
-import org.geotools.styling.ChannelSelection;
 import org.junit.Test;
 
 public class SLDChannelSectionBindingTest extends SLDTestSupport {

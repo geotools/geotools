@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.DWithin;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.LiteralExpressionImpl;
@@ -15,13 +17,11 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.spatial.DWithin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class DWithinBindingTest extends FESTestSupport {
-    static FilterFactory2 filterFact = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory filterFact = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testEncode() throws Exception {

@@ -23,11 +23,11 @@ import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.filter.v1_0.OGCBBOXTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.v3_2.GML;
-import org.opengis.filter.spatial.BBOX;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:BBOXType.

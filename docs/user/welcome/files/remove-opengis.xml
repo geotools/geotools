@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="remove-opengis" default="update">
+  <!-- Use this property to run script on your project location -->
+  <property name="project.dir" location="."/>
+  
+  <!--                                                                                  -->
+  <!-- Macros                                                                           -->
+  <!--                                                                                  -->
+  <!-- Refactorings are captued as macros so we can improve the steps based on feedback -->
+  <macrodef name="refactor">
+    <attribute name="srcPackage"/>
+    <attribute name="srcClass"/>
+    <attribute name="dstPackage"/>
+    <attribute name="dstClass"/>
+    <sequential>
+      <echo level="info" message="Refactor: @{srcPackage}.@{srcClass} -&gt; @{dstPackage}.@{dstClass}"/>
+      <replaceregexp byline="true" flags="g">
+        <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+          <contains text="@{srcPackage}.@{srcClass}" casesensitive="yes"/>
+        </fileset>
+        <regexp pattern="(\W)@{srcPackage}\.@{srcClass}(\W)"/>
+        <substitution expression="\1@{dstPackage}.@{dstClass}\2"/>
+      </replaceregexp>
+      <echo level="info" message="          @{srcClass} -&gt; @{dstClass}"/>
+      <fileset id="@{dstPackage}.@{dstClass}.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="@{dstPackage}.@{dstClass}" casesensitive="yes"/>
+      </fileset>
+      <replaceregexp byline="true" flags="g">
+        <fileset refid="@{dstPackage}.@{dstClass}.files"/>
+        <regexp pattern="(\W)@{srcClass}(\W)"/>
+        <substitution expression="\1@{dstClass}\2"/>
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="remove">
+    <attribute name="package"/>
+    <attribute name="class"/>
+    <attribute name="removed" default="// removed"/>
+    <sequential>
+      <echo level="info" message="Removed:  @{package}.@{class} -&gt;"/>
+      <echo level="verbose">... ${toString:@{package}.@{class}.remove}</echo>
+      <replaceregexp byline="true">
+        <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+          <contains text="import @{package}.@{class};" casesensitive="yes"/>
+        </fileset>
+        <regexp pattern="^import @{class}\.@{class};$"/>
+        <substitution expression="// import @{class}.@{class};@{removed}"/>
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="moveClass">
+    <attribute name="srcPackage"/>
+    <attribute name="dstPackage"/>
+    <attribute name="class"/>
+    <sequential>
+      <echo level="info" message="Moved:    '@{srcPackage}.@{class}' -&gt; '@{dstPackage}.@{class}'"/>
+      <fileset id="@{srcPackage}.@{class}.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="@{srcPackage}." casesensitive="yes"/>
+      </fileset>
+      <echo level="verbose">... ${toString:@{srcPackage}.@{class}.files}</echo>
+      <replaceregexp byline="true">
+        <fileset refid="@{srcPackage}.@{class}.files"/>
+        <regexp pattern="^import @{srcPackage}\.@{class};$"/>
+        <substitution expression="import @{dstPackage}\.@{class};"/>
+      </replaceregexp>
+      <replaceregexp byline="true">
+        <fileset refid="@{srcPackage}.@{class}.files"/>
+        <regexp pattern="@{srcPackage}\.@{class}(\W)"/>
+        <substitution expression="@{dstPackage}\.@{class}\1"/>
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+  
+  <!-- Optimization: moveFrom and moveTo share a common fileset -->
+  <macrodef name="moveFrom">
+    <attribute name="srcPackage"/>
+    <sequential>
+      <echo level="info" message="Move From: '@{srcPackage}':"/>
+      <fileset id="@{srcPackage}.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="@{srcPackage}." casesensitive="yes"/>
+      </fileset>
+      <echo level="verbose">... ${toString:@{srcPackage}.files}</echo>
+    </sequential>
+  </macrodef>
+  
+  <macrodef name="moveTo">
+    <attribute name="srcPackage"/>
+    <attribute name="dstPackage"/>
+    <attribute name="class"/>
+    <sequential>
+      <echo level="info" message="       To: '@{srcPackage}.@{class}' -&gt; '@{dstPackage}.@{class}'"/>
+      <replaceregexp byline="true">
+        <fileset refid="@{srcPackage}.files"/>
+        <regexp pattern="^import @{srcPackage}\.@{class};$"/>
+        <substitution expression="import @{dstPackage}\.@{class};"/>
+      </replaceregexp>
+      <replaceregexp byline="true">
+        <fileset refid="@{srcPackage}.files"/>
+        <regexp pattern="@{srcPackage}\.@{class}(\W)"/>
+        <substitution expression="@{dstPackage}\.@{class}\1"/>
+      </replaceregexp>
+    </sequential>
+  </macrodef>
+  
+  <!--                                                                  -->
+  <!-- Tasks                                                            -->
+  <!--                                                                  -->
+  <!-- Tasks are listed in order of execution to aid in troubleshooting -->
+  <target name="starting-up" description="Update project in current directory to remove org.opengis package use">
+    <echo level="warning">Update to GeoTools 30.x series</echo>
+    <echo level="info"/>
+    <echo level="info">UPDATE STARTING: ${project.dir}</echo>
+  </target>
+  
+  <target name="_filterFactory" description="FilterFactory2 and FilterFactory merge">
+    <echo level="info"/>
+    <echo level="info" message="Files containing org.opengis.filter.FilterFactory2:"/>
+    <fileset id="FilterFactory2.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+      <contains text="org.opengis.filter.FilterFactory2" casesensitive="yes"/>
+    </fileset>
+    <echo level="info" message="       Refactor FilterFactory2 --&gt; FilerFactory"/>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="(\W)FilterFactory2(\W)"/>
+      <substitution expression="\1FilterFactory\2"/>
+      <fileset refid="FilterFactory2.files"/>
+    </replaceregexp>
+    <echo level="info" message="       CommonFactoryFinder.getFilterFactory()"/>
+    <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replacefilter>
+        <replacetoken>.getFilterFactory2(</replacetoken>
+        <replacevalue>.getFilterFactory(</replacevalue>
+      </replacefilter>
+    </replace>
+    <echo level="info" message="Files containing org.opengis.filter.FilterFactory:"/>
+    <fileset id="filterFactory.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+      <contains text="import org.opengis.filter.FilterFactory;" casesensitive="yes"/>
+    </fileset>
+    <echo level="info">       FilterFactory.property(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.property\(null\)"/>
+      <substitution expression=".property((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.beyond(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.beyond\(null\)"/>
+      <substitution expression=".beyond((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.contains(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.contains\(null\)"/>
+      <substitution expression=".contains((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="warning">       Collecions.contains((String) possible conflicts</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.crosses\(null\)"/>
+      <substitution expression=".crosses((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.disjoint(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.disjoint\(null\)"/>
+      <substitution expression=".disjoint((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.intersects(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.intersects\(null\)"/>
+      <substitution expression=".intersects((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.overlaps(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.overlaps\(null\)"/>
+      <substitution expression=".overlaps((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.equals(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.equals\(null\)"/>
+      <substitution expression=".equals((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="warning">       Object.equals((String) null) possible conflict</echo>
+    <echo level="info">       FilterFactory.dwithin(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.dwithin\(null\)"/>
+      <substitution expression=".dwithin((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.touches(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.touches\(null\)"/>
+      <substitution expression=".touches((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.overlaps(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.overlaps\(null\)"/>
+      <substitution expression=".overlaps((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.touches(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.touches\(null\)"/>
+      <substitution expression=".touches((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+    <echo level="info">       FilterFactory.within(null)</echo>
+    <replaceregexp byline="true" flags="g">
+      <regexp pattern="\.within\(null\)"/>
+      <substitution expression=".within((String) null)"/>
+      <fileset refid="filterFactory.files"/>
+    </replaceregexp>
+  </target>
+  
+  <target name="_styling" description="GeoTools styling interfaces merge">
+    <echo level="info"/>
+    <echo level="info" message="org.geotools.styling interfaces are now merged into org.geotools.api.style"/>
+    <local name="sp"/>
+    <local name="dp"/>
+    <property name="sp">org.geotools.styling</property>
+    <property name="dp">org.geotools.api.style</property>
+    <refactor srcPackage="${sp}" dstPackage="${dp}" srcClass="StyleFactory2" dstClass="StyleFactory"/>
+    <refactor srcPackage="${sp}" dstPackage="${dp}" srcClass="TextSymbolizer2" dstClass="TextSymbolizer"/>
+    <moveFrom srcPackage="${sp}"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="AnchorPoint"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ChannelSelection"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ColorMap"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ColorMapEntry"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ColorReplacement"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ContrastEnhancement"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ContrastMethod"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ContrastMethodStrategy"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Description"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Displacement"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ExtensionSymbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Extent"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ExternalGraphic"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ExternalMark"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="FeatureTypeConstraint"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="FeatureTypeStyle"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Fill"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Font"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Graphic"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="GraphicFill"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="GraphicLegend"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="GraphicStroke"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="GraphicalSymbol"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Halo"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ImageOutline"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="LabelPlacement"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="LayerFeatureConstraints"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="LinePlacement"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="LineSymbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Mark"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="NamedLayer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="NamedStyle"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="OtherText"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="OverlapBehavior"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="OverlapBehaviorEnum"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="PointPlacement"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="PointSymbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="PolygonSymbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="RasterSymbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="RemoteOWS"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ResourceLocator"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Rule"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="SelectedChannelType"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="SemanticType"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="ShadedRelief"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Stroke"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Style"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="StyleFactory"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="StyleVisitor"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="StyledLayer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="StyledLayerDescriptor"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Symbol"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="Symbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="TextSymbolizer"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="TraversingStyleVisitor"/>
+    <moveTo srcPackage="${sp}" dstPackage="${dp}" class="UserLayer"/>
+
+   <!-- A cast is required as DataStore API is defined in gt-main -->
+    <replaceregexp flags="g">
+      <regexp pattern="(\w+)\.getInlineFeatureDatastore\(\)"/>
+      <substitution expression="(DataStore) \1.getInlineFeatureDatastore()"/>
+      <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="getInlineFeatureDatastore" casesensitive="yes"/>
+      </fileset>
+    </replaceregexp>
+  </target>
+  
+  <target name="_position" description="Position API cleanup">
+    <echo level="info"/>
+    <echo level="info" message="Position and DirectPosition cleanup ..."/>
+    <refactor srcPackage="org.opengis.geometry" srcClass="DirectPosition" dstPackage="org.opengis.geometry" dstClass="Position"/>
+    <moveFrom srcPackage="org.opengis.geometry.coordinate"/>
+    <moveTo srcPackage="org.opengis.geometry.coordinate" dstPackage="org.opengis.geometry" class="Position"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="AbstractDirectPosition" dstPackage="org.geotools.geometry" dstClass="AbstractPosition"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="GeneralDirectPosition" dstPackage="org.geotools.geometry" dstClass="GeneralPosition"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="DirectPosition1D" dstPackage="org.geotools.geometry" dstClass="Position1D"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="DirectPosition2D" dstPackage="org.geotools.geometry" dstClass="Position2D"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="DirectPosition3D" dstPackage="org.geotools.geometry" dstClass="Position3D"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="TransformedDirectPosition" dstPackage="org.geotools.geometry" dstClass="TransformedPosition"/>
+    <remove package="org.opengis.geometry.coordinate" class="PointArray" removed="// removed - use List&lt;DirectPosition&gt;"/>
+  </target>
+  
+  <target name="_bounds" description="Bounds API cleanup">
+    <echo level="info"/>
+    <echo level="info" message="Bounds and Envelope cleanup ..."/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="AbstractEnvelope" dstPackage="org.geotools.geometry" dstClass="AbstractBounds"/>
+    <refactor srcPackage="org.geotools.geometry" srcClass="GeneralEnvelope" dstPackage="org.geotools.geometry" dstClass="GeneralBounds"/>
+    
+    <!-- step by step refactor of Envelope to avoid conflicts with jts Envelope -->
+    <!--
+    <refactor srcPackage="org.opengis.geometry" srcClass="Envelope" dstPackage="org.opengis.geometry" dstClass="Bounds"/>
+    -->
+    <echo level="info" message="Refactor: Envelope -&gt; Bounds"/>
+    <echo level="info" message="          (skipping files that import org.locationtech.jts.geom.Envelope)"/>
+    <fileset id="org.opengis.geometry.Envelope.safeFiles" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+      <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
+      <not>
+        <contains text="import org.locationtech.jts.geom.Envelope;" casesensitive="yes"/>
+      </not>
+    </fileset>
+    <echo level="verbose">... ${toString:org.opengis.geometry.Envelope.safeFiles}</echo>
+    <!-- 
+    GOOD: Envelope
+          (Envelope)
+          <Envelope>
+          org.opengis.geometry.Envelope
+    BAD: "Envelope"                         (preserve text parameters)
+         CustomEnvelopeBounds               (preserve as part of class names)
+         sourceEnvelope                     (preserve as part of varaible names)
+         org.locationtech.jts.geom.Envelope (post-process to fix)
+    LITERAL: (cannot figure out how to avoid string literals, pre/post process)
+         "coverageA and coverageB should share the same Envelope or something";
+    -->
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
+      <regexp pattern="&quot;(.*?)Envelope(.*?)&quot;"/>
+      <substitution expression="&quot;\1_LITERAL_ENVELOPE_\2&quot;"/>
+    </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Envelope.safeFiles"/>
+      <regexp pattern="(\s|\(|\&lt;|org\.opengis\.geometry\.)Envelope(;|&gt;|\)|\s)"/>
+      <substitution expression="\1Bounds\2"/>
+    </replaceregexp>
+    <echo level="info" message="          org.opengis.geometry.Envelope -&gt; org.opengis.geometry.Bounds"/>
+    <fileset id="org.opengis.geometry.Envelope.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+      <contains text="org.opengis.geometry.Envelope" casesensitive="yes"/>
+    </fileset>
+    <echo level="verbose">... ${toString:org.opengis.geometry.Envelope.files}</echo>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="org.opengis.geometry.Envelope.files"/>
+      <regexp pattern="(\W)org.opengis.geometry.Envelope(\W)"/>
+      <substitution expression="\1org.opengis.geometry.Bounds\2"/>
+    </replaceregexp>
+    <!--
+    POSTPROCESS:
+        org.locationtech.jts.geom.Bounds (post-process to fix)>
+    -->
+    <replaceregexp byline="true" flags="g">
+      <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="org.locationtech.jts.geom.Bounds" casesensitive="yes"/>
+      </fileset>
+      <regexp pattern="(\W)org.locationtech.jts.geom.Bounds(\W)"/>
+      <substitution expression="\1org.locationtech.jts.geom.Envelope\2"/>
+    </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+        <contains text="_LITERAL_ENVELOPE_" casesensitive="yes"/>
+      </fileset>
+      <regexp pattern="_LITERAL_ENVELOPE_"/>
+      <substitution expression="Envelope"/>
+    </replaceregexp>
+  </target>
+  
+  <target name="_envelope2d" description="Envelope2D removal">
+    <echo level="info"/>
+    <echo level="info" message="Remove Envelope2D, refactor code to use to ReferencedEnvelope"/>
+    <!-- pre: Envelope2D method cleanup -->
+    <fileset id="envelope2D.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+      <contains text="import org.geotools.geometry.Envelope2D;" casesensitive="yes"/>
+    </fileset>
+    <echo message="  new Envelope2D(crs,x,y,w,h): Use ReferencedEnvelope.rect(x,y,w,h,crs)"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="envelope2D.files"/>
+      <regexp pattern="new Envelope2D\(\s*(.*?),\s*(.*?),\s*(.*?),\s*(.+?),\s*(.+?)\)"/>
+      <substitution expression="ReferencedEnvelope.rect(\2, \3\, \4, \5, \1)"/>
+    </replaceregexp>
+    <!-- refactor: Envelope2D to ReferencedEnvelope -->
+    <refactor srcPackage="org.geotools.geometry" srcClass="Envelope2D" dstPackage="org.geotools.geometry.jts" dstClass="ReferencedEnvelope"/>
+    
+    <!-- post: Envelope2D method cleanup -->
+    <fileset id="referencedEnvelope.files" dir="${project.dir}" includes="**/*.java" excludes="**/target/*">
+      <contains text="import org.geotools.geometry.jts.ReferencedEnvelope;" casesensitive="yes"/>
+    </fileset>
+    <echo message="       ReferencedEnvelope.create(envelope,crs): Use ReferencedEnvelope.envelope(envelope,crs)"/>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="ReferencedEnvelope\.create\(\(Envelope\)\s*"/>
+      <substitution expression="ReferencedEnvelope.envelope("/>
+    </replaceregexp>
+    <replaceregexp byline="true" flags="g">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="ReferencedEnvelope\.create\((\w+nvelope),"/>
+      <substitution expression="ReferencedEnvelope.envelope(\1,"/>
+    </replaceregexp>
+    
+    <!-- match against variable names like sourceEnvelope.x -->
+    <echo message="       ReferencedEnvelope.getMinX()"/>
+    <replaceregexp flags="gs">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.x(\W)"/>
+      <substitution expression="\1nvelope.getMinX()\2"/>
+    </replaceregexp>
+    <echo message="       ReferencedEnvelope.getMinY()"/>
+    <replaceregexp flags="gs">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.y(\W)"/>
+      <substitution expression="\1nvelope.getMinY()\2"/>
+    </replaceregexp>
+    <echo message="       ReferencedEnvelope.getWidth()"/>
+    <replaceregexp flags="gs">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.width(\W)"/>
+      <substitution expression="\1nvelope.getWidth()\2"/>
+    </replaceregexp>
+    <echo message="       ReferencedEnvelope.getHeight()"/>
+    <replaceregexp flags="gs">
+      <fileset refid="referencedEnvelope.files"/>
+      <regexp pattern="(\w)nvelope\.height(\W)"/>
+      <substitution expression="\1nvelope.getHeight()\2"/>
+    </replaceregexp>
+  </target>
+
+  <target name="_geometry" description="Geometry API cleanup">
+    <echo level="info"/>
+    <echo level="info" message="Removing org.opengis.geometry.Geometry"/>
+    <!-- you cann use refid="Position.files" fileset after refactor -->
+    <refactor srcPackage="org.opengis.geometry.coordinate" srcClass="Polygon" dstPackage="org.locationtech.jts.geom" dstClass="Polygon"/>
+    <refactor srcPackage="org.opengis.geometry.coordinate" srcClass="Point" dstPackage="org.locationtech.jts.geom" dstClass="Point"/>
+    <refactor srcPackage="org.opengis.geometry.coordinate" srcClass="LineString" dstPackage="org.locationtech.jts.geom" dstClass="LineString"/>
+    <refactor srcPackage="org.opengis.geometry" srcClass="Geometry" dstPackage="org.locationtech.jts.geom" dstClass="Geometry"/>
+  </target>
+
+  <target name="_errors" description="change from org.geotools.metadata.i18n.Errors to MessageFormat">
+    <echo level="info" message="Error clean up"/>
+    <refactor srcPackage="org.geotools.metadata.i18n" srcClass="Errors" dstPackage="java.text" dstClass="MessageFormat"/>
+    <refactor srcPackage="org.geotools.renderer.i18n" srcClass="Errors" dstPackage="java.text" dstClass="MessageFormat"/>
+  </target>
+  
+  <target name="_dataStore" description="DataStore API cleanup">
+    <echo level="info"/>
+    <echo level="info" message="Moving org.geotools.data interfaces to org.geotools.api.data"/>
+    <!-- if star import was used for data, it will be required for api.data -->
+    <local name="data"/>
+    <local name="api.data"/>
+    <property name="data">org.geotools.data</property>
+    <property name="simple">org.geotools.data.simple</property>
+    <property name="api.data">org.geotools.api.data</property>
+    <moveFrom srcPackage="${data}"/>
+    <replaceregexp flags="g">
+      <fileset refid="org.geotools.data.files"/>
+      <regexp pattern="import org.geotools.data.\*;"/>
+      <substitution expression="import org.geotools.data.*;${line.separator}import org.geotools.api.data.*;"/>
+    </replaceregexp>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AllQuery"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AttributeReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AttributeWriter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AutoCommitTransaction"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="BatchFeatureEvent"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="CloseableIterator"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="CurrentTransactionLock"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataAccess"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataAccessFactory"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataAccessFinder"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataSourceException"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataStore"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataStoreFactorySpi"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataStoreFinder"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DelegatingFeatureReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DelegatingFeatureWriter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureEvent"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureListener"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureLock"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureLockException"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureLocking"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureSource"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureStore"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureWriter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FIDReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FIDSQuery"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileDataStore"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileDataStoreFactorySpi"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileDataStoreFinder"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileGroupProvider"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileResourceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileServiceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileStoreFactory"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FilteringFileStoreFactory"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Join"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="LockingManager"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Parameter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Query"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="QueryCapabilities"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Repository"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="ResourceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="ServiceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Transaction"/>
+    
+    <moveFrom srcPackage="${simple}"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureLocking"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureReader"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureSource"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureStore"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureWriter"/>
+
+  </target>
+  
+  <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
+    <echo level="info"/>
+    <echo level="info" message="Refactor org.opengis to org.geotools.api"/>
+    <!-- bulk replace * imports, may require more than one * import -->
+    <replace dir="${project.dir}" includes="**/*.java" summary="yes">
+      <replacefilter>
+        <replacetoken>org.opengis.</replacetoken>
+        <replacevalue>org.geotools.api.</replacevalue>
+      </replacefilter>
+    </replace>
+    <echo level="info" message="    META-INF/services"/>
+    <!-- Service INF -->
+    <fileset id="services.files" dir="${project.dir}">
+        <include name="**/META-INF/services/org.opengis.*"/>
+        <exclude name="**/target/*"/>
+    </fileset>
+    <echo level="verbose">    ... ${toString:services.files}</echo>
+    <move todir="${project.dir}" verbose="true">
+      <fileset refid="services.files"/>
+      <regexpmapper from="(.*)/org\.opengis\.(.*)" to="\1/org.geotools.api.\2"/>
+    </move>
+  </target>
+  
+  <target name="update" depends="starting-up,_filterFactory,_styling,_position,_bounds,_envelope2d,_geometry,_errors,_dataStore,_opengis" description="Update project in current directory to remove org.opengis package use">
+    <echo level="warning">UPDATE COMPLETED: ${project.dir}</echo>
+    <echo level="info"/>
+    <echo level="info">At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>
+    <echo level="info">Your project has been refactored to change org.opengis to org.geotools.api</echo>
+    <echo level="info"/>
+    <echo level="info"> You may have unsued imports to clean up, but we believe your project will compile!</echo>
+  </target>
+</project>

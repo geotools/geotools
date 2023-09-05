@@ -28,15 +28,15 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.geotools.xsd.Configuration;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Unit test suite for {@link EmfAppSchemaParser}

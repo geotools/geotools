@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.expression;
 
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.InternalFunction;
+import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.filter.FunctionImpl;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.InternalFunction;
-import org.opengis.filter.expression.VolatileFunction;
 
 /**
  * A base class functions (i.e. anonymous inner classes) that are both {@link VolatileFunction
@@ -49,7 +49,7 @@ public abstract class InternalVolatileFunction extends FunctionImpl
      * given {@code parameters}.
      *
      * @see
-     *     org.opengis.filter.expression.InternalFunction#duplicate(org.opengis.filter.expression.Expression[])
+     *     org.geotools.api.filter.expression.InternalFunction#duplicate(org.geotools.api.filter.expression.Expression[])
      */
     @Override
     public InternalFunction duplicate(Expression... parameters) {

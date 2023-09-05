@@ -18,7 +18,12 @@ package org.geotools.filter.visitor;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
@@ -28,21 +33,6 @@ import org.geotools.filter.function.FilterFunction_geometryType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.geometry.Boundary;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.Geometry;
-import org.opengis.geometry.Precision;
-import org.opengis.geometry.TransfiniteSet;
-import org.opengis.geometry.complex.Complex;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 public class AbstractPostPreProcessFilterSplittingVisitorTests {
     public class TestAccessor implements ClientTransactionAccessor {
@@ -149,191 +139,5 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests {
 
         PropertyIsEqualTo filter = ff.equals(geomTypeExpr, ff.literal("Polygon"));
         return filter;
-    }
-
-    class MockGeometryImpl implements Geometry {
-        @Override
-        public boolean contains(DirectPosition arg0) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public boolean contains(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public TransfiniteSet difference(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public boolean equals(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public Boundary getBoundary() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Geometry getBuffer(double arg0) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public DirectPosition getCentroid() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Complex getClosure() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Geometry getConvexHull() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public int getCoordinateDimension() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        @Override
-        public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public int getDimension(DirectPosition arg0) {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        public double getDistance(Geometry arg0) {
-            return distance(arg0);
-        }
-
-        @Override
-        public double distance(Geometry arg0) {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-
-        @Override
-        public org.opengis.geometry.Envelope getEnvelope() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Set<Complex> getMaximalComplex() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Geometry getMbRegion() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public DirectPosition getRepresentativePoint() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public TransfiniteSet intersection(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public boolean intersects(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public boolean isCycle() {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public boolean isMutable() {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public boolean isSimple() {
-            // TODO Auto-generated method stub
-            return false;
-        }
-
-        @Override
-        public TransfiniteSet symmetricDifference(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Geometry toImmutable() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Geometry transform(CoordinateReferenceSystem arg0) throws TransformException {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public Geometry transform(CoordinateReferenceSystem arg0, MathTransform arg1)
-                throws TransformException {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public TransfiniteSet union(TransfiniteSet arg0) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public MockGeometryImpl clone() throws CloneNotSupportedException {
-            // TODO Auto-generated method stub
-            return (MockGeometryImpl) super.clone();
-        }
-
-        @Override
-        public Precision getPrecision() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public String toString() {
-            return "MOCKGEOM";
-        }
     }
 }

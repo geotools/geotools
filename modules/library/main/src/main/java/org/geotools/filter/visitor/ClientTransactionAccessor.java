@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.visitor;
 
-import org.opengis.filter.Filter;
+import org.geotools.api.filter.Filter;
 
 /**
  * Provides access to certain transaction state for the {@link PostPreProcessFilterSplittingVisitor}

@@ -29,11 +29,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.xml.transform.TransformerException;
 import net.miginfocom.swing.MigLayout;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.UserLayer;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.UserLayer;
 import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
@@ -41,7 +42,6 @@ import org.geotools.util.SuppressFBWarnings;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.geotools.xsd.Encoder;
-import org.opengis.style.Style;
 
 /**
  * StyleConverter example used to demonstrate reading and writing of SLD and SE files.
@@ -294,7 +294,7 @@ public class StyleConverter extends JFrame {
         // styleFactory.createFeatureTypeConstraint(null, Filter.INCLUDE, null);
         layer.setLayerFeatureConstraints(null);
         sld.addStyledLayer(layer);
-        layer.addUserStyle((org.geotools.styling.Style) style);
+        layer.addUserStyle(style);
 
         return sld;
     }

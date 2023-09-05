@@ -1,34 +1,34 @@
 package org.geotools.styling.visitor;
 
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
-import static org.geotools.styling.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.LEGENDONLY;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.MAPONLY;
+import static org.geotools.api.style.FeatureTypeStyle.RenderingSelectionOptions.NORMAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.Symbolizer;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.Rule;
-import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
 
 public class RenderingSelectorStyleVisitorTest {
 
     StyleBuilder sb;
     StyleFactory sf;
-    FilterFactory2 ff;
+    FilterFactory ff;
 
     @Before
     public void setUp() throws Exception {
         sf = CommonFactoryFinder.getStyleFactory(null);
-        ff = CommonFactoryFinder.getFilterFactory2(null);
+        ff = CommonFactoryFinder.getFilterFactory(null);
         sb = new StyleBuilder(sf, ff);
     }
 
@@ -128,13 +128,18 @@ public class RenderingSelectorStyleVisitorTest {
             style.featureTypeStyles()
                     .get(0)
                     .getOptions()
-                    .put(FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
+                    .put(
+                            org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION,
+                            inclusionValue);
 
         Rule rule = sf.createRule();
         Symbolizer symb1 = sf.createLineSymbolizer(sf.getDefaultStroke(), "geometry");
         rule.symbolizers().add(symb1);
         if (inclusionValue != null)
-            rule.getOptions().put(FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
+            rule.getOptions()
+                    .put(
+                            org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION,
+                            inclusionValue);
 
         Rule rule2 = sf.createRule();
         Symbolizer symb2 =
@@ -143,7 +148,10 @@ public class RenderingSelectorStyleVisitorTest {
         Symbolizer symb3 =
                 sf.createPolygonSymbolizer(sf.getDefaultStroke(), sf.getDefaultFill(), "extension");
         if (inclusionValue != null)
-            symb3.getOptions().put(FeatureTypeStyle.VENDOR_OPTION_INCLUSION, inclusionValue);
+            symb3.getOptions()
+                    .put(
+                            org.geotools.api.style.FeatureTypeStyle.VENDOR_OPTION_INCLUSION,
+                            inclusionValue);
         rule2.symbolizers().add(symb3);
 
         FeatureTypeStyle fts = sf.createFeatureTypeStyle(rule);

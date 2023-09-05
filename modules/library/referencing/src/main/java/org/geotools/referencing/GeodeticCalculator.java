@@ -25,20 +25,31 @@ import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.text.Format;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import net.sf.geographiclib.Geodesic;
 import net.sf.geographiclib.GeodesicData;
 import net.sf.geographiclib.GeodesicLine;
 import net.sf.geographiclib.GeodesicMask;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.referencing.crs.CompoundCRS;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystem;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.datum.Datum;
+import org.geotools.api.referencing.datum.Ellipsoid;
+import org.geotools.api.referencing.datum.GeodeticDatum;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.GeneralPosition;
+import org.geotools.geometry.Position2D;
+import org.geotools.geometry.TransformedPosition;
 import org.geotools.measure.Angle;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -48,18 +59,6 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.TableWriter;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.coordinate.Position;
-import org.opengis.referencing.crs.CompoundCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.datum.Datum;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.TransformException;
 import si.uom.NonSI;
 
 /**
@@ -101,7 +100,7 @@ public class GeodeticCalculator {
      * The transform from user coordinates to geodetic coordinates used for computation, or {@code
      * null} if no transformations are required.
      */
-    private final TransformedDirectPosition userToGeodetic;
+    private final TransformedPosition userToGeodetic;
 
     /**
      * The coordinate reference system for all methods working on {@link Position} objects. If
@@ -192,7 +191,7 @@ public class GeodeticCalculator {
     private GeodeticCalculator(final Ellipsoid ellipsoid, final CoordinateReferenceSystem crs) {
         if (ellipsoid == null) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
+                    MessageFormat.format(ErrorKeys.NULL_ARGUMENT_$1, "ellipsoid"));
         }
         this.ellipsoid = ellipsoid;
         semiMajorAxis = ellipsoid.getSemiMajorAxis();
@@ -208,7 +207,7 @@ public class GeodeticCalculator {
              *       fails with a "Bursa-Wolf parameters required" error message, then we probably
              *       have a bug somewhere.
              */
-            userToGeodetic = new TransformedDirectPosition(crs, geographicCRS, null);
+            userToGeodetic = new TransformedPosition(crs, geographicCRS, null);
         } else {
             userToGeodetic = null;
         }
@@ -246,8 +245,7 @@ public class GeodeticCalculator {
                 }
             }
         }
-        throw new IllegalArgumentException(
-                Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM));
+        throw new IllegalArgumentException(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM);
     }
 
     /**
@@ -268,8 +266,9 @@ public class GeodeticCalculator {
      */
     private static void checkLatitude(final double latitude) throws IllegalArgumentException {
         if (!(latitude >= Latitude.MIN_VALUE && latitude <= Latitude.MAX_VALUE)) {
+            final Object arg0 = new Latitude(latitude);
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, new Latitude(latitude)));
+                    MessageFormat.format(ErrorKeys.LATITUDE_OUT_OF_RANGE_$1, arg0));
         }
     }
 
@@ -281,9 +280,9 @@ public class GeodeticCalculator {
      */
     private static void checkLongitude(final double longitude) throws IllegalArgumentException {
         if (!(Math.abs(longitude) <= Double.MAX_VALUE)) {
+            final Object arg1 = new Longitude(longitude);
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", new Longitude(longitude)));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "longitude", arg1));
         }
     }
 
@@ -295,9 +294,9 @@ public class GeodeticCalculator {
      */
     private static void checkAzimuth(final double azimuth) throws IllegalArgumentException {
         if (!(Math.abs(azimuth) <= Double.MAX_VALUE)) {
+            final Object arg1 = new Longitude(azimuth);
             throw new IllegalArgumentException(
-                    Errors.format(
-                            ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", new Longitude(azimuth)));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "azimuth", arg1));
         }
     }
 
@@ -312,7 +311,7 @@ public class GeodeticCalculator {
             throws IllegalArgumentException {
         if (!(Math.abs(distance) <= Double.MAX_VALUE)) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "distance", distance));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "distance", distance));
         }
     }
 
@@ -321,7 +320,7 @@ public class GeodeticCalculator {
      * of {@link CoordinateFormat}.
      */
     private static String format(final Format cf, final double longitude, final double latitude) {
-        return cf.format(new GeneralDirectPosition(longitude, latitude));
+        return cf.format(new GeneralPosition(longitude, latitude));
     }
 
     ///////////////////////////////////////////////////////////////
@@ -424,13 +423,12 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.3
      */
-    public void setStartingPosition(final Position position) throws TransformException {
-        DirectPosition p = position.getDirectPosition();
+    public void setStartingPosition(Position position) throws TransformException {
         if (userToGeodetic != null) {
-            userToGeodetic.transform(p);
-            p = userToGeodetic;
+            userToGeodetic.transform(position);
+            position = userToGeodetic;
         }
-        setStartingGeographicPoint(p.getOrdinate(0), p.getOrdinate(1));
+        setStartingGeographicPoint(position.getOrdinate(0), position.getOrdinate(1));
     }
 
     /**
@@ -454,10 +452,10 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed to user coordinates.
      * @since 2.3
      */
-    public DirectPosition getStartingPosition() throws TransformException {
-        DirectPosition position = userToGeodetic;
+    public Position getStartingPosition() throws TransformException {
+        Position position = userToGeodetic;
         if (position == null) {
-            position = new DirectPosition2D();
+            position = new Position2D();
         }
         position.setOrdinate(0, long1);
         position.setOrdinate(1, lat1);
@@ -515,13 +513,12 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed.
      * @since 2.2
      */
-    public void setDestinationPosition(final Position position) throws TransformException {
-        DirectPosition p = position.getDirectPosition();
+    public void setDestinationPosition(Position position) throws TransformException {
         if (userToGeodetic != null) {
-            userToGeodetic.transform(p);
-            p = userToGeodetic;
+            userToGeodetic.transform(position);
+            position = userToGeodetic;
         }
-        setDestinationGeographicPoint(p.getOrdinate(0), p.getOrdinate(1));
+        setDestinationGeographicPoint(position.getOrdinate(0), position.getOrdinate(1));
     }
 
     /**
@@ -553,13 +550,13 @@ public class GeodeticCalculator {
      * @throws TransformException if the position can't be transformed to user coordinates.
      * @since 2.2
      */
-    public DirectPosition getDestinationPosition() throws TransformException {
+    public Position getDestinationPosition() throws TransformException {
         if (!destinationValid) {
             computeDestinationPoint();
         }
-        DirectPosition position = userToGeodetic;
+        Position position = userToGeodetic;
         if (position == null) {
-            position = new DirectPosition2D();
+            position = new Position2D();
         }
         position.setOrdinate(0, long2);
         position.setOrdinate(1, lat2);
@@ -645,7 +642,7 @@ public class GeodeticCalculator {
      */
     private void computeDestinationPoint() throws IllegalStateException {
         if (!directionValid) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.DIRECTION_NOT_SET));
+            throw new IllegalStateException(ErrorKeys.DIRECTION_NOT_SET);
         }
         GeodesicData g = geod.Direct(lat1, long1, azimuth, distance);
         lat2 = g.lat2;
@@ -679,7 +676,7 @@ public class GeodeticCalculator {
      */
     private void computeDirection() throws IllegalStateException {
         if (!destinationValid) {
-            throw new IllegalStateException(Errors.format(ErrorKeys.DESTINATION_NOT_SET));
+            throw new IllegalStateException(ErrorKeys.DESTINATION_NOT_SET);
         }
         GeodesicData g = geod.Inverse(lat1, long1, lat2, long2);
         azimuth = g.azi1;
@@ -746,7 +743,7 @@ public class GeodeticCalculator {
     public List<Point2D> getGeodeticPath(int numPoints) {
         if (numPoints < 0) {
             throw new IllegalArgumentException(
-                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numPoints", numPoints));
+                    MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "numPoints", numPoints));
         }
 
         List<Point2D> points = new ArrayList<>(numPoints + 2);

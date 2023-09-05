@@ -21,12 +21,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.Random;
 import org.junit.Test;
 
 /**
- * Tests the {@link org.geotools.metadata.math.Line} and {@link org.geotools.metadata.math.Plane}
- * classes.
+ * Tests the {@link org.geotools.metadata.math.Line} classes.
  *
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
@@ -90,49 +88,5 @@ public final class GeometryTest {
                 base.ptLineDist(x, y),
                 test.nearestColinearPoint(new Point2D.Double(x, y)).distance(x, y),
                 EPS);
-    }
-
-    /** Tests {@link org.geotools.metadata.math.Plane#setPlane} methods. */
-    @Test
-    public void testPlaneFit() {
-        final Random rd = new Random(457821698762354L);
-        final Plane plan = new Plane();
-        final double[] P1 = {
-            100 * rd.nextDouble() + 25,
-            100 * rd.nextDouble() + 25,
-            Math.rint(100 * rd.nextDouble() + 40)
-        };
-        final double[] P2 = {
-            100 * rd.nextDouble() + 25,
-            100 * rd.nextDouble() + 25,
-            Math.rint(100 * rd.nextDouble() + 40)
-        };
-        final double[] P3 = {
-            100 * rd.nextDouble() + 25,
-            100 * rd.nextDouble() + 25,
-            Math.rint(100 * rd.nextDouble() + 40)
-        };
-        double[][] points = {P1, P2, P3};
-
-        plan.setPlane(new double[][] {P1, P2, P3});
-
-        final int X = 0, Y = 1, Z = 2;
-        assertEquals("P1", P1[Z], plan.z(P1[X], P1[Y]), EPS);
-        assertEquals("P2", P2[Z], plan.z(P2[X], P2[Y]), EPS);
-        assertEquals("P3", P3[Z], plan.z(P3[X], P3[Y]), EPS);
-
-        final double[] x = new double[4000];
-        final double[] y = new double[4000];
-        final double[] z = new double[4000];
-        for (int i = 0; i < z.length; i++) {
-            x[i] = 40 + 100 * rd.nextDouble();
-            y[i] = 40 + 100 * rd.nextDouble();
-            z[i] = plan.z(x[i], y[i]) + 10 * rd.nextDouble() - 5;
-        }
-        final Plane copy = plan.clone();
-        final double eps = 1E-2; // We do expect some difference, but not much more than that.
-        assertEquals("c", copy.c, plan.c, eps);
-        assertEquals("cx", copy.cx, plan.cx, eps);
-        assertEquals("cy", copy.cy, plan.cy, eps);
     }
 }

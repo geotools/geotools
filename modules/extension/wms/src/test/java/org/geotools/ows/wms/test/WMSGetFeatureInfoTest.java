@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
@@ -26,7 +27,6 @@ import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
-import org.opengis.referencing.FactoryException;
 
 public class WMSGetFeatureInfoTest {
 
@@ -81,7 +81,7 @@ public class WMSGetFeatureInfoTest {
                         834546.5599999999,
                         CRS.decode("EPSG:3006"));
 
-        DirectPosition2D pointInImage = new DirectPosition2D(107, 2);
+        Position2D pointInImage = new Position2D(107, 2);
         Layer layer = new Layer("CV100Coberta_Terrestre");
         layer.setSrs(Sets.newSet("EPSG:3006"));
         layer.setBoundingBoxes(BBOXES);

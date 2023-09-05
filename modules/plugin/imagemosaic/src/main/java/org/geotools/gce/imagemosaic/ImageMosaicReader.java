@@ -43,6 +43,21 @@ import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridEnvelope;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FileGroupProvider.FileGroup;
+import org.geotools.api.data.ResourceInfo;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.metadata.Identifier;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -55,35 +70,20 @@ import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultFileServiceInfo;
-import org.geotools.data.FileGroupProvider.FileGroup;
-import org.geotools.data.ResourceInfo;
-import org.geotools.data.ServiceInfo;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBeans;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalogFactory;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIProviderMosaicFactory;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.Converters;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridEnvelope;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.metadata.Identifier;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Reader responsible for providing access to mosaic of georeferenced images. Citing JAI
@@ -441,9 +441,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         // we might have an imposed bbox
         this.crs = bounds.getCoordinateReferenceSystem();
-        if (envelope == null) this.originalEnvelope = new GeneralEnvelope(bounds);
+        if (envelope == null) this.originalEnvelope = new GeneralBounds(bounds);
         else {
-            this.originalEnvelope = new GeneralEnvelope(envelope);
+            this.originalEnvelope = new GeneralBounds(envelope);
             this.originalEnvelope.setCoordinateReferenceSystem(crs);
         }
 
@@ -545,7 +545,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         this(source, null);
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getFormat() */
     @Override
     public Format getFormat() {
         return new ImageMosaicFormat();
@@ -558,7 +558,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * @see
-     *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[]) @Override
+     *     org.geotools.api.coverage.grid.GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[]) @Override
      */
     @Override
     public GridCoverage2D read(String coverageName, GeneralParameterValue[] params)
@@ -931,12 +931,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope() {
+    public GeneralBounds getOriginalEnvelope() {
         return getOriginalEnvelope(UNSPECIFIED);
     }
 
     @Override
-    public GeneralEnvelope getOriginalEnvelope(String coverageName) {
+    public GeneralBounds getOriginalEnvelope(String coverageName) {
         String name = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(name);
         return manager.spatialDomainManager.coverageEnvelope;

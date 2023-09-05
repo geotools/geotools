@@ -20,10 +20,10 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
+import org.geotools.api.referencing.cs.AxisDirection;
+import org.geotools.api.referencing.cs.CoordinateSystemAxis;
+import org.geotools.api.referencing.cs.SphericalCS;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.cs.SphericalCS;
 
 /**
  * A three-dimensional coordinate system with one distance measured from the origin and two angular

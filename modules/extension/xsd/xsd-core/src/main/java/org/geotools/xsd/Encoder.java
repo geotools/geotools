@@ -59,6 +59,10 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.util.XSDUtil;
+import org.geotools.api.feature.ComplexAttribute;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.xml.XMLUtils;
@@ -74,10 +78,6 @@ import org.geotools.xsd.impl.ElementEncoder;
 import org.geotools.xsd.impl.GetPropertyExecutor;
 import org.geotools.xsd.impl.NamespaceSupportWrapper;
 import org.geotools.xsd.impl.SchemaIndexImpl;
-import org.opengis.feature.ComplexAttribute;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-import org.opengis.feature.type.FeatureType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
@@ -112,7 +112,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * <br>
  *
- * <p>As an example, consider the encoding of a {@link org.opengis.filter.Filter} instance.
+ * <p>As an example, consider the encoding of a {@link org.geotools.api.filter.Filter} instance.
  *
  * <pre>
  *         <code>

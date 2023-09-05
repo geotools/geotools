@@ -6,13 +6,13 @@ import java.util.Iterator;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Encoder;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;
 
 public class NotBindingTest {
@@ -20,7 +20,7 @@ public class NotBindingTest {
     /** Test checking correct encoding for Not operator */
     @Test
     public void testNotOperatorEncoding() throws Exception {
-        FilterFactory2 ff = new FilterFactoryImpl();
+        FilterFactory ff = new FilterFactoryImpl();
         Filter filter = ff.not(ff.isNull(ff.property("prop")));
         Configuration configuration = new org.geotools.filter.v2_0.FESConfiguration();
         Encoder encoder = new Encoder(configuration);

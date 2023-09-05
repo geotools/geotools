@@ -26,6 +26,20 @@ import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import java.math.BigInteger;
 import java.util.Date;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.DWithin;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.spatial.Within;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -38,32 +52,18 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opengis.filter.And;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.DWithin;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.spatial.Within;
 
 public class FilterToMongoTest {
 
     static final String DATE_LITERAL = "2015-07-01T00:00:00.000+01:00";
 
-    FilterFactory2 ff;
+    FilterFactory ff;
     FilterToMongo filterToMongo;
     MongoGeometryBuilder geometryBuilder;
 
     @Before
     public void setUp() throws Exception {
-        ff = CommonFactoryFinder.getFilterFactory2();
+        ff = CommonFactoryFinder.getFilterFactory();
         filterToMongo = new FilterToMongo(new GeoJSONMapper());
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();

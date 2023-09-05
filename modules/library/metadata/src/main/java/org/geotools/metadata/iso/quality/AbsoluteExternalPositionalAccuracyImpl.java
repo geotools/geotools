@@ -19,8 +19,8 @@
  */
 package org.geotools.metadata.iso.quality;
 
-import org.opengis.metadata.quality.AbsoluteExternalPositionalAccuracy;
-import org.opengis.metadata.quality.Result;
+import org.geotools.api.metadata.quality.AbsoluteExternalPositionalAccuracy;
+import org.geotools.api.metadata.quality.Result;
 
 /**
  * Closeness of reported coordinate values to values accepted as or being true.

@@ -22,6 +22,14 @@ import java.util.Map;
 import javax.imageio.ImageWriteParam;
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.coverage.grid.GridCoverageWriter;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
@@ -29,14 +37,6 @@ import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverageReader;
-import org.opengis.coverage.grid.GridCoverageWriter;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.util.ProgressListener;
 
 /**
  * AbstractGridFormat is a convenience class so subclasses only need to populate a Map class and set
@@ -73,15 +73,15 @@ public abstract class AbstractGridFormat implements Format {
     /**
      * {@link ParameterValueGroup} that controls the reading process for a {@link
      * GridCoverageReader} through the {@link
-     * GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])} method.
+     * GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])} method.
      */
     protected ParameterValueGroup readParameters;
 
     /**
      * {@link ParameterValueGroup} that controls the writing process for a {@link
      * GridCoverageWriter} through the {@link
-     * GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
-     * org.opengis.parameter.GeneralParameterValue[])} method.
+     * GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
+     * org.geotools.api.parameter.GeneralParameterValue[])} method.
      */
     protected ParameterValueGroup writeParameters;
 
@@ -107,7 +107,7 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * This {@link GeneralParameterValue} can be provided to the {@link GridCoverageWriter}s through
-     * the {@code GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
+     * the {@code GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
      * GeneralParameterValue[])} method in order to control the writing process in terms of
      * compression, tiling, etc.GridGeometry2D
      */
@@ -237,31 +237,31 @@ public abstract class AbstractGridFormat implements Format {
                     new Boolean[] {Boolean.TRUE, Boolean.FALSE},
                     RESCALE_DEFAULT);
 
-    /** @see org.opengis.coverage.grid.Format#getName() */
+    /** @see org.geotools.api.coverage.grid.Format#getName() */
     @Override
     public String getName() {
         return mInfo.get("name");
     }
 
-    /** @see org.opengis.coverage.grid.Format#getDescription() */
+    /** @see org.geotools.api.coverage.grid.Format#getDescription() */
     @Override
     public String getDescription() {
         return mInfo.get("description");
     }
 
-    /** @see org.opengis.coverage.grid.Format#getVendor() */
+    /** @see org.geotools.api.coverage.grid.Format#getVendor() */
     @Override
     public String getVendor() {
         return mInfo.get("vendor");
     }
 
-    /** @see org.opengis.coverage.grid.Format#getDocURL() */
+    /** @see org.geotools.api.coverage.grid.Format#getDocURL() */
     @Override
     public String getDocURL() {
         return mInfo.get("docURL");
     }
 
-    /** @see org.opengis.coverage.grid.Format#getVersion() */
+    /** @see org.geotools.api.coverage.grid.Format#getVersion() */
     @Override
     public String getVersion() {
         return mInfo.get("version");
@@ -336,7 +336,7 @@ public abstract class AbstractGridFormat implements Format {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.coverage.grid.Format#getReadParameters()
+     * @see org.geotools.api.coverage.grid.Format#getReadParameters()
      */
     @Override
     public ParameterValueGroup getReadParameters() {
@@ -349,7 +349,7 @@ public abstract class AbstractGridFormat implements Format {
     /*
      * (non-Javadoc)
      *
-     * @see org.opengis.coverage.grid.Format#getWriteParameters()
+     * @see org.geotools.api.coverage.grid.Format#getWriteParameters()
      */
     @Override
     public ParameterValueGroup getWriteParameters() {
@@ -370,8 +370,8 @@ public abstract class AbstractGridFormat implements Format {
 
     /**
      * Returns an instance of {@link ImageWriteParam} that can be used to control a subsequent
-     * {@link GridCoverageWriter#write(org.opengis.coverage.grid.GridCoverage,
-     * org.opengis.parameter.GeneralParameterValue[])};
+     * {@link GridCoverageWriter#write(org.geotools.api.coverage.grid.GridCoverage,
+     * org.geotools.api.parameter.GeneralParameterValue[])};
      *
      * <p>Be careful with using the {@link ImageWriteParam} since their usage is still experimental.
      *

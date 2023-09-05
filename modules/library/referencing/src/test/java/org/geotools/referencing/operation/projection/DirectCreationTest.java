@@ -21,26 +21,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.ParameterDescriptorGroup;
+import org.geotools.api.parameter.ParameterValueGroup;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchIdentifierException;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.MathTransformFactory;
+import org.geotools.api.referencing.operation.TransformException;
+import org.geotools.geometry.Position2D;
 import org.geotools.parameter.ParameterWriter;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Tests projection equations as well as the integration with {@link MathTransformFactory}.
  * Projections are tested through creation and testing of {@link MathTransform} objects; no {@link
- * org.opengis.referencing.operation.Projection} are created here.
+ * org.geotools.api.referencing.operation.Projection} are created here.
  *
  * <p>The spherical tests here tests real spheres (tests in {@code "Simple"} test scripts are not
  * exactly spherical).
@@ -86,7 +86,7 @@ public final class DirectCreationTest {
      *     extra dimensions.
      */
     private static void assertPositionEquals(
-            final DirectPosition expected, final DirectPosition actual, final double[] tolerance) {
+            final Position expected, final Position actual, final double[] tolerance) {
         final int dimension = actual.getDimension();
         final int lastToleranceIndex = tolerance.length - 1;
         assertEquals(
@@ -106,8 +106,7 @@ public final class DirectCreationTest {
      * Helper method to test transform from a source to a target point. Coordinate points are (x,y)
      * or (long, lat)
      */
-    private static void doTransform(
-            DirectPosition source, DirectPosition target, MathTransform transform)
+    private static void doTransform(Position source, Position target, MathTransform transform)
             throws TransformException {
         doTransform(source, target, transform, TOL_M);
     }
@@ -117,12 +116,9 @@ public final class DirectCreationTest {
      * or (long, lat)
      */
     private static void doTransform(
-            DirectPosition source,
-            DirectPosition target,
-            MathTransform transform,
-            final double[] tolerance)
+            Position source, Position target, MathTransform transform, final double[] tolerance)
             throws TransformException {
-        DirectPosition calculated = transform.transform(source, null);
+        Position calculated = transform.transform(source, null);
         assertPositionEquals(target, calculated, tolerance);
 
         // The inverse
@@ -161,10 +157,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new DirectPosition2D(-2.5, 51.37),
-                new DirectPosition2D(-278298.73, 5718482.24),
-                transform);
+        doTransform(new Position2D(-2.5, 51.37), new Position2D(-278298.73, 5718482.24), transform);
     }
 
     /** Some tests for the Mercator Projection. */
@@ -187,10 +180,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(3900000.0);
         params.parameter("false_northing").setValue(900000.0);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new DirectPosition2D(120.0, -3.0),
-                new DirectPosition2D(5009726.58, 569150.82),
-                transform);
+        doTransform(new Position2D(120.0, -3.0), new Position2D(5009726.58, 569150.82), transform);
 
         // spherical test (Snyder p. 266)
         params.parameter("semi_major").setValue(1.0);
@@ -200,10 +190,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new DirectPosition2D(-75.0, 35.0),
-                new DirectPosition2D(1.8325957, 0.6528366),
-                transform);
+        doTransform(new Position2D(-75.0, 35.0), new Position2D(1.8325957, 0.6528366), transform);
 
         // spherical test 2 (original units for target were feet)
         params.parameter("semi_major").setValue(6370997.0);
@@ -214,8 +201,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(-123.1, 49.2166666666),
-                new DirectPosition2D(-13688089.02443480, 6304639.84599441),
+                new Position2D(-123.1, 49.2166666666),
+                new Position2D(-13688089.02443480, 6304639.84599441),
                 transform);
 
         // ellipsoidal with latitude of origin not zero, (simone)
@@ -228,8 +215,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(4.999999999999999, 26.996561536844165),
-                new DirectPosition2D(173029.94823812644, 2448819.342941506),
+                new Position2D(4.999999999999999, 26.996561536844165),
+                new Position2D(173029.94823812644, 2448819.342941506),
                 transform);
 
         ///////////////////////////////////////
@@ -247,10 +234,7 @@ public final class DirectCreationTest {
         params.parameter("false_easting").setValue(0.0);
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
-        doTransform(
-                new DirectPosition2D(53.0, 53.0),
-                new DirectPosition2D(165704.29, 5171848.07),
-                transform);
+        doTransform(new Position2D(53.0, 53.0), new Position2D(165704.29, 5171848.07), transform);
 
         // a spherical case (me)
         params = mtFactory.getDefaultParameters("Mercator_2SP");
@@ -262,8 +246,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(-1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(-123.1, 49.2166666666),
-                new DirectPosition2D(2663494.1734, 2152319.9230),
+                new Position2D(-123.1, 49.2166666666),
+                new Position2D(2663494.1734, 2152319.9230),
                 transform);
     }
 
@@ -330,8 +314,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(150000.0);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(-76.943683333, 17.932166666),
-                new DirectPosition2D(255966.58, 142493.51),
+                new Position2D(-76.943683333, 17.932166666),
+                new Position2D(255966.58, 142493.51),
                 transform);
 
         // Spherical (me)
@@ -344,8 +328,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(151.283333333, -33.916666666),
-                new DirectPosition2D(4232963.1816, 2287639.9866),
+                new Position2D(151.283333333, -33.916666666),
+                new Position2D(4232963.1816, 2287639.9866),
                 transform);
 
         ///////////////////////////////////////
@@ -366,9 +350,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(-96.0, 28.5),
-                new DirectPosition2D(903277.7965, 77650.94219),
-                transform);
+                new Position2D(-96.0, 28.5), new Position2D(903277.7965, 77650.94219), transform);
 
         // Spherical (me)
         params.parameter("semi_major").setValue(6370997.0);
@@ -381,8 +363,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(139.733333333, 35.6833333333),
-                new DirectPosition2D(-6789805.6471, 7107623.6859),
+                new Position2D(139.733333333, 35.6833333333),
+                new Position2D(-6789805.6471, 7107623.6859),
                 transform);
 
         // 1SP where SP != lat of origin (me)
@@ -396,8 +378,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(18.45, -33.9166666666),
-                new DirectPosition2D(1803288.3324, 1616657.7846),
+                new Position2D(18.45, -33.9166666666),
+                new Position2D(1803288.3324, 1616657.7846),
                 transform);
 
         ///////////////////////////////////////////////
@@ -418,8 +400,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(5400088.44);
         transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(5.807370277, 50.6795725),
-                new DirectPosition2D(251763.20, 153034.13),
+                new Position2D(5.807370277, 50.6795725),
+                new Position2D(251763.20, 153034.13),
                 transform);
     }
 
@@ -444,8 +426,8 @@ public final class DirectCreationTest {
         params.parameter("scale_factor").setValue(0.9999);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(14.370530947, 50.071153856),
-                new DirectPosition2D(-746742.6075, -1044389.4516),
+                new Position2D(14.370530947, 50.071153856),
+                new Position2D(-746742.6075, -1044389.4516),
                 transform);
     }
 
@@ -473,8 +455,8 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0);
         MathTransform transform = mtFactory.createParameterizedTransform(params);
         doTransform(
-                new DirectPosition2D(-121.33955, 39.1012523), // 121°20'22.38"W 39°6'4.508"N
-                new DirectPosition2D(-2529570, -5341800),
+                new Position2D(-121.33955, 39.1012523), // 121°20'22.38"W 39°6'4.508"N
+                new Position2D(-2529570, -5341800),
                 transform);
 
         //
@@ -490,23 +472,20 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0);
         transform = mtFactory.createParameterizedTransform(params);
         final double[] tolerance = {0.1, 0.1};
+        doTransform(new Position2D(10, -85), new Position2D(94393.99, 535334.89), transform);
         doTransform(
-                new DirectPosition2D(10, -85),
-                new DirectPosition2D(94393.99, 535334.89),
-                transform);
-        doTransform(
-                new DirectPosition2D(-75, -80),
-                new DirectPosition2D(-1052066.625, 281900.375),
+                new Position2D(-75, -80),
+                new Position2D(-1052066.625, 281900.375),
                 transform,
                 tolerance);
         doTransform(
-                new DirectPosition2D(-75, -70),
-                new DirectPosition2D(-2119718.750, 567976.875),
+                new Position2D(-75, -70),
+                new Position2D(-2119718.750, 567976.875),
                 transform,
                 tolerance);
         doTransform(
-                new DirectPosition2D(-75, -60),
-                new DirectPosition2D(-3219560.250, 862678.563),
+                new Position2D(-75, -60),
+                new Position2D(-3219560.250, 862678.563),
                 transform,
                 tolerance);
     }

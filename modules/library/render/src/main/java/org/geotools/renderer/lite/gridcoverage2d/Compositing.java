@@ -27,6 +27,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
+import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -35,7 +36,6 @@ import org.geotools.image.ImageWorker;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.composite.BlendComposite;
 import org.geotools.renderer.composite.BlendComposite.BlendingMode;
-import org.opengis.coverage.grid.GridCoverage;
 
 /**
  * A compositing element used in rendering.

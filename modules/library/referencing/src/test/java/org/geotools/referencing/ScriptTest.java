@@ -18,12 +18,12 @@ package org.geotools.referencing;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.test.TestData;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * Run a test scripts. Scripts include a test suite provided by OpenGIS. Each script contains a list

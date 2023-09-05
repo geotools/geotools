@@ -24,6 +24,8 @@ import java.awt.image.DataBufferFloat;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.stream.IntStream;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.elasticsearch.ElasticLayerConfiguration;
 import org.geotools.data.elasticsearch.ElasticTestSupport;
@@ -34,8 +36,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoHashGridProcessIT extends ElasticTestSupport {
 
@@ -161,7 +161,7 @@ public class GeoHashGridProcessIT extends ElasticTestSupport {
         assertEquals(DefaultGeographicCRS.WGS84, grid.getCoordinateReferenceSystem2D());
         // Locked on precision 2 containing the data (with a bit of padding due to reprojection)
         // At precision 2 cells are 11.25 by 5.625 degrees
-        Envelope envelope = grid.getEnvelope();
+        Bounds envelope = grid.getEnvelope();
         assertEquals(-67.5, envelope.getMinimum(0), 0d);
         assertEquals(-61.875, envelope.getMinimum(1), 0d);
         assertEquals(56.25, envelope.getMaximum(0), 0d);

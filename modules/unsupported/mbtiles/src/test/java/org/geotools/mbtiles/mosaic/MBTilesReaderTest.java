@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -14,7 +15,6 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.parameter.Parameter;
 import org.geotools.util.URLs;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
 
 public class MBTilesReaderTest {
 

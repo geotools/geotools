@@ -17,7 +17,8 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.api.data.FIDReader;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 
 /**
  * A Default FIDReader. Just auto-increments an index. May be sufficient for files, representing

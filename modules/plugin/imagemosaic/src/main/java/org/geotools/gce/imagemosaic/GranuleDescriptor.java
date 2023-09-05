@@ -41,6 +41,7 @@ import java.awt.image.SampleModel;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,6 +67,12 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import org.apache.commons.beanutils.MethodUtils;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform2D;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -74,7 +81,7 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
@@ -83,7 +90,6 @@ import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
 import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
-import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
@@ -91,12 +97,6 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * A granuleDescriptor is a single piece of the mosaic, with its own overviews and everything.
@@ -160,17 +160,17 @@ public class GranuleDescriptor {
 
     OverviewsController overviewsController;
 
-    private GeneralEnvelope granuleEnvelope;
+    private GeneralBounds granuleEnvelope;
     private AbstractGridFormat format;
 
     private boolean nativeBandSelection;
     private Hints hints;
 
-    public GeneralEnvelope getGranuleEnvelope() {
+    public GeneralBounds getGranuleEnvelope() {
         return granuleEnvelope;
     }
 
-    public void setGranuleEnvelope(GeneralEnvelope granuleEnvelope) {
+    public void setGranuleEnvelope(GeneralBounds granuleEnvelope) {
         this.granuleEnvelope = granuleEnvelope;
     }
 
@@ -968,7 +968,7 @@ public class GranuleDescriptor {
         }
         if (rasterGranule == null && exceptionOnNullGranule) {
             throw new IllegalArgumentException(
-                    Errors.format(
+                    MessageFormat.format(
                             ErrorKeys.ILLEGAL_ARGUMENT_$2, "granuleLocation", granuleLocation));
         }
         return rasterGranule;
@@ -1452,7 +1452,7 @@ public class GranuleDescriptor {
                         image, null, granuleURLUpdated, doFiltering, pamDataset, this);
             }
 
-        } catch (org.opengis.referencing.operation.NoninvertibleTransformException e) {
+        } catch (org.geotools.api.referencing.operation.NoninvertibleTransformException e) {
             if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
                 LOGGER.log(
                         Level.WARNING,

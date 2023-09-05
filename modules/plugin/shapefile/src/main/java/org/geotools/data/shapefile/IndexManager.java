@@ -30,8 +30,10 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.CloseableIterator;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.identity.Identifier;
 import org.geotools.data.shapefile.fid.FidIndexer;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileWriter;
@@ -49,8 +51,6 @@ import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
 
 /**
  * Manages the index files on behalf of the the {@link ShapefileDataStore}

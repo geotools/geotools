@@ -21,6 +21,27 @@ import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
 import java.util.List;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.ExcludeFilter;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.Id;
+import org.geotools.api.filter.IncludeFilter;
+import org.geotools.api.filter.Not;
+import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.PropertyIsGreaterThan;
+import org.geotools.api.filter.PropertyIsLessThan;
+import org.geotools.api.filter.PropertyIsLike;
+import org.geotools.api.filter.expression.Add;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.DistanceBufferOperator;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.filter.temporal.Before;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
@@ -30,28 +51,6 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.And;
-import org.opengis.filter.ExcludeFilter;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.IncludeFilter;
-import org.opengis.filter.Not;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsBetween;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.PropertyIsGreaterThan;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Add;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.DistanceBufferOperator;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.filter.temporal.Before;
 
 /**
  * ECQL Test Case.
@@ -420,7 +419,7 @@ public final class ECQLTest {
 
     @Test
     public void testDivideEncode() throws Exception {
-        final FilterFactory2 filterFactory2 = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory filterFactory2 = CommonFactoryFinder.getFilterFactory();
         final Filter javaFilter =
                 filterFactory2.less(
                         filterFactory2.divide(
@@ -433,7 +432,7 @@ public final class ECQLTest {
     @Test
     public void testQuotedComparison() throws Exception {
         Filter filter = ECQL.toFilter("\"a\"=\"b\"");
-        final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         final Filter expected = ff.equal(ff.property("a"), ff.property("b"), false);
         assertEquals(expected, filter);
     }
@@ -445,7 +444,7 @@ public final class ECQLTest {
         String actual = ECQL.toCQL(expr);
         assertEquals("color literals", expected, actual);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Function function =
                 ff.function(

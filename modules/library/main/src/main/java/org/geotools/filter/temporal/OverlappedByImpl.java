@@ -9,10 +9,10 @@
  */
 package org.geotools.filter.temporal;
 
-import org.opengis.filter.FilterVisitor;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.temporal.OverlappedBy;
-import org.opengis.temporal.RelativePosition;
+import org.geotools.api.filter.FilterVisitor;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.temporal.OverlappedBy;
+import org.geotools.api.temporal.RelativePosition;
 
 public class OverlappedByImpl extends BinaryTemporalOperatorImpl implements OverlappedBy {
 

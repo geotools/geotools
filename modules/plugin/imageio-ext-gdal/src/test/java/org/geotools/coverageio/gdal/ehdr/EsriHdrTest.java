@@ -26,6 +26,10 @@ import java.net.URL;
 import java.util.Iterator;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -35,16 +39,12 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
 import org.geotools.coverageio.gdal.ecw.ECWReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * @author Alex Petkov, Missoula Fire Sciences Laboratory
@@ -105,9 +105,9 @@ public final class EsriHdrTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         final double cropFactor = 2.0;
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
-        final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds oldEnvelope = reader.getOriginalEnvelope();
+        final GeneralBounds cropEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getLowerCorner().getOrdinate(0)
                                     + (oldEnvelope.getSpan(0) / cropFactor),
@@ -151,8 +151,8 @@ public final class EsriHdrTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         final double translate0 = oldEnvelope.getSpan(0) + 100;
         final double translate1 = oldEnvelope.getSpan(1) + 100;
-        final GeneralEnvelope wrongEnvelope =
-                new GeneralEnvelope(
+        final GeneralBounds wrongEnvelope =
+                new GeneralBounds(
                         new double[] {
                             oldEnvelope.getLowerCorner().getOrdinate(0) + translate0,
                             oldEnvelope.getLowerCorner().getOrdinate(1) + translate1

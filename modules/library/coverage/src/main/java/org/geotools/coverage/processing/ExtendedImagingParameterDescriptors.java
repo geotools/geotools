@@ -18,11 +18,11 @@ package org.geotools.coverage.processing;
 
 import java.util.Collection;
 import javax.media.jai.RegistryElementDescriptor;
+import org.geotools.api.parameter.ParameterDescriptor;
+import org.geotools.api.referencing.ReferenceIdentifier;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.referencing.NamedIdentifier;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.referencing.ReferenceIdentifier;
 
 /**
  * Extension of the {@link ImagingParameterDescriptors} class used for setting the right operation

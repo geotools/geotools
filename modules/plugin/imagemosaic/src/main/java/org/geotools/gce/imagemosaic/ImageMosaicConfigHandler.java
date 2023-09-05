@@ -44,6 +44,21 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.ReferenceIdentifier;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GranuleStore;
@@ -51,8 +66,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -93,7 +106,7 @@ import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
@@ -103,19 +116,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.Feature;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 /**
  * This class is in responsible for creating and managing the catalog and the configuration of the
@@ -607,7 +607,7 @@ public class ImageMosaicConfigHandler {
             final GridCoverage2DReader inputReader,
             final ImageMosaicReader mosaicReader,
             final CatalogBuilderConfiguration configuration,
-            final GeneralEnvelope envelope,
+            final GeneralBounds envelope,
             final DefaultTransaction transaction,
             final List<PropertiesCollector> propertiesCollectors)
             throws IOException, GranuleHandlingException {
@@ -1418,7 +1418,7 @@ public class ImageMosaicConfigHandler {
         // the builder
         final MosaicBeanBuilder configBuilder = new MosaicBeanBuilder();
 
-        final GeneralEnvelope envelope = coverageReader.getOriginalEnvelope(inputCoverageName);
+        final GeneralBounds envelope = coverageReader.getOriginalEnvelope(inputCoverageName);
         final CoordinateReferenceSystem actualCRS =
                 coverageReader.getCoordinateReferenceSystem(inputCoverageName);
 
@@ -1662,7 +1662,7 @@ public class ImageMosaicConfigHandler {
             double[][] resolutionLevels,
             CoordinateReferenceSystem fromCRS,
             CoordinateReferenceSystem toCRS,
-            GeneralEnvelope sourceEnvelope)
+            GeneralBounds sourceEnvelope)
             throws FactoryException, TransformException {
 
         // prepare a set of points at middle of the envelope and their

@@ -16,7 +16,7 @@
  */
 package org.geotools.temporal.object;
 
-import org.opengis.temporal.TemporalObject;
+import org.geotools.api.temporal.TemporalObject;
 
 /**
  * Base abstract class for temporal object.

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.opengis.feature.Attribute;
+import org.geotools.api.feature.Attribute;
 
 /**
  * @author Russell Petty (GeoScience Victoria)

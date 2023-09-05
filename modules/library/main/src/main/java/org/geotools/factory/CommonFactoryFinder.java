@@ -18,28 +18,27 @@ package org.geotools.factory;
 
 import java.util.Arrays;
 import java.util.Set;
-import org.geotools.data.FileDataStoreFactorySpi;
+import org.geotools.api.data.FileDataStoreFactorySpi;
+import org.geotools.api.feature.FeatureFactory;
+import org.geotools.api.feature.type.FeatureTypeFactory;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.feature.LenientFeatureFactoryImpl;
 import org.geotools.filter.FunctionFactory;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
 
 /**
  * Defines static methods used to access the application's default implementation for some common
  * factories. Those "common" factories comprise the {@linkplain StyleFactory style} and {@linkplain
  * FilterFactory filter} factories. Note that some specialized factories finder like {@linkplain
- * org.geotools.referencing.ReferencingFactoryFinder referencing} and {@linkplain
- * org.geotools.coverage.GeometryFactoryFinder coverage} are defined in specialized classes.
+ * org.geotools.referencing.ReferencingFactoryFinder referencing} are defined in specialized
+ * classes.
  *
  * <p><b>Tip:</b> The {@link BasicFactories} classes provides an other way to access the various
  * factories from a central point.
@@ -257,46 +256,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
         return new LazySet<>(getServiceRegistry().getFactories(FilterFactory.class, null, hints));
     }
 
-    /**
-     * Returns the first implementation of {@link FilterFactory2} matching the specified hints. This
-     * is a convenience method invoking {@link #getFilterFactory} with a hint value set for
-     * requerying a {@link FactoryFilter2} implementation.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return The first filter factory that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FilterFactory2} interface.
-     * @see Hints#FILTER_FACTORY
-     */
-    public static FilterFactory2 getFilterFactory2(Hints hints) throws FactoryRegistryException {
-        hints = mergeSystemHints(hints);
-
-        final Object h = hints.get(Hints.FILTER_FACTORY);
-        if (!(h instanceof Class
-                ? FilterFactory2.class.isAssignableFrom((Class<?>) h)
-                : h instanceof FilterFactory2)) {
-            /*
-             * Add the hint value only if the user didn't provided a suitable hint.
-             * In any case, do not change the user-supplied hints; clone them first.
-             */
-            hints = new Hints(hints);
-            hints.put(Hints.FILTER_FACTORY, FilterFactory2.class);
-        }
-        return (FilterFactory2) getFilterFactory(hints);
-    }
-    /**
-     * Returns the first implementation of {@link FilterFactory2}. This is a convenience method
-     * invoking {@link #getFilterFactory} with a hint value set for requerying a {@link
-     * FactoryFilter2} implementation.
-     *
-     * @return The first filter factory implementation
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FilterFactory2} interface.
-     * @see Hints#FILTER_FACTORY
-     */
-    public static FilterFactory2 getFilterFactory2() throws FactoryRegistryException {
-        return getFilterFactory2(null);
-    }
     /**
      * Scans for factory plug-ins on the application class path. This method is needed because the
      * application class path can theoretically change, or additional plug-ins may become available.

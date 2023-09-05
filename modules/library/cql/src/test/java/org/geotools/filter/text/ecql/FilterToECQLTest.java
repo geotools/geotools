@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.text.ecql;
 
+import org.geotools.api.filter.Filter;
 import org.geotools.filter.text.cql2.FilterToCQLTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.filter.Filter;
 
 /**
  * This is the test class for {@link FilterToECQL}. It extends the {@link FilterToCQLTest} with the

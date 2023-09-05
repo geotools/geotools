@@ -4,13 +4,13 @@ import java.awt.RenderingHints.Key;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.util.InternationalString;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;
 import org.geotools.text.Text;
-import org.opengis.feature.type.Name;
-import org.opengis.util.InternationalString;
 
 public class UnavailableProcessFactory implements ProcessFactory {
     final Name NAME = new NameImpl("test", "unavailable");

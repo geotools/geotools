@@ -32,6 +32,14 @@ import javax.media.jai.Interpolation;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.TestData;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.datum.PixelInCell;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -42,8 +50,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
-import org.geotools.geometry.Envelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
@@ -60,14 +67,6 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.opengis.coverage.grid.Format;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 
 public class GridCoverageReaderHelperTest {
 
@@ -106,7 +105,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         assertEquals(-180, envelope.getMinX(), EPS);
         assertEquals(180, envelope.getMaxX(), EPS);
         assertEquals(-90, envelope.getMinY(), EPS);
@@ -186,7 +185,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling, the geotiff reader gives us all
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         assertEquals(-180, envelope.getMinX(), EPS);
         assertEquals(180, envelope.getMaxX(), EPS);
         assertEquals(-90, envelope.getMinY(), EPS);
@@ -200,12 +199,12 @@ public class GridCoverageReaderHelperTest {
         List<GridCoverage2D> coverages = helper.readCoverages(null, handler);
         // System.out.println(coverages);
         assertEquals(2, coverages.size());
-        Envelope2D firstEnvelope = coverages.get(0).getEnvelope2D();
+        ReferencedEnvelope firstEnvelope = coverages.get(0).getEnvelope2D();
         assertEquals(169.2, firstEnvelope.getMinX(), EPS);
         assertEquals(180, firstEnvelope.getMaxX(), EPS);
         assertEquals(69.3, firstEnvelope.getMinY(), EPS);
         assertEquals(80.1, firstEnvelope.getMaxY(), EPS);
-        Envelope2D secondEnvelope = coverages.get(1).getEnvelope2D();
+        ReferencedEnvelope secondEnvelope = coverages.get(1).getEnvelope2D();
         assertEquals(-180, secondEnvelope.getMinX(), EPS);
         assertEquals(-169.2, secondEnvelope.getMaxX(), EPS);
         assertEquals(69.3, secondEnvelope.getMinY(), EPS);
@@ -227,7 +226,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling, we should get the full requested area
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         // System.out.println(envelope);
         assertTrue(envelope.getMinX() < -100);
         assertTrue(envelope.getMaxX() > 100);
@@ -260,7 +259,7 @@ public class GridCoverageReaderHelperTest {
 
         // read single coverage with no projection handling, we should get the full requested area
         GridCoverage2D coverage = helper.readCoverage(null);
-        Envelope2D envelope = coverage.getEnvelope2D();
+        ReferencedEnvelope envelope = coverage.getEnvelope2D();
         // System.out.println(envelope);
         assertTrue(envelope.getMinX() < -100);
         assertTrue(envelope.getMaxX() > 100);
@@ -316,7 +315,7 @@ public class GridCoverageReaderHelperTest {
                     {
                         this.crs = DefaultGeographicCRS.WGS84;
                         this.originalEnvelope =
-                                new GeneralEnvelope((BoundingBox) coverage.getEnvelope2D());
+                                new GeneralBounds((BoundingBox) coverage.getEnvelope2D());
                         this.originalGridRange = coverage.getGridGeometry().getGridRange();
                     }
 
@@ -375,7 +374,7 @@ public class GridCoverageReaderHelperTest {
             assertEquals(1, coverages.size());
             // check it has been cut
             GridCoverage2D gc = coverages.get(0);
-            Envelope envelope = gc.getEnvelope();
+            Bounds envelope = gc.getEnvelope();
             assertEquals(-90, envelope.getMinimum(0), EPS);
             assertEquals(0, envelope.getMaximum(0), EPS);
             assertEquals(-45, envelope.getMinimum(1), EPS);
@@ -453,7 +452,7 @@ public class GridCoverageReaderHelperTest {
                     helper.readCoverageInEnvelope(mapExtent, null, handler, true);
             assertEquals(1, coverages.size());
             GridCoverage2D coverage = coverages.get(0);
-            Envelope2D envelope = coverage.getEnvelope2D();
+            ReferencedEnvelope envelope = coverage.getEnvelope2D();
             final double EPS = 0.2; // this is the native resolution
             assertEquals(-180.4, envelope.getMinX(), EPS);
             assertEquals(2, envelope.getMaxX(), EPS);

@@ -24,13 +24,13 @@ import java.util.logging.Logger;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
+import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.util.factory.Hints;
-import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * An {@link ImageMosaicElementConsumer} which handles a provided {@link SimpleFeature} by

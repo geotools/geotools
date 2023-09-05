@@ -22,36 +22,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.NamedStyle;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.ColorMap;
-import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ContrastEnhancementImpl;
-import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.Halo;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NamedLayerImpl;
-import org.geotools.styling.NamedStyle;
 import org.geotools.styling.NamedStyleImpl;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.RemoteOWS;
-import org.geotools.styling.ShadedRelief;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Style;
-import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.SelectedChannelTypeImpl;
 import org.geotools.styling.StyledLayerImpl;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.UserLayer;
 import org.geotools.styling.UserLayerImpl;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
@@ -83,8 +86,6 @@ import org.geotools.xml.styling.sldComplexTypes._ImageOutline;
 import org.geotools.xml.styling.sldComplexTypes._LATEST_ON_TOP;
 import org.geotools.xml.styling.sldComplexTypes._LabelPlacement;
 import org.geotools.xml.xLink.XLinkSchema;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -2488,7 +2489,7 @@ public class sldComplexTypes2 {
          */
         @Override
         public Class getInstanceType() {
-            return org.geotools.styling.SelectedChannelType.class;
+            return SelectedChannelType.class;
         }
 
         /**
@@ -2527,8 +2528,7 @@ public class sldComplexTypes2 {
                 ElementValue[] value,
                 Attributes attrs1,
                 Map<String, Object> hints) {
-            org.geotools.styling.SelectedChannelType symbol =
-                    new org.geotools.styling.SelectedChannelTypeImpl();
+            org.geotools.api.style.SelectedChannelType symbol = new SelectedChannelTypeImpl();
 
             for (ElementValue elementValue : value) {
                 if ((elementValue == null) || elementValue.getElement() == null) {
@@ -2540,7 +2540,7 @@ public class sldComplexTypes2 {
                     symbol.setChannelName((String) elementValue.getValue());
 
                 if (elems[CONTRASTENHANCEMENT].getName().equals(e.getName())) {
-                    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+                    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
                     symbol.setContrastEnhancement(
                             new ContrastEnhancementImpl(
                                     ff, (Expression) elementValue.getValue(), null));

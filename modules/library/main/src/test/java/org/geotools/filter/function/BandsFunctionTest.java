@@ -20,23 +20,23 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.image.BufferedImage;
 import org.easymock.EasyMock;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.filter.expression.Function;
 
 public class BandsFunctionTest {
 
     @Test
     public void testRenderedImage() throws Exception {
-        Function bands = CommonFactoryFinder.getFilterFactory2().function("bands");
+        Function bands = CommonFactoryFinder.getFilterFactory().function("bands");
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
         assertEquals(4, (int) bands.evaluate(image, Integer.class));
     }
 
     @Test
     public void testCoverage() throws Exception {
-        Function bands = CommonFactoryFinder.getFilterFactory2().function("bands");
+        Function bands = CommonFactoryFinder.getFilterFactory().function("bands");
         GridCoverage coverage = EasyMock.createNiceMock(GridCoverage.class);
         EasyMock.expect(coverage.getNumSampleDimensions()).andReturn(5);
         EasyMock.replay(coverage);

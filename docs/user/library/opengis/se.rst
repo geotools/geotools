@@ -128,7 +128,7 @@ StyleFactory
 
 Objects for symbology encoding are created using a ``StyleFactory``::
 
-    org.opengis.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    org.geotools.api.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     
     Fill fill = sf.fill(null, ff.literal(Color.BLUE), ff.literal(1.0));

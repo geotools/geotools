@@ -19,14 +19,14 @@ package org.geotools.data.vpf;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.geotools.data.FeatureReader;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.feature.IllegalAttributeException;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.store.ContentState;
 import org.geotools.data.vpf.file.VPFFile;
-import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.Name;
 
 /**
  * @author <a href="mailto:knuterik@onemap.org">Knut-Erik Johnsen</a>, Project OneMap
@@ -53,7 +53,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.FeatureReader#close()
+     * @see org.geotools.api.data.FeatureReader#close()
      */
     @Override
     public synchronized void close() throws IOException {
@@ -61,7 +61,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.FeatureReader#getFeatureType()
+     * @see org.geotools.api.data.FeatureReader#getFeatureType()
      */
     @Override
     public SimpleFeatureType getFeatureType() {
@@ -69,7 +69,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.FeatureReader#hasNext()
+     * @see org.geotools.api.data.FeatureReader#hasNext()
      */
     @Override
     public synchronized boolean hasNext() throws IOException {
@@ -81,7 +81,7 @@ public class VPFFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.data.FeatureReader#next()
+     * @see org.geotools.api.data.FeatureReader#next()
      */
     @Override
     public synchronized SimpleFeature next()

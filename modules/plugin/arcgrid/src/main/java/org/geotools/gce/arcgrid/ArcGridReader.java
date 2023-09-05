@@ -47,6 +47,16 @@ import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.measure.Unit;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
+import org.geotools.api.coverage.ColorInterpretation;
+import org.geotools.api.coverage.grid.Format;
+import org.geotools.api.coverage.grid.GridCoverage;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.parameter.GeneralParameterValue;
+import org.geotools.api.parameter.ParameterValue;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -58,9 +68,8 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.util.CoverageUtilities;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
@@ -68,15 +77,6 @@ import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.io.InStream;
-import org.opengis.coverage.ColorInterpretation;
-import org.opengis.coverage.grid.Format;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.parameter.ParameterValue;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -310,7 +310,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         highestRes = getResolution(originalEnvelope, actualDim, crs);
     }
 
-    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
+    /** @see org.geotools.api.coverage.grid.GridCoverageReader#getFormat() */
     @Override
     public Format getFormat() {
         return new ArcGridFormat();
@@ -330,12 +330,12 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * @see AbstractGridFormat
      * @see ArcGridFormat
      * @see
-     *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
+     *     org.geotools.api.coverage.grid.GridCoverageReader#read(org.geotools.api.parameter.GeneralParameterValue[])
      */
     @Override
     public GridCoverage2D read(GeneralParameterValue[] params)
             throws IllegalArgumentException, IOException {
-        GeneralEnvelope readEnvelope = null;
+        GeneralBounds readEnvelope = null;
         Rectangle requestedDim = null;
         OverviewPolicy overviewPolicy = null;
         if (params != null) {
@@ -344,7 +344,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    readEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
+                    readEnvelope = new GeneralBounds((Bounds) gg.getEnvelope2D());
                     requestedDim = gg.getGridRange2D().getBounds();
                     continue;
                 }
@@ -363,9 +363,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
      * @throws java.io.IOException
      */
     private GridCoverage2D createCoverage(
-            GeneralEnvelope requestedEnvelope,
-            Rectangle requestedDim,
-            OverviewPolicy overviewPolicy)
+            GeneralBounds requestedEnvelope, Rectangle requestedDim, OverviewPolicy overviewPolicy)
             throws IOException {
 
         if (!closeMe) {
@@ -567,7 +565,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         }
 
         originalEnvelope =
-                new GeneralEnvelope(
+                new GeneralBounds(
                         new double[] {xll, yll},
                         new double[] {xll + (hrWidth * cellsizeX), yll + (hrHeight * cellsizeY)});
 

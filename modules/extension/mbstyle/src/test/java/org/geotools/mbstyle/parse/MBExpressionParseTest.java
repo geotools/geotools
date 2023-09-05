@@ -26,28 +26,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.TextSymbolizer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.expression.MBColor;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.expression.MBString;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
-import org.geotools.styling.FeatureTypeStyle;
-import org.geotools.styling.TextSymbolizer;
 import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 
 public class MBExpressionParseTest {
     Map<String, JSONObject> testLayersById = new HashMap<>();
     MBObjectParser parse;
-    FilterFactory2 ff;
+    FilterFactory ff;
     JSONObject mbstyle;
 
     @Before

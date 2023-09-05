@@ -17,11 +17,11 @@
 package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
+import org.geotools.api.feature.Feature;
 import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
-import org.opengis.feature.Feature;
 
 /**
  * GetFeature response for feature's that isn't treated as SimpleFeatureType.

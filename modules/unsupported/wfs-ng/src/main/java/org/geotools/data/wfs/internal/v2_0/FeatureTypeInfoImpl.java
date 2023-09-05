@@ -30,15 +30,15 @@ import net.opengis.ows11.LanguageStringType;
 import net.opengis.ows11.WGS84BoundingBoxType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.OutputFormatListType;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 

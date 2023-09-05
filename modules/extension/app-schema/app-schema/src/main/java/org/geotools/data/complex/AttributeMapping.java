@@ -19,12 +19,12 @@ package org.geotools.data.complex;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.api.feature.type.AttributeType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.expression.Expression;
 import org.geotools.data.complex.config.MultipleValue;
 import org.geotools.data.complex.util.XPathUtil.StepList;
 import org.geotools.util.Utilities;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.expression.Expression;
 
 /**
  * @author Gabriel Roldan (Axios Engineering)

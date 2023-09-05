@@ -31,9 +31,13 @@ import static org.junit.Assert.fail;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -43,10 +47,6 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.junit.Test;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * Tests {@link GridToEnvelopeMapper}. This test appears in the coverage module instead of the
@@ -100,8 +100,8 @@ public final class GridToEnvelopeMapperTest {
         Point2D.Double point = new Point2D.Double();
         GeneralGridEnvelope gridRange =
                 new GeneralGridEnvelope(new int[] {10, 20}, new int[] {110, 220}, false);
-        GeneralEnvelope envelope =
-                new GeneralEnvelope(new double[] {1, 4, 6}, new double[] {11, 44, 66});
+        GeneralBounds envelope =
+                new GeneralBounds(new double[] {1, 4, 6}, new double[] {11, 44, 66});
         mapper.setGridRange(gridRange);
         assertSame(gridRange, mapper.getGridRange());
         try {

@@ -17,19 +17,19 @@
 package org.geotools.map;
 
 import java.io.IOException;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.geometry.Bounds;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.style.Style;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.Style;
-import org.opengis.feature.Feature;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Layer responsible for rendering vector information provided by a FeatureSource.
@@ -222,7 +222,7 @@ public class FeatureLayer extends StyleLayer {
         CoordinateReferenceSystem crs = featureSource.getSchema().getCoordinateReferenceSystem();
         if (crs != null) {
             // returns the envelope based on the CoordinateReferenceSystem
-            Envelope envelope = CRS.getEnvelope(crs);
+            Bounds envelope = CRS.getEnvelope(crs);
             if (envelope != null) {
                 return new ReferencedEnvelope(envelope); // nice!
             } else {

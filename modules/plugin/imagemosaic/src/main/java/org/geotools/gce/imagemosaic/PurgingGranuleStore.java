@@ -32,15 +32,20 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.FileGroupProvider;
+import org.geotools.api.data.FileServiceInfo;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ServiceInfo;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.NilExpression;
+import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
-import org.geotools.data.CloseableIterator;
-import org.geotools.data.FileGroupProvider;
-import org.geotools.data.FileServiceInfo;
-import org.geotools.data.Query;
-import org.geotools.data.ServiceInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.CalcResult;
@@ -52,11 +57,6 @@ import org.geotools.gce.imagemosaic.catalog.GranuleCatalogVisitor;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.NilExpression;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * {@link GranuleStore} that purges a file data/metadata only if no coverage still refers to it (by

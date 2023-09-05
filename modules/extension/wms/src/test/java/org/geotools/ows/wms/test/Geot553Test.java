@@ -18,6 +18,7 @@ package org.geotools.ows.wms.test;
 
 import java.io.IOException;
 import java.net.URL;
+import org.geotools.api.geometry.Bounds;
 import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpClient;
 import org.geotools.http.MockHttpResponse;
@@ -27,7 +28,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.geometry.Envelope;
 
 public class Geot553Test {
 
@@ -53,7 +53,7 @@ public class Geot553Test {
         WebMapServer wms = new WebMapServer(new URL("http://test.org"), client);
         Layer layer = wms.getCapabilities().getLayer().getChildren()[2];
 
-        Envelope env = wms.getEnvelope(layer, CRS.decode("EPSG:3005"));
+        Bounds env = wms.getEnvelope(layer, CRS.decode("EPSG:3005"));
 
         Assert.assertNotNull(env);
     }

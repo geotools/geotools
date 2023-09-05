@@ -19,13 +19,13 @@ package org.geotools.data.solr;
 import static java.lang.Double.parseDouble;
 
 import java.util.Locale;
+import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
-import org.opengis.feature.type.GeometryDescriptor;
 
 /**
  * Strategy interface for interacting with solr spatial types.

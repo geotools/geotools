@@ -20,10 +20,10 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.Feature;
 import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.util.logging.Logging;
-import org.opengis.feature.Feature;
 
 /**
  * Defines the complex feature iterator implementation class. It's responsible for exposing an

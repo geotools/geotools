@@ -21,19 +21,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.geotools.util.DateRange;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
 
 public class TimeRangeVisitorTest {
 
-    static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    static final FilterFactory FF = CommonFactoryFinder.getFilterFactory();
     static final BBOX BBOX = FF.bbox("", 12, 50, 12.001, 50.001, "EPSG:4326");
     private static final String JULY_22_2022 = "2022-07-22T10:05:59.024Z";
     private static final String JULY_23_2022 = "2022-07-23T10:05:59.024Z";

@@ -17,18 +17,18 @@
 
 package org.geotools.referencing.factory;
 
+import org.geotools.api.metadata.citation.Citation;
+import org.geotools.api.referencing.AuthorityFactory;
+import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.factory.Hints;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * {@link AuthorityFactory} for OGC HTTP URI resources. For example, the WGS84 coordinate reference
  * system can be expressed as {@code "http://www.opengis.net/def/crs/EPSG/0/4326"}.
  *
- * <p>Use {@link org.opengis.referencing.ReferencingFactoryFinder} instead of instantiating this
- * class directly.
+ * <p>Use {@link org.geotools.api.referencing.ReferencingFactoryFinder} instead of instantiating
+ * this class directly.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */

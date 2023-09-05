@@ -28,12 +28,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.And;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
 import org.geotools.data.geojson.GeoJSONReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
@@ -46,12 +52,6 @@ import org.geotools.util.Converters;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.spatial.BBOX;
 
 public class STACFeatureSourceTest extends AbstractSTACStoreTest {
 
@@ -60,7 +60,7 @@ public class STACFeatureSourceTest extends AbstractSTACStoreTest {
     private static final String MAJA_100_POST = "{\"collections\":[\"S2_L2A_MAJA\"],\"limit\":100}";
     private static final String APPLICATION_JSON = "application/json";
 
-    private static FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+    private static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
 
     private static String MAJA_SPACE_TIME =
             BASE_URL

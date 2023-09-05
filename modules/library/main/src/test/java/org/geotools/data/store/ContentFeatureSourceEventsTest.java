@@ -21,13 +21,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.BatchFeatureEvent;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.BatchFeatureEvent;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureEvent;
+import org.geotools.api.data.FeatureListener;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureEvent;
-import org.geotools.data.FeatureListener;
-import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -38,10 +42,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
 
 /**
  * Tests events in autocommit and with transactions
@@ -95,7 +95,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         store1.addFeatureListener(listener1);
         store2.addFeatureListener(listener2);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         final SimpleFeature feature = FEATURES.get(0);
         Filter fidFilter = ff.id(feature.getIdentifier());
@@ -162,7 +162,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         store1.addFeatureListener(listener1);
         store2.addFeatureListener(listener2);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         final SimpleFeature feature = FEATURES.get(0);
         Filter fidFilter = ff.id(feature.getIdentifier());
@@ -264,7 +264,7 @@ public class ContentFeatureSourceEventsTest extends AbstractContentTest {
         store1.addFeatureListener(listener1);
         store2.addFeatureListener(listener2);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         final SimpleFeature feature0 = FEATURES.get(0);
         final SimpleFeature feature1 = FEATURES.get(1);

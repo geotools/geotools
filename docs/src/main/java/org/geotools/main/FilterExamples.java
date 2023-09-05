@@ -22,14 +22,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.measure.Unit;
+import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.FeatureVisitor;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.identity.FeatureId;
+import org.geotools.api.geometry.BoundingBox;
+import org.geotools.api.geometry.Position;
+import org.geotools.api.parameter.Parameter;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Position2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -40,21 +55,6 @@ import org.geotools.util.SuppressFBWarnings;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.geometry.BoundingBox;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.parameter.Parameter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
  * This class gathers up the filter examples shown in the sphinx documentation for Filters.
@@ -78,7 +78,7 @@ public class FilterExamples {
      */
     // grabSelectedIds start
     SimpleFeatureCollection grabSelectedIds(Set<String> selection) throws IOException {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Set<FeatureId> fids = new HashSet<>();
         for (String id : selection) {
@@ -108,7 +108,7 @@ public class FilterExamples {
      */
     // grabSelectedNameIgnoreCase start
     SimpleFeatureCollection grabSelectedNameIgnoreCase(String name) throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         Filter filter = ff.equal(ff.property("Name"), ff.literal(name), false);
         return featureSource.getFeatures(filter);
@@ -124,7 +124,7 @@ public class FilterExamples {
      */
     // grabSelectedNames start
     SimpleFeatureCollection grabSelectedNames(Set<String> selectedNames) throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         List<Filter> match = new ArrayList<>();
         for (String name : selectedNames) {
@@ -145,7 +145,7 @@ public class FilterExamples {
     // grabFeaturesInBoundingBox start
     SimpleFeatureCollection grabFeaturesInBoundingBox(double x1, double y1, double x2, double y2)
             throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
 
         // usually "THE_GEOM" for shapefiles
@@ -164,7 +164,7 @@ public class FilterExamples {
     // grabFeaturesInPolygon start
     SimpleFeatureCollection grabFeaturesInPolygon(double x1, double y1, double x2, double y2)
             throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
         CoordinateReferenceSystem worldCRS = DefaultGeographicCRS.WGS84;
 
@@ -192,7 +192,7 @@ public class FilterExamples {
 
     // grabFeaturesOnScreen start
     SimpleFeatureCollection grabFeaturesOnScreen(ReferencedEnvelope screen) throws Exception {
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         FeatureType schema = featureSource.getSchema();
 
         // usually "THE_GEOM" for shapefiles
@@ -243,7 +243,7 @@ public class FilterExamples {
 
         ReferencedEnvelope bbox = worldBBox.transform(targetCRS, true, 10);
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         // Option 1 BBOX
         Filter filter = ff.bbox(ff.property(geometryAttributeName), bbox);
@@ -258,7 +258,7 @@ public class FilterExamples {
 
     // distance start
     SimpleFeatureCollection distance(MapMouseEvent ev) throws Exception {
-        DirectPosition2D worldPosition = ev.getWorldPos();
+        Position2D worldPosition = ev.getWorldPos();
 
         // get the unit of measurement
         SimpleFeatureType schema = featureSource.getSchema();
@@ -269,14 +269,14 @@ public class FilterExamples {
         MathTransform transform =
                 CRS.findMathTransform(worldPosition.getCoordinateReferenceSystem(), crs, true);
 
-        DirectPosition dataPosition = transform.transform(worldPosition, null);
+        Position dataPosition = transform.transform(worldPosition, null);
 
         Point point = JTS.toGeometry(dataPosition);
 
         // threshold distance
         double distance = 10.0d;
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Filter filter =
                 ff.dwithin(ff.property("POLYGON"), ff.literal(point), distance, uom.toString());
 
@@ -292,7 +292,7 @@ public class FilterExamples {
         SimpleFeatureCollection fcResult = null;
         final DefaultFeatureCollection found = new DefaultFeatureCollection();
 
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         SimpleFeature feature = null;
 
         Filter polyCheck = null;
@@ -334,7 +334,7 @@ public class FilterExamples {
 
     private void expressionExamples() {
         Geometry geometry = null;
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         // expressionExamples start
         Expression propertyAccess = ff.property("THE_GEOM");
         Expression literal = ff.literal(geometry);

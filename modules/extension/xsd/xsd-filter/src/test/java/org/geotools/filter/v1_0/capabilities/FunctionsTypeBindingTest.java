@@ -19,9 +19,9 @@ package org.geotools.filter.v1_0.capabilities;
 import static org.junit.Assert.assertEquals;
 
 import javax.xml.namespace.QName;
+import org.geotools.api.filter.capability.Functions;
 import org.geotools.xsd.Binding;
 import org.junit.Test;
-import org.opengis.filter.capability.Functions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -5,6 +5,19 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.PropertyIsEqualTo;
+import org.geotools.api.filter.capability.FunctionName;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.ExpressionVisitor;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.filter.spatial.BBOX;
+import org.geotools.api.filter.spatial.Intersects;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
@@ -20,25 +33,12 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.PropertyIsEqualTo;
-import org.opengis.filter.capability.FunctionName;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.ExpressionVisitor;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.filter.spatial.Intersects;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 @SuppressWarnings("PMD.SimplifiableTestAssertion") // using equals with tolerance for bboxes
 public class ReprojectingFilterVisitorTest {
 
     SimpleFeatureType ft;
-    FilterFactory2 ff;
+    FilterFactory ff;
     ReprojectingFilterVisitor reprojector;
 
     @Before
@@ -51,7 +51,7 @@ public class ReprojectingFilterVisitorTest {
         ft =
                 DataUtilities.createType(
                         "testType", "geom:Point:srid=4326,line:LineString,name:String,id:int");
-        ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+        ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
         reprojector = new ReprojectingFilterVisitor(ff, ft);
     }
 

@@ -16,16 +16,16 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
+import org.geotools.api.util.InternationalString;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.renderer.i18n.ErrorKeys;
-import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
 import org.geotools.renderer.i18n.VocabularyKeys;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.Hints;
-import org.opengis.util.InternationalString;
 
 /**
  * {@link RootNode} implements a {@link BaseCoverageProcessingNode} which act as the rot for a graph
@@ -87,7 +87,7 @@ class RootNode extends BaseCoverageProcessingNode implements CoverageProcessingN
     @Override
     public boolean addSource(CoverageProcessingNode source) {
         throw new UnsupportedOperationException(
-                Errors.format(
+                MessageFormat.format(
                         ErrorKeys.UNSUPPORTED_OPERATION_$1, "addSource(CoverageProcessingNode)"));
     }
 

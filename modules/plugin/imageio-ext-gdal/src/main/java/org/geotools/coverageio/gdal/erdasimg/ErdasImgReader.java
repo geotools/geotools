@@ -19,9 +19,9 @@ package org.geotools.coverageio.gdal.erdasimg;
 import it.geosolutions.imageio.plugins.erdasimg.ErdasImgImageReaderSpi;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverageReader;
+import org.geotools.api.data.DataSourceException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
-import org.geotools.api.data.DataSourceException;
 import org.geotools.util.factory.Hints;
 
 /**

@@ -19,9 +19,9 @@ package org.geotools.data.complex;
 
 import java.io.IOException;
 import java.util.Iterator;
-import org.geotools.api.feature.type.Name;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.type.Name;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.data.complex.util.XPathUtil.StepList;

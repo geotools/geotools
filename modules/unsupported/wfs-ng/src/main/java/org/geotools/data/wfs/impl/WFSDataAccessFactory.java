@@ -27,14 +27,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.geotools.api.data.DataStoreFactorySpi;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.DataAccessFactory;
-import org.geotools.data.DataUtilities;
+import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.Parameter;
+import org.geotools.api.feature.Feature;
+import org.geotools.api.feature.type.FeatureType;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.http.HTTPClient;

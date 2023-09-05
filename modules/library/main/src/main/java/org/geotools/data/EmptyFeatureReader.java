@@ -17,7 +17,6 @@
 package org.geotools.data;
 
 import java.util.NoSuchElementException;
-
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;

@@ -18,12 +18,12 @@ package org.geotools.factory;
 
 import java.util.Arrays;
 import java.util.Set;
+import org.geotools.api.data.FileDataStoreFactorySpi;
 import org.geotools.api.feature.FeatureFactory;
 import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.style.StyleFactory;
-import org.geotools.api.data.FileDataStoreFactorySpi;
 import org.geotools.feature.LenientFeatureFactoryImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.util.LazySet;

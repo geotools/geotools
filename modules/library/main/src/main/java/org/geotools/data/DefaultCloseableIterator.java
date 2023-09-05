@@ -20,7 +20,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import org.geotools.api.data.CloseableIterator;
 import org.geotools.util.logging.Logging;
 

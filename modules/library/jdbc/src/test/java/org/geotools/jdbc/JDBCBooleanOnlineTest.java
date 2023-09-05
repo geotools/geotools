@@ -18,11 +18,11 @@ package org.geotools.jdbc;
 
 import static org.junit.Assert.assertEquals;
 
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.Transaction;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.junit.Test;
 
 public abstract class JDBCBooleanOnlineTest extends JDBCTestSupport {

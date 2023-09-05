@@ -21,9 +21,9 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
+import org.geotools.api.data.Query;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.data.Query;
 import org.geotools.data.postgis.PostGISPSDialect;
 import org.geotools.data.postgis.PostgisGroupByVisitorTestSetup;
 import org.geotools.feature.visitor.Aggregate;

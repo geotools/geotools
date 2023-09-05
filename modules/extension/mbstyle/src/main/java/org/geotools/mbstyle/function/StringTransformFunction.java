@@ -17,10 +17,10 @@
 package org.geotools.mbstyle.function;
 
 import java.util.List;
+import org.geotools.api.data.Parameter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;

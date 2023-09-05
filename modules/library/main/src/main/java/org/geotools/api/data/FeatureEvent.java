@@ -17,7 +17,6 @@
 package org.geotools.api.data;
 
 import java.util.EventObject;
-
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
@@ -146,7 +145,7 @@ public class FeatureEvent extends EventObject {
             this.type = type;
         }
 
-        static Type fromValue(int value) {
+        public static Type fromValue(int value) {
             switch (value) {
                 case FEATURES_ADDED:
                     return ADDED;
@@ -156,6 +155,11 @@ public class FeatureEvent extends EventObject {
                     return REMOVED;
             }
             return CHANGED;
+        }
+
+        /** FeatureEvent static constant: FEATURES_ADDED, FEATURES_CHANGED */
+        public int getType() {
+            return type;
         }
     }
 

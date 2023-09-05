@@ -24,10 +24,10 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.data.DataAccess;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.feature.type.Name;
-import org.geotools.api.data.DataAccess;
 import org.geotools.data.complex.feature.type.Types;
 
 /** @author Fernando Miño, Geosolutions */

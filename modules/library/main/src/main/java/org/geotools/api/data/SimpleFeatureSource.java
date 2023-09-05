@@ -20,8 +20,6 @@ import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.data.FeatureSource;
-import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 
 /** FeatureSource explicitly working with SimpleFeatureCollection. */

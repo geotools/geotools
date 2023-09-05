@@ -21,16 +21,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.geotools.api.data.FeatureReader;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.Name;
-import org.geotools.api.filter.Filter;
 import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.data.SimpleFeatureWriter;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.Name;
+import org.geotools.api.filter.Filter;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -121,10 +120,7 @@ public abstract class AbstractContentTest {
             return -1;
         }
 
-        /**
-         * @see
-         *     org.geotools.data.store.ContentFeatureSource#getReaderInternal(Query)
-         */
+        /** @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(Query) */
         @Override
         protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
                 throws IOException {

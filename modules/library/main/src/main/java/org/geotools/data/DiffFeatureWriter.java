@@ -19,7 +19,6 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FeatureEvent;
 import org.geotools.api.data.FeatureReader;
@@ -121,7 +120,8 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             // mark live as removed
             diff.remove(live.getID());
             fireNotification(
-                    FeatureEvent.Type.REMOVED.type, ReferencedEnvelope.reference(live.getBounds()));
+                    FeatureEvent.Type.REMOVED.getType(),
+                    ReferencedEnvelope.reference(live.getBounds()));
             live = null;
             current = null;
         } else if (current != null) {
@@ -147,7 +147,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             ReferencedEnvelope bounds = new ReferencedEnvelope((CoordinateReferenceSystem) null);
             bounds.include(live.getBounds());
             bounds.include(current.getBounds());
-            fireNotification(FeatureEvent.Type.CHANGED.type, bounds);
+            fireNotification(FeatureEvent.Type.CHANGED.getType(), bounds);
             live = null;
             current = null;
         } else if ((live == null) && (current != null)) {
@@ -166,7 +166,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             }
             diff.add(fid, current);
             fireNotification(
-                    FeatureEvent.Type.ADDED.type,
+                    FeatureEvent.Type.ADDED.getType(),
                     ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {

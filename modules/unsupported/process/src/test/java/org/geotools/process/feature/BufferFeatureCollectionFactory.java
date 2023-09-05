@@ -17,8 +17,8 @@
 package org.geotools.process.feature;
 
 import java.util.Map;
-import org.geotools.api.util.InternationalString;
 import org.geotools.api.data.Parameter;
+import org.geotools.api.util.InternationalString;
 import org.geotools.text.Text;
 
 /**

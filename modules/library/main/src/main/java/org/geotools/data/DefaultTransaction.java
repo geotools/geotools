@@ -16,9 +16,6 @@
  */
 package org.geotools.data;
 
-import org.geotools.api.data.DataSourceException;
-import org.geotools.api.data.Transaction;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +23,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.Transaction;
 
 /**
  * Quick implementation of Transaction api.
@@ -74,8 +73,7 @@ public class DefaultTransaction implements Transaction {
      * @param key Key used to externalize State
      * @param state Externalized State (Momeneto)
      * @throws IllegalArgumentException When Transaction already using key
-     * @see Transaction#putState(java.lang.Object,
-     *     Transaction.State)
+     * @see Transaction#putState(java.lang.Object, Transaction.State)
      */
     @Override
     public void putState(Object key, State state) {

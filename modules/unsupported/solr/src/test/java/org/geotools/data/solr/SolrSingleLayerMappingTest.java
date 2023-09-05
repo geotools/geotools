@@ -19,13 +19,13 @@ package org.geotools.data.solr;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
-import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.api.data.SimpleFeatureSource;
 import org.locationtech.jts.geom.Geometry;
 
 public class SolrSingleLayerMappingTest extends SolrTestSupport {

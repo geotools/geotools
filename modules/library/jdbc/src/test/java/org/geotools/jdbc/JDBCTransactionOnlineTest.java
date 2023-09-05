@@ -19,14 +19,14 @@ package org.geotools.jdbc;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.api.data.FeatureWriter;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Test;

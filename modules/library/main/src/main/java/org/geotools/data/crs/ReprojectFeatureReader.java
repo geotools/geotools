@@ -20,7 +20,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DelegatingFeatureReader;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -32,8 +33,6 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.api.data.DataSourceException;
-import org.geotools.api.data.DelegatingFeatureReader;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;

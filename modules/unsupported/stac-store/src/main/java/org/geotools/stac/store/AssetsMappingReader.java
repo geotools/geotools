@@ -19,11 +19,11 @@ package org.geotools.stac.store;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.geojson.GeoJSONReader;
-import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 
 /**

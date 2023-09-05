@@ -25,7 +25,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.api.data.Query;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;

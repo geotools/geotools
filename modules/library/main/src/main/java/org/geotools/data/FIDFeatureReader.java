@@ -18,7 +18,6 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.api.data.AttributeReader;
 import org.geotools.api.data.FIDReader;
 import org.geotools.api.data.FeatureReader;

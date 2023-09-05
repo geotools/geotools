@@ -18,12 +18,12 @@ package org.geotools.data.oracle;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.api.data.Query;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.DWithin;
-import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;

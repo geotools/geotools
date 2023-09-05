@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureWriter;

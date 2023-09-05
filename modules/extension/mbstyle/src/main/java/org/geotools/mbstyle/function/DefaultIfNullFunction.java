@@ -18,9 +18,9 @@ package org.geotools.mbstyle.function;
 
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.api.data.Parameter;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.data.Parameter;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.text.Text;

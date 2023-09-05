@@ -21,9 +21,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import org.geotools.api.data.DataStore;
-import org.geotools.data.DataUtilities;
 import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.data.SimpleFeatureStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.integration.AbstractIntegrationTest;

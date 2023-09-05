@@ -23,6 +23,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -34,9 +36,7 @@ import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.data.DataUtilities;
-import org.geotools.api.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
-import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

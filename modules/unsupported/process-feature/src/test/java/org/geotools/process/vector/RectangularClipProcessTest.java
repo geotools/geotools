@@ -1,8 +1,8 @@
 package org.geotools.process.vector;
 
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;

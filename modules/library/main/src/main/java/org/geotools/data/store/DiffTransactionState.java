@@ -17,17 +17,16 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
 import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.data.DataSourceException;
 import org.geotools.data.Diff;
-import org.geotools.api.data.FeatureReader;
-import org.geotools.api.data.FeatureWriter;
 import org.geotools.util.factory.Hints;
 
 /** Transaction state responsible for holding an in memory {@link Diff} of any modifications. */

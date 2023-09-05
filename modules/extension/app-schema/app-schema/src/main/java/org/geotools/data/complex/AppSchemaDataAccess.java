@@ -33,8 +33,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.FeatureSource;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.ServiceInfo;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -51,11 +55,6 @@ import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.appschema.jdbc.JoiningJDBCFeatureSource;
-import org.geotools.api.data.DataSourceException;
-import org.geotools.api.data.DataStore;
-import org.geotools.api.data.FeatureSource;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.ServiceInfo;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
 import org.geotools.data.complex.feature.type.Types;
@@ -372,8 +371,9 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     /**
-     * Creates a <code>org.geotools.api.data.Query</code> that operates over the surrogate DataStore, by
-     * unrolling the <code>org.geotools.filter.Filter</code> contained in the passed <code>query
+     * Creates a <code>org.geotools.api.data.Query</code> that operates over the surrogate
+     * DataStore, by unrolling the <code>org.geotools.filter.Filter</code> contained in the passed
+     * <code>query
      * </code>, and replacing the list of required attributes by the ones of the mapped FeatureType.
      */
     public Query unrollQuery(Query query, FeatureTypeMapping mapping) {

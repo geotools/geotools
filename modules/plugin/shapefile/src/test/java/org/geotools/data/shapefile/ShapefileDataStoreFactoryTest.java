@@ -30,13 +30,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.TestData;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.QueryCapabilities;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
-import org.geotools.api.data.DataStore;
-import org.geotools.api.data.QueryCapabilities;
-import org.geotools.api.data.SimpleFeatureSource;
 import org.junit.After;
 import org.junit.Test;
 

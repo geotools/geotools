@@ -13,12 +13,12 @@ package org.geotools.tutorial.csv2;
 
 import com.csvreader.CsvReader;
 import java.io.IOException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
 import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.data.FeatureReader;
-import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;

@@ -19,9 +19,9 @@ package org.geotools.data.solr;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.api.data.Query;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.util.factory.Hints;

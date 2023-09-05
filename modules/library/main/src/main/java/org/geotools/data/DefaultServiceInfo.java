@@ -16,12 +16,11 @@
  */
 package org.geotools.data;
 
-import org.geotools.api.data.ServiceInfo;
-
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.api.data.ServiceInfo;
 
 /**
  * Implementation of DefaultServiceInfo as a java bean.

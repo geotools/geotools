@@ -20,7 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Properties;
-import org.geotools.data.DataStoreFinder;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.junit.Before;
 import org.junit.Test;

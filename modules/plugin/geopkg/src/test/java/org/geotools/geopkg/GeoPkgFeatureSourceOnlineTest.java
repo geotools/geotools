@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsLike;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.junit.Test;

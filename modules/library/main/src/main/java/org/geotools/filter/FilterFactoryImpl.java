@@ -1205,7 +1205,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
             int minOccurs,
             int maxOccurs,
             T defaultValue) {
-        return new org.geotools.data.Parameter<>(
+        return new org.geotools.api.data.Parameter<>(
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
     };
 

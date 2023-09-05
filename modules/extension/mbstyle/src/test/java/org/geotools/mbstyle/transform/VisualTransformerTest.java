@@ -42,7 +42,7 @@ import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.StyledLayer;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;

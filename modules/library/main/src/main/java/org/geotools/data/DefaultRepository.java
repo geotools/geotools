@@ -29,8 +29,15 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.geotools.api.data.DataAccess;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.LockingManager;
+import org.geotools.api.data.Repository;
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 
 /**
@@ -129,7 +136,7 @@ public class DefaultRepository implements Repository {
      * it will still exist when you try to refresh it. Nothing we do can protect client code from
      * this fact, they will need to do with the IOException when (not if) this situation occurs.
      *
-     * @see org.geotools.data.Catalog#lockRefresh(java.lang.String, org.geotools.data.Transaction)
+     * @see org.geotools.data.Catalog#lockRefresh(java.lang.String, Transaction)
      * @param lockID Authorizataion of lock to refresh
      * @param transaction Transaction used to authorize refresh
      * @throws IOException If opperation encounters problems, or lock not found
@@ -166,7 +173,7 @@ public class DefaultRepository implements Repository {
      * Since locks are time sensitive it is impossible to check if a lockExists and then be sure it
      * will still exist when you try to release it.
      *
-     * @see org.geotools.data.Catalog#lockRefresh(java.lang.String, org.geotools.data.Transaction)
+     * @see org.geotools.data.Catalog#lockRefresh(java.lang.String, Transaction)
      * @param lockID Authorizataion of lock to refresh
      * @param transaction Transaction used to authorize refresh
      * @throws IOException If opperation encounters problems
@@ -201,7 +208,7 @@ public class DefaultRepository implements Repository {
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.Catalog#registerDataStore(org.geotools.data.DataStore)
+     * @see org.geotools.data.Catalog#registerDataStore(DataStore)
      */
     public void register(String name, DataAccess<?, ?> dataStore) throws IOException {
         register(new NameImpl(name), dataStore);

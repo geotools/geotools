@@ -30,7 +30,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.GeometryAttribute;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Id;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.util.ComplexFeatureConstants;
 import org.geotools.feature.FeatureCollection;

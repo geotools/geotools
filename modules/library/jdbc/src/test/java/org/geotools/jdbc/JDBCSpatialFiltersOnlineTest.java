@@ -34,7 +34,7 @@ import org.geotools.api.filter.spatial.Equals;
 import org.geotools.api.filter.spatial.Intersects;
 import org.geotools.api.filter.spatial.Touches;
 import org.geotools.api.filter.spatial.Within;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;

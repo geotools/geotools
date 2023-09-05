@@ -23,9 +23,10 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.FeatureReader;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.XMLHandlerHints;
 import org.xml.sax.SAXException;
@@ -169,7 +170,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     protected SimpleFeatureType ft = null;
 
     private volatile Date lastUpdate;
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public SimpleFeatureType getFeatureType() {
         if (ft != null) return ft;
@@ -192,7 +193,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         return ft;
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     @Override
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (exception != null) {
@@ -215,7 +216,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         return f;
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     public SimpleFeature peek() throws IOException, NoSuchElementException {
         if (exception != null) {
             state = STOP;
@@ -228,7 +229,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         return f;
     }
 
-    /** @see org.geotools.data.FeatureReader#hasNext() */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() throws IOException {
         if (exception instanceof StopException) {
@@ -296,7 +297,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         return true;
     }
 
-    /** @see org.geotools.data.FeatureReader#close() */
+    /** @see FeatureReader#close() */
     @Override
     public void close() {
         state = STOP; // note for the sax parser

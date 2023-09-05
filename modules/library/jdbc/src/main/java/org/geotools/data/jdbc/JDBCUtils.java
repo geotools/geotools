@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Transaction;
 
 /**
  * Utility class helping developers to safely clean up after connections.

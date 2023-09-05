@@ -26,7 +26,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Or;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.appschema.util.IndexQueryUtils;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.complex.filter.IndexCombinedFilterTransformerVisitor;
 import org.geotools.data.complex.filter.IndexedFilterDetectorVisitor;
 import org.geotools.data.complex.filter.SchemaIndexedFilterDetectorVisitor;

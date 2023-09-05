@@ -18,7 +18,7 @@ package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;

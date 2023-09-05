@@ -38,7 +38,7 @@ import org.geotools.api.feature.type.Schema;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.util.InternationalString;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.BasicFeatureTypes;

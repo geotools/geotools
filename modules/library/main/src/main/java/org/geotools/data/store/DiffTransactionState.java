@@ -17,16 +17,17 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
+
+import org.geotools.api.data.Transaction;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
 import org.geotools.data.Diff;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.FeatureWriter;
 import org.geotools.util.factory.Hints;
 
 /** Transaction state responsible for holding an in memory {@link Diff} of any modifications. */
@@ -104,7 +105,7 @@ public class DiffTransactionState implements Transaction.State {
      * @param diff differences to apply to FeatureWriter
      * @throws IOException If the entire diff cannot be writen out
      * @t
-     * @see org.geotools.data.Transaction.State#commit()
+     * @see Transaction.State#commit()
      */
     public synchronized void commit() throws IOException {
         if (diff.isEmpty()) {
@@ -208,7 +209,7 @@ public class DiffTransactionState implements Transaction.State {
     }
 
     @Override
-    /** @see org.geotools.data.Transaction.State#rollback() */
+    /** @see Transaction.State#rollback() */
     public synchronized void rollback() throws IOException {
         diff.clear(); // rollback differences
         state.fireBatchFeatureEvent(false);
@@ -216,7 +217,7 @@ public class DiffTransactionState implements Transaction.State {
 
     @Override
 
-    /** @see org.geotools.data.Transaction.State#addAuthorization(java.lang.String) */
+    /** @see Transaction.State#addAuthorization(java.lang.String) */
     public synchronized void addAuthorization(String AuthID) throws IOException {
         // not required for TransactionStateDiff
     }

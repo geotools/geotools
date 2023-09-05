@@ -15,7 +15,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.api.data.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

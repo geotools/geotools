@@ -24,7 +24,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.swing.wizard.JWizard.Controller;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;

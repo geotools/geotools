@@ -25,7 +25,7 @@ import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;

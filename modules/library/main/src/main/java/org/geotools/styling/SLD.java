@@ -62,7 +62,7 @@ import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.UserLayer;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Filters;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;

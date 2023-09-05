@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.util.factory.Hints;
 

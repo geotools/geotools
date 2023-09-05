@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.jdbc.JDBCGroupByVisitorOnlineTest;
 import org.junit.Test;

@@ -16,6 +16,10 @@
  */
 package org.geotools.data;
 
+import org.geotools.api.data.CloseableIterator;
+import org.geotools.api.data.FileServiceInfo;
+import org.geotools.api.data.Query;
+
 import java.util.List;
 
 /**

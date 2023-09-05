@@ -19,7 +19,7 @@ package org.geotools.data.jdbc.datasource;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.api.data.DataAccessFactory.Param;
 
 public abstract class AbstractDataSourceFactorySpi implements DataSourceFactorySpi {
 

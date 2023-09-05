@@ -32,8 +32,8 @@ import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.RasterLayout;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.RangeType;
-import org.geotools.data.Parameter;
-import org.geotools.data.ResourceInfo;
+import org.geotools.api.data.Parameter;
+import org.geotools.api.data.ResourceInfo;
 
 /**
  * Default implementation of {@link CoverageSource}.

@@ -29,7 +29,7 @@ import org.geotools.api.feature.type.FeatureTypeFactory;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.data.complex.feature.type.Types;
 import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPath;

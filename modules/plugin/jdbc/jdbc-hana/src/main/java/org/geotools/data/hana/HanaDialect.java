@@ -41,7 +41,7 @@ import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.crs.SingleCRS;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.hana.wkb.HanaWKBParser;
 import org.geotools.data.hana.wkb.HanaWKBParserException;
 import org.geotools.data.hana.wkb.HanaWKBWriter;

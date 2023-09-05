@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.Node;
 import org.elasticsearch.client.RestClient;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 import org.junit.Test;
 
 public class ElasticDataStoreFinderIT extends ElasticTestSupport {

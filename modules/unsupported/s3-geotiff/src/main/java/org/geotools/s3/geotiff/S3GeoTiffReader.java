@@ -16,7 +16,7 @@
  */
 package org.geotools.s3.geotiff;
 
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.s3.S3ImageInputStreamImpl;
 import org.geotools.s3.S3ImageInputStreamImplSpi;

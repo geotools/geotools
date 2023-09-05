@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Map;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.util.KVP;
 

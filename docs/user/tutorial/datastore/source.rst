@@ -306,11 +306,11 @@ information and the ability to create new physical storage.
 
    To "register" our ``CSVDataStoreFactory`` please create the following in `src/main/resources/`:
 
-   *  ``META-INF/services/org.geotools.data.DataStoreFactorySpi``
+   *  ``META-INF/services/org.geotools.api.data.DataStoreFactorySpi``
 
    This file requires the file name of the factory that implements the ``DataStoreSpi`` interface.
 
-   Fill in the following content for your ``org.geotools.data.DataStoreFactorySpi`` file::
+   Fill in the following content for your ``org.geotools.api.data.DataStoreFactorySpi`` file::
     
        org.geotools.tutorial.csv.CSVDataStoreFactory
    

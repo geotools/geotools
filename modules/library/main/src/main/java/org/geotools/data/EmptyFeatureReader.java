@@ -17,6 +17,8 @@
 package org.geotools.data;
 
 import java.util.NoSuchElementException;
+
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
 
@@ -37,7 +39,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
         this.featureType = featureType;
     }
 
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public T getFeatureType() {
         return featureType;
@@ -47,7 +49,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
      * Throws NoSuchElementException as this is an Empty FeatureReader.
      *
      * @return Does not return
-     * @see org.geotools.data.FeatureReader#next()
+     * @see FeatureReader#next()
      */
     @Override
     public F next() throws NoSuchElementException {
@@ -58,7 +60,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
      * There is no next Feature.
      *
      * @return <code>false</code>
-     * @see org.geotools.data.FeatureReader#hasNext()
+     * @see FeatureReader#hasNext()
      */
     @Override
     public boolean hasNext() {
@@ -68,7 +70,7 @@ public class EmptyFeatureReader<T extends FeatureType, F extends Feature>
     /**
      * Cleans up after Empty FeatureReader.
      *
-     * @see org.geotools.data.FeatureReader#close()
+     * @see FeatureReader#close()
      */
     @Override
     public void close() {

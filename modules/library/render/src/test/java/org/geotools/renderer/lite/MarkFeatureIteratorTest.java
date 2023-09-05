@@ -23,9 +23,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.data.util.DefaultProgressListener;
 import org.geotools.renderer.lite.MarkFeatureIterator.DiskMarkFeatureIterator;
 import org.geotools.renderer.lite.MarkFeatureIterator.MemoryMarkFeatureIterator;

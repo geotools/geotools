@@ -22,8 +22,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.data.FeatureWriter;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.Transaction;
 import org.junit.Test;
 
 /**

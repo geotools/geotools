@@ -18,7 +18,7 @@ package org.geotools.data.shapefile;
 
 import java.io.IOException;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.CloseableIterator;
+import org.geotools.api.data.CloseableIterator;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader.Row;
 import org.geotools.data.shapefile.dbf.IndexedDbaseFileReader;

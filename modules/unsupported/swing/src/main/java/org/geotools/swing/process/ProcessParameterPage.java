@@ -27,7 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.process.ProcessFactory;
 import org.geotools.swing.wizard.JDoubleField;
 import org.geotools.swing.wizard.JField;

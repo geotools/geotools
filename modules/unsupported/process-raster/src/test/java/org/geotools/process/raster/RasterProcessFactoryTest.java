@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Processors;
 import org.geotools.process.factory.DescribeProcess;

@@ -22,7 +22,7 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.UserLayer;
-import org.geotools.data.DataStore;
+import org.geotools.api.data.DataStore;
 
 public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 

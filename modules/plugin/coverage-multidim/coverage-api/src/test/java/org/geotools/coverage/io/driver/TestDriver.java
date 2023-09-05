@@ -37,8 +37,8 @@ import org.geotools.coverage.io.TestCoverageSourceDescriptor;
 import org.geotools.coverage.io.impl.DefaultCoverageSource;
 import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.Parameter;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
 

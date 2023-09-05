@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataStoreFactorySpi" project="gt-api" 
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataStoreFactorySpi" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/DataStoreFactorySpi.java" binary="false">    
     <position x="306" y="299" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -8,7 +8,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataStoreFinder" project="gt-main" 
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataStoreFinder" project="gt-main"
     file="/gt-main/src/main/java/org/geotools/data/DataStoreFinder.java" binary="false">    
     <position x="702" y="300" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -16,7 +16,7 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccessFactory" project="gt-api" 
+  <interface id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataAccessFactory" project="gt-api"
     file="/gt-api/src/main/java/org/geotools/data/DataAccessFactory.java" binary="false">    
     <position x="309" y="172" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
@@ -24,7 +24,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.DataAccessFinder" project="gt-main" 
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.geotools.api.data.DataAccessFinder" project="gt-main"
     file="/gt-main/src/main/java/org/geotools/data/DataAccessFinder.java" binary="false">    
     <position x="701" y="168" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      

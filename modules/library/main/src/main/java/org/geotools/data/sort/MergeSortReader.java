@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.api.data.SimpleFeatureReader;
 
 /**
  * Reads from a list of {@link FeatureBlockReader} backed by a {@link RandomAccessFile} and performs

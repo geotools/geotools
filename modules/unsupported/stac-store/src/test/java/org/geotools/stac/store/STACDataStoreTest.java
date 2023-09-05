@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;

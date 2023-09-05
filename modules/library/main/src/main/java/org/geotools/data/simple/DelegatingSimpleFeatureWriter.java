@@ -16,9 +16,10 @@
  */
 package org.geotools.data.simple;
 
+import org.geotools.api.data.SimpleFeatureWriter;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.DelegatingFeatureWriter;
+import org.geotools.api.data.DelegatingFeatureWriter;
 
 public interface DelegatingSimpleFeatureWriter
         extends DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature>, SimpleFeatureWriter {

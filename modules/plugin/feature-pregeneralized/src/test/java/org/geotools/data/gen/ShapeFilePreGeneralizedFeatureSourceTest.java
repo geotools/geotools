@@ -17,7 +17,7 @@
 
 package org.geotools.data.gen;
 
-import org.geotools.data.Repository;
+import org.geotools.api.data.Repository;
 import org.junit.Test;
 
 public class ShapeFilePreGeneralizedFeatureSourceTest

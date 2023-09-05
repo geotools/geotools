@@ -17,7 +17,7 @@
 
 package org.geotools.grid;
 
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.hexagon.HexagonOrientation;
 import org.geotools.grid.hexagon.Hexagons;

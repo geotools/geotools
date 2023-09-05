@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -30,9 +32,8 @@ import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.OperationNotFoundException;
 import org.geotools.api.referencing.operation.TransformException;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.DelegatingFeatureReader;
-import org.geotools.data.FeatureReader;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.DelegatingFeatureReader;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -172,7 +173,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#getFeatureType()
+     * @see FeatureReader#getFeatureType()
      */
     @Override
     public SimpleFeatureType getFeatureType() {
@@ -188,7 +189,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#next()
+     * @see FeatureReader#next()
      */
     @Override
     public SimpleFeature next()
@@ -234,7 +235,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#hasNext()
+     * @see FeatureReader#hasNext()
      */
     @Override
     public boolean hasNext() throws IOException {
@@ -250,7 +251,7 @@ public class ReprojectFeatureReader
      *
      * <p>Description ...
      *
-     * @see org.geotools.data.FeatureReader#close()
+     * @see FeatureReader#close()
      */
     @Override
     public void close() throws IOException {

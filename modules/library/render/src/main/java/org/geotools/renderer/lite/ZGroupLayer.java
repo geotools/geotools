@@ -40,7 +40,7 @@ import org.geotools.api.style.Fill;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyleFactory;
 import org.geotools.api.util.ProgressListener;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.data.util.DefaultProgressListener;
 import org.geotools.factory.CommonFactoryFinder;

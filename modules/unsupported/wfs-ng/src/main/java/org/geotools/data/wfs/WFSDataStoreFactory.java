@@ -22,9 +22,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.DataStoreFinder;
+
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.data.wfs.impl.WFSDataAccessFactory;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
@@ -75,7 +76,7 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
      * GetCapabilities request to be generated from a base URL build the URL with the {@link
      * #createGetCapabilitiesRequest} first.
      *
-     * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
+     * @see DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     @Override
     public WFSDataStore createDataStore(final Map<String, ?> params) throws IOException {

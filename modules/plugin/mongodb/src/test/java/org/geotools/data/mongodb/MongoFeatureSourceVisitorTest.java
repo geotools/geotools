@@ -25,7 +25,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.mongodb.geojson.GeoJSONMongoTestSetup;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;

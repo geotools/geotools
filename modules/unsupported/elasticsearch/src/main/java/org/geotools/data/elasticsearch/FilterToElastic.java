@@ -96,7 +96,7 @@ import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.temporal.Period;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.elasticsearch.date.DateFormat;
 import org.geotools.data.elasticsearch.date.ElasticsearchDateConverter;
 import org.geotools.data.geojson.GeoJSONWriter;

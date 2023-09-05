@@ -13,7 +13,7 @@ import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.capability.FunctionName;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;

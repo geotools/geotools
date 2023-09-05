@@ -22,14 +22,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+
+import org.geotools.api.data.DataStore;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
-import org.geotools.data.DataSourceException;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
+import org.geotools.api.data.DataSourceException;
+import org.geotools.api.data.FeatureReader;
+import org.geotools.api.data.Query;
+import org.geotools.api.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
@@ -320,7 +322,7 @@ public class MemoryDataStore extends ContentDataStore {
      *
      * @param featureType SimpleFeatureType to be added
      * @throws IOException If featureType already exists
-     * @see org.geotools.data.DataStore#createSchema(org.geotools.feature.SimpleFeatureType)
+     * @see DataStore#createSchema(org.geotools.feature.SimpleFeatureType)
      */
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {

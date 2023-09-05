@@ -18,9 +18,9 @@ package org.geotools.vectormosaic;
 
 import java.io.IOException;
 import java.util.Map;
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.Repository;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.Repository;
 import org.geotools.util.KVP;
 
 /** Factory for {@link VectorMosaicStore} instances. */

@@ -21,9 +21,9 @@ import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.DataAccessFactory.Param;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.FileDataStoreFinder;
+import org.geotools.api.data.DataAccessFactory.Param;
+import org.geotools.api.data.DataStoreFactorySpi;
+import org.geotools.api.data.FileDataStoreFinder;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.URLs;
 

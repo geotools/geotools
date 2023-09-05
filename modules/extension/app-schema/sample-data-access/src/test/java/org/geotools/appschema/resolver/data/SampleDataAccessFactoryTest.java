@@ -17,10 +17,10 @@
 
 package org.geotools.appschema.resolver.data;
 
+import org.geotools.api.data.DataAccessFinder;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.type.FeatureType;
-import org.geotools.data.DataAccess;
-import org.geotools.data.DataAccessFinder;
+import org.geotools.api.data.DataAccess;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ import org.junit.Test;
 public class SampleDataAccessFactoryTest {
 
     /**
-     * Test that {@link org.geotools.data.DataAccessFinder} can find {@link
+     * Test that {@link DataAccessFinder} can find {@link
      * org.geotools.appschema.resolver.data.SampleDataAccessFactory} and use it to create a {@link
      * org.geotools.appschema.resolver.data.SampleDataAccess}.
      */

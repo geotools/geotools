@@ -24,7 +24,7 @@ import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gce.imagemosaic.RasterManager;
 import org.geotools.geometry.jts.ReferencedEnvelope;

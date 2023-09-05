@@ -35,7 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import net.opengis.wfs.WFSCapabilitiesType;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.DataSourceException;
+import org.geotools.api.data.DataSourceException;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;

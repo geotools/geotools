@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.api.data.SimpleFeatureReader;
 
 public class MongoFeatureReader implements SimpleFeatureReader {
 

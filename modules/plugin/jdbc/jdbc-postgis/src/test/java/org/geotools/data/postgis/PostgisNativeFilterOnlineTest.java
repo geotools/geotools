@@ -28,7 +28,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.NativeFilter;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.util.FeatureStreams;

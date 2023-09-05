@@ -41,7 +41,7 @@ import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.Id;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.data.FeatureSource;
+import org.geotools.api.data.FeatureSource;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.data.wfs.WFSTestData.TestDataType;

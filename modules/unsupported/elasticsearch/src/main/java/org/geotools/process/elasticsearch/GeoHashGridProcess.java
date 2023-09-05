@@ -25,7 +25,7 @@ import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.util.ProgressListener;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.elasticsearch.GeohashUtil;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;

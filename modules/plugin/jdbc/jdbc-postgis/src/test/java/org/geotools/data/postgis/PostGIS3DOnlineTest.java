@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.function.Predicate;
 import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureIterator;

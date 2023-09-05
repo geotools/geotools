@@ -27,7 +27,7 @@ import org.geotools.api.feature.type.AttributeType;
 import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.data.transform.Definition;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.text.cql2.CQLException;

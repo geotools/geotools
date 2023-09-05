@@ -50,7 +50,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.util.FeatureUtilities;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.catalog.sqlserver.SQLServerDatastoreWrapper;
 import org.geotools.geometry.GeneralBounds;

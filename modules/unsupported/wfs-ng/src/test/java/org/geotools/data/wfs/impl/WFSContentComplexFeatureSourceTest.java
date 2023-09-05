@@ -23,7 +23,7 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.wfs.TestHttpClient;
 import org.geotools.data.wfs.TestWFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest;

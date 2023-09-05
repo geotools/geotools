@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.DataAccessFactory;
+import org.geotools.api.data.DataAccessFactory;
 import org.junit.Test;
 
 public class OracleOCIDataSourceOnlineTest {

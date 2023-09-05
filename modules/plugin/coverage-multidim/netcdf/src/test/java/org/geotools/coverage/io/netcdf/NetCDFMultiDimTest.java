@@ -43,7 +43,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.Position2D;
 import org.geotools.imageio.netcdf.NetCDFImageReader;

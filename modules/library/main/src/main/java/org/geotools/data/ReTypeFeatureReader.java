@@ -18,6 +18,9 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+
+import org.geotools.api.data.DelegatingFeatureReader;
+import org.geotools.api.data.FeatureReader;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -153,13 +156,13 @@ public class ReTypeFeatureReader
         return types;
     }
 
-    /** @see org.geotools.data.FeatureReader#getFeatureType() */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
-    /** @see org.geotools.data.FeatureReader#next() */
+    /** @see FeatureReader#next() */
     @Override
     public SimpleFeature next()
             throws IOException, IllegalAttributeException, NoSuchElementException {
@@ -185,13 +188,13 @@ public class ReTypeFeatureReader
         return feature;
     }
 
-    /** @see org.geotools.data.FeatureReader#hasNext() */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() throws IOException {
         return reader.hasNext();
     }
 
-    /** @see org.geotools.data.FeatureReader#close() */
+    /** @see FeatureReader#close() */
     @Override
     public void close() throws IOException {
         if (reader != null) {

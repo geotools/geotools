@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.junit.Test;
 

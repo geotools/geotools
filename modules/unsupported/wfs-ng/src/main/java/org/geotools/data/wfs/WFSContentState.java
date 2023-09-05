@@ -16,7 +16,7 @@
  */
 package org.geotools.data.wfs;
 
-import org.geotools.data.Transaction;
+import org.geotools.api.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentState;
 

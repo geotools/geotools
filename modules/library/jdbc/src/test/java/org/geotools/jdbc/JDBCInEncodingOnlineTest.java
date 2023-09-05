@@ -28,7 +28,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.junit.Test;
 
 public abstract class JDBCInEncodingOnlineTest extends JDBCTestSupport {

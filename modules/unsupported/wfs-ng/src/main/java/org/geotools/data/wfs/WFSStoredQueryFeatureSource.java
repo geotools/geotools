@@ -19,7 +19,7 @@ package org.geotools.data.wfs;
 
 import java.io.IOException;
 import net.opengis.wfs20.StoredQueryDescriptionType;
-import org.geotools.data.Query;
+import org.geotools.api.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;

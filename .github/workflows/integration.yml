@@ -48,11 +48,10 @@ jobs:
         git clone https://github.com/geoserver/geoserver.git geoserver
         echo "Checking out GeoFence"
         mkdir geofence
-        # Using the Java 11 build branch, will update when merged
-        git clone -b java11 https://github.com/aaime/geofence.git geofence
+        git clone https://github.com/geoserver/geofence.git geofence
         echo "Checking out mapfish-print-v2"
         mkdir mapfish-print-v2
-        git clone -b remove-opengis https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
+        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
         echo "Checking out mapfish-print-v3"
         mkdir mapfish-print-v3
         git clone -b opengis-migration https://github.com/mapfish/mapfish-print.git mapfish-print-v3
@@ -102,11 +101,11 @@ jobs:
         mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geofence/src/pom.xml install -nsu -T2
     - name: Build GeoServer with tests
       run: |
-        echo "Building GeoServer without printing (as mapfish-print-v2 not available)"
+        echo "Building GeoServer"
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
         export MAVEN_OPTS="-Xmx512m $TEST_OPTS"
         cd ~
-        sed -i "s/<module>printing<\/module>/<\!--module>printing<\/module-->/g" geoserver/src/extension/pom.xml
+        sed -i "s/<mf.version>2.3-SNAPSHOT<\/mf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
         sed -i "s/<gf.version>3.6.0<\/gf.version>/<gf.version>3.6-SNAPSHOT<\/gf.version>/g" geoserver/src/pom.xml
         mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T2

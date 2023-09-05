@@ -20,8 +20,8 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static javax.measure.MetricPrefix.ATTO;
 import static javax.measure.MetricPrefix.CENTI;
+import static javax.measure.MetricPrefix.DECA;
 import static javax.measure.MetricPrefix.DECI;
-import static javax.measure.MetricPrefix.DEKA;
 import static javax.measure.MetricPrefix.EXA;
 import static javax.measure.MetricPrefix.FEMTO;
 import static javax.measure.MetricPrefix.GIGA;
@@ -59,7 +59,7 @@ public final class PrefixDefinitions {
                             PrefixDefinition.of(MEGA),
                             PrefixDefinition.of(KILO),
                             PrefixDefinition.of(HECTO),
-                            PrefixDefinition.of(DEKA),
+                            PrefixDefinition.of(DECA),
                             PrefixDefinition.of(DECI),
                             PrefixDefinition.of(CENTI),
                             PrefixDefinition.of(MILLI),
@@ -89,7 +89,7 @@ public final class PrefixDefinitions {
                             PrefixDefinition.of(MEGA),
                             // no kilo
                             PrefixDefinition.of(HECTO),
-                            PrefixDefinition.of(DEKA),
+                            PrefixDefinition.of(DECA),
                             PrefixDefinition.of(DECI),
                             PrefixDefinition.of(CENTI),
                             PrefixDefinition.of(MILLI),

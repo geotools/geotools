@@ -31,14 +31,61 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.metadata.citation.OnLineResource;
-import org.geotools.api.style.*;
+import org.geotools.api.style.AnchorPoint;
+import org.geotools.api.style.ChannelSelection;
+import org.geotools.api.style.ColorMap;
+import org.geotools.api.style.ColorMapEntry;
+import org.geotools.api.style.ColorReplacement;
+import org.geotools.api.style.ContrastEnhancement;
+import org.geotools.api.style.ContrastMethod;
+import org.geotools.api.style.Description;
+import org.geotools.api.style.Displacement;
+import org.geotools.api.style.ExtensionSymbolizer;
+import org.geotools.api.style.Extent;
+import org.geotools.api.style.ExternalGraphic;
+import org.geotools.api.style.FeatureTypeConstraint;
+import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.api.style.Fill;
+import org.geotools.api.style.Font;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicFill;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.GraphicStroke;
+import org.geotools.api.style.GraphicalSymbol;
+import org.geotools.api.style.Halo;
+import org.geotools.api.style.ImageOutline;
+import org.geotools.api.style.LabelPlacement;
+import org.geotools.api.style.LayerFeatureConstraints;
+import org.geotools.api.style.LinePlacement;
+import org.geotools.api.style.LineSymbolizer;
+import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
+import org.geotools.api.style.NamedStyle;
+import org.geotools.api.style.OverlapBehaviorEnum;
+import org.geotools.api.style.PointPlacement;
+import org.geotools.api.style.PointSymbolizer;
+import org.geotools.api.style.PolygonSymbolizer;
+import org.geotools.api.style.RasterSymbolizer;
+import org.geotools.api.style.RemoteOWS;
+import org.geotools.api.style.Rule;
+import org.geotools.api.style.SelectedChannelType;
+import org.geotools.api.style.SemanticType;
+import org.geotools.api.style.ShadedRelief;
+import org.geotools.api.style.Stroke;
+import org.geotools.api.style.Style;
+import org.geotools.api.style.StyleFactory;
+import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.api.style.Symbol;
+import org.geotools.api.style.Symbolizer;
+import org.geotools.api.style.TextSymbolizer;
+import org.geotools.api.style.UserLayer;
 import org.geotools.api.util.InternationalString;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 
 /**
- * Factory for creating Styles. All style elements are returned as Interfaces from org.geotools.core
- * as opposed to Implementations from org.geotools.defaultcore.
+ * Factory for creating Styles. All style elements are returned as Interfaces from
+ * org.geotools.api.style as opposed to Implementations from org.geotools.styling.
  *
  * <p>This class implements:
  *
@@ -132,7 +179,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             Expression label,
             LabelPlacement labelPlacement,
             String geometryPropertyName) {
-        TextSymbolizer tSymb = (TextSymbolizer) new TextSymbolizerImpl(filterFactory);
+        TextSymbolizer tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
         if (fonts != null) {
             tSymb.fonts().addAll(Arrays.asList(fonts));
@@ -206,7 +253,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public FeatureTypeStyle createFeatureTypeStyle(Rule[] rules) {
-        return (FeatureTypeStyle) new FeatureTypeStyleImpl(rules);
+        return new FeatureTypeStyleImpl(rules);
     }
 
     @Override
@@ -225,16 +272,8 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             double minScale) {
 
         Rule r =
-                (Rule)
-                        new RuleImpl(
-                                symbolizers,
-                                desc,
-                                legend,
-                                name,
-                                filter,
-                                isElseFilter,
-                                maxScale,
-                                minScale);
+                new RuleImpl(
+                        symbolizers, desc, legend, name, filter, isElseFilter, maxScale, minScale);
 
         return r;
     }
@@ -260,7 +299,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     }
 
     /**
-     * A convienice method to make a simple stroke
+     * A convenience method to make a simple stroke
      *
      * @param color the color of the line
      * @param width The width of the line
@@ -357,7 +396,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             opacity = FillImpl.DEFAULT.getOpacity();
         }
 
-        // would be nice to check if this was within bounds but we have to wait until use since it
+        // would be nice to check if this was within bounds, but we have to wait until use since it
         // may depend on an attribute
         fill.setOpacity(opacity);
         fill.setGraphicFill(graphicFill);

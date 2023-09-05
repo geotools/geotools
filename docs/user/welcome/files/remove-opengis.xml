@@ -221,6 +221,8 @@
   <target name="_styling" description="GeoTools styling interfaces merge">
     <echo level="info"/>
     <echo level="info" message="org.geotools.styling interfaces are now merged into org.geotools.api.style"/>
+    <local name="sp"/>
+    <local name="dp"/>
     <property name="sp">org.geotools.styling</property>
     <property name="dp">org.geotools.api.style</property>
     <refactor srcPackage="${sp}" dstPackage="${dp}" srcClass="StyleFactory2" dstClass="StyleFactory"/>
@@ -437,8 +439,6 @@
       <substitution expression="\1nvelope.getHeight()\2"/>
     </replaceregexp>
   </target>
-  
-  
 
   <target name="_geometry" description="Geometry API cleanup">
     <echo level="info"/>
@@ -454,6 +454,75 @@
     <echo level="info" message="Error clean up"/>
     <refactor srcPackage="org.geotools.metadata.i18n" srcClass="Errors" dstPackage="java.text" dstClass="MessageFormat"/>
     <refactor srcPackage="org.geotools.renderer.i18n" srcClass="Errors" dstPackage="java.text" dstClass="MessageFormat"/>
+  </target>
+  
+  <target name="_dataStore" description="DataStore API cleanup">
+    <echo level="info"/>
+    <echo level="info" message="Moving org.geotools.data interfaces to org.geotools.api.data"/>
+    <!-- if star import was used for data, it will be required for api.data -->
+    <local name="data"/>
+    <local name="api.data"/>
+    <property name="data">org.geotools.data</property>
+    <property name="simple">org.geotools.data.simple</property>
+    <property name="api.data">org.geotools.api.data</property>
+    <moveFrom srcPackage="${data}"/>
+    <replaceregexp flags="g">
+      <fileset refid="org.geotools.data.files"/>
+      <regexp pattern="import org.geotools.data.\*;"/>
+      <substitution expression="import org.geotools.data.*;${line.separator}import org.geotools.api.data.*;"/>
+    </replaceregexp>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AllQuery"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AttributeReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AttributeWriter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="AutoCommitTransaction"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="BatchFeatureEvent"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="CloseableIterator"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="CurrentTransactionLock"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataAccess"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataAccessFactory"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataAccessFinder"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataSourceException"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataStore"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataStoreFactorySpi"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DataStoreFinder"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DelegatingFeatureReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="DelegatingFeatureWriter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureEvent"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureListener"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureLock"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureLockException"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureLocking"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureSource"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureStore"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FeatureWriter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FIDReader"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FIDSQuery"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileDataStore"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileDataStoreFactorySpi"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileDataStoreFinder"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileGroupProvider"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileResourceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileServiceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FileStoreFactory"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="FilteringFileStoreFactory"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Join"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="LockingManager"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Parameter"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Query"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="QueryCapabilities"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Repository"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="ResourceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="ServiceInfo"/>
+    <moveTo srcPackage="${data}" dstPackage="${api.data}" class="Transaction"/>
+    
+    <moveFrom srcPackage="${simple}"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureLocking"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureReader"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureSource"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureStore"/>
+    <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureWriter"/>
+
   </target>
   
   <target name="_opengis" description="Package change from org.opengis classes to org.geotools.api">
@@ -479,7 +548,7 @@
     </move>
   </target>
   
-  <target name="update" depends="starting-up,_filterFactory,_styling,_position,_bounds,_envelope2d,_geometry,_errors,_opengis" description="Update project in current directory to remove org.opengis package use">
+  <target name="update" depends="starting-up,_filterFactory,_styling,_position,_bounds,_envelope2d,_geometry,_errors,_dataStore,_opengis" description="Update project in current directory to remove org.opengis package use">
     <echo level="warning">UPDATE COMPLETED: ${project.dir}</echo>
     <echo level="info"/>
     <echo level="info">At the request of OGC https://www.ogc.org/standard/geoapi/ standard</echo>

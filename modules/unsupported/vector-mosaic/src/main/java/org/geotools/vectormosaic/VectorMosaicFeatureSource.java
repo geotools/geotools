@@ -46,6 +46,8 @@ import org.geotools.api.feature.type.GeometryType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.FilteringFeatureReader;
+import org.geotools.api.data.Repository;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentEntry;
@@ -172,8 +174,11 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     }
 
     @Override
+    // original instance is null, no need to clase at reassignment
+    @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
+        FeatureReader<SimpleFeatureType, SimpleFeature> out = null;
         Name dsname = buildName(delegateStoreName);
         DataStore delegateDataStore = repository.dataStore(dsname);
         Filter splitFilterIndex =
@@ -181,7 +186,20 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         SimpleFeatureSource delegateFeatureSource =
                 delegateDataStore.getFeatureSource(delegateStoreTypeName);
         SimpleFeatureCollection features = delegateFeatureSource.getFeatures(splitFilterIndex);
-        return new VectorMosaicFeatureReader(features, query, this);
+        out = new VectorMosaicFeatureReader(features, query, this);
+        if (query.getFilter() != null) {
+            Filter filter = query.getFilter();
+            boolean filterIsAllIndex =
+                    allFilterAttributesAreInType(delegateFeatureSource.getSchema(), filter);
+            SimpleFeatureType granuleType = getGranuleType();
+            boolean filterIsAllGranule = allFilterAttributesAreInType(granuleType, filter);
+            // filter is not all index and not all granule, so wrap in FilteringFeatureReader
+            if (!filterIsAllIndex && !filterIsAllGranule) {
+                out = new FilteringFeatureReader<>(out, filter);
+            }
+        }
+
+        return out;
     }
 
     /**
@@ -305,23 +323,50 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         return dataStore;
     }
 
+    private DataStore getDataStoreByName(String typeName) {
+        Name dsname = buildName(typeName);
+        return repository.dataStore(dsname);
+    }
+
+    private Set<String> getAttributeNamesForType(String storeName, String typeName)
+            throws IOException {
+        DataStore dataStore = getDataStoreByName(storeName);
+        SimpleFeatureType featureType = dataStore.getSchema(typeName);
+        return getAttributeNamesForType(featureType);
+    }
+
+    private Set<String> getAttributeNamesForType(SimpleFeatureType featureType) throws IOException {
+        return featureType.getAttributeDescriptors().stream()
+                .map(AttributeDescriptor::getLocalName)
+                .collect(Collectors.toSet());
+    }
+
+    private boolean allFilterAttributesAreInType(String storeName, String typeName, Filter filter)
+            throws IOException {
+        Set<String> indexAttributeNames = getAttributeNamesForType(storeName, typeName);
+        String[] filterAttributeNames = DataUtilities.attributeNames(filter);
+        return indexAttributeNames.containsAll(Arrays.asList(filterAttributeNames));
+    }
+
+    private boolean allFilterAttributesAreInType(SimpleFeatureType featureType, Filter filter)
+            throws IOException {
+        Set<String> indexAttributeNames = getAttributeNamesForType(featureType);
+        String[] filterAttributeNames = DataUtilities.attributeNames(filter);
+        return indexAttributeNames.containsAll(Arrays.asList(filterAttributeNames));
+    }
+
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         // check if visitor is aggregate visitor
         if (visitor instanceof MaxVisitor
                 || visitor instanceof MinVisitor
                 || visitor instanceof UniqueVisitor) {
-            Name dsname = buildName(delegateStoreName);
-            DataStore delegateDataStore = repository.dataStore(dsname);
-            SimpleFeatureType delegateSchema = delegateDataStore.getSchema(delegateStoreTypeName);
             Set<String> indexAttributeNames =
-                    delegateSchema.getAttributeDescriptors().stream()
-                            .map(AttributeDescriptor::getLocalName)
-                            .collect(Collectors.toSet());
+                    getAttributeNamesForType(delegateStoreName, delegateStoreTypeName);
             // check if all filter attributes are in index/delegate
             if (query.getFilter() != null) {
-                String[] filterAttributeNames = DataUtilities.attributeNames(query.getFilter());
-                if (!indexAttributeNames.containsAll(Arrays.asList(filterAttributeNames))) {
+                if (!allFilterAttributesAreInType(
+                        delegateStoreName, delegateStoreTypeName, query.getFilter())) {
                     return false;
                 }
             }
@@ -340,6 +385,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             // this avoids query properties being set with granule attributes
             query.setPropertyNames(visitorExpressionFields);
             // visitor is aggregate type and all attributes are in index/delegate
+            DataStore delegateDataStore = getDataStoreByName(delegateStoreName);
             delegateDataStore
                     .getFeatureSource(delegateStoreTypeName)
                     .getFeatures(query)
@@ -368,6 +414,10 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         }
     }
 
+    @Override
+    protected boolean canFilter() {
+        return true;
+    }
     /**
      * Validates and loads the connection string properties into the granule
      *

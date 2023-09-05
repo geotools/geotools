@@ -17,6 +17,7 @@
 package org.geotools.vectormosaic;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.util.Set;
 import org.geotools.api.data.FeatureSource;
@@ -25,6 +26,7 @@ import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.expression.PropertyName;
+import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.feature.NameImpl;
@@ -208,5 +210,32 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         // all granules touched because visitor expression references granule-only attribute and
         // index-only attribute
         assertEquals(3, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testMixedQueryFilterUsesFilteringFeatureReader() throws Exception {
+        VectorMosaicFeatureSource featureSource =
+                (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        Query q = new Query();
+        // rank is in the index
+        PropertyName p = FF.property("rank");
+        // weight is in the granule
+        PropertyName p2 = FF.property("weight");
+        Filter f = FF.and(FF.lessOrEqual(p, FF.literal(100)), FF.lessOrEqual(p2, FF.literal(50)));
+        q.setFilter(f);
+        assertEquals(FilteringFeatureReader.class, featureSource.getReaderInternal(q).getClass());
+    }
+
+    @Test
+    public void testIndexQueryFilterDoesNotUseFilteringFeatureReader() throws Exception {
+        VectorMosaicFeatureSource featureSource =
+                (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        Query q = new Query();
+        // rank is in the index only
+        PropertyName p = FF.property("rank");
+        Filter f = FF.lessOrEqual(p, FF.literal(100));
+        q.setFilter(f);
+        assertNotEquals(
+                FilteringFeatureReader.class, featureSource.getReaderInternal(q).getClass());
     }
 }

@@ -189,6 +189,8 @@ Download and try out some of the artifacts from the above location and do a
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
+It is important to test the artifacts using the minimum supported version of Java (currently Java 11 in September 2023).
+
 1. Source download: The Jenkins job will perform a build of the source artifacts on an empty Maven
    repository to make sure any random user out there can do the same. If you want
    you can still manually test the artifacts by:
@@ -209,7 +211,8 @@ test on the developer list.
    * Check library loads:
      
      .. code-block:: bash
-        
+
+        java --version
         java -cp "lib/*" org.geotools.util.factory.GeoTools
    
    * Run quickstart:

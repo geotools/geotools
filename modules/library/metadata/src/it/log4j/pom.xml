@@ -11,7 +11,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.deploy.skip>true</maven.deploy.skip>
-    <geotools.version>28-SNAPSHOT</geotools.version>
+    <geotools.version>28.5</geotools.version>
     <log4j2.version>2.17.2</log4j2.version>
   </properties>
   <dependencies>

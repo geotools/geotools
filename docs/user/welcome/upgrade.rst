@@ -75,6 +75,33 @@ To aid in this transition an `Apache Ant <https://ant.apache.org>`__ script is p
    * Clean up unused or duplicate imports
    * You may need to re-run code formatters
 
+Data API
+^^^^^^^^
+
+The main data access interfaces have been moved from ``org.geotools.data`` to ``org.geotools.api.data``.
+This includes, ``DataStore``, ``FeatureSource``, ``FeatureIterator``, and many others.
+
+As part of the move, the datastore registration files found in ``META-INF/services`` need to be moved as well, 
+in particular:
+
+
+.. code-block:: 
+
+   org.geotools.data.DataAccessFactory
+   org.geotools.data.DataStoreFactorySpi
+   org.geotools.data.FileDataStoreFactorySpi
+
+show now be named:
+
+.. code-block:: 
+
+   org.geotools.data.api.DataAccessFactory
+   org.geotools.data.api.DataStoreFactorySpi
+   org.geotools.data.api.FileDataStoreFactorySpi
+
+The upgrade script should take care of this change.
+
+
 ISO Geometry
 ^^^^^^^^^^^^
 

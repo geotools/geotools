@@ -6,7 +6,7 @@
   <!--                                                                                  -->
   <!-- Macros                                                                           -->
   <!--                                                                                  -->
-  <!-- Refactorings are captued as macros so we can improve the steps based on feedback -->
+  <!-- Refactorings are captured as macros so we can improve the steps based on feedback -->
   <macrodef name="refactor">
     <attribute name="srcPackage"/>
     <attribute name="srcClass"/>
@@ -522,6 +522,20 @@
     <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureSource"/>
     <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureStore"/>
     <moveTo srcPackage="${simple}" dstPackage="${api.data}" class="SimpleFeatureWriter"/>
+
+    <echo level="info" message="data   META-INF/services"/>
+    <!-- Service INF -->
+    <fileset id="services.files" dir="${project.dir}">
+        <include name="**/META-INF/services/org.geotools.data.DataAccessFactory"/>
+        <include name="**/META-INF/services/org.geotools.data.DataStoreFactorySpi"/>
+        <include name="**/META-INF/services/org.geotools.data.FileDataStoreFactorySpi"/>
+        <exclude name="**/target/*"/>
+    </fileset>
+    <echo level="verbose">    ... ${toString:services.files}</echo>
+    <move todir="${project.dir}" verbose="true">
+      <fileset refid="services.files"/>
+      <regexpmapper from="(.*)/org\.geotools\.data\.(.*)" to="\1/org.geotools.api.data.\2"/>
+    </move>
 
   </target>
   

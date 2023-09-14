@@ -23,6 +23,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,12 +52,13 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         this.readTimeout = DEFAULT_TIMEOUT;
     }
 
-    /** @see org.geotools.data.ows.HTTPClient#get(java.net.URL) */
+    /** @see org.geotools.http.HTTPClient#get(java.net.URL) */
     @Override
     public HTTPResponse get(final URL url) throws IOException {
         return this.get(url, null);
     }
 
+    /** @see org.geotools.http.HTTPClient#get(URL, Map) */
     @Override
     public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
         if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "URL is " + url);
@@ -64,50 +66,43 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         if (isFile(url)) {
             return this.createFileResponse(url);
         }
-        URLConnection connection = openConnection(url);
+        URLConnection connection = openConnection(url, headers);
         if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod("GET");
         }
-
-        // Set User-Agent to a good default
-        connection.addRequestProperty(
-                "User-Agent", "GeoTools HTTPClient (" + GeoTools.getVersion() + ")");
-        if (headers != null) {
-            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(
-                            Level.FINE,
-                            "Adding header "
-                                    + headerNameValue.getKey()
-                                    + " = "
-                                    + headerNameValue.getValue());
-                }
-                connection.addRequestProperty(headerNameValue.getKey(), headerNameValue.getValue());
-            }
-        }
-
         connection.connect();
 
         return new DefaultHttpResponse(connection);
     }
 
-    /**
-     * @see org.geotools.data.ows.HTTPClient#post(java.net.URL, java.io.InputStream,
-     *     java.lang.String)
-     */
+    /** @see org.geotools.http.HTTPClient#post(URL, InputStream, String, Map) */
+    @Override
+    public HTTPResponse post(URL url, InputStream content, String contentType) throws IOException {
+        return post(url, content, contentType, null);
+    }
+
+    /** @see org.geotools.http.HTTPClient#post(URL, InputStream, String) */
     @Override
     public HTTPResponse post(
-            final URL url, final InputStream postContent, final String postContentType)
+            final URL url,
+            final InputStream postContent,
+            final String postContentType,
+            Map<String, String> headers)
             throws IOException {
 
-        URLConnection connection = openConnection(url);
+        if (headers == null) {
+            headers = new HashMap<>(1);
+        } else {
+            headers = new HashMap<>(headers);
+        }
+        if (postContentType != null) {
+            headers.put("Content-type", postContentType);
+        }
+        URLConnection connection = openConnection(url, headers);
         if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod("POST");
         }
         connection.setDoOutput(true);
-        if (postContentType != null) {
-            connection.setRequestProperty("Content-type", postContentType);
-        }
 
         connection.connect();
 
@@ -123,11 +118,17 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         return new DefaultHttpResponse(connection);
     }
 
-    private URLConnection openConnection(URL finalURL) throws IOException {
+    private URLConnection openConnection(URL finalURL, Map<String, String> headers)
+            throws IOException {
         URLConnection connection = finalURL.openConnection();
         final boolean http = connection instanceof HttpURLConnection;
+        if (headers == null) {
+            headers = new HashMap<>();
+        } else {
+            headers = new HashMap<>(headers); // avoid parameter modification
+        }
         if (http && tryGzip) {
-            connection.addRequestProperty("Accept-Encoding", "gzip");
+            headers.put("Accept-Encoding", "gzip");
         }
         // mind, connect timeout is in seconds
         if (http && getConnectTimeout() > 0) {
@@ -145,7 +146,22 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
             String encodedAuthorization =
                     Base64.encodeBytes(
                             userpassword.getBytes(StandardCharsets.UTF_8), Base64.DONT_BREAK_LINES);
-            connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);
+            headers.put("Authorization", "Basic " + encodedAuthorization);
+        }
+
+        // Set User-Agent to a good default
+        headers.put("User-Agent", "GeoTools HTTPClient (" + GeoTools.getVersion() + ")");
+
+        for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(
+                        Level.FINE,
+                        "Setting header "
+                                + headerNameValue.getKey()
+                                + " = "
+                                + headerNameValue.getValue());
+            }
+            connection.setRequestProperty(headerNameValue.getKey(), headerNameValue.getValue());
         }
         return connection;
     }

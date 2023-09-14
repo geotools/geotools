@@ -36,6 +36,13 @@ public class DelegateHTTPClient implements HTTPClient {
     }
 
     @Override
+    public HTTPResponse post(
+            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
+            throws IOException {
+        return delegate.post(url, postContent, postContentType, headers);
+    }
+
+    @Override
     public HTTPResponse get(URL url) throws IOException {
         return delegate.get(url);
     }

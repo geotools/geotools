@@ -78,7 +78,8 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
                 httpClient,
                 capabilities,
                 Collections.singletonMap(
-                        XMLHandlerHints.ENTITY_RESOLVER, config.getEntityResolver()));
+                        XMLHandlerHints.ENTITY_RESOLVER, config.getEntityResolver()),
+                config.additionalHeaders);
         this.config = config;
         super.specification = determineCorrectStrategy();
         ((WFSStrategy) specification).setCapabilities(super.capabilities);

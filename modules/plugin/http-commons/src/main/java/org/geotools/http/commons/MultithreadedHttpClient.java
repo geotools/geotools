@@ -25,7 +25,10 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import org.apache.http.Header;
@@ -59,6 +62,7 @@ import org.geotools.http.HTTPConnectionPooling;
 import org.geotools.http.HTTPProxy;
 import org.geotools.http.HTTPResponse;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.util.logging.Logging;
 
 /**
  * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
@@ -76,6 +80,8 @@ import org.geotools.util.factory.GeoTools;
  */
 public class MultithreadedHttpClient extends AbstractHttpClient
         implements HTTPConnectionPooling, HTTPProxy {
+
+    private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
 
     private final PoolingHttpClientConnectionManager connectionManager;
 
@@ -119,7 +125,19 @@ public class MultithreadedHttpClient extends AbstractHttpClient
     public HttpMethodResponse post(
             final URL url, final InputStream postContent, final String postContentType)
             throws IOException {
+        return post(url, postContent, postContentType, null);
+    }
 
+    @Override
+    public HttpMethodResponse post(
+            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
+            throws IOException {
+
+        if (headers == null) {
+            headers = new HashMap<>();
+        } else {
+            headers = new HashMap<>(headers); // avoid parameter modification
+        }
         HttpPost postMethod = new HttpPost(url.toExternalForm());
         postMethod.setConfig(connectionConfig);
         HttpEntity requestEntity;
@@ -135,11 +153,13 @@ public class MultithreadedHttpClient extends AbstractHttpClient
             requestEntity = new InputStreamEntity(postContent);
         }
         if (tryGzip) {
-            postMethod.setHeader("Accept-Encoding", "gzip");
+            headers.put("Accept-Encoding", "gzip");
         }
         if (postContentType != null) {
-            postMethod.setHeader("Content-type", postContentType);
+            headers.put("Content-type", postContentType);
         }
+
+        setHeadersOn(headers, postMethod);
 
         postMethod.setEntity(requestEntity);
 
@@ -197,18 +217,19 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         if (isFile(url)) {
             return createFileResponse(url);
         }
+        if (headers == null) {
+            headers = new HashMap<>();
+        } else {
+            headers = new HashMap<>(headers); // avoid parameter modification
+        }
         HttpGet getMethod = new HttpGet(url.toExternalForm());
         getMethod.setConfig(connectionConfig);
 
         if (tryGzip) {
-            getMethod.setHeader("Accept-Encoding", "gzip");
+            headers.put("Accept-Encoding", "gzip");
         }
 
-        if (headers != null) {
-            for (Map.Entry<String, String> headerNameValue : headers.entrySet()) {
-                getMethod.setHeader(headerNameValue.getKey(), headerNameValue.getValue());
-            }
-        }
+        setHeadersOn(headers, getMethod);
 
         HttpMethodResponse response = null;
         try {
@@ -226,6 +247,17 @@ public class MultithreadedHttpClient extends AbstractHttpClient
                             + url.toExternalForm());
         }
         return response;
+    }
+
+    private void setHeadersOn(Map<String, String> headers, HttpRequestBase request) {
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(
+                        Level.FINE,
+                        "Setting header " + header.getKey() + " = " + header.getValue());
+            }
+            request.setHeader(header.getKey(), header.getValue());
+        }
     }
 
     @Override

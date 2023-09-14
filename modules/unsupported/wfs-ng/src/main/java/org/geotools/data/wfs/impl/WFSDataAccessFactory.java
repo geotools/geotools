@@ -127,7 +127,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[23];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[24];
 
     private static final int GMLComplianceLevel = 2;
 
@@ -574,6 +574,22 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                 SCHEMA_CACHE_LOCATION =
                         new WFSFactoryParam<>(
                                 name, String.class, title, description, null, "program");
+    }
+
+    @SuppressWarnings("rawtypes")
+    public static final WFSFactoryParam<Map> ADDITIONAL_HEADERS;
+
+    static {
+        String name = "WFSDataStoreFactory:ADDITIONAL_HEADERS";
+        String title = "Set additional HTTP request headers.";
+        String description =
+                "The given HTTP headers will be set on HTTP requests in addition to "
+                        + "the regular GeoTools managed headers (like Accept-Enconding, Content-type, "
+                        + "User-Agent, Authorization). Provided values must not conflict with GeoTools "
+                        + "managed headers. Parameters must use String keys and values.";
+        parametersInfo[23] =
+                ADDITIONAL_HEADERS =
+                        new WFSFactoryParam<>(name, Map.class, title, description, null, "program");
     }
 
     /**

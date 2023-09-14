@@ -24,10 +24,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static java.util.Collections.singletonMap;
 
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.ContainsPattern;
+import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -272,6 +275,59 @@ public class MultithreadedHttpClientTest {
             Assert.assertEquals("OK", result);
 
             wireMockRule.verify(getRequestedFor(urlEqualTo("/agent")));
+        } finally {
+            if (response != null) {
+                response.dispose();
+            }
+        }
+    }
+
+    /**
+     * Tests if additional headers are added to requests as expected
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testRequestsWithAdditionalHeaders() throws IOException {
+        String headerValue;
+        URL url = new URL("http://localhost:" + wireMockRule.port() + "/test");
+        UrlPattern urlPattern = urlEqualTo("/test");
+        ResponseDefinitionBuilder responseBldr =
+                aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>");
+        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+        HTTPResponse response = null;
+
+        // GET
+        wireMockRule.addStubMapping(stubFor(get(urlPattern).willReturn(responseBldr)));
+        headerValue = "Bearer " + System.currentTimeMillis();
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            response = client.get(url, singletonMap("Authorization", headerValue));
+            wireMockRule.verify(
+                    getRequestedFor(urlEqualTo("/test"))
+                            .withHeader("Authorization", equalTo(headerValue)));
+        } finally {
+            if (response != null) {
+                response.dispose();
+                response = null;
+            }
+        }
+
+        // POST
+        wireMockRule.addStubMapping(stubFor(post(urlPattern).willReturn(responseBldr)));
+        headerValue = "Bearer " + System.currentTimeMillis() + 1;
+        try (MultithreadedHttpClient client = new MultithreadedHttpClient()) {
+            response =
+                    client.post(
+                            url,
+                            postBody,
+                            "text/plain",
+                            singletonMap("Authorization", headerValue));
+            wireMockRule.verify(
+                    postRequestedFor(urlEqualTo("/test"))
+                            .withHeader("Authorization", equalTo(headerValue)));
         } finally {
             if (response != null) {
                 response.dispose();

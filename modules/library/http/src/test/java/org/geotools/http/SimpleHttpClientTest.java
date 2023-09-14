@@ -20,12 +20,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static java.util.Collections.singletonMap;
 
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.matching.UrlPattern;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -61,5 +67,40 @@ public class SimpleHttpClientTest {
         verify(
                 getRequestedFor(urlEqualTo("/test"))
                         .withHeader("Authorization", equalTo("Basic " + encodedCredentials)));
+    }
+
+    /**
+     * Tests if additional headers are added to requests as expected
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testRequestsWithAdditionalHeaders() throws IOException {
+        String headerValue;
+        URL url = new URL("http://localhost:" + wireMockRule.port() + "/test");
+        UrlPattern urlPattern = urlEqualTo("/test");
+        ResponseDefinitionBuilder response =
+                aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>");
+        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+        SimpleHttpClient client = new SimpleHttpClient();
+
+        // GET
+        stubFor(get(urlPattern).willReturn(response));
+        headerValue = "Bearer " + System.currentTimeMillis();
+        client.get(url, singletonMap("Authorization", headerValue));
+        verify(
+                getRequestedFor(urlEqualTo("/test"))
+                        .withHeader("Authorization", equalTo(headerValue)));
+
+        // POST
+        stubFor(post(urlPattern).willReturn(response));
+        headerValue = "Bearer " + System.currentTimeMillis() + 1;
+        client.post(url, postBody, "text/plain", singletonMap("Authorization", headerValue));
+        verify(
+                postRequestedFor(urlEqualTo("/test"))
+                        .withHeader("Authorization", equalTo(headerValue)));
     }
 }

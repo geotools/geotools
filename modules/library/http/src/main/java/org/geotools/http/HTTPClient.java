@@ -54,6 +54,35 @@ public interface HTTPClient {
     HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException;
 
     /**
+     * Executes an HTTP POST request against the provided URL, sending the contents of {@code
+     * postContent} as the POST method body and setting the Content-Type request header to {@code
+     * postContentType} if given, and returns the server response.
+     *
+     * <p>If an HTTP authentication {@link #getUser() user} and {@link #getPassword() password} is
+     * set, the appropriate authentication HTTP header will be sent with the request.
+     *
+     * <p>If a {@link #getConnectTimeout() connection timeout} is set, the http connection will be
+     * set to respect that timeout.
+     *
+     * <p>If a {@link #getReadTimeout() read timeout} is set, the http connection will be set to
+     * respect it.
+     *
+     * <p>header parameter contains additional headers to add to the request.
+     *
+     * @param url the URL against which to execute the POST request
+     * @param postContent an input stream with the contents of the POST body
+     * @param postContentType the MIME type of the contents sent as the request POST body, can be
+     *     {@code null}
+     * @param headers a list of custom headers to add to the request.
+     * @return the {@link HTTPResponse} encapsulating the response to the HTTP POST request
+     */
+    default HTTPResponse post(
+            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
+            throws IOException {
+        return post(url, postContent, postContentType);
+    }
+
+    /**
      * Executes an HTTP GET request against the provided URL and returns the server response.
      *
      * <p>If an HTTP authentication {@link #getUser() user} and {@link #getPassword() password} is

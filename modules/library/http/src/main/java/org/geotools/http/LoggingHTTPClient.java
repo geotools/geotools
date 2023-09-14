@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
@@ -65,10 +66,40 @@ public class LoggingHTTPClient extends DelegateHTTPClient {
     }
 
     @Override
+    public HTTPResponse post(
+            URL url, InputStream postContent, String postContentType, Map<String, String> headers)
+            throws IOException {
+        final int myCount = ++counter;
+        LOGGER.info(
+                String.format(
+                        "POST Request #%d URL with additional headers %s : %s",
+                        myCount, headers, url));
+        if (LOGGER.isLoggable(Level.FINEST)) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            copy(postContent, out);
+            LOGGER.finest("POST Request Body: \n" + out.toString(charsetName));
+
+            postContent = new ByteArrayInputStream(out.toByteArray());
+        }
+        return new LoggingHTTPResponse(
+                delegate.post(url, postContent, postContentType, headers), charsetName, myCount);
+    }
+
+    @Override
     public HTTPResponse get(URL url) throws IOException {
         final int myCount = ++counter;
         LOGGER.info(String.format("GET Request #%d URL: %s", myCount, url));
         return new LoggingHTTPResponse(delegate.get(url), charsetName, myCount);
+    }
+
+    @Override
+    public HTTPResponse get(URL url, Map<String, String> headers) throws IOException {
+        final int myCount = ++counter;
+        LOGGER.info(
+                String.format(
+                        "GET Request #%d URL with additional headers %s : %s",
+                        myCount, headers, url));
+        return new LoggingHTTPResponse(delegate.get(url, headers), charsetName, myCount);
     }
 
     static void copy(InputStream input, OutputStream output) throws IOException {

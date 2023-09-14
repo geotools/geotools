@@ -16,13 +16,24 @@
  */
 package org.geotools.data.wfs.internal;
 
+import static java.util.Collections.singletonMap;
+import static org.geotools.data.wfs.impl.WFSDataAccessFactory.ADDITIONAL_HEADERS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
@@ -41,8 +52,10 @@ import org.geotools.feature.FakeTypes;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.FeatureTypeImpl;
+import org.geotools.http.DefaultHttpResponse;
 import org.geotools.http.HTTPClient;
 import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.ows.ServiceException;
 import org.junit.After;
@@ -200,6 +213,88 @@ public class WFSClientTest {
         WFSServiceInfo info = client.getInfo();
         assertEquals("SLIP_Public_Services_Environment_WFS", info.getTitle());
         assertEquals("1.1.0", info.getVersion());
+    }
+
+    /**
+     * Tests if WFSClient passes on HTTP headers to HTTPClient, if present.
+     *
+     * <p>Consists of two parts:
+     *
+     * <ol>
+     *   <li>GetCapabilities (GET) and DescribeFeatureFeature (POST) is run without additional
+     *       headers. Tests if HTTPClient API for GET and POST without providing headers is used.
+     *   <li>GetCapabilities (GET) and DescribeFeatureFeature (POST) is run with additional headers.
+     *       Tests if HTTPClient API for GET and POST with providing headers is used.
+     * </ol>
+     *
+     * @throws ServiceException
+     * @throws IOException
+     */
+    @Test
+    public void testHeaderHandling() throws ServiceException, IOException {
+        HTTPClient mockHttpClient;
+        WFSClient wfsClient;
+        DescribeFeatureTypeRequest request;
+        URL capabilitiesURL = WFSTestData.url("GeoServer_2.2.x/1.0.0/GetCapabilities.xml");
+        URLConnection urlConnection = capabilitiesURL.openConnection();
+        IllegalStateException ex = new IllegalStateException("Mock: Not implemented.");
+        HTTPResponse capsResponse = new DefaultHttpResponse(urlConnection);
+
+        // first run: WITHOUT headers -> for max backwards compatibility API w/o
+        // headers should be called
+        // ---------------------------
+        mockHttpClient = mock(HTTPClient.class);
+        // GET -> GetCapabilities
+        when(mockHttpClient.get(any())).thenReturn(capsResponse);
+        // POST -> DescribeFeatureType: exception -> only interested in req headers, not response
+        when(mockHttpClient.post(any(), any(), any())).thenThrow(ex);
+
+        // create client & issue GetCapabilities
+        wfsClient = new WFSClient(capabilitiesURL, mockHttpClient, config);
+        request = wfsClient.createDescribeFeatureTypeRequest();
+        request.setTypeName(wfsClient.getRemoteTypeNames().iterator().next());
+
+        try {
+            wfsClient.issueRequest(request);
+        } catch (IllegalStateException e) {
+            // DescribeFeatureType cause mock to throw exception, which is fine.
+            // Just interested in headers passed to mock
+            assertSame(ex, e);
+        }
+
+        // no additional headers in test: system uses client API without headers, as before
+        verify(mockHttpClient, times(1)).get(any());
+        verify(mockHttpClient, times(1)).post(any(), any(), any());
+
+        // second run: WITH headers -> headers must be passed to HttpClient
+        // -----------------------
+        Map<String, String> headers = singletonMap("Authorization", "Bearer XYZ");
+        config = WFSConfig.fromParams(singletonMap(ADDITIONAL_HEADERS.key, headers));
+
+        urlConnection = capabilitiesURL.openConnection();
+        capsResponse = new DefaultHttpResponse(urlConnection);
+        mockHttpClient = mock(HTTPClient.class);
+        // GET -> GetCapabilities
+        when(mockHttpClient.get(any(), any())).thenReturn(capsResponse);
+        // POST -> DescribeFeatureType: exception -> only interested in req headers, not response
+        when(mockHttpClient.post(any(), any(), any(), any())).thenThrow(ex);
+
+        // create client & issue GetCapabilities
+        wfsClient = new WFSClient(capabilitiesURL, mockHttpClient, config);
+        request = wfsClient.createDescribeFeatureTypeRequest();
+        request.setTypeName(wfsClient.getRemoteTypeNames().iterator().next());
+
+        try {
+            wfsClient.issueRequest(request);
+        } catch (IllegalStateException e) {
+            // DescribeFeatureType causes mock to throw exception, which is fine.
+            // Just interested in headers passed to mock
+            assertSame(ex, e);
+        }
+
+        // with additional headers in test: system uses client API with headers (new for POST)
+        verify(mockHttpClient, times(1)).get(any(), eq(headers));
+        verify(mockHttpClient, times(1)).post(any(), any(), any(), eq(headers));
     }
 
     private static QName STED_REMOTE_NAME =

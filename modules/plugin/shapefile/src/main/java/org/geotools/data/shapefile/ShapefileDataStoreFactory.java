@@ -49,7 +49,12 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     /** url to the .shp file. */
     public static final Param URLP =
             new Param(
-                    "url", URL.class, "url to a .shp file", true, null, new KVP(Param.EXT, "shp"));
+                    "url",
+                    URL.class,
+                    "url to a .shp or a .shp.gz file",
+                    true,
+                    null,
+                    new KVP(Param.EXT, "shp"));
 
     /**
      * This system property will enable "DBF charset autodetection from CPG sidecar file" feature.
@@ -344,8 +349,9 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     }
 
     @Override
-    public boolean canProcess(URL f) {
-        return f != null && f.getFile().toUpperCase().endsWith("SHP");
+    public boolean canProcess(URL url) {
+        final String file = url != null ? url.getPath().toLowerCase() : null;
+        return file != null && (file.endsWith(".shp") || file.endsWith(".shp.gz"));
     }
 
     /**

@@ -50,6 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 import org.apache.commons.lang3.SystemUtils;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
@@ -158,9 +159,11 @@ public class ShpFiles {
         char lastChar = urlString.charAt(urlString.length() - 1);
         boolean upperCase = Character.isUpperCase(lastChar);
 
+        boolean isGz = urlString.toLowerCase().endsWith(".gz");
         for (ShpFileType type : ShpFileType.values()) {
 
-            String extensionWithPeriod = type.extensionWithPeriod;
+            String extensionWithPeriod =
+                    isGz ? type.gzExtensionWithPeriod : type.extensionWithPeriod;
             if (upperCase) {
                 extensionWithPeriod = extensionWithPeriod.toUpperCase();
             } else {
@@ -206,7 +209,11 @@ public class ShpFiles {
             // doesn't exist
             return null;
         }
-        File[] files = directory.listFiles((dir, name) -> file.getName().equalsIgnoreCase(name));
+        File[] files =
+                directory.listFiles(
+                        (dir, name) ->
+                                file.getName().equalsIgnoreCase(name)
+                                        || (file.getName() + ".gz").equalsIgnoreCase(name));
         if (files != null && files.length > 0) {
             try {
                 return files[0].toURI().toURL();
@@ -609,9 +616,14 @@ public class ShpFiles {
         return urls.get(ShpFileType.SHP).toExternalForm().toLowerCase().startsWith("file:");
     }
 
+    /** @return whether the files are gzip-ped. */
+    public boolean isGz() {
+        return urls.get(ShpFileType.SHP).toExternalForm().toLowerCase().endsWith(".gz");
+    }
+
     /** Returns true if the files are writable */
     public boolean isWritable() {
-        if (!isLocal()) {
+        if (!isLocal() || isGz()) {
             return false;
         }
         return URLs.urlToFile(urls.get(SHP)).canWrite() && URLs.urlToFile(urls.get(DBF)).canWrite();
@@ -766,7 +778,7 @@ public class ShpFiles {
         URL url = acquireRead(type, requestor);
         ReadableByteChannel channel = null;
         try {
-            if (isLocal()) {
+            if (isLocal() && !isGz()) {
                 File file = URLs.urlToFile(url);
 
                 @SuppressWarnings("resource")
@@ -774,6 +786,9 @@ public class ShpFiles {
                 channel = new FileChannelDecorator(raf.getChannel(), this, url, requestor);
             } else {
                 InputStream in = url.openConnection().getInputStream();
+                if (isGz()) {
+                    in = new GZIPInputStream(in);
+                }
                 channel =
                         new ReadableByteChannelDecorator(
                                 Channels.newChannel(in), this, url, requestor);

@@ -262,8 +262,9 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      */
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-        if (!shpFiles.isLocal()) {
-            throw new IOException("Cannot create FeatureType on remote or in-classpath shapefile");
+        if (!shpFiles.isLocal() || shpFiles.isGz()) {
+            throw new IOException(
+                    "Cannot create FeatureType on remote or in-classpath or gzipped shapefile");
         }
 
         shpFiles.delete();

@@ -25,7 +25,7 @@ The following connection parameters are available:
 +--------------------------+---------------------------------------------------+
 | Parameter                | Description                                       |
 +==========================+===================================================+
-| ``url``                  | A URL of the file ending in ``shp``               |
+| ``url``                  | A URL of the file ending in ``shp`` or ``shp.gz`` |
 +--------------------------+---------------------------------------------------+
 | ``namespace``            | Optional: URI to use for the ``FeatureType``      |
 +--------------------------+---------------------------------------------------+
@@ -88,6 +88,8 @@ ESRI proprietary extensions (ignored by GeoTools):
 * ``filename.shp.xml``: FGDC metadata
 
 This style of file format (from the dawn of time) is referred to as "sidecar" files, at a minimum file ``filename.shp`` and its sidecar file ``filename.dbf`` are needed. 
+
+If the ``DataStore`` is used for reading only, the files may be gzip-ped and marked by the additional filename extension ``.gz``.
 
 Access
 ''''''

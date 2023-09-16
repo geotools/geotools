@@ -256,8 +256,8 @@
       <artifactId>jt-shadedrelief</artifactId>
       <exclusions>
         <exclusion>
-          <artifactId>jts</artifactId>
           <groupId>com.vividsolutions</groupId>
+          <artifactId>jts</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

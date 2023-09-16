@@ -236,23 +236,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sphinx</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <ant antfile="build.xml" dir="${basedir}" target="${target}">
-                  <property name="build.directory" value="${project.build.directory}"></property>
-                  <property name="project.version" value="${project.version}"></property>
-                </ant>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
         <dependencies>
           <dependency>
             <groupId>org.apache.ant</groupId>
@@ -265,6 +248,23 @@
             <version>1.0b3</version>
           </dependency>
         </dependencies>
+        <executions>
+          <execution>
+            <id>sphinx</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <tasks>
+                <ant antfile="build.xml" dir="${basedir}" target="${target}">
+                  <property name="build.directory" value="${project.build.directory}"></property>
+                  <property name="project.version" value="${project.version}"></property>
+                </ant>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <!-- Disable PMD in this module, the code is a set of examples, too many System.out -->

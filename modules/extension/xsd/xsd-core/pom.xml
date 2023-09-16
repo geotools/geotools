@@ -81,8 +81,8 @@
       <version>1.2</version>
       <exclusions>
         <exclusion>
-          <artifactId>xml-apis</artifactId>
           <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -92,16 +92,16 @@
       <version>1.3</version>
       <exclusions>
         <exclusion>
-          <artifactId>xerces</artifactId>
           <groupId>xerces</groupId>
+          <artifactId>xerces</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>servletapi</artifactId>
           <groupId>servletapi</groupId>
+          <artifactId>servletapi</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>junit</artifactId>
           <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

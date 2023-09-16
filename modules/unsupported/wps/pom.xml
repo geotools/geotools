@@ -105,12 +105,12 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <artifactId>gt-xsd-wfs</artifactId>
           <groupId>org.geotools.xsd</groupId>
+          <artifactId>gt-xsd-wfs</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>net.opengis.wfs</artifactId>
           <groupId>org.geotools.ogc</groupId>
+          <artifactId>net.opengis.wfs</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

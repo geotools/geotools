@@ -143,8 +143,8 @@
       <!-- The version number is specified in the parent POM. -->
       <exclusions>
         <exclusion>
-          <artifactId>imageio-ext-gdalgeotiff</artifactId>
           <groupId>it.geosolutions.imageio-ext</groupId>
+          <artifactId>imageio-ext-gdalgeotiff</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

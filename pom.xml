@@ -557,8 +557,8 @@
         <version>2.1</version>
         <exclusions>
           <exclusion>
-            <artifactId>indriya</artifactId>
             <groupId>tech.units</groupId>
+            <artifactId>indriya</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -821,8 +821,8 @@
         <version>${batik.version}</version>
         <exclusions>
           <exclusion>
-            <artifactId>xml-apis</artifactId>
             <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1185,8 +1185,8 @@
         <scope>test</scope>
         <exclusions>
           <exclusion>
-            <artifactId>xercesImpl</artifactId>
             <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1400,8 +1400,8 @@
           <!-- junit is carried over as a compile scope dependency, exclude it -->
           <!-- see https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple/1.1.1 -->
           <exclusion>
-            <artifactId>junit</artifactId>
             <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -1664,10 +1664,10 @@
         <executions>
           <execution>
             <id>directories</id>
-            <phase>initialize</phase>
             <goals>
               <goal>highest-basedir</goal>
             </goals>
+            <phase>initialize</phase>
             <configuration>
               <property>geotoolsBaseDir</property>
             </configuration>
@@ -1706,15 +1706,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.3.1</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>install</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-          </execution>
-        </executions>
         <inherited>false</inherited>
         <configuration>
           <encoding>UTF-8</encoding>
@@ -1729,6 +1720,15 @@
             </resource>
           </resources>
         </configuration>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>install</phase>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- ======================================================= -->
@@ -1806,6 +1806,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.3.0</version>
+        <inherited>true</inherited>
+        <configuration>
+          <attach>true</attach>
+        </configuration>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -1814,10 +1818,6 @@
             </goals>
           </execution>
         </executions>
-        <inherited>true</inherited>
-        <configuration>
-          <attach>true</attach>
-        </configuration>
       </plugin>
 
       <!-- ======================================================= -->
@@ -1827,13 +1827,6 @@
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
         <version>2.2.5</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>revision</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <prefix>build</prefix>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
@@ -1862,6 +1855,13 @@
           -->
           <useNativeGit>${git.commit.useNative}</useNativeGit>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- ======================================================= -->
@@ -2014,14 +2014,6 @@
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <version>2.20.0</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>${spotless.action}</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <java>
             <googleJavaFormat>
@@ -2034,20 +2026,20 @@
             <indexFile>${project.basedir}/.spotless-index</indexFile>
           </upToDateChecking>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>${spotless.action}</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
         <groupId>com.github.ekryd.sortpom</groupId>
         <artifactId>sortpom-maven-plugin</artifactId>
-        <version>2.15.0</version>
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>${pom.fmt.action}</goal>
-            </goals>
-          </execution>
-        </executions>
+        <version>3.3.0</version>
         <configuration>
           <skip>${pom.fmt.skip}</skip>
           <keepBlankLines>true</keepBlankLines>
@@ -2056,6 +2048,14 @@
           <verifyFail>stop</verifyFail>
           <verifyFailOn>strict</verifyFailOn>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>${pom.fmt.action}</goal>
+            </goals>
+            <phase>verify</phase>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
@@ -2172,6 +2172,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>3.4.5</version>
+        <configuration>
+          <!-- Avoid the dependency plugin to download again all jars
+               from repositories just to report the following information -->
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
         <reportSets>
           <reportSet>
             <reports>
@@ -2183,12 +2189,6 @@
             </reports>
           </reportSet>
         </reportSets>
-        <configuration>
-          <!-- Avoid the dependency plugin to download again all jars
-               from repositories just to report the following information -->
-          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-        </configuration>
       </plugin>
 
       <!-- ======================================================= -->
@@ -2315,6 +2315,11 @@
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
             <version>7.1.1</version>
+            <configuration>
+              <failBuildOnCVSS>7</failBuildOnCVSS>
+              <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
+              <format>ALL</format>
+            </configuration>
             <executions>
               <execution>
                 <goals>
@@ -2322,11 +2327,6 @@
                 </goals>
               </execution>
             </executions>
-            <configuration>
-              <failBuildOnCVSS>7</failBuildOnCVSS>
-              <suppressionFile>${geotoolsBaseDir}/build/qa/dependency-check-suppression.xml</suppressionFile>
-              <format>ALL</format>
-            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -2345,13 +2345,20 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-pmd-plugin</artifactId>
             <version>${maven.pmd.plugin.version}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
+            <configuration>
+              <skip>${pmd.skip}</skip>
+              <rulesets>
+                <ruleset>${geotoolsBaseDir}/build/qa/pmd-ruleset.xml</ruleset>
+                <ruleset>${geotoolsBaseDir}/build/qa/pmd-junit-ruleset.xml</ruleset>
+              </rulesets>
+              <failurePriority>3</failurePriority>
+              <minimumPriority>3</minimumPriority>
+              <verbose>true</verbose>
+              <includeTests>true</includeTests>
+              <excludeRoots>
+                <excludeRoot>target/generated-sources</excludeRoot>
+              </excludeRoots>
+            </configuration>
             <dependencies>
               <dependency>
                 <groupId>net.sourceforge.pmd</groupId>
@@ -2374,20 +2381,13 @@
                 <version>${pmd.version}</version>
               </dependency>
             </dependencies>
-            <configuration>
-              <skip>${pmd.skip}</skip>
-              <rulesets>
-                <ruleset>${geotoolsBaseDir}/build/qa/pmd-ruleset.xml</ruleset>
-                <ruleset>${geotoolsBaseDir}/build/qa/pmd-junit-ruleset.xml</ruleset>
-              </rulesets>
-              <failurePriority>3</failurePriority>
-              <minimumPriority>3</minimumPriority>
-              <verbose>true</verbose>
-              <includeTests>true</includeTests>
-              <excludeRoots>
-                <excludeRoot>target/generated-sources</excludeRoot>
-              </excludeRoots>
-            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -2440,13 +2440,6 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
             <configuration>
               <fork>false</fork>
               <effort>More</effort>
@@ -2456,6 +2449,13 @@
               <skip>${spotbugs.skip}</skip>
               <excludeFilterFile>${geotoolsBaseDir}/build/qa/spotbugs-exclude.xml</excludeFilterFile>
             </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -2472,20 +2472,6 @@
         <plugins>
           <plugin>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>com.puppycrawl.tools</groupId>
-                <artifactId>checkstyle</artifactId>
-                <version>9.3</version>
-              </dependency>
-            </dependencies>
             <configuration>
               <logViolationsToConsole>true</logViolationsToConsole>
               <!-- ignore generated classes, e.g., javacc ones -->
@@ -2493,6 +2479,20 @@
               <skip>${checkstyle.skip}</skip>
               <configLocation>${geotoolsBaseDir}/build/qa/${checkstyle.file}</configLocation>
             </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>9.3</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -2564,10 +2564,10 @@
               </execution>
               <execution>
                 <id>post-unit-test</id>
-                <phase>test</phase>
                 <goals>
                   <goal>report</goal>
                 </goals>
+                <phase>test</phase>
               </execution>
             </executions>
           </plugin>

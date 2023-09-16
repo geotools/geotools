@@ -45,6 +45,12 @@
         <artifactId>jjtree-javacc</artifactId>
         <version>${project.version}</version>
 
+        <configuration>
+          <nodePackage>org.geotools.filter.text.cql_2.parsers</nodePackage>
+          <nodeDirectory>${basedir}/modified-src</nodeDirectory>
+          <sourceDirectory>${basedir}/src/main/jjtree</sourceDirectory>
+        </configuration>
+
         <executions>
           <execution>
             <goals>
@@ -55,12 +61,6 @@
 
         </executions>
 
-        <configuration>
-          <nodePackage>org.geotools.filter.text.cql_2.parsers</nodePackage>
-          <nodeDirectory>${basedir}/modified-src</nodeDirectory>
-          <sourceDirectory>${basedir}/src/main/jjtree</sourceDirectory>
-        </configuration>
-
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -68,10 +68,10 @@
         <executions>
           <execution>
             <id>add-source</id>
-            <phase>generate-sources</phase>
             <goals>
               <goal>add-source</goal>
             </goals>
+            <phase>generate-sources</phase>
             <configuration>
               <sources>
                 <source>${project.build.directory}/generated-sources/jjtree-javacc</source>

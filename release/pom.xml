@@ -33,8 +33,8 @@
       <version>${project.version}</version>
       <exclusions>
         <exclusion>
-          <artifactId>*</artifactId>
           <groupId>*</groupId>
+          <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -464,30 +464,6 @@
       <plugin>
         <groupId>com.ruleoftech</groupId>
         <artifactId>markdown-page-generator-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>licenses</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputDirectory>${project.basedir}/../licenses</inputDirectory>
-              <outputDirectory>${project.build.directory}/html/licenses</outputDirectory>
-            </configuration>
-          </execution>
-          <execution>
-            <id>readme</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputDirectory>${project.basedir}/src/markdown</inputDirectory>
-              <outputDirectory>${project.build.directory}/html</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
         <configuration>
           <recursiveInput>false</recursiveInput>
           <transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
@@ -496,19 +472,35 @@
           <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS</pegdownExtensions>
           <defaultTitle>true</defaultTitle>
         </configuration>
+        <executions>
+          <execution>
+            <id>licenses</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <inputDirectory>${project.basedir}/../licenses</inputDirectory>
+              <outputDirectory>${project.build.directory}/html/licenses</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>readme</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <inputDirectory>${project.basedir}/src/markdown</inputDirectory>
+              <outputDirectory>${project.build.directory}/html</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- package distribution -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>make-assembly</id>
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <finalName>geotools-${project.version}</finalName>
           <descriptors>
@@ -517,10 +509,27 @@
             <descriptor>src/assembly/userDocDist.xml</descriptor>
           </descriptors>
         </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <!-- integration testing to see if packages are good -->
       <plugin>
         <artifactId>maven-invoker-plugin</artifactId>
+        <configuration>
+          <parallelThreads>1C</parallelThreads>
+          <ignoreFailures>true</ignoreFailures>
+          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+          <settingsFile>src/it/settings.xml</settingsFile>
+          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+          <showErrors>true</showErrors>
+          <streamLogs>false</streamLogs>
+        </configuration>
         <executions>
           <execution>
             <id>integration-test</id>
@@ -541,15 +550,6 @@
             </configuration>
           </execution>
         </executions>
-        <configuration>
-          <parallelThreads>1C</parallelThreads>
-          <ignoreFailures>true</ignoreFailures>
-          <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-          <settingsFile>src/it/settings.xml</settingsFile>
-          <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-          <showErrors>true</showErrors>
-          <streamLogs>false</streamLogs>
-        </configuration>
       </plugin>
       <!-- no need to install this to local repo -->
       <plugin>

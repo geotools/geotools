@@ -176,7 +176,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         Date d = new Date(Calendar.getInstance().getTimeInMillis() + timeout);
 
         while ((ft == null) && ((state != FINISH) && (state != STOP))) {
-            yield(); // let the parser run ... this is being called from
+            Thread.yield(); // let the parser run ... this is being called from
 
             if (d.before(Calendar.getInstance().getTime())) {
                 exception = new SAXException("Timeout");
@@ -316,7 +316,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
         } catch (SAXException e) {
             exception = e;
             state = STOP;
-            yield();
+            Thread.yield();
         }
     }
 

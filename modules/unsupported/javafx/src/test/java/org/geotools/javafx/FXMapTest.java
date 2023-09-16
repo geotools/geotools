@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-public class FXMapJDK11Test extends ApplicationTest {
+public class FXMapTest extends ApplicationTest {
 
     private static FXMap map;
 
@@ -25,7 +25,7 @@ public class FXMapJDK11Test extends ApplicationTest {
     private static final int sceneWidth = 750;
 
     private static GeneralBounds initialBounds;
-    private static final Logger log = Logger.getLogger(FXMapJDK11Test.class.getName());
+    private static final Logger log = Logger.getLogger(FXMapTest.class.getName());
     private static final String mapEPSG = "EPSG:4326";
     private static final String wmsLayer = "OpenStreetMap WMS - by terrestris";
     private static final String wmsURL = "http://ows.terrestris.de/osm/service";

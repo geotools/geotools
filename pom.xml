@@ -440,9 +440,6 @@
   <!--     stress             Profile to activate tests which end  -->
   <!--                        in "StressTest.java"                 -->
   <!--                                                             -->
-  <!--     jdk11test          Profile to activate tests which end  -->
-  <!--                        in "JDK11Test.java"                  -->
-  <!--                                                             -->
   <!--     dependencycheck    Profile to check dependency versions -->
   <!--                                                             -->
   <!--   Example:                                                  -->
@@ -512,7 +509,6 @@
     <interactive.image>false</interactive.image>
     <interactive.tests>false</interactive.tests>
     <java.awt.headless>true</java.awt.headless>
-    <jdk11test.skip.pattern>**/*JDK11Test.java</jdk11test.skip.pattern>
     <jvm.opts></jvm.opts>
     <lint>deprecation,unchecked</lint>
     <logging-profile>quiet-logging</logging-profile>
@@ -1754,7 +1750,6 @@
             <exclude>${online.skip.pattern}</exclude>
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
-            <exclude>${jdk11test.skip.pattern}</exclude>
           </excludes>
           <systemPropertyVariables>
             <org.geotools.test.extensive>${extensive.tests}</org.geotools.test.extensive>
@@ -2314,12 +2309,6 @@
       </properties>
     </profile>
     <profile>
-      <id>jdk11test</id>
-      <properties>
-        <jdk11test.skip.pattern>disabled</jdk11test.skip.pattern>
-      </properties>
-    </profile>
-    <profile>
       <id>site.local</id>
       <distributionManagement>
         <site>
@@ -2411,9 +2400,6 @@
               <excludeRoots>
                 <excludeRoot>target/generated-sources</excludeRoot>
               </excludeRoots>
-              <excludes>
-                <exclude>**/*JDK11Test.java</exclude>
-              </excludes>
             </configuration>
           </plugin>
         </plugins>

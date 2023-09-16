@@ -1662,6 +1662,20 @@
               <failIfNoMatch>false</failIfNoMatch>
             </configuration>
           </execution>
+          <execution>
+            <id>escape-baskslashes</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <value>${project.build.directory}</value>
+              <regex>\\</regex>
+              <replacement>\\\\\\\\</replacement>
+              <name>escapedBuildDirectory</name>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
@@ -2436,7 +2450,7 @@
             <configuration>
               <compilerArgs>
                 <arg>-XDcompilePolicy=simple</arg>
-                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${project.build.directory}/generated-sources/.* -Xep:BanJNDI:WARN ${errorProneFlags}</arg>
+                <arg>-Xplugin:ErrorProne -XepExcludedPaths:${escapedBuildDirectory}/generated-sources/.* -Xep:BanJNDI:WARN ${errorProneFlags}</arg>
                 <arg>-Xlint:${lint}</arg>
                 <arg>-Werror</arg>
                 <arg>-Xmaxwarns</arg>

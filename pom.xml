@@ -503,7 +503,7 @@
     <solrj.version>8.9.0</solrj.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
-    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.6.0</maven.javadoc.plugin.version>
     <!-- surefire configuration -->
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <allow.test.skip>true</allow.test.skip>
@@ -534,7 +534,7 @@
     <errorProneFlags></errorProneFlags>
     <jacoco.version>0.8.7</jacoco.version>
     <lint>deprecation,unchecked</lint>
-    <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
+    <maven.jacoco.plugin.version>0.8.10</maven.jacoco.plugin.version>
     <maven.pmd.plugin.version>3.20.0</maven.pmd.plugin.version>
     <pmd.skip>false</pmd.skip>
     <pmd.version>6.55.0</pmd.version>
@@ -1552,7 +1552,7 @@
       <plugins>
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.3.0</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-eclipse-plugin</artifactId>
@@ -1568,13 +1568,8 @@
           <version>${maven.javadoc.plugin.version}</version>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.9.1</version>
-        </plugin>
-        <plugin>
           <artifactId>maven-plugin-plugin</artifactId>
-          <version>3.6.0</version>
+          <version>3.9.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -1582,27 +1577,27 @@
         </plugin>
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.3.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.3.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0-M3</version>
+          <version>3.4.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
-          <version>3.2.2</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.0.0-M2</version>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <artifactId>maven-antrun-plugin</artifactId>
@@ -1610,21 +1605,21 @@
         </plugin>
         <plugin>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.1.2</version>
         </plugin>
         <plugin>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.1.2</version>
+          <version>3.6.0</version>
         </plugin>
         <plugin>
           <groupId>com.ruleoftech</groupId>
           <artifactId>markdown-page-generator-plugin</artifactId>
-          <version>2.3.1</version>
+          <version>2.4.0</version>
         </plugin>
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
-          <version>4.7.3.4</version>
+          <version>4.7.3.5</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1634,7 +1629,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.4.0</version>
         <executions>
           <execution>
             <id>remove_gt_from_modulename</id>
@@ -1668,7 +1663,7 @@
       <plugin>
         <groupId>org.commonjava.maven.plugins</groupId>
         <artifactId>directory-maven-plugin</artifactId>
-        <version>0.3.1</version>
+        <version>1.0</version>
         <executions>
           <execution>
             <id>directories</id>
@@ -1713,7 +1708,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>copy-resources</id>
@@ -2078,7 +2073,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.0</version>
+        <version>3.12.1</version>
       </plugin>
 
       <!-- ======================================================= -->
@@ -2180,7 +2175,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.7</version>
+        <version>3.4.5</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -2206,7 +2201,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.3</version>
+        <version>3.3.0</version>
         <reportSets>
           <reportSet>
             <reports>
@@ -2224,15 +2219,6 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${maven.jacoco.plugin.version}</version>
-      </plugin>
-
-      <!-- ======================================================= -->
-      <!-- Static analysis of code in search of common bugs        -->
-      <!-- ======================================================= -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <version>3.0.5</version>
       </plugin>
 
       <!-- ======================================================= -->

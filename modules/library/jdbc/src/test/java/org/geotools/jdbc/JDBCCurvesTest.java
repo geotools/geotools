@@ -55,7 +55,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
-
 public abstract class JDBCCurvesTest extends JDBCTestSupport {
 
     @Override

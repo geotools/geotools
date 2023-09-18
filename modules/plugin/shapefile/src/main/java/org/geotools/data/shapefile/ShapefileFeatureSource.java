@@ -18,6 +18,7 @@ package org.geotools.data.shapefile;
 
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
@@ -345,7 +346,22 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         // setup the feature readers
         ShapefileSetManager shpManager = getDataStore().shpManager;
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
-        ShapefileReader shapeReader = shpManager.openShapeReader(geometryFactory, goodRecs != null);
+        ShapefileReader shapeReader = null;
+        final boolean shpFileMayExist =
+                !shpManager.shpFiles.isLocal() || shpManager.shpFiles.exists(ShpFileType.SHP);
+        if (shpFileMayExist) {
+            try {
+                @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
+                final ShapefileReader sr =
+                        shpManager.openShapeReader(geometryFactory, goodRecs != null);
+                shapeReader = sr;
+            } catch (final FileNotFoundException e) {
+                final String format = "Ignoring missing shp-file and moving on: %s";
+                LOGGER.fine(() -> String.format(format, e.getMessage()));
+            }
+        } else {
+            LOGGER.fine("Ignoring missing shp-file and moving on.");
+        }
         @SuppressWarnings("PMD.CloseResource") // managed as a field of the return value
         DbaseFileReader dbfReader = null;
         List<AttributeDescriptor> attributes = readSchema.getAttributeDescriptors();
@@ -454,19 +470,27 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         List<AttributeDescriptor> types = readAttributes();
 
         SimpleFeatureType parent = null;
-        GeometryDescriptor geomDescriptor = (GeometryDescriptor) types.get(0);
-        Class<?> geomBinding = geomDescriptor.getType().getBinding();
+        final GeometryDescriptor geomDescriptor =
+                types.get(0) instanceof GeometryDescriptor
+                        ? (GeometryDescriptor) types.get(0)
+                        : null;
+        if (geomDescriptor != null) {
+            Class<?> geomBinding = geomDescriptor.getType().getBinding();
 
-        if ((geomBinding == Point.class) || (geomBinding == MultiPoint.class)) {
-            parent = BasicFeatureTypes.POINT;
-        } else if ((geomBinding == Polygon.class) || (geomBinding == MultiPolygon.class)) {
-            parent = BasicFeatureTypes.POLYGON;
-        } else if ((geomBinding == LineString.class) || (geomBinding == MultiLineString.class)) {
-            parent = BasicFeatureTypes.LINE;
+            if ((geomBinding == Point.class) || (geomBinding == MultiPoint.class)) {
+                parent = BasicFeatureTypes.POINT;
+            } else if ((geomBinding == Polygon.class) || (geomBinding == MultiPolygon.class)) {
+                parent = BasicFeatureTypes.POLYGON;
+            } else if ((geomBinding == LineString.class)
+                    || (geomBinding == MultiLineString.class)) {
+                parent = BasicFeatureTypes.LINE;
+            }
         }
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.setDefaultGeometry(geomDescriptor.getLocalName());
+        if (geomDescriptor != null) {
+            builder.setDefaultGeometry(geomDescriptor.getLocalName());
+        }
         builder.addAll(types);
         builder.setName(entry.getName());
         builder.setAbstract(false);
@@ -493,7 +517,12 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         AttributeTypeBuilder build = new AttributeTypeBuilder();
         List<AttributeDescriptor> attributes = new ArrayList<>();
         try {
-            shp = shpManager.openShapeReader(new GeometryFactory(), false);
+            try {
+                shp = shpManager.openShapeReader(new GeometryFactory(), false);
+            } catch (final FileNotFoundException e) {
+                final String format = "Ignoring missing shp-file and moving on: %s";
+                LOGGER.fine(() -> String.format(format, e.getMessage()));
+            }
             dbf = shpManager.openDbfReader(false);
             try {
                 prj = shpManager.openPrjReader();
@@ -509,21 +538,21 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 }
                 crs = null;
             }
+            Set<String> usedNames = new HashSet<>(); // record names in case of duplicates
+            if (shp != null) {
+                Class<? extends Geometry> geometryClass =
+                        JTSUtilities.findBestGeometryClass(shp.getHeader().getShapeType());
+                build.setName(Classes.getShortName(geometryClass));
+                build.setNillable(true);
+                build.setCRS(crs);
+                build.setBinding(geometryClass);
 
-            Class<? extends Geometry> geometryClass =
-                    JTSUtilities.findBestGeometryClass(shp.getHeader().getShapeType());
-            build.setName(Classes.getShortName(geometryClass));
-            build.setNillable(true);
-            build.setCRS(crs);
-            build.setBinding(geometryClass);
-
-            GeometryType geometryType = build.buildGeometryType();
-            attributes.add(
-                    build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
-            Set<String> usedNames = new HashSet<>(); // record names in
-            // case of
-            // duplicates
-            usedNames.add(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME);
+                GeometryType geometryType = build.buildGeometryType();
+                attributes.add(
+                        build.buildDescriptor(
+                                BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
+                usedNames.add(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME);
+            }
 
             // take care of the case where no dbf and query wants all =>
             // geometry only

@@ -19,7 +19,9 @@ package org.geotools.data.hana;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCGeographyOnlineTest;
 import org.geotools.jdbc.JDBCGeographyTestSetup;
 import org.geotools.jdbc.VirtualTable;
@@ -71,5 +73,14 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
                                 .getCoordinateReferenceSystem(),
                         false);
         assertEquals(4326, epsg);
+    }
+
+    @Override
+    public void testBounds() throws Exception {
+        assumeTrue(isGeographySupportAvailable());
+
+        ReferencedEnvelope env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
+        ReferencedEnvelope expected = new ReferencedEnvelope(-110, 0, 29, 49, decodeEPSG(4326));
+        assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
     }
 }

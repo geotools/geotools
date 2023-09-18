@@ -500,7 +500,7 @@
     <solrj.version>8.9.0</solrj.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
-    <maven.javadoc.plugin.version>3.6.0</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <!-- surefire configuration -->
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <allow.test.skip>true</allow.test.skip>
@@ -2068,7 +2068,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.12.1</version>
+        <version>2.0</version>
       </plugin>
 
       <!-- ======================================================= -->

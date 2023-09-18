@@ -426,7 +426,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     protected GeometryFactory getGeometryFactory(Query query) {
         // if no hints, use the default geometry factory
         if (query == null || query.getHints() == null) {
-            return new GeometryFactory();
+            final GeometryFactory geometryFactory = entry.getDataStore().getGeometryFactory();
+            return geometryFactory != null ? geometryFactory : new GeometryFactory();
         }
 
         // grab a geometry factory... check for a special hint
@@ -439,6 +440,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
             if (csFactory != null) {
                 geometryFactory = new GeometryFactory(csFactory);
+            } else {
+                geometryFactory = entry.getDataStore().getGeometryFactory();
             }
         }
 

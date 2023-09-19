@@ -85,7 +85,7 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testMultiSurfaceLinearized() throws Exception {
-        String featureTypeName = "tMultiPolygon";
+        String featureTypeName = tname("tMultiPolygon");
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setName("tMultiPolygon");
@@ -96,10 +96,14 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
         SimpleFeatureType ft = ftb.buildFeatureType();
         dataStore.createSchema(ft);
 
+        SimpleFeatureType newSchema = dataStore.getSchema(featureTypeName);
+        assertNotNull(newSchema);
+        newSchema.getGeometryDescriptor().getType().getBinding();
+
         SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
         WKTReader2 reader = new WKTReader2();
-        sfb.set("name", "the name");
-        sfb.set("geom", reader.read("MultiSurface (((1 0, 2 0, 2 1, 1 1, 1 0)))"));
+        sfb.set(aname("name"), "the name");
+        sfb.set(aname("geom"), reader.read("MultiSurface (((1 0, 2 0, 2 1, 1 1, 1 0)))"));
 
         ContentFeatureStore store =
                 (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);

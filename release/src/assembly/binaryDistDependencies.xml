@@ -62,7 +62,6 @@
         <include>org.geotools:gt-metadata</include>
         <include>org.geotools:gt-mongodb</include>
         <include>org.geotools:gt-netcdf</include>
-        <include>org.geotools:gt-opengis</include>
         <include>org.geotools:gt-process-feature</include>
         <include>org.geotools:gt-process-geometry</include>
         <include>org.geotools:gt-process-raster</include>
@@ -96,7 +95,6 @@
         <include>org.geotools.xsd:gt-xsd-wmts</include>
         <include>org.geotools.xsd:gt-xsd-wps</include>
         
-        <include>org.geotools.jdbc:gt-jdbc-oracle</include>
         <include>org.geotools.jdbc:gt-jdbc-db2</include>
         <include>org.geotools.jdbc:gt-jdbc-h2</include>
         <include>org.geotools.jdbc:gt-jdbc-hana</include>

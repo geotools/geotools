@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>30-SNAPSHOT</version>
+    <version>31-SNAPSHOT</version>
   </parent>
 
   <!--properties>

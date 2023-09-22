@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>30-SNAPSHOT</version>
+    <version>30-RC</version>
   </parent>
   <artifactId>gt-http</artifactId>
   <name>HTTP Clients</name>

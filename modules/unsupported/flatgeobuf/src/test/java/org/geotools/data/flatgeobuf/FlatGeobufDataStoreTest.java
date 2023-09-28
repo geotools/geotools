@@ -799,6 +799,43 @@ public class FlatGeobufDataStoreTest {
     }
 
     @Test
+    public void readEmpty() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("empty");
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures();
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(0, count);
+        }
+    }
+
+    @Test
+    public void readEmptyBbox() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("empty");
+        SimpleFeatureType schema = featureSource.getSchema();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+        CoordinateReferenceSystem targetCRS =
+                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        Envelope env = new Envelope(12, 13, 56, 57);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(env, targetCRS);
+        Filter filter = ff.bbox(ff.property(geometryPropertyName), bbox);
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int count = 0;
+            while (it.hasNext()) {
+                it.next();
+                count++;
+            }
+            assertEquals(0, count);
+        }
+    }
+
+    @Test
     public void readCountries() throws IOException {
         URL url =
                 getClass()

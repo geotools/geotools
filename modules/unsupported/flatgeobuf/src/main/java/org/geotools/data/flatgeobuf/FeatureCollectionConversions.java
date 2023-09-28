@@ -133,19 +133,21 @@ public class FeatureCollectionConversions {
         int featuresOffset = headerMeta.offset + treeSize;
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
-
         Iterable<SimpleFeature> iterable;
-        SearchResult result =
-                PackedRTree.search(
-                        data,
-                        headerMeta.offset,
-                        (int) headerMeta.featuresCount,
-                        headerMeta.indexNodeSize,
-                        rect);
-        int skip = treeSize - result.pos;
-        if (skip > 0) FlatGeobufFeatureReader.skipNBytes(data, treeSize - result.pos);
-        iterable = new ReadHitsIterable(fb, result.hits, headerMeta, featuresOffset, data);
-
+        if (headerMeta.indexNodeSize > 1) {
+            SearchResult result =
+                    PackedRTree.search(
+                            data,
+                            headerMeta.offset,
+                            (int) headerMeta.featuresCount,
+                            headerMeta.indexNodeSize,
+                            rect);
+            int skip = treeSize - result.pos;
+            if (skip > 0) FlatGeobufFeatureReader.skipNBytes(data, treeSize - result.pos);
+            iterable = new ReadHitsIterable(fb, result.hits, headerMeta, featuresOffset, data);
+        } else {
+            iterable = new ReadAllInterable(headerMeta, data, fb);
+        }
         return iterable;
     }
 }

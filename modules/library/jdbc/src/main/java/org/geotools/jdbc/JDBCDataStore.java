@@ -1430,6 +1430,16 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
         }
 
+        // In the SQL standard distinct and order by can work only if all order by attributes also
+        // show up in the select
+        // Given the Unique visitor makes no promise regarding sorting, it's easier to just remove
+        // the sort
+        if (visitor instanceof UniqueVisitor
+                && query.getSortBy() != null
+                && query.getSortBy().length > 0) {
+            query.setSortBy();
+        }
+
         // if the visitor is limiting the result to a given start - max, we will
         // try to apply limits to the aggregate query
         LimitingVisitor limitingVisitor = null;
@@ -3153,6 +3163,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         return sql.toString();
     }
+
     /**
      * Creates the prepared statement for a select from the geometry association table.
      *
@@ -5012,6 +5023,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
         dataSource = null;
     }
+
     /**
      * Checks if geometry generalization required and makes sense
      *
@@ -5033,6 +5045,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     protected boolean isSimplificationRequired(Hints hints, GeometryDescriptor gatt) {
         return isGeometryReduceRequired(hints, gatt, Hints.GEOMETRY_SIMPLIFICATION);
     }
+
     /**
      * Checks if reduction required and makes sense
      *

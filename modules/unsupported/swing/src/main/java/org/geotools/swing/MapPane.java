@@ -78,7 +78,7 @@ public interface MapPane {
      * Sets the area to display in world units.
      *
      * @param envelope the new display area
-     * @throws IllegalArgumentException if {@code envelope} is {@code null]
+     * @throws IllegalArgumentException if {@code envelope} is {@code null}
      */
     void setDisplayArea(Bounds envelope);
 
@@ -124,7 +124,7 @@ public interface MapPane {
 
     /**
      * Registers an object that wishes to receive {@code MapMouseEvent}s such as a {@linkplain
-     * StatusBar}.
+     * org.geotools.swing.control.JMapStatusBar}.
      *
      * @param listener the listener to add
      * @throws IllegalArgumentException if listener is null

@@ -62,7 +62,7 @@ import org.geotools.swing.tool.ScrollWheelTool;
  * }</pre>
  *
  * @see MapLayerTable
- * @see StatusBar
+ * @see JMapStatusBar
  * @author Michael Bedward
  * @since 2.6
  * @version $Id$

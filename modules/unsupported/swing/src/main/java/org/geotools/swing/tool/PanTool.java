@@ -75,7 +75,8 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * Respond to a mouse dragged event. Calls {@link org.geotools.swing.MapPane#moveImage()}
+     * Respond to a mouse dragged event. Calls {@link org.geotools.swing.MapPane#moveImage(int,
+     * int)}
      *
      * @param ev the mouse event
      */

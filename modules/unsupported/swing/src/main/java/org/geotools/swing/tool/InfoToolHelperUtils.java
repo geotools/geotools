@@ -50,7 +50,7 @@ public class InfoToolHelperUtils {
     }
 
     /**
-     * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(DirectPosition)} into an
+     * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(org.geotools.api.geometry.Position)  into an
      * array of {@code Numbers}.
      *
      * @param objArray an Object representing a primitive array

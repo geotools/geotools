@@ -36,7 +36,7 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * <pre>   {@code len = len.old * z} </pre>
  *
- * where {@code z} is the linear zoom increment (>= 1.0)
+ * where {@code z} is the linear zoom increment (&ge; 1.0)
  *
  * @author Michael Bedward
  * @since 2.6

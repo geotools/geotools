@@ -346,7 +346,7 @@ public abstract class AbstractMapPane extends JPanel
      *
      * @return true if the pane is currently accepting repaint requests; false if it is ignoring
      *     them
-     * @see #setRepaint(boolean)
+     * @see #setIgnoreRepaint(boolean)
      */
     public boolean isAcceptingRepaints() {
         return acceptRepaintRequests.get();

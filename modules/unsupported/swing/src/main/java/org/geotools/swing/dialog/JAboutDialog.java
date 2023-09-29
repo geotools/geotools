@@ -57,7 +57,7 @@ import org.geotools.util.factory.GeoTools;
  *           "GeoFoo: Map your foos in real time %nVersion 0.0.1");
  *
  * SwingUtilities.invokeLater(new Runnable() {
- *     &#64Override
+ *     @Override
  *     public void run() {
  *         JAboutDialog dialog = new JAboutDialog("About", appInfo);
  *         DialogUtils.showCentred(dialog);

@@ -41,7 +41,7 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
      * feature as necessary. Example of a simple buffering operation:
      *
      * <pre>
-     * protected void processFeature(SimpleFeature feature, Map<String, Object> input) throws Exception {
+     * protected void processFeature(SimpleFeature feature, Map&lt;String, Object&gt; input) throws Exception {
      *    Double buffer = (Double) input.get( BufferFeatureCollectionFactory.BUFFER.key );
      *
      *    Geometry g = (Geometry) feature.getDefaultGeometry();

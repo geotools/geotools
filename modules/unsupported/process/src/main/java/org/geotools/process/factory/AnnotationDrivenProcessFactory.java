@@ -460,7 +460,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
      * <p>Subclasses can control the process using their implementation of:
      *
      * <ul>
-     *   <li>{@ #method(String)}: must return a non null method
+     *   <li>{@link #method(String)}: must return a non null method
      *   <li>{@link #createProcessBean(Name)}: return a bean to use; or null for static methods
      * </ul>
      */

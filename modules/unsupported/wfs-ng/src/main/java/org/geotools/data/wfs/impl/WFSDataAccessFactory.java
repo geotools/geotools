@@ -48,8 +48,8 @@ import org.xml.sax.EntityResolver;
 /**
  * The factory responsible for creating WFSDataAccess objects based on their capabilities and the
  * configuration file used. This file is included as a candidate for DataAccessFinder by virtue of
- * the fact that its name is present in the file gt-wfs-ng > src/main/resources > META-INF >
- * services > org.geotools.api.data.DataAccessFactory.
+ * the fact that its name is present in the file gt-wfs-ng &gt; src/main/resources &gt; META-INF
+ * &gt; services &gt; org.geotools.api.data.DataAccessFactory.
  *
  * @author Adam Brown (Curtin University of Technology)
  */
@@ -149,7 +149,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
      * <ul>
      *   <li>{@code null} (not supplied): use "AUTO", let the DataStore decide.
      *   <li>{@code Boolean.TRUE} use HTTP POST preferably.
-     *   <li {@code Boolean.FALSE} use HTTP GET preferably.
+     *   <li>{@code Boolean.FALSE} use HTTP GET preferably.
      * </ul>
      */
     public static final WFSFactoryParam<Boolean> PROTOCOL;
@@ -242,7 +242,9 @@ public class WFSDataAccessFactory implements DataAccessFactory {
 
     /**
      * Optional {@code Integer} DataStore parameter indicating a timeout in milliseconds for the
-     * HTTP connections. <>p> @TODO: specify if its just a connection timeout or also a read timeout
+     * HTTP connections.
+     *
+     * <p>@TODO: specify if its just a connection timeout or also a read timeout
      */
     public static final WFSFactoryParam<Integer> TIMEOUT;
 

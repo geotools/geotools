@@ -46,10 +46,10 @@ public interface WFSResponseFactory {
     public boolean canProcess(WFSRequest originatingRequest, String contentType);
 
     /**
-     * Creates a response parser for the given WFS response.
+     * Creates a response for the given WFS request.
      *
      * @param response the handle to the response contents the WFS sent
-     * @return a {@link WFSResponseParser} that can deal with the given WFS response
+     * @return a {@link WFSResponse} that can deal with the given request and response
      */
     public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException;
 

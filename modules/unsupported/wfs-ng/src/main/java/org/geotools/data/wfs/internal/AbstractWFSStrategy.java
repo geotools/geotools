@@ -594,7 +594,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
      *
      * @return a two-element array where the first element is the supported filter and the second
      *     the one to post-process
-     * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.geotools.api.filter.Filter)
+     * @see WFSStrategy#splitFilters(QName, Filter)
      */
     @Override
     public Filter[] splitFilters(QName typeName, Filter filter) {

@@ -44,8 +44,8 @@ import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xsd.SchemaIndex;
 
 /**
- * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore &
- *     ContentDataStore.
+ * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore
+ *     and ContentDataStore.
  */
 public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
     /** The Web feature service client object. */

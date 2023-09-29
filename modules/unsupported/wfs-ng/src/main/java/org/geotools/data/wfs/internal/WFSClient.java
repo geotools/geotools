@@ -432,7 +432,7 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
      *
      * @return a two-element array where the first element is the supported filter and the second
      *     the one to post-process
-     * @see org.geotools.data.wfs.internal.WFSStrategy#splitFilters(org.geotools.api.filter.Filter)
+     * @see WFSStrategy#splitFilters(QName, Filter)
      */
     public Filter[] splitFilters(QName typeName, Filter filter) {
         return getStrategy().splitFilters(typeName, filter);

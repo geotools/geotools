@@ -40,8 +40,8 @@ import org.xml.sax.EntityResolver;
  * Potential base class for {@link WFSResponseFactory} implementations. Provides support for
  * detecting and parsing of exception reports received as {@link HTTPResponse}.
  *
- * <p>Subclasses have to {@link Implementation} {@link #isValidResponseHead(StringBuilder)} and
- * {@link #createResponseImpl(WFSRequest, HTTPResponse, InputStream)}.
+ * <p>Subclasses have to {@link Implementation} {@link #isValidResponseHead} and {@link
+ * #createResponseImpl(WFSRequest, HTTPResponse, InputStream)}.
  *
  * @author awaterme
  */
@@ -57,9 +57,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
      * header. Truth is, some WFS implementations does not set proper HTTP response headers so a bit
      * of an heuristic may be needed in order to identify the actual response.
      *
-     * @see WFSResponseFactory#createParser(WFSResponse)
-     * @see FeatureCollectionParser
-     * @see ExceptionReportParser
+     * @see WFSResponseFactory#createResponse(WFSRequest, HTTPResponse)
+     * @see WFSException
      */
     @Override
     public WFSResponse createResponse(WFSRequest request, HTTPResponse response)

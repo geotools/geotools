@@ -42,8 +42,8 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.xml.sax.SAXException;
 
 /**
- * {@link GetParser<SimpleFeature>} for {@link WFSFeatureReader} that uses the geotools {@link
- * PullParser} to fetch Features out of a WFS GetFeature response.
+ * {@link GetParser<SimpleFeature>} for {@link org.geotools.data.wfs.WFSFeatureReader} that uses the
+ * geotools {@link PullParser} to fetch Features out of a WFS GetFeature response.
  *
  * @author Niels Charlier
  */

@@ -45,8 +45,8 @@ import org.geotools.util.Converters;
  * A wrapper allowing a {@link Process} with a single output to be called as a {@link Function}.
  * Since Function parameters are positional and Process parameters are named, the following strategy
  * is used to allow specifying named Process parameters as function inputs. All inputs to the
- * function must evaluate to Map<String, Object>, with a single entry where the key is the name of a
- * process parameter and the value is the argument value
+ * function must evaluate to Map&lt;String, Object&gt;, with a single entry where the key is the
+ * name of a process parameter and the value is the argument value
  *
  * @author Andrea Aime - GeoSolutions
  */

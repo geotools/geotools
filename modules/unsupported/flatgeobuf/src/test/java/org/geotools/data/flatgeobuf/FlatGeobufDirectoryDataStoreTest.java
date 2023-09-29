@@ -42,6 +42,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.junit.Rule;
 import org.junit.Test;
@@ -62,11 +63,7 @@ public class FlatGeobufDirectoryDataStoreTest {
         // Copy over some FGB files
         String[] fgbNames = {"lines", "points", "polygons"};
         for (String name : fgbNames) {
-            File file =
-                    URLs.urlToFile(
-                            getClass()
-                                    .getClassLoader()
-                                    .getResource("org/geotools/data/flatgeobuf/" + name + ".fgb"));
+            File file = URLs.urlToFile(TestData.url(FlatGeobufDataStore.class, name + ".fgb"));
             Files.copy(
                     file.toPath(),
                     new File(directory, file.getName()).toPath(),

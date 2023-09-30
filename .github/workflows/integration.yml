@@ -53,8 +53,8 @@ jobs:
         echo "Checking out mapfish-print-v2"
         mkdir mapfish-print-v2
         git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
-        echo "Checking out mapfish-print-v3"
 # additional check during remove-opengis activity
+#        echo "Checking out mapfish-print-v3"
 #        mkdir mapfish-print-v3
 #        git clone -b opengis-migration https://github.com/mapfish/mapfish-print.git mapfish-print-v3
 # additional check during remove-opengis activity

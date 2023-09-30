@@ -50,7 +50,7 @@ jobs:
 #        echo "Checking out GeoFence"
 #        mkdir geofence
 #        git clone https://github.com/geoserver/geofence.git geofence
-#        echo "Checking out mapfish-print-v2"
+        echo "Checking out mapfish-print-v2"
         mkdir mapfish-print-v2
         git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
         echo "Checking out mapfish-print-v3"

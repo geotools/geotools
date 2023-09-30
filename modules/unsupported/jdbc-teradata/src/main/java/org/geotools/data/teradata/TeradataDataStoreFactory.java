@@ -58,7 +58,7 @@ public class TeradataDataStoreFactory extends JDBCDataStoreFactory {
                     false,
                     Boolean.FALSE);
 
-    /** enables using && in bbox queries */
+    /** enables using &amp;&amp; in bbox queries */
     public static final Param LOOSEBBOX =
             new Param(
                     "Loose bbox",

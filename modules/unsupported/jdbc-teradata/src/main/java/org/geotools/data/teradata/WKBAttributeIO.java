@@ -87,7 +87,6 @@ public class WKBAttributeIO {
         }
     }
 
-    /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(java.sql.ResultSet, int) */
     public Geometry read(ResultSet rs, String columnName) throws IOException {
         try {
             return read(rs, rs.findColumn(columnName));
@@ -97,7 +96,6 @@ public class WKBAttributeIO {
         }
     }
 
-    /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(java.sql.ResultSet, int) */
     public Geometry read(ResultSet rs, int columnIndex) throws IOException {
         try {
             switch (rs.getMetaData().getColumnType(columnIndex)) {
@@ -111,7 +109,6 @@ public class WKBAttributeIO {
         }
     }
 
-    /** @see org.geotools.data.jdbc.attributeio.AttributeIO#read(java.sql.ResultSet, int) */
     private Geometry readFromBytes(ResultSet rs, int columnIndex) throws IOException {
         try {
             return wkb2Geometry(rs.getBytes(columnIndex));
@@ -143,10 +140,6 @@ public class WKBAttributeIO {
         }
     }
 
-    /**
-     * @see org.geotools.data.jdbc.attributeio.AttributeIO#write(java.sql.PreparedStatement, int,
-     *     java.lang.Object)
-     */
     public void write(PreparedStatement ps, int position, Object value) throws IOException {
         try {
             if (value == null) {

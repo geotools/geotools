@@ -128,10 +128,9 @@ public class GML2EncodingUtils {
         // not an EPSG code? figure out separate authority and code then
         if (code == null) {
             for (ReferenceIdentifier referenceIdentifier : crs.getIdentifiers()) {
-                Identifier id = (Identifier) referenceIdentifier;
-                if (id.getAuthority() != null) {
-                    authority = id.getAuthority().getTitle().toString();
-                    code = id.getCode();
+                if (referenceIdentifier.getAuthority() != null) {
+                    authority = referenceIdentifier.getCodeSpace();
+                    code = referenceIdentifier.getCode();
                     break;
                 }
             }

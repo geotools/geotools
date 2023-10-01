@@ -356,6 +356,8 @@
   <modules>
     <module>build</module>
     <module>modules</module>
+    <module>tutorials/quickstart</module>
+    <module>docs</module>
     <module>release</module>
   </modules>
 
@@ -2236,18 +2238,6 @@
 
   <!-- Profiles set on the command-line overwrite default properties. -->
   <profiles>
-    <profile>
-      <id>docs</id>
-      <activation>
-        <property>
-          <name>all</name>
-        </property>
-      </activation>
-      <modules>
-        <module>tutorials/quickstart</module>
-        <module>docs</module>
-      </modules>
-    </profile>
     <profile>
       <id>extensive.tests</id>
       <properties>

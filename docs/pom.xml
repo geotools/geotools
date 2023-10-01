@@ -235,40 +235,7 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sphinx</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <ant antfile="build.xml" dir="${basedir}" target="${target}">
-                  <property name="build.directory" value="${project.build.directory}"></property>
-                  <property name="project.version" value="${project.version}"></property>
-                </ant>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>1.10.12</version>
-          </dependency>
-          <dependency>
-            <groupId>ant-contrib</groupId>
-            <artifactId>ant-contrib</artifactId>
-            <version>1.0b3</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-      <plugin>
         <!-- Disable PMD in this module, the code is a set of examples, too many System.out -->
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>${maven.pmd.plugin.version}</version>
         <executions>
@@ -279,7 +246,6 @@
       </plugin>
       <plugin>
         <!-- do not deploy tutorial examples -->
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <configuration>
           <skip>true</skip>
@@ -289,6 +255,50 @@
   </build>
 
   <profiles>
+    <profile>
+      <id>docs</id>
+      <activation>
+        <property>
+          <name>all</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sphinx</id>
+                <phase>compile</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <ant antfile="build.xml" dir="${basedir}" target="${target}">
+                      <property name="build.directory" value="${project.build.directory}"></property>
+                      <property name="project.version" value="${project.version}"></property>
+                    </ant>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant</artifactId>
+                <version>1.10.12</version>
+              </dependency>
+              <dependency>
+                <groupId>ant-contrib</groupId>
+                <artifactId>ant-contrib</artifactId>
+                <version>1.0b3</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>index</id>
       <properties>

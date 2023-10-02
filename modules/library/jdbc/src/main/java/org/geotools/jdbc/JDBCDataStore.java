@@ -1953,7 +1953,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         Geometry g = (Geometry) value;
         if (CurvedGeometry.class.isInstance(g)
                 && !CurvedGeometry.class.isAssignableFrom(binding)
-                && !binding.isAssignableFrom(Geometry.class)) {
+                && !binding.equals(Geometry.class)) {
             return ((CurvedGeometry<? extends Geometry>) g).linearize();
         }
         return g;

@@ -373,12 +373,16 @@ public abstract class JDBCCurvesTest extends JDBCTestSupport {
         SimpleFeatureType ft = ftb.buildFeatureType();
 
         SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
-        sfb.set("name", "the name");
+        sfb.set("name", "multipolygon_linearized");
         sfb.set("geometry", feature.getDefaultGeometry());
 
         ContentFeatureStore store =
                 (ContentFeatureStore) dataStore.getFeatureSource(featureTypeName);
         store.addFeatures(DataUtilities.collection(sfb.buildFeature("1")));
+        SimpleFeature retrievedFeature = getSingleFeatureByName("multipolygon_linearized");
+        Geometry g = (Geometry) retrievedFeature.getDefaultGeometry();
+        assertNotNull(g);
+        assertThat(g, CoreMatchers.instanceOf(MultiPolygon.class));
     }
 
     protected SimpleFeature getSingleFeatureByName(String name) throws IOException {

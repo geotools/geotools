@@ -25,14 +25,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
-import org.geotools.api.data.DataStore;
-import org.geotools.api.data.Query;
-import org.geotools.api.data.SimpleFeatureReader;
-import org.geotools.api.feature.Feature;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.AttributeDescriptor;
-import org.geotools.api.filter.Filter;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureReader;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.util.logging.Logging;
+import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.Filter;
 
 /** {@link DataStore} for a vector mosaic. */
 public class VectorMosaicFeatureReader implements SimpleFeatureReader {

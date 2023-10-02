@@ -55,8 +55,8 @@ import org.geotools.xsd.SchemaIndex;
  * downloads. To do this use the parameter {@link WFSDataAccessFactory#SCHEMA_CACHE_LOCATION}, or
  * call the function {@link #setCacheLocation(File)}.
  *
- * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore &
- *     ContentDataStore.
+ * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore
+ *     and ContentDataStore.
  */
 public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
     /** The Web feature service client object. */

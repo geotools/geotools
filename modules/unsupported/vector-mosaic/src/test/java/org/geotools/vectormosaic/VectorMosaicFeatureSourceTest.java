@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -37,7 +38,6 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.PropertyName;
-import org.geotools.data.FeatureSource;
 
 public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
 
@@ -251,7 +251,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         q.setFilter(f);
         q.setPropertyNames("weight");
         try (VectorMosaicFeatureReader featureReader =
-                     (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
             if (featureReader.hasNext()) {
                 String granuleAttributes =
                         featureReader.rawGranule.getType().getDescriptors().stream()
@@ -272,7 +272,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         q.setFilter(f);
         q.setPropertyNames("rank");
         try (VectorMosaicFeatureReader featureReader =
-                     (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
             if (featureReader.hasNext()) {
                 String delegateAttributes =
                         featureReader.delegateFeature.getType().getDescriptors().stream()
@@ -294,7 +294,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         q.setFilter(f);
         q.setPropertyNames("rank", "weight");
         try (VectorMosaicFeatureReader featureReader =
-                     (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
             if (featureReader.hasNext()) {
                 String delegateAttributes =
                         featureReader.delegateFeature.getType().getDescriptors().stream()

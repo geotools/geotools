@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Returns a clone of the provided filter where all geometries and bboxes have inverted coordinates
- * (x, y) -> (y, x).
+ * (x, y) -&gt; (y, x).
  *
  * @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it"
  */

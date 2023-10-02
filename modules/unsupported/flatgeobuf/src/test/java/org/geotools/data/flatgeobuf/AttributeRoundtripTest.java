@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +26,7 @@ import org.geotools.data.memory.MemoryFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -44,11 +46,8 @@ public class AttributeRoundtripTest {
 
     String getResource(String name)
             throws URISyntaxException, UnsupportedEncodingException, IOException {
-        File file =
-                URLs.urlToFile(
-                        getClass()
-                                .getClassLoader()
-                                .getResource("org/geotools/data/flatgeobuf/" + name));
+        URL url = TestData.url(FlatGeobufDataStore.class, name);
+        File file = URLs.urlToFile(url);
         String resource =
                 new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8.name());
         return GeoJSONWriter.toGeoJSON(GeoJSONReader.parseFeatureCollection(resource));

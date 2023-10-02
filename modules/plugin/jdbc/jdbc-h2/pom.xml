@@ -57,12 +57,12 @@
       <version>0.9</version>
       <exclusions>
         <exclusion>
-          <artifactId>h2</artifactId>
           <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>hatbox</artifactId>
           <groupId>net.sourceforge.hatbox</groupId>
+          <artifactId>hatbox</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

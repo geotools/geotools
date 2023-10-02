@@ -133,9 +133,9 @@ public class URIs {
      * Appends a query string to a url.
      *
      * <p>This method checks <code>url</code> to see if the appended query string requires a '?' or
-     * '&' to be prepended.
+     * '&amp;' to be prepended.
      *
-     * <p>This code can be used to make sure the url ends with ? or & by calling
+     * <p>This code can be used to make sure the url ends with ? or &amp; by calling
      * appendQueryString(url, "")
      *
      * @param url The base url.

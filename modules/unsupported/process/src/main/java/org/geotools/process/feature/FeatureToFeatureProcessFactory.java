@@ -37,7 +37,7 @@ import org.geotools.text.Text;
  *
  * <ul>
  *   <li>{@link ProcessFactory#getTitle()}
- *   <li>{@link ProcessFactory#getDescription()}
+ *   <li>{@link ProcessFactory#getDescription(Name)}
  *   <li>{@link #addParameters(Map)}
  *   <li>
  * </ul>

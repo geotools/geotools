@@ -54,7 +54,7 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
      *
      * <p>It also checks that the requested type is a SimpleFeatureType
      *
-     * @see WFSResponseFactory#canProcess(WFSOperationType, String)
+     * @see WFSResponseFactory#canProcess(WFSRequest, String)
      */
     @Override
     public boolean canProcess(final WFSRequest request, final String contentType) {

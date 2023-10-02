@@ -29,6 +29,12 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
+      <artifactId>gt-sample-data</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
       <artifactId>gt-geojson-core</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
@@ -36,7 +42,7 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20230227</version>
+      <version>20230618</version>
       <scope>test</scope>
     </dependency>
     <dependency>

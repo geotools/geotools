@@ -127,7 +127,7 @@ public final class TestData extends org.geotools.test.TestData {
      * org/geotools/foo/test-data/foo.txt} (in the {@code foo} module).
      *
      * <p>This method is useful when a test case needs to access a resource through a {@link File},
-     * for example because it want to open it using {@link java.io.RandomAccess}. Because the
+     * for example because it want to open it using {@link java.util.RandomAccess}. Because the
      * resources provided in the {@code sample-data} module are available to other modules as a JAR
      * file, other modules can only access them through an {@link URL} unless they copy them in
      * their own {@code test-data} directory.
@@ -138,8 +138,8 @@ public final class TestData extends org.geotools.test.TestData {
      *
      * <p>The file will be {@linkplain File#deleteOnExit deleted on exit} if and only if it has been
      * modified. Callers don't need to worry about cleanup, because the files are copied in the
-     * {@code target/.../test-data} directory, which is not versionned by SVN and is cleaned by
-     * Maven on {@code mvn clean} execution.
+     * {@code target/.../test-data} directory, which is not versioned by Git and is cleaned by Maven
+     * on {@code mvn clean} execution.
      *
      * @param caller Calling class or object used to locate the destination {@code test-data}.
      * @param name Path to file in {@code org/geotools/test-data}.

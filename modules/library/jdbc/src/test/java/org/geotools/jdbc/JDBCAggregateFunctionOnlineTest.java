@@ -415,6 +415,25 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testUniqueWithNonMatchingSort() throws Exception {
+        assumeTrue(dataStore.getSQLDialect().isAggregatedSortSupported("distinct"));
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property(aname("stringProperty"));
+
+        UniqueVisitor v = new MyUniqueVisitor(p);
+        v.setStartIndex(0);
+        Query q = new Query(tname("ft1"));
+        PropertyName pNonMatching = ff.property(aname("doubleProperty"));
+        q.setSortBy(new SortByImpl(pNonMatching, ASCENDING));
+        // used to fail with an exception, because stringProperty was in order by, but not in select
+        dataStore.getFeatureSource(tname("ft1")).accepts(q, v, null);
+        assertFalse(visited);
+        Set result = v.getResult().toSet();
+        assertEquals(3, result.size());
+    }
+
+    @Test
     public void testStoreChecksVisitorLimits() throws Exception {
         assumeTrue(dataStore.getSQLDialect().isLimitOffsetSupported());
         assumeTrue(dataStore.getSQLDialect().isAggregatedSortSupported("distinct"));

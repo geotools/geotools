@@ -5,9 +5,9 @@ use the library.
 
 * [Quickstart](https://docs.geotools.org/latest/userguide/tutorial/quickstart/index.html)
 
-# Source code
+## Source code
 
-The implementations provided here are spliced into the tutorial documentation using sphinx
+The implementations provided here are spliced into the documentation
 by making use of "markers" placed into the files such as shown below.
 
 ```java
@@ -21,7 +21,7 @@ public void sample(){
      // sample end
 }
 ```
-        
+
 With this in mind please consider the source code in the context of the documentation.
 Such code may not always show best practice (if part of an example leading up to best practice).
 

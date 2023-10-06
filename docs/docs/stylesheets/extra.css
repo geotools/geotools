@@ -1,0 +1,65 @@
+img + em {
+  display: block;
+  text-align: left;
+  font-size: 0.7rem;
+  font-style: normal;
+}
+
+.md-typeset .admonition, .md-typeset details {
+  font-size: 0.75rem;
+}
+
+/* grid */
+.md-typeset .grid {
+  column-count: 2;
+  column-gap: 2em;
+  margin-bottom: 20px;
+}
+.md-typeset .grid dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(16rem,1fr));
+  margin: 0;
+}
+.md-typeset .grid.cards dt, .md-typeset .grid.cards dd {
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.1rem;
+  display: block;
+  margin: 0;
+  padding: 0.8rem;
+  transition: border .25s,box-shadow .25s;
+}
+.md-typeset .grid.cards dt {
+  font-weight: bold;
+}
+.md-typeset .grid.cards dt .twemoji {
+  margin-right: 5px;
+}
+.md-typeset .grid.cards dd {
+  margin-bottom: 0.8rem;
+  margin-top: -1px;
+}
+.md-typeset .grid.cards dd p {
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .md-typeset .grid dl {
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  .md-typeset .grid.cards dt, .md-typeset .grid.cards dd {
+    width: calc(100vw - 1.2rem - 1.2rem);
+  }
+}
+
+/* definition list used to display general inputs */
+.md-typeset dl dd {
+  margin: 10px 0;
+}
+[dir=ltr] .md-typeset dd {
+  margin-left: 0;
+}
+.md-typeset dl dd code {
+  border: 1px solid rgba(230, 230, 230, 0.7);
+  padding: 8px 12px;
+}
+

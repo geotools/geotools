@@ -260,6 +260,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         String srsName = getSupportedSrsName(request, query);
 
         request.setSrsName(srsName);
+        LOGGER.fine("request = " + request.toString());
         return request;
     }
 
@@ -273,6 +274,7 @@ class WFSFeatureSource extends ContentFeatureSource {
             throws IOException {
 
         if (Filter.EXCLUDE.equals(localQuery.getFilter())) {
+            LOGGER.fine("Filter is EXCLUDE returning empty collection");
             return new EmptyFeatureReader<>(getSchema());
         }
 
@@ -282,9 +284,9 @@ class WFSFeatureSource extends ContentFeatureSource {
         final SimpleFeatureType contentType =
                 getQueryType(localQuery, (SimpleFeatureType) request.getFullType());
         request.setQueryType(contentType);
-
+        LOGGER.fine("request = "+request);
         GetFeatureResponse response = client.issueRequest(request);
-
+        LOGGER.fine("response = " + response);
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
         GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
 

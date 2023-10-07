@@ -47,7 +47,7 @@ public class JtsModule extends SimpleModule {
     /** serialVersionUID */
     private static final long serialVersionUID = 3387512874441967803L;
 
-    public static int DEFAULT_MAX_DECIMALS = 4;
+    public static int DEFAULT_MAX_DECIMALS = 6;
     public static int DEFAULT_MIN_DECIMALS = 0;
     public static RoundingMode DEFAULT_ROUND_MODE = RoundingMode.HALF_UP;
 

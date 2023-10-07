@@ -19,6 +19,7 @@ package org.geotools.data.elasticsearch;
 import static org.geotools.process.elasticsearch.ElasticBucketVisitor.ES_AGGREGATE_BUCKET;
 import static org.geotools.util.factory.Hints.VIRTUAL_TABLE_PARAMETERS;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.ImmutableList;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -107,6 +109,7 @@ import org.geotools.util.Converters;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -1217,9 +1220,31 @@ class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             final CoordinateSequence coordinates = linearRing.getCoordinateSequence();
             currentGeometry = factory.createLineString(coordinates);
         }
-
-        final String geoJson = GeoJSONWriter.toGeoJSON(currentGeometry);
+        int maxDecimals = getMaxDecimalsForEnvelope(currentGeometry.getEnvelopeInternal());
+        final String geoJson = GeoJSONWriter.toGeoJSON(currentGeometry, maxDecimals);
         currentShapeBuilder = mapReader.readValue(geoJson);
+    }
+
+    protected static int getMaxDecimalsForEnvelope(Envelope envelope) {
+        double min = Math.min(Math.abs(envelope.getWidth()), Math.abs(envelope.getHeight()));
+        if (min == 0) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "BBox Geometry has no width or height, it is either a point or a line.");
+            return JtsModule.DEFAULT_MAX_DECIMALS;
+        }
+        double decimalPart = min - Math.floor(min);
+        // min dimension is whole number but the other dimension might have decimals
+        if (decimalPart == 0) {
+            return JtsModule.DEFAULT_MAX_DECIMALS;
+        }
+        double log = Math.log10(decimalPart);
+        int numDecimals = Math.abs((int) Math.floor(log) + 1);
+        if (numDecimals <= JtsModule.DEFAULT_MAX_DECIMALS) {
+            return JtsModule.DEFAULT_MAX_DECIMALS;
+        } else {
+            return numDecimals;
+        }
     }
 
     private Object visitBinarySpatialOperator(

@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.bedatadriven.jackson.datatype.jts.JtsModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -86,6 +87,7 @@ import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -1573,5 +1575,31 @@ public class ElasticFilterTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testUnsupportedLiteralTimePeriod() {
         builder.visitLiteralTimePeriod();
+    }
+
+    @Test
+    public void testGetMaxDecimalsForEnvelope() {
+        Envelope bigEnv = new Envelope(-180, 180, -90, 90);
+        assertEquals(
+                JtsModule.DEFAULT_MAX_DECIMALS, FilterToElastic.getMaxDecimalsForEnvelope(bigEnv));
+
+        Envelope superBigEnv = new Envelope(-18000, 18000, -9000, 9000);
+        assertEquals(
+                JtsModule.DEFAULT_MAX_DECIMALS,
+                FilterToElastic.getMaxDecimalsForEnvelope(superBigEnv));
+
+        Envelope bigEnvWithDec2 = new Envelope(-18000, 18999.1, -9000, 9999.1);
+        assertEquals(
+                JtsModule.DEFAULT_MAX_DECIMALS,
+                FilterToElastic.getMaxDecimalsForEnvelope(bigEnvWithDec2));
+
+        Envelope smallEnv = new Envelope(-180, -179.9999999, -90, -89.9999999);
+        assertEquals(7, FilterToElastic.getMaxDecimalsForEnvelope(smallEnv));
+
+        Envelope smallEnv2 = new Envelope(-180, -179.9999999999, -90, -89.9999999999);
+        assertEquals(10, FilterToElastic.getMaxDecimalsForEnvelope(smallEnv2));
+
+        Envelope smallestEnv = new Envelope(0, 0.00000000000000001, 0, 0.00000000000000001);
+        assertEquals(16, FilterToElastic.getMaxDecimalsForEnvelope(smallestEnv));
     }
 }

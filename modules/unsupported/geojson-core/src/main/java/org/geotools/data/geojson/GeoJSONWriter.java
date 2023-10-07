@@ -80,7 +80,7 @@ public class GeoJSONWriter implements AutoCloseable {
             FastDateFormat.getInstance(DEFAULT_DATE_FORMAT, DEFAULT_TIME_ZONE);
 
     /** Maximum number of decimal places (see https://xkcd.com/2170/ before changing it) */
-    private int maxDecimals = 4;
+    private int maxDecimals = JtsModule.DEFAULT_MAX_DECIMALS;
 
     private OutputStream out;
 
@@ -376,8 +376,16 @@ public class GeoJSONWriter implements AutoCloseable {
 
     /** Utility encoding a single JTS geometry in GeoJSON, and returning it as a string */
     public static String toGeoJSON(Geometry geometry) {
+        return toGeoJSON(geometry, JtsModule.DEFAULT_MAX_DECIMALS);
+    }
+
+    /**
+     * Utility encoding a single JTS geometry in GeoJSON with configurable max decimals, and
+     * returning it as a string
+     */
+    public static String toGeoJSON(Geometry geometry, int maxDecimals) {
         ObjectMapper lMapper = new ObjectMapper();
-        lMapper.registerModule(new JtsModule());
+        lMapper.registerModule(new JtsModule(maxDecimals));
         try {
             return lMapper.writeValueAsString(geometry);
         } catch (JsonProcessingException e) {

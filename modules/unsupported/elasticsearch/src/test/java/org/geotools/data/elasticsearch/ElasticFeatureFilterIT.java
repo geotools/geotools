@@ -166,6 +166,17 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
     }
 
     @Test
+    public void testGetFeaturesWithVerySmallBboxFilter() throws Exception {
+        init();
+        FilterFactory ff = dataStore.getFilterFactory();
+        BBOX bbox = ff.bbox("geo", 1, 1, 1.00000001, 1.00000001, "EPSG:" + SOURCE_SRID);
+        SimpleFeatureCollection features = featureSource.getFeatures(bbox);
+        // If the GeoJSON precision is not adjusted, this will fail with an IllegalArgumentException
+        // from ES "top cannot be the same as the bottom"
+        assertEquals(0, features.size());
+    }
+
+    @Test
     public void testGetFeaturesWithORLogicFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();

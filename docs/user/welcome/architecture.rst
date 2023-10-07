@@ -14,7 +14,9 @@ GeoTools Library
 The GeoTools library forms a software "stack" with each jar building on the ideas
 and concepts defined in the previous one.
 
-.. image:: /images/geotools.png
+.. figure:: /images/geotools.svg
+   
+   GeoTools Module Architecture
 
 Each layer of the "stack" is built on the ones below it:
 
@@ -28,17 +30,16 @@ for an example use.
 ================== ==============================================================
 Module                Purpose
 ================== ==============================================================
-``gt-render``      Implements of Java2D rendering engine to draw a map
+``gt-render``      Map API, with Java2D rendering engine for mapping.
 ``gt-jdbc``        Implements for accessing spatial database
-``gt-main``        Implements for accessing spatial data
 ``gt-xml``         Implements of common spatial XML formats
 ``gt-cql``         Implements of Common Query Language for filters
-``gt-main``        Interfaces for working with spatial information. Implements filter, feature, etc...
-``jts``            Definition and implementation of Geometry
 ``gt-coverage``    Implementation for accessing raster information
+``gt-main``        Data API, with default implementations of filter, feature, etc...
 ``gt-referencing`` Implementation of co-ordinate location and transformation
 ``gt-metadata``    Implementation of identification and description
-``gt-opengis``     Definition of interfaces for common spatial concepts
+``gt-api``         Definition of interfaces for common spatial concepts
+``jts``            JTS Topology Suite (external library) implementing Geometry
 ================== ==============================================================
 
 
@@ -69,17 +70,13 @@ system authorities and so on.
 +---------------------+------------------------+--------------------------------------+
 |                     | ``gt-jdbc-terasdata``  | Teradata                             |
 +---------------------+------------------------+--------------------------------------+
-| ``gt-main``         | ``gt-shape``           | Shapefile read/write support         |
-+---------------------+------------------------+--------------------------------------+
-|                     | ``gt-wfs``             | WFS read/write support               |
-+---------------------+------------------------+--------------------------------------+
 | ``gt-xml``          |                        |                                      |
 +---------------------+------------------------+--------------------------------------+
 | ``gt-cql``          |                        |                                      |
 +---------------------+------------------------+--------------------------------------+
-| ``gt-main``         |                        |                                      |
+| ``gt-main``         | ``gt-shape``           | Shapefile read/write support         |
 +---------------------+------------------------+--------------------------------------+
-| ``jts``             |                        |                                      |
+|                     | ``gt-wfs``             | WFS read/write support               |
 +---------------------+------------------------+--------------------------------------+
 | ``gt-coverage``     | ``gt-geotiff``         | GeoTIFF raster format                |
 +---------------------+------------------------+--------------------------------------+
@@ -99,7 +96,9 @@ system authorities and so on.
 +---------------------+------------------------+--------------------------------------+
 | ``gt-metadata``     |                        |                                      |
 +---------------------+------------------------+--------------------------------------+
-| ``gt-opengis``      |                        |                                      |
+| ``gt-api``          |                        |                                      |
++---------------------+------------------------+--------------------------------------+
+| ``jts``             |                        |                                      |
 +---------------------+------------------------+--------------------------------------+
 
 Usually at least one plug-in is needed for each layer for GeoTools to do something. As an
@@ -109,21 +108,27 @@ around (or the referencing module will not know that "EPSG:4326" is the world as
 GeoTools Extensions
 -------------------
 
-We have gone a bit further and implemented some interesting "extensions" on top of the GeoTools library. These extensions provide additional capabilities that are built on top of GeoTools using the spatial facilities of the library.
+We have gone a bit further and implemented some interesting "extensions" on top of the GeoTools library. These extensions provide additional capabilities that are built on top of GeoTools using the full functionality of the core library.
 
-.. image:: /images/extension.png
+.. figure:: /images/extensions.svg
+   
+   GeoTools Extensions
 
 The extensions are independent of each other offering and may be of use in your application. Here is a brief listing of the extensions at the time of writing.
 
-================== ===============================================
+================== ====================================================
 JAR                Extension
-================== ===============================================
-``gt-graph``       Work with graph and network traversals
-``gt-validation``  Quality assurance for spatial data
-``gt-wms``         Web Map Server client
-``gt-xsd``         Parsing/Encoding for common OGC schemas
+================== ====================================================
+``gt-app-schema``  Map from application schema to complex feature model
 ``gt-brewer``      Generation of styles using color brewer
-================== ===============================================
+``gt-complext``    Support for making custom complex feature model
+``gt-graph``       Work with graph and network traversals
+``gt-grid``        Dynamicly generate features from grid definiton
+``gt-transform``   Transform features on the fly
+``gt-wms``         Web Map Server client
+``gt-wmts``        Web Map Tile Server client
+``gt-xsd``         Parsing/Encoding for common OGC schemas
+================== ====================================================
 
 XML
 ^^^

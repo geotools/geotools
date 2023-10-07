@@ -37,7 +37,7 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * <pre>   {@code len = len.old / z} </pre>
  *
- * where {@code z} is the linear zoom increment (>= 1.0)
+ * where {@code z} is the linear zoom increment {@code (>= 1.0)}
  *
  * <p>The tool also responds to the user drawing a box on the map mapPane with mouse click-and-drag
  * to define the zoomed-in area.

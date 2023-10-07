@@ -28,8 +28,9 @@ import org.geotools.swing.MapPane;
 
 /**
  * Handles keyboard events for a map pane. This is the default handler for classes derived from
- * {@linkplain AbstractMapPane}. It provides for keyboard-controlled scrolling and zooming of the
- * display. The default key bindings for actions should be suitable for most keyboards.
+ * {@linkplain org.geotools.swing.AbstractMapPane}. It provides for keyboard-controlled scrolling
+ * and zooming of the display. The default key bindings for actions should be suitable for most
+ * keyboards.
  *
  * <p>While the Java Swing toolkit provides its own mechanism for linking key events to actions,
  * this class is somewhat easier to use and provides a model that could be implemented in other
@@ -61,7 +62,7 @@ import org.geotools.swing.MapPane;
  * </code></pre>
  *
  * @see KeyInfo
- * @see AbstractMapPane#setKeyHandler(java.awt.event.KeyListener)
+ * @see org.geotools.swing.AbstractMapPane#setKeyHandler(KeyListener)
  * @author Michael Bedward
  * @since 8.0
  * @version $Id$

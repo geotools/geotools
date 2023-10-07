@@ -127,15 +127,15 @@ public class MapLayerTable extends JPanel {
         doSetMapPane(mapPane);
     }
 
-    /**
-     * Helper for {@link #setMapPane(MapPane). This is just defined so that
-     * it can be called from the constructor without a warning from the compiler
-     * about calling a public overridable method.
-     *
-     * @param mapPane the map pane
-     */
     private Listener listener;
 
+    /**
+     * Helper for {@link #setMapPane(MapPane)}. This is just defined so that it can be called from
+     * the constructor without a warning from the compiler about calling a public overridable
+     * method.
+     *
+     * @param newMapPane the map pane
+     */
     private void doSetMapPane(MapPane newMapPane) {
         listener.disconnectFromMapPane();
         mapPane = newMapPane;

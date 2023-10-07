@@ -43,8 +43,8 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     private static final Logger LOGGER = Logging.getLogger(InfoToolHelper.class);
 
     /**
-     * String key used for the position element in the {@code Map} passed to {@linkplain #getInfo(
-     * org.geotools.util.KVP )}.
+     * String key used for the position element in the {@code Map} passed to {@linkplain
+     * #getInfo(org.geotools.geometry.Position2D)}.
      */
     public static final String KEY_POSITION = "pos";
 
@@ -55,7 +55,7 @@ public abstract class InfoToolHelper implements MapBoundsListener {
     private MathTransform transform;
 
     /**
-     * CAlled by the helper lookup system when selecting a helper for a given layer.
+     * Called by the helper lookup system when selecting a helper for a given layer.
      *
      * @param layer the layer
      * @return {@code true} is this helper can handle the layer

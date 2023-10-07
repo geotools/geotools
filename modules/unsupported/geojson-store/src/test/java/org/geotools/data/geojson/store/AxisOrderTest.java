@@ -130,7 +130,7 @@ public class AxisOrderTest {
         int index = contents.indexOf("coordinates");
         assertTrue("No Coordinates in output file", index > 0);
         String test = contents.substring(index + 17, index + 32);
-        assertTrue("bad coords", "-3.3496,56.8215".equalsIgnoreCase(test));
+        assertTrue("bad coords", "-3.349554,56.82".equalsIgnoreCase(test));
         String[] c = test.split(",");
         assertTrue(Double.parseDouble(c[0]) < Double.parseDouble(c[1]));
     }

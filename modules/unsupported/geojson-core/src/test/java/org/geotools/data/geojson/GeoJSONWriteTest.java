@@ -131,7 +131,7 @@ public class GeoJSONWriteTest {
         out = new ByteArrayOutputStream();
         writer = new GeoJSONWriter(out);
         writer.write(feature);
-        assertTrue("Incorrect number of decimals", out.toString().contains("[0.1235,1.2346]"));
+        assertTrue("Incorrect number of decimals", out.toString().contains("[0.123457,1.234568]"));
         out.close();
         writer.close();
         out = new ByteArrayOutputStream();
@@ -163,7 +163,7 @@ public class GeoJSONWriteTest {
 
         assertTrue(
                 "missing bbox in " + out.toString(),
-                out.toString().contains("\"bbox\":[-7.556,49.7687,-7.5536,49.7724]"));
+                out.toString().contains("\"bbox\":[-7.555983,49.768664,-7.553629,49.772378]"));
         out.close();
         writer.close();
     }

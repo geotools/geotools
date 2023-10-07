@@ -376,7 +376,7 @@ public class GeoJSONWriteTest {
         String contents =
                 "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"properties\""
                         + ":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},"
-                        + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.6819]},\"id\":\"locations.0\"}]}";
+                        + "\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.681944]},\"id\":\"locations.0\"}]}";
         assertEquals(
                 "Ensure the file has only the one feature we created",
                 contents.trim(),
@@ -480,7 +480,8 @@ public class GeoJSONWriteTest {
         try (BufferedReader r = new BufferedReader(new FileReader(out))) {
             assertTrue(
                     "missing bbox",
-                    r.readLine().endsWith("\"bbox\":[-124.7314,24.956,-66.9698,49.3717]}"));
+                    r.readLine()
+                            .endsWith("\"bbox\":[-124.731422,24.955967,-66.969849,49.371735]}"));
         }
     }
 
@@ -524,7 +525,7 @@ public class GeoJSONWriteTest {
                     "missing bbox",
                     r.readLine()
                             .startsWith(
-                                    "{\"type\":\"FeatureCollection\",\"bbox\":[-124.7314,24.956,-66.9698,49.3717],"));
+                                    "{\"type\":\"FeatureCollection\",\"bbox\":[-124.731422,24.955967,-66.969849,49.371735],"));
         }
     }
 

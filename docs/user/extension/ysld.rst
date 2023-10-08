@@ -13,7 +13,7 @@ References:
 
 * :geoserver:`YSLD <styling/ysld/index>` (GeoServer User Guide)
 * :doc:`gt-main style layer descriptor </library/main/sld>` (interfaces)
-* :doc:`gt-opengis symbology encoding</library/opengis/se>` (interfaces)
+* :doc:`gt-opengis symbology encoding</library/api/se>` (interfaces)
 * :doc:`style </tutorial/map/style>` (tutorial)
 * :doc:`gt-render style </library/render/style>` (code examples)
 

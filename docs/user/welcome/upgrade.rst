@@ -29,6 +29,8 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+.. _update30:
+
 GeoTools 30.x
 -------------
 
@@ -156,6 +158,8 @@ For the most part these changes are method compatible, attempting common replace
 
 * Replace ``Envelope`` field access ``x``,``y``,``width``,``height`` with appropriate methods (example ``ReferencedEnvelope.getMinX()``)
 
+.. _update29:
+
 GeoTools 29.x
 -------------
 
@@ -170,6 +174,8 @@ Deprecated functions removed
 
 In gt-wfs-ng we've removed:
 ``org.geotools.data.wfs.WFSFeatureReader.WFSFeatureReader(GetParser<SimpleFeature>)``
+
+.. _update27:
 
 GeoTools 27.x
 -------------
@@ -253,6 +259,8 @@ In a production environment several logging libraries from different components 
 
 For more information see :doc:`/library/metadata/logging/factory`.
 
+.. _update26:
+
 GeoTools 26.x
 -------------
 
@@ -301,6 +309,8 @@ filter to make use of the faster and more robust `Google regular expression's li
 but inadvisable patterns, such as those with multi character escapes or wild cards. If you had patterns that 
 relied on long escape or wild card patterns you may now get an ``IllegalArgumentException`` for a pattern that 
 happened to work in the past.
+
+.. _update25:
 
 GeoTools 25.x
 -------------
@@ -527,6 +537,7 @@ See list of available constructors:
 For the same reason we will not allow changes to the headers after initialisation,
 and have deprecated ``public Map<String, String> getHeaders()``.
 
+.. _update24:
 
 GeoTools 24.x
 -------------
@@ -536,6 +547,8 @@ The Oracle extension was upgraded to use the current JDBC driver release. If you
 ``DbaseFileHeader.readHeader(ReadableByteChannel, Charset)`` method was removed. Instead ``DbaseFileHeader`` constructor must be used to pass a charset and ``DbaseFileHeader.readHeader(ReadableByteChannel)`` to read the header.
 
 The Units library (JSR 385) was updated to Units 2.0. This is mostly a change from package ``tec.uom.se.*`` to ``tech.units.indriya.*``. If you make any use of the Units library in your own code you will need to update the imports. There are also changes to the arithmetic operations' names. See this `blog post <https://schneide.blog/tag/unit-api-2-0/>`_ for more details.
+
+.. _update22:
 
 GeoTools 22.x
 -------------
@@ -635,6 +648,8 @@ AFTER :file:`pom.xml`:
      <snapshots><enabled>true</enabled></snapshots>
      <releases><enabled>false</enabled></releases>
    </repository>
+
+.. _update21:
 
 GeoTools 21.x
 -------------
@@ -761,6 +776,8 @@ AFTER :file:`pom.xml`:
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
        <geotools.version>21.5</geotools.version>
    </properties>
+
+.. _update20:
 
 GeoTools 20.x
 -------------
@@ -929,6 +946,8 @@ You will find it no longer compiles. It should be converted to use the ``Quantit
     System.out.println(dist.to(MetricPrefix.KILO(SI.METRE)).getValue() + " Km");
     System.out.println(dist.to(USCustomary.MILE) + " miles");
 
+.. _update19:
+
 GeoTools 19.x
 -------------
 
@@ -937,6 +956,8 @@ GeoTools is built and tested with Java 8 at this time, to use this library in a 
     --add-modules=java.xml.bind --add-modules=java.activation -XX:+IgnoreUnrecognizedVMOptions
 
 These settings turn on several JRE modules that have been disabled by default in Java 9 onward.
+
+.. _update15:
 
 GeoTools 15.x
 -------------
@@ -956,6 +977,8 @@ GeoTools 15.x requires Java 8::
             </plugin>
         </plugins>
     </build>
+
+.. _update14:
 
 GeoTools 14.x
 -------------
@@ -1000,6 +1023,8 @@ AFTER::
 
 ``ShapefileDataStore`` representing shapefiles without any data, now return empty bounds on ``getBounds()`` instead of the bounds inside the shapefile header (mostly [0:0,0:0]). So ``bounds.isEmpty()`` and ``bounds.isNull()`` will return true for empty shapefiles.
 
+.. _update13:
+
 GeoTools 13.0
 -------------
 As of GeoTools 13.0, the ``CoverageViewType`` classes have been removed. The ``AbstractDataStore`` class is also now deprecated. Extensive work has been done to bring in ``ContentDataStore`` as its replacement.
@@ -1015,15 +1040,21 @@ Many readers and iterators are now ``Closable`` for use with try-with-resource s
        }
    }
 
+.. _update12:
+
 GeoTools 12.0
 -------------
 GeoTools now requires `Java 7 <http://docs.geotools.org/latest/userguide/build/install/jdk.html>`_ and this is the first release tested with OpenJDK! Please ensure you are using JDK 1.7 or newer for GeoTools 12. Both Oracle Java 7 and OpenJDK 7 are supported, tested, release targets.
 
 Filter interfaces have been simplified. The GeoTools interfaces have been deprecated since GeoTools 2.3, and finally they have been removed. All filter interfaces now use the GeoAPI Filter.
 
+.. _update11:
+
 GeoTools 11.0
 -------------
 Only new features were added in GeoTools 11.0.
+
+.. _update10:
 
 GeoTools 10.0
 -------------
@@ -1044,6 +1075,8 @@ BEFORE::
 AFTER::
  
   GridCoverage2DReader reader = format.getReader(source);
+
+.. _update9:
 
 GeoTools 9.0
 ------------
@@ -1222,6 +1255,9 @@ JAVA7 using try-with-resource syntax for ``Iterator`` that implements ``Closeabl
     }
     
 
+.. _update8:
+
+
 GeoTools 8.0
 ------------
 
@@ -1282,7 +1318,7 @@ FeatureId
 
 * AFTER
 
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
      :language: java
      :start-after: // id start
      :end-before: // id end
@@ -1361,6 +1397,8 @@ AFTER::
 
       NumberRange<Double> after1 = new NumberRange( Double.class, 0.0, 5.0 );
       NumberRange<Double> after2 = NumberRage.create( 0.0, 5.0 );
+
+.. _update7:
 
 GeoTools 2.7
 ------------
@@ -1559,6 +1597,9 @@ Old Method                          New Method
 ``double getLength(dimension)``     ``double getSpan(dimension)``
 ``getLength(dimension, unit)``      ``double getSpan(dimension, unit)``
 =================================== ===================================================
+
+.. _update6:
+
 
 GeoTools 2.6
 ------------
@@ -1775,6 +1816,9 @@ Removed deprecated constructors from ``DefaultParameterDescriptor`` and ``Parame
 
     DefaultParameterDescriptor.create(...)
     Parameter.create(...)
+
+.. _update5:
+
 
 GeoTools 2.5
 ------------
@@ -2098,6 +2142,8 @@ DataAccess and DataStore
      Feature feature = features.next();
     }
     //No DataAccess.getFeatureReader/Writer
+
+.. _update4:
 
 GeoTools 2.4
 ------------

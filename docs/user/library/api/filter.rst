@@ -216,7 +216,7 @@ The heart of the filter data model is property comparisons; these filters allow 
 to test the attributes of your feature and select out only those features that
 match:
    
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
    :language: java
    :start-after: // start ff example
    :end-before: // end ff example
@@ -231,7 +231,7 @@ that the value is empty.
 We also have the situation where a property is allowed to occur zero or many times; in this case
 we want a nice clear way to check that a Property does not exist at all (that is occur = zero).
 
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
    :language: java
    :start-after: // start nil example
    :end-before: // end nil example
@@ -242,7 +242,7 @@ MatchCase
 By default property comparison is case sensitive; you can override this default
 when constructing your filter as shown below.
   
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
    :language: java
    :start-after: // caseSensitive start
    :end-before: // caseSensitive end
@@ -268,7 +268,7 @@ The property can be retrieved through a simple getter::
   
   Evaluates to true if any possible combinations of operands evaluates to true:
      
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
      :language: java
      :start-after: // matchActionAny start
      :end-before: // matchActionAny end
@@ -277,7 +277,7 @@ The property can be retrieved through a simple getter::
   
   Evaluates to true if all possible combinations of operands evaluates to true.:
 
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
      :language: java
      :start-after: // matchActionAll start
      :end-before: // matchActionAll end
@@ -286,7 +286,7 @@ The property can be retrieved through a simple getter::
   
   Evaluates to true if exactly one possible combination of values evaluates to true:
   
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
      :language: java
      :start-after: // matchActionOne start
      :end-before: // matchActionOne end
@@ -297,7 +297,7 @@ of this nature child references may return a multi-valued attribute.
 
 As an example this filter tests whether all children are older than 12:
     
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
    :language: java
    :start-after: // matchAction start
    :end-before: // matchAction end
@@ -307,7 +307,7 @@ Logical
 
 Filters can be combined using the usual binary logic of AND, OR and NOT.
 
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
    :language: java
    :start-after: // logical start
    :end-before: // logical end
@@ -332,7 +332,7 @@ value for ``Query.getFilter()`` is ``Filter.INCLUDES``.
 
 * These are static constants and do not require a constructor:
   
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
      :language: java
      :start-after: // includeExclude start
      :end-before: // includeExclude end
@@ -363,7 +363,7 @@ case rather than evaluating the attributes we will directly match the ``FeatureI
 
 The most common test is against ``FeatureId``:
   
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
     :language: java
     :start-after: // id start
     :end-before: // id end
@@ -373,7 +373,7 @@ based evaluation (such as a bounding box filter).
 
 You can also use a ``Set<FeatureId>``:
 
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
     :language: java
     :start-after: // idSet start
     :end-before: // idSet end
@@ -383,7 +383,7 @@ case a ``ResourceId`` is used that consists of both a ``fid`` and a ``rid``.
 
 ``ResourceId`` can be used to explore versioned information:
 
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
     :language: java
     :start-after: // rid start
     :end-before: // rid end
@@ -397,7 +397,7 @@ Spatial filters are also available.
 
 Here is a quick example showing how to request features within a bounding box.
 
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
     :language: java
     :start-after: // bbox start
     :end-before: // bbox end
@@ -420,7 +420,7 @@ The gt-main module supplies some of the implementation classes we will need:
   
 Here is an example illustrating their construction and use with temporal filters:
   
-.. literalinclude:: /../src/main/java/org/geotools/opengis/FilterExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/FilterExamples.java
    :language: java
    :start-after: // temporal start
    :end-before: // temporal end

@@ -7,7 +7,7 @@ offers GeoTools specific extensions to the symbology encoding data structure.
 References:
 
 * :doc:`style </tutorial/map/style>` (tutorial)
-* :doc:`gt-opengis symbology encoding<../opengis/se>`
+* :doc:`gt-opengis symbology encoding<../api/se>`
 * :doc:`gt-render style <../render/style>` (code examples)
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)

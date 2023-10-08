@@ -11,7 +11,7 @@ This page is devoted to examples, to review the concepts consult the references 
 References:
 
 * :doc:`gt-main style layer descriptor <../main/sld>` (interfaces)
-* :doc:`gt-opengis symbology encoding <../opengis/se>` (interfaces)
+* :doc:`gt-opengis symbology encoding <../api/se>` (interfaces)
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
 
@@ -37,7 +37,7 @@ Here are some examples of these classes in action:
   
   Here is a quick example showing the creation of a ``PointSymbolizer``:
   
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/StyleExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/StyleExamples.java
      :language: java
      :start-after: // styleFactoryExample start
      :end-before: // styleFactoryExample end

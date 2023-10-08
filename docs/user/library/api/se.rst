@@ -65,7 +65,7 @@ The available symbolizers are:
 
 Here is a quick example showing the creation of a ``PointSymbolizer``:
   
-.. literalinclude:: /../src/main/java/org/geotools/opengis/StyleExamples.java
+.. literalinclude:: /../src/main/java/org/geotools/api/StyleExamples.java
    :language: java
    :start-after: // styleFactoryExample start
    :end-before: // styleFactoryExample end

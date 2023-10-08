@@ -9,7 +9,7 @@
  *    You should have received a copy of the CC0 Public Domain Dedication along with this
  *    software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
-package org.geotools.opengis;
+package org.geotools.api;
 
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;

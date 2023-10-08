@@ -5,8 +5,8 @@ GeoTools makes use of the ``gt-opengis`` ``Filter`` and ``Expression`` interface
 
 Reference:
 
-* ``gt-opengis`` data :doc:`../opengis/model` for ``Feature``, ``FeatureType`` and ``Filter``
-* ``gt-opengis`` :doc:`../opengis/filter` model
+* ``gt-opengis`` data :doc:`../api/model` for ``Feature``, ``FeatureType`` and ``Filter``
+* ``gt-opengis`` :doc:`../api/filter` model
 * ``gt-cql`` :doc:`../cql/index`
 * ``gt-xml`` :doc:`../xml/index`
 * http://docs.geoserver.org/stable/en/user/filter/function_reference.html

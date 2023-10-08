@@ -37,14 +37,14 @@ static type system        dynamic type system                               dyna
 
 Java example:
 
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FeatureExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FeatureExamples.java
      :language: java
      :start-after: // javaFlag start
      :end-before: // javaFlag end
 
 Feature example:
 
-  .. literalinclude:: /../src/main/java/org/geotools/opengis/FeatureExamples.java
+  .. literalinclude:: /../src/main/java/org/geotools/api/FeatureExamples.java
      :language: java
      :start-after: // featureFlag start
      :end-before: // featureFlag end

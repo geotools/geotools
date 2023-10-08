@@ -1,5 +1,5 @@
-OpenGIS
-=======
+API
+===
 
 Interfaces for GeoSpatial concepts, often defined by the OGC or ISO standards bodies. The interfaces
 in this module serve as a great reference if you do not have the time to purchase and read
@@ -8,16 +8,16 @@ are comfortable with - Java!
 
 .. image:: /images/gt-opengis.png
 
-GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't
-invent here policy (rather than get off topic). By referencing standards we are able to use well
+GeoTools is all about implementing spatial solutions, and we do our very best to follow a "don't
+invent here" policy (rather than get off topic). By referencing standards we are able to use well
 understood names for common spatial ideas and constructs.
 
-The *gt-opengis* module provides:
+The *gt-api* module provides:
 
-* interfaces implemented by :doc:`gt-main <../main/index>` such as Feature, FeatureType, Filter and Function
-* interfaces implemented by :doc:`gt-coverage <../coverage/index>` such as GridCoverage
-* interfaces implemented by :doc:`gt-referencing <../referencing/index>` such as CoordinateReferenceSystem
-* interfaces implemented by :doc:`gt-metadata <../metadata/index>` such as Citation
+* interfaces implemented by :doc:`gt-main <../main/index>` such as `Feature`, `FeatureType`, `Filter` and `Function`
+* interfaces implemented by :doc:`gt-coverage <../coverage/index>` such as `GridCoverage`
+* interfaces implemented by :doc:`gt-referencing <../referencing/index>` such as `CoordinateReferenceSystem`
+* interfaces implemented by :doc:`gt-metadata <../metadata/index>` such as `Citation`
 
 For more information on the standards covered by the library as whole: :ref:`standards`
 

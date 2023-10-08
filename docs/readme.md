@@ -75,15 +75,44 @@ GeoTools makes use of the python sphinx documentation system:
 
    See [userDocDist.xml](../release/src/assembly/userDocDist.xml) for details. 
 
-4. The `deploy` and `install` phases are disabled to avoid taking up space
-
 ## Building with Ant
 
-You may also quickly test by calling the ant `build.xml` directly::
+1. You may also quickly test by calling the ant ``build.xml`` directly::
 
-``` bash 
-ant user
-ant developer
-```
+   ``` bash 
+   ant user
+   ```
+   
+   The files are generated into ``target/user/html/index.html``.
+   
+2. Interactive feedback while editing is availle:
+
+   ``` bash
+   ant user-site
+   ```
+   
+   Opens ``http://localhost:8000/`` for a live preview which will update as you edit.
+
+3. For the complete list of build targets:
+   
+   ``` bash
+   ant -p
+   ```
+   ``` text
+   Buildfile: /Users/jgarnett/dev/geotools/geotools/docs/build.xml
+
+       sphin-build integration for GeoTools documentation
+   
+   Main targets:
+
+    developer       Generate sphinx-build developper guide
+    developer-site  Interactive autobuild evelopper guide, opens browser to http://localhost:8000
+    full            Generate sphinx-build of all content
+    index           Generate sphinx-build index page
+    user            Generate sphinx-build user guide
+    user-site       Interactive autobuild user guide, opens browser to http://localhost:8000
+    web             Generate sphinx-build website
+   Default target: full
+   ```
 
 Please see the user guide build instructions for more detail.

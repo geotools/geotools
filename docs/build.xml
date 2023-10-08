@@ -1,5 +1,8 @@
 <project name="docs" default="full">
-
+   <description>
+   sphin-build integration for GeoTools documentation
+   </description>
+   
    <target name="init">
       <property environment="env"/>
       <condition property="sphinx.available">

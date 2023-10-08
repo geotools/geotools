@@ -165,12 +165,4 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         }
         return connection;
     }
-
-    @Deprecated
-    public static class SimpleHTTPResponse extends DefaultHttpResponse {
-
-        public SimpleHTTPResponse(final URLConnection connection) throws IOException {
-            super(connection);
-        }
-    }
 }

@@ -1,135 +1,372 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="640px" height="320px" viewBox="0 0 640 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>geotools</title>
-    <g id="geotools" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <text id="API" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
-            <tspan x="38.296" y="25">API</tspan>
-        </text>
-        <text id="IMPLEMENTATION" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
-            <tspan x="143.9" y="25">IMPLEMENTATION</tspan>
-        </text>
-        <text id="PLUGINS" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
-            <tspan x="455.264" y="25">PLUGINS</tspan>
-        </text>
-        <g id="gt-api" transform="translate(11, 32)">
-            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="246" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A26">
-                <tspan x="27.038" y="127">gt-api</tspan>
+    <title>gt-metadata</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="91" height="282" rx="8"></rect>
+        <filter x="-6.0%" y="-2.0%" width="112.1%" height="103.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-3" x="0" y="0" width="267" height="24" rx="8"></rect>
+        <filter x="-2.1%" y="-22.9%" width="104.1%" height="145.8%" filterUnits="objectBoundingBox" id="filter-4">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-5" x="0" y="0" width="267" height="24" rx="8"></rect>
+        <filter x="-2.1%" y="-22.9%" width="104.1%" height="145.8%" filterUnits="objectBoundingBox" id="filter-6">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-7" x="0" y="0" width="267" height="23" rx="8"></rect>
+        <filter x="-2.1%" y="-23.9%" width="104.1%" height="147.8%" filterUnits="objectBoundingBox" id="filter-8">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-9" x="0" y="0" width="266" height="24" rx="8"></rect>
+        <filter x="-2.1%" y="-22.9%" width="104.1%" height="145.8%" filterUnits="objectBoundingBox" id="filter-10">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-11" x="0" y="0" width="266" height="24" rx="8"></rect>
+        <filter x="-2.1%" y="-22.9%" width="104.1%" height="145.8%" filterUnits="objectBoundingBox" id="filter-12">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-13" x="0" y="0" width="130" height="24" rx="8"></rect>
+        <filter x="-4.2%" y="-22.9%" width="108.5%" height="145.8%" filterUnits="objectBoundingBox" id="filter-14">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-15" x="0" y="0" width="130" height="24" rx="8"></rect>
+        <filter x="-4.2%" y="-22.9%" width="108.5%" height="145.8%" filterUnits="objectBoundingBox" id="filter-16">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-17" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-18">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-19" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-20">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-21" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-22">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-23" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-24">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-25" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-26">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-27" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-28">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <rect id="path-29" x="0" y="0" width="210" height="24" rx="8"></rect>
+        <filter x="-2.6%" y="-22.9%" width="105.2%" height="145.8%" filterUnits="objectBoundingBox" id="filter-30">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <path d="M0,0 L258,0 C262.418278,-8.11624501e-16 266,3.581722 266,8 L266,15 C266,19.418278 262.418278,23 258,23 L0,23 L0,23 L0,0 Z" id="path-31"></path>
+        <filter x="-2.1%" y="-23.9%" width="104.1%" height="147.8%" filterUnits="objectBoundingBox" id="filter-32">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <path d="M8,0 L78,0 L78,0 L78,23 L8,23 C3.581722,23 -2.39399376e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="path-33"></path>
+        <filter x="-7.1%" y="-23.9%" width="114.1%" height="147.8%" filterUnits="objectBoundingBox" id="filter-34">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <path d="M0,0 L258,0 C262.418278,-8.11624501e-16 266,3.581722 266,8 L266,15 C266,19.418278 262.418278,23 258,23 L0,23 L0,23 L0,0 Z" id="path-35"></path>
+        <filter x="-2.1%" y="-23.9%" width="104.1%" height="147.8%" filterUnits="objectBoundingBox" id="filter-36">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <path d="M8,0 L78,0 L78,0 L78,23 L8,23 C3.581722,23 -2.39399376e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="path-37"></path>
+        <filter x="-7.1%" y="-23.9%" width="114.1%" height="147.8%" filterUnits="objectBoundingBox" id="filter-38">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="gt-metadata" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="module-diagram" transform="translate(11, 1)">
+            <text id="API" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
+                <tspan x="27.296" y="24">API</tspan>
             </text>
-        </g>
-        <g id="gt-metadata" transform="translate(109, 290)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="267" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="95.454" y="16">gt-metadata</tspan>
+            <text id="IMPLEMENTATION" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
+                <tspan x="132.9" y="24">IMPLEMENTATION</tspan>
             </text>
-        </g>
-        <g id="gt-referencing" transform="translate(110, 254)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="267" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="89.094" y="16">gt-referencing</tspan>
+            <text id="PLUGINS" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
+                <tspan x="444.264" y="24">PLUGINS</tspan>
             </text>
-        </g>
-        <g id="gt-http" transform="translate(110, 219)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="267" height="23" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="111.312" y="16">gt-http</tspan>
-            </text>
-        </g>
-        <g id="gt-coverage" transform="translate(110, 148)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="266" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="97.012" y="16">gt-coverage</tspan>
-            </text>
-        </g>
-        <g id="gt-jdbc" transform="translate(111, 112)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="266" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="111.268" y="16">gt-jdbc</tspan>
-            </text>
-        </g>
-        <g id="gt-cql" transform="translate(110, 76)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="130" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="46.856" y="16">gt-cql</tspan>
-            </text>
-        </g>
-        <g id="gt-xml" transform="translate(246, 76)">
-            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="130" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="44.816" y="16">gt-xml</tspan>
-            </text>
-        </g>
-        <g id="epsh-hsql" transform="translate(397, 254)">
-            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
-            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
-                <tspan x="62.688" y="16">gt-epsgh-hsql</tspan>
-            </text>
-        </g>
-        <g id="gt-http-commons" transform="translate(397, 219)">
-            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
-            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
-                <tspan x="51.414" y="12">gt-http-commons</tspan>
-            </text>
-        </g>
-        <g id="gt-http-commons-copy" transform="translate(397, 184)">
-            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
-            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
-                <tspan x="78.612" y="12">gt-shape</tspan>
-            </text>
-        </g>
-        <g id="gt-http-commons-copy-3" transform="translate(397, 149)">
-            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
-            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
-                <tspan x="74.748" y="12">gt-geotiff</tspan>
-            </text>
-        </g>
-        <g id="gt-http-commons-copy-4" transform="translate(397, 112)">
-            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
-            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
-                <tspan x="73.938" y="12">gt-postgis</tspan>
-            </text>
-        </g>
-        <g id="gt-http-commons-copy-2" transform="translate(397, 76)">
-            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
-            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
-                <tspan x="77.94" y="12">xsd-wms</tspan>
-            </text>
-        </g>
-        <g id="jts" transform="translate(11, 290)">
-            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A26">
-                <tspan x="21.368" y="12">jts-core</tspan>
-            </text>
-        </g>
-        <g id="gt-mail-impl" transform="translate(111, 184)">
-            <path d="M0,0 L258,0 C262.418278,-8.11624501e-16 266,3.581722 266,8 L266,15 C266,19.418278 262.418278,23 258,23 L0,23 L0,23 L0,0 Z" id="impl" stroke="#979797" fill="#1EC0F4"></path>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="108.652" y="12">gt-main</tspan>
-            </text>
-        </g>
-        <g id="gt-main-api" transform="translate(33, 184)">
-            <path d="M8,0 L78,0 L78,0 L78,23 L8,23 C3.581722,23 -2.39399376e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="api" stroke="#979797" fill="#D5E7D4"></path>
-            <text id="api" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="10.062" y="12">(api.data)</tspan>
-            </text>
-        </g>
-        <g id="gt-mail-impl-copy" transform="translate(111, 41)">
-            <path d="M0,0 L258,0 C262.418278,-8.11624501e-16 266,3.581722 266,8 L266,15 C266,19.418278 262.418278,23 258,23 L0,23 L0,23 L0,0 Z" id="impl" stroke="#979797" fill="#1EC0F4"></path>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="103.756" y="12">gt-render</tspan>
-            </text>
-        </g>
-        <g id="gt-main-api-copy" transform="translate(34, 41)">
-            <path d="M8,0 L77,0 L77,0 L77,23 L8,23 C3.581722,23 3.82325518e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="api" stroke="#979797" fill="#D5E7D4"></path>
-            <text id="api" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
-                <tspan x="21.472" y="12">(map)</tspan>
-            </text>
+            <g id="gt-api" transform="translate(0, 31)">
+                <g id="api">
+                    <use fill="#D5E7D4" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-1"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="27.038" y="121.5">gt-api</tspan>
+                </text>
+            </g>
+            <g id="gt-metadat" transform="translate(98, 289)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-3"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="95.454" y="17">gt-metadata</tspan>
+                </text>
+            </g>
+            <g id="gt-referencing" transform="translate(99, 253)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-5"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-5"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="89.094" y="17">gt-referencing</tspan>
+                </text>
+            </g>
+            <g id="gt-http" transform="translate(99, 218)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-7"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-8)" xlink:href="#path-7"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-7"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="111.312" y="16.4583333">gt-http</tspan>
+                </text>
+            </g>
+            <g id="gt-coverage" transform="translate(99, 147)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-9"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-10)" xlink:href="#path-9"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-9"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="97.012" y="17">gt-coverage</tspan>
+                </text>
+            </g>
+            <g id="gt-jdbc" transform="translate(100, 111)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-11"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-12)" xlink:href="#path-11"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-11"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="111.268" y="17">gt-jdbc</tspan>
+                </text>
+            </g>
+            <g id="gt-cql" transform="translate(99, 75)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-13"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-14)" xlink:href="#path-13"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-13"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="46.856" y="17">gt-cql</tspan>
+                </text>
+            </g>
+            <g id="gt-xml" transform="translate(235, 75)">
+                <g id="impl">
+                    <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-15"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-16)" xlink:href="#path-15"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-15"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                    <tspan x="44.816" y="17">gt-xml</tspan>
+                </text>
+            </g>
+            <g id="gt-epsg-hsql" transform="translate(386, 253)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-17"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-18)" xlink:href="#path-17"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-17"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="66.6" y="17">gt-epsg-hsql</tspan>
+                </text>
+            </g>
+            <g id="gt-http-commons" transform="translate(386, 218)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-19"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-20)" xlink:href="#path-19"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-19"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="51.414" y="17">gt-http-commons</tspan>
+                </text>
+            </g>
+            <g id="gt-shape" transform="translate(386, 183)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-21"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-22)" xlink:href="#path-21"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-21"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="78.612" y="17">gt-shape</tspan>
+                </text>
+            </g>
+            <g id="gt-geotiff" transform="translate(386, 148)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-23"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-24)" xlink:href="#path-23"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-23"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="74.748" y="17">gt-geotiff</tspan>
+                </text>
+            </g>
+            <g id="gt-postgis" transform="translate(386, 111)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-25"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-26)" xlink:href="#path-25"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-25"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="73.938" y="17">gt-postgis</tspan>
+                </text>
+            </g>
+            <g id="gt-xsd-wms" transform="translate(386, 75)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-27"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-28)" xlink:href="#path-27"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-27"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="77.94" y="17">xsd-wms</tspan>
+                </text>
+            </g>
+            <g id="gt-svg" transform="translate(386, 40)">
+                <rect id="plugins" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+                <g id="plugin">
+                    <use fill="#EDEDED" fill-rule="evenodd" xlink:href="#path-29"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-30)" xlink:href="#path-29"></use>
+                    <use stroke="#979797" stroke-width="1" xlink:href="#path-29"></use>
+                </g>
+                <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                    <tspan x="86.046" y="17">gt-svg</tspan>
+                </text>
+            </g>
+            <g id="gt-main" transform="translate(22, 183)">
+                <g id="impl" transform="translate(78, 0)">
+                    <g>
+                        <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-31"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-32)" xlink:href="#path-31"></use>
+                        <use stroke="#979797" stroke-width="1" xlink:href="#path-31"></use>
+                    </g>
+                    <text id="module" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                        <tspan x="108.652" y="17">gt-main</tspan>
+                    </text>
+                </g>
+                <g id="api">
+                    <g>
+                        <use fill="#D5E7D4" fill-rule="evenodd" xlink:href="#path-33"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-34)" xlink:href="#path-33"></use>
+                        <use stroke="#979797" stroke-width="1" xlink:href="#path-33"></use>
+                    </g>
+                    <text id="package" font-family="MiriamLibre-Regular, Miriam Libre" font-size="12" font-weight="normal" fill="#17365C">
+                        <tspan x="11.124" y="17">(api.data)</tspan>
+                    </text>
+                </g>
+            </g>
+            <g id="gt-render" transform="translate(21, 40)">
+                <g id="impl" transform="translate(78, 0)">
+                    <g>
+                        <use fill="#1EC0F4" fill-rule="evenodd" xlink:href="#path-35"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-36)" xlink:href="#path-35"></use>
+                        <use stroke="#979797" stroke-width="1" xlink:href="#path-35"></use>
+                    </g>
+                    <text id="module" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                        <tspan x="103.756" y="17">gt-render</tspan>
+                    </text>
+                </g>
+                <g id="api">
+                    <g>
+                        <use fill="#D5E7D4" fill-rule="evenodd" xlink:href="#path-37"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-38)" xlink:href="#path-37"></use>
+                        <use stroke="#979797" stroke-width="1" xlink:href="#path-37"></use>
+                    </g>
+                    <text id="package" font-family="MiriamLibre-Regular, Miriam Libre" font-size="12" font-weight="normal" fill="#17365C">
+                        <tspan x="22.5" y="17">(map)</tspan>
+                    </text>
+                </g>
+            </g>
         </g>
     </g>
 </svg>

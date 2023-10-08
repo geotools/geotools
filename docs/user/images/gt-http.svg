@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="640px" height="320px" viewBox="0 0 640 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>geotools</title>
+    <title>gt-http</title>
     <defs>
         <rect id="path-1" x="0" y="0" width="91" height="282" rx="8"></rect>
         <filter x="-6.0%" y="-2.0%" width="112.1%" height="103.9%" filterUnits="objectBoundingBox" id="filter-2">
@@ -32,7 +32,7 @@
             <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
             <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
             <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
-            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
         </filter>
         <rect id="path-9" x="0" y="0" width="266" height="24" rx="8"></rect>
         <filter x="-2.1%" y="-22.9%" width="104.1%" height="145.8%" filterUnits="objectBoundingBox" id="filter-10">
@@ -155,7 +155,7 @@
             <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 0 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
         </filter>
     </defs>
-    <g id="geotools" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="gt-http" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="module-diagram" transform="translate(11, 1)">
             <text id="API" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
                 <tspan x="27.296" y="24">API</tspan>

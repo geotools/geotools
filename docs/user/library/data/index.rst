@@ -8,7 +8,7 @@ The DataStore API is all about hoisting data (usually in the form of features) o
 services, disk files etc... into your application. This is where you can finally start putting
 the toolkit to work with real information.
 
-.. figure:: /images/gt-data.svg
+.. figure:: /images/gt-main-data.svg
    
    gt-main module DataStore API
    

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="640px" height="320px" viewBox="0 0 640 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>geotools</title>
-    <g id="geotools" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <title>gt-data</title>
+    <defs>
+        <path d="M8,0 L78,0 L78,0 L78,23 L8,23 C3.581722,23 -2.39399376e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="path-1"></path>
+        <filter x="-7.1%" y="-23.9%" width="114.1%" height="147.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="5" operator="erode" in="SourceAlpha" result="shadowSpreadInner1"></feMorphology>
+            <feGaussianBlur stdDeviation="2.5" in="shadowSpreadInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.933541417   0 0 0 0 0.943533659   0 0 0 0 0.0787500814  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="gt-data" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <text id="API" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
             <tspan x="38.296" y="25">API</tspan>
         </text>
@@ -12,7 +22,7 @@
             <tspan x="455.264" y="25">PLUGINS</tspan>
         </text>
         <g id="gt-api" transform="translate(11, 32)">
-            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="246" rx="8"></rect>
+            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="282" rx="8"></rect>
             <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A26">
                 <tspan x="27.038" y="127">gt-api</tspan>
             </text>
@@ -66,6 +76,13 @@
                 <tspan x="62.688" y="16">gt-epsgh-hsql</tspan>
             </text>
         </g>
+        <g id="epsh-hsql-copy" transform="translate(397, 254)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="66.6" y="16">gt-epsg-hsql</tspan>
+            </text>
+        </g>
         <g id="gt-http-commons" transform="translate(397, 219)">
             <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
             <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
@@ -101,10 +118,11 @@
                 <tspan x="77.94" y="12">xsd-wms</tspan>
             </text>
         </g>
-        <g id="jts" transform="translate(11, 290)">
-            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="24" rx="8"></rect>
-            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A26">
-                <tspan x="21.368" y="12">jts-core</tspan>
+        <g id="gt-http-commons-copy-5" transform="translate(397, 44)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="86.046" y="12">gt-svg</tspan>
             </text>
         </g>
         <g id="gt-mail-impl" transform="translate(111, 184)">
@@ -114,7 +132,11 @@
             </text>
         </g>
         <g id="gt-main-api" transform="translate(33, 184)">
-            <path d="M8,0 L78,0 L78,0 L78,23 L8,23 C3.581722,23 -2.39399376e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="api" stroke="#979797" fill="#D5E7D4"></path>
+            <g id="api">
+                <use fill="#D5E7D4" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use stroke="#979797" stroke-width="1" xlink:href="#path-1"></use>
+            </g>
             <text id="api" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
                 <tspan x="10.062" y="12">(api.data)</tspan>
             </text>

@@ -5,7 +5,9 @@ Used to interpret referencing information allowing the determination of a locati
 coordinates. Includes implementation of ``CoordinateReferenceSystem`` (CRS), conversion and
 transformation services.
 
-.. image:: /images/gt-referencing.png
+.. figure:: /images/gt-referencing.svg
+   
+   gt-referencing module
 
 The gt-referencing module is our first example that makes use of the plugin system provided
 by :doc:`gt-metadata <../metadata/index>`. It does require a little bit of care when configuring

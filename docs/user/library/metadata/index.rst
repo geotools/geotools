@@ -4,7 +4,9 @@ Metadata
 Metadata is used by GeoTools to describe GeoSpatial information and services. The data structure
 is an implementation of ISO19115 (for metadata describing spatial data).
 
-.. image:: /images/gt-metadata.png
+.. figure:: /images/gt-metadata.svg
+   
+   gt-metadata module
 
 The gt-metadata module also pulls double duty as the first implementation module it is responsible for providing the facilities we use to wire the library together at runtime.
 

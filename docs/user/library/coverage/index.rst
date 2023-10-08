@@ -5,7 +5,9 @@ The gt-coverage module provides a way to build and use highly structured grids o
 such as imagery data, for instance GeoTIFF format files, or multi-dimensional matrix data, like
 that found in NetCDF format files.
 
-.. image:: /images/gt-coverage.png
+.. figure:: /images/gt-coverage.svg
+   
+   gt-coverage module
 
 The gt-coverage module is responsible for:
 

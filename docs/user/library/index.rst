@@ -11,17 +11,17 @@ support for common spatial databases such as ``gt-jdbc-postgis`` to support the 
    :maxdepth: 1
    
    api/index
-   jts/index
    metadata/index
    referencing/index
-   coverage/index
+   http/index
    main/index
+   jts/index
    data/index
+   coverage/index
    jdbc/index
    cql/index
-   xml/index
    render/index
-   http/index
+   xml/index
 
 Reference:
 

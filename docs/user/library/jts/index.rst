@@ -1,12 +1,14 @@
-===
-JTS
-===
+==========
+Main JTS
+==========
 
 The JTS Topology Suite is an external project that GeoTools uses to provide an implementation of
 the Geometry data structure. The major benefit is the numerically stable geometry operations as a
 result of years of dedicated effort.
 
-.. image:: /images/gt-jts.png
+.. figure:: /images/gt-jts.svg
+   
+   gt-main module JTS Topology Suite Integration
 
 GeoTools is all about implementing spatial solutions, and we do our very best to follow a don't
 invent here policy (rather than get off topic). The excellent **JTS Topology Suite** project offers

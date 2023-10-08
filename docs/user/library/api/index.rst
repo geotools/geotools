@@ -6,7 +6,9 @@ in this module serve as a great reference if you do not have the time to purchas
 the official standards documents. Approach the standards using an environment you
 are comfortable with - Java!
 
-.. image:: /images/gt-opengis.png
+.. figure:: /images/gt-api.svg
+   
+   gt-api module
 
 GeoTools is all about implementing spatial solutions, and we do our very best to follow a "don't
 invent here" policy (rather than get off topic). By referencing standards we are able to use well

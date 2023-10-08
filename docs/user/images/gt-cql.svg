@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640px" height="320px" viewBox="0 0 640 320" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>geotools</title>
+    <g id="geotools" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <text id="API" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
+            <tspan x="38.296" y="25">API</tspan>
+        </text>
+        <text id="IMPLEMENTATION" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
+            <tspan x="143.9" y="25">IMPLEMENTATION</tspan>
+        </text>
+        <text id="PLUGINS" font-family="Sintony" font-size="24" font-weight="normal" fill="#0580CD">
+            <tspan x="455.264" y="25">PLUGINS</tspan>
+        </text>
+        <g id="gt-api" transform="translate(11, 32)">
+            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="246" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A26">
+                <tspan x="27.038" y="127">gt-api</tspan>
+            </text>
+        </g>
+        <g id="gt-metadata" transform="translate(109, 290)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="267" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="95.454" y="16">gt-metadata</tspan>
+            </text>
+        </g>
+        <g id="gt-referencing" transform="translate(110, 254)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="267" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="89.094" y="16">gt-referencing</tspan>
+            </text>
+        </g>
+        <g id="gt-http" transform="translate(110, 219)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="267" height="23" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="111.312" y="16">gt-http</tspan>
+            </text>
+        </g>
+        <g id="gt-coverage" transform="translate(110, 148)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="266" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="97.012" y="16">gt-coverage</tspan>
+            </text>
+        </g>
+        <g id="gt-jdbc" transform="translate(111, 112)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="266" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="111.268" y="16">gt-jdbc</tspan>
+            </text>
+        </g>
+        <g id="gt-cql" transform="translate(110, 76)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="130" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="46.856" y="16">gt-cql</tspan>
+            </text>
+        </g>
+        <g id="gt-xml" transform="translate(246, 76)">
+            <rect id="impl" stroke="#979797" fill="#1EC0F4" x="0" y="0" width="130" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="44.816" y="16">gt-xml</tspan>
+            </text>
+        </g>
+        <g id="epsh-hsql" transform="translate(397, 254)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="62.688" y="16">gt-epsgh-hsql</tspan>
+            </text>
+        </g>
+        <g id="gt-http-commons" transform="translate(397, 219)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="51.414" y="12">gt-http-commons</tspan>
+            </text>
+        </g>
+        <g id="gt-http-commons-copy" transform="translate(397, 184)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="78.612" y="12">gt-shape</tspan>
+            </text>
+        </g>
+        <g id="gt-http-commons-copy-3" transform="translate(397, 149)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="74.748" y="12">gt-geotiff</tspan>
+            </text>
+        </g>
+        <g id="gt-http-commons-copy-4" transform="translate(397, 112)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="73.938" y="12">gt-postgis</tspan>
+            </text>
+        </g>
+        <g id="gt-http-commons-copy-2" transform="translate(397, 76)">
+            <rect id="extensions" stroke="#979797" fill="#EDEDED" x="5" y="5" width="210" height="24" rx="8"></rect>
+            <rect id="plugin" stroke="#979797" fill="#EDEDED" x="0" y="0" width="210" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A27">
+                <tspan x="77.94" y="12">xsd-wms</tspan>
+            </text>
+        </g>
+        <g id="jts" transform="translate(11, 290)">
+            <rect id="api" stroke="#979797" fill="#D5E7D4" x="0" y="0" width="91" height="24" rx="8"></rect>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#014A26">
+                <tspan x="21.368" y="12">jts-core</tspan>
+            </text>
+        </g>
+        <g id="gt-mail-impl" transform="translate(111, 184)">
+            <path d="M0,0 L258,0 C262.418278,-8.11624501e-16 266,3.581722 266,8 L266,15 C266,19.418278 262.418278,23 258,23 L0,23 L0,23 L0,0 Z" id="impl" stroke="#979797" fill="#1EC0F4"></path>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="108.652" y="12">gt-main</tspan>
+            </text>
+        </g>
+        <g id="gt-main-api" transform="translate(33, 184)">
+            <path d="M8,0 L78,0 L78,0 L78,23 L8,23 C3.581722,23 -2.39399376e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="api" stroke="#979797" fill="#D5E7D4"></path>
+            <text id="api" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="10.062" y="12">(api.data)</tspan>
+            </text>
+        </g>
+        <g id="gt-mail-impl-copy" transform="translate(111, 41)">
+            <path d="M0,0 L258,0 C262.418278,-8.11624501e-16 266,3.581722 266,8 L266,15 C266,19.418278 262.418278,23 258,23 L0,23 L0,23 L0,0 Z" id="impl" stroke="#979797" fill="#1EC0F4"></path>
+            <text id="name" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="103.756" y="12">gt-render</tspan>
+            </text>
+        </g>
+        <g id="gt-main-api-copy" transform="translate(34, 41)">
+            <path d="M8,0 L77,0 L77,0 L77,23 L8,23 C3.581722,23 3.82325518e-15,19.418278 0,15 L0,8 C-5.41083001e-16,3.581722 3.581722,5.41083001e-16 8,0 Z" id="api" stroke="#979797" fill="#D5E7D4"></path>
+            <text id="api" font-family="MiriamLibre-Bold, Miriam Libre" font-size="12" font-weight="bold" fill="#17365C">
+                <tspan x="21.472" y="12">(map)</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

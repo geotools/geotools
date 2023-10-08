@@ -7,7 +7,9 @@ The ``gt-main`` module provides default implementations for the GeoTools API
 (Filter, Style, Feature etc...) and enough glue code to make creating an application
 possible (various builders and utility classes).
 
-.. image:: /images/gt-main.png
+.. figure:: /images/gt-main.svg
+    
+   gt-main module
 
 The ``gt-main`` module is responsible for:
 

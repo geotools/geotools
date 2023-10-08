@@ -3,7 +3,9 @@ XML
 
 Supports the parsing and encoding of geospatial information using XML.
 
-.. image:: /images/gt-xml.png
+.. figure:: /images/gt-xml.svg
+   
+   gt-xml module
 
 There are a large number of supporting plugins capturing XML schemas, and "bindings" mapping
 these ideas into concrete Java objects.

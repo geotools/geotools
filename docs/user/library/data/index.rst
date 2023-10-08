@@ -1,15 +1,17 @@
-Data
-====
+Main Data API
+=============
 
 Supports access to feature information (i.e. vector information) from a range of data sources.
 Additional DataStore plugins are available from :doc:`gt-jdbc <../jdbc/index>` for database access.
 
-The Data module is all about hoisting data (usually in the form of features) off of external
+The DataStore API is all about hoisting data (usually in the form of features) off of external
 services, disk files etc... into your application. This is where you can finally start putting
-the toolkit to work.
+the toolkit to work with real information.
 
-.. image:: /images/gt-main.png
-
+.. figure:: /images/gt-data.svg
+   
+   gt-main module DataStore API
+   
 The ``gt-main`` module is the foundation for implementing additional :doc:`DataStore <../main/datastore>`
  formats:
 

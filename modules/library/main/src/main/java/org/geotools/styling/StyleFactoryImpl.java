@@ -84,15 +84,15 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 
 /**
- * Factory for creating Styles. All style elements are returned as Interfaces from
- * {@code org.geotools.api.style} as opposed to Implementations from org.geotools.styling.
+ * Factory for creating Styles. All style elements are returned as Interfaces from {@code
+ * org.geotools.api.style} as opposed to Implementations from org.geotools.styling.
  *
  * <p>Implements {@link StyleFactory} to provide:
  *
  * <ul>
- *   <li>SLD 1.0</li>
- *   <li>SE 1.1</li>
- *   <li>GeoTools extensions (such as a text mark allowing a graphic beyond text)</li>
+ *   <li>SLD 1.0
+ *   <li>SE 1.1
+ *   <li>GeoTools extensions (such as a text mark allowing a graphic beyond text)
  * </ul>
  *
  * @author iant

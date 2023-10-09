@@ -188,12 +188,12 @@ XML
 
 Some of the SAX, DOM and Transform classes for handling are defined in ``gt-main``.
 
-Their use for XML and GML handling will be covered in ``gt-xml``.
+Their use for XML and GML handling will be covered in ``gt-xml`` module documentation.
 
 Style
 ^^^^^
 
-The ``gt-main`` interfaces for ``Style`` are a straight extension of the ``gt-opengis`` interfaces for mutability. This does come with a drawback; we need to ask you to be careful of thread safety.
+The ``gt-main`` interfaces for ``Style`` are a straight extension of the ``gt-api`` interfaces. Please note these implemtnations are not threadsafe - extensive copy constructors have been provided if you need to copy these data strucrtures for use in an isolaed thread.
 
 Filter
 ^^^^^^

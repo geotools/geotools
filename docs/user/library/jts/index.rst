@@ -46,6 +46,8 @@ The GeoTools provides some help for working with JTS:
    :maxdepth: 1
 
    geometry
+   envelope
+   jts
    equals
    relate
    dim9

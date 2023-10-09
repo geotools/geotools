@@ -12,7 +12,7 @@ The gt-metadata module also pulls double duty as the first implementation module
 
 The gt-metadata module is responsible for:
 
-* implementation of the metadata interfaces from :doc:`gt-opengis <../api/index>` such as Citation and Identifier
+* implementation of the metadata interfaces from :doc:`gt-api <../api/index>` such as ``Citation`` and ``Identifier``
 * Configuring the library at runtime with **GeoTools** and **FactoryRegistry** and **Logging** facilities
 * Utility classes with helpful implementations for Collections, Caching and Object pools
 * Default set of :doc:`Converters <convert>` supporting basic Java types

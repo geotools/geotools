@@ -1,5 +1,5 @@
-``URLChecker``
---------------
+URLChecker
+----------
 
 ``URLChecker`` is an SPI extension point allowing to plug-in a custom URL checker.
 URL checks can be implemented whenever the code is going to access a location that

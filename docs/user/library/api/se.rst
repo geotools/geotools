@@ -8,24 +8,48 @@ These specifications define an XML document you can use to save and load your st
 References:
 
 * :doc:`style </tutorial/map/style>` (tutorial)
-* :doc:`gt-main sld <../main/sld>`
+* :doc:`gt-api sld <sld>`
 * :doc:`gt-render style <../render/style>`
-* http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
 
+Symbology Encoding API
+^^^^^^^^^^^^^^^^^^^^^^
+
+This implementation differs slightly from SLD in that it is only focused on how to draw one layer of content in isolation (not an entire map).
+
+This section also introduces some of the interesting GeoTools specific extensions that have been created.
+
 FeatureTypeStyle
-^^^^^^^^^^^^^^^^
+''''''''''''''''
 
 The Symbology Encoding specification provides us the FeatureTypeStyle which is focused on how to draw features in a manner similar to CSS.
-
 
 .. image:: /images/se.PNG
 
 The key concepts for symbology encoding are:
 
-* FeatureTypeStyle: captures the recipe for drawing a specific kind of feature
-* Rule: used to select features for drawing, using a list of symbolizers to control the actual drawing process.
-* Symbolizer
+* ``FeatureTypeStyle``: captures the recipe for drawing a specific kind of feature
+* ``Rule``: used to select features for drawing, using a list of symbolizers to control the actual drawing process.
+* ``Symbolizer``: defining how selected features are portrayed using fill, stroke, mark and font information.
+
+Rule
+''''
+
+.. image:: /images/rule.PNG
+
+In the above example of ``Rule`` you can see that these data structures are mutable:
+
+* ``Rule.isElseFilter()``
+* ``Rule.setElseFilter()``
+  
+  Both getters and setters are now provided.
+
+* ``Rule.symbolizers()`` provides direct access to a ``List<Symbolizer>``
+  
+  You can modify the list of symbolizers directly::
+     
+     rule.clear();
+     rule.symbolizers().add( pointSymbolizer );
 
 Symbolizer
 ''''''''''
@@ -33,10 +57,15 @@ Symbolizer
 A Symbolizer defines how a geometry is to be rendered in terms of pixels; selecting the geometry
 from the feature, and drawing using the information provided here.
 
-
 .. image:: /images/symbolizer.PNG
 
 .. note:: The Symbology Encoding standard does its best to render something in all cases; thus a PointSymbolizer applied to a Polygon will draw a point in the center, more interestingly a LineSymbolizer applied to a point will draw a small line (of a fixed size) at the indicated location.
+
+GeoTools extends the concept of ``Symbolizer`` provided by the standard allowing the geometry to be defined using a general ``Expression`` (rather than just a ``PropertyName`` references).
+
+.. image:: /images/symbolizer2.PNG
+
+This facility allows a geometry to be defined using a ``Function`` expression giving users an opportunity to pre-process the geometry.
 
 The available symbolizers are:
 
@@ -69,6 +98,32 @@ Here is a quick example showing the creation of a ``PointSymbolizer``:
    :language: java
    :start-after: // styleFactoryExample start
    :end-before: // styleFactoryExample end
+
+TextSymbolizer
+''''''''''''''
+
+.. image:: /images/textSymbolizer.PNG
+
+GeoTools extends the concept of a ``TextSymbolizer`` allowing:
+
+* ``TextSymbolizer.getPriority()``
+  
+  Priority used to determine precedence when labels collisions occur during rendering. The label with the highest priority
+  "wins" with the others being moved out of the way (within a tolerance) or just not displayed.
+
+* ``TextSymbolizer.getOption(String)``
+  
+  Additional vendor specific options used to control the rendering process.
+* ``TextSymbolizer2.getGraphic()``
+  
+  Graphic to display behind the text label
+* ``TextSymbolizer2.getSnippet()``
+  
+  Used by text renderers such as KML and RSS to specify a snippet of text.
+* ``TextSymbolizer2.getFeatureDescription()``
+  
+  Used by formats like KML or RSS to supply info on a feature. 
+
 
 Fill
 ''''
@@ -120,15 +175,18 @@ finally ending with a fallback ``Mark``.
 StyleVisitor
 ^^^^^^^^^^^^
 
-A style visitor is defined allowing you to traverse the style data structure. For details on the use of a visitor please review
-:doc:`filter` on the subject.
+A style visitor is defined allowing you to traverse the style data structure.
+
+For general guidance on the use of a visitor please review :doc:`filter` on the subject.
 
 StyleFactory
 ^^^^^^^^^^^^
 
-Objects for symbology encoding are created using a ``StyleFactory``::
+Objects for symbology encoding are created using a ``StyleFactory``:
 
-    org.geotools.api.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-    FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    
-    Fill fill = sf.fill(null, ff.literal(Color.BLUE), ff.literal(1.0));
+.. code-block:: java
+
+   org.geotools.api.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+   FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+   
+   Fill fill = sf.fill(null, ff.literal(Color.BLUE), ff.literal(1.0));

@@ -9,7 +9,7 @@ facilities.:
      :start-after: // exampleText start
      :end-before: // exampleText end
 
-The idea of an ``InternationalString`` comes from the ``gt-opengis`` module.
+The idea of an ``InternationalString`` comes from the ``gt-api`` module.
 
 The above class is backed by a couple of implementations provided by ``gt-metadata``:
 

@@ -13,7 +13,7 @@ The standard way to access an external data source to create GeoTools GridCovera
 
 2. A builder of the GridCoverage2D which uses the above information to create an instance.
 
-The ``gt-opengis``  module documentation explains the concepts behind this work. It should eventually be possible to reduce the effort required of programmers wishing to use this part of the library (in particular a standard way to define all the different kinds of metadata for grid coverages).
+The ``gt-api``  module documentation explains the concepts behind this work. It should eventually be possible to reduce the effort required of programmers wishing to use this part of the library (in particular a standard way to define all the different kinds of metadata for grid coverages).
 
 This page explores some of the examples available today.
 
@@ -36,7 +36,7 @@ The final step involves writing a class which can create a GridCoverage2D. That 
   own. However, the unsupported module ``coverageio``  and ``coverageio-netcdf``
   may have useful ideas for programmers who wish to look at that code.
 
-This page refers to the DEM example from the ``gt-opengis``  explanation of GridCoverage.
+This page refers to the DEM example from the ``gt-api`` explanation of GridCoverage.
 
 ========== ==================== ============== ======================
 RAW Data   Category             Value          Color

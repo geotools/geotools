@@ -4,7 +4,7 @@ Internal
 Please note that this page is optional and only for the curious. It covers some of the
 implementation classes.
 
-A ``CoordinateReferenceSystem`` is a ``gt-opengis`` interface describing how a set of
+A ``CoordinateReferenceSystem`` is a ``gt-api`` interface describing how a set of
 ordinates is to be interpreted as a three dimensional point. This definition is standardized,
 mathematical and generally not of interest unless something goes wrong.
 
@@ -97,7 +97,7 @@ creates a ``CoordinateReferenceSystem`` to represent WGS84.
 Referencing Factories
 ^^^^^^^^^^^^^^^^^^^^^
 
-These are the "real" factories - interfaces that actually create stuff. All are ``gt-opengis`` interfaces, so you will need
+These are the "real" factories - interfaces that actually create stuff. All are ``gt-api`` interfaces, so you will need
 to use ``ReferencingFactoryFinder`` to get started:
 
 * ``DatumFactory``:
@@ -209,6 +209,6 @@ You will need to make sure that one of the **epsg** plugins is on your CLASSPATH
      IdentifiedObject find = finder.find(crs);
   
   As shown above this is additional functionality made available through
-  ``AbstractAuthorityFactory`` - it is not part of the normal ``gt-opengis`` interfaces.
+  ``AbstractAuthorityFactory`` - it is not part of the normal ``gt-api`` interfaces.
 
 You can construct finders to search through other categories of referencing Objects (like ``Datum`` and ``ReferencingSystem``).

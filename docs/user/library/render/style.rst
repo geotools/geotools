@@ -10,30 +10,29 @@ This page is devoted to examples, to review the concepts consult the references 
 
 References:
 
-* :doc:`gt-main style layer descriptor <../main/sld>` (interfaces)
-* :doc:`gt-opengis symbology encoding <../api/se>` (interfaces)
+* :doc:`gt-api style layer descriptor <../api/sld>` (interfaces)
+* :doc:`gt-api symbology encoding <../api/se>` (interfaces)
 * http://www.opengeospatial.org/standards/sld (style layer descriptor)
 * http://www.opengeospatial.org/standards/symbol (symbology encoding)
 
 StyleFactory
 ^^^^^^^^^^^^
 
-We have three style factories offering various levels of standards compliance vs pragmatism.
+We have two approaches offering various levels of standards compliance vs pragmatism.
 
-============== ==================== ================ ======== =======================================
+============== ==================== ================ ======== ============================================
 Module         Class                Capability       Scope    Description
-============== ==================== ================ ======== =======================================
-``gt-opengis`` ``StyleFactory``     get              SE       Strictly limited to the SE standard
-``gt-main``    ``StyleFactory``     get/set          SE / SLD Supports GeoTools vendor extensions
-``gt-main``    ``StyleFactory2``    get/set          SE / SLD Supports text label graphics
+============== ==================== ================ ======== ============================================
+``gt-api``     ``StyleFactory``     get/set          SE / SLD SE, SLD, and vendor extensions
 ``gt-main``    ``StyleBuilder``     get/set/defaults SE / SLD Shorter methods, does not do everything
-============== ==================== ================ ======== =======================================
+``gt-brewer``  ``StyleBuilder``     fluent           SE / SLD Fluent API for SE, SLD and vendor extensions
+============== ==================== ================ ======== ============================================
 
 Here are some examples of these classes in action:
 
 * ``StyleFactory``
-  
-  The ``gt-opengis`` ``StyleFactory`` allows you to create read-only instances.
+    
+  StyleFactory allows creation using the parameters defined by the SLD standard.
   
   Here is a quick example showing the creation of a ``PointSymbolizer``:
   
@@ -42,31 +41,21 @@ Here are some examples of these classes in action:
      :start-after: // styleFactoryExample start
      :end-before: // styleFactoryExample end
   
-* ``StyleFactory2``
+  To work with GeoTools vendor specific options, a slightly different style of programming
+  is needed taking advantage of the mutable instances are creating allowing you to call both
+  get and set methods.
   
-  This ``gt-main`` interface allows one additional non standard trick; it allows us to place
-  an icon behind text labels. This is a popular technique used for example to place a
-  "label shield" behind hi-way signs.
-
-* ``StyleFactory``
-  
-  This ``gt-main`` interface allows access to all the GeoTools vendor specific options.
-  
-  It has a slightly different style of programming where mutable instances are creating allowing
-  you to call both get and set methods.
-  
-  You are of course not advised to update a style while it is being used to draw.
+  .. note:: These classes are not thread-safe, do not update a style while it is being used to draw.
   
   .. literalinclude:: /../src/main/java/org/geotools/render/StyleExamples.java
      :language: java
      :start-after: // styleFactoryExample start
      :end-before: // styleFactoryExample end
 
-* ``StyleBuilder``
+* ``StyleBuilder`` from ``gt-main``:
   
-  Since a ``Style`` is composed of a complex set of objects, a ``StyleBuilder`` object is provided for
-  you to conveniently build simple styles without the need to build all of the style elements
-  by hand.
+  Since a ``Style`` is composed of a complex set of objects, a ``StyleBuilder`` object is provided 
+  to build simple styles without the need to build all of the style elements by hand.
   
   For example, you can create a ``PolygonSymbolizer`` and then create a ``Style`` out of it with a
   single method call: the builder will generate a default ``FeatureTypeStyle`` and the ``Rule`` for you.
@@ -80,11 +69,17 @@ Here are some examples of these classes in action:
   less of an issue now as the rendering system is able to correctly handle null as a default
   for many cases such as default symbol size.
 
+* ``StyleBuilder`` from ``gt-brewer``:
+  
+  .. code-block:: java
+     
+     Style style = new StrokeBuilder().color(Color.BLACK).width(3).buildStyle();
+
 **What to use**
 
 For working with symbology encoding ``StyleFactory`` is recommended as it defines a small
 number of easy to use methods. There are however no helpful methods and shortcuts
-but you have the advantage of less methods to trip over). Since everything is in plain
+(but you have the advantage of less methods to trip over). Since everything is in plain
 sight you may discover some tricky advanced abilities that may not obvious using
 ``StyleBuilder``.
 
@@ -93,16 +88,15 @@ with their default values filled in; and then configure them as needed using set
 
 Internally we have:
 
-* ``StyleFactoryImpl2`` that creates the raw objects; this is an implementation
-  of the simple ``gt-opengis`` ``StyleFactory``.
+* ``StyleFactoryImpl2`` that creates the raw objects
 * ``StyleFactoryImpl`` makes use of a delegate to create the objects; and then allows for a wider
-  range of create methods defined by ``gt-main`` ``StyleFactory``
-* ``StyleBuilder`` which as expected uses a ``FilterFactory`` and a ``StyleFactory`` in order to get the job done.
+  range of create methods defined by ``gt-api`` ``StyleFactory``
+* ``StyleBuilder`` uses a ``FilterFactory`` and a ``StyleFactory`` in order build up a complicated data structure
 
 Style Layer Descriptor
 ^^^^^^^^^^^^^^^^^^^^^^
 
-GeoTools styling is built on the style layer descriptor data model shown below (from :doc:`gt-main <../main/sld>`).
+GeoTools styling is built on the style layer descriptor data model shown below (from :doc:`gt-api <../api/sld>`).
 
 .. image:: /images/sld.PNG
 

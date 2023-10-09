@@ -2,8 +2,7 @@ Map data and display classes
 ----------------------------
 
 The ``gt-render`` module defines a new data structure to represent the contents of a map. ``MapContent``
-defines a map as a series of layers (which are drawn in order). This is not part of the formal
-``gt-opengis`` module because it is not based on a standard.
+defines a map as a series of layers (which are drawn in order).
 
 MapContent
 ^^^^^^^^^^

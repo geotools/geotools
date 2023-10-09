@@ -5,9 +5,9 @@ This page consists of a series of code examples showing how to do common tasks w
 
 Reference:
 
-* :doc:`../api/model` ``gt-opengis`` data model
-* :doc:`../api/type` ``gt-opengis`` feature type interfaces
-* :doc:`../api/feature` ``gt-opengis`` feature interfaces
+* :doc:`../api/model` ``gt-api`` data model
+* :doc:`../api/type` ``gt-api`` feature type interfaces
+* :doc:`../api/feature` ``gt-api`` feature interfaces
 
 Build a Feature Type
 ^^^^^^^^^^^^^^^^^^^^

@@ -15,7 +15,7 @@ the module with appropriate EPSG authority.
 
 The ``gt-referencing`` module is responsible for:
 
-* Implementation of the referencing interfaces from :doc:`gt-opengis <../api/index>` such
+* Implementation of the referencing interfaces from :doc:`gt-api <../api/index>` such
   as ``CoordinateReferenceSystem`` and ``MathTransform``
 * Providing a definition for common spatial reference system codes using plugins available
   on the CLASSPATH

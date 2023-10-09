@@ -31,7 +31,7 @@ For more information on the standards covered by the library as whole: :ref:`sta
    
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-opengis</artifactId>
+      <artifactId>gt-api</artifactId>
       <version>${geotools.version}</version>
     </dependency>
 
@@ -53,6 +53,7 @@ For more information on the standards covered by the library as whole: :ref:`sta
    filter
    coverage
    cs
+   sld
    se
    progress
    name

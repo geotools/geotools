@@ -2,16 +2,16 @@ Architecture
 ============
 
 Having an understanding of how the GeoTools library is structured is helpful for sorting
-out what jars you need for your application.
+out what jars you need to include with your application.
 
-This page introduces you to the parts of the GeoTools library and how they fit together.
+This page introduces you to the modules of the GeoTools library and how they fit together.
 By including only the jars you need you can select just the right amount of GeoTools for
 your next project.
 
 GeoTools Library
 ----------------
 
-The GeoTools library forms a software "stack" with each jar building on the ideas
+The GeoTools library forms a software "stack" with each module building on the ideas
 and concepts defined in the previous one.
 
 .. figure:: /images/geotools.svg
@@ -20,9 +20,13 @@ and concepts defined in the previous one.
 
 Each layer of the "stack" is built on the ones below it:
 
-* To use Referencing you need ``gt-opengis``, ``gt-referencing`` and ``gt-metadata``
-* To use Data you need ``gt-main``, ``jts``, ``gt-opengis``, ``gt-referencing``, ``gt-opengis``,
-  ``gt-metadata``
+* To use Referencing you require ``gt-api``, ``gt-metadata`` and ``gt-referencing``. To make use of
+  "EPSG" codes you need one plugin, such as ``gt-epsg-hsql``, to supply the EPSG definitions to the 
+  Referencing module.
+  
+* To use Coverage you require ``gt-api``, ``gt-metadata``, ``gt-referencing`` (with plugin ``gt-epsg-hsql``),
+  ``gt-main``, and ``gt-covearge``. To make full use of the Coverage module a plugin such as ``gt-geotiff`` is
+  used to access GeoTIFF files.
 
 The maven tool can calculate the jars you need, please see the Eclipse or Netbeans quickstart
 for an example use.

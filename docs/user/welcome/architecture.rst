@@ -72,8 +72,6 @@ system authorities and so on.
 +---------------------+------------------------+--------------------------------------+
 |                     | ``gt-jdbc-hana``       | SAP HANA                             |
 +---------------------+------------------------+--------------------------------------+
-|                     | ``gt-jdbc-terasdata``  | Teradata                             |
-+---------------------+------------------------+--------------------------------------+
 | ``gt-xml``          |                        |                                      |
 +---------------------+------------------------+--------------------------------------+
 | ``gt-cql``          |                        |                                      |
@@ -125,7 +123,7 @@ JAR                Extension
 ================== ====================================================
 ``gt-app-schema``  Map from application schema to complex feature model
 ``gt-brewer``      Generation of styles using color brewer
-``gt-complext``    Support for making custom complex feature model
+``gt-complex``     Support for making custom complex feature model
 ``gt-graph``       Work with graph and network traversals
 ``gt-grid``        Dynamicly generate features from grid definiton
 ``gt-transform``   Transform features on the fly

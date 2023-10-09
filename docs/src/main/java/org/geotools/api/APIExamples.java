@@ -32,13 +32,13 @@ public class APIExamples {
         // exampleGeneralBounds start
         CoordinateReferenceSystem wsg84 = CRS.decode("EPSG:4326");
 
-        GeneralPosition lowerPosition = new GeneralPosition(0.0,0.0);
+        GeneralPosition lowerPosition = new GeneralPosition(0.0, 0.0);
         lowerPosition.setCoordinateReferenceSystem(wsg84);
 
-        GeneralPosition upperPosition = new GeneralPosition(10.0,20.0);
+        GeneralPosition upperPosition = new GeneralPosition(10.0, 20.0);
         upperPosition.setCoordinateReferenceSystem(wsg84);
 
-        Bounds bounds = new GeneralBounds(lowerPosition,upperPosition);
+        Bounds bounds = new GeneralBounds(lowerPosition, upperPosition);
 
         double xMin = bounds.getMinimum(0);
         double yMin = bounds.getMinimum(1);
@@ -147,7 +147,7 @@ public class APIExamples {
     private void recommendedReferencedEnvelope() throws Exception {
         // recommendedReferencedEnvelope start
         ReferencedEnvelope envelope =
-                ReferencedEnvelope.create(0, 10, 0, 20, DefaultGeographicCRS.WGS84);
+                new ReferencedEnvelope(0, 10, 0, 20, DefaultGeographicCRS.WGS84);
 
         double xMin = envelope.getMinX();
         double yMin = envelope.getMinY();

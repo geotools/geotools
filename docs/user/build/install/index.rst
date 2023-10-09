@@ -75,7 +75,7 @@ The following tools are required to build GeoTools:
    
    Apache Ant provides a cross-platform `Makefile` of build targets .. with all the usability of XML.
   
-   * http://maven.apache.org/download.html
+   * https://ant.apache.org/bindownload.cgi
    
   `SDKMAN! <https://sdkman.io>`__ installation:
   

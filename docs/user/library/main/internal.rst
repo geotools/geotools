@@ -193,7 +193,7 @@ Their use for XML and GML handling will be covered in ``gt-xml`` module document
 Style
 ^^^^^
 
-The ``gt-main`` interfaces for ``Style`` are a straight extension of the ``gt-api`` interfaces. Please note these implemtnations are not threadsafe - extensive copy constructors have been provided if you need to copy these data strucrtures for use in an isolaed thread.
+The ``gt-main`` interfaces for ``Style`` are a straight extension of the ``gt-api`` interfaces. Please note these implementations are not threadsafe - extensive copy constructors have been provided if you need to copy these data structures for use in an isolated thread.
 
 Filter
 ^^^^^^

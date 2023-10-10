@@ -4,13 +4,15 @@ Metadata
 Metadata is used by GeoTools to describe GeoSpatial information and services. The data structure
 is an implementation of ISO19115 (for metadata describing spatial data).
 
-.. image:: /images/gt-metadata.png
+.. figure:: /images/gt-metadata.svg
+   
+   gt-metadata module
 
 The gt-metadata module also pulls double duty as the first implementation module it is responsible for providing the facilities we use to wire the library together at runtime.
 
 The gt-metadata module is responsible for:
 
-* implementation of the metadata interfaces from :doc:`gt-opengis <../opengis/index>` such as Citation and Identifier
+* implementation of the metadata interfaces from :doc:`gt-api <../api/index>` such as ``Citation`` and ``Identifier``
 * Configuring the library at runtime with **GeoTools** and **FactoryRegistry** and **Logging** facilities
 * Utility classes with helpful implementations for Collections, Caching and Object pools
 * Default set of :doc:`Converters <convert>` supporting basic Java types

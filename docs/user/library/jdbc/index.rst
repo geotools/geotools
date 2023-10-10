@@ -3,7 +3,9 @@ JDBC
 
 Supports accessing feature information databases using the Java JDBC library.
 
-.. image:: /images/gt-jdbc.png
+.. figure:: /images/gt-jdbc.svg
+   
+   gt-jdbc module
 
 The JDBC module is used as the base for all JDBC / Database backed DataStores. Alone it does not
 contain any useful functionality. The useful functionality is contained within modules specific

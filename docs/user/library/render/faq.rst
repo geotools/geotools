@@ -13,12 +13,14 @@ Style Layer Descriptor Specification (SLD) is an OGC standard
 defining styles used when drawing maps. Think of it as CSS for maps.
 
 GeoTools rendering is based around the Style Layer Descriptor standard,
-for details please see the ``gt-opengis``  module.
+for details please see the ``gt-api``  module.
 
 This standard is divided into two parts:
 
-* Style Layer Descriptor 1.1 covers the integration of styles
-  with a web map server.
+* Style Layer Descriptor 1.0 and 1.1 covers the integration of styles
+  with a web map server. This defines an entire map, listing layers,
+  with the name of the content to draw, and the style to be used
+  for that layer.
 
 * Symbology Encoding 1.1 covers the definition of a feature type style
   controlling how a rendering engine draws features.
@@ -29,14 +31,6 @@ Q: What is a MapContent?
 A MapContent object holds one or more Layers which are rendered in the
 order that they were added.
 
-This is not part of the formal ``gt-opengis`` module because it is not
-considered finished, done, or complete. The GeoTools community is
-actively looking to collaborate with other projects (such as OpenJUMP,
-uDig and Deegree) in order to collaborate on these ideas. If open 
-source collaboration fails we will look to traditional collaboration
-with a standards body in the form of the the OGC working group on "Open
-Web Context" documents.
-
 Q: What about the Widget?
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -44,7 +38,7 @@ This module only draws into a Graphics2D context (so printer or image
 buffer). You can use this functionality in your own Swing widget in
 order to draw something on screen.
 
-* ````gt-swing```` 
+* ``gt-swing`` 
   
   GeoTools does not provide comprehensive GUI components but there is a
   basic Swing widget JMapFrame in the ````gt-swing```` module which is used
@@ -76,7 +70,7 @@ is not cut on the Date Line but it is replicated as many times as the Date Line
 is crossed.
 
 This feature can be enabled/disabled using the related method
-*setAdvancedProjectionHandlingEnabled()* in the same class.
+``setAdvancedProjectionHandlingEnabled()`` in the same class.
 
 Q: Why does my SVG external graphic display as a gray square?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

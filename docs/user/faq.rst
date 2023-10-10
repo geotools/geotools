@@ -11,7 +11,7 @@ Please direct any comments or suggestions about this page to the `GeoTools user 
 <https://lists.sourceforge.net/lists/listinfo/geotools-gt2-users>`_.
 
 .. include:: /welcome/faq.rst
-.. include:: /library/opengis/faq.rst
+.. include:: /library/api/faq.rst
 .. include:: /library/jts/faq.rst
 .. include:: /library/metadata/faq.rst
 .. include:: /library/referencing/faq.rst

@@ -1,15 +1,15 @@
 Filter
 ------
 
-GeoTools makes use of the ``gt-opengis`` ``Filter`` and ``Expression`` interfaces in order to express constraints. This is most often used when making a Query to retrieve specific ``Features`` from a ``DataStore``.
+GeoTools makes use of ``gt-api`` interfaces ``Filter`` and ``Expression`` in order to define constraints. This is most often used when making a Query to retrieve specific ``Features`` from a ``DataStore``.
 
 Reference:
 
-* ``gt-opengis`` data :doc:`../opengis/model` for ``Feature``, ``FeatureType`` and ``Filter``
-* ``gt-opengis`` :doc:`../opengis/filter` model
+* ``gt-api`` data :doc:`../api/model` for ``Feature``, ``FeatureType`` and ``Filter``
+* ``gt-api`` :doc:`../api/filter` model
 * ``gt-cql`` :doc:`../cql/index`
 * ``gt-xml`` :doc:`../xml/index`
-* http://docs.geoserver.org/stable/en/user/filter/function_reference.html
+* `Filter Function Reference <https://docs.geoserver.org/stable/en/user/filter/function_reference.html>`__ (GeoServer User Manual)
 
 You will find the use of ``Filter`` in an number of other locations:
 

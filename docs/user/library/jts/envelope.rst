@@ -5,7 +5,7 @@ GeoTools supports working with JTS Topology Suite Envelopes (used to represent t
 
 The ``git-main`` module defines ``ReferencedEnvelope`` and ``ReferencedEnvelope3D`` as an integration between JTS Geometry model and ``gt-api`` ``Bounds`` and ``Bound3D`` interfaces.
 
-.. image:: /images/envelope.png
+.. image:: /images/reference_envelope.png
 
 JTS Envelope
 ^^^^^^^^^^^^

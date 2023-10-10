@@ -40,7 +40,7 @@ ReferencedEnvelope and ReferencedEnvelope3D
 GeoTools ``ReferencedEnvelope`` extends JTS ``Envelope`` to implement the ``gt-api`` module ``Bounds`` interface,
 and subclass ``ReferencedEnvelope3D`` implementing ``Bounds3D``.
 
-.. image:: /images/envelope.png
+.. image:: /images/reference_envelope.png
 
 Use of ``ReferencedEnvelope`` is the most common representation of a bounds in GeoTools:
 

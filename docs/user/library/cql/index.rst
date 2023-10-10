@@ -8,7 +8,9 @@ CQL was originally known as Common Query Language (so you will find lots of exam
 refer to this name). The standard comes out of library science and was picked up by the OGC when
 they were implementing their catalog server specification.
 
-.. image:: /images/gt-cql.png
+.. figure:: /images/gt-cql.svg
+   
+   gt-cql module
 
 For our purposes it provides a great human readable way to expression Filter similar to an
 SQL "where clause". Indeed we have our own extension that allows you to represent the full

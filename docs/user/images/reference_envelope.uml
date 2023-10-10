@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.geometry.Bounds</OriginalElement>
+  <nodes>
+    <node x="-604.700127064803" y="200.0">org.geotools.geometry.jts.ReferencedEnvelope</node>
+    <node x="10.732528589580625" y="200.0">org.geotools.api.geometry.BoundingBox</node>
+    <node x="-101.76747141041938" y="-98.13341804320203">org.geotools.api.geometry.Bounds</node>
+    <node x="14.732528589580625" y="636.4326556543837">org.geotools.api.geometry.BoundingBox3D</node>
+    <node x="-477.20012706480304" y="-98.13341804320203">org.locationtech.jts.geom.Envelope</node>
+    <node x="-519.200127064803" y="555.9326556543837">org.geotools.geometry.jts.ReferencedEnvelope3D</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.geometry.jts.ReferencedEnvelope3D" target="org.geotools.geometry.jts.ReferencedEnvelope" relationship="GENERALIZATION">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.geometry.BoundingBox" target="org.geotools.api.geometry.Bounds" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="org.geotools.geometry.jts.ReferencedEnvelope" target="org.geotools.api.geometry.Bounds" relationship="REALIZATION">
+      <point x="119.51273967741565" y="-66.66036036036036" />
+      <point x="-282.6873873873874" y="173.933290978399" />
+      <point x="-39.74684684684678" y="173.933290978399" />
+      <point x="-140.4793754364274" y="48.991976601760584" />
+    </edge>
+    <edge source="org.geotools.geometry.jts.ReferencedEnvelope3D" target="org.geotools.api.geometry.BoundingBox3D" relationship="REALIZATION">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="org.geotools.geometry.jts.ReferencedEnvelope" target="org.locationtech.jts.geom.Envelope" relationship="GENERALIZATION">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.geometry.BoundingBox3D" target="org.geotools.api.geometry.BoundingBox" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="org.geotools.geometry.jts.ReferencedEnvelope" target="org.geotools.api.geometry.BoundingBox" relationship="REALIZATION">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="-142.5" y="329.2018018018018" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

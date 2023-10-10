@@ -3,14 +3,16 @@ Render
 
 Supports the rendering of geospatial information using the Java2D API.
 
-.. image:: /images/gt-render.png
+.. figure:: /images/gt-render.svg
+   
+   gt-render module
 
 This is most likely the reason you are interested in the GeoTools library - this module finally
 lets you draw a map using all that data you set up.
 
 **Reference**
 
-* :doc:`/library/opengis/se`
+* :doc:`/library/api/se`
 * :doc:`/library/main/sld`
 * http://www.opengeospatial.org/standards/sld
 * http://www.opengeospatial.org/standards/se

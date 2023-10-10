@@ -1,20 +1,31 @@
 Main
 ====
 
-The ``gt-main`` module extends the ``gt-opengis`` concepts with additional interfaces forming the GeoTools API.
+The GeoTools Main module adds a few more interfaces to the GeoTools API, and provides default implementations for the library.
 
-The ``gt-main`` module provides default implementations for the GeoTools API
-(Filter, Style, Feature etc...) and enough glue code to make creating an application
-possible (various builders and utility classes).
+.. figure:: /images/gt-main.svg
+    
+   gt-main module
 
-.. image:: /images/gt-main.png
+The ``gt-main`` module adds new interfacs to the GeoTools library API:
 
-The ``gt-main`` module is responsible for:
+* ``org.geotools.jts`` integrating geometry from JTS Topology Suite
 
-* Default implementation :doc:`gt-opengis <../opengis/index>` interfaces for ``Feature``, ``FeatureType``, ``Filter`` and ``Style``
-* Default set of :doc:`gt-opengis <../opengis/filter>` Functions for working with spatial data
-* Helper classes for your own application development such as ``DataUtilities`` and ``SimpleFeatureTypeBuilder``
+* ``org.geotools.api.data`` which defines a DataStore API to read and write spatial content
+
+The ``gt-main`` module contains the default implementations for the GeoTools API interfaces
+(``Filter``, ``Style``, ``Feature``, ``DataStore``, etc...). Implementors will also find abstract
+base classes in ``gt-main`` to use as a starting point for their own implementations.
+
+* Default implementation :doc:`gt-api <../api/index>` interfaces for ``Feature``, ``FeatureType``, ``Filter`` and ``Style``
+* Default set of :doc:`gt-api <../api/filter>` Functions for working with spatial data
 * Abstract classes to help implementers of :doc:`DataStore <datastore>`
+
+Finally ``gt-main`` provides different kinds of helper classes to make using everything easier.
+
+* Utility classes (such as ``DataUtilities``)provide static methods perform common activities.
+* Facades (such as ``JTS``) provide access to module services
+* Builders (``SimpleFeatureTypeBuilder``) help you construct data structures, collecting all the information provided before using a fatory to create the required object.
 
 **Maven**::
 
@@ -43,8 +54,7 @@ The ``gt-main`` module is responsible for:
    function_list
    feature
    collection
-   envelope
-   jts
+   bounds
    shape
    datastore
    repository

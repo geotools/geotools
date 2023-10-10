@@ -70,7 +70,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.GeoTools;
 
 /*
- * Factory for creating Styles; based on the GeoAPI StyleFactory interface.
+ * Factory for creating Styles.
  *
  * <p>This factory is simple; it just creates styles with no logic or magic default values. For
  * magic default values please read the SE or SLD specification; or use an appropriate builder.

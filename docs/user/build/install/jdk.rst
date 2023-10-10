@@ -5,7 +5,7 @@ GeoTools is written in the Java Programming Language. The library is targeted fo
 
 Java Run-time Environment:
 
-* Java 17 - Experimentally supported in GeoTools 27.x and above (OpenJDK tested)
+* Java 17 - GeoTools 27.x and above (OpenJDK tested)
 * Java 11 - GeoTools 21.x and above (OpenJDK tested)
 * Java 8 - GeoTools 15.x up to and including GeoTools 28.x (OpenJDK and Oracle JRE tested)
 * Java 7 - GeoTools 11.x to GeoTools 14.x (OpenJDK and Oracle JRE tested)
@@ -18,8 +18,8 @@ When developing GeoTools please change your compile options to:
 * IDE: Produce Java 11 compliant code
 * Maven: source=11
 
-Building GeoTools with Java 11
-''''''''''''''''''''''''''''''
+GeoTools Java 11 Minium
+'''''''''''''''''''''''
 
 Java introduced a number of changes to the JVM, most notably the module system (Project Jigsaw). Refer to `The State of the Module System <http://openjdk.java.net/projects/jigsaw/spec/sotms/>`_ for more details.
 
@@ -36,13 +36,90 @@ GeoTools Java 11 development is supported on both OpenJDK and Oracle JDK as down
 ========================= =================== ===== ====== ======= ======= ==============
 Java 11 Provider          License             Linux macOS  Solaris Windows Free Updates
 ========================= =================== ===== ====== ======= ======= ==============
-Oracle JDK                Binary Code License x     x      x       x       2019 March
-Oracle OpenJDK            GPL                 x     x              x       2019 March
-RedHat OpenJDK            GPL                 x                            2024 October
-Adopt OpenJDK             GPL                 x     x              x       2022 September
+Oracle JDK                Binary Code License x     x      x       x       2023-09
+Oracle OpenJDK            GPL                 x     x              x       2023-09
+RedHat OpenJDK            GPL                 x                            2024-10
+Adopt OpenJDK             GPL                 x     x              x       2024-10
 ========================= =================== ===== ====== ======= ======= ==============
 
 .. warning:: Since the API changes from Java version to version, building a GeoTools version with a newer Java SDK is risky (you may accidentally use a new method). Pull requests are tested against Java 11 and Java 17, but we do ask you to be careful.
+
+SDKMan!
+^^^^^^^
+
+Recommended: The `SDKMAN! <https://sdkman.io>`__ recommended for downloading installing, and swapping between versions of build tools and environments:
+
+1. Java Development Kit 11 (JDK 11)
+     
+   .. code-block:: bash
+   
+      # list to determine latest Temurin JDK 11
+      sdk list java 11
+   
+      # Installing latest Temurin JDK 11 shown above
+      sdk install java 11.0.20.1-tem
+
+2. Optional: Java Development Kit 17 (JDK 17)
+     
+   .. code-block:: bash
+   
+      # list to determine latest Temurin JDK 17
+      sdk list java 17
+   
+      # Installing latest Temurin JDK 11 shown above
+      sdk install java 17.0.8.1-tem
+   
+3. GeoTools build process takes advantage of quality assurance tools compatible with the JDK you have installed.
+   
+   To change to JDK 11 (using tab completion to review available installs):
+   
+   .. code-block:: bash
+   
+      sdk use java 11<tab>
+
+   To change to JDK 17 (using tab completion to review available installs):
+   
+   .. code-block:: bash
+   
+      sdk use java 17<tab>
+
+Windows or macOS Install
+''''''''''''''''''''''''
+
+1. Download an OpenJDK release for your platform:
+
+   * https://adoptium.net/temurin/releases/?version=11 Temurin 11 (LTS) - Recommended
+   
+2. Choose the options to:
+   
+   * Updating the ``JAVA_HOME`` environment variable
+   * Add the installation to the ``PATH`` environment variable
+
+Package Manager
+^^^^^^^^^^^^^^^
+
+Installing OpenJDK using your ***apt-get** or another package manager allows Java to managed and patched
+alongside your operating system updates.
+
+* Ubuntu:
+  
+   .. code-block:: bash
+   
+     sudo apt-get update
+     sudo apt-get install openjdk-11-jdk
+  
+If you find that you end up installing an older version (or you'd like to use the very latest), consider use of :command:`sdk` above (or manual installation).
+
+MacOS Homebrew
+^^^^^^^^^^^^^^
+
+On macOS the `Homebrew <https://brew.sh>`__ package manager provides a "formula" to install OpenJDK:
+
+.. code-block:: bash
+
+   brew install openjdk@11
+
+Setup ``JAVA_HOME`` and ``PATH`` environmental variables.
 
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''

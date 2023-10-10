@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.geometry.GeneralBounds</OriginalElement>
+  <nodes>
+    <node x="135.33333333333337" y="-447.0">org.geotools.geometry.AbstractBounds</node>
+    <node x="-322.3333333333333" y="-447.0">org.geotools.api.geometry.Bounds</node>
+    <node x="396.0" y="-447.0">org.geotools.geometry.GeneralBounds</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.geometry.AbstractBounds" target="org.geotools.api.geometry.Bounds" relationship="REALIZATION">
+      <point x="-104.0" y="10.0" />
+      <point x="202.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.geometry.GeneralBounds" target="org.geotools.geometry.AbstractBounds" relationship="GENERALIZATION">
+      <point x="-202.5" y="-67.5" />
+      <point x="104.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="249.0" y="-318.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

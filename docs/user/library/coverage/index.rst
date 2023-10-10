@@ -5,11 +5,13 @@ The gt-coverage module provides a way to build and use highly structured grids o
 such as imagery data, for instance GeoTIFF format files, or multi-dimensional matrix data, like
 that found in NetCDF format files.
 
-.. image:: /images/gt-coverage.png
+.. figure:: /images/gt-coverage.svg
+   
+   gt-coverage module
 
 The gt-coverage module is responsible for:
 
-* implementation of the coverage interfaces from :doc:`gt-opengis <../opengis/index>` such as GridCoverage2D and Format
+* implementation of the coverage interfaces from :doc:`gt-api <../api/index>` such as GridCoverage2D and Format
 * Bridging between Java Advanced Imaging, JAI Image IO and Java Image facilities and the geospatial idea of a GridCoverage
 * Recognizing additional formats available on the CLASSPATH using **GridFormatFinder**
   

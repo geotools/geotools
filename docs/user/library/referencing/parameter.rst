@@ -1,15 +1,15 @@
 Parameter
 ---------
 
-The ``gt-referencing`` module is the first one to use the ``Parameter`` and ``ParameterGroup`` data structure defined by ``gt-opengis``.
+The ``gt-referencing`` uses the ``Parameter`` and ``ParameterGroup`` data structure defined by ``gt-api`` module.
 
-These Parameters are a bit odd for Java developers:
+The ``Parameter`` data structure:
 
-* They are actually a dynamic type system (you need to inspect the values at runtime in order to learn what values are acceptable)
-* They are based an ISO Standard, rather than Java Beans
-* They are strongly typed (you need a ``ParameterDescriptor`` in place to create a ``ParameterValue``)
-* They allow multiplicity, the same parameter can be repeated multiple times if needed. Very similar to how XML elements are allowed to repeat
-* They allow parameters to be "grouped", similar to how XML supports elements in a sequence
+* Forms a dynamic type system (you need to inspect the values at runtime in order to learn what values are acceptable)
+* Is based an ISO Standard, rather than Java Beans
+* Is strongly typed (you need a ``ParameterDescriptor`` in place to create a ``ParameterValue``)
+* Allows multiplicity, the same parameter can be repeated multiple times if needed. Very similar to how XML elements are allowed to repeat
+* Allows parameters to be "grouped", similar to how XML supports elements in a sequence
 
 ParameterDescriptor and Parameter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

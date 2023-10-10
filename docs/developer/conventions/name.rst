@@ -23,48 +23,48 @@ GeoTools makes use of the following naming conventions.
   
   DataStore
   
-  GeoTools interfaces are usually located in the *gt-opengis* or *gt-api* modules. Interfaces should be called XXX.java
+  GeoTools interfaces are usually located in the *gt-api* or *gt-main* modules. Interfaces should be called :file:`XXX.java`.
 
 * Implementation
   
-  ShapefileDataStore
+  ``ShapefileDataStore``
   
   Append the name of the interface being implemented
 
 * Default
   
-  DefaultQuery
-  QueryImpl
+  ``DefaultQuery``, ``QueryImpl``
   
-  Default implementations should be called DefaultXXX.java or XXXImpl.java
+  Default implementations should be called :file:`DefaultXXX.java` or :file:`XXXImpl.java`
 
 * Abstract
   
-  AbstractDataStore
+  ``AbstractDataStore``
   
-  Abstract implementations should be called AbstractXXX.java
+  Abstract implementations should be called :file:`AbstractXXX.java`
 
 * Javadoc
   
-  doc-files/
+  ``doc-files/``
+  ``package-info.java``
   
-  Javadoc makes use of doc-files directories in the package hierarchy to allow the inclusion of rich content in generated api documentation.
+  Javadoc makes use of :file:`doc-files` directories in the package hierarchy to allow the inclusion of rich content in generated api documentation.
 
 * JUnit
   
-  test-data/
+  ``test-data/``
   
   JUnit test cases make use of test-data directories in the package hierarchy
 
 * Test
   
-  SampleTest
+  ``SampleTest``
   
   JUnit test, picked up by maven build process
 
 * online test
   
-  ServerOnlineTest
+  ``ServerOnlineTest``
   
   JUnit test making use of line resource such as a web service
 
@@ -72,7 +72,7 @@ Some versions of windows do not distinguish between upper and lower case, and in
 
 Notes:
 
-* both test-data and doc-files do not follow the package naming convention allowing them to be easily distinguished from normal code
+* Keep in mind :file:`package-info.java`, :file:`test-data` and :file:`doc-files` do not follow the Java naming convention allowing them to be easily distinguished from normal code.
 * both Test and OnineTest are picked out by the maven build process for special treatment
 
 Naming Conventions
@@ -82,37 +82,37 @@ We tend to follow normal java development naming conventions. Classes start with
 
 * Interface
   
-  Renderer
+  ``Renderer``
   
   Use camel case and start with a capital letter
 
 * Interface
   
-  RendererFactory
+  ``RendererFactory``
   
   When defining an interface you often need a factory to handle construction
 
 * Class
   
-  DefaultRenderer
+  ``DefaultRenderer``
   
   Use camel case and start with a capital letter. Try and end with the interface name
 
 * Class
   
-  RendererImpl
+  ``RendererImpl``
   
   Used to quickly implement an interface when we expect only one implementation
 
 * Variable
   
-  xDelta
+  ``xDelta``
   
   Start with lower case using camel case to separate words
 
 * Constant
   
-  MAX_LIMIT
+  ``MAX_LIMIT``
   
   Use all capitals and an underscore to separate words. This applies to enumeration constants as well
 

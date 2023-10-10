@@ -1,101 +1,153 @@
 <project name="docs" default="full">
+   <description>
+   sphin-build integration for GeoTools documentation
+   </description>
+   
+   <target name="init">
+      <property environment="env"/>
+      <condition property="sphinx.available">
+         <or>
+            <available file="sphinx-build" filepath="${env.PATH}"/>
+            <available file="sphinx-build.exe" filepath="${env.Path}"/>
+            <available file="sphinx-build.exe" filepath="${env.PATH}"/>
+         </or>
+      </condition>
+      <condition property="autobuild.available">
+         <or>
+            <available file="sphinx-autobuild" filepath="${env.PATH}"/>
+            <available file="sphinx-autobuild.exe" filepath="${env.Path}"/>
+            <available file="sphinx-autobuild.exe" filepath="${env.PATH}"/>
+         </or>
+      </condition>
+      <condition property="rst2pdf.available">
+         <or>
+            <available file="rst2pdf" filepath="${env.PATH}"/>
+            <available file="rst2pdf.exe" filepath="${env.Path}"/>
+            <available file="rst2pdf.exe" filepath="${env.PATH}"/>
+         </or>
+      </condition>
+      <condition property="latex.available">
+         <or>
+            <available file="latex" filepath="${env.PATH}"/>
+         </or>
+      </condition>
 
-        <target name="init">
-                <property environment="env"/>
-		<condition property="sphinx.available">
-			<or>
-				<available file="sphinx-build" filepath="${env.PATH}"/>
-				<available file="sphinx-build.exe" filepath="${env.Path}"/>
-				<available file="sphinx-build.exe" filepath="${env.PATH}"/>
-			</or>
-		</condition>
-		<condition property="rst2pdf.available">
-			<or>
-				<available file="rst2pdf" filepath="${env.PATH}"/>
-				<available file="rst2pdf.exe" filepath="${env.Path}"/>
-				<available file="rst2pdf.exe" filepath="${env.PATH}"/>
-			</or>
-		</condition>
-		<condition property="latex.available">
-			<or>
-				<available file="latex" filepath="${env.PATH}"/>
-			</or>
-		</condition>
+      <condition property="build.directory" value="${build.directory}" else="${basedir}/target">
+         <isset property="build.directory" />
+      </condition>
 
-		<condition property="build.directory" value="${build.directory}" else="${basedir}/target">
-			<isset property="build.directory" />
-		</condition>
+      <condition property="project.version" value="${project.version}" else="31-SNAPSHOT">
+          <isset property="project.version" />
+      </condition>
 
-        <condition property="project.version" value="${project.version}" else="31-SNAPSHOT">
-			<isset property="project.version" />
-		</condition>
+      <echo message="Build directory is ${build.directory} and project version is ${project.version}"/>
+   </target>
 
-                <echo message="Build directory is ${build.directory} and project version is ${project.version}"/>
-        </target>
+    <target name="clean" depends="init">
+       <delete includeemptydirs="true">
+          <fileset dir="${build.directory}" defaultexcludes="false">
+             <include name="**/" />
+          </fileset>
+       </delete>
+    </target>
 
-	<target name="clean" depends="init">
-		<delete includeemptydirs="true">
-			<fileset dir="${build.directory}" defaultexcludes="false">
-				<include name="**/" />
-			</fileset>
-		</delete>
-	</target>
+    <target name="index" depends="init" if="sphinx.available"
+            description="Generate sphinx-build index page">
+       <antcall target="sphinx">
+          <param name="id" value="index"/>
+          <param name="build" value="html"/>
+       </antcall>
+    </target>
 
-	<target name="index" depends="init">
-		<antcall target="sphinx">
-			<param name="id" value="index"/>
-			<param name="build" value="html"/>
-		</antcall>
-	</target>
+    <target name="user" depends="init" if="sphinx.available"
+            description="Generate sphinx-build user guide">
+       <antcall target="sphinx">
+          <param name="id" value="user" />
+          <param name="build" value="html" />
+       </antcall>
+    </target>
+    
+    <target name="user-site" depends="init" if="autobuild.available"
+            description="Interactive autobuild user guide, opens browser to http://localhost:8000">
+      <antcall target="autobuild">
+        <param name="id" value="user" />
+        <param name="build" value="html" />
+      </antcall>
+    </target>
 
-	<target name="user" depends="init">
-		<antcall target="sphinx">
-			<param name="id" value="user" />
-			<param name="build" value="html" />
-		</antcall>
-	</target>
+    <target name="web" depends="init" if="sphinx.available"
+            description="Generate sphinx-build website">
+        <antcall target="sphinx">
+            <param name="id" value="web"/>
+            <param name="build" value="html"/>
+        </antcall>
+    </target>
 
-	<target name="web" depends="init">
-		<antcall target="sphinx">
-			<param name="id" value="web"/>
-			<param name="build" value="html"/>
-		</antcall>
-	</target>
+    <target name="developer" depends="init" if="sphinx.available"
+            description="Generate sphinx-build developper guide">
+        <antcall target="sphinx">
+            <param name="id" value="developer"/>
+            <param name="build" value="html"/>
+        </antcall>
+    </target>
+    
+    <target name="developer-site" depends="init" if="autobuild.available"
+            description="Interactive autobuild evelopper guide, opens browser to http://localhost:8000">
+        <antcall target="autobuild">
+            <param name="id" value="developer"/>
+            <param name="build" value="html"/>
+        </antcall>
+    </target>
 
-	<target name="developer" depends="init">
-		<antcall target="sphinx">
-			<param name="id" value="developer"/>
-			<param name="build" value="html"/>
-		</antcall>
-	</target>
-
-	<target name="full" depends="index,user,web,developer">
-	</target>
-
-	<target name="sphinx-ignore-warnings" if="sphinx.available">
-        <echo message="Running sphinx-build -D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
-		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
-		</exec>
-	</target>
+    <target name="full" depends="index,user,web,developer" if="autobuild.available"
+            description="Generate sphinx-build of all content">
+        <echo>Full sphinx-build completed</echo>
+    </target>
+    
+    <!-- python enviornment               -->
+    <!--                                  -->
+    <!-- pip3 install -r requirements.txt -->
+    <!--                                  -->
     
     <target name="sphinx" if="sphinx.available">
-        <echo message="Running sphinx-build -D release=${project.version} -q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
-		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
-		</exec>
-	</target>
-
-	<target name="latex" if="latex.available">
-		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
-		</exec>
-	</target>
-
-	<target name="pdf" if="rst2pdf.available">
-		<exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
-			<arg line="-D release=${project.version} -c ${basedir}/${id}/pdf -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
-		</exec>
-	</target>
+        <local name="argLine"/>
+        <property name="argLine"
+                  value="-D release=${project.version} -q -W --keep-going -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        <echo message="Running sphinx-build ${argLine}"/> 
+        <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+          <arg line="${argLine}"/>
+        </exec>
+    </target>
+    
+  <target name="autobuild" if="autobuild.available">
+    <local name="argLine"/>
+    <property name="argLine" value="-D release=${project.version} -q -W -b html -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/html&quot;"/>
+    <echo message="Running sphinx-autobuild ${argLine}"/> 
+    <exec executable="sphinx-autobuild" failonerror="true" dir="${basedir}/${id}">
+      <arg line="${argLine} --open-browser"/>
+    </exec>
+  </target>
+    
+    <!-- available if needed for troubleshooting -->
+    <target name="sphinx-ignore-warnings" if="sphinx.available">
+        <echo message="Running sphinx-build -D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+            <arg line="-D release=${project.version} -q -j auto -b ${build} -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        </exec>
+    </target>
+    
+    <!-- not presently used: LaTeX environment hard to setup -->
+    <target name="latex" if="latex.available">
+        <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+            <arg line="-D release=${project.version} -b latex -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        </exec>
+    </target>
+    
+    <!-- not presently used: https://github.com/rst2pdf/rst2pdf -->
+    <target name="pdf" if="rst2pdf.available">
+        <exec executable="sphinx-build" failonerror="true" dir="${basedir}/${id}">
+            <arg line="-D release=${project.version} -c ${basedir}/${id}/pdf -b pdf -d &quot;${build.directory}/${id}/doctrees&quot; . &quot;${build.directory}/${id}/${build}&quot;"/>
+        </exec>
+    </target>
 
 </project>

@@ -15,7 +15,7 @@ Here is how a library (aka part of the GeoTools library API) may earn a star:
 * Passes IP check documented in review.txt file, basically has correct headers
 * Releasable - has no non blocking bugs in jira
 * Quality Assurance - Test Case coverage
-* Stability - based on stable / reviewed interfaces (gt-api or gt-opengis) representing collaboration or ISO/OGC specification
+* Stability - based on stable / reviewed interfaces (`org.geotools.api`) representing collaboration or ISO/OGC specification
 * Supported - user docs, module maintainer watches user list, answers email etc.. (example referencing)
 
 Plugin QA Test

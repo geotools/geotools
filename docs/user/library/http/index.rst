@@ -2,6 +2,11 @@ HTTP Clients
 ------------
 
 Supports calling external HTTP services by a common client API. The API is defined by two interfaces HTTPClient and HTTPResponse.
+
+.. figure:: /images/gt-http.svg
+   
+   gt-http module
+
 To create an implementation of the HTTPClient we're offering a factory through HTTPClientFinder.
 
 **Maven**::

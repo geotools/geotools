@@ -15,6 +15,5 @@ We would also like to welcome developers using GeoTools from downstream projects
    
    jump
    geoserver
-   geomajas
    udig
    javaEE

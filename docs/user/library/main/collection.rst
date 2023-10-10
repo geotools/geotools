@@ -1,5 +1,5 @@
-``FeatureCollection``
----------------------
+FeatureCollection
+-----------------
 
 A ``FeatureCollection`` is a collection of Features similar to a JDBC ``ResultSet``. 
 

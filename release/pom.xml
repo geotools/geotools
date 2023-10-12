@@ -23,6 +23,10 @@
   <packaging>pom</packaging>
   <name>Geotools Release</name>
   <description>Geotools library release packaging</description>
+  <properties>
+    <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
+    <copyright.year>${maven.build.timestamp}</copyright.year>
+  </properties>
 
   <dependencies>
     <!-- docs dependency only used to schedule release after docs module order        -->
@@ -460,6 +464,28 @@
           <failOnError>false</failOnError>
         </configuration>
       </plugin>
+      <!-- process markdown templates -->
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <phase>process-resources</phase>
+            <configuration>
+              <outputDirectory>${project.basedir}/target/html-template</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/markdown/html</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <!-- process markdown -->
       <plugin>
         <groupId>com.ruleoftech</groupId>
@@ -467,8 +493,8 @@
         <configuration>
           <recursiveInput>false</recursiveInput>
           <transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
-          <headerHtmlFile>${project.basedir}/src/markdown/html/header.html</headerHtmlFile>
-          <footerHtmlFile>${project.basedir}/src/markdown/html/footer.html</footerHtmlFile>
+          <headerHtmlFile>${project.basedir}/target/html-template/header.html</headerHtmlFile>
+          <footerHtmlFile>${project.basedir}/target/html-template/footer.html</footerHtmlFile>
           <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS</pegdownExtensions>
           <defaultTitle>true</defaultTitle>
         </configuration>

@@ -1,0 +1,75 @@
+name: Assembly bundle and test
+
+on: [pull_request]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  MAVEN_OPTS: -Dmaven.wagon.httpconnectionManager.ttlSeconds=25 -Dmaven.wagon.http.retryHandler.count=3 -Dorg.slf4j.simpleLogger.defaultLogLevel=WARN
+
+jobs:
+  build:
+    runs-on: [ubuntu-20.04]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: 11
+    - name: Maven repository caching
+      uses: actions/cache@v2
+      with:
+        path: ~/.m2/repository
+        key: gt-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          gt-maven-
+    - name: Setup python for docs
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        cache: 'pip' # caching pip dependencies from requirements.txt below
+    - name: Setup python pip requirements for building docs
+      working-directory: docs
+      run: |
+        pip install -r requirements.txt
+    - name: Disable checksum offloading
+      # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
+      run: sudo ethtool -K eth0 tx off rx off
+    - name: Build with Maven
+      run: |
+        mvn -B clean install -DskipTests -Dall -T2 --file pom.xml
+    - name: Assemble downloads
+      run: |
+        mvn -B -DskipTests assembly:single -file release/pom.xml
+    - name: Test bin download run and compile
+      shell: bash
+      working-directory: release/target
+      run: |
+        echo "List assemblies:"
+        ls geotools-*.zip
+        echo "Unzip bin assembly for testing"
+        unzip -q `ls geotools-*bin.zip` -d bin-download
+        cd bin-download
+        cd `ls -d geotools-*/`
+        echo "Running GeoTools.main()..."
+        java -cp "lib/*" org.geotools.util.factory.GeoTools
+        echo "Compiling Quickstart.java"
+        mkdir bin
+        javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java
+        ls -R bin | grep Quickstart
+    - name: Test user guide download
+      shell: bash
+      working-directory: release/target
+      run: |
+        echo "Unzip bin assembly for testing"
+        unzip -q `ls geotools-*userguide.zip` -d userguide-download
+        cd userguide-download
+        cd `ls -d geotools-*/`
+        
+        
+    - name: Remove SNAPSHOT jars from repository
+      run: |
+        find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

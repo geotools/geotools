@@ -1,4 +1,4 @@
-name: Download assembly build
+name: Assembly bundle and test
 
 on: [pull_request]
 
@@ -19,10 +19,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: 11
-    - name: Set up GDAL
-      run: |
-        sudo apt update
-        sudo apt install --no-install-recommends -y gdal-bin libgdal-dev libgdal-java
     - name: Maven repository caching
       uses: actions/cache@v2
       with:
@@ -30,14 +26,15 @@ jobs:
         key: gt-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           gt-maven-
-    - uses: actions/setup-python@v2
+    - name: Setup python
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-    - uses: BSFishy/pip-action@v1
-      with:
-        packages: |
-          sphinx==4.5.0
-          requests
+        cache: 'pip' # caching pip dependencies from requirements.txt below
+    - name: Setup python pip requirements for building docs
+      working-directory: docs
+      run: |
+        pip install -r requirements.txt
     - name: Disable checksum offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: sudo ethtool -K eth0 tx off rx off
@@ -49,11 +46,17 @@ jobs:
         mvn -B -DskipTests assembly:single -file release/pom.xml
     - name: Test bin download run and compile
       shell: bash
+      working-directory: release/target
       run: |
-        cd release/target
-        unzip geotools-bin*.zip
+        echo "List assemblies:"
+        ls geotools-*.zip
+        echo "Unzip bin assembly for testing"
+        unzip -q `ls geotools-*bin.zip` -d bin-download
+        cd bin-download
         cd `ls -d geotools-*/`
+        echo "Running GeoTools.main()..."
         java -cp "lib/*" org.geotools.util.factory.GeoTools
+        echo "Compiling Quickstart.java"
         mkdir bin
         javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java
         ls -R bin | grep Quickstart

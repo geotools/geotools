@@ -9,15 +9,22 @@ mvn assembly:single
 To list the bin release:
 
 ```
-unzip -t target/geotools-30-SNAPSHOT-bin.zip
+unzip -l target/geotools-*-SNAPSHOT-bin.zip
 ```
 
 To test the bin release:
 
 ```
-unzip target/geotools-30-SNAPSHOT-bin.zip
-java -cp "geotools-30-SNAPSHOT/lib/*" org.geotools.util.factory.GeoTools
+cd target
+unzip geotools-*-SNAPSHOT-bin.zip
+cd `ls -d geotools-*/`
+java -cp "lib/*" org.geotools.util.factory.GeoTools
+
+mkdir bin
+javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
+java -cp "lib/*;bin" org.geotools.tutorial.quickstart.Quickstart
 ```
+
 
 For more information see [Controlling the Contents of an Assembly](https://books.sonatype.com/mvnref-book/reference/assemblies-sect-controlling-contents.html)
 

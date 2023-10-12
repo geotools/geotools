@@ -1,17 +1,15 @@
 # GeoTools @RELEASE@
 
-Thank you for downloading GeoTools @RELEASE@. This release was created
-on @DATE@.
+Thank you for downloading GeoTools @RELEASE@. This release was created on @DATE@.
 
-This release contains only a subset of the current GeoTools code base.
-The full GeoTools code base contains additional unsupported modules
-covering experiments with a range of additional data formats. Only the
-modules which are considered to be stable have been included in this
-release.
+This binary release contains the GeoTools library, plugins and extensions.
+The binary release contains jars for the modules which are stable and have been
+reviewed for distribution. The full GeoTools source code contains additional
+unsupported modules (to share experiments and ideas). These modules may be compiled
+from source and are seeking feedback, patches and funding to added to GeoTools.
 
 For more information, and documentation on the GeoTools library please
-see the [GeoTools User
-Guide](http://docs.geotools.org/@LINK@/userguide/).
+see the [GeoTools User Guide](http://docs.geotools.org/@LINK@/userguide/).
 
 The user guide includes the following tutorials:
 
@@ -47,24 +45,25 @@ The following is provided as a quick reference only, please the
 To use the GeoTools libraries you will need:
 
 - Java 11: OpenJDK distribution tested
-- Java 8: Oracle JDK implementations tested
+- Java 17: OpenJDK distribution tested
 
 Details on JRE compatibility and optional extensions are found in our
 [developers guide](http://docs.geotools.org/@LINK@/userguide/build/install/jdk.html).
 
 ### Quickstart
 
-As a java library GeoTools is intended for use within your own program, the binary distribution includes jars of the geotools library, and third-party jars required for their operation.
+As a java library GeoTools is intended for use within your own program, the binary distribution
+includes jars of the geotools library, and third-party jars required for their operation.
 
 The GeoTools utility class provide a *main* method to verify installation:
 
-````
-java -cp "lib/*" org.geotools.util.factory.GeoTools 
-````
+``` shell
+java -cp "lib/*" org.geotools.util.factory.GeoTools
+```
 
 To compile and run Quickstart.java:
 
-```
+``` shell
 mkdir bin
 javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
 java -cp "lib/*;bin" org.geotools.tutorial.quickstart.Quickstart
@@ -79,10 +78,11 @@ In order to build GeoTools you will need a copy of
 
 With maven installed, you can perform a full build from the GeoTools folder and typing:
 
-    mvn install
+```
+mvn install
+```
 
-Please read the [User
-Guide](http://docs.geotools.org/@LINK@/userguide/build/maven/index.html)
+Please read the [User Guide](http://docs.geotools.org/@LINK@/userguide/build/maven/index.html)
 for more information about maven.
 
 ### Getting Involved (Recommended)
@@ -103,5 +103,4 @@ the [GeoTools Homepage](http://geotools.org/).
 
 Thanks for your interest in GeoTools,
 
-*The GeoTools Project Management Committee, Open Source Geospatial
-Foundation*
+*The GeoTools Project Management Committee, Open Source Geospatial Foundation*

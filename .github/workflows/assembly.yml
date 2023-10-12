@@ -60,6 +60,16 @@ jobs:
         mkdir bin
         javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java
         ls -R bin | grep Quickstart
+    - name: Test user guide download
+      shell: bash
+      working-directory: release/target
+      run: |
+        echo "Unzip bin assembly for testing"
+        unzip -q `ls geotools-*userguide.zip` -d userguide-download
+        cd userguide-download
+        cd `ls -d geotools-*/`
+        
+        
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

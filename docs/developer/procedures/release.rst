@@ -20,7 +20,7 @@ The following are necessary to perform a GeoTools release:
 
 #. Commit access to the GeoTools `Git repository <https://Github.com/geotools/geotools>`_
 #. Build access to `Jenkins <https://build.geoserver.org>`_
-#. Edit access to the GeoTools `Blog <http://www.blogger.com/blogger.g?blogID=5176900881057973693#overview>`_
+#. Edit access to the GeoTools `Blog <https://www.blogger.com/blogger.g?blogID=5176900881057973693#overview>`_
 #. Administration rights to `GeoTools JIRA <https://osgeo-org.atlassian.net/projects/GEOT/>`_
 #. Release/file management privileges in `SourceForge <https://sourceforge.net/projects/geotools/>`_
 
@@ -29,7 +29,7 @@ Versions and revisions
 
 When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and GeoTools revisions that have passed testing, navigate to `geoserver.org <http://geoserver.org>`__ and download a "binary" nightly build. From the download check the :file:`VERSION.txt` file. For example:
+To obtain the GeoServer and GeoTools revisions that have passed testing, navigate to `geoserver.org <https://geoserver.org>`__ and download a "binary" nightly build. From the download check the :file:`src/target/VERSION.txt` file. For example:
 
 .. code-block:: none
 
@@ -222,7 +222,9 @@ It is important to test the artifacts using the minimum supported version of Jav
         mkdir bin
         javac -cp "lib/*" -d bin src/org/geotools/tutorial/quickstart/Quickstart.java 
         java -cp "lib/*:bin" org.geotools.tutorial.quickstart.Quickstart
- 
+
+   Note, for testing on Windows, replace the ``:`` classpath separator in the last line above with ``;`` i.e. ``"lib/*;bin"``
+
 Publish the Release
 -------------------
 
@@ -247,11 +249,11 @@ Run the `geotools-release-publish <https://build.geoserver.org/view/geotools/job
 
 This job will rsync all the artifacts located at::
 
-     http://build.geoserver.org/geotools/release/<RELEASE>
+     https://build.geoserver.org/geotools/release/<RELEASE>
 
 to the SourceForge FRS server, and also deploy the artifacts to the public geotools maven repository.
 
-#. Navigate to `Sourceforge <http://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
+#. Navigate to `Sourceforge <https://sourceforge.net/projects/geotools/>`__ and verify that the artifacts have been uploaded properly.
 #. If this is the latest stable release, make its ``-bin.zip`` the default download for all platforms (use the "i" button).
 
 Release notes
@@ -311,7 +313,7 @@ Announce on GeoTools Blog
    * Update the Release Notes with link to GitHub release URL: https://github.com/geotools/geotools/releases/tag/26.1
    * For a new stable series, be sure to thank those involved with the release (testing, completed proposals, docs, and so on)
 
-#. The public entry point will be here: http://geotoolsnews.blogspot.com/
+#. The public entry point will be here: https://geotoolsnews.blogspot.com/
   
 Tell the World
 ^^^^^^^^^^^^^^

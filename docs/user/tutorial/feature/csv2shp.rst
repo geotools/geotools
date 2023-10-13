@@ -313,8 +313,8 @@ FeatureClass
 In GeoTools we have an interface for ``Feature``, ``FeatureType`` and ``Attribute`` provided by the GeoAPI
 project. In general GeoAPI provides a very strict interface and GeoTools will provide a class.
 
- .. image:: images/feature.png
- 
+ .. image:: images/Feature.png
+
 It is very common for a ``Feature`` to have only simple ``Attributes`` (``String``, ``Integer``, ``Date`` and so on)
 rather than references to other ``Features``, or data structures such as ``List<Date>``.  ``Features`` that
 meet this requirement are so common we have broken out a sub-class to represent them called

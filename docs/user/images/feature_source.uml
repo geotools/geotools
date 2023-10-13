@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.data.FeatureLocking</OriginalElement>
+  <nodes>
+    <node x="-716.5" y="319.0">org.geotools.api.data.FeatureSource</node>
+    <node x="-471.0" y="400.0">org.geotools.api.data.Transaction</node>
+    <node x="-843.0" y="269.0">org.geotools.api.data.DataAccess</node>
+    <node x="-473.0" y="481.0">org.geotools.api.data.FeatureLock</node>
+    <node x="-716.5" y="481.0">org.geotools.api.data.FeatureLocking</node>
+    <node x="-716.5" y="400.0">org.geotools.api.data.FeatureStore</node>
+    <node x="-473.0" y="319.0">org.geotools.api.data.Query</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.data.FeatureSource" target="org.geotools.api.data.Query" relationship="LINK_IN_DOCS">
+      <point x="105.5" y="0.0" />
+      <point x="-47.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.FeatureLocking" target="org.geotools.api.data.FeatureLock" relationship="DEPENDENCY">
+      <point x="109.5" y="0.0" />
+      <point x="-72.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.FeatureStore" target="org.geotools.api.data.FeatureSource" relationship="INTERFACE_GENERALIZATION">
+      <point x="6.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.geotools.api.data.FeatureStore" target="org.geotools.api.data.Transaction" relationship="DEPENDENCY">
+      <point x="99.5" y="0.0" />
+      <point x="-70.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.DataAccess" target="org.geotools.api.data.FeatureStore" relationship="LINK_IN_DOCS">
+      <point x="0.0" y="14.0" />
+      <point x="-748.0" y="414.0" />
+      <point x="-99.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.FeatureLocking" target="org.geotools.api.data.FeatureStore" relationship="INTERFACE_GENERALIZATION">
+      <point x="-10.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.geotools.api.data.DataAccess" target="org.geotools.api.data.FeatureLocking" relationship="LINK_IN_DOCS">
+      <point x="-15.0" y="14.0" />
+      <point x="-763.0" y="495.0" />
+      <point x="-109.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.DataAccess" target="org.geotools.api.data.FeatureSource" relationship="DEPENDENCY">
+      <point x="39.0" y="14.0" />
+      <point x="-98.0" y="-14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="true" x="-142.0" y="414.36" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

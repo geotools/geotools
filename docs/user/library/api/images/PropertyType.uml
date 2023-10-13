@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.feature.type.PropertyType</OriginalElement>
+  <nodes>
+    <node x="-159.0625" y="-375.0">org.geotools.api.feature.type.PropertyType</node>
+    <node x="-405.5" y="148.0">org.geotools.api.feature.type.ComplexType</node>
+    <node x="-450.0" y="352.0">org.geotools.api.feature.type.FeatureType</node>
+    <node x="-412.8583397534669" y="-79.0">org.geotools.api.feature.type.AssociationType</node>
+    <node x="-31.5" y="148.0">org.geotools.api.feature.type.GeometryType</node>
+    <node x="150.69250770416033" y="-79.0">org.geotools.api.feature.type.OperationType</node>
+    <node x="-125.0625" y="-79.0">org.geotools.api.feature.type.AttributeType</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.feature.type.ComplexType" target="org.geotools.api.feature.type.AttributeType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-77.0" />
+      <point x="-228.5" y="123.0" />
+      <point x="-21.5625" y="123.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.AttributeType" target="org.geotools.api.feature.type.PropertyType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="123.0" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.FeatureType" target="org.geotools.api.feature.type.ComplexType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="0.0" y="77.0" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.GeometryType" target="org.geotools.api.feature.type.AttributeType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-31.0" />
+      <point x="190.0" y="123.0" />
+      <point x="-21.5625" y="123.0" />
+      <point x="0.0" y="42.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.OperationType" target="org.geotools.api.feature.type.PropertyType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-88.5" />
+      <point x="291.19250770416033" y="-104.0" />
+      <point x="-21.5625" y="-104.0" />
+      <point x="0.0" y="123.0" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.AssociationType" target="org.geotools.api.feature.type.PropertyType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-54.0" />
+      <point x="-288.8583397534669" y="-104.0" />
+      <point x="-21.5625" y="-104.0" />
+      <point x="0.0" y="123.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.9304659498207886" showDependencies="false" x="246.0" y="312.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

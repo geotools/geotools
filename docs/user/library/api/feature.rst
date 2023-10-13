@@ -1,7 +1,8 @@
 Feature
 -------
 
-The Feature class is used to represents "something that can be drawn on a map". 
+The **Feature** class provides a data model, used to store a mix of spatial and attribute values.
+Feature is used to represent "something that can be drawn on a map". 
 
 References:
 
@@ -15,7 +16,7 @@ Data Structure
 A GeoTools Feature stores your information in a data structure composed of Feature, Attributes, and
 Associations.
 
-.. image:: /images/feature_data_model.PNG
+.. image:: images/Feature.png
 
 To directly create a ``Feature`` you can make use of ``FeatureFactory``, or use a builder which makes things a little easier (as it fills in defaults)::
 
@@ -56,7 +57,7 @@ A "simple" feature is an object that can be drawn on a map (i.e. a feature) that
 
 Here are the additional methods made available:
 
-.. image:: /images/feature_simple.PNG
+.. image:: images/SimpleFeature.png
 
 Here is an example of constructing a ``SimpleFeatureType``::
    

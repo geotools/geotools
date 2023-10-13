@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.feature.type</OriginalElement>
+  <nodes>
+    <node x="-843.5" y="772.0">org.geotools.api.feature.type.AssociationDescriptor</node>
+    <node x="-1384.5" y="772.0">org.geotools.api.feature.type.Operation</node>
+    <node x="-1087.0" y="772.0">org.geotools.api.feature.type.AttributeDescriptor</node>
+    <node x="-1206.5" y="1003.5">org.geotools.api.feature.type.GeometryDescriptor</node>
+    <node x="-1122.5" y="477.5">org.geotools.api.feature.type.PropertyDescriptor</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.feature.type.AssociationDescriptor" target="org.geotools.api.feature.type.PropertyDescriptor" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-31.0" />
+      <point x="-733.0" y="961.0" />
+      <point x="-985.0" y="961.0" />
+      <point x="0.0" y="88.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.AttributeDescriptor" target="org.geotools.api.feature.type.PropertyDescriptor" relationship="INTERFACE_GENERALIZATION">
+      <point x="-102.0" y="0.0" />
+      <point x="-985.0" y="826.0" />
+      <point x="0.0" y="88.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.Operation" target="org.geotools.api.feature.type.PropertyDescriptor" relationship="INTERFACE_GENERALIZATION">
+      <point x="129.0" y="0.0" />
+      <point x="-673.0" y="849.0" />
+      <point x="-673.0" y="961.0" />
+      <point x="-985.0" y="961.0" />
+      <point x="0.0" y="88.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.type.GeometryDescriptor" target="org.geotools.api.feature.type.AttributeDescriptor" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="54.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="false" x="-427.5" y="1030.0" />
+  <SelectedNodes>
+    <node>org.geotools.api.feature.type.AssociationDescriptor</node>
+    <node>org.geotools.api.feature.type.GeometryDescriptor</node>
+    <node>org.geotools.api.feature.type.Operation</node>
+    <node>org.geotools.api.feature.type.AttributeDescriptor</node>
+    <node>org.geotools.api.feature.type.PropertyDescriptor</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

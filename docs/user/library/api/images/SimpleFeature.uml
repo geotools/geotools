@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.feature.simple.SimpleFeature</OriginalElement>
+  <nodes>
+    <node x="442.0" y="119.5">org.geotools.api.feature.simple.SimpleFeature</node>
+    <node x="-60.0" y="-54.0">org.geotools.api.feature.type.FeatureType</node>
+    <node x="402.0" y="-54.0">org.geotools.api.feature.Feature</node>
+    <node x="-24.5" y="119.5">org.geotools.api.feature.simple.SimpleFeatureType</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.feature.simple.SimpleFeatureType" target="org.geotools.api.feature.type.FeatureType" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-65.5" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="org.geotools.api.feature.simple.SimpleFeature" target="org.geotools.api.feature.Feature" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-88.5" />
+      <point x="0.0" y="65.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.simple.SimpleFeature" target="org.geotools.api.feature.simple.SimpleFeatureType" relationship="DEPENDENCY">
+      <point x="-125.0" y="-23.0" />
+      <point x="169.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.feature.Feature" target="org.geotools.api.feature.type.FeatureType" relationship="DEPENDENCY">
+      <point x="-165.0" y="-11.5" />
+      <point x="411.0" y="0.0" />
+      <point x="411.0" y="0.0" />
+      <point x="205.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="true" x="336.0" y="121.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

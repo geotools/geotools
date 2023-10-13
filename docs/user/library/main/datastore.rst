@@ -143,7 +143,7 @@ FeatureSource
 
 A ``FeatureSource`` is used to provide access to the contents of a DataStore.
 
-.. image:: /images/FeatureSource.PNG
+.. image:: /images/DataAccess.png
 
 **Approach**
 

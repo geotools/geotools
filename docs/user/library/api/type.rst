@@ -1,7 +1,7 @@
 FeatureType
 -----------
 
-**FeatureType** provides metadata model describing the represented information.  This is considered "metadata" as it is a description of the information stored in the features.
+**FeatureType** provides dynamic type system, as a model describing the represented information.  This is considered "metadata" as it is a description of the information stored in the individual features.
 
 FeatureType is used when:
 
@@ -24,7 +24,7 @@ PropertyType
 The type is represented by PropertyType, AttributeType, GeometryType, ComplexType, FeatureType.
 
 
-.. image:: /images/feature_type_model.PNG
+.. image:: images/PropertyType.png
 
 This forms a "dynamic type system" indicating we can describe new types of information at runtime. To make this a complete type system we have support for references (with AssociationType) and methods (with OperationType) although use of these facilities is considered experimental at present.
 
@@ -35,4 +35,4 @@ As shown above a ComplexType contains a list of **properties** each represented 
 
 
 
-.. image:: /images/feature_type_model_descriptors.PNG
+.. image:: images/PropertyDescriptor.png

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.feature.Feature</OriginalElement>
+  <nodes>
+    <node x="-696.4999999999999" y="-238.66666666666666">org.geotools.api.feature.simple.SimpleFeature</node>
+    <node x="-1192.0" y="-232.66666666666669">org.geotools.api.feature.Feature</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.feature.simple.SimpleFeature" target="org.geotools.api.feature.Feature" relationship="INTERFACE_GENERALIZATION">
+      <point x="-142.0" y="-109.00000000000003" />
+      <point x="193.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.5" showDependencies="false" x="-618.5" y="40.0" />
+  <SelectedNodes>
+    <node>org.geotools.api.feature.simple.SimpleFeature</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

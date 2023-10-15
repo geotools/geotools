@@ -93,7 +93,7 @@ in particular:
    org.geotools.data.DataStoreFactorySpi
    org.geotools.data.FileDataStoreFactorySpi
 
-show now be named:
+should now be named:
 
 .. code-block:: 
 

@@ -16,6 +16,7 @@
  */
 package org.geotools.tile;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -66,6 +67,26 @@ public class TileTest {
         Assert.assertNotNull(img);
         Assert.assertEquals(256, img.getHeight());
         Assert.assertEquals(256, img.getWidth());
+        int pix = img.getRGB(20, 10);
+        Assert.assertTrue(checkColor(Color.white.getRGB(), pix));
+        System.setProperty(Tile.DEBUG_FLAG, "no");
+        img = this.tile.createErrorImage("Failed:" + this.tile.getId());
+        Assert.assertNotNull(img);
+        Assert.assertEquals(256, img.getHeight());
+        Assert.assertEquals(256, img.getWidth());
+        pix = img.getRGB(20, 10);
+        Assert.assertFalse(checkColor(Color.white.getRGB(), pix));
+    }
+
+    private boolean checkColor(int expected, int observed) {
+        int blueExpected = expected & 0xff;
+        int greenExpected = (expected & 0xff00) >> 8;
+        int redExpected = (expected & 0xff0000) >> 16;
+
+        int blue = observed & 0xff;
+        int green = (observed & 0xff00) >> 8;
+        int red = (observed & 0xff0000) >> 16;
+        return (blue == blueExpected && red == redExpected && green == greenExpected);
     }
 
     @Test

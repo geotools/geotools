@@ -5,16 +5,13 @@ import java.net.URL;
 import org.geotools.api.data.FileDataStore;
 import org.geotools.api.data.FileDataStoreFinder;
 import org.geotools.api.data.SimpleFeatureSource;
-import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.style.Style;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.map.WMTSMapLayer;
 import org.geotools.ows.wmts.model.WMTSLayer;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.SLD;
 import org.geotools.swing.JMapFrame;
 
@@ -34,31 +31,27 @@ public class Quickstart {
 
         map.setTitle("Quickstart");
 
-        CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
-        ReferencedEnvelope env = new ReferencedEnvelope(-180, 180, -90, 90, crs);
-        /*
-         * crs = CRS.decode("epsg:3857"); env = env.transform(crs, true);
-         */
-
-        map.getViewport().setCoordinateReferenceSystem(crs);
-        map.getViewport().setBounds(env);
         URL serverURL =
                 new URL(
                         "http://astun-desktop:8080/geoserver/gwc/service/wmts?REQUEST=GetCapabilities");
-        serverURL = new URL("http://raspberrypi:9000/wmts/1.0.0/WMTSCapabilities.xml");
+        serverURL =
+                new URL(
+                        "http://spectrum.mapinfoservices.com/rest/Spatial/WMTS/1.0.0/WMTSCapabilities.xml");
         WebMapTileServer server = new WebMapTileServer(serverURL);
-        String name = "osm";
+        String name = "USA_WMTS_Layer_ID1";
         WMTSLayer wlayer = server.getCapabilities().getLayer(name);
         // System.out.println(wlayer.getLatLonBoundingBox());
         WMTSMapLayer mapLayer = new WMTSMapLayer(server, wlayer);
         map.addLayer(mapLayer);
-        // System.out.println(mapLayer.getBounds());
-        File file = new File("/data/natural_earth/110m_physical/110m_coastline.shp");
+
+        File file = new File("/home/ian/Data/states/states.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
-        SimpleFeatureSource featureSource = store.getFeatureSource();
-        Style style = SLD.createSimpleStyle(featureSource.getSchema());
-        Layer layer = new FeatureLayer(featureSource, style);
-        map.addLayer(layer);
+        if (store != null) {
+            SimpleFeatureSource featureSource = store.getFeatureSource();
+            Style style = SLD.createSimpleStyle(featureSource.getSchema());
+            Layer layer = new FeatureLayer(featureSource, style);
+            map.addLayer(layer);
+        }
         JMapFrame frame = new JMapFrame();
         frame.setSize(800, 450);
         // map.getViewport().setScreenArea(new Rectangle(800,400));

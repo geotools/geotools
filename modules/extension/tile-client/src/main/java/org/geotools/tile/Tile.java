@@ -42,6 +42,7 @@ import org.geotools.util.logging.Logging;
 public abstract class Tile implements ImageLoader {
 
     protected static final Logger LOGGER = Logging.getLogger("org.geotools.tile.loader");
+    public static final String DEBUG_FLAG = "SHOW_DEBUG_TILES";
 
     /**
      * These are the states of the tile. This state represents if the tile needs to be re-rendered
@@ -199,7 +200,7 @@ public abstract class Tile implements ImageLoader {
 
     /**
      * Returns true if the image has been correctly loaded and the render state is {@link
-     * RenderState.RENDERED}.
+     * RenderState}.
      *
      * @return the tile image
      */
@@ -210,19 +211,23 @@ public abstract class Tile implements ImageLoader {
     /** Gets an image showing an error, possibly indicating a failure to load the tile image. */
     protected BufferedImage createErrorImage(final String message) {
 
+        String flag = System.getProperty(DEBUG_FLAG);
+        boolean showMessage = flag == null || !"no".equalsIgnoreCase(flag);
         final int size = getTileSize();
         BufferedImage buffImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D graphics = buffImage.createGraphics();
-        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.5));
+        if (showMessage) {
+            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.5));
 
-        graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, size, size);
-        graphics.setColor(Color.RED);
-        graphics.drawLine(0, 0, size, size);
-        graphics.drawLine(0, size, size, 0);
-        int mesgWidth = graphics.getFontMetrics().stringWidth(message);
-        graphics.drawString(message, (size - mesgWidth) / 2, size / 2);
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, size, size);
+            graphics.setColor(Color.RED);
+            graphics.drawLine(0, 0, size, size);
+            graphics.drawLine(0, size, size, 0);
+            int mesgWidth = graphics.getFontMetrics().stringWidth(message);
+            graphics.drawString(message, (size - mesgWidth) / 2, size / 2);
+        }
         graphics.dispose();
 
         return buffImage;

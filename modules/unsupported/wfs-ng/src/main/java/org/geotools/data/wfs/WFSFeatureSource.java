@@ -284,7 +284,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         final SimpleFeatureType contentType =
                 getQueryType(localQuery, (SimpleFeatureType) request.getFullType());
         request.setQueryType(contentType);
-        LOGGER.fine("request = "+request);
+        LOGGER.fine("request = " + request);
         GetFeatureResponse response = client.issueRequest(request);
         LOGGER.fine("response = " + response);
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());

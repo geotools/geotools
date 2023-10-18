@@ -29,6 +29,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.test.TestData;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 
 /**
@@ -78,7 +79,9 @@ public class GDALTestCase {
 
     @Before
     public void setUp() throws Exception {
-        if (!testingEnabled()) return;
+        // skip all tests if gdal-java is not found
+        Assume.assumeTrue(testingEnabled());
+
         try {
             final File file = TestData.file(this, "test.zip");
             if (file != null && file.exists() && file.canRead())

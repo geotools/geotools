@@ -72,10 +72,6 @@ public final class JP2MrSIDTest extends GDALTestCase {
 
     @Test
     public void test() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
-
         File file = null;
         try {
             file = TestData.file(this, fileName);
@@ -109,10 +105,6 @@ public final class JP2MrSIDTest extends GDALTestCase {
 
     @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         GridFormatFinder.scanForPlugins();
 
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();

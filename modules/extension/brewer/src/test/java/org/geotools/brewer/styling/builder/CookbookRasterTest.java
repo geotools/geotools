@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import org.geotools.api.style.ColorMap;
 import org.geotools.api.style.ColorMapEntry;
 import org.geotools.api.style.ContrastMethod;
@@ -313,5 +314,26 @@ public class CookbookRasterTest extends AbstractStyleTest {
         assertFalse(cmap.getExtendedColors());
         assertEntry("#008000", 70.0, 1.0, "Label1", cmap.getColorMapEntry(0));
         assertEntry("#663333", 256.0, 1.0, "Label2", cmap.getColorMapEntry(1));
+    }
+
+    @Test
+    public void testAutomaticExtendedMode() {
+        ColorMapBuilder cm = new RasterSymbolizerBuilder().colorMap();
+        for (int i = 0; i < 257; i++) {
+            cm.entry().quantity(i).color(new Color(i)).label("Label" + i);
+        }
+        Style style = cm.buildStyle();
+        // print(style);
+
+        // round up the basic elements and check its simple
+        StyleCollector collector = new StyleCollector();
+        style.accept(collector);
+        assertSimpleStyle(collector);
+
+        // check the symbolizer
+        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        ColorMap cmap = rs.getColorMap();
+        assertEquals(257, cmap.getColorMapEntries().length);
+        assertTrue(cmap.getExtendedColors());
     }
 }

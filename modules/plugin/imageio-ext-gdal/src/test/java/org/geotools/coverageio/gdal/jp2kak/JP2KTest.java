@@ -56,10 +56,6 @@ public final class JP2KTest extends GDALTestCase {
 
     @Test
     public void test() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
-
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
             LOGGER.info(
@@ -96,10 +92,6 @@ public final class JP2KTest extends GDALTestCase {
 
     @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         GridFormatFinder.scanForPlugins();
 
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();

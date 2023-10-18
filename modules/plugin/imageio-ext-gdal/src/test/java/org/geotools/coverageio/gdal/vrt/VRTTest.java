@@ -18,6 +18,7 @@
 package org.geotools.coverageio.gdal.vrt;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Rectangle;
@@ -65,10 +66,6 @@ public final class VRTTest extends GDALTestCase {
 
     @Test
     public void testService() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         GridFormatFinder.scanForPlugins();
 
         Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
@@ -92,10 +89,6 @@ public final class VRTTest extends GDALTestCase {
 
     @Test
     public void test() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
-
         // Preparing an useful layout in case the image is striped.
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
@@ -116,13 +109,14 @@ public final class VRTTest extends GDALTestCase {
         forceDataLoading(gc);
 
         // check the nodata has been read
-        Object property = gc.getProperty(NoDataContainer.GC_NODATA);
+        double noData = getNoData(gc);
+
         final double NO_DATA_VALUE = -3.27670000000000E+04;
-        assertEquals(NO_DATA_VALUE, (Double) property, 1);
+        assertEquals(NO_DATA_VALUE, noData, 1);
         GridSampleDimension sd = gc.getSampleDimension(0);
         assertEquals(1, sd.getCategories().size());
         Category noDataCategory = sd.getCategories().get(0);
-        assertEquals("NO_DATA", noDataCategory.getName().toString());
+        assertEquals("No data", noDataCategory.getName().toString());
         assertEquals(
                 new NumberRange<>(Double.class, NO_DATA_VALUE, NO_DATA_VALUE),
                 noDataCategory.getRange());
@@ -171,5 +165,18 @@ public final class VRTTest extends GDALTestCase {
                         cropEnvelope));
         gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
+    }
+
+    private double getNoData(GridCoverage2D gc) {
+        Object property = gc.getProperty(NoDataContainer.GC_NODATA);
+        if (property != null) {
+            if (property instanceof NoDataContainer) {
+                return ((NoDataContainer) property).getAsRange().getMin().doubleValue();
+            } else if (property instanceof Double) {
+                return (Double) property;
+            }
+        }
+        fail("No data not found");
+        return Double.NaN; // just to make compiler happy
     }
 }

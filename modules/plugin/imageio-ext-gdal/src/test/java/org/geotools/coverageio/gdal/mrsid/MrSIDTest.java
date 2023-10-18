@@ -71,9 +71,6 @@ public final class MrSIDTest extends GDALTestCase {
     @org.junit.Test
     @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope test with tolerance
     public void test() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
             LOGGER.info(
@@ -207,9 +204,6 @@ public final class MrSIDTest extends GDALTestCase {
     /** Test class methods */
     @org.junit.Test
     public void test2() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
         // read in the grid coverage
         if (fileName.equalsIgnoreCase("")) {
             LOGGER.info(
@@ -265,9 +259,6 @@ public final class MrSIDTest extends GDALTestCase {
 
     @org.junit.Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
         GridFormatFinder.scanForPlugins();
 
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();

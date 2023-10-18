@@ -62,9 +62,6 @@ public class EnviHdrTest extends GDALTestCase {
     @Test
     @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope test with tolerance
     public void test() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
         File file = null;
         try {
             file = TestData.file(this, fileName);
@@ -143,10 +140,6 @@ public class EnviHdrTest extends GDALTestCase {
 
     @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         GridFormatFinder.scanForPlugins();
 
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();
@@ -170,9 +163,6 @@ public class EnviHdrTest extends GDALTestCase {
 
     @Test
     public void testDimensionNames() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
         String fileName = "multiband.bsq";
         File file = null;
         try {

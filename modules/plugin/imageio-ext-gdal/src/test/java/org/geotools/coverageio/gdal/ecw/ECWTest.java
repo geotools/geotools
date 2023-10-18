@@ -69,10 +69,6 @@ public final class ECWTest extends GDALTestCase {
     @Test
     @SuppressWarnings("PMD.SimplifiableTestAssertion") // envelope test with tolerance
     public void test() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
-
         // Preparing an useful layout in case the image is striped.
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
@@ -184,10 +180,6 @@ public final class ECWTest extends GDALTestCase {
 
     @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         GridFormatFinder.scanForPlugins();
 
         Iterator list = GridFormatFinder.getAvailableFormats().iterator();
@@ -211,10 +203,6 @@ public final class ECWTest extends GDALTestCase {
 
     @Test
     public void testAfricaMask() throws Exception {
-        if (!testingEnabled()) {
-            return;
-        }
-
         // get a reader
         File file = null;
         try {

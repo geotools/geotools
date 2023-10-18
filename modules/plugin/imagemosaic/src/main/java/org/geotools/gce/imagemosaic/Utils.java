@@ -389,12 +389,15 @@ public class Utils {
          * mosaic bounds
          */
         public static final String NO_DATA = "NoData";
+
         /** Whether to skip checks for external overviews, when no internal overviews are found */
         public static final String SKIP_EXTERNAL_OVERVIEWS = "SkipExternalOverviews";
 
         public static final String QUERY_CACHE_MAX_AGE = "QueryCacheMaxAge";
 
         public static final String QUERY_CACHE_MAX_FEATURES = "QueryCacheMaxFeatures";
+
+        public static final String COLLECT_RAT = "CollectAttributeTables";
     }
 
     /**
@@ -552,29 +555,12 @@ public class Utils {
         final Queue<Throwable> exceptions = new LinkedList<>();
 
         try {
-            final ImageMosaicEventHandlers.ProcessingEventListener listener =
-                    new ImageMosaicEventHandlers.ProcessingEventListener() {
-
-                        @Override
-                        public void exceptionOccurred(
-                                ImageMosaicEventHandlers.ExceptionEvent event) {
-                            final Throwable t = event.getException();
-                            exceptions.add(t);
-                            if (LOGGER.isLoggable(Level.SEVERE)) {
-                                LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
-                            }
-                        }
-
-                        @Override
-                        public void getNotification(
-                                ImageMosaicEventHandlers.ProcessingEvent event) {
-                            if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.fine(event.getMessage());
-                            }
-                        }
-                    };
-            eventHandler.addProcessingEventListener(listener);
+            eventHandler.addProcessingEventListener(new DefaultProcessingListener(exceptions));
+            if (Boolean.valueOf(configuration.getParameter(Prop.COLLECT_RAT))) {
+                eventHandler.addProcessingEventListener(new RATCollectorListener(configuration));
+            }
             walker.run();
+            eventHandler.fireCompleted();
         } catch (Throwable e) {
             LOGGER.log(Level.SEVERE, "Unable to build mosaic", e);
             return false;
@@ -587,6 +573,33 @@ public class Utils {
             return false;
         }
         return true;
+    }
+
+    /** Simple listener collecting exceptions and logging events */
+    private static class DefaultProcessingListener
+            extends ImageMosaicEventHandlers.ProcessingEventListener {
+
+        private final Queue<Throwable> exceptions;
+
+        public DefaultProcessingListener(Queue<Throwable> exceptions) {
+            this.exceptions = exceptions;
+        }
+
+        @Override
+        public void exceptionOccurred(ImageMosaicEventHandlers.ExceptionEvent event) {
+            final Throwable t = event.getException();
+            exceptions.add(t);
+            if (LOGGER.isLoggable(Level.SEVERE)) {
+                LOGGER.log(Level.SEVERE, t.getLocalizedMessage(), t);
+            }
+        }
+
+        @Override
+        public void getNotification(ImageMosaicEventHandlers.ProcessingEvent event) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(event.getMessage());
+            }
+        }
     }
 
     /**
@@ -1364,6 +1377,8 @@ public class Utils {
 
     public static final boolean DEFAULT_RECURSION_BEHAVIOR = true;
 
+    public static final boolean DEFAULT_COLLECT_RAT = false;
+
     /** */
     public static Map<String, Serializable> createDataStoreParamsFromPropertiesFile(
             final URL datastoreProperties) throws IOException {
@@ -1840,6 +1855,8 @@ public class Utils {
 
     public static final String SAMPLE_IMAGE_NAME_LEGACY = "sample_image";
     public static final String SAMPLE_IMAGE_NAME = "sample_image.dat";
+
+    public static final String PAM_DATASET_NAME = ".aux.xml";
 
     public static final String BBOX = "BOUNDINGBOX";
 

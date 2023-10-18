@@ -499,6 +499,8 @@ public class IndexerUtils {
                 parameterList,
                 Utils.Prop.RECURSIVE,
                 Boolean.toString(Utils.DEFAULT_RECURSION_BEHAVIOR));
+        setParam(
+                parameterList, Utils.Prop.COLLECT_RAT, Boolean.toString(Utils.DEFAULT_COLLECT_RAT));
         setParam(parameterList, Utils.Prop.INDEX_NAME, Utils.DEFAULT_INDEX_NAME);
 
         return defaultIndexer;
@@ -582,6 +584,7 @@ public class IndexerUtils {
         addProperty(Utils.Prop.ABSOLUTE_PATH, props, parameters);
         addProperty(Utils.Prop.PATH_TYPE, props, parameters);
         addProperty(Utils.Prop.RECURSIVE, props, parameters);
+        addProperty(Utils.Prop.COLLECT_RAT, props, parameters);
 
         // isCog
         if (props.containsKey(Utils.Prop.COG)) {

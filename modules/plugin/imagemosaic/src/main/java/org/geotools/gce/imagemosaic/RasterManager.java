@@ -19,6 +19,8 @@ package org.geotools.gce.imagemosaic;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import it.geosolutions.imageio.pam.PAMDataset;
+import it.geosolutions.imageio.pam.PAMParser;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -154,6 +156,8 @@ public class RasterManager implements Cloneable {
 
     private SubmosaicProducerFactory submosaicProducerFactory =
             new DefaultSubmosaicProducerFactory();
+
+    private PAMDataset pamDataset;
 
     /**
      * This class is responsible for putting together all the 2D spatial information needed for a
@@ -929,6 +933,7 @@ public class RasterManager implements Cloneable {
 
         // load defaultSM and defaultCM by using the sample_image if it was provided
         loadSampleImage(configuration);
+        loadPamDataset(configuration);
 
         CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
         typeName = catalogBean != null ? catalogBean.getTypeName() : null;
@@ -1139,6 +1144,49 @@ public class RasterManager implements Cloneable {
         if (typeName == null && granuleCatalog != null) {
             String[] typeNames = granuleCatalog.getTypeNames();
             typeName = (typeNames != null && typeNames.length > 0) ? typeNames[0] : null;
+        }
+    }
+
+    /**
+     * This code tries to load the PAMDataset for this coverage, assuming there is one, otherwise
+     * sets the field to null
+     */
+    private void loadPamDataset(MosaicConfigurationBean configuration) {
+        if (this.parentReader.sourceURL == null) {
+            // TODO: I need to define the sampleImage somehow for the ImageMosaicDescriptor case
+            return;
+        }
+
+        final URL baseURL = this.parentReader.sourceURL;
+        final File baseFile = URLs.urlToFile(baseURL);
+        // in case we do not manage to convert the source URL we leave right awaycd sr
+        if (baseFile == null) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.fine("Unable to find PAM dataset for path " + baseURL);
+            return;
+        }
+        String baseName = baseFile.getParent() + "/";
+        String fileName = null;
+        File pamDatasetFile = null;
+        if (configuration != null) {
+            String name = configuration.getName();
+            if (name != null) {
+                fileName = baseName + name + Utils.PAM_DATASET_NAME;
+                pamDatasetFile = new File(fileName);
+            }
+        }
+
+        if (pamDatasetFile == null) {
+            pamDatasetFile = new File(baseName + Utils.PAM_DATASET_NAME);
+        }
+
+        if (!pamDatasetFile.exists()) return;
+
+        try {
+            PAMParser parser = new PAMParser();
+            this.pamDataset = parser.parsePAM(pamDatasetFile);
+        } catch (IOException e) {
+            LOGGER.warning("Failed to load PAM dataset: " + e);
         }
     }
 
@@ -1899,5 +1947,10 @@ public class RasterManager implements Cloneable {
     /** Returns the coverage name */
     public String getName() {
         return name;
+    }
+
+    /** Returns the PAM dataset for this coverage, if one is available */
+    public PAMDataset getPamDataset() {
+        return pamDataset;
     }
 }

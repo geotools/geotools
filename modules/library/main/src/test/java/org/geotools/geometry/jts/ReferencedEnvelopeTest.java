@@ -225,4 +225,21 @@ public class ReferencedEnvelopeTest {
         assertTrue(ReferencedEnvelope.create(re, re.getCoordinateReferenceSystem()).isEmpty());
         assertTrue(ReferencedEnvelope.reference(re).isEmpty());
     }
+
+    @Test
+    public void testWrappingEnvelopeConversion() throws Exception {
+        GeneralBounds ge = new GeneralBounds(new double[] {160, 20}, new double[] {-160, 40});
+        ge.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+
+        // used to convert to an empty envelope, which is wrong, the above is not empty,
+        // it's just spanning the dateline. ReferencedEnvelope cannot represent that case,
+        // but we can at least make sure it doesn't convert to an empty envelope and use whole
+        // world instead
+        ReferencedEnvelope re = ReferencedEnvelope.reference(ge);
+        assertEquals(DefaultGeographicCRS.WGS84, re.getCoordinateReferenceSystem());
+        assertEquals(-180, re.getMinX(), 0d);
+        assertEquals(180, re.getMaxX(), 0d);
+        assertEquals(20, re.getMinY(), 0d);
+        assertEquals(40, re.getMaxY(), 0d);
+    }
 }

@@ -61,10 +61,6 @@ public final class SRPTest extends GDALTestCase {
 
     @Test
     public void testService() throws NoSuchAuthorityCodeException, FactoryException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         GridFormatFinder.scanForPlugins();
 
         Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
@@ -99,10 +95,6 @@ public final class SRPTest extends GDALTestCase {
     }
 
     public void checkSource(Object source) throws IOException {
-        if (!testingEnabled()) {
-            return;
-        }
-
         // Preparing an useful layout in case the image is striped.
         final ImageLayout l = new ImageLayout();
         l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(64).setTileWidth(64);

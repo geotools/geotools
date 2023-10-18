@@ -26,6 +26,7 @@ import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.cs.CoordinateSystem;
 import org.geotools.api.referencing.operation.CoordinateOperation;
 import org.geotools.api.referencing.operation.CoordinateOperationFactory;
@@ -148,6 +149,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                     return "ReferencedEnvelope.EVERYTHING";
                 }
             };
+
     /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = -3188702602373537163L;
 
@@ -346,6 +348,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             }
         }
     }
+
     /**
      * Make sure that the specified location uses the same CRS as this one.
      *
@@ -368,6 +371,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
+
     /**
      * Set the coordinate reference system in which the coordinate are given.
      *
@@ -377,6 +381,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         AbstractPosition.checkCoordinateReferenceSystemDimension(crs, getDimension());
         this.crs = crs;
     }
+
     /** Returns the number of dimensions. */
     @Override
     public int getDimension() {
@@ -520,6 +525,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
         return super.intersects(toJTSEnvelope(bbox));
     }
+
     /** Check if this bounding box intersects the provided bounds. */
     @Override
     public ReferencedEnvelope intersection(Envelope env) {
@@ -544,6 +550,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         }
         expandToInclude(ReferencedEnvelope.reference(bbox));
     }
+
     /** Expand to include the provided DirectPosition */
     public void expandToInclude(Position pt) {
         Coordinate coordinate = new Coordinate(pt.getOrdinate(0), pt.getOrdinate(1));
@@ -555,6 +562,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         ((Position2D) pos).setLocation(pt);
         this.expandToInclude(pos);
     }
+
     /**
      * Returns the X coordinate of the center of the rectangle.
      *
@@ -623,6 +631,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public void setFrameFromDiagonal(Point2D lowerLeft, Point2D upperRight) {
         super.init(lowerLeft.getX(), upperRight.getX(), lowerLeft.getY(), upperRight.getY());
     }
+
     /** Rectangle style x,y,width,height bounds definition */
     public void setFrame(double x, double y, double width, double height) {
         super.init(x, x + width, y, y + height);
@@ -896,6 +905,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
         return buffer.toString();
     }
+
     /**
      * Factory method to create the correct ReferencedEnvelope.
      *
@@ -908,6 +918,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         }
         return new ReferencedEnvelope(original);
     }
+
     /**
      * Factory method to create the correct ReferencedEnvelope implementation for the provided
      * CoordinateReferenceSystem.
@@ -945,6 +956,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
         return new ReferencedEnvelope(reference(bounds), bounds.getCoordinateReferenceSystem());
     }
+
     /**
      * Utility method to create a ReferencedEnvelope from provided {@code Bounds}.
      *
@@ -970,6 +982,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
         return new ReferencedEnvelope(reference(env), crs);
     }
+
     /**
      * Utility method to copy a ReferencedEnvelope.
      *
@@ -1002,6 +1015,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                 rectangle.getHeight(),
                 DefaultGeographicCRS.WGS84);
     }
+
     /**
      * Construct referenced envelope using rectangle conventions using width and height.
      *
@@ -1032,6 +1046,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
     public static ReferencedEnvelope rect(double x, double y, double width, double height) {
         return new ReferencedEnvelope(x, x + width, y, y + height, DefaultGeographicCRS.WGS84);
     }
+
     /**
      * Construct referenced envelope using rectangle conventions using width and height.
      *
@@ -1155,6 +1170,18 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
 
         // emptiness test according to org.locationtech.jts.geom.Envelope using ! to catch NaN
         if (!(env.getMinimum(0) < env.getMaximum(0))) {
+            // but for geographic crs the above means the original envelope
+            // wrapped the dateline, while we cannot expressed the same in JTS,
+            // we'll at least convert it to a whole world envelope
+            if (env.getCoordinateReferenceSystem() instanceof GeographicCRS
+                    && env.getMinimum(1) <= env.getMaximum(1)) {
+                return new ReferencedEnvelope(
+                        -180.0,
+                        180.0,
+                        env.getMinimum(1),
+                        env.getMaximum(1),
+                        env.getCoordinateReferenceSystem());
+            }
             return new ReferencedEnvelope(env.getCoordinateReferenceSystem());
         }
         return new ReferencedEnvelope(env);

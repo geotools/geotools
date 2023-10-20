@@ -19,6 +19,7 @@ package org.geotools.jdbc;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 
@@ -342,6 +343,29 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "HOUSE", "10.0");
         checkValueContains(value, "FABRIC", "700.0");
         checkValueContains(value, "SCHOOL", "180.0");
+    }
+
+    protected void testGroupByWithAggregateAllValuesNull(
+            Aggregate aggregate, boolean expectOptimized) throws Exception {
+        PropertyName aggregateAttribute =
+                CommonFactoryFinder.getFilterFactory().property(aname("fuel_consumption"));
+        Expression groupBy = dataStore.getFilterFactory().property(aname("building_type"));
+        List<Object[]> value =
+                genericGroupByTestTest(
+                        Query.ALL, aggregate, aggregateAttribute, expectOptimized, groupBy);
+        // All values in the fuel_consumption column are null, should return null without an NPE
+        for (Object[] row : value) {
+            assertNull(row[1]);
+        }
+    }
+
+    @Test
+    public void testGroupByWithAggregateAllValuesNull() throws Exception {
+        testGroupByWithAggregateAllValuesNull(Aggregate.MAX, true);
+        testGroupByWithAggregateAllValuesNull(Aggregate.MIN, true);
+        testGroupByWithAggregateAllValuesNull(Aggregate.SUM, true);
+        testGroupByWithAggregateAllValuesNull(Aggregate.AVERAGE, true);
+        testGroupByWithAggregateAllValuesNull(Aggregate.MEDIAN, false);
     }
 
     @Test

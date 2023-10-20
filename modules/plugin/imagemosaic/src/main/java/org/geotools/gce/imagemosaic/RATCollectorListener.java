@@ -61,6 +61,8 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
         if (event instanceof FileProcessingEvent) {
             // grab the file and check if it exists
             FileProcessingEvent fileEvent = (FileProcessingEvent) event;
+            // skip non ingested files
+            if (!fileEvent.isIngested()) return;
             File file = fileEvent.getFile();
             File pamFile = new File(file.getParent(), file.getName() + ".aux.xml");
             if (pamFile.exists() && pamFile.isFile() && pamFile.canRead()) {

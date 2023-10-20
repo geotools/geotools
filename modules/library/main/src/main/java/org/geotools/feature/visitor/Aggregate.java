@@ -43,6 +43,9 @@ public enum Aggregate {
 
         @Override
         public CalcResult wrap(Expression aggregateAttribute, Object value) {
+            if (value == null) {
+                return AbstractCalcResult.NULL_RESULT;
+            }
             return new AverageVisitor.AverageResult(value);
         }
 
@@ -156,6 +159,9 @@ public enum Aggregate {
 
         @Override
         public CalcResult wrap(Expression aggregateAttribute, Object value) {
+            if (value == null) {
+                return AbstractCalcResult.NULL_RESULT;
+            }
             return new SumVisitor.SumResult(value);
         }
 

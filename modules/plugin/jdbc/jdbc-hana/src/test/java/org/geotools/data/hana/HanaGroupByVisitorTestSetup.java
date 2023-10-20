@@ -42,6 +42,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                 {"building_id", "VARCHAR(255)"},
                 {"building_type", "VARCHAR(255)"},
                 {"energy_type", "VARCHAR(255)"},
+                {"fuel_consumption", "DECIMAL(5, 1)"},
                 {"energy_consumption", "DECIMAL(5, 1)"},
                 {"last_update", "TIMESTAMP"},
                 {"last_update_date", "DATE"}
@@ -54,6 +55,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "SCHOOL_A",
                     "SCHOOL",
                     "FLOWING_WATER",
+                    null,
                     50.0,
                     "2016-06-03 12:00:00",
                     "2016-06-03");
@@ -63,6 +65,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "SCHOOL_A",
                     "SCHOOL",
                     "NUCLEAR",
+                    null,
                     10.0,
                     "2016-06-03 16:00:00",
                     "2016-06-03");
@@ -72,6 +75,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "SCHOOL_A",
                     "SCHOOL",
                     "WIND",
+                    null,
                     20.0,
                     "2016-06-03 20:00:00",
                     "2016-06-03");
@@ -81,6 +85,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "SCHOOL_B",
                     "SCHOOL",
                     "SOLAR",
+                    null,
                     30.0,
                     "2016-06-05 12:00:00",
                     "2016-06-05");
@@ -90,6 +95,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "SCHOOL_B",
                     "SCHOOL",
                     "FUEL",
+                    null,
                     60.0,
                     "2016-06-06 12:00:00",
                     "2016-06-06");
@@ -99,6 +105,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "SCHOOL_B",
                     "SCHOOL",
                     "NUCLEAR",
+                    null,
                     10.0,
                     "2016-06-06 14:00:00",
                     "2016-06-06");
@@ -108,6 +115,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "FABRIC_A",
                     "FABRIC",
                     "FLOWING_WATER",
+                    null,
                     500.0,
                     "2016-06-07 12:00:00",
                     "2016-06-07");
@@ -117,6 +125,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "FABRIC_A",
                     "FABRIC",
                     "NUCLEAR",
+                    null,
                     150.0,
                     "2016-06-07 18:00:00",
                     "2016-06-07");
@@ -126,6 +135,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "FABRIC_B",
                     "FABRIC",
                     "WIND",
+                    null,
                     20.0,
                     "2016-06-07 20:00:00",
                     "2016-06-07");
@@ -135,6 +145,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "FABRIC_B",
                     "FABRIC",
                     "SOLAR",
+                    null,
                     30.0,
                     "2016-06-15 12:00:00",
                     "2016-06-15");
@@ -144,6 +155,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "HOUSE_A",
                     "HOUSE",
                     "FUEL",
+                    null,
                     6.0,
                     "2016-06-15 19:00:00",
                     "2016-06-15");
@@ -153,6 +165,7 @@ public class HanaGroupByVisitorTestSetup extends JDBCGroupByVisitorTestSetup {
                     "HOUSE_B",
                     "HOUSE",
                     "NUCLEAR",
+                    null,
                     4.0,
                     "2016-06-15 20:00:00",
                     "2016-06-15");

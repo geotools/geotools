@@ -122,7 +122,7 @@ public class CQLAttributeNameTest {
         testAttributeBetweenDoubleQuotes("\"環境\"");
     }
 
-    private void testAttributeBetweenDoubleQuotes(final String attSample) throws CQLException {
+    protected void testAttributeBetweenDoubleQuotes(final String attSample) throws CQLException {
 
         PropertyName attResult = parsePropertyName(attSample);
 

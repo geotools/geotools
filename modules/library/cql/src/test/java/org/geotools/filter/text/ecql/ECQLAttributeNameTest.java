@@ -19,6 +19,8 @@ package org.geotools.filter.text.ecql;
 
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLAttributeNameTest;
+import org.geotools.filter.text.cql2.CQLException;
+import org.junit.Test;
 
 /**
  * Test case for Attribute Name
@@ -37,5 +39,12 @@ import org.geotools.filter.text.cql2.CQLAttributeNameTest;
 public class ECQLAttributeNameTest extends CQLAttributeNameTest {
     public ECQLAttributeNameTest() {
         super(Language.ECQL);
+    }
+
+    @Test
+    public void spacesInAttributeName() throws CQLException {
+
+        testAttributeBetweenDoubleQuotes("\"población general\"");
+        testAttributeBetweenDoubleQuotes("\"statut de diffusion de l'établissement\"");
     }
 }

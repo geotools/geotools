@@ -68,7 +68,7 @@ Release in JIRA
 
 2. Add a new version for the next version to be released after the current release. For example, if you are releasing GeoTools 27.1, create version 27.2.  Enter the current date as the Start Date and use the date from the `release schedule <https://github.com/geoserver/geoserver/wiki/Release-Schedule>`_ for the Release Date.
 
-3. Click in the Actions column for the version you are releasing and select Release. Enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 
+3. Click in the Actions column for the version you are releasing and select Release. Update the Release Date to the current date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 2 above.
 
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------

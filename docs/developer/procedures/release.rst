@@ -202,7 +202,7 @@ It is important to test the artifacts using the minimum supported version of Jav
    
    If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 
-3. Userguide: check the eclipse quickstart section on `geotools.version`, should reference the correct release tag and snapshot tag.
+3. Userguide: Open and check the tutorial -> quickstart -> eclipse guide, search for `geotools.version`, which should reference the correct release tag and snapshot tag.
 
 4. Binary download:
    

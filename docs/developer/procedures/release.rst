@@ -27,9 +27,9 @@ The following are necessary to perform a GeoTools release:
 Versions and revisions
 ----------------------
 
-When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
+When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer. If you are making a stand alone release, it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and GeoTools revisions that have passed testing, navigate to `geoserver.org <https://geoserver.org>`__ and download a "binary" nightly build. From the download check the :file:`src/target/VERSION.txt` file. For example:
+To obtain the GeoServer, GWC and GeoTools revisions that have passed testing, navigate to `geoserver.org/download > Development<https://geoserver.org/download>`__, find the correct series (e.g. 2.17.x) and download a “binary” nightly build. From the download check the :file:`src/target/VERSION.txt` file. For example:
 
 .. code-block:: none
 

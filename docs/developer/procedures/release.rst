@@ -311,6 +311,7 @@ Announce on GeoTools Blog
 
    * Update the Sourceforge links above to reflect the release
    * Update the Release Notes with link to GitHub release URL: https://github.com/geotools/geotools/releases/tag/26.1
+   * Paste the Release Notes hyperlinks from Jira, after using a tool like https://www.htmlwasher.com/ to clean up the HTML.
    * For a new stable series, be sure to thank those involved with the release (testing, completed proposals, docs, and so on)
 
 #. The public entry point will be here: https://geotoolsnews.blogspot.com/

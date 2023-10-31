@@ -269,7 +269,7 @@ Publish release notes to github tag:
    
    * Select format `Markdown`
    * Layout: Issue key with link
-   * Issue types: `Bug` and `Improvement`
+   * Issue types: All
    
    Change the heading from :kbd:`Release notes - GeoTools - Version 26.1` to :kbd:`Release notes`, and apply the change with :guilabel:`Done`.
 
@@ -295,7 +295,8 @@ Publish release notes to github tag:
    
    * Release title: `GeoTools 26.1`
    * Write: Paste the markdown from Jira release notes editor
-   
+   * Set as the latest release: only tick this for stable releases, leave unticked for maintenance and support releases
+
    Use :guilabel:`Publish release` button to publish the release notes.
    
 Announce the Release

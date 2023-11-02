@@ -177,6 +177,7 @@ public final class VRTTest extends GDALTestCase {
                                         (int) (range.width / 2.0 / cropFactor),
                                         (int) (range.height / 2.0 / cropFactor))),
                         cropEnvelope));
+        gc.dispose(true);
         gc = reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
 
@@ -184,6 +185,30 @@ public final class VRTTest extends GDALTestCase {
         assertThat(info, CoreMatchers.instanceOf(PAMResourceInfo.class));
         assertPamDataset((PAMResourceInfo) info);
 
+        gc.dispose(true);
+        reader.dispose();
+    }
+
+    @Test
+    public void testNaN() throws Exception {
+        // Preparing an useful layout in case the image is striped.
+        final ImageLayout l = new ImageLayout();
+        l.setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(512).setTileWidth(512);
+
+        Hints hints = new Hints();
+        hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, l));
+
+        // get a reader
+        final File file = TestData.file(this, "n43.dt0.nan.vrt");
+        final BaseGDALGridCoverage2DReader reader = new VRTReader(file, hints);
+
+        GridCoverage2D gc = reader.read(null);
+
+        // check the nodata has been read
+        double noData = getNoData(gc);
+        assertEquals(Double.NaN, noData, 0);
+
+        gc.dispose(true);
         reader.dispose();
     }
 

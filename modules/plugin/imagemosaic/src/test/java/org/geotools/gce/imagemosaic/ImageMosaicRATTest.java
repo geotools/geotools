@@ -30,13 +30,18 @@ import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.FieldDefn;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.GDALRasterAttributeTable;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Row;
 import it.geosolutions.imageio.pam.PAMParser;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.PAMResourceInfo;
+import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.image.ImageWorker;
 import org.geotools.test.TestData;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -119,6 +124,14 @@ public class ImageMosaicRATTest {
         List<String> rowOnlySecondOriginal = lookupRow(rows2, rowValueOnlySecond);
         assertEquals(rowOnlySecondOriginal, rowOnlySecond);
 
+        // check nodata
+        GridCoverage2D coverage = reader.read(null);
+        NoDataContainer cvNoData = CoverageUtilities.getNoDataProperty(coverage);
+        assertEquals(Double.NaN, cvNoData.getAsSingleValue(), 0d);
+        RenderedImage ri = coverage.getRenderedImage();
+        assertEquals(Double.NaN, new ImageWorker(ri).getNoData().getMin().doubleValue(), 0d);
+
+        coverage.dispose(true);
         reader.dispose();
     }
 

@@ -113,7 +113,7 @@ public final class GeoTiffIIOMetadataDecoder {
 
     private final TiePoint[] tiePoints;
 
-    private final double noData;
+    private final Double noData;
 
     private final AffineTransform modelTransformation;
 
@@ -346,19 +346,20 @@ public final class GeoTiffIIOMetadataDecoder {
      * @return the noData value or {@link Double#NaN} in case of unable to get noData.
      */
     public double getNoData() {
-        return noData;
+        return noData == null ? Double.NaN : noData.doubleValue();
     }
 
-    private double calculateNoData(Node rootNode) {
+    private Double calculateNoData(Node rootNode) {
         final IIOMetadataNode noDataNode = getTiffField(rootNode, GeoTiffConstants.TIFFTAG_NODATA);
         if (noDataNode == null) {
-            return Double.NaN;
+            return null;
         }
         final String noData = getTiffAscii(noDataNode);
         if (noData == null) {
-            return Double.NaN;
+            return null;
         }
         try {
+            if ("nan".equals(noData)) return Double.NaN; // GDAL can use "nan" too
             return Double.parseDouble(noData);
         } catch (NumberFormatException nfe) {
             // TODO: Log a message.
@@ -403,7 +404,7 @@ public final class GeoTiffIIOMetadataDecoder {
      * @see GeoTiffConstants#TIFFTAG_NODATA
      */
     public boolean hasNoData() {
-        return !Double.isNaN(noData);
+        return noData != null;
     }
 
     /**

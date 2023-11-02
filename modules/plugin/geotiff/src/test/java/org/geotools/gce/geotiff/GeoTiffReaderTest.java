@@ -1648,4 +1648,29 @@ public class GeoTiffReaderTest {
         assertEquals(type, fieldDefn.getType());
         assertEquals(usage, fieldDefn.getUsage());
     }
+
+    @Test
+    public void testNoDataNaN() throws Exception {
+        final File file = TestData.file(GeoTiffReaderTest.class, "rat/rat.tiff");
+        assertNotNull(file);
+        final AbstractGridFormat format = new GeoTiffFormat();
+        GeoTiffReader reader = (GeoTiffReader) format.getReader(file);
+        assertNotNull(reader);
+
+        GridCoverage2D coverage = reader.read(null);
+
+        // set in the image
+        Object value = coverage.getRenderedImage().getProperty(NoDataContainer.GC_NODATA);
+        assertThat(value, CoreMatchers.instanceOf(NoDataContainer.class));
+        NoDataContainer noData = (NoDataContainer) value;
+        assertEquals(Double.NaN, noData.getAsSingleValue(), 0d);
+
+        // set in the coverage
+        noData = CoverageUtilities.getNoDataProperty(coverage);
+        assertNotNull(noData);
+        assertEquals(Double.NaN, noData.getAsSingleValue(), 0d);
+
+        coverage.dispose(true);
+        reader.dispose();
+    }
 }

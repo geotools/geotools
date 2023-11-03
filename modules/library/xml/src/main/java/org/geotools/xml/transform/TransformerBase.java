@@ -876,7 +876,11 @@ public abstract class TransformerBase {
             start(element, atts);
 
             if (content != null) {
-                chars(content);
+                if (content.equals(" ")) {
+                    cdata(content);
+                } else {
+                    chars(content);
+                }
             }
 
             end(element);

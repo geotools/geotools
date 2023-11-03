@@ -794,7 +794,7 @@ public abstract class TransformerBase {
             start(element, atts);
 
             if (content != null) {
-                if (content.equals(" ")) {
+                if (content.matches("^\\s+$")) {
                     cdata(content);
                 } else {
                     chars(content);

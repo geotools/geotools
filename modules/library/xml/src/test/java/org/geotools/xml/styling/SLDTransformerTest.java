@@ -1550,6 +1550,31 @@ public class SLDTransformerTest extends XmlTestSupport {
     }
 
     @Test
+    public void testWhitespaceCDATA() throws TransformerException {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+
+        ts.setGeometry(
+                ff.function(
+                        "geomFromWKT",
+                        ff.function(
+                                "Concatenate",
+                                ff.literal("POINT("),
+                                ff.property("lng"),
+                                ff.literal(" "), // this space needs to be encoded within CDATA
+                                ff.property("lat"),
+                                ff.literal(")"))));
+
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+
+        String xml = transformer.transform(sld);
+
+        // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string
+        // comparisons here
+        assertTrue(xml.contains("<![CDATA[ ]]>"));
+    }
+
+    @Test
     public void testLabelCDataEnd() throws TransformerException {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();

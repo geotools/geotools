@@ -876,7 +876,10 @@ public abstract class TransformerBase {
             start(element, atts);
 
             if (content != null) {
-                if (content.matches("^\\s+$")) {
+                int length = content.length();
+                if (length > 0
+                        && (Character.isWhitespace(content.charAt(0))
+                                || Character.isWhitespace(content.charAt(length - 1)))) {
                     cdata(content);
                 } else {
                     chars(content);

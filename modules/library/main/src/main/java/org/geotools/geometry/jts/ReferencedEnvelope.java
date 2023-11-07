@@ -620,14 +620,26 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         super.init(toJTSEnvelope(bbox));
     }
 
+    /**
+     * Initialize the bounding box using a line from the center to a corner.
+     *
+     * @param center location of the new bounding box
+     * @param corner location of a corner establishing the extent of the bounding box
+     */
     public void setFrameFromCenter(Point2D center, Point2D corner) {
         double widthDelta = Math.abs(corner.getX() - center.getX());
         double heightDelta = Math.abs(corner.getY() - center.getY());
         super.init(
                 center.getX() - widthDelta, center.getX() + widthDelta,
-                center.getY() - heightDelta, getCenterY() + heightDelta);
+                center.getY() - heightDelta, center.getY() + heightDelta);
     }
 
+    /**
+     * Initialize the bounding box using a line from the lower left to upper right corners.
+     *
+     * @param lowerLeft Lower left extent of the new bounding box
+     * @param upperRight Upper right extent of the new bounding box
+     */
     public void setFrameFromDiagonal(Point2D lowerLeft, Point2D upperRight) {
         super.init(lowerLeft.getX(), upperRight.getX(), lowerLeft.getY(), upperRight.getY());
     }
@@ -1026,10 +1038,10 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
             return new ReferencedEnvelope(crs);
         }
         return new ReferencedEnvelope(
-                rectangle.getX(),
-                rectangle.getWidth(),
-                rectangle.getY(),
-                rectangle.getHeight(),
+                rectangle.getMinX(),
+                rectangle.getMaxX(),
+                rectangle.getMinY(),
+                rectangle.getMaxY(),
                 crs);
     }
 

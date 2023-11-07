@@ -1522,7 +1522,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testWhitespaceCDATA() throws TransformerException {
+    public void testWhitespaceCDATA() throws Exception {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
 
@@ -1547,7 +1547,7 @@ public class SLDTransformerTest {
     }
 
     @Test
-    public void testLabelCDataEnd() throws TransformerException {
+    public void testLabelCDataEnd() throws Exception {
         StyleBuilder sb = new StyleBuilder();
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.setLabel(ff.function("strConcat", ff.literal("abc "), ff.property("myProperty")));

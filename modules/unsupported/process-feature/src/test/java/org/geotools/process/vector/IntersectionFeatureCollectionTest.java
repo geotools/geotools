@@ -46,6 +46,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
@@ -303,5 +304,58 @@ public class IntersectionFeatureCollectionTest {
                 assertTrue(expected.equals((Geometry) sf.getDefaultGeometry())); // NOPMD
             }
         }
+    }
+
+    @Test
+    public void testPointInPolygonReturnsPoint() throws Exception {
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName("featureType");
+        tb.add("geometry", Polygon.class);
+        tb.add("integer", Integer.class);
+
+        GeometryFactory gf = new GeometryFactory();
+        SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
+
+        DefaultFeatureCollection features = new DefaultFeatureCollection(null, b.getFeatureType());
+        Polygon[] firstArrayGeometry = new Polygon[1];
+
+        for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
+            Coordinate[] array = new Coordinate[5];
+            array[0] = new Coordinate(0, 0);
+            array[1] = new Coordinate(1, 0);
+            array[2] = new Coordinate(1, 1);
+            array[3] = new Coordinate(0, 1);
+            array[4] = new Coordinate(0, 0);
+            LinearRing shell = gf.createLinearRing(new CoordinateArraySequence(array));
+            b.add(gf.createPolygon(shell, null));
+            b.add(0);
+            firstArrayGeometry[0] = gf.createPolygon(shell, null);
+            features.add(b.buildFeature(numFeatures + ""));
+        }
+
+        SimpleFeatureTypeBuilder pointFeatureTypeBuilder = new SimpleFeatureTypeBuilder();
+        pointFeatureTypeBuilder.setName("pointFeatureType");
+        pointFeatureTypeBuilder.add("geometry", Point.class);
+        pointFeatureTypeBuilder.add("integer", Integer.class);
+
+        SimpleFeatureBuilder pointFeatureBuilder =
+                new SimpleFeatureBuilder(pointFeatureTypeBuilder.buildFeatureType());
+        DefaultFeatureCollection pointFeatureCollection =
+                new DefaultFeatureCollection(null, pointFeatureBuilder.getFeatureType());
+        Point point = gf.createPoint(new Coordinate(0.5, 0.5));
+        pointFeatureCollection.add(pointFeatureBuilder.buildFeature("1", new Object[] {point}));
+
+        SimpleFeatureCollection output3 =
+                process.execute(features, pointFeatureCollection, null, null, null, false, false);
+
+        assertEquals(1, output3.size());
+        Point pointOut = (Point) output3.features().next().getDefaultGeometry();
+        assertEquals(0.5, pointOut.getX(), 0.01);
+        assertEquals(
+                "GeometryTypeImpl the_geom<Point>",
+                ((IntersectionFeatureCollection.IntersectedFeatureCollection) output3)
+                        .geomType
+                        .getType()
+                        .toString());
     }
 }

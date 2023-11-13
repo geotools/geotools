@@ -18,11 +18,11 @@ package org.geotools.gml3.bindings;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -44,7 +44,7 @@ public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
     @Test
     public void testParseWithSurfaceMember() throws Exception {
         GML3MockData.multiSurface(document, document);
-        MultiPolygon mpoly = (MultiPolygon) parse();
+        MultiSurface mpoly = (MultiSurface) parse();
 
         assertEquals(2, mpoly.getNumGeometries());
     }
@@ -52,7 +52,7 @@ public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
     @Test
     public void testParseWithSurfaceMembers() throws Exception {
         GML3MockData.multiSurface(document, document, false);
-        MultiPolygon mpoly = (MultiPolygon) parse();
+        MultiSurface mpoly = (MultiSurface) parse();
 
         assertEquals(2, mpoly.getNumGeometries());
     }

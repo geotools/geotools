@@ -105,4 +105,10 @@ public class SQLServerGeometryOnlineTest extends JDBCGeometryOnlineTest {
         assertEquals(Point.class, gd.getType().getBinding());
         assertEquals(4326, (int) CRS.lookupEpsgCode(gd.getCoordinateReferenceSystem(), false));
     }
+
+    @Override
+    public void testMultiSurfaceLinearized() throws Exception {
+        testSetup.setupMetadataTable(dataStore);
+        super.testMultiSurfaceLinearized();
+    }
 }

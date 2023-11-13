@@ -287,4 +287,11 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             assert value == context.getValue(xpath);
         }
     }
+
+    @Override
+    public int getPriority() {
+        // this is the default and the most generic property accessor
+        // hence we give it the lowest priority
+        return LOWEST_PRIORITY;
+    }
 }

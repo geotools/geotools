@@ -17,9 +17,15 @@
 package org.geotools.filter.expression;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 
 /**
  * Convenience class for looking up a property accessor for a particular object type.
@@ -27,6 +33,8 @@ import org.geotools.util.factory.Hints;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class PropertyAccessors {
+
+    private static final Logger LOGGER = Logging.getLogger(PropertyAccessors.class);
     static final PropertyAccessorFactory[] FACTORY_CACHE;
 
     static {
@@ -44,6 +52,18 @@ public class PropertyAccessors {
             if (!nonCached) {
                 cache.add(factory);
             }
+        }
+        // sort the property accessors by their priority. The sort maintains the order of equal elements.
+        cache.sort(Comparator.comparing(PropertyAccessorFactory::getPriority).reversed());
+        if (LOGGER.isLoggable(Level.CONFIG)) {
+            String log = cache.stream()
+                    .filter(Objects::nonNull)
+                    .map(factory -> {
+                        String name = "[Name=" + factory.getClass().getSimpleName() + ", ";
+                        return name + "Priority=" + factory.getPriority() + "]";
+                    })
+                    .collect(Collectors.joining("; "));
+            LOGGER.config(log);
         }
         FACTORY_CACHE = cache.toArray(new PropertyAccessorFactory[cache.size()]);
     }

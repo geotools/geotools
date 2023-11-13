@@ -1,1 +1,3 @@
 org.geotools.filter.FilterTest$MockPropertyAccessorFactory
+org.geotools.filter.expression.PropertyAccessorsFactoryTest$LowPriorityMockPropertyAccessorFactory
+org.geotools.filter.expression.PropertyAccessorsFactoryTest$HighPriorityMockPropertyAccessorFactory

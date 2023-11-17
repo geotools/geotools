@@ -854,12 +854,12 @@ public class FlatGeobufDataStoreTest {
         Query query = new Query(schema.getTypeName(), filter);
         SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
         try (SimpleFeatureIterator it = featureCollection.features()) {
-            int count = 0;
-            while (it.hasNext()) {
-                it.next();
-                count++;
-            }
-            assertEquals(2, count);
+            SimpleFeature f1 = it.next();
+            assertEquals("countries.46", f1.getID());
+            SimpleFeature f2 = it.next();
+            assertEquals("countries.48", f2.getID());
+            boolean hasNext = it.hasNext();
+            assertEquals(false, hasNext);
         }
     }
 

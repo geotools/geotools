@@ -881,7 +881,7 @@ public class FlatGeobufDataStoreTest {
             SimpleFeature f2 = it.next();
             assertEquals("countries.48", f2.getID());
             boolean hasNext = it.hasNext();
-            assertEquals(false, hasNext);
+            assertFalse(hasNext);
         }
     }
 

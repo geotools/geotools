@@ -185,6 +185,7 @@ org.geotools.filter.function.FilterFunction_listMultiply
 org.geotools.filter.function.FilterFunction_list
 org.geotools.filter.function.LapplyFunction
 org.geotools.filter.function.LitemFunction
+org.geotools.filter.function.LinFunction
 org.geotools.filter.function.SizeFunction
 org.geotools.styling.visitor.RescaleToPixelsFunction
 org.geotools.filter.function.color.HSLFunction

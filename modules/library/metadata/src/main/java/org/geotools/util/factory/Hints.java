@@ -766,7 +766,7 @@ public class Hints extends RenderingHints {
      *
      * @since 18
      */
-    public static final ClassKey REPOSITORY = new ClassKey("org.geotools.data.Repository");
+    public static final ClassKey REPOSITORY = new ClassKey("org.geotools.api.data.Repository");
 
     /**
      * Granule removachoosing policy. The value must be one of {link

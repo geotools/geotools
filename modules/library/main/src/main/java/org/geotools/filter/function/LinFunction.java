@@ -24,9 +24,10 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 
 /**
- * Apply an expression to each item of a list, resulting in a new list. Provide a list and an
- * expression as input, returns a new list as output. Use the "." symbol inside the expression to
- * refer to each item of the list.
+ * The function checks whether a candidate value is contained in a list object.
+ *
+ * <p>If the candidate value is found, the function returns <code>true</code>; otherwise, it returns
+ * <code>false</code>.
  *
  * @author Niels Charlier
  */

@@ -31,6 +31,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
@@ -205,6 +206,10 @@ public class FilterMockData {
 
     public static PropertyIsGreaterThanOrEqualTo propertyIsGreaterThanOrEqualTo() {
         return f.greaterOrEqual(propertyName(), literal());
+    }
+
+    public static PropertyIsBetween propertyIsBetween() {
+        return f.between(propertyName(), literal(10), literal(20));
     }
 
     public static Element binaryComparisonOp(Document document, Node parent, QName name) {

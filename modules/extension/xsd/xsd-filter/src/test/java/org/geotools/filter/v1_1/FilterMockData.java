@@ -25,6 +25,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.Id;
 import org.geotools.api.filter.Not;
 import org.geotools.api.filter.Or;
+import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.PropertyIsGreaterThan;
 import org.geotools.api.filter.PropertyIsGreaterThanOrEqualTo;
@@ -205,6 +206,10 @@ public class FilterMockData {
 
     public static PropertyIsGreaterThanOrEqualTo propertyIsGreaterThanOrEqualTo() {
         return f.greaterOrEqual(propertyName(), literal());
+    }
+
+    public static PropertyIsBetween propertyIsBetween() {
+        return f.between(propertyName(), literal(10), literal(20));
     }
 
     public static Element binaryComparisonOp(Document document, Node parent, QName name) {

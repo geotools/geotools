@@ -20,6 +20,7 @@ import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCPropertyIsBetweenTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsBetween;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:PropertyIsBetweenType.
@@ -54,5 +55,15 @@ public class PropertyIsBetweenTypeBinding extends OGCPropertyIsBetweenTypeBindin
     @Override
     public QName getTarget() {
         return FES.PropertyIsBetweenType;
+    }
+
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
+        if (FES.expression.equals(name)) {
+            PropertyIsBetween between = (PropertyIsBetween) object;
+            return between.getExpression();
+        }
+
+        return super.getProperty(object, name);
     }
 }

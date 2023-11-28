@@ -55,6 +55,7 @@ import org.geotools.filter.v2_0.bindings.GeometryOperandsType_GeometryOperandBin
 import org.geotools.filter.v2_0.bindings.Id_CapabilitiesTypeBinding;
 import org.geotools.filter.v2_0.bindings.IntersectsBinding;
 import org.geotools.filter.v2_0.bindings.LiteralBinding;
+import org.geotools.filter.v2_0.bindings.LowerBoundaryTypeBinding;
 import org.geotools.filter.v2_0.bindings.MatchActionBinding;
 import org.geotools.filter.v2_0.bindings.MeasureTypeBinding;
 import org.geotools.filter.v2_0.bindings.MeetsBinding;
@@ -84,6 +85,7 @@ import org.geotools.filter.v2_0.bindings.TContainsBinding;
 import org.geotools.filter.v2_0.bindings.TEqualsBinding;
 import org.geotools.filter.v2_0.bindings.TOverlapsBinding;
 import org.geotools.filter.v2_0.bindings.TouchesBinding;
+import org.geotools.filter.v2_0.bindings.UpperBoundaryTypeBinding;
 import org.geotools.filter.v2_0.bindings.ValueReferenceBinding;
 import org.geotools.filter.v2_0.bindings.VersionTypeBinding;
 import org.geotools.filter.v2_0.bindings.WithinBinding;
@@ -178,7 +180,8 @@ public class FESConfiguration extends Configuration {
         //
         // container.registerComponentImplementation(FES.LogicOpsType,LogicOpsTypeBinding.class);
         //
-        // container.registerComponentImplementation(FES.LowerBoundaryType,LowerBoundaryTypeBinding.class);
+        container.registerComponentImplementation(
+                FES.LowerBoundaryType, LowerBoundaryTypeBinding.class);
         //
         // container.registerComponentImplementation(FES.MatchActionType,MatchActionTypeBinding.class);
 
@@ -225,7 +228,8 @@ public class FESConfiguration extends Configuration {
         //
         // container.registerComponentImplementation(FES.UnaryLogicOpType,UnaryLogicOpTypeBinding.class);
         //
-        // container.registerComponentImplementation(FES.UpperBoundaryType,UpperBoundaryTypeBinding.class);
+        container.registerComponentImplementation(
+                FES.UpperBoundaryType, UpperBoundaryTypeBinding.class);
         //
         // container.registerComponentImplementation(FES.VersionActionTokens,VersionActionTokensBinding.class);
         container.registerComponentImplementation(FES.VersionType, VersionTypeBinding.class);

@@ -181,8 +181,10 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         }
 
         query.setUnsupportedFilter(unsupportedFilter);
+        updatePropertyNames(query, unsupportedFilter);
 
         if (!Filter.INCLUDE.equals(supportedFilter)) {
+            // the unsupported filter must be able to run in memory afterwards
             wfsQuery.setFilter(supportedFilter);
         }
 

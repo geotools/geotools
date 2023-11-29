@@ -27,59 +27,47 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import org.geotools.data.DataStoreFinder;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.factory.GeoTools;
-import org.junit.Before;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsEqualTo;
 
 /** @author ian */
 public class GeoServerWFSOnlineTest extends OnlineTestSupport {
-    /** Results expected for Version 1.x */
-    TreeSet<String> expected1 = new TreeSet<>();
-    /** Results expected for Version 2.x */
-    TreeSet<String> expected2 = new TreeSet<>();
 
-    @Before
-    public void setup() {
-        String[] expectedA = {
-            "states.1",
-            "states.7",
-            "states.9",
-            "states.13",
-            "states.14",
-            "states.17",
-            "states.18",
-            "states.19",
-            "states.21",
-            "states.22"
-        };
-        expected1.addAll(Arrays.asList(expectedA));
-
-        String[] expectedB = {
-            "states.1",
-            "states.13",
-            "states.14",
-            "states.17",
-            "states.18",
-            "states.19",
-            "states.21",
-            "states.22",
-            "states.23",
-            "states.24",
-        };
-        expected2.addAll(Arrays.asList(expectedB));
-    }
+    /** All states with LAND_KM between 100,000 and 150,000 */
+    TreeSet<String> expected =
+            new TreeSet<>(
+                    Arrays.asList(
+                            "states.1",
+                            "states.7",
+                            "states.9",
+                            "states.13",
+                            "states.14",
+                            "states.17",
+                            "states.18",
+                            "states.19",
+                            "states.21",
+                            "states.22",
+                            "states.23",
+                            "states.24",
+                            "states.30",
+                            "states.36",
+                            "states.39",
+                            "states.40",
+                            "states.48"));
 
     @Test
     public void testGeoServerWFSFilter_V1_get() throws IOException, NoSuchElementException {
@@ -103,20 +91,16 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
 
     @Test
     public void testGeoServerWFSFilter_V2_get() throws IOException, NoSuchElementException {
-        geoServerTest("2.0.0", true, expected2);
+        geoServerTest("2.0.0", true);
     }
 
     @Test
     public void testGeoServerWFSFilter_V2_post() throws IOException, NoSuchElementException {
-        geoServerTest("2.0.0", false, expected2);
+        geoServerTest("2.0.0", false);
     }
 
-    private void geoServerTest(String version, boolean get) throws IOException {
-        geoServerTest(version, get, expected1);
-    }
     /** */
-    private void geoServerTest(String version, boolean get, Set<String> expected)
-            throws IOException {
+    private void geoServerTest(String version, boolean get) throws IOException {
         Properties fixture = getFixture();
 
         String getCapabilities =
@@ -151,34 +135,53 @@ public class GeoServerWFSOnlineTest extends OnlineTestSupport {
         Query query = new Query();
         query.setTypeName(typeName);
 
+        // simple filter
         query.setFilter(filter);
         SimpleFeatureCollection features = source.getFeatures(query);
-        int size = features.size();
+        assertEquals(expected.size(), features.size());
+        assertEquals(expected, collectIds(features));
 
-        assertTrue(size > 10);
-        // Iterator through all the features and print them out.
-        int count = 0;
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext() && count < 10) {
-                SimpleFeature feature = iterator.next();
-                assertTrue(
-                        "unexpected feature " + feature.getID(),
-                        expected.contains(feature.getID()));
-                count++;
-            }
-        }
-
+        // adding paging
         query.setMaxFeatures(10);
         features = source.getFeatures(query);
-        size = features.size();
-        assertEquals(10, size);
-        // Iterator through all the features and print them out.
-        try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext()) {
-                SimpleFeature feature = iterator.next();
-                assertTrue(expected.contains(feature.getID()));
-            }
-        }
+        assertEquals(10, features.size());
+        assertTrue(expected.containsAll(collectIds(features)));
+
+        // and now a non-encodable filter too, to check how it interacts with paging
+        // (only 2 features match the filter)
+        PropertyIsEqualTo functionFilter =
+                ff.equal(
+                        ff.function(
+                                "strSubstring",
+                                ff.property("STATE_NAME"),
+                                ff.literal(0),
+                                ff.literal(1)),
+                        ff.literal("A"),
+                        true);
+        query.setFilter(ff.and(filter, functionFilter));
+        features = source.getFeatures(query);
+        assertEquals(2, features.size());
+        TreeSet<String> expectedFF = new TreeSet<>(Arrays.asList("states.17", "states.21"));
+        assertEquals(expectedFF, collectIds(features));
+
+        // finally, make sure that property selection works with a non-encodable filter
+        // (the attribute chosen is not part of either filters)
+        query.setPropertyNames(new String[] {"STATE_ABBR"});
+        features = source.getFeatures(query);
+        SimpleFeatureType schema = features.getSchema();
+        assertEquals(1, schema.getAttributeCount());
+        assertEquals("STATE_ABBR", schema.getDescriptor(0).getLocalName());
+        Set<String> names =
+                DataUtilities.list(features).stream()
+                        .map(f -> (String) f.getAttribute("STATE_ABBR"))
+                        .collect(Collectors.toSet());
+        assertEquals(new TreeSet<>(Arrays.asList("AR", "AL")), names);
+    }
+
+    private static Set<String> collectIds(SimpleFeatureCollection features) {
+        return DataUtilities.list(features).stream()
+                .map(f -> f.getID())
+                .collect(Collectors.toSet());
     }
 
     @Override

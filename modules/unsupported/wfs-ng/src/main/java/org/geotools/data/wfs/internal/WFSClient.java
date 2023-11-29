@@ -222,7 +222,9 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
             } else if (uri.toLowerCase().contains("/arcgis/services/")
                     && Versions.v2_0_0.equals(capsVersion)) {
                 strategy = new ArcGisStrategy_2_0();
-            } else if (uri.contains("mapserver") || uri.contains("map=")) {
+            } else if ((uri.contains("mapserver") || uri.contains("map="))
+                    && !Versions.v2_0_0.equals(capsVersion)) {
+                // v 1.x strategy, won't work with WFS 2.0
                 strategy = new MapServerWFSStrategy(capabilitiesDoc);
             }
         }

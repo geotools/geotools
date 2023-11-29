@@ -28,6 +28,7 @@ import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
+import org.geotools.data.MaxFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
@@ -277,12 +278,17 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         GetFeatureRequest request = createGetFeature(localQuery, ResultType.RESULTS);
 
-        final SimpleFeatureType destType = getQueryType(localQuery, getSchema());
+        // the read type migth contain extra properties to run the unsupported filter
+        CoordinateReferenceSystem crs = localQuery.getCoordinateSystemReproject();
+        final SimpleFeatureType destType =
+                getQueryType(crs, localQuery.getPropertyNames(), getSchema());
         final SimpleFeatureType contentType =
-                getQueryType(localQuery, (SimpleFeatureType) request.getFullType());
+                getQueryType(
+                        crs, request.getPropertyNames(), (SimpleFeatureType) request.getFullType());
         request.setQueryType(contentType);
-
+        LOGGER.fine(() -> "request = " + request);
         GetFeatureResponse response = client.issueRequest(request);
+        LOGGER.fine(() -> "response = " + response);
 
         GeometryFactory geometryFactory = findGeometryFactory(localQuery.getHints());
         GetParser<SimpleFeature> features = response.getSimpleFeatures(geometryFactory);
@@ -290,9 +296,14 @@ class WFSFeatureSource extends ContentFeatureSource {
         FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 new WFSFeatureReader(features, response);
 
-        if (request.getUnsupportedFilter() != null
-                && request.getUnsupportedFilter() != Filter.INCLUDE) {
-            reader = new FilteringFeatureReader<>(reader, request.getUnsupportedFilter());
+        Filter unsupportedFilter = request.getUnsupportedFilter();
+        if (unsupportedFilter != null && unsupportedFilter != Filter.INCLUDE) {
+            reader = new FilteringFeatureReader<>(reader, unsupportedFilter);
+            // in case of unsupported filters, the max features has not been sent to the server,
+            // needs to be applied locally
+            if (localQuery.getMaxFeatures() < Integer.MAX_VALUE) {
+                reader = new MaxFeatureReader<>(reader, localQuery.getMaxFeatures());
+            }
         }
 
         if (!reader.hasNext()) {
@@ -416,13 +427,9 @@ class WFSFeatureSource extends ContentFeatureSource {
      * original feature type for the request's type name in terms of the query CRS and requested
      * attributes.
      */
-    SimpleFeatureType getQueryType(final Query query, SimpleFeatureType featureType)
+    SimpleFeatureType getQueryType(
+            CoordinateReferenceSystem crs, String[] propertyNames, SimpleFeatureType featureType)
             throws IOException {
-
-        final CoordinateReferenceSystem coordinateSystemReproject =
-                query.getCoordinateSystemReproject();
-
-        String[] propertyNames = query.getPropertyNames();
 
         SimpleFeatureType queryType = featureType;
         if (propertyNames != null && propertyNames.length > 0) {
@@ -435,11 +442,9 @@ class WFSFeatureSource extends ContentFeatureSource {
             propertyNames = DataUtilities.attributeNames(featureType);
         }
 
-        if (coordinateSystemReproject != null) {
+        if (crs != null) {
             try {
-                queryType =
-                        DataUtilities.createSubType(
-                                queryType, propertyNames, coordinateSystemReproject);
+                queryType = DataUtilities.createSubType(queryType, propertyNames, crs);
             } catch (SchemaException e) {
                 throw new DataSourceException(e);
             }

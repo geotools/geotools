@@ -46,17 +46,18 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
                 -1,
                 ff.id(Collections.singleton(ff.featureId("states.1"))),
                 createSpatialFilter(),
-                WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
+                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
     }
 
     public static Filter createSpatialFilter() {
+        // compliant axis order for WFS 2.0, lat and then lon
         GeometryFactory gf = new GeometryFactory();
         Coordinate[] coordinates = {
-            new Coordinate(-107, 39),
-            new Coordinate(-107, 38),
-            new Coordinate(-104, 38),
-            new Coordinate(-104, 39),
-            new Coordinate(-107, 39)
+            new Coordinate(39, -107),
+            new Coordinate(38, -107),
+            new Coordinate(38, -104),
+            new Coordinate(39, -104),
+            new Coordinate(39, -107)
         };
         LinearRing shell = gf.createLinearRing(coordinates);
         Polygon polygon = gf.createPolygon(shell, null);

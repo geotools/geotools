@@ -185,15 +185,6 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
     }
 
     @Override
-    /**
-     * Currently the wfs-ng client is unable to handle max features and filters. Setting canLimit to
-     * false is inefficient but gives correct results.
-     */
-    public boolean canLimit() {
-        return false;
-    }
-
-    @Override
     public Version getServiceVersion() {
         return Versions.v2_0_0;
     }
@@ -242,6 +233,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             Filter originalFilter = query.getFilter();
 
             query.setUnsupportedFilter(originalFilter);
+            updatePropertyNames(query, originalFilter);
 
             Map<String, String> viewParams = null;
             if (query.getRequestHints() != null) {
@@ -350,6 +342,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
             // The query filter must be processed locally in full
             query.setUnsupportedFilter(query.getFilter());
+            updatePropertyNames(query, query.getFilter());
 
             Map<String, String> viewParams = null;
             StoredQueryConfiguration config = null;
@@ -386,6 +379,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
             }
 
             query.setUnsupportedFilter(unsupportedFilter);
+            updatePropertyNames(query, unsupportedFilter);
 
             if (!Filter.INCLUDE.equals(supportedFilter)) {
                 wfsQuery.setFilter(supportedFilter);

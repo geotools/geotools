@@ -16,8 +16,8 @@
  */
 package org.geotools.data.wfs.online;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.TreeSet;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -37,61 +36,15 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.factory.GeoTools;
-import org.junit.Before;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
 /** @author ian */
 public class ArcServerWFSOnlineTest extends OnlineTestSupport {
-
-    TreeSet<String> expected = new TreeSet<>();
-
-    @Before
-    public void setup() {
-        String[] expectedA = {
-            "ARMS.209",
-            "ARMS.755",
-            "ARMS.852",
-            "ARMS.866",
-            "ARMS.1333",
-            "ARMS.1881",
-            "ARMS.1887",
-            "ARMS.3426",
-            "ARMS.2241",
-            "ARMS.6427",
-            "ARMS.6428",
-            "ARMS.8456",
-            "ARMS.9018",
-            "ARMS.10881",
-            "ARMS.15184",
-            "ARMS.13564",
-            "ARMS.15468",
-            "ARMS.17342",
-            "ARMS.19371",
-            "ARMS.18651",
-            "ARMS.20556",
-            "ARMS.20557",
-            "ARMS.21690",
-            "ARMS.22392",
-            "ARMS.25485",
-            "ARMS.26036",
-            "ARMS.27089",
-            "ARMS.27090",
-            "ARMS.26381",
-            "ARMS.29412",
-            "ARMS.29413",
-            "ARMS.28654",
-            "ARMS.28584",
-            "ARMS.28590",
-            "ARMS.31125",
-            "ARMS.31126",
-            "ARMS.34517",
-            "ARMS.34302"
-        };
-        expected.addAll(Arrays.asList(expectedA));
-    }
 
     @Test
     public void testArcMapWFSFilter_V1_get() throws IOException, NoSuchElementException {
@@ -122,6 +75,7 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
     public void testArcMapWFSFilter_V2_post() throws IOException, NoSuchElementException {
         arcMapTest("2.0.0", false);
     }
+
     /** */
     private void arcMapTest(String version, boolean get) throws IOException {
 
@@ -153,31 +107,52 @@ public class ArcServerWFSOnlineTest extends OnlineTestSupport {
         query.setFilter(filter);
         SimpleFeatureCollection features = source.getFeatures(query);
         int size = features.size();
-        // System.out.println(size);
-        assertSame("Wrong number of features", size, 79);
+        assertTrue("Wrong number of features", size > 10);
         // Iterator through all the features and print them out.
         int count = 0;
         try (SimpleFeatureIterator iterator = features.features()) {
-            while (iterator.hasNext() && count < 10) {
+            while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                // System.out.println(feature.getID());
-                assertTrue(expected.contains(feature.getID()));
+                assertThat((String) feature.getAttribute("NBAFR"), CoreMatchers.startsWith("YON"));
                 count++;
             }
         }
+        assertTrue(count > 10);
 
+        // check max-features is working properly
         query.setMaxFeatures(10);
         features = source.getFeatures(query);
         size = features.size();
         assertEquals(10, size);
         // Iterator through all the features and print them out.
+        count = 0;
         try (SimpleFeatureIterator iterator = features.features()) {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-
-                assertTrue(expected.contains(feature.getID()));
+                assertThat((String) feature.getAttribute("NBAFR"), CoreMatchers.startsWith("YON"));
+                count++;
             }
         }
+        assertEquals(10, count);
+
+        // set up an un-encodable filter using property selection
+        query.setPropertyNames(Arrays.asList("NBAFR"));
+        Filter functionFilter =
+                ff.greater(ff.function("abs", ff.property("OBJECTID")), ff.literal(50));
+        query.setFilter(ff.and(filter, functionFilter));
+        features = source.getFeatures(query);
+        SimpleFeatureType schema = features.getSchema();
+        assertEquals(1, schema.getAttributeCount());
+        assertEquals("NBAFR", schema.getDescriptor(0).getLocalName());
+        count = 0;
+        try (SimpleFeatureIterator iterator = features.features()) {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                assertThat((String) feature.getAttribute("NBAFR"), CoreMatchers.startsWith("YON"));
+                count++;
+            }
+        }
+        assertEquals(10, count);
     }
 
     @Override

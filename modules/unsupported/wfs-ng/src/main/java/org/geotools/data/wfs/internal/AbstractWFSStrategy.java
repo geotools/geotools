@@ -47,6 +47,7 @@ import javax.xml.namespace.QName;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.filter.Capabilities;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.CapabilitiesFilterSplitter;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.util.Version;
@@ -156,6 +157,38 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
     protected abstract QName getOperationName(WFSOperationType operation);
 
     /**
+     * If needed, expands the set of requested property names to include the ones needed to evaluate
+     * the unsupported filter.
+     *
+     * @param request
+     * @param unsupportedFilter
+     */
+    protected void updatePropertyNames(GetFeatureRequest request, Filter unsupportedFilter) {
+        if (Filter.INCLUDE.equals(unsupportedFilter)) return;
+
+        String[] propertyNames = request.getPropertyNames();
+        if (propertyNames != null) {
+            Set<String> propertyNamesSet = new HashSet<>(Arrays.asList(propertyNames));
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor();
+            unsupportedFilter.accept(extractor, null);
+            Set<String> extraAttributes =
+                    new HashSet<>(Arrays.asList(extractor.getAttributeNames()));
+            propertyNamesSet.addAll(extraAttributes);
+            // update the property names if needed
+            if (propertyNames.length < propertyNamesSet.size()) {
+                propertyNames = propertyNamesSet.toArray(new String[propertyNamesSet.size()]);
+                request.setPropertyNames(propertyNames);
+                // Also unset the query type, it's no longer representative of the query
+                // the parser will be configured with the full type in this case
+                // which does not appear to cause problems, other than maybe a few more
+                // loops searching for attributse that are not there. Recomputing the query
+                // type here is no possible, as we're dealing with potentially non simple types
+                request.setQueryType(null);
+            }
+        }
+    }
+
+    /**
      * Creates the EMF object to be encoded with the {@link #getWfsConfiguration() WFS
      * configuration} when a DescribeFeatureType POST request is to be made.
      */
@@ -248,25 +281,9 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
         map.put("OUTPUTFORMAT", outputFormat);
         map.put("RESULTTYPE", request.getResultType().name());
 
-        if (request.getMaxFeatures() != null) {
-            map.put("MAXFEATURES", String.valueOf(request.getMaxFeatures()));
-        }
-
         QName typeName = request.getTypeName();
         String queryTypeName = getPrefixedTypeName(typeName);
         map.put("TYPENAME", queryTypeName);
-
-        if (request.getPropertyNames() != null && request.getPropertyNames().length > 0) {
-            List<String> propertyNames = Arrays.asList(request.getPropertyNames());
-            StringBuilder pnames = new StringBuilder();
-            for (Iterator<String> it = propertyNames.iterator(); it.hasNext(); ) {
-                pnames.append(it.next());
-                if (it.hasNext()) {
-                    pnames.append(',');
-                }
-            }
-            map.put("PROPERTYNAME", encodePropertyName(pnames.toString()));
-        }
 
         final String srsName = request.getSrsName();
         if (srsName != null) {
@@ -287,7 +304,13 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
                     unsupportedFilter);
         }
 
+        // in case of unsupported filter, we need to expand the property names and
+        // remove the max features limit
         request.setUnsupportedFilter(unsupportedFilter);
+        updatePropertyNames(request, unsupportedFilter);
+        if (!Filter.INCLUDE.equals(unsupportedFilter)) {
+            request.setMaxFeatures(null);
+        }
 
         if (supportedFilter instanceof Id) {
             final Set<Identifier> identifiers = ((Id) supportedFilter).getIdentifiers();
@@ -312,6 +335,22 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
                 throw new RuntimeException(e);
             }
             map.put("FILTER", xmlEncodedFilter);
+        }
+
+        if (request.getMaxFeatures() != null) {
+            map.put("MAXFEATURES", String.valueOf(request.getMaxFeatures()));
+        }
+
+        if (request.getPropertyNames() != null && request.getPropertyNames().length > 0) {
+            List<String> propertyNames = Arrays.asList(request.getPropertyNames());
+            StringBuilder pnames = new StringBuilder();
+            for (Iterator<String> it = propertyNames.iterator(); it.hasNext(); ) {
+                pnames.append(it.next());
+                if (it.hasNext()) {
+                    pnames.append(',');
+                }
+            }
+            map.put("PROPERTYNAME", encodePropertyName(pnames.toString()));
         }
 
         return map;

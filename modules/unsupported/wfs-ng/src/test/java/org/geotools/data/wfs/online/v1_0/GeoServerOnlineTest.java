@@ -23,6 +23,7 @@ import java.util.Collections;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
@@ -51,15 +52,21 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
     public static Filter createSpatialFilter() {
         GeometryFactory gf = new GeometryFactory();
         Coordinate[] coordinates = {
-            new Coordinate(39, -107),
-            new Coordinate(38, -107),
-            new Coordinate(38, -104),
-            new Coordinate(39, -104),
-            new Coordinate(39, -107)
+            new Coordinate(-107, 39),
+            new Coordinate(-107, 38),
+            new Coordinate(-104, 38),
+            new Coordinate(-104, 39),
+            new Coordinate(-107, 39)
         };
         LinearRing shell = gf.createLinearRing(coordinates);
         Polygon polygon = gf.createPolygon(shell, null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
+    }
+
+    @Test
+    @Override
+    public void testDataStoreSupportsPlainBBOXInterface() throws Exception {
+        super.testDataStoreSupportsPlainBBOXInterface();
     }
 }

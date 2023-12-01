@@ -2003,10 +2003,11 @@ public class StreamingRenderer implements GTRenderer {
         layer.getStyle().accept(selectorStyleVisitor);
         Style style = (Style) selectorStyleVisitor.getCopy();
 
+        FeatureType schema = layer.getFeatureSource().getSchema();
         for (FeatureTypeStyle fts : style.featureTypeStyles()) {
-            if (isFeatureTypeStyleActive(layer.getFeatureSource().getSchema(), fts)) {
+            if (isFeatureTypeStyleActive(schema, fts)) {
 
-                SimplifyingStyleVisitor simplifier = new SimplifyingStyleVisitor();
+                SimplifyingStyleVisitor simplifier = new SimplifyingStyleVisitor(schema);
                 fts.accept(simplifier);
                 fts = (FeatureTypeStyle) simplifier.getCopy();
 
@@ -2068,7 +2069,7 @@ public class StreamingRenderer implements GTRenderer {
 
         if (!result.isEmpty()) {
             // make sure all spatial filters in the feature source native SRS
-            reprojectSpatialFilters(result, layer.getFeatureSource().getSchema());
+            reprojectSpatialFilters(result, schema);
 
             // apply the uom and dpi rescale
             applyUnitRescale(result);

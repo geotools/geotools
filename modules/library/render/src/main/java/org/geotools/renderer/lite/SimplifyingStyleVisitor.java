@@ -24,6 +24,7 @@ import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.FeatureTypeStyleImpl;
 import org.geotools.styling.Rule;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
+import org.opengis.feature.type.FeatureType;
 
 /**
  * A style visitor returning a simplified copy of the style, in particular, simplfying filters and
@@ -42,6 +43,19 @@ class SimplifyingStyleVisitor extends DuplicatingStyleVisitor {
                 CommonFactoryFinder.getStyleFactory(null),
                 CommonFactoryFinder.getFilterFactory2(null),
                 new SimplifyingFilterVisitor());
+    }
+
+    SimplifyingStyleVisitor(FeatureType schema) {
+        super(
+                CommonFactoryFinder.getStyleFactory(null),
+                CommonFactoryFinder.getFilterFactory2(null),
+                getFilterSimplifier(schema));
+    }
+
+    private static SimplifyingFilterVisitor getFilterSimplifier(FeatureType schema) {
+        SimplifyingFilterVisitor filterSimplifier = new SimplifyingFilterVisitor();
+        filterSimplifier.setFeatureType(schema);
+        return filterSimplifier;
     }
 
     @Override

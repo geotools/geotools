@@ -51,6 +51,7 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.expression.SimplifiableFunction;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.filter.expression.VolatileFunction;
 import org.opengis.filter.identity.FeatureId;
@@ -482,9 +483,17 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         if (attributeExtractor.isConstantExpression()) {
             Object result = function.evaluate(null);
             return ff.literal(result);
-        } else {
-            return super.visit(function, extraData);
         }
+
+        // perform simplifying copy, the arguments will be simplified if possible
+        Object result = super.visit(function, extraData);
+
+        // past that, we can try to ask the function to simplify itself
+        if (result instanceof SimplifiableFunction) {
+            return ((SimplifiableFunction) result).simplify(ff, featureType);
+        }
+
+        return result;
     }
 
     /**

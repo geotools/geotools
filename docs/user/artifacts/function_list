@@ -1227,6 +1227,17 @@ Contains 203 functions.
 
 * ``result`` (``Color``)
 
+``northFix(targetCRS, point, angle, sourceCRS)``: returns ``result``
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+* ``targetCRS`` (``CoordinateRefereneSystem``) required. Rendering CRS.
+
+* ``point`` (``Point``) required. Point where the north direction is computed.
+
+* ``angle`` (``Double``) optional. Angle to be north-fixed. Default is 0.
+
+* ``sourceCRS`` (``CoordinateRefereneSystem``) optional. CRS of the source point. If missing, automatically looked up from the geometry user data, the feature type description, or the point SRID.
+
 ``modulo(dividend, divisor)``: returns ``modulo``
 '''''''''''''''''''''''''''''''''''''''''''''''''
 

@@ -142,6 +142,7 @@ org.geotools.filter.function.GeometryFunction
 org.geotools.filter.function.IDFunction
 org.geotools.filter.function.InterpolateFunction
 org.geotools.filter.function.MapGetFunction
+org.geotools.filter.function.NorthFix
 org.geotools.filter.function.RecodeFunction
 org.geotools.filter.function.math.FilterFunction_IEEEremainder
 org.geotools.filter.function.math.FilterFunction_abs

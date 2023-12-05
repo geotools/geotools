@@ -20,6 +20,7 @@ jobs:
         distribution: 'temurin'
     - name: Set up GDAL
       run: |
+        brew update
         brew install gdal
     - name: Maven repository caching
       uses: actions/cache@v1

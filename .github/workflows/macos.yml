@@ -17,6 +17,7 @@ jobs:
     - name: Set up GDAL
       run: |
         brew update
+        brew upgrade
         brew install gdal
     - name: Maven repository caching
       uses: actions/cache@v1

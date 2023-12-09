@@ -50,9 +50,22 @@ import org.geotools.util.Utilities;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-class CategoryList extends AbstractList<Category> implements Comparator<Category>, Serializable {
+class CategoryList extends AbstractList<Category> implements Serializable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 2647846361059903365L;
+
+    /**
+     * Compares {@link Category} objects according their {@link Category#minimum} value. This is
+     * used for sorting the {@link #categories} array at construction time.
+     */
+    static Comparator<Category> COMPARATOR =
+            new Comparator<Category>() {
+
+                @Override
+                public int compare(Category c1, Category c2) {
+                    return CategoryList.compare(c1.minimum, c2.minimum);
+                }
+            };
 
     /**
      * The range of values in this category list. This is the union of the range of values of every
@@ -153,7 +166,7 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
     CategoryList(Category[] categories, Unit<?> units, boolean searchNearest)
             throws IllegalArgumentException {
         this.categories = categories = categories.clone();
-        Arrays.sort(categories, this);
+        Arrays.sort(categories, COMPARATOR);
         assert isSorted(categories);
         /*
          * Constructs the array of Category.minimum values. During
@@ -250,15 +263,6 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
         }
         this.overflowFallback = overflowFallback;
         this.unit = units;
-    }
-
-    /**
-     * Compares {@link Category} objects according their {@link Category#minimum} value. This is
-     * used for sorting the {@link #categories} array at construction time.
-     */
-    @Override
-    public final int compare(final Category o1, final Category o2) {
-        return compare(o1.minimum, o2.minimum);
     }
 
     /**

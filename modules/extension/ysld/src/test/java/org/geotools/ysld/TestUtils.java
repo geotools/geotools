@@ -350,7 +350,7 @@ public enum TestUtils {
 
     /** Matches a YSLD Tuple with n values */
     @SuppressWarnings("unchecked")
-    public static Matcher<Object> yTuple(int n) {
+    public static Matcher<? extends Object> yTuple(int n) {
         Matcher[] matchers = new Matcher[n];
         Arrays.fill(matchers, anything());
         return Matchers.describedAs("A YSLD Tuple with %0 values", yTuple(matchers), n);

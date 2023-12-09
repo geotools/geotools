@@ -489,7 +489,7 @@
     <jts.version>1.19.0</jts.version>
     <log4j2.version>2.17.2</log4j2.version>
     <logback.version>1.3.12</logback.version>
-    <mockito.core.version>3.12.4</mockito.core.version>
+    <mockito.core.version>5.6.0</mockito.core.version>
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
     <netcdf.version>4.6.15</netcdf.version>
@@ -1174,7 +1174,7 @@
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
-        <version>4.3</version>
+        <version>5.2.0</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -1757,7 +1757,7 @@
             <java.util.logging.SimpleFormatter.format>%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$-7s [%3$s] %5$s%6$s%n</java.util.logging.SimpleFormatter.format>
           </systemPropertyVariables>
           <!-- Use systemPropertyVariables @{argLine} late subtitution for jacoco params injection in surefire-->
-          <argLine>@{argLine} -Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Djava.library.path="${java.library.path}" ${test.args} -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -XX:-OmitStackTraceInFastThrow --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
+          <argLine>@{argLine} -Xmx${test.maxHeapSize} ${jvm.opts} -Dfile.encoding=UTF-8 -Djava.library.path="${java.library.path}" ${test.args} -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:ReservedCodeCacheSize=240m -XX:+IgnoreUnrecognizedVMOptions -XX:-OmitStackTraceInFastThrow --add-exports=java.desktop/sun.awt.image=ALL-UNNAMED ${test.otherJVMParams}</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the beginning of this pom.xml file. -->

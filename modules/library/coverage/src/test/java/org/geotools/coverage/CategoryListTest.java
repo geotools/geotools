@@ -69,7 +69,7 @@ public final class CategoryListTest {
             for (int i = 0; i < categories.length; i++) {
                 categories[i] = new Category(String.valueOf(i), null, random.nextInt(100));
             }
-            Arrays.sort(categories, new CategoryList(new Category[0], null));
+            Arrays.sort(categories, CategoryList.COMPARATOR);
             assertTrue("isSorted", CategoryList.isSorted(categories));
             for (int i = 0; i < categories.length; i++) {
                 array[i] = categories[i].minimum;

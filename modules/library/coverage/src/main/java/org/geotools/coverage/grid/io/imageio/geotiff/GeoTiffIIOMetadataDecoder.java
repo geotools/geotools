@@ -359,7 +359,11 @@ public final class GeoTiffIIOMetadataDecoder {
             return null;
         }
         try {
-            if ("nan".equals(noData)) return Double.NaN; // GDAL can use "nan" too
+            // GDAL always serializes NaN as "nan".
+            if ("nan".equals(noData)) return Double.NaN;
+            // On Linux, +/- inf are serialized like the following.
+            if ("inf".equals(noData)) return Double.POSITIVE_INFINITY;
+            if ("-inf".equals(noData)) return Double.NEGATIVE_INFINITY;
             return Double.parseDouble(noData);
         } catch (NumberFormatException nfe) {
             // TODO: Log a message.

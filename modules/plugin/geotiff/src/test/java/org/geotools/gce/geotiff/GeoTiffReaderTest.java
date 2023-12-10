@@ -1497,10 +1497,9 @@ public class GeoTiffReaderTest {
 
     @Test
     public void testFloatNegInfinityNoData() throws IOException {
-        // has a negative infinity nodata value
-        final File scaleOffset =
-                TestData.file(GeoTiffReaderTest.class, "float32_neg_infinity_nodata.tif");
-        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
+        // has a negative infinity nodata value, serialized as "-Infinity"
+        final File file = TestData.file(GeoTiffReaderTest.class, "float32_neg_infinity_nodata.tif");
+        GeoTiffReader reader = new GeoTiffReader(file);
 
         GridCoverage2D coverage = null;
         try {
@@ -1510,6 +1509,50 @@ public class GeoTiffReaderTest {
             Range noDataRange = iw.getNoData();
             double noData = noDataRange.getMin().doubleValue();
             assertEquals(Double.NEGATIVE_INFINITY, noData, 0d);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
+
+    @Test
+    public void testFloatNegInfNoData() throws IOException {
+        // has a negative infinity nodata value, serialized as "-inf"
+        final File file = TestData.file(GeoTiffReaderTest.class, "float32_neg_inf_nodata.tif");
+        GeoTiffReader reader = new GeoTiffReader(file);
+
+        GridCoverage2D coverage = null;
+        try {
+            coverage = reader.read(null);
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+
+            Range noDataRange = iw.getNoData();
+            double noData = noDataRange.getMin().doubleValue();
+            assertEquals(Double.NEGATIVE_INFINITY, noData, 0d);
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposeImage(coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+        }
+    }
+
+    @Test
+    public void testFloatInfNoData() throws IOException {
+        // has a infinity nodata value, serialized as "inf"
+        final File file = TestData.file(GeoTiffReaderTest.class, "float32_inf_nodata.tif");
+        GeoTiffReader reader = new GeoTiffReader(file);
+
+        GridCoverage2D coverage = null;
+        try {
+            coverage = reader.read(null);
+            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
+
+            Range noDataRange = iw.getNoData();
+            double noData = noDataRange.getMin().doubleValue();
+            assertEquals(Double.POSITIVE_INFINITY, noData, 0d);
         } finally {
             if (coverage != null) {
                 ImageUtilities.disposeImage(coverage.getRenderedImage());

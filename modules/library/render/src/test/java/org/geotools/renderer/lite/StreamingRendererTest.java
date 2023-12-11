@@ -749,7 +749,7 @@ public class StreamingRendererTest {
                             throws IOException {
                         return new PropertyFeatureSource(entry, Query.ALL) {
                             @Override
-                            protected boolean canFilter() {
+                            protected boolean canFilter(Query query) {
                                 return true;
                             }
                         };

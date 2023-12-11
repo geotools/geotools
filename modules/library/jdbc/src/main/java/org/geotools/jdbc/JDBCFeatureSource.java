@@ -492,10 +492,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         try {
 
             if ((postFilter != null) && (postFilter != Filter.INCLUDE)
-                    || (query.getMaxFeatures() < Integer.MAX_VALUE && !canLimit())
+                    || (query.getMaxFeatures() < Integer.MAX_VALUE && !canLimit(query))
                     || (query.getStartIndex() != null
                             && query.getStartIndex() > 0
-                            && !canOffset())) {
+                            && !canOffset(query))) {
                 // calculate manually, don't use datastore optimization
                 getDataStore().getLogger().fine("Calculating bounds manually");
 
@@ -538,27 +538,25 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canFilter() {
+    protected boolean canFilter(Query query) { return true; }
+
+    @Override
+    protected boolean canSort(Query query) {
         return true;
     }
 
     @Override
-    protected boolean canSort() {
+    protected boolean canRetype(Query query) {
         return true;
     }
 
     @Override
-    protected boolean canRetype() {
-        return true;
-    }
-
-    @Override
-    protected boolean canLimit() {
+    protected boolean canLimit(Query query) {
         return getDataStore().getSQLDialect().isLimitOffsetSupported();
     }
 
     @Override
-    protected boolean canOffset() {
+    protected boolean canOffset(Query query) {
         return getDataStore().getSQLDialect().isLimitOffsetSupported();
     }
 

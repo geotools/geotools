@@ -200,10 +200,10 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
      *
      * <ul>
      *   <li>{@link #canReproject()}
-     *   <li>{@link #canFilter()}
+     *   <li>{@link #canFilter(Query)}
      *   <li>{@link #canEvent()}
-     *   <li>{@link #canLimit()}
-     *   <li>{@link #canSort()}
+     *   <li>{@link #canLimit(Query)}
+     *   <li>{@link #canSort(Query)}
      *   <li>{@link #canLock()}
      * </ul>
      *

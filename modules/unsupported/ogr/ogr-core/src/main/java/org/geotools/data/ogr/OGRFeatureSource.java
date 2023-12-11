@@ -476,19 +476,15 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canFilter() {
+    protected boolean canFilter(Query query) { return true; }
+
+    @Override
+    protected boolean canRetype(Query query) {
         return true;
     }
 
     @Override
-    protected boolean canRetype() {
-        return true;
-    }
-
-    @Override
-    protected boolean canSort() {
-        return true;
-    }
+    protected boolean canSort(Query query) { return true; }
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {

@@ -137,12 +137,12 @@ public class ContentFeatureSourceTest {
                             }
 
                             @Override
-                            protected boolean canRetype() {
+                            protected boolean canRetype(Query query) {
                                 return true;
                             }
 
                             @Override
-                            protected boolean canSort() {
+                            protected boolean canSort(Query query) {
                                 return false;
                             }
                         };

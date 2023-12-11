@@ -167,13 +167,13 @@ class ShapefileFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected boolean canFilter() {
-        return delegate.canFilter();
+    protected boolean canFilter(Query query) {
+        return delegate.canFilter(query);
     }
 
     @Override
-    protected boolean canRetype() {
-        return delegate.canRetype();
+    protected boolean canRetype(Query query) {
+        return delegate.canRetype(query);
     }
 
     @Override

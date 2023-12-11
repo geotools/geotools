@@ -543,7 +543,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // offset
         int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if (!canOffset() && offset > 0) {
+        if (!canOffset(query) && offset > 0) {
             // skip the first n records
             count = Math.max(0, count - offset);
         }
@@ -614,8 +614,8 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // to remove the retyping, or we won't be able to sort in memory
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         boolean postRetypeRequired =
-                !canSort()
-                        && canRetype()
+                !canSort(query)
+                        && canRetype(query)
                         && query.getSortBy() != null
                         && query.getPropertyNames() != Query.ALL_NAMES;
         if (postRetypeRequired) {
@@ -647,7 +647,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
 
         // filtering
-        if (!canFilter()) {
+        if (!canFilter(query)) {
             if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
                 reader = new FilteringFeatureReader<>(reader, query.getFilter());
             }
@@ -655,13 +655,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // sorting
         if (query.getSortBy() != null && query.getSortBy().length != 0) {
-            if (!canSort()) {
+            if (!canSort(query)) {
                 reader = new SortedFeatureReader(DataUtilities.simple(reader), query);
             }
         }
 
         // retyping
-        if (!canRetype() || postRetypeRequired) {
+        if (!canRetype(query) || postRetypeRequired) {
             if (query.getPropertyNames() != Query.ALL_NAMES) {
                 // rebuild the type and wrap the reader
                 SimpleFeatureType target =
@@ -678,7 +678,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // offset
         int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if (!canOffset() && offset > 0) {
+        if (!canOffset(query) && offset > 0) {
             // skip the first n records
             for (int i = 0; i < offset && reader.hasNext(); i++) {
                 reader.next();
@@ -915,6 +915,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return false;
     }
 
+    protected boolean canLimit(Query query) {
+        return this.canLimit();
+    }
+
     /**
      * Determines if the datastore can natively skip the first <code>offset</code> number of
      * features returned in a query.
@@ -927,6 +931,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      */
     protected boolean canOffset() {
         return false;
+    }
+
+    protected boolean canOffset(Query query) {
+        return this.canOffset();
     }
 
     /**
@@ -947,6 +955,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return false;
     }
 
+    protected boolean canFilter(Query query) {
+        return this.canFilter();
+    }
+
     /**
      * Determines if the datasatore can natively perform "retyping" which includes limiting the
      * number of attributes returned and reordering of those attributes
@@ -964,6 +976,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return false;
     }
 
+    protected boolean canRetype(Query query) {
+        return this.canRetype();
+    }
+
     /**
      * Determines if the datastore can natively perform sorting.
      *
@@ -977,6 +993,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      */
     protected boolean canSort() {
         return false;
+    }
+
+    protected boolean canSort(Query query) {
+        return this.canSort();
     }
 
     /**

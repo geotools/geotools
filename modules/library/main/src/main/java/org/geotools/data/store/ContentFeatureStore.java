@@ -144,7 +144,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
                 // Simple simple writer with no events or locking
                 writer = getWriterInternal(query, flags);
                 // filtering may not be needed
-                if (!canFilter()) {
+                if (!canFilter(query)) {
                     if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
                         writer = new FilteringFeatureWriter(writer, query.getFilter());
                     }
@@ -165,7 +165,7 @@ public abstract class ContentFeatureStore extends ContentFeatureSource
                 writer = new EventContentFeatureWriter(this, writer);
             }
             // filtering
-            if (!canFilter()) {
+            if (!canFilter(query)) {
                 if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
                     writer = new FilteringFeatureWriter(writer, query.getFilter());
                 }

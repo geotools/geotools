@@ -1476,6 +1476,27 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         store.dispose();
     }
 
+    @Test
+    public void testOffset() throws Exception {
+        URL url = TestData.url(STATE_POP);
+        ShapefileDataStore store = new ShapefileDataStore(url);
+        SimpleFeatureSource featureSource = store.getFeatureSource();
+        Query q1 = new Query(Query.ALL);
+        String idIterate;
+        String idOffset;
+        try (SimpleFeatureIterator it = featureSource.getFeatures(q1).features()) {
+            it.next();
+            idIterate = it.next().getID();
+        }
+        Query q2 = new Query(Query.ALL);
+        q2.setStartIndex(1);
+        try (SimpleFeatureIterator it = featureSource.getFeatures(q2).features()) {
+            idOffset = it.next().getID();
+        }
+        assertEquals(idIterate, idOffset);
+        store.dispose();
+    }
+
     /** Checks if feature reading optimizations still allow to execute the queries or not */
     @Test
     public void testGetReaderOptimizations() throws Exception {

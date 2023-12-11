@@ -933,9 +933,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return false;
     }
 
-    protected boolean canOffset(Query query) {
-        return this.canOffset();
-    }
+    protected boolean canOffset(Query query) { return this.canOffset(); }
 
     /**
      * Determines if the datastore can natively perform a filtering.
@@ -951,13 +949,9 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * created by the subclass to be wrapped in a filtering feature reader when the query specifies
      * a filter. See {@link FilteringFeatureReader}.
      */
-    protected boolean canFilter() {
-        return false;
-    }
+    protected boolean canFilter() { return false; }
 
-    protected boolean canFilter(Query query) {
-        return this.canFilter();
-    }
+    protected boolean canFilter(Query query) { return this.canFilter(); }
 
     /**
      * Determines if the datasatore can natively perform "retyping" which includes limiting the
@@ -972,13 +966,9 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @see ReTypeFeatureReader
      */
-    protected boolean canRetype() {
-        return false;
-    }
+    protected boolean canRetype() { return false; }
 
-    protected boolean canRetype(Query query) {
-        return this.canRetype();
-    }
+    protected boolean canRetype(Query query) { return this.canRetype(); }
 
     /**
      * Determines if the datastore can natively perform sorting.
@@ -991,13 +981,9 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @see SortedFeatureReader
      */
-    protected boolean canSort() {
-        return false;
-    }
+    protected boolean canSort() { return false; }
 
-    protected boolean canSort(Query query) {
-        return this.canSort();
-    }
+    protected boolean canSort(Query query) { return this.canSort(); }
 
     /**
      * Determines if the store can natively manage transactions.

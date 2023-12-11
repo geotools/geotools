@@ -152,10 +152,14 @@ class OGRFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected boolean canSort(Query query) { return delegate.canSort(query); }
+    protected boolean canSort(Query query) {
+        return delegate.canSort(query);
+    }
 
     @Override
-    protected boolean canRetype(Query query) { return delegate.canRetype(query); }
+    protected boolean canRetype(Query query) {
+        return delegate.canRetype(query);
+    }
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {

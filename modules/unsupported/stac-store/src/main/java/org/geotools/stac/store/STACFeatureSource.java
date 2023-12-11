@@ -169,7 +169,9 @@ public class STACFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canSort(Query query) { return true; }
+    protected boolean canSort(Query query) {
+        return true;
+    }
 
     @Override
     protected boolean canRetype(Query query) {

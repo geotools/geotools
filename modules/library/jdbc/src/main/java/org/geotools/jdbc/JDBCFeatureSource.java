@@ -538,7 +538,9 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canFilter(Query query) { return true; }
+    protected boolean canFilter(Query query) {
+        return true;
+    }
 
     @Override
     protected boolean canSort(Query query) {

@@ -476,7 +476,9 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canFilter(Query query) { return true; }
+    protected boolean canFilter(Query query) {
+        return true;
+    }
 
     @Override
     protected boolean canRetype(Query query) {
@@ -484,7 +486,9 @@ class OGRFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canSort(Query query) { return true; }
+    protected boolean canSort(Query query) {
+        return true;
+    }
 
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {

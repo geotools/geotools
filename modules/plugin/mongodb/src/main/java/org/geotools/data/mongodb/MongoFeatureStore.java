@@ -84,7 +84,9 @@ public class MongoFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected boolean canLimit(Query query) { return delegate.canLimit(query); }
+    protected boolean canLimit(Query query) {
+        return delegate.canLimit(query);
+    }
 
     @Override
     protected boolean canRetype(Query query) {
@@ -92,10 +94,14 @@ public class MongoFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected boolean canSort(Query query) { return delegate.canSort(query); }
+    protected boolean canSort(Query query) {
+        return delegate.canSort(query);
+    }
 
     @Override
-    protected boolean canFilter(Query query) { return delegate.canFilter(query); }
+    protected boolean canFilter(Query query) {
+        return delegate.canFilter(query);
+    }
 
     @Override
     protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(

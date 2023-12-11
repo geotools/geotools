@@ -383,22 +383,22 @@ public class ElasticFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canLimit() {
+    protected boolean canLimit(Query query) {
         return true;
     }
 
     @Override
-    protected boolean canOffset() {
+    protected boolean canOffset(Query query) {
         return true;
     }
 
     @Override
-    protected boolean canFilter() {
+    protected boolean canFilter(Query query) {
         return true;
     }
 
     @Override
-    protected boolean canSort() {
+    protected boolean canSort(Query query) {
         return true;
     }
 }

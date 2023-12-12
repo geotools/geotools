@@ -193,7 +193,7 @@ public class SortedReaderTest {
                 SimpleFeature f = sr.next();
                 String id = f.getID();
                 if (prev != null) {
-                    assertTrue(id.compareTo(prev) >= 0);
+                    assertTrue(AlphanumComparator.compare(id, prev) >= 0);
                 }
                 prev = id;
             }
@@ -213,7 +213,7 @@ public class SortedReaderTest {
                 SimpleFeature f = sr.next();
                 String id = f.getID();
                 if (prev != null) {
-                    assertTrue(id.compareTo(prev) >= 0);
+                    assertTrue(AlphanumComparator.compare(id, prev) >= 0);
                 }
                 prev = id;
                 count++;

@@ -60,7 +60,7 @@ class FidComparator implements Comparator<SimpleFeature> {
         } else if (id2 == null) {
             return 1;
         } else {
-            return id1.compareTo(id2);
+            return AlphanumComparator.compare(id1, id2);
         }
     }
 }

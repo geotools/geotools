@@ -19,14 +19,17 @@ package org.geotools.vectormosaic;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -35,6 +38,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.PropertyName;
@@ -215,7 +219,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
     }
 
     @Test
-    public void testMixedQueryFilterUsesFilteringFeatureReader() throws Exception {
+    public void testMixedQueryFilter() throws Exception {
         VectorMosaicFeatureSource featureSource =
                 (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
         Query q = new Query();
@@ -223,9 +227,39 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         PropertyName p = FF.property("rank");
         // weight is in the granule
         PropertyName p2 = FF.property("weight");
-        Filter f = FF.and(FF.lessOrEqual(p, FF.literal(100)), FF.lessOrEqual(p2, FF.literal(50)));
+        Filter f = FF.and(FF.greaterOrEqual(p, FF.literal(2)), FF.lessOrEqual(p2, FF.literal(7)));
         q.setFilter(f);
-        assertEquals(FilteringFeatureReader.class, featureSource.getReaderInternal(q).getClass());
+        ContentFeatureCollection features = featureSource.getFeatures(q);
+        List<SimpleFeature> list = DataUtilities.list(features);
+        assertEquals(1, list.size());
+        assertEquals("granule2.1", list.get(0).getID());
+    }
+
+    /**
+     * Test filtering on attributes found both in the index and in the granule, but return a third
+     * property
+     */
+    @Test
+    public void testMixedFilterAttributeSelection() throws Exception {
+        VectorMosaicFeatureSource featureSource =
+                (VectorMosaicFeatureSource) MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        Query q = new Query();
+        // rank is in the index
+        PropertyName p = FF.property("rank");
+        // weight is in the granule
+        PropertyName p2 = FF.property("weight");
+        Filter f = FF.and(FF.greaterOrEqual(p, FF.literal(2)), FF.lessOrEqual(p2, FF.literal(7)));
+        q.setFilter(f);
+        q.setPropertyNames("tractorid");
+        ContentFeatureCollection features = featureSource.getFeatures(q);
+
+        // expected, just one feature, with only the tractorid attribute
+        List<SimpleFeature> list = DataUtilities.list(features);
+        assertEquals(1, list.size());
+        SimpleFeature feature = list.get(0);
+        assertEquals("granule2.1", feature.getID());
+        assertEquals(1, feature.getType().getAttributeCount());
+        assertEquals("deere2", feature.getAttribute("tractorid"));
     }
 
     @Test
@@ -307,10 +341,10 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
                                 .map(d -> d.getName().getLocalPart())
                                 .collect(Collectors.joining(","));
                 assertEquals("weight", granuleAttributes);
-                // validate that both show in final merged feature
+                // validate that both show in final merged feature, following the query order
                 Feature f1 = featureReader.next();
                 assertEquals(
-                        "weight,rank",
+                        "rank,weight",
                         f1.getType().getDescriptors().stream()
                                 .map(d -> d.getName().getLocalPart())
                                 .collect(Collectors.joining(",")));

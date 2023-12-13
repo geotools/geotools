@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
@@ -37,7 +38,6 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Repository;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -51,6 +51,7 @@ import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.FeatureVisitor;
@@ -178,7 +179,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> out = null;
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
         Name dsname = buildName(delegateStoreName);
         DataStore delegateDataStore = repository.dataStore(dsname);
         Filter splitFilterIndex =
@@ -193,31 +194,28 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             delegateQuery.setPropertyNames(filteredArray);
         }
         SimpleFeatureCollection features = delegateFeatureSource.getFeatures(delegateQuery);
-        out = new VectorMosaicFeatureReader(features, query, this);
-        if (query.getFilter() != null) {
-            Filter filter = query.getFilter();
-            boolean filterIsAllIndex =
-                    allFilterAttributesAreInType(delegateFeatureSource.getSchema(), filter);
-            SimpleFeatureType granuleType = getGranuleType();
-            boolean filterIsAllGranule = allFilterAttributesAreInType(granuleType, filter);
-            // filter is not all index and not all granule, so wrap in FilteringFeatureReader
-            if (!filterIsAllIndex && !filterIsAllGranule) {
-                out = new FilteringFeatureReader<>(out, filter);
-            }
-        }
-        return out;
+
+        // The reader merges the features from delegate and granule, filters contents, and
+        // retypes to the target feature type
+        reader = new VectorMosaicFeatureReader(features, query, this);
+
+        return reader;
     }
 
-    public static String[] getOnlyTypeMatchingAttributes(
+    static String[] getOnlyTypeMatchingAttributes(
             DataStore typeStore, String typeName, Query query, boolean isDelegate)
             throws IOException {
         SimpleFeatureType featureType = typeStore.getSchema(typeName);
         Set<String> attributeNames =
                 VectorMosaicFeatureSource.getAttributeNamesForType(featureType);
+        Set<String> queryNames = new LinkedHashSet<>(Arrays.asList(query.getPropertyNames()));
+        if (query.getFilter() != null) {
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
+            query.getFilter().accept(extractor, null);
+            queryNames.addAll(Arrays.asList(extractor.getAttributeNames()));
+        }
         String[] filteredArray =
-                Arrays.stream(query.getPropertyNames())
-                        .filter(attributeNames::contains)
-                        .toArray(String[]::new);
+                queryNames.stream().filter(attributeNames::contains).toArray(String[]::new);
         // delegate must have the connection parameters field
         if (isDelegate) {
             if (!containsString(
@@ -231,6 +229,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
 
         return filteredArray;
     }
+
     // Method to check if a string is present in an array
     private static boolean containsString(String[] array, String target) {
         return Arrays.asList(array).contains(target);
@@ -383,18 +382,6 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         return indexAttributeNames.containsAll(Arrays.asList(filterAttributeNames));
     }
 
-    private boolean allFilterAttributesAreInType(SimpleFeatureType featureType, Filter filter)
-            throws IOException {
-        String[] filterAttributeNames = DataUtilities.attributeNames(filter);
-        return typeHasAllAttributeNames(filterAttributeNames, featureType);
-    }
-
-    private boolean typeHasAllAttributeNames(String[] propertyNames, SimpleFeatureType featureType)
-            throws IOException {
-        Set<String> indexAttributeNames = getAttributeNamesForType(featureType);
-        return indexAttributeNames.containsAll(Arrays.asList(propertyNames));
-    }
-
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         // check if visitor is aggregate visitor
@@ -463,6 +450,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     protected boolean canFilter() {
         return true;
     }
+
     /**
      * Validates and loads the connection string properties into the granule
      *

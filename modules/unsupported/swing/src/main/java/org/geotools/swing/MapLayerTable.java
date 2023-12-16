@@ -160,7 +160,7 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the map layer
      */
-    void onRemoveLayer(Layer layer) {
+    public void onRemoveLayer(Layer layer) {
         listModel.removeItem(layer);
     }
 		

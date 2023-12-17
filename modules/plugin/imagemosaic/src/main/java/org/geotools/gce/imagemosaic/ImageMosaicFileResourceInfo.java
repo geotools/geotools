@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.imageio.pam.PAMDataset;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +36,7 @@ import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
+import org.geotools.coverage.grid.io.PAMResourceInfo;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -57,7 +59,8 @@ import org.geotools.util.logging.Logging;
  * {@link FileResourceInfo} implementation for ImageMosaic. The specific implementation is able to
  * retrieve support files such as, as an instance, prj and world file for TIFFs.
  */
-public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements FileResourceInfo {
+public class ImageMosaicFileResourceInfo extends DefaultResourceInfo
+        implements FileResourceInfo, PAMResourceInfo {
 
     static final Logger LOGGER = Logging.getLogger(ImageMosaicFileResourceInfo.class);
 
@@ -355,5 +358,10 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo implements 
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
+    }
+
+    @Override
+    public PAMDataset getPAMDataset() {
+        return rasterManager.getPamDataset();
     }
 }

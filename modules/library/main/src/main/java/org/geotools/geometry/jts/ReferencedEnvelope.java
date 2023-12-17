@@ -617,7 +617,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         double heightDelta = Math.abs(corner.getY() - center.getY());
         super.init(
                 center.getX() - widthDelta, center.getX() + widthDelta,
-                center.getY() - heightDelta, center.getY() + heightDelta);
+                center.getY() - heightDelta, center.getYX() + heightDelta);
     }
 
     public void setFrameFromDiagonal(Point2D lowerLeft, Point2D upperRight) {

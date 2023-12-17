@@ -196,7 +196,7 @@ public class RasterLayerResponse {
                 Unit<?> unit) {
             super(
                     description,
-                    !Double.isNaN(nodata)
+                    !Double.isInfinite(nodata)
                             ? new Category[] {
                                 new Category(
                                         Vocabulary.formatInternational(VocabularyKeys.NODATA),

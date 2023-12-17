@@ -1278,7 +1278,7 @@ public class GridCoverageRendererTest {
                         null,
                         rasterSymbolizer,
                         Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                        Color.GRAY,
+                        Color.BLACK,
                         256,
                         256);
         assertNotNull(image);
@@ -1306,7 +1306,7 @@ public class GridCoverageRendererTest {
                         null,
                         rasterSymbolizer,
                         Interpolation.getInstance(Interpolation.INTERP_NEAREST),
-                        Color.GRAY,
+                        Color.BLACK, // this is filling the nodata area (the NaN pixels)
                         256,
                         256);
         assertNotNull(image);

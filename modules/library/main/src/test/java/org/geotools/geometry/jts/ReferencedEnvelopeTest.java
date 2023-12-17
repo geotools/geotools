@@ -9,6 +9,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -224,5 +225,59 @@ public class ReferencedEnvelopeTest {
         assertTrue(ReferencedEnvelope.create(re).isEmpty());
         assertTrue(ReferencedEnvelope.create(re, re.getCoordinateReferenceSystem()).isEmpty());
         assertTrue(ReferencedEnvelope.reference(re).isEmpty());
+    }
+
+    @Test
+    public void testWrappingEnvelopeConversion() throws Exception {
+        GeneralBounds ge = new GeneralBounds(new double[] {160, 20}, new double[] {-160, 40});
+        ge.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
+
+        // used to convert to an empty envelope, which is wrong, the above is not empty,
+        // it's just spanning the dateline. ReferencedEnvelope cannot represent that case,
+        // but we can at least make sure it doesn't convert to an empty envelope and use whole
+        // world instead
+        ReferencedEnvelope re = ReferencedEnvelope.reference(ge);
+        assertEquals(DefaultGeographicCRS.WGS84, re.getCoordinateReferenceSystem());
+        assertEquals(-180, re.getMinX(), 0d);
+        assertEquals(180, re.getMaxX(), 0d);
+        assertEquals(20, re.getMinY(), 0d);
+        assertEquals(40, re.getMaxY(), 0d);
+    }
+
+    /**
+     * This method tests the different ways of initializing a ReferencedEnvelope in a manner
+     * consistent with behavior of {@link Rectangle2D}
+     */
+    @Test
+    public void testRectangle2DBehaviour() throws Exception {
+        Rectangle2D rectangle = new Rectangle2D.Double(10.0, 10.0, 40.0, 30.0);
+        ReferencedEnvelope envelope =
+                ReferencedEnvelope.rect(10.0, 10.0, 40.0, 30.0, DefaultEngineeringCRS.CARTESIAN_2D);
+        assertEquals(
+                "rect",
+                ReferencedEnvelope.rect(rectangle, DefaultEngineeringCRS.CARTESIAN_2D),
+                envelope);
+
+        assertEquals("x", rectangle.getMinX(), envelope.getMinX(), 0.0);
+        assertEquals("height", rectangle.getHeight(), envelope.getHeight(), 0.0);
+
+        Point2D center = new Point2D.Double(50.0, 50.0);
+        Point2D outer = new Point2D.Double(85.0, 15.0);
+        rectangle.setFrameFromCenter(center, outer);
+        envelope.setFrameFromCenter(center, outer);
+        assertEquals(
+                "setFrameFromCenter",
+                ReferencedEnvelope.rect(rectangle, DefaultEngineeringCRS.CARTESIAN_2D),
+                envelope);
+
+        Point2D lower = new Point2D.Double(10.0, 10.0);
+        Point2D upper = new Point2D.Double(40.0, 30.0);
+
+        rectangle.setFrameFromDiagonal(lower, upper);
+        envelope.setFrameFromDiagonal(lower, upper);
+        assertEquals(
+                "setFrameFromDiagonal",
+                ReferencedEnvelope.rect(rectangle, DefaultEngineeringCRS.CARTESIAN_2D),
+                envelope);
     }
 }

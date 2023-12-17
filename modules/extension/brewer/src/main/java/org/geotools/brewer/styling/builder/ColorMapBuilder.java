@@ -72,7 +72,7 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
         }
         ColorMap colorMap = sf.createColorMap();
         colorMap.setType(type);
-        colorMap.setExtendedColors(extended);
+        colorMap.setExtendedColors(extended || entries.size() > 256);
         for (ColorMapEntry entry : entries) {
             colorMap.addColorMapEntry(entry);
         }

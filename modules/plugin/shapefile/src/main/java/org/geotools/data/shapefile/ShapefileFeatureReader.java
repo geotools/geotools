@@ -163,10 +163,10 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             return shp.hasNext();
         } else {
             boolean dbfHasNext = dbf.hasNext();
-            boolean shpHasNext = shp == null || shp.hasNext();
+            boolean shpHasNext = shp.hasNext();
             if (dbfHasNext && shpHasNext) {
                 return true;
-            } else if (shp != null && (dbfHasNext || shpHasNext)) {
+            } else if (dbfHasNext || shpHasNext) {
                 throw new IOException(((shpHasNext) ? "Shp" : "Dbf") + " has extra record");
             } else {
                 return false;
@@ -177,10 +177,9 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     @Override
     public boolean hasNext() throws IOException {
         while (nextFeature == null && filesHaveMore()) {
-            Record record = shp != null ? shp.nextRecord() : null;
+            Record record = shp.nextRecord();
 
-            final Geometry geometry =
-                    record != null ? getGeometry(record) : SKIP.getFactory().createEmpty(0);
+            Geometry geometry = getGeometry(record);
             if (geometry != SKIP) {
                 // also grab the dbf row
                 Row row;
@@ -193,10 +192,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     row = null;
                 }
 
-                final int number = record != null ? record.number : 0;
-                final Envelope envelope =
-                        record != null ? record.envelope() : geometry.getEnvelopeInternal();
-                nextFeature = buildFeature(number, geometry, row, envelope);
+                nextFeature = buildFeature(record.number, geometry, row, record.envelope());
             } else {
                 if (dbf != null) {
                     dbf.skip();

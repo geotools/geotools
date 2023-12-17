@@ -104,10 +104,11 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 final List<String> indexingDirectories,
                 final FileFilter filter,
                 ImageMosaicWalker walker,
-                ImageMosaicElementConsumer consumer,
-                boolean recursive)
+                ImageMosaicElementConsumer consumer)
                 throws IOException {
-            super(filter, recursive ? Integer.MAX_VALUE : 1);
+            super(
+                    filter,
+                    Integer.MAX_VALUE); // runConfiguration.isRecursive()?Integer.MAX_VALUE:0);
 
             this.walker = walker;
             this.consumer = consumer;
@@ -192,9 +193,6 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                 indexDirs = harvestDirectory;
             }
             String[] indexDirectories = indexDirs.split("\\s*,\\s*");
-            boolean recursive =
-                    Boolean.parseBoolean(
-                            configHandler.getRunConfiguration().getParameter(Prop.RECURSIVE));
             for (String indexingDirectory : indexDirectories) {
                 indexingDirectory = Utils.checkDirectory(indexingDirectory, false);
                 final File directoryToScan = new File(indexingDirectory);
@@ -202,7 +200,12 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                         FileUtils.listFiles(
                                 directoryToScan,
                                 finalFilter,
-                                recursive ? TrueFileFilter.INSTANCE : FalseFileFilter.INSTANCE);
+                                Boolean.parseBoolean(
+                                                configHandler
+                                                        .getRunConfiguration()
+                                                        .getParameter(Prop.RECURSIVE))
+                                        ? TrueFileFilter.INSTANCE
+                                        : FalseFileFilter.INSTANCE);
                 numFiles += files.size();
             }
             //
@@ -216,8 +219,7 @@ public class ImageMosaicDirectoryWalker extends ImageMosaicWalker {
                         indexingDirectories,
                         finalFilter,
                         this,
-                        new ImageMosaicFileFeatureConsumer.ImageMosaicFileConsumer(),
-                        recursive);
+                        new ImageMosaicFileFeatureConsumer.ImageMosaicFileConsumer());
 
             } else {
                 LOGGER.log(Level.INFO, "No files to process!");

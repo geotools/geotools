@@ -788,8 +788,6 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.setOverlapBehavior(raster.getOverlapBehavior());
         copy.setShadedRelief(copy(raster.getShadedRelief()));
 
-        copy.getOptions().putAll(raster.getOptions());
-
         if (STRICT && !copy.equals(raster)) {
             throw new IllegalStateException("Was unable to duplicate provided raster:" + raster);
         }

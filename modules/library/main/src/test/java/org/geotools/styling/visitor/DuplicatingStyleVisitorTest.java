@@ -17,7 +17,6 @@
 package org.geotools.styling.visitor;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -27,8 +26,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.Icon;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
@@ -289,20 +286,6 @@ public class DuplicatingStyleVisitorTest {
         // Compare rastersymbolizer overlap behaviour
         RasterSymbolizer notEq = sf.createRasterSymbolizer();
         Assert.assertNotEquals(notEq.getOverlapBehavior(), rasterSymb1.getOverlapBehavior());
-    }
-
-    @Test
-    public void testRasterSymbolizerOptions() throws Exception {
-        Map<String, String> options = new HashMap<>();
-        options.put("k1", "v1");
-        options.put("k2", "v2");
-        RasterSymbolizer rasterSymb = sf.createRasterSymbolizer();
-        rasterSymb.getOptions().putAll(options);
-        rasterSymb.accept(visitor);
-        RasterSymbolizer clone = (RasterSymbolizer) visitor.getCopy();
-
-        assertEquals(rasterSymb.getOptions(), clone.getOptions());
-        assertNotSame(rasterSymb.getOptions(), clone.getOptions());
     }
 
     @Test

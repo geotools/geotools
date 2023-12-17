@@ -876,14 +876,7 @@ public abstract class TransformerBase {
             start(element, atts);
 
             if (content != null) {
-                int length = content.length();
-                if (length > 0
-                        && (Character.isWhitespace(content.charAt(0))
-                                || Character.isWhitespace(content.charAt(length - 1)))) {
-                    cdata(content);
-                } else {
-                    chars(content);
-                }
+                chars(content);
             }
 
             end(element);

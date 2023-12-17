@@ -11319,7 +11319,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfaceType"),
-                        MultiSurface.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         Collections.emptyList(),
@@ -12969,7 +12969,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfacePropertyType"),
-                        MultiSurface.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         Collections.emptyList(),

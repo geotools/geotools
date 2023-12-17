@@ -87,7 +87,6 @@ import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FileGroupProvider.FileGroup;
-import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
@@ -167,7 +166,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
     /** Adapter for the GeoTiff crs. */
     private GeoTiffMetadata2CRSAdapter gtcs;
 
-    private Double noData = null;
+    private double noData = Double.NaN;
 
     /** File containing image overviews */
     private File ovrSource;
@@ -380,7 +379,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 // nodata though float to get a representation that would succesfully compare
                 // against the pixels
                 if (sampleModel.getDataType() == DataBuffer.TYPE_FLOAT) {
-                    noData = Double.valueOf(((Double) noData).floatValue());
+                    noData = (float) noData;
                 }
             }
 
@@ -616,13 +615,6 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
         return new GeoTiffFormat();
     }
 
-    @Override
-    public ResourceInfo getInfo(String coverageName) {
-        List<FileGroup> files = getFiles();
-        if (files == null) files = Collections.emptyList();
-        return new GeoTIFFResourceInfo(files, pamDataset);
-    }
-
     /**
      * This method reads in the TIFF image, constructs an appropriate CRS, determines the math
      * transform from raster to the CRS model, and constructs a GridCoverage.
@@ -762,7 +754,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
         // applying rescale if needed
         if (rescalePixels) {
-            if (noData != null) {
+            if (!Double.isNaN(noData)) {
                 // Force nodata settings since JAI ImageRead may lost that
                 // We have to make sure that noData pixels won't be rescaled
                 PlanarImage t = PlanarImage.wrapRenderedImage(coverageRaster);
@@ -983,7 +975,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
 
         Category noDataCategory = null;
         final Map<String, Object> properties = new HashMap<>();
-        if (noData != null && !Double.isInfinite(noData)) {
+        if (Double.isFinite(noData)) {
             noDataCategory =
                     new Category(
                             Vocabulary.formatInternational(VocabularyKeys.NODATA),

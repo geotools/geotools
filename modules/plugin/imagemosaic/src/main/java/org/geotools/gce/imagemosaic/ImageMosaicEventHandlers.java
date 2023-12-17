@@ -186,15 +186,6 @@ public class ImageMosaicEventHandlers {
         }
     }
 
-    /** Event launched when processing completes */
-    public static final class CompletionEvent extends ProcessingEvent {
-
-        /** */
-        public CompletionEvent(Object source) {
-            super(source, "Indexing complete", 100);
-        }
-    }
-
     /**
      * Private Class which simply fires the events using a copy of the listeners list in order to
      * avoid problems with listeners that remove themselves or are removed by someone else
@@ -260,7 +251,10 @@ public class ImageMosaicEventHandlers {
             LOGGER.log(level, inMessage);
         }
         synchronized (notificationListeners) {
-            final StringBuilder message = buildMessage(inMessage);
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(inMessage);
             final ProcessingEvent evt = new ProcessingEvent(this, message.toString(), percentage);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
                     new ProgressEventDispatchThreadEventLauncher();
@@ -286,7 +280,10 @@ public class ImageMosaicEventHandlers {
             LOGGER.log(level, inMessage);
         }
         synchronized (notificationListeners) {
-            final StringBuilder message = buildMessage(inMessage);
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(inMessage);
             final FileProcessingEvent evt =
                     new FileProcessingEvent(this, file, ingested, message.toString(), percentage);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
@@ -294,14 +291,6 @@ public class ImageMosaicEventHandlers {
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());
             sendEvent(eventLauncher);
         }
-    }
-
-    private StringBuilder buildMessage(String inMessage) {
-        final String newLine = System.getProperty("line.separator");
-        final StringBuilder message = new StringBuilder("Thread Name ");
-        message.append(Thread.currentThread().getName()).append(newLine);
-        message.append(this.getClass().toString()).append(newLine).append(inMessage);
-        return message;
     }
 
     /**
@@ -321,7 +310,10 @@ public class ImageMosaicEventHandlers {
             LOGGER.log(level, inMessage);
         }
         synchronized (notificationListeners) {
-            final StringBuilder message = buildMessage(inMessage);
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(inMessage);
             final URLProcessingEvent evt =
                     new URLProcessingEvent(this, url, ingested, message.toString(), percentage);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
@@ -348,7 +340,10 @@ public class ImageMosaicEventHandlers {
             LOGGER.log(level, inMessage);
         }
         synchronized (notificationListeners) {
-            final StringBuilder message = buildMessage(inMessage);
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(inMessage);
             final URIProcessingEvent evt =
                     new URIProcessingEvent(this, uri, ingested, message.toString(), percentage);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
@@ -381,19 +376,11 @@ public class ImageMosaicEventHandlers {
      */
     private void fireException(final String string, final double percentage, Exception ex) {
         synchronized (notificationListeners) {
-            buildMessage(string);
+            final String newLine = System.getProperty("line.separator");
+            final StringBuilder message = new StringBuilder("Thread Name ");
+            message.append(Thread.currentThread().getName()).append(newLine);
+            message.append(this.getClass().toString()).append(newLine).append(string);
             final ExceptionEvent evt = new ExceptionEvent(this, string, percentage, ex);
-            ProgressEventDispatchThreadEventLauncher eventLauncher =
-                    new ProgressEventDispatchThreadEventLauncher();
-            eventLauncher.setEvent(evt, this.notificationListeners.toArray());
-            sendEvent(eventLauncher);
-        }
-    }
-
-    /** Sends the indexing completion event */
-    protected void fireCompleted() {
-        synchronized (notificationListeners) {
-            final ProcessingEvent evt = new CompletionEvent(this);
             ProgressEventDispatchThreadEventLauncher eventLauncher =
                     new ProgressEventDispatchThreadEventLauncher();
             eventLauncher.setEvent(evt, this.notificationListeners.toArray());

@@ -97,9 +97,9 @@ should now be named:
 
 .. code-block:: 
 
-   org.geotools.api.data.DataAccessFactory
-   org.geotools.api.data.DataStoreFactorySpi
-   org.geotools.api.data.FileDataStoreFactorySpi
+   org.geotools.data.api.DataAccessFactory
+   org.geotools.data.api.DataStoreFactorySpi
+   org.geotools.data.api.FileDataStoreFactorySpi
 
 The upgrade script should take care of this change.
 

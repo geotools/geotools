@@ -6014,38 +6014,4 @@ public class ImageMosaicReaderTest {
         // clean up
         reader.dispose();
     }
-
-    @Test
-    public void testRecurseOff() throws Exception {
-        // create the base mosaic we are going to use
-        File mosaicSource = TestData.file(this, "rgb");
-        String mosaicName = "rgb-recurse-off";
-        File targetRgba = new File("target", mosaicName);
-        File subfolder = new File(targetRgba, "subfolder");
-        FileUtils.deleteQuietly(targetRgba);
-        FileUtils.copyDirectory(mosaicSource, targetRgba);
-        assertTrue(subfolder.mkdir());
-        // move most files to a subdirectory
-        Arrays.stream(
-                        targetRgba.listFiles(
-                                f ->
-                                        !f.getName().matches("global_mosaic_\\d\\..*")
-                                                && !f.isDirectory()))
-                .forEach(f -> f.renameTo(new File(subfolder, f.getName())));
-
-        // setup the indexer with the recurse off
-        Properties properties = new Properties();
-        properties.put(Prop.RECURSIVE, "false");
-        try (FileOutputStream fos =
-                new FileOutputStream(new File(targetRgba, "indexer.properties"))) {
-            properties.store(fos, null);
-        }
-
-        final ImageMosaicReader reader = getReader(fileToUrl(targetRgba));
-        // only the 10 files with a single digit left in the root folder have been
-        // indexed, the others in the subfolder have been ignored
-        assertEquals(10, reader.getGranules(mosaicName, true).getCount(Query.ALL));
-
-        reader.dispose();
-    }
 }

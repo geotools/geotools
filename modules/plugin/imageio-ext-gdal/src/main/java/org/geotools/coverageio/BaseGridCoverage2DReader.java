@@ -121,7 +121,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
     private ServiceInfo serviceInfo;
 
-    protected ResourceInfo resourceInfo;
+    private ResourceInfo resourceInfo;
 
     protected Double nodata;
 

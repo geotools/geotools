@@ -29,7 +29,6 @@ import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.SchemaImpl;
-import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.v3_2.gmd.GMDSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
@@ -17063,7 +17062,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiSurfacePropertyType"),
-                        MultiSurface.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         null,
@@ -17103,7 +17102,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiSurfaceType"),
-                        MultiSurface.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         null,

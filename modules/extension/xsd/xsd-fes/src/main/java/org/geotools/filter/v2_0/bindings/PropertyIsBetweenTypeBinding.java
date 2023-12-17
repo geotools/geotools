@@ -18,7 +18,6 @@ package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.PropertyIsBetween;
 import org.geotools.filter.v1_0.OGCPropertyIsBetweenTypeBinding;
 import org.geotools.filter.v2_0.FES;
 
@@ -55,15 +54,5 @@ public class PropertyIsBetweenTypeBinding extends OGCPropertyIsBetweenTypeBindin
     @Override
     public QName getTarget() {
         return FES.PropertyIsBetweenType;
-    }
-
-    @Override
-    public Object getProperty(Object object, QName name) throws Exception {
-        if (FES.expression.equals(name)) {
-            PropertyIsBetween between = (PropertyIsBetween) object;
-            return between.getExpression();
-        }
-
-        return super.getProperty(object, name);
     }
 }

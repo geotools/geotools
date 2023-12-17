@@ -121,33 +121,6 @@ public class KartverketStedsnavnDataStoreOnlineTest extends AbstractWfsDataStore
     }
 
     /**
-     * Check that we can call getSchema without SCHEMA_CACHE_LOCATION being set.
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testComplexSchemaWithoutCache() throws Exception {
-        if (!isOnline()) {
-            return;
-        }
-        Map<String, Serializable> params = new HashMap<>();
-        params.put(WFSDataStoreFactory.URL.key, new URL(SERVER_URL));
-
-        WFSDataAccessFactory dataStoreFactory = new WFSDataAccessFactory();
-        WFSContentDataAccess dataAccess =
-                (WFSContentDataAccess) dataStoreFactory.createDataStore(params);
-        Name featureName = null;
-        for (Name nextName : dataAccess.getNames()) {
-            if (NAME.equals(nextName.getLocalPart())) {
-                featureName = nextName;
-                break;
-            }
-        }
-        FeatureType schema = dataAccess.getSchema(featureName);
-        Assert.assertNotNull(schema);
-    }
-
-    /**
      * Check that the returned feature doesn't have other property names than those specified when
      * calling getSchema()
      */

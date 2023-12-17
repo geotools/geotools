@@ -97,7 +97,6 @@ import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExpressionTypeVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
-import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
@@ -1566,7 +1565,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     private boolean fullySupports(Expression expression) {
         if (expression == null) {
-
             throw new IllegalArgumentException("Null expression can not be unpacked");
         }
 
@@ -1926,7 +1924,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     }
 
                     if (Geometry.class.isAssignableFrom(binding)) {
-                        Geometry g = linearize(value, binding);
+                        Geometry g = (Geometry) value;
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
@@ -1956,17 +1954,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         } finally {
             closeSafe(ps);
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private Geometry linearize(Object value, Class<?> binding) {
-        Geometry g = (Geometry) value;
-        if (CurvedGeometry.class.isInstance(g)
-                && !CurvedGeometry.class.isAssignableFrom(binding)
-                && !binding.equals(Geometry.class)) {
-            return ((CurvedGeometry<? extends Geometry>) g).linearize();
-        }
-        return g;
     }
 
     static void checkAllInserted(int[] inserts, int size) throws IOException {
@@ -3834,8 +3821,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             }
 
             if (binding != null && Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = linearize(value, binding);
-                dialect.setGeometryValue(g, dimension, srid, binding, ps, offset + i + 1);
+                dialect.setGeometryValue(
+                        (Geometry) value, dimension, srid, binding, ps, offset + i + 1);
             } else if (ad != null && this.dialect.isArray(ad)) {
                 dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
             } else {
@@ -4429,7 +4416,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             } else {
                 if (Geometry.class.isAssignableFrom(binding)) {
                     try {
-                        Geometry g = linearize(value, binding);
+                        Geometry g = (Geometry) value;
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.encodeGeometryValue(g, dimension, srid, sql);
@@ -4578,7 +4565,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
                 try {
-                    Geometry g = linearize(value, binding);
+                    Geometry g = (Geometry) value;
                     int srid = getGeometrySRID(g, att);
                     int dimension = getGeometryDimension(g, att);
                     dialect.encodeGeometryValue(g, dimension, srid, sql);
@@ -4686,7 +4673,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Class binding = att.getType().getBinding();
             Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
-                Geometry g = linearize(value, binding);
+                Geometry g = (Geometry) value;
                 dialect.setGeometryValue(
                         g, getDescriptorDimension(att), getDescriptorSRID(att), binding, ps, j + 1);
             } else {

@@ -142,11 +142,6 @@ public class SchemaResolver {
         return resolve(locationUri.toString());
     }
 
-    /** Cache used by this Schema Resolver. Could be null if not set. */
-    public SchemaCache getCache() {
-        return cache;
-    }
-
     /**
      * Resolve an absolute URL to a local file or jar URL.
      *

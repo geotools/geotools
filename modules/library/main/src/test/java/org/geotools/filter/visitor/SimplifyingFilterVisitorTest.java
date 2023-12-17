@@ -16,9 +16,6 @@
  */
 package org.geotools.filter.visitor;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
@@ -26,7 +23,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -36,15 +32,12 @@ import org.geotools.api.filter.Or;
 import org.geotools.api.filter.PropertyIsEqualTo;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.InternalFunction;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.expression.SimplifiableFunction;
 import org.geotools.api.filter.identity.Identifier;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
@@ -773,85 +766,5 @@ public class SimplifyingFilterVisitorTest {
         Expression e = ff.divide(ff.function("env", ff.literal("var")), ff.literal(10));
         Expression result = (Expression) e.accept(simpleVisitor, null);
         assertEquals(ff.literal(12.3), result);
-    }
-
-    /**
-     * Simple mock function to test function simplification. Implements also internal function so
-     * that this mock does not need to be registered. Creating the same behavior with EasyMock is
-     * actually more complicated.
-     */
-    private class MockSimplifiableFunction extends FunctionExpressionImpl
-            implements InternalFunction, SimplifiableFunction {
-
-        protected MockSimplifiableFunction() {
-            super("MockFunction");
-        }
-
-        @Override
-        public InternalFunction duplicate(Expression... parameters) {
-            MockSimplifiableFunction clone = new MockSimplifiableFunction();
-            if (parameters != null) clone.setParameters(Arrays.asList(parameters));
-            return clone;
-        }
-
-        @Override
-        public Expression simplify(FilterFactory ff, FeatureType featureType) {
-            // Odd conditions to allow testing different branches of simplification code
-
-            // if there is a feature type, return its name
-            if (featureType != null) return ff.literal(featureType.getName().getLocalPart());
-            // if there is a single argument, return a static string
-            else if (getParameters().size() == 1) return ff.literal("simplified");
-            // otherwise return the function itself (which is used to test argument simplification)
-            return this;
-        }
-
-        @Override
-        public Object evaluate(Object object) {
-            // this should never be called during the existing tests
-            throw new UnsupportedOperationException("Unexpected");
-        }
-    }
-
-    @Test
-    public void testSimplifiableFunction() throws Exception {
-        MockSimplifiableFunction function = new MockSimplifiableFunction();
-        function.setParameters(Arrays.asList(ff.property("a")));
-        Expression simplified = (Expression) function.accept(simpleVisitor, null);
-        assertEquals("simplified", simplified.evaluate(null, String.class));
-    }
-
-    /**
-     * Check basic simplification works (the simplifiable arguments, are simplified)
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testSimplifiableFunctionRecurse() throws Exception {
-        MockSimplifiableFunction function = new MockSimplifiableFunction();
-        function.setParameters(
-                Arrays.asList(ff.property("a"), ff.add(ff.literal(1), ff.literal(2))));
-        Expression simplified = (Expression) function.accept(simpleVisitor, null);
-        assertThat(simplified, instanceOf(MockSimplifiableFunction.class));
-        MockSimplifiableFunction sf = (MockSimplifiableFunction) simplified;
-        assertThat(sf.getParameters().get(0), instanceOf(PropertyName.class));
-        Expression p1 = sf.getParameters().get(1);
-        assertThat(p1, instanceOf(Literal.class));
-        assertThat(p1.evaluate(null), equalTo(3d));
-    }
-
-    /**
-     * Test it can do something else when a schema is provided
-     *
-     * @throws Exception
-     */
-    @Test
-    public void testSimplifiableFunctionWithSchema() throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("typeName", "a:String");
-        simpleVisitor.setFeatureType(schema);
-        MockSimplifiableFunction function = new MockSimplifiableFunction();
-        function.setParameters(Arrays.asList(ff.property("a")));
-        Expression simplified = (Expression) function.accept(simpleVisitor, null);
-        assertEquals("typeName", simplified.evaluate(null, String.class));
     }
 }

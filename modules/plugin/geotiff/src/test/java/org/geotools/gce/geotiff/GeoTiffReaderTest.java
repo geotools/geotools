@@ -29,9 +29,6 @@ import static org.junit.Assert.fail;
 
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import it.geosolutions.imageio.pam.PAMDataset;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.FieldType;
-import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.FieldUsage;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.range.NoDataContainer;
@@ -64,7 +61,6 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FileGroupProvider;
-import org.geotools.api.data.ResourceInfo;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.parameter.ParameterValueGroup;
@@ -83,7 +79,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GroundControlPoints;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.coverage.grid.io.PAMResourceInfo;
 import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
@@ -194,7 +189,6 @@ public class GeoTiffReaderTest {
 
         coverage1.dispose(true);
     }
-
     /** Test for reading bad/strange geotiff files */
     @Test
     public void testReaderBadGeotiff()
@@ -1497,9 +1491,10 @@ public class GeoTiffReaderTest {
 
     @Test
     public void testFloatNegInfinityNoData() throws IOException {
-        // has a negative infinity nodata value, serialized as "-Infinity"
-        final File file = TestData.file(GeoTiffReaderTest.class, "float32_neg_infinity_nodata.tif");
-        GeoTiffReader reader = new GeoTiffReader(file);
+        // has a negative infinity nodata value
+        final File scaleOffset =
+                TestData.file(GeoTiffReaderTest.class, "float32_neg_infinity_nodata.tif");
+        GeoTiffReader reader = new GeoTiffReader(scaleOffset);
 
         GridCoverage2D coverage = null;
         try {
@@ -1509,50 +1504,6 @@ public class GeoTiffReaderTest {
             Range noDataRange = iw.getNoData();
             double noData = noDataRange.getMin().doubleValue();
             assertEquals(Double.NEGATIVE_INFINITY, noData, 0d);
-        } finally {
-            if (coverage != null) {
-                ImageUtilities.disposeImage(coverage.getRenderedImage());
-                coverage.dispose(true);
-            }
-        }
-    }
-
-    @Test
-    public void testFloatNegInfNoData() throws IOException {
-        // has a negative infinity nodata value, serialized as "-inf"
-        final File file = TestData.file(GeoTiffReaderTest.class, "float32_neg_inf_nodata.tif");
-        GeoTiffReader reader = new GeoTiffReader(file);
-
-        GridCoverage2D coverage = null;
-        try {
-            coverage = reader.read(null);
-            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
-
-            Range noDataRange = iw.getNoData();
-            double noData = noDataRange.getMin().doubleValue();
-            assertEquals(Double.NEGATIVE_INFINITY, noData, 0d);
-        } finally {
-            if (coverage != null) {
-                ImageUtilities.disposeImage(coverage.getRenderedImage());
-                coverage.dispose(true);
-            }
-        }
-    }
-
-    @Test
-    public void testFloatInfNoData() throws IOException {
-        // has a infinity nodata value, serialized as "inf"
-        final File file = TestData.file(GeoTiffReaderTest.class, "float32_inf_nodata.tif");
-        GeoTiffReader reader = new GeoTiffReader(file);
-
-        GridCoverage2D coverage = null;
-        try {
-            coverage = reader.read(null);
-            ImageWorker iw = new ImageWorker(coverage.getRenderedImage());
-
-            Range noDataRange = iw.getNoData();
-            double noData = noDataRange.getMin().doubleValue();
-            assertEquals(Double.POSITIVE_INFINITY, noData, 0d);
         } finally {
             if (coverage != null) {
                 ImageUtilities.disposeImage(coverage.getRenderedImage());
@@ -1642,78 +1593,5 @@ public class GeoTiffReaderTest {
 
         // and can be looked up as such
         assertEquals("IAU:49900", CRS.lookupIdentifier(crs, true));
-    }
-
-    @Test
-    public void testRAT() throws Exception {
-        final File file = TestData.file(GeoTiffReaderTest.class, "rat/rat.tiff");
-        assertNotNull(file);
-        final AbstractGridFormat format = new GeoTiffFormat();
-        GeoTiffReader reader = (GeoTiffReader) format.getReader(file);
-        assertNotNull(reader);
-
-        // check the resource info contains a PAMDataset
-        ResourceInfo info = reader.getInfo("rat");
-        assertThat(info, CoreMatchers.instanceOf(PAMResourceInfo.class));
-        PAMResourceInfo pi = (PAMResourceInfo) info;
-        PAMDataset pam = pi.getPAMDataset();
-        assertNotNull(pam);
-        List<PAMRasterBand> bands = pam.getPAMRasterBand();
-        assertEquals(1, bands.size());
-        PAMRasterBand band = bands.get(0);
-        PAMRasterBand.GDALRasterAttributeTable rat = band.getGdalRasterAttributeTable();
-        assertNotNull(rat);
-
-        // Check each field
-        List<PAMRasterBand.FieldDefn> fields = rat.getFieldDefn();
-        assertEquals(3, fields.size());
-        assertField(fields.get(0), "con_min", FieldType.Real, FieldUsage.Min);
-        assertField(fields.get(1), "con_max", FieldType.Real, FieldUsage.Max);
-        assertField(fields.get(2), "test", FieldType.String, FieldUsage.Generic);
-
-        // Check rows
-        List<PAMRasterBand.Row> rows = rat.getRow();
-        assertEquals(8, rows.size());
-
-        // one sample row
-        PAMRasterBand.Row row = rows.get(1);
-        List<String> fieldValues = row.getF();
-        assertEquals("1.4", fieldValues.get(0));
-        assertEquals("1.6", fieldValues.get(1));
-        assertEquals("white", fieldValues.get(2));
-
-        reader.dispose();
-    }
-
-    private void assertField(
-            PAMRasterBand.FieldDefn fieldDefn, String name, FieldType type, FieldUsage usage) {
-        assertEquals(name, fieldDefn.getName());
-        assertEquals(type, fieldDefn.getType());
-        assertEquals(usage, fieldDefn.getUsage());
-    }
-
-    @Test
-    public void testNoDataNaN() throws Exception {
-        final File file = TestData.file(GeoTiffReaderTest.class, "rat/rat.tiff");
-        assertNotNull(file);
-        final AbstractGridFormat format = new GeoTiffFormat();
-        GeoTiffReader reader = (GeoTiffReader) format.getReader(file);
-        assertNotNull(reader);
-
-        GridCoverage2D coverage = reader.read(null);
-
-        // set in the image
-        Object value = coverage.getRenderedImage().getProperty(NoDataContainer.GC_NODATA);
-        assertThat(value, CoreMatchers.instanceOf(NoDataContainer.class));
-        NoDataContainer noData = (NoDataContainer) value;
-        assertEquals(Double.NaN, noData.getAsSingleValue(), 0d);
-
-        // set in the coverage
-        noData = CoverageUtilities.getNoDataProperty(coverage);
-        assertNotNull(noData);
-        assertEquals(Double.NaN, noData.getAsSingleValue(), 0d);
-
-        coverage.dispose(true);
-        reader.dispose();
     }
 }

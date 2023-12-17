@@ -351,11 +351,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
     @Override
     public boolean canProcess(URL url) {
         final String file = url != null ? url.getPath().toLowerCase() : null;
-        return file != null
-                && (file.endsWith(".shp")
-                        || file.endsWith(".shp.gz")
-                        || file.endsWith(".dbf")
-                        || file.endsWith(".dbf.gz"));
+        return file != null && (file.endsWith(".shp") || file.endsWith(".shp.gz"));
     }
 
     /**

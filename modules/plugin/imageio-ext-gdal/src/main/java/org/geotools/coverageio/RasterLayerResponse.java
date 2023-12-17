@@ -374,7 +374,7 @@ class RasterLayerResponse {
         Double noData = originatingCoverageRequest.getNoData();
         final Map<String, Object> properties = new HashMap<>();
         Category noDataCategory = null;
-        if (noData != null && !noData.isInfinite()) {
+        if (noData != null && Double.isFinite(noData)) {
             noDataCategory =
                     new Category(
                             Vocabulary.formatInternational(VocabularyKeys.NODATA),

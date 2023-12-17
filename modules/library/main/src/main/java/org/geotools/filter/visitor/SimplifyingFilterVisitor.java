@@ -50,7 +50,6 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.Multiply;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.expression.SimplifiableFunction;
 import org.geotools.api.filter.expression.Subtract;
 import org.geotools.api.filter.expression.VolatileFunction;
 import org.geotools.api.filter.identity.FeatureId;
@@ -483,17 +482,9 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         if (attributeExtractor.isConstantExpression()) {
             Object result = function.evaluate(null);
             return ff.literal(result);
+        } else {
+            return super.visit(function, extraData);
         }
-
-        // perform simplifying copy, the arguments will be simplified if possible
-        Object result = super.visit(function, extraData);
-
-        // past that, we can try to ask the function to simplify itself
-        if (result instanceof SimplifiableFunction) {
-            return ((SimplifiableFunction) result).simplify(ff, featureType);
-        }
-
-        return result;
     }
 
     /**

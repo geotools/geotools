@@ -33,6 +33,7 @@ import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -233,6 +234,63 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         List<SimpleFeature> list = DataUtilities.list(features);
         assertEquals(1, list.size());
         assertEquals("granule2.1", list.get(0).getID());
+    }
+
+    @Test
+    public void testNearestIndexHasExpressionAndFilter() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName rank = FF.property("rank");
+        Query q = new Query();
+        Filter f = FF.lessOrEqual(rank, FF.literal(100));
+        q.setFilter(f);
+
+        NearestVisitor v = new NearestVisitor(rank, 2.7);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        int max = v.getResult().toInt();
+        assertEquals(3, max);
+        // no granules touched because all expressions match index
+        assertEquals(0, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testNearestIndexHasExpressionButFilterNeedsGranules() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName granuleOnly = FF.property("tractorid");
+        Query q = new Query();
+        Filter f = FF.equals(granuleOnly, FF.literal("deere1"));
+        q.setFilter(f);
+        PropertyName p = FF.property("rank");
+        NearestVisitor v = new NearestVisitor(p, 100); // only one matching value anyways, 1
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        int nearest = v.getResult().toInt();
+        assertEquals(1, nearest);
+        // all granules touched because filter references granule attribute
+        assertEquals(3, tracker.getGranuleNames().size());
+    }
+
+    @Test
+    public void testNearestIndexDoesNotMatchExpression() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+        PropertyName rank = FF.property("rank");
+        Query q = new Query();
+        Filter f = FF.lessOrEqual(rank, FF.literal(100));
+        q.setFilter(f);
+        PropertyName granuleOnly = FF.property("weight");
+        NearestVisitor v = new NearestVisitor(granuleOnly, 8.7);
+        ((VectorMosaicFeatureSource) featureSource).accepts(q, v, null);
+        int nearest = v.getResult().toInt();
+        assertEquals(9, nearest);
+        // all granules touched because visitor expression references granule attribute
+        assertEquals(3, tracker.getGranuleNames().size());
     }
 
     /**

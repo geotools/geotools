@@ -50,6 +50,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -387,7 +388,8 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         // check if visitor is aggregate visitor
         if (visitor instanceof MaxVisitor
                 || visitor instanceof MinVisitor
-                || visitor instanceof UniqueVisitor) {
+                || visitor instanceof UniqueVisitor
+                || visitor instanceof NearestVisitor) {
             Set<String> indexAttributeNames =
                     getAttributeNamesForType(delegateStoreName, delegateStoreTypeName);
             // check if all filter attributes are in index/delegate

@@ -111,8 +111,18 @@ public class DistanceBufferUtil {
      * units distance
      */
     public static double getDistanceInMeters(DistanceBufferOperator operator) {
-        double distance = operator.getDistance();
-        String units = operator.getDistanceUnits();
+        return getDistanceInMeters(operator.getDistance(), operator.getDistanceUnits());
+    }
+
+    /**
+     * Converts the distance of the operator in meters, or returns the current value if there is no
+     * units distance
+     *
+     * @param distance distance
+     * @param units distance units
+     * @return distance in meters, or original distance if units are not specified
+     */
+    public static double getDistanceInMeters(double distance, String units) {
         // no units or no SRID, no party, return value as-is
         if (units == null || UNITS_MAP.get(units.toLowerCase()) == null) {
             return distance;

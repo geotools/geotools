@@ -68,6 +68,7 @@ import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.filter.spatial.DWithinImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -293,8 +294,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
             return infinity();
         }
 
-        Envelope env = geom.getEnvelopeInternal();
-        env.expandBy(filter.getDistance());
+        Envelope env = DWithinImpl.buffer(geom, filter.getDistance(), filter.getDistanceUnits());
 
         if (bbox != null) {
             bbox.expandToInclude(env);

@@ -28,6 +28,7 @@ import org.geotools.api.geometry.MismatchedReferenceSystemException;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.extent.GeographicBoundingBox;
 import org.geotools.api.parameter.InvalidParameterValueException;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CoordinateSystem;
@@ -846,7 +847,16 @@ public class GeneralBounds extends AbstractBounds implements Cloneable, Serializ
      */
     private static boolean equalsIgnoreMetadata(
             final CoordinateReferenceSystem crs1, final CoordinateReferenceSystem crs2) {
-        return crs1 == null || crs2 == null || CRS.equalsIgnoreMetadata(crs1, crs2);
+        boolean equalCrs = crs1 == null || crs2 == null || CRS.equalsIgnoreMetadata(crs1, crs2);
+        if (!equalCrs) {
+            try {
+                equalCrs = !CRS.isTransformationRequired(crs1, crs2);
+            } catch (FactoryException e) {
+                // That was an attempt looking for a transformation.
+                // Let's ignore the exception and return the previous equality result
+            }
+        }
+        return equalCrs;
     }
     /**
      * Adds a position to this bounds. The resulting bounds is the smallest bounds that contains

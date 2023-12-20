@@ -16,15 +16,15 @@
  */
 package org.geotools.filter.visitor;
 
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Expression;
+import org.geotools.api.filter.expression.Function;
+import org.geotools.api.filter.expression.Literal;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.JsonPointerFunction;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 
 public class JsonPointerFilterSplittingVisitor extends PostPreProcessFilterSplittingVisitor {
 
@@ -66,7 +66,7 @@ public class JsonPointerFilterSplittingVisitor extends PostPreProcessFilterSplit
             Function duplicated = (Function) expression.accept(duplicating, null);
             // if constant can encode
             Object result = param.evaluate(null);
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
             // setting constant expression evaluated to literal
             duplicated.getParameters().set(paramIdx, ff.literal(result));
             return duplicated;

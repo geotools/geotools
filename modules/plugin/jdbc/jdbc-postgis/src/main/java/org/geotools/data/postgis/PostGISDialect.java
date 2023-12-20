@@ -41,10 +41,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.jdbc.FilterToSQL;
@@ -80,12 +76,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.postgresql.jdbc.PgConnection;
 
 public class PostGISDialect extends BasicSQLDialect {
@@ -1634,27 +1624,6 @@ public class PostGISDialect extends BasicSQLDialect {
         split[1] = splitter.getFilterPost();
 
         return split;
-    }
-
-    // Given a function and one of its parameters check if it is a constant one
-    // and eventually resolve it to Literal setting to the function,
-    // after doing a defensive copy of it.
-    private Function constantParameterToLiteral(
-            Function expression, Expression param, int paramIdx) {
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        param.accept(extractor, null);
-        if (extractor.isConstantExpression()) {
-            // defensive copy of filter before manipulating it
-            DuplicatingFilterVisitor duplicating = new DuplicatingFilterVisitor();
-            Function duplicated = (Function) expression.accept(duplicating, null);
-            // if constant can encode
-            Object result = param.evaluate(null);
-            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-            // setting constant expression evaluated to literal
-            duplicated.getParameters().set(paramIdx, ff.literal(result));
-            return duplicated;
-        }
-        return expression;
     }
 
     @Override

@@ -35,6 +35,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.parameter.InvalidParameterValueException;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
@@ -816,7 +817,16 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
      */
     private static boolean equalsIgnoreMetadata(
             final CoordinateReferenceSystem crs1, final CoordinateReferenceSystem crs2) {
-        return crs1 == null || crs2 == null || CRS.equalsIgnoreMetadata(crs1, crs2);
+        boolean equalCrs = crs1 == null || crs2 == null || CRS.equalsIgnoreMetadata(crs1, crs2);
+        if (!equalCrs) {
+            try {
+                equalCrs = !CRS.isTransformationRequired(crs1, crs2);
+            } catch (FactoryException e) {
+                // That was an attempt looking for a transformation.
+                // Let's ignore the exception and return the previous equality result
+            }
+        }
+        return equalCrs;
     }
 
     /**

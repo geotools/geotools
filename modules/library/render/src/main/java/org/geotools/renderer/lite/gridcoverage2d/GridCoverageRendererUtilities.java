@@ -155,7 +155,7 @@ public final class GridCoverageRendererUtilities {
                 continue;
             }
             final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
-            if (!CRS.equalsIgnoreMetadata(coverageCRS, destinationCRS)) {
+            if (!isEquivalentCRS(coverageCRS, destinationCRS)) {
                 GridCoverage2D reprojected =
                         reproject(
                                 coverage,
@@ -516,7 +516,7 @@ public final class GridCoverageRendererUtilities {
                 continue;
             }
             final CoordinateReferenceSystem coverageCRS = coverage.getCoordinateReferenceSystem();
-            if (!CRS.equalsIgnoreMetadata(coverageCRS, targetCRS)) {
+            if (!isEquivalentCRS(coverageCRS, targetCRS)) {
                 reprojectionNeeded = true;
                 break;
             }
@@ -543,6 +543,33 @@ public final class GridCoverageRendererUtilities {
             coverages = cropped;
         }
         return coverages;
+    }
+
+    /**
+     * This method is checking if the 2 CRSs are equivalent by first using the equalsIgnoreMetadata
+     * approach and then looking for an identity transformation between the 2 CRSs if the first
+     * check fails.
+     *
+     * @param source The source {@link CoordinateReferenceSystem}
+     * @param target the target {@link CoordinateReferenceSystem}
+     */
+    public static boolean isEquivalentCRS(
+            CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
+        boolean equivalentCRS = CRS.equalsIgnoreMetadata(source, target);
+        if (!equivalentCRS) {
+
+            try {
+                equivalentCRS = !CRS.isTransformationRequired(source, target);
+            } catch (FactoryException e) {
+                // That was an attempt looking for an identity transform.
+                // Let's ignore the exception and return the previous result
+                LOGGER.log(
+                        Level.FINE,
+                        "Unable to find MathTransform between source and target CRS",
+                        e);
+            }
+        }
+        return equivalentCRS;
     }
 
     /** Crop a coverage on a specified destination Envelope */

@@ -123,8 +123,9 @@ public class GridCoverageReaderHelper {
         // determine if we need a reading gutter, or not, we do if we are reprojecting, or if
         // there is an interpolation to be applied, in that case we need to expand the area
         // we are going to read
+
         sameCRS =
-                CRS.equalsIgnoreMetadata(
+                GridCoverageRendererUtilities.isEquivalentCRS(
                         mapExtent.getCoordinateReferenceSystem(),
                         reader.getCoordinateReferenceSystem());
         paddingRequired =

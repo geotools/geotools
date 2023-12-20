@@ -20,21 +20,21 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.expression.Function;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Function;
 
 public class OracleJsonOnlineTest extends JDBCTestSupport {
 
     private OracleJsonOnlineTestSetup testSetup;
-    private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    private FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
     @Override
     protected OracleJsonOnlineTestSetup createTestSetup() {

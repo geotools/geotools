@@ -25,10 +25,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import it.geosolutions.jaiext.interpolators.InterpolationNearest;
+import it.geosolutions.jaiext.mosaic.MosaicOpImage;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
@@ -52,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.TiledImage;
@@ -134,11 +138,15 @@ import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Envelope;
 
 /** @author Simone Giannecchini */
 public class GridCoverageRendererTest {
+
+    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private static final String AFRICA_EQUIDISTANT_CONIC_WKT =
             "PROJCS[\"Africa_Equidistant_Conic\","
@@ -2398,6 +2406,88 @@ public class GridCoverageRendererTest {
         int sampleB = raster.getSample(noDataPixelCoordinateX, noDataPixelCoordinateY, 0);
         assertEquals(0, sampleB);
         coverage.dispose(true);
+    }
+
+    @Test
+    public void testOnEquivalentCRSs() throws Exception {
+        /**
+         * The test is checking that the rendering machinery is not applying the reprojection's
+         * extra steps when the requested map's CRS and the reader CRS are the same. There might be
+         * the case of a ProjectedCRS which has the baseCRS as lon/lat axis whilst the requested CRS
+         * is the same ProjectedCRS with same projection axis but with baseCRS having lat/lon axis.
+         */
+        CoordinateReferenceSystem utmProjection = CRS.decode("urn:ogc:def:crs:EPSG::25832", false);
+        String testLocation = "utm";
+        URL storeUrl = TestData.url(this.getClass(), testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = temporaryFolder.newFolder(testLocation);
+
+        File utmFile = new File(testDataFolder, "data.tif");
+        File destUtmFile = new File(testDirectory, "data.tif");
+        FileUtils.copyFile(utmFile, destUtmFile);
+
+        Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, true);
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, hints);
+        ReferencedEnvelope mapExtent =
+                new ReferencedEnvelope(
+                        585173.1053764131,
+                        585989.3229074453,
+                        5670037.032323576,
+                        5670853.249854608,
+                        utmProjection);
+        Rectangle mapRasterArea = new Rectangle(768, 768);
+        AffineTransform worldToScreen =
+                RendererUtilities.worldToScreenTransform(mapExtent, mapRasterArea);
+        Interpolation interpolation =
+                InterpolationNearest.getInstance(Interpolation.INTERP_NEAREST);
+        RenderingHints interpolationHints =
+                new RenderingHints(JAI.KEY_INTERPOLATION, interpolation);
+        GridCoverageRenderer gcr =
+                new GridCoverageRenderer(
+                        mapExtent.getCoordinateReferenceSystem(),
+                        mapExtent,
+                        mapRasterArea,
+                        worldToScreen,
+                        interpolationHints);
+        gcr.setAdvancedProjectionHandlingEnabled(true);
+        gcr.setWrapEnabled(true);
+        RenderedImage ri = gcr.renderImage(imReader, null, null, interpolation, null, 256, 256);
+        RenderedOp ro = ((RenderedOp) ri);
+        Object rendering = ro.getRendering();
+
+        /* Without the isEquivalentCRS fix, the involved processing chain
+          would have been: ImageRead -> Scale -> Mosaic -> Scale -> Crop
+          So there was basically an initial read with some extra pixels,
+          to provide some padding needed when reprojecting.
+          Then the mosaicking on the scaled image and the affine (scale).
+          Finally, the latest operation was a crop to provide the
+          requested destination envelope
+        */
+
+        /* With the fix, the involved processing chain is simply:
+         ImageRead -> Scale -> Mosaic
+         Since there is no reprojection involved, a scaled image
+         will be mosaicked to provide the expected layout
+        */
+        assertTrue("The returned image is a MosaicOpImage", rendering instanceof MosaicOpImage);
+        // Make sure that we only have 3 operations instead of 5
+        assertEquals(3, getChainLength(ro));
+    }
+
+    private static int getChainLength(RenderedOp op) {
+        int length = 1;
+        int numSources = op.getNumSources();
+
+        for (int i = 0; i < numSources; i++) {
+            Object source = op.getSourceObject(i);
+
+            if (source instanceof RenderedOp) {
+                length += getChainLength((RenderedOp) source);
+            }
+        }
+
+        return length;
     }
 
     @Test

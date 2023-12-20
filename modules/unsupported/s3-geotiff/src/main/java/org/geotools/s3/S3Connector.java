@@ -19,10 +19,10 @@ package org.geotools.s3;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.AnonymousAWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.S3ClientOptions;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,6 +116,10 @@ public class S3Connector {
 
             Properties prop = readProperties(s3Alias);
 
+            String endpoint = prop.getProperty(s3Alias + ".s3.endpoint");
+            AwsClientBuilder.EndpointConfiguration endpointConfiguration =
+                    new AwsClientBuilder.EndpointConfiguration(endpoint, region.getName());
+
             s3 =
                     AmazonS3ClientBuilder.standard()
                             .withCredentials(
@@ -123,16 +127,9 @@ public class S3Connector {
                                             new BasicAWSCredentials(
                                                     prop.getProperty(s3Alias + ".s3.user"),
                                                     prop.getProperty(s3Alias + ".s3.password"))))
+                            .withEndpointConfiguration(endpointConfiguration)
+                            .withPathStyleAccessEnabled(true)
                             .build();
-
-            final S3ClientOptions clientOptions =
-                    S3ClientOptions.builder().setPathStyleAccess(true).build();
-            s3.setS3ClientOptions(clientOptions);
-            String endpoint = prop.getProperty(s3Alias + ".s3.endpoint");
-            if (!endpoint.endsWith("/")) {
-                endpoint = endpoint + "/";
-            }
-            s3.setEndpoint(endpoint);
 
             // aws cli client
         } else if (useAnon) {

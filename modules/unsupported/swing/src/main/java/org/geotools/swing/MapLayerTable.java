@@ -160,8 +160,22 @@ public class MapLayerTable extends JPanel {
      *
      * @param layer the map layer
      */
-    void onRemoveLayer(Layer layer) {
+    public void onRemoveLayer(Layer layer) {
         listModel.removeItem(layer);
+    }
+
+    /**
+     * Move a layer from those listed in the table. This method will be called by the associated map
+     * pane automatically as part of the event sequence when a new MapLayer isremoved from the
+     * pane's MapContext.
+     *
+     * @param layer the map layer
+     */
+    public void onMoveLayer(Layer layer) {
+        listModel.removeItem(layer);
+        int curContextPos = mapPane.getMapContent().layers().indexOf(layer);
+        int newListModelPos = listModel.getSize() - curContextPos;
+        listModel.insertItem(newListModelPos, layer);
     }
 
     /**
@@ -538,7 +552,9 @@ public class MapLayerTable extends JPanel {
         }
 
         @Override
-        public void layerMoved(MapLayerListEvent event) {}
+        public void layerMoved(MapLayerListEvent event) {
+            table.onMoveLayer(event.getLayer());
+        }
 
         @Override
         public void layerPreDispose(MapLayerListEvent event) {}

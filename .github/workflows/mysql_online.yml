@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mysql: [5, 8]
+        mysql: [ 5.7, 8.0, 8.2 ]
         java: [11]
 
     steps:

@@ -796,7 +796,7 @@ public final class GridCoverageRenderer {
                 }
             }
         } else if (!coverages.isEmpty()
-                && !CRS.equalsIgnoreMetadata(
+                && !GridCoverageRendererUtilities.isEquivalentCRS(
                         coverages.get(0).getCoordinateReferenceSystem2D(), destinationCRS)) {
             // do the affine step to allow warp/affine merging, in order to best preserve rotations
             // in the warp in case of oversampling

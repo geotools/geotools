@@ -1,6 +1,6 @@
-name: MySQL online tests
+name: 'MySQL online tests'
 
-on: [pull_request]
+on: [ pull_request ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -13,18 +13,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mysql: [5, 8]
-        java: [11]
+        mysql: [ '5.7', '8.0', '8.2' ]
+        java: [ 11 ]
 
     steps:
     - name: Set up JDK ${{ matrix.java }}
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
         java-version: ${{ matrix.java }}
         distribution: 'temurin'
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Maven repository caching
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: gt-maven-${{ hashFiles('**/pom.xml') }}

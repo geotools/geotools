@@ -41,9 +41,9 @@
   <!-- Properties -->
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <h2gis-version>2.2.0</h2gis-version>
-    <h2-version>2.1.214</h2-version>
-    <cts-version>1.7.0</cts-version>
+    <h2gis-version>2.2.1</h2gis-version>
+    <h2-version>2.2.224</h2-version>
+    <cts-version>1.7.1</cts-version>
     <junit-version>5.8.2</junit-version>
   </properties>
 

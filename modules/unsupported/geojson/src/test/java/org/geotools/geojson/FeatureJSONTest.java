@@ -992,6 +992,12 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                                 + "      'properties': {"
                                 + "        'prop': 1.0"
                                 + "      }"
+                                + "    },"
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'properties': {"
+                                + "         'prop': 2"
+                                + "      }"
                                 + "    }"
                                 + "  ]"
                                 + "}");

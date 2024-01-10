@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
@@ -28,6 +29,7 @@ import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.GrowableInternationalString;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -60,6 +62,29 @@ public class StyleBuilderTest {
         layer.userStyles().add(style);
 
         sld.layers().add(layer);
+    }
+
+    @Test
+    public void testRuleResetI18nTitle() {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        Rule rule = sf.createRule();
+        rule.setName("Rule name");
+        GrowableInternationalString title = new GrowableInternationalString();
+        title.add(Locale.ENGLISH, "Title in English");
+        title.add(Locale.FRENCH, "Titre en français");
+        rule.getDescription().setTitle(title);
+
+        Style resetStyle = new RuleBuilder().reset(rule).name(rule.getName()).buildStyle();
+        Rule resetRule = resetStyle.featureTypeStyles().get(0).rules().get(0);
+
+        assertEquals(
+                rule.getDescription().getTitle().toString(Locale.ENGLISH),
+                resetRule.getDescription().getTitle().toString(Locale.ENGLISH)
+        );
+        assertEquals(
+                rule.getDescription().getTitle().toString(Locale.FRENCH),
+                resetRule.getDescription().getTitle().toString(Locale.FRENCH)
+        );
     }
 
     @Test

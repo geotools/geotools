@@ -103,33 +103,51 @@ public class FeatureCollectionConversions {
         return it;
     }
 
-    public static Iterable<SimpleFeature> deserialize(
-            InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft) throws IOException {
+    private static int getTreeSize(HeaderMeta headerMeta) {
         int treeSize =
                 headerMeta.featuresCount > 0 && headerMeta.indexNodeSize > 0
                         ? (int)
                                 PackedRTree.calcSize(
                                         (int) headerMeta.featuresCount, headerMeta.indexNodeSize)
                         : 0;
+        return treeSize;
+    }
+
+    public static Iterable<SimpleFeature> deserialize(
+            InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft) throws IOException {
+        int treeSize = getTreeSize(headerMeta);
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
 
         Iterable<SimpleFeature> iterable;
         if (treeSize > 0) FlatGeobufFeatureReader.skipNBytes(data, treeSize);
-        iterable = new ReadAllInterable(headerMeta, data, fb);
+        iterable = new ReadAllInterable(headerMeta, data, fb, 0);
 
+        return iterable;
+    }
+
+    public static Iterable<SimpleFeature> deserialize(
+            InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft, int startIndex)
+            throws IOException {
+        int treeSize = getTreeSize(headerMeta);
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
+        LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
+        if (treeSize > 0) {
+            if (startIndex >= headerMeta.featuresCount) throw new IndexOutOfBoundsException();
+            long[] offsets =
+                    PackedRTree.readFeatureOffsets(data, new long[] {startIndex}, headerMeta);
+            FlatGeobufFeatureReader.skipNBytes(data, offsets[0]);
+        } else {
+            startIndex = 0;
+        }
+        Iterable<SimpleFeature> iterable = new ReadAllInterable(headerMeta, data, fb, startIndex);
         return iterable;
     }
 
     public static Iterable<SimpleFeature> deserialize(
             InputStream stream, HeaderMeta headerMeta, SimpleFeatureType ft, Envelope rect)
             throws IOException {
-        int treeSize =
-                headerMeta.featuresCount > 0 && headerMeta.indexNodeSize > 0
-                        ? (int)
-                                PackedRTree.calcSize(
-                                        (int) headerMeta.featuresCount, headerMeta.indexNodeSize)
-                        : 0;
+        int treeSize = getTreeSize(headerMeta);
         int featuresOffset = headerMeta.offset + treeSize;
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         LittleEndianDataInputStream data = new LittleEndianDataInputStream(stream);
@@ -146,7 +164,7 @@ public class FeatureCollectionConversions {
             if (skip > 0) FlatGeobufFeatureReader.skipNBytes(data, treeSize - result.pos);
             iterable = new ReadHitsIterable(fb, result.hits, headerMeta, featuresOffset, data);
         } else {
-            iterable = new ReadAllInterable(headerMeta, data, fb);
+            iterable = new ReadAllInterable(headerMeta, data, fb, 0);
         }
         return iterable;
     }

@@ -89,6 +89,7 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
         Filter filter = q.getFilter();
         Envelope bbox = new ReferencedEnvelope();
         Id id = null;
+        Integer startIndex = q.getStartIndex();
         if (q != null && filter != null) {
             bbox = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
             if (filter instanceof Id) id = (Id) filter;
@@ -115,6 +116,11 @@ public class FlatGeobufFeatureReader implements FeatureReader<SimpleFeatureType,
             it =
                     FeatureCollectionConversions.deserialize(
                                     inputStream, headerMeta, featureType, fids)
+                            .iterator();
+        } else if (startIndex != null && startIndex > 0) {
+            it =
+                    FeatureCollectionConversions.deserialize(
+                                    inputStream, headerMeta, featureType, q.getStartIndex())
                             .iterator();
         } else {
             it =

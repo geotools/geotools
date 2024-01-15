@@ -26,7 +26,7 @@ import org.wololo.flatgeobuf.HeaderMeta;
 
 final class ReadAllInterable implements Iterable<SimpleFeature> {
     private final class IteratorImplementation implements Iterator<SimpleFeature> {
-        long count = 0;
+        long currentIndex = startIndex;
         SimpleFeature feature;
         SimpleFeature nextFeature;
         boolean done = false;
@@ -56,7 +56,7 @@ final class ReadAllInterable implements Iterable<SimpleFeature> {
                 nextFeature = null;
             } else {
                 try {
-                    feature = FeatureConversions.deserialize(data, fb, headerMeta, count++);
+                    feature = FeatureConversions.deserialize(data, fb, headerMeta, currentIndex++);
                 } catch (IOException e) {
                     throw new NoSuchElementException();
                 }
@@ -68,12 +68,17 @@ final class ReadAllInterable implements Iterable<SimpleFeature> {
     private final HeaderMeta headerMeta;
     private final LittleEndianDataInputStream data;
     private final SimpleFeatureBuilder fb;
+    private final int startIndex;
 
     ReadAllInterable(
-            HeaderMeta headerMeta, LittleEndianDataInputStream data, SimpleFeatureBuilder fb) {
+            HeaderMeta headerMeta,
+            LittleEndianDataInputStream data,
+            SimpleFeatureBuilder fb,
+            int startIndex) {
         this.headerMeta = headerMeta;
         this.data = data;
         this.fb = fb;
+        this.startIndex = startIndex;
     }
 
     @Override

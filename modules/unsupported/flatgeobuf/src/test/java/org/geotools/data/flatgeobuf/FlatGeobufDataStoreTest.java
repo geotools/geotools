@@ -904,6 +904,26 @@ public class FlatGeobufDataStoreTest {
     }
 
     @Test
+    public void readCountriesOffsetLimit() throws IOException {
+        SimpleFeatureSource featureSource = getFeatureSource("countries");
+        SimpleFeatureType schema = featureSource.getSchema();
+        Query query = new Query(schema.getTypeName());
+        query.setMaxFeatures(2);
+        query.setStartIndex(10);
+        SimpleFeatureCollection featureCollection = featureSource.getFeatures(query);
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            SimpleFeature f1 = it.next();
+            assertEquals("countries.10", f1.getID());
+            assertEquals("Zimbabwe", f1.getAttribute("name"));
+            SimpleFeature f2 = it.next();
+            assertEquals("countries.11", f2.getID());
+            assertEquals("Angola", f2.getAttribute("name"));
+            boolean hasNext = it.hasNext();
+            assertFalse(hasNext);
+        }
+    }
+
+    @Test
     public void readCountriesFidsInvalid() throws IOException {
         SimpleFeatureSource featureSource = getFeatureSource("countries");
         SimpleFeatureType schema = featureSource.getSchema();

@@ -75,6 +75,14 @@ public class FlatGeobufDataStore extends ContentDataStore {
         return name;
     }
 
+    boolean hasIndex() throws IOException {
+        getHeaderMeta();
+        if (headerMeta != null) {
+            return headerMeta.indexNodeSize > 0;
+        }
+        return false;
+    }
+
     protected HeaderMeta getHeaderMeta() throws IOException {
         if (headerMeta == null) {
             if (file != null && !file.exists()) {

@@ -153,4 +153,23 @@ public class FillMarginTest {
                 image,
                 100);
     }
+
+    @Test
+    public void testMarkLargeMargin() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "margin/mark-large-margin.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+
+        BufferedImage image =
+                RendererBaseTest.showRender("MarkLargeMargin", renderer, TIME, bounds);
+        ImageAssert.assertEquals(
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/margin/markLargeMargin.png"),
+                image,
+                100);
+    }
 }

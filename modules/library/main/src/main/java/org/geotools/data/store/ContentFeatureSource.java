@@ -543,13 +543,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // offset
         int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if (!canOffset() && offset > 0) {
+        if (!canOffset(query) && offset > 0) {
             // skip the first n records
             count = Math.max(0, count - offset);
         }
 
         // max feature limit
-        if (!canLimit()) {
+        if (!canLimit(query)) {
             if (query.getMaxFeatures() != -1 && query.getMaxFeatures() < Integer.MAX_VALUE) {
                 count = Math.min(query.getMaxFeatures(), count);
             }
@@ -614,8 +614,8 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         // to remove the retyping, or we won't be able to sort in memory
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
         boolean postRetypeRequired =
-                !canSort()
-                        && canRetype()
+                !canSort(query)
+                        && canRetype(query)
                         && query.getSortBy() != null
                         && query.getPropertyNames() != Query.ALL_NAMES;
         if (postRetypeRequired) {
@@ -647,7 +647,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
 
         // filtering
-        if (!canFilter()) {
+        if (!canFilter(query)) {
             if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
                 reader = new FilteringFeatureReader<>(reader, query.getFilter());
             }
@@ -655,13 +655,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // sorting
         if (query.getSortBy() != null && query.getSortBy().length != 0) {
-            if (!canSort()) {
+            if (!canSort(query)) {
                 reader = new SortedFeatureReader(DataUtilities.simple(reader), query);
             }
         }
 
         // retyping
-        if (!canRetype() || postRetypeRequired) {
+        if (!canRetype(query) || postRetypeRequired) {
             if (query.getPropertyNames() != Query.ALL_NAMES) {
                 // rebuild the type and wrap the reader
                 SimpleFeatureType target =
@@ -678,7 +678,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
 
         // offset
         int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if (!canOffset() && offset > 0) {
+        if (!canOffset(query) && offset > 0) {
             // skip the first n records
             for (int i = 0; i < offset && reader.hasNext(); i++) {
                 reader.next();
@@ -686,7 +686,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         }
 
         // max feature limit
-        if (!canLimit()) {
+        if (!canLimit(query)) {
             if (query.getMaxFeatures() != -1 && query.getMaxFeatures() < Integer.MAX_VALUE) {
                 reader = new MaxFeatureReader<>(reader, query.getMaxFeatures());
             }
@@ -859,10 +859,10 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * <ul>
      *   <li>{@link #canReproject()} - handles {@link Query#getCoordinateSystemReproject()} internally.
      *       Example would be PostGIS using Proj to handle reproejction internally</li>
-     *   <li>{@link #canFilter()} - handles {@link Query#getFilter() internally.</li>
-     *   <li>{@link #canLimit()} - handles {@link Query#getMaxFeatures()} and {@link Query#getStartIndex()} internally.</li>
-     *   <li>{@link #canSort()} - handles {@link Query#getSortBy()} natively.</li>
-     *   <li>{@link #canRetype()} - handles {@link Query#getProperties()} natively. Example would
+     *   <li>{@link #canFilter(Query)} - handles {@link Query#getFilter() internally.</li>
+     *   <li>{@link #canLimit(Query)} - handles {@link Query#getMaxFeatures()} and {@link Query#getStartIndex()} internally.</li>
+     *   <li>{@link #canSort(Query)} - handles {@link Query#getSortBy()} natively.</li>
+     *   <li>{@link #canRetype(Query)} - handles {@link Query#getProperties()} natively. Example would
      *   be only parsing the properties the user asks for from an XML file</li>
      *   <li>{@link #canLock()} - handles read-locks natively</li>
      *   <li>{@link #canTransact()} - handles transactions natively</li>
@@ -899,6 +899,12 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
         return false;
     }
 
+    /** @deprecated use {@link #canLimit(Query)} instead. */
+    @Deprecated
+    protected boolean canLimit() {
+        return false;
+    }
+
     /**
      * Determines if the datastore can natively limit the number of features returned in a query.
      *
@@ -911,7 +917,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @see MaxFeatureReader
      */
-    protected boolean canLimit() {
+    protected boolean canLimit(Query query) {
+        return this.canLimit();
+    }
+
+    /** @deprecated use {@link #canOffset(Query)} instead. */
+    @Deprecated
+    protected boolean canOffset() {
         return false;
     }
 
@@ -923,9 +935,15 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * to return <code>true</code>. In this case it <b>must</b> do the cap or throw an exception.
      *
      * <p>Not overriding this method or returning <code>false</code> will case the feature reader
-     * created by the subclass to be be accesset offset times before being returned to the caller.
+     * created by the subclass to be accessed offset times before being returned to the caller.
      */
-    protected boolean canOffset() {
+    protected boolean canOffset(Query query) {
+        return this.canOffset();
+    }
+
+    /** @deprecated use {@link #canFilter(Query)} instead. */
+    @Deprecated
+    protected boolean canFilter() {
         return false;
     }
 
@@ -943,12 +961,18 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * created by the subclass to be wrapped in a filtering feature reader when the query specifies
      * a filter. See {@link FilteringFeatureReader}.
      */
-    protected boolean canFilter() {
+    protected boolean canFilter(Query query) {
+        return this.canFilter();
+    }
+
+    /** @deprecated use {@link #canRetype(Query)} instead. */
+    @Deprecated
+    protected boolean canRetype() {
         return false;
     }
 
     /**
-     * Determines if the datasatore can natively perform "retyping" which includes limiting the
+     * Determines if the datastore can natively perform "retyping" which includes limiting the
      * number of attributes returned and reordering of those attributes
      *
      * <p>If the subclass can handle retyping natively it should override this method to return
@@ -960,7 +984,13 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @see ReTypeFeatureReader
      */
-    protected boolean canRetype() {
+    protected boolean canRetype(Query query) {
+        return this.canRetype();
+    }
+
+    /** @deprecated use {@link #canSort(Query)} instead. */
+    @Deprecated
+    protected boolean canSort() {
         return false;
     }
 
@@ -975,8 +1005,8 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      *
      * @see SortedFeatureReader
      */
-    protected boolean canSort() {
-        return false;
+    protected boolean canSort(Query query) {
+        return this.canSort();
     }
 
     /**

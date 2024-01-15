@@ -91,43 +91,43 @@ class WFSFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected boolean canOffset() {
+    protected boolean canOffset(Query query) {
         return false; // TODO: check with the WFS client
     }
 
     /**
      * @return {@code true}
-     * @see org.geotools.data.store.ContentFeatureSource#canSort()
+     * @see org.geotools.data.store.ContentFeatureSource#canSort(Query)
      */
     @Override
-    protected boolean canSort() {
+    protected boolean canSort(Query query) {
         return client.canSort();
     }
 
     /**
      * @return {@code true}
-     * @see org.geotools.data.store.ContentFeatureSource#canRetype()
+     * @see org.geotools.data.store.ContentFeatureSource#canRetype(Query)
      */
     @Override
-    protected boolean canRetype() {
+    protected boolean canRetype(Query query) {
         return client.canRetype();
     }
 
     /**
      * @return {@code true}
-     * @see org.geotools.data.store.ContentFeatureSource#canFilter()
+     * @see org.geotools.data.store.ContentFeatureSource#canFilter(Query)
      */
     @Override
-    protected boolean canFilter() {
+    protected boolean canFilter(Query query) {
         return client.canFilter();
     }
 
     /**
      * @return {@code true}
-     * @see org.geotools.data.store.ContentFeatureSource#canLimit()
+     * @see org.geotools.data.store.ContentFeatureSource#canLimit(Query)
      */
     @Override
-    protected boolean canLimit() {
+    protected boolean canLimit(Query query) {
         return client.canLimit();
     }
 
@@ -251,7 +251,7 @@ class WFSFeatureSource extends ContentFeatureSource {
         request.setHints(query.getHints());
 
         int maxFeatures = query.getMaxFeatures();
-        if (Integer.MAX_VALUE > maxFeatures && canLimit()) {
+        if (Integer.MAX_VALUE > maxFeatures && canLimit(query)) {
             request.setMaxFeatures(maxFeatures);
         }
         // let the request decide request.setOutputFormat(outputFormat);

@@ -90,6 +90,24 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
     }
 
     @Override
+    protected boolean canOffset(Query query) {
+        try {
+            return query.getFilter() == Filter.INCLUDE && getDataStore().hasIndex();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    protected boolean canSort(Query query) {
+        try {
+            return query.getFilter() == Filter.INCLUDE && getDataStore().hasIndex();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     protected int getCountInternal(Query query) throws IOException {
         int count = -1;
         if (query.getFilter() != Filter.INCLUDE) {

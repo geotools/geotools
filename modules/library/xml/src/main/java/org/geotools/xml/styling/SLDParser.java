@@ -1014,7 +1014,7 @@ public class SLDParser {
                     LOGGER.finest("about to parse " + child.getLocalName());
                 }
                 Element element = (Element) child;
-                if (element.getTagName().equalsIgnoreCase("localized")) {
+                if (element.getLocalName().equalsIgnoreCase("localized")) {
                     String lang = element.getAttribute("lang");
                     String translation = getFirstChildValue(element);
 

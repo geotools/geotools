@@ -75,6 +75,27 @@ public class SLDParserTest {
                     + " </NamedLayer>"
                     + "</StyledLayerDescriptor>";
 
+    public static String SLDWithNamespace =
+            "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" "
+                    + "version=\"1.0.0\">"
+                    + "  <sld:NamedLayer>"
+                    + "    <sld:Name>layer</sld:Name>"
+                    + "    <sld:UserStyle>"
+                    + "      <sld:Name>style</sld:Name>"
+                    + "      <sld:FeatureTypeStyle>"
+                    + "        <sld:Name>name</sld:Name>"
+                    + "        <sld:Rule>"
+                    + "          <sld:PolygonSymbolizer>"
+                    + "            <sld:Fill>"
+                    + "              <sld:CssParameter name=\"fill\">#FF0000</sld:CssParameter>"
+                    + "            </sld:Fill>"
+                    + "          </sld:PolygonSymbolizer>"
+                    + "        </sld:Rule>"
+                    + "      </sld:FeatureTypeStyle>"
+                    + "    </sld:UserStyle>"
+                    + "  </sld:NamedLayer>"
+                    + "</sld:StyledLayerDescriptor>";
+
     public static String LocalizedSLD =
             "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" version=\"1.0.0\">"
                     + " <NamedLayer>"
@@ -104,6 +125,31 @@ public class SLDParserTest {
                     + "  </UserStyle>"
                     + " </NamedLayer>"
                     + "</StyledLayerDescriptor>";
+
+    public static String LocalizedSLDWithNamespace =
+            "<sld:StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" xmlns:sld=\"http://www.opengis.net/sld\" "
+                    + "version=\"1.0.0\">"
+                    + "  <sld:NamedLayer>"
+                    + "    <sld:Name>style</sld:Name>"
+                    + "    <sld:UserStyle>"
+                    + "      <sld:Name>style</sld:Name>"
+                    + "      <sld:FeatureTypeStyle>"
+                    + "        <sld:Name>name</sld:Name>"
+                    + "        <sld:Rule>"
+                    + "          <sld:Title>sldtitle"
+                    + "            <sld:Localized lang=\"en\">english</sld:Localized>"
+                    + "          </sld:Title>"
+                    + "          <sld:Abstract>sld abstract</sld:Abstract>"
+                    + "          <sld:PolygonSymbolizer>"
+                    + "            <sld:Fill>"
+                    + "              <sld:CssParameter name=\"fill\">#FF0000</sld:CssParameter>"
+                    + "            </sld:Fill>"
+                    + "          </sld:PolygonSymbolizer>"
+                    + "        </sld:Rule>"
+                    + "      </sld:FeatureTypeStyle>"
+                    + "    </sld:UserStyle>"
+                    + "  </sld:NamedLayer>"
+                    + "</sld:StyledLayerDescriptor>";
 
     public static String EmptyTitleSLD =
             "<StyledLayerDescriptor xmlns=\"http://www.opengis.net/sld\" version=\"1.0.0\">"
@@ -440,6 +486,13 @@ public class SLDParserTest {
     }
 
     @Test
+    public void testWithNamespace() throws Exception {
+        SLDParser parser = new SLDParser(styleFactory, input(SLDWithNamespace));
+        Style[] styles = parser.readXML();
+        assertStyles(styles);
+    }
+
+    @Test
     public void testLocalizedRuleTitle() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input(LocalizedSLD));
         Style[] styles = parser.readXML();
@@ -574,6 +627,22 @@ public class SLDParserTest {
                         .getAbstract()
                         .toString(Locale.CANADA_FRENCH));
         assertStyles(styles);
+    }
+
+    @Test
+    public void testLocalizedWithNamespace() throws Exception {
+        SLDParser parser = new SLDParser(styleFactory, input(LocalizedSLDWithNamespace));
+        Style[] styles = parser.readXML();
+        assertEquals(
+                "english",
+                styles[0]
+                        .featureTypeStyles()
+                        .get(0)
+                        .rules()
+                        .get(0)
+                        .getDescription()
+                        .getTitle()
+                        .toString(Locale.ENGLISH));
     }
 
     @Test

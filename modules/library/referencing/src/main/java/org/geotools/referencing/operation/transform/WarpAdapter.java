@@ -17,8 +17,8 @@
 package org.geotools.referencing.operation.transform;
 
 import java.awt.geom.Point2D;
-import java.awt.image.RasterFormatException;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import javax.media.jai.Warp;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.api.referencing.operation.TransformException;
@@ -86,6 +86,43 @@ final class WarpAdapter extends Warp {
         if (destRect == null) {
             destRect = new float[2 * count];
         }
+        int index = fillDestRect(xmin, ymin, periodX, periodY, destRect, ymax, xmax);
+        try {
+            inverse.transform(destRect, 0, destRect, 0, count);
+        } catch (TransformException exception) {
+            // At least one transformation failed. Slow down and run mappings one by one instead
+            Arrays.fill(destRect, 0, index, 0f);
+            fillDestRect(xmin, ymin, periodX, periodY, destRect, ymax, xmax);
+            index = 0;
+            float[] pt = new float[2];
+            for (int y = ymin; y < ymax; y += periodY) {
+                for (int x = xmin; x < xmax; x += periodX) {
+                    pt[0] = x + 0.5f;
+                    pt[1] = y + 0.5f;
+                    try {
+                        inverse.transform(pt, 0, pt, 0, 1);
+                        destRect[index++] = pt[0];
+                        destRect[index++] = pt[1];
+                    } catch (TransformException e) {
+                        // tricky decision here... the source should be outside of the
+                        // coverage, but Integer.MAX_VALUE makes the warp fail for some images,
+                        // and Float.NaN for all of them.
+                        // Setting to Short.MAX_VALUE seems to work better, and we'll rely on ROI
+                        // for better output masking
+                        destRect[index++] = Short.MAX_VALUE;
+                        destRect[index++] = Short.MAX_VALUE;
+                    }
+                }
+            }
+        }
+        while (--index >= 0) {
+            destRect[index] -= 0.5f;
+        }
+        return destRect;
+    }
+
+    private static int fillDestRect(
+            int xmin, int ymin, int periodX, int periodY, float[] destRect, int ymax, int xmax) {
         int index = 0;
         for (int y = ymin; y < ymax; y += periodY) {
             for (int x = xmin; x < xmax; x += periodX) {
@@ -93,21 +130,7 @@ final class WarpAdapter extends Warp {
                 destRect[index++] = y + 0.5f;
             }
         }
-        try {
-            inverse.transform(destRect, 0, destRect, 0, count);
-        } catch (TransformException exception) {
-            // At least one transformation failed. In Geotools MapProjection
-            // implementation, unprojected coordinates are set to (NaN,NaN).
-            RasterFormatException e =
-                    new RasterFormatException(
-                            MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, name));
-            e.initCause(exception);
-            throw e;
-        }
-        while (--index >= 0) {
-            destRect[index] -= 0.5f;
-        }
-        return destRect;
+        return index;
     }
 
     /**
@@ -147,5 +170,10 @@ final class WarpAdapter extends Warp {
         }
         result.setLocation(result.getX() - 0.5, result.getY() - 0.5);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WarpAdapter{" + "name=" + name + ", inverse=" + inverse + '}';
     }
 }

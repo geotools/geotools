@@ -48,6 +48,7 @@ import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea;
 import org.geotools.referencing.operation.projection.MapProjection;
+import org.geotools.referencing.operation.projection.Orthographic;
 import org.geotools.referencing.operation.projection.PolarStereographic;
 
 /**
@@ -106,9 +107,16 @@ class EnvelopeReprojector {
         GeneralBounds generalEnvelope = toGeneralEnvelope(envelope);
         expandOnPolarOrigin(
                 sourceCRS, mt, transformed, targetCRS, sourceProjection, generalEnvelope);
+
+        /* For the polar stereographic, extreme points are at quadrants */
         MapProjection targetProjection = getMapProjection(targetCRS);
         if (targetProjection instanceof PolarStereographic && sourceCRS instanceof GeographicCRS) {
             expandOnPolarQuadrands(envelope, sourceCRS, mt, transformed, generalEnvelope);
+        }
+
+        /* Similar case for Orthographic, but the center is configurable, not the pole */
+        if (targetProjection instanceof Orthographic && sourceCRS instanceof GeographicCRS) {
+            expandOnOrthographicQuadrants(envelope, transformed, targetCRS, mt);
         }
 
         /*
@@ -144,6 +152,52 @@ class EnvelopeReprojector {
         }
 
         return transformed;
+    }
+
+    private static void expandOnOrthographicQuadrants(
+            Bounds sourceEnvelope,
+            GeneralBounds transformed,
+            CoordinateReferenceSystem targetCRS,
+            MathTransform mt)
+            throws TransformException {
+        final GeneralPosition centerPt = new GeneralPosition(2);
+        getProjectionCenterLonLat(targetCRS, centerPt);
+
+        // check if the envelope contains the center point
+        GeneralPosition targetPt = new GeneralPosition(mt.getTargetDimensions());
+        GeneralPosition sourcePt = new GeneralPosition(mt.getSourceDimensions());
+
+        // check the meridian going through the center first ordinate
+        double o1 = centerPt.getOrdinate(0);
+        if (sourceEnvelope.getMinimum(0) <= o1 && sourceEnvelope.getMaximum(0) >= o1) {
+            sourcePt.setOrdinate(0, o1);
+            sourcePt.setOrdinate(
+                    1, Math.max(sourceEnvelope.getMinimum(1), centerPt.getOrdinate(1) - 90));
+            mt.transform(sourcePt, targetPt);
+            transformed.add(targetPt);
+
+            sourcePt.setOrdinate(0, o1);
+            sourcePt.setOrdinate(
+                    1, Math.min(centerPt.getOrdinate(1) + 90, sourceEnvelope.getMaximum(1)));
+            mt.transform(sourcePt, targetPt);
+            transformed.add(targetPt);
+        }
+
+        // check the parallel going through the center second ordinate
+        double o2 = centerPt.getOrdinate(1);
+        if (sourceEnvelope.getMinimum(1) <= o2 && sourceEnvelope.getMaximum(1) >= o2) {
+            sourcePt.setOrdinate(
+                    0, Math.max(sourceEnvelope.getMinimum(0), centerPt.getOrdinate(0) - 90));
+            sourcePt.setOrdinate(1, o2);
+            mt.transform(sourcePt, targetPt);
+            transformed.add(targetPt);
+
+            sourcePt.setOrdinate(
+                    0, Math.min(centerPt.getOrdinate(0) + 90, sourceEnvelope.getMaximum(0)));
+            sourcePt.setOrdinate(1, o2);
+            mt.transform(sourcePt, targetPt);
+            transformed.add(targetPt);
+        }
     }
 
     private static void expandOnAntimeridian(

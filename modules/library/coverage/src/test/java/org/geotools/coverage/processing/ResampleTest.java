@@ -16,6 +16,7 @@
  */
 package org.geotools.coverage.processing;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -35,6 +36,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -111,6 +113,7 @@ public final class ResampleTest extends GridProcessingTestBase {
                     + "AUTHORITY[\"EPSG\",\"3785\"],"
                     + "AXIS[\"X\",EAST],"
                     + "AXIS[\"Y\",NORTH]]";
+
     /**
      * The source grid coverage, to be initialized by {@link #setUp}. Contains 8-bits indexed color
      * model for a PNG image, with categories.
@@ -345,6 +348,61 @@ public final class ResampleTest extends GridProcessingTestBase {
 
         File expected =
                 new File("src/test/resources/org/geotools/image/test-data/google-reproject.png");
+        // allow one row of difference
+        ImageAssert.assertEquals(expected, gcResampled.getRenderedImage(), 600);
+    }
+
+    @Test
+    public void testOrthographicWorld() throws Exception {
+        // spin the world a bit, remaining inside the case where one read is enough
+        // (no need to perform two reads across the dateline)
+        testOrthographicWorlds(
+                ReferencedEnvelope.rect(-180, -90, 180, 180, WGS84),
+                CRS.decode("AUTO:42003,9001,-90,0"),
+                "ortho-reproject-m90.png");
+        testOrthographicWorlds(
+                ReferencedEnvelope.rect(-135, -90, 180, 180, WGS84),
+                CRS.decode("AUTO:42003,9001,-45,0"),
+                "ortho-reproject-m45.png");
+        testOrthographicWorlds(
+                ReferencedEnvelope.rect(-90, -90, 180, 180, WGS84),
+                CRS.decode("AUTO:42003,9001,0,0"),
+                "ortho-reproject-0.png");
+        testOrthographicWorlds(
+                ReferencedEnvelope.rect(-45, -90, 180, 180, WGS84),
+                CRS.decode("AUTO:42003,9001,45,0"),
+                "ortho-reproject-45.png");
+        testOrthographicWorlds(
+                ReferencedEnvelope.rect(0, -90, 180, 180, WGS84),
+                CRS.decode("AUTO:42003,9001,90,0"),
+                "ortho-reproject-90.png");
+    }
+
+    private void testOrthographicWorlds(
+            ReferencedEnvelope cropEnvelope, CoordinateReferenceSystem crs, String expectedFileName)
+            throws IOException, FactoryException {
+        File world = TestData.copy(this, "geotiff/world.tiff");
+        RenderedImage image = ImageIO.read(world);
+
+        ReferencedEnvelope envelope = ReferencedEnvelope.rect(-180, -90, 360, 180, WGS84);
+        GridCoverage2D gcFullWorld = new GridCoverageFactory().create("world", image, envelope);
+
+        // crop, we cannot reproject it fully to orthographic
+        GridCoverage2D gcCropWorld =
+                (GridCoverage2D) Operations.DEFAULT.crop(gcFullWorld, cropEnvelope);
+
+        // resample
+        Hints.putSystemDefault(Hints.RESAMPLE_TOLERANCE, 0d);
+        GridCoverage2D gcResampled =
+                (GridCoverage2D)
+                        Operations.DEFAULT.resample(
+                                gcCropWorld,
+                                crs,
+                                null,
+                                Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+
+        File expected =
+                new File("src/test/resources/org/geotools/image/test-data/" + expectedFileName);
         // allow one row of difference
         ImageAssert.assertEquals(expected, gcResampled.getRenderedImage(), 600);
     }

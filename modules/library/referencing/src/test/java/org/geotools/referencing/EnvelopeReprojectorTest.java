@@ -71,7 +71,7 @@ public class EnvelopeReprojectorTest {
     }
 
     /**
-     * Tests the transformations of an envelope when the two CRS have identify transforms but
+     * Tests the transformations of an envelope when the two CRS have identity transforms but
      * different datum names
      */
     @Test

@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>extension</artifactId>
-    <version>30-SNAPSHOT</version>
+    <version>30.2</version>
   </parent>
 
   <!-- =========================================================== -->

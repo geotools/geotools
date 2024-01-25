@@ -72,4 +72,5 @@ Here is the SLD representation of the generated style:
       </sld:NamedLayer>
     </sld:StyledLayerDescriptor>
 
+.. note:: You can use the ``@styleName '<style name>'`` directive to set the name of the style, otherwise ``"Default Styler"`` will be used
 

@@ -1851,4 +1851,11 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(0.5, g.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0d);
         assertEquals(1, g.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0d);
     }
+
+    @Test
+    public void testStylenameDirective() {
+        String css = "@styleName 'testStyle'; * { fill: orange; }";
+        Style style = translate(css);
+        assertEquals("testStyle", style.getName());
+    }
 }

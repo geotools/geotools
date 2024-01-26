@@ -1916,11 +1916,11 @@ public class NetCDFMosaicReaderTest {
                 nc2 = it.next();
             }
 
-            TimeZone tz = TimeZone.getDefault();
+
             TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
             assertEquals("2017-02-06 00:00:00.0", nc1.getAttribute("time").toString());
             assertEquals("2017-02-06 12:00:00.0", nc2.getAttribute("time").toString());
-            TimeZone.setDefault(tz);
+
 
         } finally {
             if (reader != null) {

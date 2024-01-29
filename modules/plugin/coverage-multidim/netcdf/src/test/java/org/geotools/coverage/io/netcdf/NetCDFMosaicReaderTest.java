@@ -149,6 +149,19 @@ public class NetCDFMosaicReaderTest {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);
     }
 
+    private static TimeZone DEFAULT;
+
+    @BeforeClass
+    public static void setupTimeZone() {
+        DEFAULT = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @AfterClass
+    public static void resetTimeZone() {
+        TimeZone.setDefault(DEFAULT);
+    }
+
     @Test
     public void testHarvestAddTime() throws IOException {
         // prepare a "mosaic" with just one NetCDF
@@ -1916,7 +1929,7 @@ public class NetCDFMosaicReaderTest {
                 nc2 = it.next();
             }
 
-            TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+            // TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
             assertEquals("2017-02-06 00:00:00.0", nc1.getAttribute("time").toString());
             assertEquals("2017-02-06 12:00:00.0", nc2.getAttribute("time").toString());
         } finally {

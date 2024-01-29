@@ -132,6 +132,19 @@ public class NetCDFMosaicReaderTest {
 
     @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
+    private static TimeZone DEFAULT;
+
+    @BeforeClass
+    public static void setupTimeZone() {
+        DEFAULT = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @AfterClass
+    public static void resetTimeZone() {
+        TimeZone.setDefault(DEFAULT);
+    }
+
     public static ParameterValue<Boolean> NO_DEFERRED_LOADING_PARAM;
 
     static {
@@ -147,19 +160,6 @@ public class NetCDFMosaicReaderTest {
 
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);
-    }
-
-    private static TimeZone DEFAULT;
-
-    @BeforeClass
-    public static void setupTimeZone() {
-        DEFAULT = TimeZone.getDefault();
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
-
-    @AfterClass
-    public static void resetTimeZone() {
-        TimeZone.setDefault(DEFAULT);
     }
 
     @Test
@@ -1931,6 +1931,7 @@ public class NetCDFMosaicReaderTest {
 
             assertEquals("2017-02-06 00:00:00.0", nc1.getAttribute("time").toString());
             assertEquals("2017-02-06 12:00:00.0", nc2.getAttribute("time").toString());
+
         } finally {
             if (reader != null) {
                 reader.dispose();

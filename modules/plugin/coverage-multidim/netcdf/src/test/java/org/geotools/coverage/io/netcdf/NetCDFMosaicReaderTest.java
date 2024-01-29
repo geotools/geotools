@@ -149,6 +149,19 @@ public class NetCDFMosaicReaderTest {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);
     }
 
+    private static TimeZone DEFAULT;
+
+    @BeforeClass
+    public static void setupTimeZone() {
+        DEFAULT = TimeZone.getDefault();
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+    }
+
+    @AfterClass
+    public static void resetTimeZone() {
+        TimeZone.setDefault(DEFAULT);
+    }
+
     @Test
     public void testHarvestAddTime() throws IOException {
         // prepare a "mosaic" with just one NetCDF

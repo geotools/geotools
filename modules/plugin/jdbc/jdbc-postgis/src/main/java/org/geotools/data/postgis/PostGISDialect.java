@@ -41,17 +41,10 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.GeometryDescriptor;
 import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.api.filter.expression.Expression;
-import org.geotools.api.filter.expression.Function;
-import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.function.JsonPointerFunction;
-import org.geotools.filter.visitor.DuplicatingFilterVisitor;
+import org.geotools.filter.visitor.JsonPointerFilterSplittingVisitor;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
@@ -1622,30 +1615,8 @@ public class PostGISDialect extends BasicSQLDialect {
     public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
 
         PostPreProcessFilterSplittingVisitor splitter =
-                new PostPreProcessFilterSplittingVisitor(
-                        dataStore.getFilterCapabilities(), schema, null) {
-
-                    @Override
-                    public Object visit(Function expression, Object notUsed) {
-                        if (expression instanceof JsonPointerFunction) {
-                            // takes the json pointer param to check if
-                            // can be encoded
-                            Expression param = expression.getParameters().get(1);
-                            if (!(param instanceof Literal)) {
-                                expression = constantParameterToLiteral(expression, param, 1);
-                            }
-                        }
-                        return super.visit(expression, notUsed);
-                    }
-
-                    @Override
-                    protected boolean supports(Object value) {
-                        if (value instanceof JsonPointerFunction) {
-                            Expression param = ((Function) value).getParameters().get(1);
-                            return param instanceof Literal;
-                        } else return super.supports(value);
-                    }
-                };
+                new JsonPointerFilterSplittingVisitor(
+                        dataStore.getFilterCapabilities(), schema, null);
         filter.accept(splitter, null);
 
         Filter[] split = new Filter[2];
@@ -1653,27 +1624,6 @@ public class PostGISDialect extends BasicSQLDialect {
         split[1] = splitter.getFilterPost();
 
         return split;
-    }
-
-    // Given a function and one of its parameters check if it is a constant one
-    // and eventually resolve it to Literal setting to the function,
-    // after doing a defensive copy of it.
-    private Function constantParameterToLiteral(
-            Function expression, Expression param, int paramIdx) {
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        param.accept(extractor, null);
-        if (extractor.isConstantExpression()) {
-            // defensive copy of filter before manipulating it
-            DuplicatingFilterVisitor duplicating = new DuplicatingFilterVisitor();
-            Function duplicated = (Function) expression.accept(duplicating, null);
-            // if constant can encode
-            Object result = param.evaluate(null);
-            FilterFactory ff = CommonFactoryFinder.getFilterFactory();
-            // setting constant expression evaluated to literal
-            duplicated.getParameters().set(paramIdx, ff.literal(result));
-            return duplicated;
-        }
-        return expression;
     }
 
     @Override

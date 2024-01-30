@@ -139,6 +139,8 @@ public class CssTranslator {
 
     static final String DIRECTIVE_TRANSLATION_MODE = "mode";
 
+    static final String DIRECTIVE_STYLE_NAME = "styleName";
+
     static final String DIRECTIVE_STYLE_TITLE = "styleTitle";
 
     static final String DIRECTIVE_STYLE_ABSTRACT = "styleAbstract";
@@ -278,7 +280,11 @@ public class CssTranslator {
 
         // prepare the full SLD builder
         StyleBuilder styleBuilder = new StyleBuilder();
-        styleBuilder.name("Default Styler");
+
+        String styleName =
+                Objects.requireNonNullElse(
+                        stylesheet.getDirectiveValue(DIRECTIVE_STYLE_NAME), "Default Styler");
+        styleBuilder.name(styleName);
         styleBuilder.title(stylesheet.getDirectiveValue(DIRECTIVE_STYLE_TITLE));
         styleBuilder.styleAbstract(stylesheet.getDirectiveValue(DIRECTIVE_STYLE_ABSTRACT));
 

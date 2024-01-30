@@ -45,7 +45,7 @@ public class H2GISDataStoreFactoryTest {
         factory = new H2GISDataStoreFactory();
         params = new HashMap<>();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
-        params.put(JDBCDataStoreFactory.DATABASE.key, "geotools");
+        params.put(JDBCDataStoreFactory.DATABASE.key, "target/geotools-factory-test");
         params.put(JDBCDataStoreFactory.DBTYPE.key, "h2gis");
     }
 

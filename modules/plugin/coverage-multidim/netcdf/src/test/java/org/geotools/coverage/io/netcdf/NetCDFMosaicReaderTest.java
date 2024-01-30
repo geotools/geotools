@@ -1931,7 +1931,6 @@ public class NetCDFMosaicReaderTest {
 
             assertEquals("2017-02-06 00:00:00.0", nc1.getAttribute("time").toString());
             assertEquals("2017-02-06 12:00:00.0", nc2.getAttribute("time").toString());
-
         } finally {
             if (reader != null) {
                 reader.dispose();

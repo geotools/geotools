@@ -21,6 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +41,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.property.PropertyDataStoreFactory;
+import org.geotools.data.store.DecoratingDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,9 +56,19 @@ public class VectorMosaicFilterTest {
     public static void initialize() throws IOException {
         DefaultRepository repository = new DefaultRepository();
         File delegate = new File("src/test/resources/org.geotools.vectormosaic.data2");
+        PropertyDataStore delegateStore = new PropertyDataStore(delegate);
 
-        PropertyDataStore ds = new PropertyDataStore(delegate);
-        repository.register("delegate", ds);
+        File granules = new File(delegate, "granules");
+        DataStore granulesStore =
+                new DecoratingDataStore(new PropertyDataStore(granules)) {
+                    @Override
+                    public void dispose() {
+                        fail("Dispose should not be called on granules store");
+                    }
+                };
+
+        repository.register("delegate", delegateStore);
+        repository.register("granulesStore", granulesStore);
         VectorMosaicStoreFactory factory = new VectorMosaicStoreFactory();
         Map<String, Object> params = new HashMap<>();
         params.put(VectorMosaicStoreFactory.DELEGATE_STORE_NAME.getName(), "delegate");
@@ -72,13 +84,14 @@ public class VectorMosaicFilterTest {
     public void testTypeNames() throws Exception {
         List<String> typeNames = Arrays.asList(MOSAIC_STORE.getTypeNames());
         // Lakes is not included, not valid
-        assertEquals(3, typeNames.size());
+        assertEquals(4, typeNames.size());
         assertThat(
                 typeNames,
                 hasItems(
                         "RoadSegmentsAll_mosaic",
                         "RoadSegmentsFilter_mosaic",
-                        "RoadSegmentsNone_mosaic"));
+                        "RoadSegmentsNone_mosaic",
+                        "RoadSegmentsRepository_mosaic"));
     }
 
     @Test
@@ -116,6 +129,15 @@ public class VectorMosaicFilterTest {
 
         Set<Object> fids = collectFids(typeName, Query.ALL);
         assertThat(fids, empty());
+    }
+
+    @Test
+    public void testRepository() throws Exception {
+        String typeName = "RoadSegmentsRepository_mosaic";
+        checkRoadSegmentsSchema(typeName);
+
+        Set<Object> fids = collectFids(typeName, Query.ALL);
+        assertThat(fids, hasItems(101, 102, 103, 104));
     }
 
     private static Set<Object> collectFids(String typeName, Query query) throws IOException {

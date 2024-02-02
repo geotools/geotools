@@ -24,20 +24,34 @@ import java.util.logging.Logger;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.DataStoreFinder;
+import org.geotools.api.data.Repository;
+import org.geotools.data.store.DecoratingDataStore;
+import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
 
-/** Class used to find the DataStore for a VectorMosaicGranule. */
+/**
+ * Class used to find the DataStore for a VectorMosaicGranule. The lookup tries three possible
+ * avenues:
+ *
+ * <ul>
+ *   <li>Using the store name, if set in the granule, to lookup the store in the provided {@link
+ *       Repository}
+ *   <li>Using the connection properties if they are set in the granule
+ * </ul>
+ */
 public class GranuleStoreFinderImpl extends GranuleStoreFinder {
     static final Logger LOGGER = Logging.getLogger(GranuleStoreFinderImpl.class);
     protected final String preferredSPI;
+    protected final Repository repository;
 
     /**
      * Constructor that accepts a nullable preferred SPI.
      *
      * @param preferredSPI the preferred SPI
      */
-    public GranuleStoreFinderImpl(String preferredSPI) {
+    public GranuleStoreFinderImpl(String preferredSPI, Repository repository) {
         this.preferredSPI = preferredSPI;
+        this.repository = repository;
     }
 
     @Override
@@ -46,6 +60,11 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
             VectorMosaicGranule granule, boolean isSampleForSchema) {
         DataStore dataStore = null;
         try {
+            if (granule.getStoreName() != null) {
+                DataStore ds = repository.dataStore(new NameImpl(granule.getStoreName()));
+                if (ds != null) ds = new DisposeStopWrapper(ds);
+                return Optional.ofNullable(ds);
+            }
             if (granule.getConnProperties() != null) {
                 Map params = propertiesToMap(granule.getConnProperties());
                 if (preferredSPI != null) {
@@ -75,5 +94,20 @@ public class GranuleStoreFinderImpl extends GranuleStoreFinder {
 
     public String getPreferredSPI() {
         return preferredSPI;
+    }
+
+    /**
+     * Simple store wrapper that prevents the store from being disposed. Used when the store comes
+     * from a {@link Repository} that manages its lifecycle.
+     */
+    private class DisposeStopWrapper extends DecoratingDataStore {
+        public DisposeStopWrapper(DataStore ds) {
+            super(ds);
+        }
+
+        @Override
+        public void dispose() {
+            // do not dispose the store, it's managed by the repository
+        }
     }
 }

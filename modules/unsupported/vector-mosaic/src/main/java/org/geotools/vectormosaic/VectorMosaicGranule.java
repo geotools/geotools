@@ -39,6 +39,8 @@ public class VectorMosaicGranule implements Serializable {
     String params;
     Properties connProperties;
 
+    String storeName;
+
     Filter filter;
 
     public static VectorMosaicGranule fromDelegateFeature(SimpleFeature delegateFeature) {
@@ -97,5 +99,13 @@ public class VectorMosaicGranule implements Serializable {
 
     public void setFilter(Filter filter) {
         this.filter = filter;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 }

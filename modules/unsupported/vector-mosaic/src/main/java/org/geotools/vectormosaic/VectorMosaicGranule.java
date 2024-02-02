@@ -19,12 +19,17 @@ package org.geotools.vectormosaic;
 import java.io.Serializable;
 import java.util.Properties;
 import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.filter.Filter;
+import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.filter.text.ecql.ECQL;
 
 /** Configuration for a vector mosaic. */
 public class VectorMosaicGranule implements Serializable {
 
     public static final String CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT = "params";
     public static final String GRANULE_TYPE_NAME = "type";
+
+    public static final String GRANULE_FILTER = "filter";
     public static final String GRANULE_ID_FIELD = "id";
 
     /** The feature type name */
@@ -34,12 +39,22 @@ public class VectorMosaicGranule implements Serializable {
     String params;
     Properties connProperties;
 
+    Filter filter;
+
     public static VectorMosaicGranule fromDelegateFeature(SimpleFeature delegateFeature) {
         VectorMosaicGranule config = new VectorMosaicGranule();
         config.params =
                 (String) delegateFeature.getAttribute(CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT);
         if (delegateFeature.getAttribute(GRANULE_TYPE_NAME) != null) {
             config.granuleTypeName = (String) delegateFeature.getAttribute(GRANULE_TYPE_NAME);
+        }
+        String filterAttribute = (String) delegateFeature.getAttribute(GRANULE_FILTER);
+        if (filterAttribute != null && !filterAttribute.isEmpty()) {
+            try {
+                config.filter = ECQL.toFilter(filterAttribute);
+            } catch (CQLException e) {
+                throw new IllegalArgumentException("Failed to parse filter: " + filterAttribute);
+            }
         }
         return config;
     }
@@ -74,5 +89,13 @@ public class VectorMosaicGranule implements Serializable {
 
     public void setConnProperties(Properties connProperties) {
         this.connProperties = connProperties;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 }

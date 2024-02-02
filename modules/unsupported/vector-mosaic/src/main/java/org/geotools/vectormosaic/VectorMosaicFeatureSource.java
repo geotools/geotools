@@ -335,6 +335,8 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     protected boolean isNotMandatoryIndexType(AttributeDescriptor descriptor) {
         String name = descriptor.getLocalName();
         return (!VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT.equals(name)
+                && !VectorMosaicGranule.GRANULE_TYPE_NAME.equals(name)
+                && !VectorMosaicGranule.GRANULE_FILTER.equals(name)
                 && !(descriptor.getType() instanceof GeometryType)
                 && (!name.equals(VectorMosaicGranule.GRANULE_ID_FIELD)));
     }

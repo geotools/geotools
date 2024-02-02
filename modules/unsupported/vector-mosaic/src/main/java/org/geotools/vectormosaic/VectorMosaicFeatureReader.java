@@ -30,6 +30,7 @@ import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -147,9 +148,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
                 params = granule.getParams();
             }
 
-            Filter granuleFilter =
-                    source.getSplitFilter(
-                            query, granuleDataStore, granule.getGranuleTypeName(), false);
+            Filter granuleFilter = getGranuleFilter(granule);
             Query granuleQuery = new Query(granule.getGranuleTypeName(), granuleFilter);
             if (query.getPropertyNames() != Query.ALL_NAMES) {
                 String[] filteredArray =
@@ -172,6 +171,17 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
         // no more
         close();
         return false;
+    }
+
+    private Filter getGranuleFilter(VectorMosaicGranule granule) {
+        Filter filter =
+                source.getSplitFilter(query, granuleDataStore, granule.getGranuleTypeName(), false);
+        Filter configuredFilter = granule.getFilter();
+        if (configuredFilter != null && configuredFilter != Filter.INCLUDE) {
+            FilterFactory ff = source.getDataStore().getFilterFactory();
+            return ff.and(filter, configuredFilter);
+        }
+        return filter;
     }
 
     private SimpleFeature readNext() {

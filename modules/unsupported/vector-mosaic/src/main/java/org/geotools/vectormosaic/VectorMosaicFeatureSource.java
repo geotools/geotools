@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.data.DataStore;
@@ -66,6 +67,15 @@ import org.geotools.util.logging.Logging;
 /** FeatureSource for a vector mosaic. */
 public class VectorMosaicFeatureSource extends ContentFeatureSource {
     static final Logger LOGGER = Logging.getLogger(VectorMosaicFeatureSource.class);
+
+    /**
+     * Regular expression to validate store name. Store name must not contain an equals sign, a
+     * forward slash, a period, or a colon (e.g., it does not look like a property file, nor like a
+     * URI/URL).
+     */
+    private static final Pattern STORE_NAME_REGEX =
+            Pattern.compile("^(?!.*=)(?!.*(?:\\/|\\.|\\w+:\\w+)).*$", Pattern.DOTALL);
+
     private final Repository repository;
     private final String delegateStoreTypeName;
     private final String delegateStoreName;
@@ -91,7 +101,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         repository = store.getRepository();
         delegateStoreName = store.getDelegateStoreName();
         this.preferredSPI = store.getPreferredSPI();
-        finder = new GranuleStoreFinderImpl(preferredSPI);
+        finder = new GranuleStoreFinderImpl(preferredSPI, repository);
         this.connectionParameterKey = store.getConnectionParameterKey();
     }
 
@@ -350,7 +360,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     public DataStore initGranule(VectorMosaicGranule granule, boolean isSampleForType)
             throws IOException {
         DataStore dataStore = null;
-        validateAndLoadConnectionStringProperties(granule);
+        setupGranuleStore(granule);
         Optional<DataStore> dataStoreOptional = finder.findDataStore(granule, isSampleForType);
         dataStore =
                 dataStoreOptional.orElseThrow(
@@ -460,15 +470,20 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
      *
      * @param granule the granule to validate and load the properties into
      */
-    private void validateAndLoadConnectionStringProperties(VectorMosaicGranule granule) {
+    private void setupGranuleStore(VectorMosaicGranule granule) {
         Properties connProps = new Properties();
+        String params = granule.getParams();
+        if (STORE_NAME_REGEX.matcher(params).matches()) {
+            granule.setStoreName(params);
+            return;
+        }
         try {
-            if (isURI(granule.getParams())) {
+            if (isURI(params)) {
                 connProps.put(
                         connectionParameterKey,
-                        toConnectionParameter(connectionParameterKey, granule.getParams()));
+                        toConnectionParameter(connectionParameterKey, params));
             } else {
-                connProps.load(new StringReader(granule.getParams()));
+                connProps.load(new StringReader(params));
             }
         } catch (IOException e) {
             connProps.put(

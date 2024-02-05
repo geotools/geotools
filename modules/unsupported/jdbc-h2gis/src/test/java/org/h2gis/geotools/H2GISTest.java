@@ -116,8 +116,7 @@ class H2GISTest extends H2GISTestSetup {
         if (dbName.startsWith("file://")) {
             return new File(URI.create(dbName)).getAbsolutePath();
         } else {
-            return new File("/tmp/" + dbName).getAbsolutePath();
-            // return new File("target/test-resources/" + dbName).getAbsolutePath();
+            return new File("target/test-resources/" + dbName).getAbsolutePath();
         }
     }
 

@@ -71,6 +71,13 @@ public class PostgisSimplifiedGeometryTest extends JDBCTestSupport {
     }
 
     @Test
+    public void testPolygon0Distance() throws IOException, ParseException {
+        Geometry geom = getFirstGeometry("simplify_polygon", 0);
+        // do not simplify
+        assertGeometryEquals(geom, "POLYGON ((-120 40, -130 40, -130 50, -130 40, -120 40))");
+    }
+
+    @Test
     public void testCollection() throws IOException, ParseException {
         Geometry geom = getFirstGeometry("simplify_collection", 20);
         // line part simplified, but won't use TWKB

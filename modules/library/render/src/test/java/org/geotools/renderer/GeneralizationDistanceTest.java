@@ -18,6 +18,7 @@ package org.geotools.renderer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.awt.RenderingHints;
 import java.util.Collections;
@@ -136,18 +137,18 @@ public class GeneralizationDistanceTest {
     @Test
     public void testDistanceReprojectionWholeWorld() throws Exception {
         // when APH is disabled the calculation will fail, disabling generalization
-        assertDistanceWholeWorldRendering(Collections.emptyMap(), 0);
+        assertDistanceWholeWorldRendering(Collections.emptyMap(), null);
 
         // before the fix we would have gotten zero with APH enabled too (failure to compute the
         // distance), but no more, it's using a valid distance for a envelope spanning the planet
         assertDistanceWholeWorldRendering(
                 Collections.singletonMap(
                         StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, Boolean.TRUE),
-                160300);
+                160300d);
     }
 
     public void assertDistanceWholeWorldRendering(
-            Map<Object, Object> hints, double expectedDistance) {
+            Map<Object, Object> hints, Double expectedDistance) {
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(source, style));
         StreamingRenderer sr = new StreamingRenderer();
@@ -160,7 +161,11 @@ public class GeneralizationDistanceTest {
                 null,
                 200,
                 100);
-        assertNotNull(lastDistance);
-        assertEquals(expectedDistance, lastDistance, 1);
+        if (expectedDistance == null) {
+            assertNull(lastDistance);
+        } else {
+            assertNotNull(lastDistance);
+            assertEquals(expectedDistance, lastDistance, 1);
+        }
     }
 }

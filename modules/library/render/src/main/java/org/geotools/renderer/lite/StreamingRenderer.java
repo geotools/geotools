@@ -1272,25 +1272,30 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 }
 
+                // if there is any trouble during generalization distance calculation, we'll
+                // get [0,0] as the spans. Do not generalize in that case.
                 double distance = spans[0] < spans[1] ? spans[0] : spans[1];
-                if (hasRenderingTransformation) {
-                    // the RT might need valid geometries, we can at most apply a topology
-                    // preserving generalization
-                    if (fsHints.contains(Hints.GEOMETRY_GENERALIZATION)) {
-                        hints.put(Hints.GEOMETRY_GENERALIZATION, distance);
-                        disableInMemoryGeneralization(styleList);
-                    }
-                } else {
-                    // ... if possible we let the datastore do the generalization
-                    if (fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {
-                        // good, we don't need to perform in memory generalization, the datastore
-                        // does it all for us
-                        hints.put(Hints.GEOMETRY_SIMPLIFICATION, distance);
-                        disableInMemoryGeneralization(styleList);
-                    } else if (fsHints.contains(Hints.GEOMETRY_DISTANCE)) {
-                        // in this case the datastore can get us close, but we can still
-                        // perform some in memory generalization
-                        hints.put(Hints.GEOMETRY_DISTANCE, distance);
+                if (distance > 0) {
+                    if (hasRenderingTransformation) {
+                        // the RT might need valid geometries, we can at most apply a topology
+                        // preserving generalization
+                        if (fsHints.contains(Hints.GEOMETRY_GENERALIZATION)) {
+                            hints.put(Hints.GEOMETRY_GENERALIZATION, distance);
+                            disableInMemoryGeneralization(styleList);
+                        }
+                    } else {
+                        // ... if possible we let the datastore do the generalization
+                        if (fsHints.contains(Hints.GEOMETRY_SIMPLIFICATION)) {
+                            // good, we don't need to perform in memory generalization, the
+                            // datastore
+                            // does it all for us
+                            hints.put(Hints.GEOMETRY_SIMPLIFICATION, distance);
+                            disableInMemoryGeneralization(styleList);
+                        } else if (fsHints.contains(Hints.GEOMETRY_DISTANCE)) {
+                            // in this case the datastore can get us close, but we can still
+                            // perform some in memory generalization
+                            hints.put(Hints.GEOMETRY_DISTANCE, distance);
+                        }
                     }
                 }
             }

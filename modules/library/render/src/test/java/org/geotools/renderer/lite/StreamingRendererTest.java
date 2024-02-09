@@ -24,6 +24,7 @@ import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -31,6 +32,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -44,9 +46,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -88,6 +92,7 @@ import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyleImpl;
 import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -984,5 +989,64 @@ public class StreamingRendererTest {
 
         Assert.assertEquals(0, errors);
         Assert.assertEquals(inFeatures.size(), features);
+    }
+
+    /**
+     * When a test point for simplfication spans cannot be reprojected back to source, a
+     * simplification distance of "0" is returned. It should not be sent down to the store.
+     */
+    @Test
+    public void testInvalidSimplificationDistance() throws Exception {
+        // TODO: advertise supported hints and cycle through the distance variations
+        Style lineStyle = createLineStyle();
+        testInvalidSimplificationDistance2(Hints.GEOMETRY_DISTANCE, lineStyle);
+        testInvalidSimplificationDistance2(Hints.GEOMETRY_SIMPLIFICATION, lineStyle);
+        testInvalidSimplificationDistance2(Hints.GEOMETRY_GENERALIZATION, lineStyle);
+        Style rtStyle = RendererBaseTest.loadStyle(this, "attributeRename.sld");
+        testInvalidSimplificationDistance2(Hints.GEOMETRY_DISTANCE, rtStyle);
+        testInvalidSimplificationDistance2(Hints.GEOMETRY_SIMPLIFICATION, rtStyle);
+        testInvalidSimplificationDistance2(Hints.GEOMETRY_GENERALIZATION, rtStyle);
+    }
+
+    /**
+     * Tests that the simplification distance is not sent to the store when it is zero. Allows to
+     * check different siplification hints, and vary the style.
+     */
+    void testInvalidSimplificationDistance2(final RenderingHints.Key hint, Style style)
+            throws Exception {
+        AtomicReference<Object> reference = new AtomicReference<>();
+        SimpleFeatureSource testSource =
+                new CollectionFeatureSource(createLineCollection()) {
+                    @Override
+                    public SimpleFeatureCollection getFeatures(Query query) {
+                        reference.set(query.getHints().get(hint));
+                        return super.getFeatures(query);
+                    }
+
+                    @Override
+                    public synchronized Set<RenderingHints.Key> getSupportedHints() {
+                        return Set.of(hint);
+                    }
+                };
+
+        MapContent mc = new MapContent();
+        FeatureLayer layer = new FeatureLayer(testSource, style);
+        mc.addLayer(layer);
+
+        StreamingRenderer sr = new StreamingRenderer();
+        sr.setMapContent(mc);
+
+        ReferencedEnvelope envelope =
+                new ReferencedEnvelope(-1e7, 1e7, -1e7, 1e7, CRS.decode("AUTO:42003,9001,45,0"));
+
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D graphics = bi.createGraphics();
+        try {
+            sr.paint(graphics, new Rectangle(5, 5, 7, 7), envelope);
+        } finally {
+            graphics.dispose();
+            mc.dispose();
+        }
+        assertNull("Got a distance simplification reference, unexpected", reference.get());
     }
 }

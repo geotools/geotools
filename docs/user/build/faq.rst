@@ -136,7 +136,7 @@ GeoTools modules and their dependencies.
                         </goals>
                         <configuration>
                             <filters>
-						                         	<!-- filter signed jars in the dependencies -->
+	                  	<!-- filter signed jars in the dependencies -->
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
@@ -152,7 +152,7 @@ GeoTools modules and their dependencies.
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.geotools.demo.Quickstart</mainClass>
                                 </transformer>
-	 							                      <!-- merge services (eg referencing plugins) -->
+	 			<!-- merge services (eg referencing plugins) -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                         </configuration>

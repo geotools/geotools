@@ -152,7 +152,7 @@ GeoTools modules and their dependencies.
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>org.geotools.demo.Quickstart</mainClass>
                                 </transformer>
-	 			<!-- merge services (eg referencing plugins) -->
+	 			<!-- This bit merges the various GeoTools META-INF/services files  (e.g. referencing plugins) -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                         </configuration>

@@ -127,7 +127,7 @@ GeoTools modules and their dependencies.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>1.3.1</version>
+                <version>3.5.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -135,15 +135,24 @@ GeoTools modules and their dependencies.
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+						                         	<!-- filter signed jars in the dependencies -->
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>                    
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>shaded</shadedClassifierName>
                             <transformers>
-                                <!-- This bit sets the main class for the executable jar as you otherwise -->
-                                <!-- would with the assembly plugin                                       -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <manifestEntries>
-                                        <Main-Class>org.geotools.demo.Quickstart</Main-Class>
-                                    </manifestEntries>
+                                    <mainClass>org.geotools.demo.Quickstart</mainClass>
                                 </transformer>
-                                <!-- This bit merges the various GeoTools META-INF/services files         -->
+	 							                      <!-- merge services (eg referencing plugins) -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                         </configuration>

@@ -83,10 +83,11 @@ public class GDALTestCase {
         Assume.assumeTrue(testingEnabled());
 
         try {
-            final File file = TestData.file(this, "test.zip");
-            if (file != null && file.exists() && file.canRead())
+            final File file = new File(TestData.file(this, null), "test.zip");
+            if (file.exists()) {
                 // unzip it
                 TestData.unzipFile(this, "test.zip");
+            }
         } catch (FileNotFoundException e) {
             LOGGER.log(Level.SEVERE, "can not locate test-data for \"test.zip\"");
         } catch (Exception e1) {

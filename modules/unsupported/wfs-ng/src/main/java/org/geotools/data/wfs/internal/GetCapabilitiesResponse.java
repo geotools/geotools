@@ -19,26 +19,22 @@ package org.geotools.data.wfs.internal;
 import static org.geotools.data.wfs.internal.AbstractWFSStrategy.WFS_1_0_CAPABILITIES_CONFIGURATION;
 import static org.geotools.data.wfs.internal.AbstractWFSStrategy.WFS_1_1_CONFIGURATION;
 import static org.geotools.data.wfs.internal.AbstractWFSStrategy.WFS_2_0_CONFIGURATION;
-import static org.geotools.data.wfs.internal.Loggers.MODULE;
-import static org.geotools.data.wfs.internal.Loggers.RESPONSES;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import net.opengis.wfs.WFSCapabilitiesType;
-import org.apache.commons.io.IOUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.http.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
+import org.geotools.util.logging.Logging;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.DOMParser;
 import org.w3c.dom.Document;
@@ -48,28 +44,14 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
 
     private WFSGetCapabilities capabilities;
 
-    //    public GetCapabilitiesResponse(HTTPResponse response) throws IOException, ServiceException
-    // {
-    //        this(response, null);
-    //    }
+    private static Logger LOGGER = Logging.getLogger(GetCapabilitiesResponse.class);
 
     public GetCapabilitiesResponse(HTTPResponse response, EntityResolver entityResolver)
             throws IOException, ServiceException {
         super(response);
-        MODULE.finer("Parsing GetCapabilities response");
+        LOGGER.finer("Parsing GetCapabilities response");
         try {
             final Document rawDocument;
-            final byte[] rawResponse;
-            {
-                ByteArrayOutputStream buff = new ByteArrayOutputStream();
-                try (InputStream inputStream = response.getResponseStream()) {
-                    IOUtils.copy(inputStream, buff);
-                }
-                rawResponse = buff.toByteArray();
-            }
-            if (RESPONSES.isLoggable(Level.FINE)) {
-                RESPONSES.fine("Full GetCapabilities response: " + new String(rawResponse));
-            }
             try {
                 DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 builderFactory.setNamespaceAware(true);
@@ -78,7 +60,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
                 if (entityResolver != null) {
                     documentBuilder.setEntityResolver(entityResolver);
                 }
-                rawDocument = documentBuilder.parse(new ByteArrayInputStream(rawResponse));
+                rawDocument = documentBuilder.parse(response.getResponseStream());
             } catch (Exception e) {
                 throw new IOException("Error parsing capabilities document: " + e.getMessage(), e);
             }
@@ -110,16 +92,16 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
                         break;
                     }
                 } catch (Exception e) {
-                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+                    LOGGER.log(
+                            Level.INFO,
+                            "Couldn't use configuration:" + wfsConfig.getClass().getName(),
+                            e);
                 }
             }
 
             if (null == parsedCapabilities) {
                 throw new IllegalStateException("Unable to parse GetCapabilities document");
             }
-            // if (object instanceof ServiceException) {
-            // throw (ServiceException) object;
-            // }
 
             this.capabilities = WFSGetCapabilities.create(parsedCapabilities, rawDocument);
         } finally {
@@ -130,7 +112,6 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
     private EObject parseCapabilities(final Document document, final Configuration wfsConfig)
             throws IOException {
 
-        // final Parser parser = new Parser(wfsConfig);
         DOMParser parser = new DOMParser(wfsConfig, document);
         final Object parsed;
         try {

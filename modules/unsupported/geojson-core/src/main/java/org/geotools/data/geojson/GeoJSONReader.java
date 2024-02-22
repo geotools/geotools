@@ -358,9 +358,12 @@ public class GeoJSONReader implements AutoCloseable {
                 }
                 while (parser.nextToken() == JsonToken.START_OBJECT) {
                     ObjectNode node = mapper.readTree(parser);
-
-                    SimpleFeature feature = getNextFeature(node);
-                    features.add(feature);
+                    try {
+                        SimpleFeature feature = getNextFeature(node);
+                        features.add(feature);
+                    } catch (IOException e) {
+                        LOGGER.log(Level.WARNING, e.getMessage(), e);
+                    }
                 }
             }
             // support paged feature collections, OGC API style
@@ -446,7 +449,7 @@ public class GeoJSONReader implements AutoCloseable {
 
         // the geometry might have been selected away by a property selection
         Geometry g = null;
-        if (geom != null) g = GEOM_PARSER.geometryFromJson(geom);
+        if (geom != null && !geom.isNull()) g = GEOM_PARSER.geometryFromJson(geom);
 
         JsonNode props = node.get("properties");
         // accommodate for STAC servers that remove the properties object altogether, when

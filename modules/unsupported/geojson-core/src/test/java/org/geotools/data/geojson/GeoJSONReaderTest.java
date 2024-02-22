@@ -691,6 +691,15 @@ public class GeoJSONReaderTest {
     }
 
     @Test
+    public void testGeometrynull() throws Exception {
+        URL url = TestData.url(GeoJSONReaderTest.class, "geometrynull.json");
+        try (GeoJSONReader reader = new GeoJSONReader(url)) {
+            SimpleFeatureCollection features = reader.getFeatures();
+            assertEquals(3, features.size());
+        }
+    }
+
+    @Test
     public void testEmpty() throws Exception {
         URL url = TestData.url(GeoJSONReaderTest.class, "empty.json");
         try (GeoJSONReader reader = new GeoJSONReader(url)) {

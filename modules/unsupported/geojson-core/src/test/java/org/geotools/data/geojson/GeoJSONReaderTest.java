@@ -691,7 +691,7 @@ public class GeoJSONReaderTest {
     }
 
     @Test
-    public void testGeometrynull() throws Exception {
+    public void testGeometryNull() throws Exception {
         URL url = TestData.url(GeoJSONReaderTest.class, "geometrynull.json");
         try (GeoJSONReader reader = new GeoJSONReader(url)) {
             SimpleFeatureCollection features = reader.getFeatures();

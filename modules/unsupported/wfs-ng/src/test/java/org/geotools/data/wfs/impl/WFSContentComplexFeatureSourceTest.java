@@ -15,6 +15,7 @@ package org.geotools.data.wfs.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import javax.xml.namespace.QName;
 import org.geotools.TestData;
 import org.geotools.api.data.Query;
@@ -158,10 +159,17 @@ public class WFSContentComplexFeatureSourceTest {
     public void testGetFeaturesSRSName() throws Exception {
         final TestWFSClient client = createWFSClient(true);
         final WFSContentDataAccess dataAccess = createDataAccess(client);
+        final String expectedFilter =
+                "<fes:Filter xmlns:hfp=\"http://www.w3.org/2001/XMLSchema-hasFacetAndProperty\" xmlns:fes=\"http://www.opengis.net/fes/2.0\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><fes:PropertyIsEqualTo matchAction=\"Any\" matchCase=\"true\"><fes:ValueReference>stedsnummer</fes:ValueReference><fes:Literal>1</fes:Literal></fes:PropertyIsEqualTo></fes:Filter>";
+
         ((TestHttpClient) client.getHTTPClient())
                 .expectGet(
                         new URL(
-                                "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?FILTER=%3Cfes%3AFilter+xmlns%3Axs%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%22+xmlns%3Afes%3D%22http%3A%2F%2Fwww.opengis.net%2Ffes%2F2.0%22+xmlns%3Agml%3D%22http%3A%2F%2Fwww.opengis.net%2Fgml%2F3.2%22%3E%3Cfes%3APropertyIsEqualTo+matchAction%3D%22Any%22+matchCase%3D%22true%22%3E%3Cfes%3AValueReference%3Estedsnummer%3C%2Ffes%3AValueReference%3E%3Cfes%3ALiteral%3E1%3C%2Ffes%3ALiteral%3E%3C%2Ffes%3APropertyIsEqualTo%3E%3C%2Ffes%3AFilter%3E&REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&SRSNAME=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25833&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+                                "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?FILTER="
+                                        + URLEncoder.encode(expectedFilter, "UTF-8")
+                                                .replace("%20", "+")
+                                        + "&REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2"
+                                        + "&SRSNAME=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25833&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
                         new MockHttpResponse(
                                 TestData.file(
                                         TestHttpClient.class,

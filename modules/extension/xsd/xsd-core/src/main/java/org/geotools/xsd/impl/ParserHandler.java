@@ -544,31 +544,37 @@ public class ParserHandler extends DefaultHandler2 {
     private boolean loadSchemas(String uri, Attributes attributes) throws SAXException {
         boolean root = schemas == null;
         if (root) {
-            // root element, parse the schema
-            // TODO: this processing is too loose, do some validation will ya!
+            // look for namespaces and schemaLocations in attributes of root element
+            // put in pairwise array of namespace/location. Allow location to be null.
             String[] locations = getSchemaLocations(attributes);
+            if (locations.length % 2 == 1) {
+                locations = Arrays.copyOf(locations, locations.length + 1);
+            }
+            List<String> declaredNamespaces = getNamespaces(attributes);
+            for (int i = 0; i < locations.length; i += 2) {
+                declaredNamespaces.removeIf(locations[i]::equals);
+            }
+            if (!declaredNamespaces.isEmpty()) {
+                int start = locations.length;
+                locations =
+                        Arrays.copyOf(locations, locations.length + declaredNamespaces.size() * 2);
+                for (int i = 0; i < declaredNamespaces.size(); i++) {
+                    locations[start + (i * 2)] = declaredNamespaces.get(i);
+                }
+            }
 
             // look up schema overrides
             List<XSDSchemaLocator> locators = Arrays.asList(findSchemaLocators());
             List<XSDSchemaLocationResolver> resolvers =
                     Arrays.asList(findSchemaLocationResolvers());
 
-            if ((locations != null) && (locations.length > 0)) {
+            if (locations.length > 0) {
                 // parse each namespace location pair into schema objects
                 schemas = new XSDSchema[locations.length / 2];
 
                 for (int i = 0; i < locations.length; i += 2) {
                     String namespace = locations[i];
-                    String location = null;
-                    if (i + 1 < locations.length) {
-                        location = locations[i + 1];
-                    } else {
-                        logger.warning(
-                                "Schema location not specified as namespace/location pair. "
-                                        + "Ignoring "
-                                        + namespace);
-                        continue;
-                    }
+                    String location = locations[i + 1];
 
                     // first check for a location override
                     for (XSDSchemaLocationResolver resolver : resolvers) {
@@ -601,7 +607,7 @@ public class ParserHandler extends DefaultHandler2 {
                     }
 
                     // if no schema override was found, parse location directly
-                    if (schemas[i / 2] == null) {
+                    if (schemas[i / 2] == null && location != null) {
                         // validate the schema location
                         if (isValidating()) {
                             try {
@@ -740,12 +746,22 @@ public class ParserHandler extends DefaultHandler2 {
             context.registerComponentInstance(index);
 
             // if no default prefix is set in this namespace context, then
-            // set it to be the namesapce of the configuration
+            // set it to be the namespace of the configuration
             if (namespaces.getURI("") == null) {
                 namespaces.declarePrefix("", config.getNamespaceURI());
             }
         }
         return root;
+    }
+
+    private List<String> getNamespaces(Attributes attributes) {
+        List<String> namespaces = new ArrayList<>(attributes.getLength());
+        for (int i = 0; i < attributes.getLength(); i++) {
+            if (attributes.getQName(i).startsWith("xmlns:")) {
+                namespaces.add(attributes.getValue(i));
+            }
+        }
+        return namespaces;
     }
 
     private String[] getSchemaLocations(Attributes attributes) {

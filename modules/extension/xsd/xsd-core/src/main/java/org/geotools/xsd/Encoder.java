@@ -235,6 +235,34 @@ public class Encoder {
         bindingLoader = new BindingLoader(configuration.setupBindings());
         bindingWalker = new BindingWalker(bindingLoader);
 
+        namespaces = new NamespaceSupport();
+        addSchemasNamespaces(schema);
+
+        List<XSDSchema> schemas = new ArrayList<>();
+        schemas.add(schema);
+
+        for (Configuration depConfig : configuration.allDependencies()) {
+            try {
+                XSDSchema dependentSchema = depConfig.getXSD().getSchema();
+                if (dependentSchema != null) {
+                    schemas.add(dependentSchema);
+                    addSchemasNamespaces(dependentSchema);
+                }
+            } catch (IOException e) {
+                logger.severe("Error in dependent xsd " + depConfig.getXSD().getSchemaLocation());
+            }
+        }
+
+        index = new SchemaIndexImpl(schemas.toArray(new XSDSchema[schemas.size()]));
+
+        // ensure a default namespace prefix set
+        if (namespaces.getURI("") == null) {
+            namespaces.declarePrefix("", schema.getTargetNamespace());
+        }
+
+        // schema location setup
+        schemaLocations = new HashMap<>();
+
         // create the context
         context = new DefaultPicoContainer();
         context.registerComponentInstance(this);
@@ -257,9 +285,6 @@ public class Encoder {
         context = configuration.setupContext(context);
         encoder.setContext(context);
 
-        // schema location setup
-        schemaLocations = new HashMap<>();
-
         // get a logger from the context
         logger = (Logger) context.getComponentInstanceOfType(Logger.class);
 
@@ -272,7 +297,6 @@ public class Encoder {
         encoder.setLogger(logger);
 
         // namespaces
-        namespaces = new NamespaceSupport();
         context.registerComponentInstance(namespaces);
         context.registerComponentInstance(new NamespaceSupportWrapper(namespaces));
 
@@ -290,6 +314,19 @@ public class Encoder {
         outputProps.setProperty(INDENT_AMOUNT_KEY, "2");
 
         configuration.setupEncoder(this);
+    }
+
+    private void addSchemasNamespaces(XSDSchema schema) {
+        for (Map.Entry<String, String> entry : schema.getQNamePrefixToNamespaceMap().entrySet()) {
+            String pre = entry.getKey();
+            String ns = entry.getValue();
+
+            if (XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001.equals(ns) || namespaces.getPrefix(ns) != null) {
+                continue;
+            }
+
+            namespaces.declarePrefix((pre != null) ? pre : "", ns);
+        }
     }
 
     /**

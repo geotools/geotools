@@ -2975,7 +2975,8 @@ public class StreamingRenderer implements GTRenderer {
                                             disposeCoverage,
                                             (RasterSymbolizer) symbolizer,
                                             destinationCrs,
-                                            worldToScreenTransform));
+                                            worldToScreenTransform,
+                                            getRenderingInterpolation(drawMe.layer)));
                             paintCommands++;
                         }
                     } else if (grid instanceof GridCoverage2DReader) {
@@ -3844,6 +3845,7 @@ public class StreamingRenderer implements GTRenderer {
      */
     protected class RenderRasterRequest extends RenderingRequest {
 
+        private final Interpolation interpolation;
         private Graphics2D graphics;
         private boolean disposeCoverage;
         private GridCoverage2D coverage;
@@ -3857,13 +3859,15 @@ public class StreamingRenderer implements GTRenderer {
                 boolean disposeCoverage,
                 RasterSymbolizer symbolizer,
                 CoordinateReferenceSystem destinationCRS,
-                AffineTransform worldToScreen) {
+                AffineTransform worldToScreen,
+                Interpolation interpolation) {
             this.graphics = graphics;
             this.coverage = coverage;
             this.disposeCoverage = disposeCoverage;
             this.symbolizer = symbolizer;
             this.destinationCRS = destinationCRS;
             this.worldToScreen = worldToScreen;
+            this.interpolation = interpolation;
         }
 
         @Override
@@ -3884,13 +3888,15 @@ public class StreamingRenderer implements GTRenderer {
                 // rely on the gridocerage renderer itself.
                 //
                 // /////////////////////////////////////////////////////////////////
+                Hints localHints = new Hints(java2dHints);
+                if (interpolation != null) localHints.put(JAI.KEY_INTERPOLATION, interpolation);
                 final GridCoverageRenderer gcr =
                         new GridCoverageRenderer(
                                 destinationCRS,
                                 originalMapExtent,
                                 screenSize,
                                 worldToScreen,
-                                java2dHints);
+                                localHints);
 
                 try {
                     gcr.paint(graphics, coverage, symbolizer);

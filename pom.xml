@@ -473,7 +473,7 @@
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- documentation publication -->
-    <series>maintenance</series>
+    <series>archive</series>
     <!-- dependency management -->
     <batik.version>1.17</batik.version>
     <commons-beanutils.version>1.9.2</commons-beanutils.version>

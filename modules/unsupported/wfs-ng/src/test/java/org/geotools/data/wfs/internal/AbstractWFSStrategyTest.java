@@ -20,6 +20,7 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.TestHttpResponse;
+import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
 import org.geotools.data.wfs.internal.v2_0.StrictWFS_2_0_Strategy;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.LiteralExpressionImpl;
@@ -67,5 +68,61 @@ public class AbstractWFSStrategyTest {
         Assert.assertNotNull(filters);
         Assert.assertEquals(2, filters.length);
         Assert.assertTrue(filters[0].evaluate(filter));
+    }
+
+    /**
+     * Test method for {@link
+     * org.geotools.data.wfs.internal.AbstractWFSStrategy#buildUrlGET(WFSRequest)}, to check if it
+     * produces the STARTINDEX query parameter for a WFS 1.1.0 request.
+     */
+    @Test
+    public void testWfs1UrlBuildingWithStartIndexParameter() throws IOException, ServiceException {
+        HTTPResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml", "UTF-8", url("GeoServer_1.7.x/1.1.0/GetCapabilities.xml"));
+
+        WFSStrategy strategy = new StrictWFS_1_x_Strategy();
+
+        WFSGetCapabilities capabilities =
+                new GetCapabilitiesResponse(httpResponse, null).getCapabilities();
+        strategy.setCapabilities(capabilities);
+
+        GetFeatureRequest request = new GetFeatureRequest(new WFSConfig(), strategy);
+
+        request.setTypeName(new QName("example"));
+        request.setFilter(Filter.INCLUDE);
+        request.setStartIndex(100);
+
+        URL url = strategy.buildUrlGET(request);
+
+        Assert.assertTrue(url.getQuery().contains("STARTINDEX=100"));
+    }
+
+    /**
+     * Test method for {@link
+     * org.geotools.data.wfs.internal.AbstractWFSStrategy#buildUrlGET(WFSRequest)}, to check if it
+     * produces the STARTINDEX query parameter for a WFS 2.0.0 request.
+     */
+    @Test
+    public void testWfs2UrlBuildingWithStartIndexParameter() throws IOException, ServiceException {
+        HTTPResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml", "UTF-8", url("GeoServer_2.2.x/2.0.0/GetCapabilities.xml"));
+
+        WFSStrategy strategy = new StrictWFS_2_0_Strategy();
+
+        WFSGetCapabilities capabilities =
+                new GetCapabilitiesResponse(httpResponse, null).getCapabilities();
+        strategy.setCapabilities(capabilities);
+
+        GetFeatureRequest request = new GetFeatureRequest(new WFSConfig(), strategy);
+
+        request.setTypeName(new QName("example"));
+        request.setFilter(Filter.INCLUDE);
+        request.setStartIndex(100);
+
+        URL url = strategy.buildUrlGET(request);
+
+        Assert.assertTrue(url.getQuery().contains("STARTINDEX=100"));
     }
 }

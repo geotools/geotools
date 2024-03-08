@@ -52,8 +52,7 @@ public class UnitFormatterTest {
         List<Map.Entry<Unit<?>, String>> unitToName =
                 toSortedList1(getUnitToNameMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
-        List<Map.Entry<Unit<?>, String>> unitToSymbol =
-                toSortedList1(formatter.getUnitToSymbolMap());
+        List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.unitToName);
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInOld =
                 unitToName.stream()
@@ -88,8 +87,7 @@ public class UnitFormatterTest {
         List<Map.Entry<Unit<?>, String>> unitToNameMap =
                 toSortedList1(getUnitToNameMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
-        List<Map.Entry<Unit<?>, String>> unitToSymbol =
-                toSortedList1(formatter.getUnitToSymbolMap());
+        List<Map.Entry<Unit<?>, String>> unitToSymbol = toSortedList1(formatter.unitToName);
 
         List<Map.Entry<Unit<?>, String>> unitsOnlyInNew =
                 unitToSymbol.stream()
@@ -120,8 +118,7 @@ public class UnitFormatterTest {
         List<Map.Entry<String, Unit<?>>> nameToUnitMap =
                 toSortedList2(getNameToUnitMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
-        List<Map.Entry<String, Unit<?>>> symbolToUnit =
-                toSortedList2(formatter.getSymbolToUnitMap());
+        List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.nameToUnit);
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInOld =
                 nameToUnitMap.stream()
@@ -152,8 +149,7 @@ public class UnitFormatterTest {
         List<Map.Entry<String, Unit<?>>> nameToUnitMap =
                 toSortedList2(getNameToUnitMap(simpleUnitFormat));
         @SuppressWarnings("deprecation")
-        List<Map.Entry<String, Unit<?>>> symbolToUnit =
-                toSortedList2(formatter.getSymbolToUnitMap());
+        List<Map.Entry<String, Unit<?>>> symbolToUnit = toSortedList2(formatter.nameToUnit);
 
         List<Map.Entry<String, Unit<?>>> unitsOnlyInNew =
                 symbolToUnit.stream()

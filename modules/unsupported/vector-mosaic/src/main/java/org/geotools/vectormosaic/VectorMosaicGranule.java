@@ -32,6 +32,10 @@ public class VectorMosaicGranule implements Serializable {
     public static final String GRANULE_FILTER = "filter";
     public static final String GRANULE_ID_FIELD = "id";
 
+    public static final String[] GRANULE_CONFIG_FIELDS = {
+        CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT, GRANULE_FILTER, GRANULE_TYPE_NAME
+    };
+
     /** The feature type name */
     String name;
 

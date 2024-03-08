@@ -39,6 +39,8 @@ import java.util.Collections;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
 import org.geotools.imageio.netcdf.NetCDFUnitFormat;
+import org.geotools.measure.UnitFormat;
+import org.geotools.measure.UnitFormatter;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -47,7 +49,6 @@ import org.junit.runners.Parameterized;
 import si.uom.NonSI;
 import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
-import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.function.LogConverter;
 
 @RunWith(Enclosed.class)
@@ -165,9 +166,9 @@ public class NetCDFUnitParserTest {
 
         @Test(expected = MeasurementParseException.class)
         public void testIsolation() {
-            // the normal instance should be isolated, the configuration of the the NetCDF
+            // the normal instance should be isolated, the configuration of the NetCDF
             // unit parse should not affect the normal parser
-            SimpleUnitFormat instance = SimpleUnitFormat.getInstance();
+            UnitFormatter instance = UnitFormat.getInstance();
             instance.parse("degree");
         }
 

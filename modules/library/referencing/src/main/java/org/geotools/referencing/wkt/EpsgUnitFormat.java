@@ -23,16 +23,17 @@ import java.util.stream.Stream;
 import org.geotools.measure.BaseUnitFormatter;
 import org.geotools.measure.UnitDefinition;
 import org.geotools.measure.UnitDefinitions;
-import org.geotools.measure.UnitFormatter;
 
 /** A factory for unit formatters that support the EPSG dialect. */
-public final class EpsgUnitFormat {
+public final class EpsgUnitFormat extends BaseUnitFormatter {
 
-    public static UnitFormatter getInstance() {
+    public static EpsgUnitFormat getInstance() {
         return INSTANCE;
     }
 
-    private EpsgUnitFormat() {}
+    private EpsgUnitFormat(List<UnitDefinition> unitDefinitions) {
+        super(unitDefinitions);
+    }
 
     private static final List<UnitDefinition> UNIT_DEFINITIONS =
             Stream.of(
@@ -44,7 +45,7 @@ public final class EpsgUnitFormat {
                             UnitDefinitions.US_CUSTOMARY,
                             UnitDefinitions.EPSG)
                     .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
 
-    private static final BaseUnitFormatter INSTANCE = new BaseUnitFormatter(UNIT_DEFINITIONS);
+    private static final EpsgUnitFormat INSTANCE = new EpsgUnitFormat(UNIT_DEFINITIONS);
 }

@@ -30,10 +30,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
+import org.geotools.measure.BaseUnitFormatter;
 import org.geotools.measure.UnitFormat;
 import org.geotools.util.logging.Logging;
 import si.uom.NonSI;
-import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.function.LogConverter;
 
 /**
@@ -45,7 +45,7 @@ public class NetCDFUnitFormat {
     static final Logger LOGGER = Logging.getLogger(NetCDFUnitFormat.class);
 
     /** The format used to parse units */
-    private static SimpleUnitFormat FORMAT;
+    private static BaseUnitFormatter FORMAT;
 
     private static Map<String, String> REPLACEMENTS;
 
@@ -120,26 +120,26 @@ public class NetCDFUnitFormat {
      * Configures the aliases to be used on the unit parser. An alias is a different name for a unit
      */
     public static void setAliases(Map<String, String> aliases) {
-        SimpleUnitFormat format = UnitFormat.create();
+        BaseUnitFormatter format = UnitFormat.create();
 
         // missing unit that cannot be expressed via config files
         Unit<?> bel = ONE.transform(new LogConverter(10));
-        format.alias(bel.divide(10), "dB");
+        format.addAlias(bel.divide(10), "dB");
 
         // register non SI units as well
         for (Unit<?> u : NonSI.getInstance().getUnits()) {
             if (u.getSymbol() != null && unknownSymbol(format, u.getSymbol())) {
-                format.alias(u, u.getSymbol());
+                format.addAlias(u, u.getSymbol());
             }
         }
 
         // register a notion of unitless
-        format.label(ONE, "unitless");
+        format.addLabel(ONE, "unitless");
 
         // go with the aliases (key -> value, that is, alias -> actual unit)
         for (Map.Entry<String, String> entry : aliases.entrySet()) {
             try {
-                format.alias(format.parse(entry.getValue()), entry.getKey());
+                format.addAlias(format.parse(entry.getValue()), entry.getKey());
             } catch (MeasurementParseException ex) {
                 LOGGER.log(
                         Level.WARNING,
@@ -157,7 +157,7 @@ public class NetCDFUnitFormat {
     }
 
     /** Checks if the symbol in question is already known to the formatter, or not */
-    private static boolean unknownSymbol(SimpleUnitFormat format, String symbol) {
+    private static boolean unknownSymbol(BaseUnitFormatter format, String symbol) {
         try {
             format.parse(symbol);
             return false;

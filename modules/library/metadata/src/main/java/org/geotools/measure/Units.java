@@ -156,8 +156,7 @@ public final class Units {
      * reference unit is defined, it returns the provided unit.
      */
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        return ((WktUnitFormat.WktUnitFormatterImpl) WktUnitFormat.getInstance())
-                .getEquivalentUnit(unit);
+        return ((WktUnitFormat) WktUnitFormat.getInstance()).getEquivalentUnit(unit);
     }
 
     /**

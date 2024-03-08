@@ -84,14 +84,15 @@ public class VectorMosaicFilterTest {
     public void testTypeNames() throws Exception {
         List<String> typeNames = Arrays.asList(MOSAIC_STORE.getTypeNames());
         // Lakes is not included, not valid
-        assertEquals(4, typeNames.size());
+        assertEquals(5, typeNames.size());
         assertThat(
                 typeNames,
                 hasItems(
                         "RoadSegmentsAll_mosaic",
                         "RoadSegmentsFilter_mosaic",
                         "RoadSegmentsNone_mosaic",
-                        "RoadSegmentsRepository_mosaic"));
+                        "RoadSegmentsRepository_mosaic",
+                        "RoadSegmentsRepositoryFilter_mosaic"));
     }
 
     @Test
@@ -138,6 +139,35 @@ public class VectorMosaicFilterTest {
 
         Set<Object> fids = collectFids(typeName, Query.ALL);
         assertThat(fids, hasItems(101, 102, 103, 104));
+    }
+
+    @Test
+    public void testRepositoryFilter() throws Exception {
+        String typeName = "RoadSegmentsRepositoryFilter_mosaic";
+        checkRoadSegmentsSchema(typeName);
+
+        Set<Object> fids = collectFids(typeName, Query.ALL);
+        assertThat(fids, hasItems(101, 103));
+    }
+
+    @Test
+    public void testRepositoryPropertySelection() throws Exception {
+        String typeName = "RoadSegmentsRepositoryFilter_mosaic";
+        checkRoadSegmentsSchema(typeName);
+
+        // selecting "fid" only, the reader should still pick filter and type attributes from index
+        Query q = new Query(typeName);
+        q.setPropertyNames("fid");
+        // if that happened, only two features are returned
+        List<SimpleFeature> features =
+                DataUtilities.list(MOSAIC_STORE.getFeatureSource(typeName).getFeatures(q));
+        Set<Object> fids =
+                features.stream().map(f -> f.getAttribute("fid")).collect(Collectors.toSet());
+        assertThat(fids, hasItems(101, 103));
+        // however, only fid is returned to the caller
+        SimpleFeature f = features.get(0);
+        assertEquals(1, f.getAttributes().size());
+        assertEquals(1, f.getType().getDescriptors().size());
     }
 
     private static Set<Object> collectFids(String typeName, Query query) throws IOException {

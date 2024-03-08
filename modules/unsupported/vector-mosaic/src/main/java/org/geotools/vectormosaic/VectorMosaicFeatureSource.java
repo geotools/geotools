@@ -16,6 +16,7 @@
  */
 package org.geotools.vectormosaic;
 
+import static org.geotools.vectormosaic.VectorMosaicGranule.GRANULE_CONFIG_FIELDS;
 import static org.geotools.vectormosaic.VectorMosaicStore.buildName;
 
 import java.io.File;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -225,25 +225,19 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             query.getFilter().accept(extractor, null);
             queryNames.addAll(Arrays.asList(extractor.getAttributeNames()));
         }
-        String[] filteredArray =
-                queryNames.stream().filter(attributeNames::contains).toArray(String[]::new);
-        // delegate must have the connection parameters field
+        List<String> filteredAttributes =
+                queryNames.stream().filter(attributeNames::contains).collect(Collectors.toList());
+        // delegate must have the extra granule configuration fields
         if (isDelegate) {
-            if (!containsString(
-                    filteredArray,
-                    VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT)) {
-                List<String> list = new ArrayList<>(Arrays.asList(filteredArray));
-                list.add(VectorMosaicGranule.CONNECTION_PARAMETERS_DELEGATE_FIELD_DEFAULT);
-                filteredArray = list.toArray(new String[list.size()]);
+            for (String field : GRANULE_CONFIG_FIELDS) {
+                // some of the config fields are optional, were they included in the first place?
+                if (attributeNames.contains(field) && !filteredAttributes.contains(field)) {
+                    filteredAttributes.add(field);
+                }
             }
         }
 
-        return filteredArray;
-    }
-
-    // Method to check if a string is present in an array
-    private static boolean containsString(String[] array, String target) {
-        return Arrays.asList(array).contains(target);
+        return filteredAttributes.toArray(n -> new String[n]);
     }
 
     /**

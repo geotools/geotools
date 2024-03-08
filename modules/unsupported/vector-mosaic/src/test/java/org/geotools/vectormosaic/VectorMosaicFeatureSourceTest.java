@@ -370,8 +370,8 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
                         featureReader.delegateFeature.getType().getDescriptors().stream()
                                 .map(d -> d.getName().getLocalPart())
                                 .collect(Collectors.joining(","));
-                // params is a required element of the delegate feature
-                assertEquals("rank,params", delegateAttributes);
+                // params is a required element of the delegate feature, so is type
+                assertEquals("rank,params,type", delegateAttributes);
             }
         }
     }
@@ -392,8 +392,8 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
                         featureReader.delegateFeature.getType().getDescriptors().stream()
                                 .map(d -> d.getName().getLocalPart())
                                 .collect(Collectors.joining(","));
-                // params is a required element of the delegate feature
-                assertEquals("rank,params", delegateAttributes);
+                // params is a required element of the delegate feature, so is type
+                assertEquals("rank,params,type", delegateAttributes);
                 String granuleAttributes =
                         featureReader.rawGranule.getType().getDescriptors().stream()
                                 .map(d -> d.getName().getLocalPart())

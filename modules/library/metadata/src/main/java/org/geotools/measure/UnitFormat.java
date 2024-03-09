@@ -28,8 +28,6 @@ public final class UnitFormat extends BaseUnitFormatter {
         return INSTANCE;
     }
 
-    // Only required because a mutable instance is required in NetCDFFormat.
-    // Ideally, we would move all the construction logic for NetCDFFormat to that class.
     public static UnitFormat create() {
         return new UnitFormat(UNIT_DEFINITIONS);
     }

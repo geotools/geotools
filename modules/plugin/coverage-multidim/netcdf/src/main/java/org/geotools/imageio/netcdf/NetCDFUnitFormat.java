@@ -23,15 +23,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
 import org.geotools.measure.BaseUnitFormatter;
-import org.geotools.measure.UnitFormat;
+import org.geotools.measure.UnitDefinition;
+import org.geotools.measure.UnitDefinitions;
 import org.geotools.util.logging.Logging;
 import si.uom.NonSI;
 import tech.units.indriya.function.LogConverter;
@@ -40,14 +45,15 @@ import tech.units.indriya.function.LogConverter;
  * Parser/Encoder for units expressed in the NetCDF CF syntax, with ability to configure the unit
  * syntax transformation and allow setting up custom aliases just for the NetCDF case.
  */
-public class NetCDFUnitFormat {
+public final class NetCDFUnitFormat extends BaseUnitFormatter {
 
-    static final Logger LOGGER = Logging.getLogger(NetCDFUnitFormat.class);
+    // It is questionable whether a global instance is a good idea,
+    // considering that this class provides mutating operations.
+    public static NetCDFUnitFormat getInstance() {
+        return INSTANCE;
+    }
 
-    /** The format used to parse units */
-    private static BaseUnitFormatter FORMAT;
-
-    private static Map<String, String> REPLACEMENTS;
+    private static final Logger LOGGER = Logging.getLogger(NetCDFUnitFormat.class);
 
     /** Unit aliases config file name (normally looked up in the classpath) */
     public static final String NETCDF_UNIT_ALIASES = "netcdf-unit-aliases.properties";
@@ -62,27 +68,46 @@ public class NetCDFUnitFormat {
                     entry("-", "^-"),
                     entry(".", "*"));
 
-    static {
-        reset();
+    private static final List<UnitDefinition> UNIT_DEFINITIONS =
+            Stream.of(
+                            UnitDefinitions.DIMENSIONLESS,
+                            UnitDefinitions.CONSTANTS,
+                            UnitDefinitions.SI_BASE,
+                            UnitDefinitions.SI_DERIVED,
+                            UnitDefinitions.NON_SI,
+                            UnitDefinitions.US_CUSTOMARY,
+                            UnitDefinitions.GEOTOOLS)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toUnmodifiableList());
+
+    private static final NetCDFUnitFormat INSTANCE = createWithBuiltInConfig();
+
+    /** Creates a NetCDFUnitFormat with the built-in defaults. */
+    public static NetCDFUnitFormat createWithBuiltInConfig() {
+        return new NetCDFUnitFormat(builtInReplacements(), builtInAliases());
     }
 
-    /** Resets the format to the built-in defaults */
-    public static void reset() {
-        Map<String, String> replacements = loadBuiltInConfigFile(NETCDF_UNIT_REPLACEMENTS);
+    public static NetCDFUnitFormat create(
+            Map<String, String> replacements, Map<String, String> aliases) {
+        return new NetCDFUnitFormat(replacements, aliases);
+    }
+
+    public static Map<String, String> builtInReplacements() {
+        return loadPropertiesOrdered(
+                NetCDFUnitFormat.class.getResourceAsStream(NETCDF_UNIT_REPLACEMENTS));
+    }
+
+    public static Map<String, String> builtInAliases() {
+        return loadPropertiesOrdered(
+                NetCDFUnitFormat.class.getResourceAsStream(NETCDF_UNIT_ALIASES));
+    }
+
+    private Map<String, String> REPLACEMENTS;
+
+    private NetCDFUnitFormat(Map<String, String> replacements, Map<String, String> aliases) {
+        super(UNIT_DEFINITIONS);
         setReplacements(replacements);
-        Map<String, String> aliases = loadBuiltInConfigFile(NETCDF_UNIT_ALIASES);
         setAliases(aliases);
-    }
-
-    /**
-     * Configures the string replacements to be performed before trying to parse the units.
-     *
-     * @param replacements The replacements to be used. It is strongly advised to use a {@link
-     *     LinkedHashMap} as replacements are run from top to bottom, in order, and the order might
-     *     influence the results
-     */
-    public static void setReplacements(Map<String, String> replacements) {
-        REPLACEMENTS = new LinkedHashMap<>(replacements);
     }
 
     /**
@@ -111,35 +136,41 @@ public class NetCDFUnitFormat {
         }
     }
 
-    private static Map<String, String> loadBuiltInConfigFile(String fileName) {
-        return loadPropertiesOrdered(
-                org.geotools.imageio.netcdf.NetCDFUnitFormat.class.getResourceAsStream(fileName));
+    /**
+     * Configures the string replacements to be performed before trying to parse the units.
+     *
+     * @param replacements The replacements to be used. It is strongly advised to use a {@link
+     *     LinkedHashMap} as replacements are run from top to bottom, in order, and the order might
+     *     influence the results
+     */
+    public void setReplacements(Map<String, String> replacements) {
+        REPLACEMENTS = new LinkedHashMap<>(replacements);
     }
 
     /**
-     * Configures the aliases to be used on the unit parser. An alias is a different name for a unit
+     * Configures the aliases to be used on the unit parser. An alias is a different name for a
+     * unit.
      */
-    public static void setAliases(Map<String, String> aliases) {
-        BaseUnitFormatter format = UnitFormat.create();
+    public void setAliases(Map<String, String> aliases) {
 
         // missing unit that cannot be expressed via config files
         Unit<?> bel = ONE.transform(new LogConverter(10));
-        format.addAlias(bel.divide(10), "dB");
+        addAlias(bel.divide(10), "dB");
 
         // register non SI units as well
         for (Unit<?> u : NonSI.getInstance().getUnits()) {
-            if (u.getSymbol() != null && unknownSymbol(format, u.getSymbol())) {
-                format.addAlias(u, u.getSymbol());
+            if (u.getSymbol() != null && unknownSymbol(u.getSymbol())) {
+                addAlias(u, u.getSymbol());
             }
         }
 
         // register a notion of unitless
-        format.addLabel(ONE, "unitless");
+        addLabel(ONE, "unitless");
 
         // go with the aliases (key -> value, that is, alias -> actual unit)
         for (Map.Entry<String, String> entry : aliases.entrySet()) {
             try {
-                format.addAlias(format.parse(entry.getValue()), entry.getKey());
+                addAlias(this.parse(entry.getValue()), entry.getKey());
             } catch (MeasurementParseException ex) {
                 LOGGER.log(
                         Level.WARNING,
@@ -151,15 +182,12 @@ public class NetCDFUnitFormat {
                         ex);
             }
         }
-
-        // replace
-        FORMAT = format;
     }
 
     /** Checks if the symbol in question is already known to the formatter, or not */
-    private static boolean unknownSymbol(BaseUnitFormatter format, String symbol) {
+    private boolean unknownSymbol(String symbol) {
         try {
-            format.parse(symbol);
+            parse(symbol);
             return false;
         } catch (MeasurementParseException e) {
             return true;
@@ -167,7 +195,7 @@ public class NetCDFUnitFormat {
     }
 
     /** Parses a unit applying the configured set of replacements and aliases */
-    public static Unit<?> parse(String spec) {
+    public Unit<?> parse(String spec) {
         // apply blind replacements
         boolean replaced = false;
         for (Map.Entry<String, String> entry : REPLACEMENTS.entrySet()) {
@@ -190,23 +218,10 @@ public class NetCDFUnitFormat {
         // do a normal parse, catch and rethrow because the default exception message does not
         // even say what was being parsed
         try {
-            return FORMAT.parse(spec);
+            return super.parse(spec);
         } catch (MeasurementParseException e) {
             throw new MeasurementParseException(
                     "Failed to parse " + spec, e.getParsedString(), e.getPosition());
         }
     }
-
-    /**
-     * Formats the unit
-     *
-     * @param unit The unit to be formatted
-     * @return A string representation of the same unit.
-     */
-    public static String format(Unit<?> unit) {
-        return FORMAT.format(unit);
-    }
-
-    /** Utility class, no instantiation */
-    private NetCDFUnitFormat() {};
 }

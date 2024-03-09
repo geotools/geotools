@@ -240,7 +240,7 @@ public class BaseUnitFormatter implements UnitFormatter {
      * @throws IllegalArgumentException if the label is not a {@link
      *     BaseUnitFormatter#isValidIdentifier(String)} valid identifier.
      */
-    public void addLabel(Unit<?> unit, String label) {
+    protected void addLabel(Unit<?> unit, String label) {
         if (!isValidIdentifier(label))
             throw new IllegalArgumentException("Label: " + label + " is not a valid identifier.");
         synchronized (this) {
@@ -262,7 +262,7 @@ public class BaseUnitFormatter implements UnitFormatter {
      * @throws IllegalArgumentException if the label is not a {@link
      *     BaseUnitFormatter#isValidIdentifier(String)} valid identifier.
      */
-    public void addAlias(Unit<?> unit, String alias) {
+    protected void addAlias(Unit<?> unit, String alias) {
         if (!isValidIdentifier(alias))
             throw new IllegalArgumentException("Alias: " + alias + " is not a valid identifier.");
         synchronized (this) {

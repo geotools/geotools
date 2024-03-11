@@ -358,12 +358,8 @@ public class GeoJSONReader implements AutoCloseable {
                 }
                 while (parser.nextToken() == JsonToken.START_OBJECT) {
                     ObjectNode node = mapper.readTree(parser);
-                    try {
-                        SimpleFeature feature = getNextFeature(node);
-                        features.add(feature);
-                    } catch (IOException e) {
-                        LOGGER.log(Level.WARNING, e.getMessage(), e);
-                    }
+                    SimpleFeature feature = getNextFeature(node);
+                    features.add(feature);
                 }
             }
             // support paged feature collections, OGC API style

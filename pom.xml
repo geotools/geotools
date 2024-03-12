@@ -497,7 +497,7 @@
     <postgresql.jdbc.version>42.7.2</postgresql.jdbc.version>
     <reload4j.version>1.2.19</reload4j.version>
     <sl4j.version>1.7.32</sl4j.version>
-    <solrj.version>8.9.0</solrj.version>
+    <solrj.version>8.11.3</solrj.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
     <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>

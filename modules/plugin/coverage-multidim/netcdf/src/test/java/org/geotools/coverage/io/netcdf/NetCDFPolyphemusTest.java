@@ -54,11 +54,10 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public final class NetCDFPolyphemusTest extends Assert {
+public final class NetCDFPolyphemusTest extends NetCDFBaseTest {
 
     private static final Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class);
     private File testDirectory;

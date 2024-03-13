@@ -1709,7 +1709,6 @@ public class NetCDFMosaicReaderTest {
 
             // remove granule
             GranuleStore store = (GranuleStore) reader.getGranules("NO2", false);
-
             int removed =
                     store.removeGranules(FF.like(FF.property("location"), "*20130101*"), hints);
             assertEquals(1, removed);

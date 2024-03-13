@@ -56,6 +56,7 @@ import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
+import org.geotools.io.MemoryMappedFileCache;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SoftValueHashMap;
@@ -76,6 +77,7 @@ import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.ft.fmrc.Fmrc;
 import ucar.nc2.util.cache.FileCache;
+import ucar.nc2.util.cache.FileCacheIF;
 
 /**
  * Set of NetCDF utility methods.
@@ -312,12 +314,20 @@ public class NetCDFUtilities {
 
     protected static final Map<String, DatasetUrl> DATASET_URL_CACHE = new SoftValueHashMap<>();
 
+    private static FileCacheIF fileCache;
+
+    private static boolean USE_MEMORY_MAPPING;
+
     /**
      * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have
      * WMO headers prepended by a telecommunications gateway. NetCDF-Java Grib{1,2}RecordScanner
      * look for the header in this many bytes.
      */
     private static final int GRIB_SEARCH_BYTES = 16000;
+
+    public static boolean useMemoryMapping() {
+        return USE_MEMORY_MAPPING;
+    }
 
     /**
      * Global attribute for coordinate coverageDescriptorsCache.
@@ -390,6 +400,7 @@ public class NetCDFUtilities {
         initEnhanceMode();
 
         // Initializing NetCDF Caches
+        initMemoryMapping();
         initCache();
 
         String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
@@ -450,6 +461,7 @@ public class NetCDFUtilities {
         if (!IS_NC4_LIBRARY_AVAILABLE && LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(NC4_ERROR_MESSAGE);
         }
+        refreshParameterBehaviors();
     }
 
     private static void initEnhanceMode() {
@@ -479,6 +491,24 @@ public class NetCDFUtilities {
         NetcdfDataset.setDefaultEnhanceMode(DEFAULT_ENHANCE_MODE);
     }
 
+    private static void initMemoryMapping() {
+        String os = System.getProperty("os.name").toLowerCase();
+        String initiator = "system default";
+        if (os.contains("linux")) {
+            USE_MEMORY_MAPPING = true;
+        } else {
+            USE_MEMORY_MAPPING = false;
+        }
+        String memoryMapping = System.getProperty("org.geotools.coverage.io.netcdf.memorymap");
+        if (memoryMapping != null && !memoryMapping.isEmpty()) {
+            USE_MEMORY_MAPPING = Boolean.parseBoolean(memoryMapping);
+            initiator = "system property";
+        }
+        if (USE_MEMORY_MAPPING) {
+            LOGGER.info("MemoryMapped RandomAccessFile has been enabled through " + initiator);
+        }
+    }
+
     @SuppressWarnings("deprecation")
     private static void initCache() {
         if (Boolean.getBoolean("org.geotools.coverage.io.netcdf.cachefile")) {
@@ -493,13 +523,12 @@ public class NetCDFUtilities {
             // https://docs.unidata.ucar.edu/netcdf-java/5.5/userguide/disk_caching.html#netcdffilecache
 
             NetcdfDatasets.initNetcdfFileCache(minElements, maxElements, period);
-            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(
-                    new FileCache(minElements, maxElements, period));
+            fileCache =
+                    USE_MEMORY_MAPPING
+                            ? new MemoryMappedFileCache(minElements, maxElements, period)
+                            : new FileCache(minElements, maxElements, period);
+            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(fileCache);
         }
-    }
-
-    static boolean isLatLon(String bandName) {
-        return bandName.equalsIgnoreCase(LON) || bandName.equalsIgnoreCase(LAT);
     }
 
     private static Set<String> initIgnoreSet() {
@@ -759,14 +788,19 @@ public class NetCDFUtilities {
         return format;
     }
 
-    public static DatasetUrl getDatasetUrl(String uri) throws IOException {
-        DatasetUrl url = DATASET_URL_CACHE.get(uri);
+    public static DatasetUrl getDatasetUrl(String uriString) throws IOException {
+        DatasetUrl url = DATASET_URL_CACHE.get(uriString);
         if (url != null) {
             return url;
         }
-        url = DatasetUrl.findDatasetUrl(uri);
-        DATASET_URL_CACHE.put(uri, url);
+        url = DatasetUrl.findDatasetUrl(uriString);
+        DATASET_URL_CACHE.put(uriString, url);
         return url;
+    }
+
+    public static boolean isFile(String location) {
+        String scheme = location.split(":")[0].toLowerCase();
+        return "file".equalsIgnoreCase(scheme);
     }
 
     private static FileFormat getFormatFromUri(URI uri) throws IOException {
@@ -837,6 +871,8 @@ public class NetCDFUtilities {
         FeatureCollectionConfigBuilder builder = new FeatureCollectionConfigBuilder(formatter);
         // this is the path to the feature collection XML
         FeatureCollectionConfig config = builder.readConfigFromFile(path);
+
+        @SuppressWarnings("PMD.CloseResource")
         Fmrc fmrc = Fmrc.open(config, formatter);
         NetcdfDataset dataset = NetcdfDataset.builder().setLocation(path).build();
         fmrc.getDataset2D(dataset);
@@ -1324,10 +1360,6 @@ public class NetCDFUtilities {
     private static Set<String> PARAMS_MAX;
 
     private static Set<String> PARAMS_MIN;
-
-    static {
-        refreshParameterBehaviors();
-    }
 
     public static void refreshParameterBehaviors() {
         PARAMS_MAX = new HashSet<>();

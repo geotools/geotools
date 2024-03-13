@@ -25,5 +25,11 @@ public class NetCDFBaseTest extends Assert {
     public static void init() {
         System.setProperty("user.timezone", "GMT");
         System.setProperty("netcdf.coordinates.enablePlugins", "true");
+        System.setProperty("org.geotools.coverage.io.netcdf.cachefile", "true");
+        System.setProperty("org.geotools.coverage.io.netcdf.memorymap", "true");
+        // We are hard limiting the mapped byte buffer to validate that it's
+        // capable of reading files bigger than the max size of the memory
+        // mapped byte buffer
+        System.setProperty("org.geotools.coverage.io.netcdf.memorymaplimit", "65536");
     }
 }

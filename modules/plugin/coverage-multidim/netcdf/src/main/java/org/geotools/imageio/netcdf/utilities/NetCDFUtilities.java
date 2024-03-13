@@ -56,6 +56,7 @@ import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi;
+import org.geotools.io.MemoryMappedFileCache;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SoftValueHashMap;
@@ -76,6 +77,7 @@ import ucar.nc2.dataset.NetcdfDatasets;
 import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.ft.fmrc.Fmrc;
 import ucar.nc2.util.cache.FileCache;
+import ucar.nc2.util.cache.FileCacheIF;
 
 /**
  * Set of NetCDF utility methods.
@@ -308,12 +310,28 @@ public class NetCDFUtilities {
 
     protected static final Map<String, DatasetUrl> DATASET_URL_CACHE = new SoftValueHashMap<>();
 
+    private static FileCacheIF rafFileCache;
+
+    private static FileCacheIF netcdfFileCache;
+
+    private static boolean USE_MEMORY_MAPPING;
+
+    private static boolean USE_CACHE;
+
     /**
      * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have
      * WMO headers prepended by a telecommunications gateway. NetCDF-Java Grib{1,2}RecordScanner
      * look for the header in this many bytes.
      */
     private static final int GRIB_SEARCH_BYTES = 16000;
+
+    public static boolean useMemoryMapping() {
+        return USE_MEMORY_MAPPING;
+    }
+
+    public static boolean useCache() {
+        return USE_CACHE;
+    }
 
     /**
      * Global attribute for coordinate coverageDescriptorsCache.
@@ -386,6 +404,7 @@ public class NetCDFUtilities {
         initEnhanceMode();
 
         // Initializing NetCDF Caches
+        initMemoryMapping();
         initCache();
 
         String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
@@ -446,6 +465,7 @@ public class NetCDFUtilities {
         if (!IS_NC4_LIBRARY_AVAILABLE && LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(NC4_ERROR_MESSAGE);
         }
+        refreshParameterBehaviors();
     }
 
     private static void initEnhanceMode() {
@@ -475,8 +495,27 @@ public class NetCDFUtilities {
         NetcdfDataset.setDefaultEnhanceMode(DEFAULT_ENHANCE_MODE);
     }
 
+    private static void initMemoryMapping() {
+        String os = System.getProperty("os.name").toLowerCase();
+        String initiator = "system default";
+        if (os.contains("linux")) {
+            USE_MEMORY_MAPPING = true;
+        } else {
+            USE_MEMORY_MAPPING = false;
+        }
+        String memoryMapping = System.getProperty("org.geotools.coverage.io.netcdf.memorymap");
+        if (memoryMapping != null && !memoryMapping.isEmpty()) {
+            USE_MEMORY_MAPPING = Boolean.parseBoolean(memoryMapping);
+            initiator = "system property";
+        }
+        if (USE_MEMORY_MAPPING) {
+            LOGGER.info("MemoryMapped RandomAccessFile has been enabled through " + initiator);
+        }
+    }
+
     private static void initCache() {
-        if (Boolean.getBoolean("org.geotools.coverage.io.netcdf.cachefile")) {
+        USE_CACHE = Boolean.getBoolean("org.geotools.coverage.io.netcdf.cachefile");
+        if (useCache()) {
             LOGGER.info("NetCDF File Cache has been enabled");
             int minElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.min", 200);
             int maxElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.max", 300);
@@ -487,9 +526,16 @@ public class NetCDFUtilities {
             // No replacements found for 5.5 even if deprecated. Documentation still uses it
             // https://docs.unidata.ucar.edu/netcdf-java/5.5/userguide/disk_caching.html#netcdffilecache
 
+            if (useMemoryMapping()) {
+                rafFileCache =
+                        new MemoryMappedFileCache("rafCache", minElements, maxElements, -1, period);
+            } else {
+                rafFileCache = new FileCache("rafCache", minElements, maxElements, -1, period);
+            }
             NetcdfDatasets.initNetcdfFileCache(minElements, maxElements, period);
-            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(
-                    new FileCache(minElements, maxElements, period));
+            netcdfFileCache = NetcdfDatasets.getNetcdfFileCache();
+
+            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(rafFileCache);
         }
     }
 
@@ -750,14 +796,19 @@ public class NetCDFUtilities {
         return format;
     }
 
-    public static DatasetUrl getDatasetUrl(String uri) throws IOException {
-        DatasetUrl url = DATASET_URL_CACHE.get(uri);
+    public static DatasetUrl getDatasetUrl(String uriString) throws IOException {
+        DatasetUrl url = DATASET_URL_CACHE.get(uriString);
         if (url != null) {
             return url;
         }
-        url = DatasetUrl.findDatasetUrl(uri);
-        DATASET_URL_CACHE.put(uri, url);
+        url = DatasetUrl.findDatasetUrl(uriString);
+        DATASET_URL_CACHE.put(uriString, url);
         return url;
+    }
+
+    public static boolean isFile(String location) {
+        String scheme = location.split(":")[0].toLowerCase();
+        return "file".equalsIgnoreCase(scheme);
     }
 
     private static FileFormat getFormatFromUri(URI uri) throws IOException {
@@ -1317,10 +1368,6 @@ public class NetCDFUtilities {
 
     private static Set<String> PARAMS_MIN;
 
-    static {
-        refreshParameterBehaviors();
-    }
-
     public static void refreshParameterBehaviors() {
         PARAMS_MAX = new HashSet<>();
         String maxProperty = System.getProperty(PARAMS_MAX_KEY);
@@ -1360,6 +1407,24 @@ public class NetCDFUtilities {
         DATASET_URL_CACHE.clear();
     }
 
+    public static void disableNetCDFFileCaches() {
+        if (rafFileCache != null) {
+            rafFileCache.disable();
+        }
+        if (netcdfFileCache != null) {
+            netcdfFileCache.disable();
+        }
+    }
+
+    public static void enableNetCDFFileCaches() {
+        if (rafFileCache != null) {
+            rafFileCache.enable();
+        }
+        if (netcdfFileCache != null) {
+            netcdfFileCache.enable();
+        }
+    }
+
     /**
      * Clear all the internal caches. Call this method if the datastore config has been updated or
      * the NetCDF XML file has been modified.
@@ -1368,5 +1433,21 @@ public class NetCDFUtilities {
         clearCache();
         AncillaryFileManager.clearCache();
         VariableAdapter.clearCache();
+        if (useCache()) {
+            if (netcdfFileCache != null) {
+                netcdfFileCache.clearCache(true);
+            }
+            if (rafFileCache != null) {
+                rafFileCache.clearCache(true);
+            }
+        }
+    }
+
+    public static FileCacheIF getRafFileCache() {
+        return rafFileCache;
+    }
+
+    public static FileCacheIF getNetCDFFileCache() {
+        return netcdfFileCache;
     }
 }

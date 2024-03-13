@@ -69,7 +69,6 @@ public final class NetCDFStationsTest {
 
     @Test
     public void readMultipleBandsDimensionSelectingOnlyOneBand() throws Exception {
-
         // we should have only band a single band
         ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
         selectedBands.setValue(new int[] {1});
@@ -80,7 +79,6 @@ public final class NetCDFStationsTest {
 
     @Test
     public void readMultipleBandsDimensionWithDifferentOrderBandsSelection() throws Exception {
-
         // we should have three bands with values indexes ordered as 2, 0, 1
         ParameterValue<int[]> selectedBands = AbstractGridFormat.BANDS.createValue();
         selectedBands.setValue(new int[] {2, 0, 1});

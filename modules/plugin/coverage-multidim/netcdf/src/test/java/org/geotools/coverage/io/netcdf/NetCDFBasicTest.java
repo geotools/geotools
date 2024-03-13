@@ -68,7 +68,7 @@ import ucar.nc2.dataset.NetcdfDatasets;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-public final class NetCDFBasicTest extends Assert {
+public final class NetCDFBasicTest extends NetCDFBaseTest {
 
     private static final Logger LOGGER = Logger.getLogger(NetCDFBasicTest.class.toString());
 
@@ -772,7 +772,7 @@ public final class NetCDFBasicTest extends Assert {
     }
 
     @Test
-    public void testNetCDFWithDifferentTimeDimensions() throws MalformedURLException, IOException {
+    public void testNetCDFWithDifferentTimeDimensions() throws IOException {
         // Selection of the input file
         final File workDir = new File(TestData.file(this, "."), "times");
         if (!workDir.mkdir()) {

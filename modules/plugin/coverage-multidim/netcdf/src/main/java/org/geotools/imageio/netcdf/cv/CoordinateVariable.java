@@ -81,17 +81,23 @@ public abstract class CoordinateVariable<T> {
         }
 
         @Override
-        public T getMinimum() {
+        public synchronized T getMinimum() {
+            // Made it synchronized since axis1D values retrieval
+            // does cached read on its underlying
             return convertValue(axis1D.getMinValue());
         }
 
         @Override
-        public T getMaximum() {
+        public synchronized T getMaximum() {
+            // Made it synchronized since axis1D values retrieval
+            // does cached read on its underlying
             return convertValue(axis1D.getMaxValue());
         }
 
         @Override
-        public List<T> getAll() {
+        public synchronized List<T> getAll() {
+            // Made it synchronized since axis1D values retrieval
+            // does cached read on its underlying
             return new AbstractList<T>() {
                 @Override
                 public T get(int index) {

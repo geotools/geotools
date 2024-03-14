@@ -765,4 +765,9 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
         return delete;
     }
+
+    @Override
+    public boolean canOffset() {
+        return true;
+    }
 }

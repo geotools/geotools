@@ -261,6 +261,10 @@ public class WFSClient extends AbstractOpenWebService<WFSGetCapabilities, QName>
         return getStrategy().canLimit();
     }
 
+    public boolean canOffset() {
+        return getStrategy().canOffset();
+    }
+
     public boolean canFilter() {
         return true;
     }

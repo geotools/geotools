@@ -92,7 +92,7 @@ class WFSFeatureSource extends ContentFeatureSource {
 
     @Override
     protected boolean canOffset(Query query) {
-        return true; // TODO: check with the WFS client
+        return client.canOffset();
     }
 
     /**

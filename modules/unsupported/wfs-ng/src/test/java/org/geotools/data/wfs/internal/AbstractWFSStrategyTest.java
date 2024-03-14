@@ -16,8 +16,11 @@ package org.geotools.data.wfs.internal;
 import static org.geotools.data.wfs.WFSTestData.url;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import javax.xml.namespace.QName;
+import org.apache.commons.io.IOUtils;
 import org.geotools.api.filter.Filter;
 import org.geotools.data.wfs.TestHttpResponse;
 import org.geotools.data.wfs.internal.v1_x.StrictWFS_1_x_Strategy;
@@ -73,16 +76,16 @@ public class AbstractWFSStrategyTest {
     /**
      * Test method for {@link
      * org.geotools.data.wfs.internal.AbstractWFSStrategy#buildUrlGET(WFSRequest)}, to check if it
-     * produces the STARTINDEX query parameter for a WFS 1.1.0 request.
+     * produces the <code>STARTINDEX</code> query parameter also for a WFS 1.X request.
      */
     @Test
-    public void testWfs1UrlBuildingWithStartIndexParameter() throws IOException, ServiceException {
-        HTTPResponse httpResponse =
-                new TestHttpResponse(
-                        "text/xml", "UTF-8", url("GeoServer_1.7.x/1.1.0/GetCapabilities.xml"));
+    public void testWfs1_XUrlBuildingWithStartIndexParameter() throws Exception {
 
         WFSStrategy strategy = new StrictWFS_1_x_Strategy();
 
+        HTTPResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml", "UTF-8", url("GeoServer_1.7.x/1.1.0/GetCapabilities.xml"));
         WFSGetCapabilities capabilities =
                 new GetCapabilitiesResponse(httpResponse, null).getCapabilities();
         strategy.setCapabilities(capabilities);
@@ -101,16 +104,16 @@ public class AbstractWFSStrategyTest {
     /**
      * Test method for {@link
      * org.geotools.data.wfs.internal.AbstractWFSStrategy#buildUrlGET(WFSRequest)}, to check if it
-     * produces the STARTINDEX query parameter for a WFS 2.0.0 request.
+     * produces the <code>STARTINDEX</code> query parameter for a WFS 2.0.0 request.
      */
     @Test
-    public void testWfs2UrlBuildingWithStartIndexParameter() throws IOException, ServiceException {
-        HTTPResponse httpResponse =
-                new TestHttpResponse(
-                        "text/xml", "UTF-8", url("GeoServer_2.2.x/2.0.0/GetCapabilities.xml"));
+    public void testWfs2_0UrlBuildingWithStartIndexParameter() throws Exception {
 
         WFSStrategy strategy = new StrictWFS_2_0_Strategy();
 
+        HTTPResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml", "UTF-8", url("GeoServer_2.2.x/2.0.0/GetCapabilities.xml"));
         WFSGetCapabilities capabilities =
                 new GetCapabilitiesResponse(httpResponse, null).getCapabilities();
         strategy.setCapabilities(capabilities);
@@ -124,5 +127,68 @@ public class AbstractWFSStrategyTest {
         URL url = strategy.buildUrlGET(request);
 
         Assert.assertTrue(url.getQuery().contains("STARTINDEX=100"));
+    }
+
+    /**
+     * Test method for {@link
+     * org.geotools.data.wfs.internal.AbstractWFSStrategy#getPostContents(WFSRequest)}, to check if
+     * it does not produce the <code>startIndex</code> parameter for a WFS 1.X request, since it is
+     * not supported.
+     */
+    @Test
+    public void testWfs1_XPostContentCreationWithStartIndexParameter() throws Exception {
+
+        WFSStrategy strategy = new StrictWFS_1_x_Strategy();
+
+        HTTPResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml", "UTF-8", url("GeoServer_1.7.x/1.1.0/GetCapabilities.xml"));
+        WFSGetCapabilities capabilities =
+                new GetCapabilitiesResponse(httpResponse, null).getCapabilities();
+        strategy.setCapabilities(capabilities);
+
+        GetFeatureRequest request = new GetFeatureRequest(new WFSConfig(), strategy);
+
+        request.setTypeName(new QName("http://www.openplans.org/topp", "states", "topp"));
+        request.setFilter(Filter.INCLUDE);
+        request.setStartIndex(100);
+        request.setMaxFeatures(222222);
+
+        InputStream postContents = strategy.getPostContents(request);
+
+        String postContentsString =
+                String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
+        Assert.assertFalse(postContentsString.contains("startIndex"));
+    }
+
+    /**
+     * Test method for {@link
+     * org.geotools.data.wfs.internal.AbstractWFSStrategy#getPostContents(WFSRequest)}, to check if
+     * it produces the <code>startIndex</code> parameter for a WFS 2.0.0 request.
+     */
+    @Test
+    public void testWfs2_0PostContentCreationWithStartIndexParameter() throws Exception {
+
+        WFSStrategy strategy = new StrictWFS_2_0_Strategy();
+
+        HTTPResponse httpResponse =
+                new TestHttpResponse(
+                        "text/xml", "UTF-8", url("GeoServer_2.2.x/2.0.0/GetCapabilities.xml"));
+        WFSGetCapabilities capabilities =
+                new GetCapabilitiesResponse(httpResponse, null).getCapabilities();
+        strategy.setCapabilities(capabilities);
+
+        GetFeatureRequest request = new GetFeatureRequest(new WFSConfig(), strategy);
+
+        request.setTypeName(new QName("http://www.openplans.org/topp", "states", "topp"));
+        request.setFilter(Filter.INCLUDE);
+        request.setStartIndex(100);
+        request.setMaxFeatures(222222);
+
+        InputStream postContents = strategy.getPostContents(request);
+
+        String postContentsString =
+                String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
+        Assert.assertTrue(postContentsString.contains("startIndex=\"100\""));
     }
 }

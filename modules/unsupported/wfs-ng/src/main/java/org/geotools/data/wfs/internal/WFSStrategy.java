@@ -215,4 +215,14 @@ public abstract class WFSStrategy extends Specification {
     public boolean canLimit() {
         return true;
     }
+
+    /**
+     * Indicates whether the server supports adjusting the starting position of the result set.
+     * Defaults to false, as not all servers provide support for paging.
+     *
+     * @return true if the server supports setting an offset for the results, otherwise false
+     */
+    public boolean canOffset() {
+        return false;
+    }
 }

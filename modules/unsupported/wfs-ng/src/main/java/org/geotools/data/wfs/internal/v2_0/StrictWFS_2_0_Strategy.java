@@ -307,7 +307,7 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
     @Override
     @SuppressWarnings("CollectionIncompatibleType")
-    protected EObject createGetFeatureRequestPost(GetFeatureRequest query) throws IOException {
+    protected EObject createGetFeatureRequestPost(GetFeatureRequest query) {
         final QName typeName = query.getTypeName();
         final FeatureTypeInfoImpl featureTypeInfo =
                 (FeatureTypeInfoImpl) getFeatureTypeInfo(typeName);
@@ -325,7 +325,11 @@ public class StrictWFS_2_0_Strategy extends AbstractWFSStrategy {
 
         Integer maxFeatures = query.getMaxFeatures();
         if (maxFeatures != null) {
-            getFeature.setCount(BigInteger.valueOf(maxFeatures.intValue()));
+            getFeature.setCount(BigInteger.valueOf(maxFeatures));
+        }
+        Integer startIndex = query.getStartIndex();
+        if (startIndex != null) {
+            getFeature.setStartIndex(BigInteger.valueOf(startIndex));
         }
 
         ResultType resultType = query.getResultType();

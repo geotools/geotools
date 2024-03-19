@@ -232,7 +232,7 @@ in play.
 
 .. note:: Challenge
 
-  The ``canRetype(query)`` operations are easy to support, check the query and only provide values for the
+  The ``canRetype(query)`` operation is easy to support, check the query and only provide values for the
   requested attributes. This is an especially valuable optimization to perform at a low-level as
   you may be able to avoid an expensive step (like parsing ``Geometry``) if it is not being requested
   by the client.

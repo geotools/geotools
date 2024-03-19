@@ -29,6 +29,23 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+.. _update31:
+
+GeoTools 31.x
+-------------
+
+DataStore Optimization uses Actual Query
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The actual query can now be passed to the method to determine whether the DataStore implementation can optimize for specific queries.
+
+For example, ``canLimit()`` changes to ``canLimit(query)`` so the actual query can be evaluated and used to determine the response of true or false.  Previously, ``canLimit()`` had to respond in a generic way, without the benefit of the query.  The old methods have been deprecated.
+
+This allows some simple queries to be optimized when possible without also having to optimize for more complex queries (which might not be possible for the particular DataStore.)
+
+For more details on whether a method can be optimized in this way, please refer to the `API docs <https://docs.geotools.org/latest/javadocs/org/geotools/data/store/ContentFeatureSource.html>`_ and the `tutorial <https://docs.geotools.org/latest/userguide/tutorial/datastore/optimisation.html>`_.
+
+
 .. _update30:
 
 GeoTools 30.x

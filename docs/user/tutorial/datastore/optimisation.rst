@@ -163,14 +163,14 @@ in play.
         }
         
         //filtering
-        if ( !canFilter(query) ) {
+        if ( !canFilter() ) {
             if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE ) {
                 reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>( reader, query.getFilter() );
             }    
         }
         
         //retyping
-        if ( !canRetype(query) ) {
+        if ( !canRetype() ) {
             if ( query.getPropertyNames() != Query.ALL_NAMES ) {
                 //rebuild the type and wrap the reader
                 SimpleFeatureType target = 
@@ -186,7 +186,7 @@ in play.
         
         // sorting
         if ( query.getSortBy() != null && query.getSortBy().length != 0 ) {
-            if ( !canSort(query) ) {
+            if ( !canSort() ) {
                 reader = new SortedFeatureReader(DataUtilities.simple(reader), query);
             } 
         }
@@ -194,7 +194,7 @@ in play.
         
         // offset
         int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
-        if( !canOffset(query) && offset > 0 ) {
+        if( !canOffset() && offset > 0 ) {
             // skip the first n records
             for(int i = 0; i < offset && reader.hasNext(); i++) {
                 reader.next();
@@ -202,7 +202,7 @@ in play.
         }
         
         // max feature limit
-        if ( !canLimit(query) ) {
+        if ( !canLimit() ) {
             if (query.getMaxFeatures() != -1 && query.getMaxFeatures() < Integer.MAX_VALUE ) {
                 reader = new MaxFeatureReader<SimpleFeatureType, SimpleFeature>(reader, query.getMaxFeatures());
             }    
@@ -232,7 +232,7 @@ in play.
 
 .. note:: Challenge
 
-  The ``canRetype(query)`` operations are easy to support, check the query and only provide values for the
+  The ``canRetype()`` operations is easy to support, check the query and only provide values for the
   requested attributes. This is an especially valuable optimization to perform at a low-level as
   you may be able to avoid an expensive step (like parsing ``Geometry``) if it is not being requested
   by the client.
@@ -263,7 +263,7 @@ A similar set of wrappers is used for ``FeatureWriter``:
                 writer = new EventContentFeatureWriter(this, writer );
             }
             // filtering
-            if (!canFilter(query)) {
+            if (!canFilter()) {
                 if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
                     writer = new FilteringFeatureWriter(writer, query.getFilter());
                 }
@@ -296,17 +296,6 @@ The wrapper classes mentioned above are excellent examples on how to create your
 
 Every helper class we discussed above can be replaced if your external data source supports the
 functionality.
-
-Actual Query Optimization
-'''''''''''''''''''''''''
-
-Since GeoTools version 31.0, the actual query can be passed to the method to determine whether the DataStore implementation can optimize for specific queries.
-
-For example, ``canLimit()`` changes to ``canLimit(query)`` so the actual query can be evaluated and used to determine the response of true or false.  Previously, ``canLimit()`` had to respond in a generic way, without the benefit of the query.  The old methods have been deprecated.
-
-This allows some simple queries to be optimized when possible without also having to optimize for more complex queries (which might not be possible for the particular DataStore.)
-
-For more details on whether a method can be optimized in this way, please refer to the `API docs <https://docs.geotools.org/latest/javadocs/org/geotools/data/store/ContentFeatureSource.html>`_.
 
 Custom ContentState
 '''''''''''''''''''

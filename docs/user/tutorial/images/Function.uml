@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.filter.expression.Function</OriginalElement>
+  <nodes>
+    <node x="-717.0" y="79.0">org.geotools.api.filter.expression.Function</node>
+    <node x="-722.0" y="-78.5">org.geotools.api.filter.expression.Expression</node>
+    <node x="-385.0" y="89.0">org.geotools.api.filter.capability.FunctionName</node>
+    <node x="-341.5" y="-68.0">org.geotools.api.filter.capability.Operator</node>
+    <node x="-722.0" y="-246.0">org.geotools.filter.FunctionFactory</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.filter.expression.Function" target="org.geotools.api.filter.expression.Expression" relationship="INTERFACE_GENERALIZATION">
+      <point x="13.5" y="-65.5" />
+      <point x="0.0" y="54.0" />
+    </edge>
+    <edge source="org.geotools.api.filter.capability.FunctionName" target="org.geotools.api.filter.capability.Operator" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-77.0" />
+      <point x="0.0" y="54.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="0.0" y="104.0" />
+  <SelectedNodes>
+    <node>org.geotools.filter.FunctionFactory</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

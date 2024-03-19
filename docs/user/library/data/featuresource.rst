@@ -1,120 +1,130 @@
 FeatureSource
 -------------
 
-FeatureSource is probably the reason you came to this party; it let's you access geospatial information as Java objects.
+FeatureSource is used to access geospatial information as Java objects.
 
 References:
 
 * :doc:`gt-main <../main/datastore>`
 
-To review a FeatureSource may support the additional interfaces FeatureStore and FeatureLocking if
+A `FeatureSource` instance may implement additional interfaces ``FeatureStore`` and ``FeatureLocking`` if
 the current user has permission to modify or lock features.
 
-.. image:: /images/FeatureSource.PNG
+.. image:: /images/feature_source.png
 
 This page explores the capabilities of these classes using code examples.
 
 SimpleFeatureSource
 ^^^^^^^^^^^^^^^^^^^
 
-.. image:: /images/SimpleFeatureSource.PNG
+Starting with ``SimpleFeatureSource`` used accessing ``SimpleFeature`` content.
 
-To start out with we will focus on SimpleFeatureSource which is used
-primarily for accessing features.
+.. image:: /images/simple_feature_source.png
 
 Access Features
 '''''''''''''''
 
-You can access all the features using a single method call::
-  
-  SimpleFeatureSource featureSource = dataStore.getFeatureSource(featureName);
-  SimpleFeatureCollection collection = featureSource.getFeatures();
+You can access all the features using a single method call:
 
-This is the same as asking for all the features included in the file or table::
-  
-  SimpleFeatureSource featureSource = dataStore.getFeatureSource(featureName);
-  SimpleFeatureCollection collection = featureSource.getFeatures( Filter.INCLUDE );
+.. code-block:: java
+   
+   String typeName = ...
+   SimpleFeatureSource featureSource = dataStore.getFeatureSource(typeName);
+   SimpleFeatureCollection collection = featureSource.getFeatures();
 
-Feature Access using Filter::
-  
-  Filter filter = CQL.filter("NAME == 'Hwy 31a');
-  SimpleFeatureCollection collection = featureSource.getFeatures( filter );
+This is the same as asking for all the features included in the file or table:
 
-* This is very efficient as Filter can often be boiled down to a raw SQL statement when working with databases
-* Any functionality not supported by the back end is handled as part of GeoTools on the client side
+.. code-block:: java
 
-You can use Query to request a limited set of attributes; and also request the contents in a specific order.::
-  
-  FilterFactory ff = ...
-  Filter filter = ...
-  String typeName = ...
-  Query query = new Query(typeName, filter);
-  query.setMaxFeatures(10);
-  query.setPropertyNames(new String[]{"the_geom", "name"});
-  
-  SortBy sortBy = ff.sort("name", SortOrder.ASCENDING);
-  query.setSortBy(new SortBy[]{sortBy});
-  
-  SimpleFeatureCollection collection = featureSource.getFeatures( query );
+   SimpleFeatureSource featureSource = dataStore.getFeatureSource( typeName );
+   SimpleFeatureCollection collection = featureSource.getFeatures( Filter.INCLUDE );
 
-You can use Hints as part of your Query to fine tune performance and functionality; for more information please see the Hints javadocs.::
-  
-  FilterFactory ff = ...
-  Filter filter = ...
-  String typeName = ... 
-  Query query = new Query(typeName, filter);
-  query.setPropertyNames(new String[]{"the_geom", "name"});
-  
-  query.setHints( new Hints( Hints.FEATURE_2D, Boolean.true ); // force 2D data
-  SimpleFeatureCollection collection = featureSource.getFeatures( query );
+Feature Access using Filter:
 
-To quickly request only the FeatureIds (and no content)::
+.. code-block:: java
   
-  SimpleFeatureCollection featureCollection = featureSource.getFeatures( Query.FIDS );
+   Filter filter = CQL.filter("NAME == 'Hwy 31a'");
+   SimpleFeatureCollection collection = featureSource.getFeatures( filter );
+
+* This is very efficient as ``Filter`` can often be procesed into a raw SQL statement when working with databases
+* Any functionality not supported by the database or service being accessed is handled locally by the GeoTools library
+
+You can use ``Query`` to request a limited set of attributes; and also request the contents in a specific order.:
+
+.. code-block:: java
+  
+   Query query = new Query( typeName, filter );
+   query.setMaxFeatures(10);
+   query.setPropertyNames(new String[]{"the_geom", "name"});
+  
+   SortBy sortBy = ff.sort("name", SortOrder.ASCENDING);
+   query.setSortBy(new SortBy[]{sortBy});
+  
+   SimpleFeatureCollection collection = featureSource.getFeatures( query );
+
+``Hints`` are added to a ``Query`` to fine tune performance and functionality; for more information please see the Hints javadocs.:
+
+.. code-block:: java
+  
+   Query query = new Query( typeName, filter );
+   query.setPropertyNames(new String[]{"the_geom", "name"});
+  
+   query.setHints( new Hints( Hints.FEATURE_2D, Boolean.true ); // force 2D data
+   SimpleFeatureCollection collection = featureSource.getFeatures( query );
+
+To quickly request only the FeatureIds (and no content):
+
+.. code-block:: java
+  
+   SimpleFeatureCollection featureCollection = featureSource.getFeatures( Query.FIDS );
 
 Summary
 '''''''
 
-A simple count is available::
-  
-  SimpleFeatureType schema = featureSource.getSchema();
-  Query query = new Query( schema.getTypeName(), Filter.INCLUDE );
-  int count = featureSource.getCount( query );
-  if( count == -1 ){
-    // information was not available in the header!
-    SimpleFeatureCollection collection = featureSource.getFeatures( query );
-    count = collection.size();
-  }
-  System.out.println("There are "+count+" "+schema.getTypeName()+ " features");
+A simple count is available:
 
-The bounding box, or extend, of a set of features::
+.. code-block:: java
   
-  SimpleFeatureType schema = featureSource.getSchema();
-  Query query = new Query( schema.getTypeName(), Filter.INCLUDE );
-  BoundingBox bounds = featureSource.getBounds( query );
-  if( bounds == null ){
-     // information was not available in the header
-     FeatureCollection<SimpleFeatureType, SimpleFeature> collection = featureSource.getFeatures( query );
-     bounds = collection.getBounds();
-  }
-  System.out.println("The features are contained within "+bounds );
+   SimpleFeatureType schema = featureSource.getSchema();
+   Query query = new Query( schema.getTypeName(), Filter.INCLUDE );
+   int count = featureSource.getCount( query );
+   if( count == -1 ){
+     // information was not available in the header!
+     SimpleFeatureCollection collection = featureSource.getFeatures( query );
+     count = collection.size();
+   }
+   System.out.println("There are "+count+" "+schema.getTypeName()+ " features");
 
-Ad-hoc summary information is available using aggregate functions for feature collections::
+The bounding box, or extend, of a set of features:
+
+.. code-block:: java
+    
+   SimpleFeatureType schema = featureSource.getSchema();
+   Query query = new Query( schema.getTypeName(), Filter.INCLUDE );
+   BoundingBox bounds = featureSource.getBounds( query );
+   if( bounds == null ){
+      // information was not available in the header
+      FeatureCollection<SimpleFeatureType, SimpleFeature> collection = featureSource.getFeatures( query );
+      bounds = collection.getBounds();
+   }
+   System.out.println("The features are contained within "+bounds );
+
+Ad-hoc summary information is available using aggregate functions for feature collections:
+
+.. code-block:: java
+    
+   SimpleFeatureCollection collection = featureSource.getFeatures();
   
-  SimpleFeatureCollection collection = featureSource.getFeatures();
+   FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+   Function sum = ff.function("Collection_Sum", ff.property("population"));
   
-  FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-  Function sum = ff.function("Collection_Sum", ff.property("population"));
-  
-  Object value = sum.evaluate( featureCollection );
-  System.out.println("total population: "+ sum );
+   Object value = sum.evaluate( featureCollection );
+   System.out.println("total population: "+ sum );
 
 For more information see :doc:`gt-main collection<../main/collection>` page.
 
 SimpleFeatureStore
 ^^^^^^^^^^^^^^^^^^
-
-.. image:: /images/SimpleFeatureStore.PNG
 
 FeatureStore is where we finally get access to writing out information to disk, database or web services.
 
@@ -285,9 +295,6 @@ SimpleFeatureLocking
 
 ``FeatureLocking`` follows the same model as web feature service locking; a time based lock is requested. The lock is valid
 until released, or until the duration expires.
-
-
-.. image:: /images/SimpleFeatureLocking.PNG
 
 Acquiring a lock is straight forward::
         

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.data.SimpleFeatureSource</OriginalElement>
+  <nodes>
+    <node x="348.5" y="175.0">org.geotools.api.data.FeatureSource</node>
+    <node x="99.0" y="175.0">org.geotools.api.data.DataAccess</node>
+    <node x="130.5" y="255.0">org.geotools.api.data.DataStore</node>
+    <node x="348.0" y="255.0">org.geotools.api.data.SimpleFeatureSource</node>
+    <node x="626.5" y="175.0">org.geotools.api.data.Query</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.data.DataStore" target="org.geotools.api.data.DataAccess" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.geotools.api.data.FeatureSource" target="org.geotools.api.data.Query" relationship="LINK_IN_DOCS">
+      <point x="105.5" y="-0.0" />
+      <point x="-47.5" y="-0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.SimpleFeatureSource" target="org.geotools.api.data.FeatureSource" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.geotools.api.data.DataStore" target="org.geotools.api.data.SimpleFeatureSource" relationship="DEPENDENCY">
+      <point x="63.5" y="0.0" />
+      <point x="-106.0" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.SimpleFeatureSource" target="org.geotools.api.data.Query" relationship="DEPENDENCY">
+      <point x="106.0" y="0.0" />
+      <point x="674.0" y="269.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.geotools.api.data.DataAccess" target="org.geotools.api.data.FeatureSource" relationship="DEPENDENCY">
+      <point x="95.0" y="0.0" />
+      <point x="-105.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="true" x="415.5" y="51.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

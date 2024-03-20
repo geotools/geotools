@@ -490,7 +490,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
             LOGGER.warning(
                     "There is code leaving netcdf image readers open, this might cause "
                             + "issues with file deletion on Windows!");
-            if (NetCDFUtilities.TRACE_ENABLED) {
+            if (Boolean.TRUE.equals(NetCDFUtilities.TRACE_ENABLED)) {
                 LOGGER.log(
                         Level.WARNING,
                         "The unclosed image reader originated on this stack trace",
@@ -617,10 +617,6 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 if (origName == null) {
                     origName = name.getLocalPart();
                 }
-                //                else {
-                //                    throw new IllegalArgumentException("Unable to locate
-                // descriptor for Coverage: "+name);
-                //                }
                 cd = new VariableAdapter(this, name, (VariableDS) getVariableByName(origName));
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -632,7 +628,10 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
     /** @see javax.imageio.ImageReader#read(int, javax.imageio.ImageReadParam) */
     @Override
-    @SuppressWarnings("PMD.ReplaceHashtableWithMap") // needed for BufferedImageConstructor
+    @SuppressWarnings({
+        "deprecation",
+        "PMD.ReplaceHashtableWithMap"
+    }) // needed for BufferedImageConstructor
     public BufferedImage read(int imageIndex, ImageReadParam param) throws IOException {
         clearAbortRequest();
 
@@ -939,7 +938,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     private synchronized boolean needFlipYAxis(CoordinateAxis axis) throws IOException {
         boolean flipYAxis = false;
         try {
-            Array yAxisStart = axis.read(new Section().appendRange(2));
+            Array yAxisStart = axis.read(new Section(new Range(2)));
             float y1 = yAxisStart.getFloat(0);
             float y2 = yAxisStart.getFloat(1);
             if (y2 > y1) {

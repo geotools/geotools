@@ -255,7 +255,7 @@ class WFSFeatureSource extends ContentFeatureSource {
             request.setMaxFeatures(maxFeatures);
         }
         Integer startIndex = query.getStartIndex();
-        if (startIndex != null && Integer.MAX_VALUE > startIndex && canOffset(query)) {
+        if (startIndex != null && canOffset(query)) {
             request.setStartIndex(startIndex);
         }
         // let the request decide request.setOutputFormat(outputFormat);

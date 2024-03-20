@@ -261,7 +261,7 @@ class FilterToSqlHelper {
             property.accept(delegate, extraData);
             out.write(",");
             geometry.accept(delegate, extraData);
-            out.write(") > ");
+            out.write(") >= ");
             out.write(toNativeUnits(filter));
         }
     }

@@ -154,11 +154,11 @@ public class AbstractWFSStrategyTest {
         request.setStartIndex(100);
         request.setMaxFeatures(222222);
 
-        InputStream postContents = strategy.getPostContents(request);
-
-        String postContentsString =
-                String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
-        Assert.assertFalse(postContentsString.contains("startIndex"));
+        try (InputStream postContents = strategy.getPostContents(request)) {
+            String postContentsString =
+                    String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
+            Assert.assertFalse(postContentsString.contains("startIndex"));
+        }
     }
 
     /**
@@ -185,10 +185,10 @@ public class AbstractWFSStrategyTest {
         request.setStartIndex(100);
         request.setMaxFeatures(222222);
 
-        InputStream postContents = strategy.getPostContents(request);
-
-        String postContentsString =
-                String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
-        Assert.assertTrue(postContentsString.contains("startIndex=\"100\""));
+        try (InputStream postContents = strategy.getPostContents(request)) {
+            String postContentsString =
+                    String.join("\n", IOUtils.readLines(new InputStreamReader(postContents)));
+            Assert.assertTrue(postContentsString.contains("startIndex=\"100\""));
+        }
     }
 }

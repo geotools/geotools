@@ -341,7 +341,7 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
             map.put("MAXFEATURES", String.valueOf(request.getMaxFeatures()));
         }
 
-        if (request.getStartIndex() != null) {
+        if (request.getStartIndex() != null && this.canOffset()) {
             map.put("STARTINDEX", String.valueOf(request.getStartIndex()));
         }
 

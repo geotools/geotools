@@ -98,7 +98,7 @@ public class AbstractWFSStrategyTest {
 
         URL url = strategy.buildUrlGET(request);
 
-        Assert.assertTrue(url.getQuery().contains("STARTINDEX=100"));
+        Assert.assertFalse(url.getQuery().contains("STARTINDEX"));
     }
 
     /**

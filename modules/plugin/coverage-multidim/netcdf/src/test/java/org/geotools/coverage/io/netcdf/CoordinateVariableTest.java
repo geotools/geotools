@@ -37,23 +37,16 @@ import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import ucar.nc2.Dimension;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
-public class CoordinateVariableTest extends Assert {
-
-    @BeforeClass
-    public static void init() {
-        System.setProperty("user.timezone", "GMT");
-        System.setProperty("netcdf.coordinates.enablePlugins", "true");
-    }
+public class CoordinateVariableTest extends NetCDFBaseTest {
 
     @AfterClass
     public static void close() {
@@ -70,6 +63,7 @@ public class CoordinateVariableTest extends Assert {
             return units;
         }
 
+        @SuppressWarnings("deprecation") // No alternative provided
         CoordinateAxis1DUnitWrapper(NetcdfDataset ncd, CoordinateAxis1D axis, String units) {
             super(ncd, axis);
             this.units = units;
@@ -78,9 +72,8 @@ public class CoordinateVariableTest extends Assert {
 
     @Test
     public void timeUnitsTest() throws Exception {
-
         try (NetcdfDataset dataset =
-                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
+                NetcdfDatasets.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
             Dimension dim = dataset.findDimension("time");
 
             // check type
@@ -215,7 +208,7 @@ public class CoordinateVariableTest extends Assert {
 
         // acquire dataset
         try (NetcdfDataset dataset =
-                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
+                NetcdfDatasets.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
             assertNotNull(dataset);
             final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
             assertNotNull(cvs);
@@ -299,7 +292,7 @@ public class CoordinateVariableTest extends Assert {
 
         // acquire dataset
         try (final NetcdfDataset dataset =
-                NetcdfDataset.openDataset(
+                NetcdfDatasets.openDataset(
                         TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc")
                                 .toExternalForm())) {
             assertNotNull(dataset);
@@ -423,7 +416,7 @@ public class CoordinateVariableTest extends Assert {
         TestData.unzipFile(this, "climatologicalaxis/climatological.zip");
 
         try (NetcdfDataset dataset =
-                NetcdfDataset.openDataset(
+                NetcdfDatasets.openDataset(
                         TestData.url(this, "climatologicalaxis/climatological.nc")
                                 .toExternalForm())) {
             Dimension dim = dataset.findDimension("time");

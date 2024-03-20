@@ -62,23 +62,19 @@ import org.geotools.util.SoftValueHashMap;
 import thredds.featurecollection.FeatureCollectionConfig;
 import thredds.featurecollection.FeatureCollectionConfigBuilder;
 import ucar.ma2.Array;
-import ucar.ma2.ArrayByte;
-import ucar.ma2.ArrayDouble;
-import ucar.ma2.ArrayFloat;
-import ucar.ma2.ArrayInt;
-import ucar.ma2.ArrayShort;
 import ucar.ma2.DataType;
 import ucar.nc2.Attribute;
 import ucar.nc2.Dimension;
 import ucar.nc2.Group;
 import ucar.nc2.Variable;
-import ucar.nc2.VariableIF;
+import ucar.nc2.VariableSimpleIF;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis1D;
+import ucar.nc2.dataset.DatasetUrl;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.dataset.NetcdfDatasets;
+import ucar.nc2.ffi.netcdf.NetcdfClibrary;
 import ucar.nc2.ft.fmrc.Fmrc;
-import ucar.nc2.jni.netcdf.Nc4Iosp;
 import ucar.nc2.util.cache.FileCache;
 
 /**
@@ -144,6 +140,8 @@ public class NetCDFUtilities {
      */
     public static final Boolean TRACE_ENABLED =
             "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
+
+    public static final Set<NetcdfDataset.Enhance> DEFAULT_ENHANCE_MODE;
 
     private NetCDFUtilities() {}
 
@@ -302,14 +300,13 @@ public class NetCDFUtilities {
     public static final String ENHANCE_CONVERT_ENUMS =
             "org.geotools.coverage.io.netcdf.enhance.ConvertEnums";
 
-    public static final String ENHANCE_SCALE_MISSING_DEFER =
-            "org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer";
-
     public static boolean ENHANCE_SCALE_OFFSET = false;
 
     public static final String STORE_NAME = "StoreName";
 
     protected static final Map<URI, FileFormat> URI_FORMAT_CACHE = new SoftValueHashMap<>();
+
+    protected static final Map<String, DatasetUrl> DATASET_URL_CACHE = new SoftValueHashMap<>();
 
     /**
      * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have
@@ -385,40 +382,11 @@ public class NetCDFUtilities {
         // params
 
         // Default used to be to just enhance coord systems
-        EnumSet<NetcdfDataset.Enhance> defaultEnhanceMode =
-                EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
-
-        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
-                && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
-            defaultEnhanceMode.remove(NetcdfDataset.Enhance.CoordSystems);
-        }
-
-        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
-            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissing);
-            ENHANCE_SCALE_OFFSET = true;
-        }
-
-        if (Boolean.getBoolean(ENHANCE_CONVERT_ENUMS)) {
-            defaultEnhanceMode.add(NetcdfDataset.Enhance.ConvertEnums);
-        }
-
-        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING_DEFER)) {
-            defaultEnhanceMode.add(NetcdfDataset.Enhance.ScaleMissingDefer);
-        }
-
-        NetcdfDataset.setDefaultEnhanceMode(defaultEnhanceMode);
+        DEFAULT_ENHANCE_MODE = EnumSet.of(NetcdfDataset.Enhance.CoordSystems);
+        initEnhanceMode();
 
         // Initializing NetCDF Caches
-        if (Boolean.getBoolean("org.geotools.coverage.io.netcdf.cachefile")) {
-            int minElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.min", 200);
-            int maxElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.max", 300);
-            int period =
-                    Integer.getInteger(
-                            "org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
-            NetcdfDataset.initNetcdfFileCache(minElements, maxElements, period);
-            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(
-                    new FileCache(minElements, maxElements, period));
-        }
+        initCache();
 
         String property = System.getProperty(CHECK_COORDINATE_PLUGINS_KEY);
         CHECK_COORDINATE_PLUGINS = Boolean.getBoolean(CHECK_COORDINATE_PLUGINS_KEY);
@@ -427,7 +395,7 @@ public class NetCDFUtilities {
             LOGGER.info("Should check for coordinate handler plugins:" + CHECK_COORDINATE_PLUGINS);
         }
 
-        IGNORED_DIMENSIONS = initializeIgnoreSet();
+        IGNORED_DIMENSIONS = initIgnoreSet();
 
         // Setting the LINUX Epoch as start time
         final GregorianCalendar calendar = new GregorianCalendar(1970, 00, 01, 00, 00, 00);
@@ -440,9 +408,7 @@ public class NetCDFUtilities {
         EXCLUDED_ATTRIBUTES.add(DESCRIPTION);
         EXCLUDED_ATTRIBUTES.add(STANDARD_NAME);
 
-        HashSet<String> unsupportedSet = new HashSet<>();
-        unsupportedSet.add("OSEQD");
-        UNSUPPORTED_DIMENSIONS = Collections.unmodifiableSet(unsupportedSet);
+        UNSUPPORTED_DIMENSIONS = Set.of("OSEQD");
 
         VALID_TYPES.add(DataType.BOOLEAN);
         VALID_TYPES.add(DataType.BYTE);
@@ -476,17 +442,58 @@ public class NetCDFUtilities {
             IS_GRIB_AVAILABLE = false;
         }
 
-        IS_NC4_LIBRARY_AVAILABLE = Nc4Iosp.isClibraryPresent();
+        IS_NC4_LIBRARY_AVAILABLE = NetcdfClibrary.isLibraryPresent();
         if (!IS_NC4_LIBRARY_AVAILABLE && LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine(NC4_ERROR_MESSAGE);
         }
     }
 
-    static boolean isLatLon(String bandName) {
-        return bandName.equalsIgnoreCase(LON) || bandName.equalsIgnoreCase(LAT);
+    private static void initEnhanceMode() {
+        if (System.getProperty(ENHANCE_COORD_SYSTEMS) != null
+                && !Boolean.getBoolean(ENHANCE_COORD_SYSTEMS)) {
+            DEFAULT_ENHANCE_MODE.remove(NetcdfDataset.Enhance.CoordSystems);
+        }
+
+        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
+            // These sets are taken from the deprecated NetCDFDataset.parseEnhanceMode
+            EnumSet<NetcdfDataset.Enhance> set =
+                    EnumSet.of(
+                            NetcdfDataset.Enhance.ConvertUnsigned,
+                            NetcdfDataset.Enhance.ApplyScaleOffset,
+                            NetcdfDataset.Enhance.ConvertMissing);
+            DEFAULT_ENHANCE_MODE.addAll(set);
+            ENHANCE_SCALE_OFFSET = true;
+        }
+
+        if (Boolean.getBoolean(ENHANCE_CONVERT_ENUMS)) {
+            DEFAULT_ENHANCE_MODE.add(NetcdfDataset.Enhance.ConvertEnums);
+        }
+
+        // ENHANCE_SCALE_MISSING_DEFER isn't exposed anymore since it will add a "none" enhancement,
+        // so no need to parse it anymore
+
+        NetcdfDataset.setDefaultEnhanceMode(DEFAULT_ENHANCE_MODE);
     }
 
-    private static Set<String> initializeIgnoreSet() {
+    private static void initCache() {
+        if (Boolean.getBoolean("org.geotools.coverage.io.netcdf.cachefile")) {
+            LOGGER.info("NetCDF File Cache has been enabled");
+            int minElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.min", 200);
+            int maxElements = Integer.getInteger("org.geotools.coverage.io.netcdf.cache.max", 300);
+            int period =
+                    Integer.getInteger(
+                            "org.geotools.coverage.io.netcdf.cache.cleanup.period", 12 * 60);
+
+            // No replacements found for 5.5 even if deprecated. Documentation still uses it
+            // https://docs.unidata.ucar.edu/netcdf-java/5.5/userguide/disk_caching.html#netcdffilecache
+
+            NetcdfDatasets.initNetcdfFileCache(minElements, maxElements, period);
+            ucar.unidata.io.RandomAccessFile.setGlobalFileCache(
+                    new FileCache(minElements, maxElements, period));
+        }
+    }
+
+    private static Set<String> initIgnoreSet() {
         Set<CoordinateHandlerSpi> handlers = CoordinateHandlerFinder.getAvailableHandlers();
         Iterator<CoordinateHandlerSpi> iterator = handlers.iterator();
         Set<String> ignoredSet = new HashSet<>();
@@ -563,15 +570,10 @@ public class NetCDFUtilities {
      * @return The data type, or {@link DataBuffer#TYPE_UNDEFINED} if unknown.
      * @see NetcdfImageReader#getRawDataType
      */
-    public static int getRawDataType(final VariableIF variable) {
-        VariableDS ds = (VariableDS) variable;
-        final DataType type;
-        if (Boolean.getBoolean(ENHANCE_SCALE_MISSING)) {
-            type = ds.getDataType();
-        } else {
-            type = ds.getOriginalDataType();
-        }
-        return transcodeNetCDFDataType(type, variable.isUnsigned());
+    public static int getRawDataType(final VariableSimpleIF variable) {
+        Variable ds = (Variable) variable;
+        final DataType type = ds.getDataType();
+        return transcodeNetCDFDataType(type, variable.getDataType().isUnsigned());
     }
 
     /**
@@ -615,6 +617,7 @@ public class NetCDFUtilities {
      * NetCDF files may contains a wide set of coverageDescriptorsCache. Some of them are unuseful
      * for our purposes. The method returns {@code true} if the specified variable is accepted.
      */
+    @SuppressWarnings("deprecation") // no alternative for Dimension.getFullName
     public static boolean isVariableAccepted(
             final Variable var, final CheckType checkType, final NetcdfDataset dataset) {
         if (var instanceof CoordinateAxis1D) {
@@ -687,6 +690,7 @@ public class NetCDFUtilities {
         }
     }
 
+    @SuppressWarnings("deprecation") // no Alternative for Dimension.getFullName
     private static Variable getAuxiliaryCoordinate(
             NetcdfDataset dataset, Group group, Variable var, String dimName) {
         Variable coordinateVariable = null;
@@ -695,7 +699,10 @@ public class NetCDFUtilities {
             String coordinates = attribute.getStringValue();
             String[] coords = coordinates.split(" ");
             for (String coord : coords) {
-                Variable coordVar = dataset.findVariable(group, coord);
+                Variable coordVar =
+                        group == null
+                                ? dataset.findVariable(coord)
+                                : group.findVariableLocal(coord);
                 List<Dimension> varDimensions = coordVar.getDimensions();
                 if (varDimensions != null
                         && varDimensions.size() == 1
@@ -741,6 +748,16 @@ public class NetCDFUtilities {
         format = getFormatFromUri(uri);
         URI_FORMAT_CACHE.put(uri, format);
         return format;
+    }
+
+    public static DatasetUrl getDatasetUrl(String uri) throws IOException {
+        DatasetUrl url = DATASET_URL_CACHE.get(uri);
+        if (url != null) {
+            return url;
+        }
+        url = DatasetUrl.findDatasetUrl(uri);
+        DATASET_URL_CACHE.put(uri, url);
+        return url;
     }
 
     private static FileFormat getFormatFromUri(URI uri) throws IOException {
@@ -809,21 +826,22 @@ public class NetCDFUtilities {
         @SuppressWarnings("PMD.CloseResource") // won't risk closing System.err
         Formatter formatter = new Formatter(System.err);
         FeatureCollectionConfigBuilder builder = new FeatureCollectionConfigBuilder(formatter);
-        FeatureCollectionConfig config =
-                builder.readConfigFromFile(
-                        path.toString()); // this is the path to the feature collection XML
+        // this is the path to the feature collection XML
+        FeatureCollectionConfig config = builder.readConfigFromFile(path);
+        @SuppressWarnings("PMD.CloseResource") // It will be closed outside
         Fmrc fmrc = Fmrc.open(config, formatter);
-        NetcdfDataset dataset = new NetcdfDataset();
+        NetcdfDataset dataset = NetcdfDataset.builder().setLocation(path).build();
         fmrc.getDataset2D(dataset);
-        dataset.setLocation(path);
         return dataset;
     }
 
     public static NetcdfDataset acquireDataset(URI uri) throws IOException {
+        String uriString = uri.toString();
         if (getFormat(uri) == FileFormat.FC) {
-            return acquireFeatureCollection(uri.toString());
+            return acquireFeatureCollection(uriString);
         } else {
-            return NetcdfDataset.acquireDataset(uri.toString(), null);
+            DatasetUrl url = getDatasetUrl(uriString);
+            return NetcdfDatasets.acquireDataset(url, null);
         }
     }
 
@@ -1131,13 +1149,15 @@ public class NetCDFUtilities {
      * @param var Variable instance
      * @return a Number representing NoData
      */
+    @SuppressWarnings("deprecation") // no alternative for Attribute.getFullName
     public static Number getNodata(Variable var) {
         if (var != null) {
             // Getting all the Variable attributes
-            List<Attribute> attributes = var.getAttributes();
+            Iterator<Attribute> attributes = var.iterator();
             String fullName;
             // Searching for FILL_VALUE or MISSING_VALUE attributes
-            for (Attribute attribute : attributes) {
+            while (attributes.hasNext()) {
+                Attribute attribute = attributes.next();
                 fullName = attribute.getFullName();
                 if (fullName.equalsIgnoreCase(FILL_VALUE)
                         || fullName.equalsIgnoreCase(MISSING_VALUE)) {
@@ -1253,196 +1273,12 @@ public class NetCDFUtilities {
     public static Array getArray(int[] dimensions, DataType varDataType) {
         if (dimensions == null) throw new IllegalArgumentException("Illegal dimensions");
         final int nDims = dimensions.length;
-        switch (nDims) {
-            case 7:
-                // 7D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D7(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5],
-                            dimensions[6]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D7(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5],
-                            dimensions[6]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D7(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5],
-                            dimensions[6]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D7(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5],
-                            dimensions[6]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D7(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5],
-                            dimensions[6]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
-            case 6:
-                // 6D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D6(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D6(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D6(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D6(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D6(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4],
-                            dimensions[5]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
-            case 5:
-                // 5D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D5(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D5(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D5(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D5(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D5(
-                            dimensions[0],
-                            dimensions[1],
-                            dimensions[2],
-                            dimensions[3],
-                            dimensions[4]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
-            case 4:
-                // 4D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D4(
-                            dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D4(
-                            dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D4(
-                            dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D4(
-                            dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D4(
-                            dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
-            case 3:
-                // 3D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D3(dimensions[0], dimensions[1], dimensions[2]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D3(dimensions[0], dimensions[1], dimensions[2]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D3(dimensions[0], dimensions[1], dimensions[2]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D3(dimensions[0], dimensions[1], dimensions[2]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D3(dimensions[0], dimensions[1], dimensions[2]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
-            case 2:
-                // 2D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D2(dimensions[0], dimensions[1]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D2(dimensions[0], dimensions[1]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D2(dimensions[0], dimensions[1]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D2(dimensions[0], dimensions[1]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D2(dimensions[0], dimensions[1]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
-            case 1:
-                // 1D Arrays
-                if (varDataType == DataType.FLOAT) {
-                    return new ArrayFloat.D1(dimensions[0]);
-                } else if (varDataType == DataType.DOUBLE) {
-                    return new ArrayDouble.D1(dimensions[0]);
-                } else if (varDataType == DataType.BYTE) {
-                    return new ArrayByte.D1(dimensions[0]);
-                } else if (varDataType == DataType.SHORT) {
-                    return new ArrayShort.D1(dimensions[0]);
-                } else if (varDataType == DataType.INT) {
-                    return new ArrayInt.D1(dimensions[0]);
-                } else throw new IllegalArgumentException("unsupported Datatype");
+        if (nDims < 1 || nDims > 7) {
+            throw new IllegalArgumentException(
+                    "Unable to create a proper array unsupported Datatype; nDims not between 1 and 7");
         }
-        throw new IllegalArgumentException(
-                "Unable to create a proper array unsupported Datatype; nDims not between 1 and 7");
+
+        return Array.factory(varDataType, dimensions);
     }
 
     /**
@@ -1453,17 +1289,17 @@ public class NetCDFUtilities {
      */
     public static Number transcodeNumber(final DataType type, Number value) {
         if (DataType.DOUBLE.equals(type)) {
-            return Double.valueOf(value.doubleValue());
+            return value.doubleValue();
         } else if (DataType.FLOAT.equals(type)) {
-            return Float.valueOf(value.floatValue());
+            return value.floatValue();
         } else if (DataType.LONG.equals(type)) {
-            return Long.valueOf(value.longValue());
+            return value.longValue();
         } else if (DataType.INT.equals(type)) {
-            return Integer.valueOf(value.intValue());
+            return value.intValue();
         } else if (DataType.SHORT.equals(type)) {
-            return Short.valueOf(value.shortValue());
+            return value.shortValue();
         } else if (DataType.BYTE.equals(type)) {
-            return Byte.valueOf(value.byteValue());
+            return value.byteValue();
         }
         throw new IllegalArgumentException(
                 "Unsupported type or value: type = " + type.toString() + " value = " + value);
@@ -1521,6 +1357,7 @@ public class NetCDFUtilities {
 
     private static void clearCache() {
         URI_FORMAT_CACHE.clear();
+        DATASET_URL_CACHE.clear();
     }
 
     /**

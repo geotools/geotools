@@ -20,7 +20,6 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,6 +57,7 @@ import org.junit.Test;
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /** Unit test for testing Grib data. */
 public class GribTest extends Assert {
@@ -109,8 +109,8 @@ public class GribTest extends Assert {
 
         TestData.unzipFile(this, referenceDir + "/TT_FC_INCA_EarthShape.zip");
         final File file = new File(workDir, "TT_FC_INCA_EarthShape.grb2");
-        try (NetcdfDataset dataset = NetcdfDataset.openDataset(file.getAbsolutePath())) {
-            Variable var = dataset.findVariable(null, "LambertConformal_Projection");
+        try (NetcdfDataset dataset = NetcdfDatasets.openDataset(file.getAbsolutePath())) {
+            Variable var = dataset.findVariable("LambertConformal_Projection");
             assertNotNull(var);
 
             // Before switching to NetCDF 4.6.2 there was a bug which was returning
@@ -178,7 +178,7 @@ public class GribTest extends Assert {
 
     /** Test on a Grib image. */
     @Test
-    public void testGribImage() throws MalformedURLException, IOException {
+    public void testGribImage() throws IOException {
         // Selection of the input file
         final File file = TestData.file(this, "sampleGrib.grb2");
         // Testing the 2 points
@@ -191,7 +191,7 @@ public class GribTest extends Assert {
      * validpoint and nodatapoint should be inverted.
      */
     private void testGribFile(final File inputFile, Point2D validPoint, Point2D nodataPoint)
-            throws MalformedURLException, IOException {
+            throws IOException {
         // Get format
         final AbstractGridFormat format =
                 GridFormatFinder.findFormat(inputFile.toURI().toURL(), null);
@@ -235,7 +235,7 @@ public class GribTest extends Assert {
 
     /** Test on a Grib image asking for a larger bounding box. */
     @Test
-    public void testGribImageWithLargeBBOX() throws MalformedURLException, IOException {
+    public void testGribImageWithLargeBBOX() throws IOException {
         // Selection of the input file
         final File inputFile = TestData.file(this, "sampleGrib.grb2");
         // Get format
@@ -292,7 +292,7 @@ public class GribTest extends Assert {
 
     /** Test on a Grib image with temporal bands, querying different bands */
     @Test
-    public void testGribImageWithTimeDimension() throws MalformedURLException, IOException {
+    public void testGribImageWithTimeDimension() throws IOException {
         // Selection of the input file
         final File inputFile = TestData.file(this, "tpcprblty.2019100912.incremental.grib2");
         // Get format
@@ -328,8 +328,9 @@ public class GribTest extends Assert {
 
             final ParameterValue<List> time =
                     new DefaultParameterDescriptor<>("TIME", List.class, null, null).createValue();
-            // 2019-10-09T18:00:00.000Z
-            time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570644000000L))));
+            // Time value have changed with the NetCDF Version upgrade.
+            // 2019-10-09T15:00:00.000Z
+            time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570633200000L))));
 
             // HEIGHT_ABOVE_GROUND = "[10.0]"
             final ParameterValue<List> height =
@@ -339,13 +340,13 @@ public class GribTest extends Assert {
 
             GeneralParameterValue[] values = {gg, time, height};
 
-            // Read with 0th date
+            // Read with 1st date
             GridCoverage2D grid = reader.read(coverageName, values);
             assertNotNull(grid);
 
             // Read with 12th date
-            // 2019-10-12T18:00:00.000Z
-            time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570903200000L))));
+            // 2019-10-12T15:00:00.000Z
+            time.setValue(new ArrayList<>(Collections.singletonList(new Date(1570892400000L))));
             grid = reader.read(coverageName, values);
             assertNotNull(grid);
         } finally {

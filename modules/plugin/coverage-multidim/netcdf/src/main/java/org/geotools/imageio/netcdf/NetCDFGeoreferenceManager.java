@@ -329,7 +329,7 @@ class NetCDFGeoreferenceManager {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("The variable refers to gridMapping: " + gridMappingName);
                 }
-                Variable mapping = dataset.findVariable(null, gridMappingName);
+                Variable mapping = dataset.findVariable(gridMappingName);
                 if (mapping != null) {
                     CoordinateReferenceSystem localCrs = NetCDFProjection.parseProjection(mapping);
                     if (localCrs != null) {
@@ -531,7 +531,7 @@ class NetCDFGeoreferenceManager {
     }
 
     private String getCoordinatesForVariable(String shortName) {
-        Variable var = dataset.findVariable(null, shortName);
+        Variable var = dataset.findVariable(shortName);
         if (var != null) {
             // Getting the coordinates attribute
             Attribute attribute = var.findAttribute(NetCDFUtilities.COORDINATES);
@@ -580,6 +580,7 @@ class NetCDFGeoreferenceManager {
      * Parse the CoordinateAxes of the dataset and setup proper {@link CoordinateVariable} instances
      * on top of it and proper mapping between NetCDF dimensions and related coordinate variables.
      */
+    @SuppressWarnings("deprecation") // We need to modify the axisType of the dataset axis.
     private void initCoordinates() {
         // get the coordinate variables
         Map<String, CoordinateVariable<?>> coordinates = new HashMap<>();

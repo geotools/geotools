@@ -39,7 +39,7 @@ import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.CF;
 import ucar.nc2.dataset.NetcdfDataset;
-import ucar.unidata.geoloc.LatLonPointImpl;
+import ucar.unidata.geoloc.LatLonPoints;
 
 /**
  * Class used to properly setup NetCDF CF Projection parameters. Given a known OGC Projection, it
@@ -410,7 +410,7 @@ public class NetCDFProjection {
                             throw new RuntimeException(
                                     "Unexpected north pole latitude: " + latNorthPole);
                         }
-                        double lonOrigin = LatLonPointImpl.lonNormal(lonNorthPole + 180);
+                        double lonOrigin = LatLonPoints.lonNormal(lonNorthPole + 180);
                         double latOrigin = 90 - latNorthPole;
                         ParameterValueGroup ogcParameters = netcdfParameters.clone();
                         ogcParameters
@@ -444,7 +444,7 @@ public class NetCDFProjection {
                             throw new RuntimeException(
                                     "Unexpected latitude of origin: " + latOrigin);
                         }
-                        double lonNorthPole = LatLonPointImpl.lonNormal(lonOrigin + 180);
+                        double lonNorthPole = LatLonPoints.lonNormal(lonOrigin + 180);
                         double latNorthPole = 90 - latOrigin;
                         ParameterValueGroup netcdfParameters = ogcParameters.clone();
                         netcdfParameters

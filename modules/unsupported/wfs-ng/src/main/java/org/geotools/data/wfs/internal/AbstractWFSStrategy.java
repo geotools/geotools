@@ -108,7 +108,7 @@ import org.geotools.xsd.Encoder;
  *   <li>{@link #createTransactionRequest}
  * </ul>
  *
- * <p>Additionaly, specific strategy objects may override any other method to work around specific
+ * <p>Additionally, specific strategy objects may override any other method to work around specific
  * service implementation oddities. To that end, the following methods might be of special interest:
  *
  * <ul>
@@ -339,6 +339,10 @@ public abstract class AbstractWFSStrategy extends WFSStrategy {
 
         if (request.getMaxFeatures() != null) {
             map.put("MAXFEATURES", String.valueOf(request.getMaxFeatures()));
+        }
+
+        if (request.getStartIndex() != null && this.canOffset()) {
+            map.put("STARTINDEX", String.valueOf(request.getStartIndex()));
         }
 
         if (request.getPropertyNames() != null && request.getPropertyNames().length > 0) {

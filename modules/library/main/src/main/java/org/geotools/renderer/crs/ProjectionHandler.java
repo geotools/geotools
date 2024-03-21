@@ -805,7 +805,7 @@ public class ProjectionHandler {
         }
         Geometry result = null;
         try {
-            result = geometry.intersection(mask);
+           result = intersection(geometry, mask);
         } catch (Exception e1) {
             // JTS versions lower than 1.18.0 included a call to buffer(0) in the reduce call.
             // We add it here to ensure that inputs are suitably clean.
@@ -831,7 +831,7 @@ public class ProjectionHandler {
                                         + "validity mask, trying a precision reduction approach with a precision of "
                                         + precision);
                     }
-                    result = reduced.intersection(mask);
+                    result = intersection(reduced, mask);   
                     break;
                 } catch (Exception e3) {
                     precision *= 10;
@@ -848,15 +848,7 @@ public class ProjectionHandler {
             }
         }
 
-        // workaround for a JTS bug, sometimes it returns empty results
-        // even if the two geometries are indeed intersecting
-        if (result.isEmpty() && geometry.intersects(mask)) {
-            try {
-                result = EnhancedPrecisionOp.intersection(geometry, mask);
-            } catch (Exception e2) {
-                result = geometry;
-            }
-        }
+        
 
         // clean up lower dimensional elements
         GeometryDimensionCollector collector =
@@ -870,6 +862,22 @@ public class ProjectionHandler {
         } else {
             return result;
         }
+    }
+    
+    private Geometry intersection(Geometry geometry, Geometry mask) {
+        Geometry result = geometry.intersection(mask);
+
+        // workaround for a JTS bug, sometimes it returns empty results
+        // even if the two geometries are indeed intersecting
+        if (result.isEmpty() && geometry.intersects(mask)) {
+            try {
+                result = EnhancedPrecisionOp.intersection(geometry, mask);
+            } catch (Exception e2) {
+                result = geometry;
+            }
+        }
+        
+        return result;
     }
 
     /** Can modify/wrap the transform to handle specific projection issues */

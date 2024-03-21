@@ -83,6 +83,7 @@ public class AutoCRSFactory extends DirectAuthorityFactory implements CRSAuthori
         add(Auto97001.DEFAULT);
         add(Auto97002.DEFAULT);
         add(Auto97003.DEFAULT);
+        add(Auto97004.DEFAULT);
     }
 
     /** Add the specified factlet. */

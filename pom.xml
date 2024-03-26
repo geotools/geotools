@@ -492,7 +492,7 @@
     <mockito.core.version>5.6.0</mockito.core.version>
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
-    <netcdf.version>4.6.15</netcdf.version>
+    <netcdf.version>5.5.3</netcdf.version>
     <ojdbc8.version>19.18.0.0</ojdbc8.version>
     <postgresql.jdbc.version>42.7.2</postgresql.jdbc.version>
     <reload4j.version>1.2.19</reload4j.version>
@@ -1089,7 +1089,7 @@
       <!-- Grid data formats -->
       <dependency>
         <groupId>edu.ucar</groupId>
-        <artifactId>cdm</artifactId>
+        <artifactId>cdm-core</artifactId>
         <version>${netcdf.version}</version>
       </dependency>
       <dependency>

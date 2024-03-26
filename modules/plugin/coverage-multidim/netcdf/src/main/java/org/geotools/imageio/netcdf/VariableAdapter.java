@@ -16,6 +16,7 @@
  */
 package org.geotools.imageio.netcdf;
 
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -488,12 +489,11 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         return variableDS.getRank() - ignoredDimensions.size();
     }
 
-    /** @throws Exception */
-    private void initSlicesInfo() throws Exception {
+    private void initSlicesInfo() {
         int[] shape = variableDS.getShape();
         numberOfSlices = 1;
         for (int i = 0; i < variableDS.getShape().length - 2; i++) {
-            if (!ignoredDimensions.contains(variableDS.getDimension(i).getFullName())) {
+            if (!ignoredDimensions.contains(variableDS.getDimension(i).getName())) {
                 numberOfSlices *= shape[i];
             }
         }
@@ -828,7 +828,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         spatialDomain.setGridGeometry(getGridGeometry());
     }
 
-    /** */
+    @SuppressWarnings("deprecation") // No alternatives for getFullName
     private void initRange() {
 
         width =
@@ -1150,6 +1150,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         return resultIndex;
     }
 
+    @SuppressWarnings("deprecation") // No alternative for getFullName
     public Map<String, Integer> mapIndex(int[] splittedIndex) {
         Map<String, Integer> resultIndex = new HashMap<>();
         for (int n = 0; n < splittedIndex.length; n++) {
@@ -1320,7 +1321,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
      * @param dimensionIndex the index of the dimension
      * @return the value
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"}) // No alternative for getFullName
     private <T> T getValueByIndex(int dimensionIndex, final Map<String, Integer> mappedIndex) {
         final Dimension dimension = variableDS.getDimension(dimensionIndex);
         return (T)
@@ -1342,6 +1343,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         /** Boolean indicating that the vertical axis is present */
         private final boolean vertical;
 
+        @SuppressWarnings("deprecation") // No alternative for CoordinateSystem
         CoordinateSystemAdapter(CoordinateSystem cs) {
             this.cs = cs;
             // Check if the Vertical axis is present
@@ -1381,7 +1383,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         }
 
         @Override
-        public List<CoordinateAxis> getCoordinateAxes() {
+        public ImmutableList<CoordinateAxis> getCoordinateAxes() {
             return cs.getCoordinateAxes();
         }
     }

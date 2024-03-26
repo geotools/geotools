@@ -30,6 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.data.arcgisrest.schema.catalog.Error_;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -40,9 +43,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.feature.type.AttributeDescriptor;
 
 /**
  * GeoJSON parsing of simple ,mbi-dimensional features using a streaming parser
@@ -113,21 +113,12 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         this.featureType = featureTypeIn;
     }
 
-    /** Makes sure resources are released */
-    protected void finalize() throws Throwable {
-        try {
-            this.inFeatureCollection = false;
-            this.close();
-        } finally {
-            super.finalize();
-        }
-    }
-
     /** Closes associated resources (such as the inpout stream) */
     @Override
     public void close() {
         try {
             this.reader.close();
+            this.inFeatureCollection = false;
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

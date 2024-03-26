@@ -1951,7 +1951,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
@@ -2158,7 +2158,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://docs.oracle.com/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/javase/11/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>

@@ -26,13 +26,13 @@ import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
-import org.geotools.feature.NameImpl;
-import org.geotools.filter.text.cql2.CQL;
-import org.junit.Test;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
+import org.geotools.feature.NameImpl;
+import org.geotools.filter.text.cql2.CQL;
+import org.junit.Test;
 
 public class ArcGISRestDataStoreSystemTest {
 

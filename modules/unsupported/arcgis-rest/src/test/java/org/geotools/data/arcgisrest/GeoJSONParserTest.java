@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
+import org.geotools.api.feature.simple.SimpleFeature;
+import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
@@ -37,8 +39,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
-import org.geotools.api.feature.simple.SimpleFeature;
-import org.geotools.api.feature.simple.SimpleFeatureType;
 
 public class GeoJSONParserTest {
 

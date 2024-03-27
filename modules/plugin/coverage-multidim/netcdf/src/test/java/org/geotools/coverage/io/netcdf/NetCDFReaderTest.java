@@ -87,18 +87,12 @@ import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import si.uom.SI;
 import ucar.nc2.dataset.NetcdfDataset;
 
-public class NetCDFReaderTest extends Assert {
-
-    @Before
-    public void setup() {
-        System.setProperty("netcdf.coordinates.enablePlugins", "true");
-    }
+public class NetCDFReaderTest extends NetCDFBaseTest {
 
     private static final double DELTA = 1E-6;
 
@@ -192,7 +186,8 @@ public class NetCDFReaderTest extends Assert {
         // Capture the current enhance mode, so we can change it now and set it back later
         Set<NetcdfDataset.Enhance> currentEnhanceMode = NetcdfDataset.getDefaultEnhanceMode();
         Set<NetcdfDataset.Enhance> newEnhanceMode =
-                EnumSet.of(NetcdfDataset.Enhance.CoordSystems, NetcdfDataset.Enhance.ScaleMissing);
+                EnumSet.of(
+                        NetcdfDataset.Enhance.CoordSystems, NetcdfDataset.Enhance.ApplyScaleOffset);
         Boolean currentEnhanceSysProp = Boolean.getBoolean(NetCDFUtilities.ENHANCE_SCALE_MISSING);
         if (!currentEnhanceSysProp) {
             System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, "true");
@@ -1134,8 +1129,7 @@ public class NetCDFReaderTest extends Assert {
     }
 
     @Test
-    public void NetCDFTestOnClimatologicalTime()
-            throws NoSuchAuthorityCodeException, FactoryException, IOException, ParseException {
+    public void NetCDFTestOnClimatologicalTime() throws IOException {
         final File workDir = new File(TestData.file(this, "."), "climatological");
         if (!workDir.mkdir()) {
             FileUtils.deleteDirectory(workDir);

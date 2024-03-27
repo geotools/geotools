@@ -153,6 +153,7 @@ public abstract class CoordinateVariable<T> {
         }
 
         @Override
+        @SuppressWarnings("deprecation") // no Alternative for Dimension.getFullName
         public synchronized T get(Map<String, Integer> indexMap) {
             int i = indexMap.get(coordinateAxis.getFullName());
             int j =

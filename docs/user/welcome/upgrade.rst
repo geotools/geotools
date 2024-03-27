@@ -29,6 +29,21 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+.. _update32:
+
+GeoTools 32.x
+-------------
+
+NetCDF Version upgrade to 5.5.3
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GeoTools 32.0 upgraded underlying Unidata NetCDF libraries from 4.6.15 to 5.5.3 which includes internal GRIB mapping table 
+updates and GRIB parameters interpretation updates. The upgrade impacted the way the GRIB parameters are being retrieved as
+well the way the temporal information is being extracted from the underlying data which may affect the construction of the
+names and the reported temporal ranges as well, resulting in some breakage with the upgrade.
+
+Refer to `GEOT-7547 <https://osgeo-org.atlassian.net/browse/GEOT-7547>`_ for relevant details.
+
+
 .. _update31:
 
 GeoTools 31.x

@@ -61,6 +61,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /**
  * Testing Low level reader infrastructure.
@@ -252,7 +253,7 @@ public final class NetCDFBasicTest extends Assert {
     public void testNoValid2DVariable() throws Exception {
         final File file = TestData.file(this, "noVars.nc");
         NetCDFImageReader reader = null;
-        try (NetcdfDataset dataset = NetcdfDataset.acquireDataset(file.getAbsolutePath(), null)) {
+        try (NetcdfDataset dataset = NetcdfDatasets.openDataset(file.getAbsolutePath())) {
             List<Variable> variables = dataset.getVariables();
             boolean speedVariableIsPresent = false;
             String speedVariableName = "";

@@ -95,11 +95,6 @@ public class GeosProjectionHandlerFactory implements ProjectionHandlerFactory {
      * @return the valid area of the projection
      */
     static Geometry getValidAreaLatLon(double centralMeridian, double angle) {
-
-        // center of the valid area
-        double lon0 = centralMeridian;
-        double lat0 = 0;
-
         // compute "circle" around the center, one segment every 2 degrees
         Point center = new GeometryFactory().createPoint(new Coordinate(centralMeridian, 0));
         Geometry circle = center.buffer(angle, 45);

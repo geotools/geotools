@@ -86,13 +86,42 @@ final class WarpAdapter extends Warp {
         if (destRect == null) {
             destRect = new float[2 * count];
         }
+
+        // potentially, we'll make it throw lots of TransformExceptions, without reporting or using
+        // the stack trace. Avoid the overhead of filling them.
+        final float[] finalDestRect = destRect;
+        return TransformException.runWithoutStackTraces(
+                () ->
+                        warpSparseRectInternal(
+                                xmin,
+                                ymin,
+                                periodX,
+                                periodY,
+                                finalDestRect,
+                                ymax,
+                                xmax,
+                                finalDestRect,
+                                count));
+    }
+
+    private float[] warpSparseRectInternal(
+            int xmin,
+            int ymin,
+            int periodX,
+            int periodY,
+            float[] destRect,
+            int ymax,
+            int xmax,
+            float[] finalDestRect,
+            int count) {
         int index = fillDestRect(xmin, ymin, periodX, periodY, destRect, ymax, xmax);
         try {
-            inverse.transform(destRect, 0, destRect, 0, count);
+            inverse.transform(finalDestRect, 0, destRect, 0, count);
         } catch (TransformException exception) {
-            // At least one transformation failed. Slow down and run mappings one by one instead
+            // At least one transformation failed. Slow down and run mappings one by one
+            // instead
             Arrays.fill(destRect, 0, index, 0f);
-            fillDestRect(xmin, ymin, periodX, periodY, destRect, ymax, xmax);
+            fillDestRect(xmin, ymin, periodX, periodY, finalDestRect, ymax, xmax);
             index = 0;
             float[] pt = new float[2];
             for (int y = ymin; y < ymax; y += periodY) {
@@ -101,24 +130,26 @@ final class WarpAdapter extends Warp {
                     pt[1] = y + 0.5f;
                     try {
                         inverse.transform(pt, 0, pt, 0, 1);
-                        destRect[index++] = pt[0];
-                        destRect[index++] = pt[1];
+                        finalDestRect[index++] = pt[0];
+                        finalDestRect[index++] = pt[1];
                     } catch (TransformException e) {
                         // tricky decision here... the source should be outside of the
-                        // coverage, but Integer.MAX_VALUE makes the warp fail for some images,
+                        // coverage, but Integer.MAX_VALUE makes the warp fail for some
+                        // images,
                         // and Float.NaN for all of them.
-                        // Setting to Short.MAX_VALUE seems to work better, and we'll rely on ROI
+                        // Setting to Short.MAX_VALUE seems to work better, and we'll
+                        // rely on ROI
                         // for better output masking
-                        destRect[index++] = Short.MAX_VALUE;
-                        destRect[index++] = Short.MAX_VALUE;
+                        finalDestRect[index++] = Short.MAX_VALUE;
+                        finalDestRect[index++] = Short.MAX_VALUE;
                     }
                 }
             }
         }
         while (--index >= 0) {
-            destRect[index] -= 0.5f;
+            finalDestRect[index] -= 0.5f;
         }
-        return destRect;
+        return finalDestRect;
     }
 
     private static int fillDestRect(

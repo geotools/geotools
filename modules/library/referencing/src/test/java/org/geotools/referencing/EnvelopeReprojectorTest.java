@@ -244,4 +244,22 @@ public class EnvelopeReprojectorTest {
         assertEquals(-radius, result.getMinimum(0), EPS);
         assertEquals(radius, result.getMaximum(0), EPS);
     }
+
+    @Test
+    public void testGeostationaryCentered() throws Exception {
+        // centered geostationary
+        CoordinateReferenceSystem geos = CRS.decode("AUTO:97004,9001,0,0");
+        CoordinateOperation operation =
+                CRS.getCoordinateOperationFactory(true).createOperation(WGS84, geos);
+
+        // envelope wrapping the area of validity
+        GeneralBounds bounds = new GeneralBounds(WGS84);
+        bounds.setEnvelope(-79, -79, 79, 79);
+        Bounds result = EnvelopeReprojector.transform(operation, bounds);
+
+        assertEquals(-5429740, result.getMinimum(0), 1d);
+        assertEquals(5429740, result.getMaximum(0), 1d);
+        assertEquals(-5411672, result.getMinimum(1), 1d);
+        assertEquals(5411672, result.getMaximum(1), 1d);
+    }
 }

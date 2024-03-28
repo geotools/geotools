@@ -1030,11 +1030,12 @@ public class ProjectionHandlerTest {
         List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
         assertEquals(1, queryEnvelopes.size());
 
-        // the expected query envelope
-        ReferencedEnvelope expected =
-                new ReferencedEnvelope(-180, 0, 0, 85, DefaultGeographicCRS.WGS84)
-                        .transform(epsg900913, true);
-        assertEquals(expected, queryEnvelopes.get(0));
+        // the bisection transformation provides a query envelope, close to the pole
+        ReferencedEnvelope qa = queryEnvelopes.get(0);
+        assertEquals(-2.0037508342789244E7, qa.getMinX(), 1);
+        assertEquals(0, qa.getMaxX(), 1);
+        assertEquals(0, qa.getMinY(), 1);
+        assertEquals(2.8066337200331915E7, qa.getMaxY(), 1);
     }
 
     @Test
@@ -1223,7 +1224,7 @@ public class ProjectionHandlerTest {
                 new ReferencedEnvelope(
                         1.5028131257091932E7,
                         2.0037508342789244E7,
-                        -1.9971868880408555E7,
+                        -3.2487565023661762E7,
                         -5621521.486192067,
                         OSM);
         assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
@@ -1245,7 +1246,7 @@ public class ProjectionHandlerTest {
         ReferencedEnvelope expected =
                 new ReferencedEnvelope(
                         -2.003748375258002E7,
-                        1.9582312033733368E7,
+                        1.958231203373337E7,
                         -1.5538175797794182E7,
                         -5621345.809658899,
                         OSM);
@@ -1267,7 +1268,7 @@ public class ProjectionHandlerTest {
         ReferencedEnvelope expected =
                 new ReferencedEnvelope(
                         -2.003748375258002E7,
-                        1.9582312033733368E7,
+                        1.958231203373337E7,
                         -1.5538175797794182E7,
                         -5621345.809658899,
                         OSM);

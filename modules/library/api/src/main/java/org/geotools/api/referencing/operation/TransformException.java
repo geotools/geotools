@@ -9,6 +9,7 @@
  */
 package org.geotools.api.referencing.operation;
 
+import java.util.concurrent.Callable;
 import org.geotools.api.geometry.Position; // For javadoc
 
 /**
@@ -26,6 +27,14 @@ import org.geotools.api.geometry.Position; // For javadoc
 public class TransformException extends Exception {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8923944544398567533L;
+
+    static final ThreadLocal<Boolean> FILL_STACK_TRACE =
+            new ThreadLocal<>() {
+                @Override
+                protected Boolean initialValue() {
+                    return Boolean.TRUE;
+                }
+            };
 
     /**
      * The last transform that either transformed successfuly all coordinates, or filled the
@@ -84,5 +93,33 @@ public class TransformException extends Exception {
      */
     public void setLastCompletedTransform(final MathTransform transform) {
         lastCompletedTransform = transform;
+    }
+
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        if (FILL_STACK_TRACE.get()) {
+            return super.fillInStackTrace();
+        }
+        return this;
+    }
+
+    /**
+     * This allows executing a callable with {@link TransformException} not filling its stack trace
+     * while being thrown. This is useful when the exception is expected to be caught and handled
+     * without the need to fill the stack trace (which can be quite expensive, if done many times in
+     * a tight loop).
+     *
+     * <p>An eventual exception thrown by the callable will be wrapped in a {@link RuntimeException}
+     * and rethrown.
+     */
+    public static <T> T runWithoutStackTraces(Callable<T> callable) {
+        FILL_STACK_TRACE.set(Boolean.FALSE);
+        try {
+            return callable.call();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            FILL_STACK_TRACE.remove();
+        }
     }
 }

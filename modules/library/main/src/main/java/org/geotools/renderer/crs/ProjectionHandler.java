@@ -805,7 +805,7 @@ public class ProjectionHandler {
         }
         Geometry result = null;
         try {
-           result = intersection(geometry, mask);
+            result = intersection(geometry, mask);
         } catch (Exception e1) {
             // JTS versions lower than 1.18.0 included a call to buffer(0) in the reduce call.
             // We add it here to ensure that inputs are suitably clean.
@@ -831,7 +831,7 @@ public class ProjectionHandler {
                                         + "validity mask, trying a precision reduction approach with a precision of "
                                         + precision);
                     }
-                    result = intersection(reduced, mask);   
+                    result = intersection(reduced, mask);
                     break;
                 } catch (Exception e3) {
                     precision *= 10;
@@ -848,8 +848,6 @@ public class ProjectionHandler {
             }
         }
 
-        
-
         // clean up lower dimensional elements
         GeometryDimensionCollector collector =
                 new GeometryDimensionCollector(geometry.getDimension());
@@ -863,7 +861,7 @@ public class ProjectionHandler {
             return result;
         }
     }
-    
+
     private Geometry intersection(Geometry geometry, Geometry mask) {
         Geometry result = geometry.intersection(mask);
 
@@ -876,7 +874,7 @@ public class ProjectionHandler {
                 result = geometry;
             }
         }
-        
+
         return result;
     }
 

@@ -329,7 +329,7 @@ public abstract class GeostationarySatellite extends MapProjection {
 
     public static class Provider extends MapProjection.AbstractProvider {
 
-        static final ParameterDescriptor SATELLITE_HEIGHT =
+        public static final ParameterDescriptor SATELLITE_HEIGHT =
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "satellite_height"),

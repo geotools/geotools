@@ -216,8 +216,6 @@ public class StreamingRendererTest {
         sr.setRendererHints(hints);
         sr.setMapContent(mc);
 
-        /*BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
-        Graphics2D graphics = bi.createGraphics();*/
         Graphics2D graphics = Mockito.mock(Graphics2D.class);
         CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632", true);
         ReferencedEnvelope env = new ReferencedEnvelope(10, 20, 0, 40, WGS84);

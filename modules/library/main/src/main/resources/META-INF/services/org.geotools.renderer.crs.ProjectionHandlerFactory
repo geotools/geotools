@@ -8,3 +8,4 @@ org.geotools.renderer.crs.WorldVanDerGrintenIHandlerFactory
 org.geotools.renderer.crs.AzimulthalEquidistantProjectionHandlerFactory
 org.geotools.renderer.crs.HomolosineHandlerFactory
 org.geotools.renderer.crs.OrthographicProjectionHandlerFactory
+org.geotools.renderer.crs.GeosProjectionHandlerFactory

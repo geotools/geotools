@@ -155,4 +155,9 @@ public class FlatGeobufDataStore extends ContentDataStore {
         }
         file.delete();
     }
+
+    /** Called internally to clear the header meta cache */
+    void clearHeaderMeta() {
+        this.headerMeta = null;
+    }
 }

@@ -23,15 +23,12 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.api.data.DataStore;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureReader;
+import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
-import org.geotools.api.filter.Filter;
-import org.geotools.api.filter.FilterFactory;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -45,37 +42,34 @@ import org.geotools.util.logging.Logging;
  */
 class VectorMosaicFeatureReader implements SimpleFeatureReader {
     static final Logger LOGGER = Logging.getLogger(VectorMosaicFeatureReader.class);
-    private final SimpleFeatureCollection delegateCollection;
-    private final Query query;
+
     private final VectorMosaicFeatureSource source;
     private final SimpleFeatureType internalSchema;
+    private final GranuleSourceProvider granuleSourceProvider;
+    private final Query query;
     private SimpleFeatureType targetSchema;
 
     private SimpleFeatureBuilder builder;
     private SimpleFeatureBuilder retypeBuilder;
     FeatureIterator delegateIterator;
     FeatureIterator granuleIterator;
-    DataStore granuleDataStore;
-    protected Feature nextGranule = null;
+
+    protected SimpleFeature nextGranule = null;
     protected SimpleFeature delegateFeature = null;
     protected SimpleFeature rawGranule = null;
-
-    String params;
 
     /**
      * Constructor
      *
-     * @param delegateFeatures index features from the delegate store
-     * @param query query to use to filter the index features and the granule features
+     * @param granuleSourceProvider provides the granule feature sources
      * @param vectorMosaicFeatureSource the source of the vector mosaic
      */
     public VectorMosaicFeatureReader(
-            SimpleFeatureCollection delegateFeatures,
-            Query query,
+            GranuleSourceProvider granuleSourceProvider,
             VectorMosaicFeatureSource vectorMosaicFeatureSource) {
-        this.delegateCollection = delegateFeatures;
-        this.query = query;
+        this.granuleSourceProvider = granuleSourceProvider;
         this.source = vectorMosaicFeatureSource;
+        this.query = granuleSourceProvider.getQuery();
         this.targetSchema = this.internalSchema = retype(source.getSchema(), query);
         this.builder = new SimpleFeatureBuilder(internalSchema);
 
@@ -86,8 +80,6 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
             if (!internalSchema.equals(targetSchema))
                 this.retypeBuilder = new SimpleFeatureBuilder(targetSchema);
         }
-
-        this.delegateIterator = delegateCollection.features();
     }
 
     @Override
@@ -109,9 +101,8 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     }
 
     @Override
-    @SuppressWarnings(
-            "PMD.CloseResource") // VectorMosaicGranule should only close the store when it is
-    // exhausted or when the reader is closed
+    // Should only close the store when it is exhausted or when the reader is closed
+    @SuppressWarnings("PMD.CloseResource")
     public boolean hasNext() throws IOException {
         if (nextGranule != null) {
             return true;
@@ -123,48 +114,19 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
             }
         }
 
-        // get the next delegate, because granule is exhausted or not initialized
-        while (delegateIterator.hasNext()) {
-            // close current before we move to next
-            if (granuleIterator != null) {
-                granuleIterator.close();
-            }
+        SimpleFeatureSource granuleSource = null;
+        while ((granuleSource = granuleSourceProvider.getNextGranuleSource()) != null) {
+            delegateFeature = granuleSourceProvider.getDelegateFeature();
+            Query granuleQuery = granuleSourceProvider.getGranuleQuery();
 
-            delegateFeature = (SimpleFeature) delegateIterator.next();
-            VectorMosaicGranule granule = VectorMosaicGranule.fromDelegateFeature(delegateFeature);
-            // if tracking granule statistics, this is how many times granules are accessed
-            if (source.finder.granuleTracker != null) {
-                source.finder.granuleTracker.incrementAccessCount();
-            }
-            if (params != null && params.equals(granule.getParams())) {
-                // same connection, no need to reinitialize
-                source.populateGranuleTypeName(granule, granuleDataStore);
-            } else {
-                // different connection, need to reinitialize
-                if (granuleDataStore != null) {
-                    granuleDataStore.dispose();
-                }
-                granuleDataStore = source.initGranule(granule, false);
-                params = granule.getParams();
-            }
-
-            Filter granuleFilter = getGranuleFilter(granule);
-            Query granuleQuery = new Query(granule.getGranuleTypeName(), granuleFilter);
-            if (query.getPropertyNames() != Query.ALL_NAMES) {
-                String[] filteredArray =
-                        VectorMosaicFeatureSource.getOnlyTypeMatchingAttributes(
-                                granuleDataStore, granule.getGranuleTypeName(), query, false);
-                granuleQuery.setPropertyNames(filteredArray);
-            }
-            granuleIterator =
-                    granuleDataStore
-                            .getFeatureSource(granule.getGranuleTypeName())
-                            .getFeatures(granuleQuery)
-                            .features();
-
+            // gran the next granule iterator and look for the next granule
+            granuleIterator = granuleSource.getFeatures(granuleQuery).features();
             while (granuleIterator.hasNext()) {
                 nextGranule = readNext();
                 if (nextGranule != null) return true;
+            }
+            if (nextGranule == null) {
+                granuleIterator.close();
             }
         }
 
@@ -173,20 +135,9 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
         return false;
     }
 
-    private Filter getGranuleFilter(VectorMosaicGranule granule) {
-        Filter filter =
-                source.getSplitFilter(query, granuleDataStore, granule.getGranuleTypeName(), false);
-        Filter configuredFilter = granule.getFilter();
-        if (configuredFilter != null && configuredFilter != Filter.INCLUDE) {
-            FilterFactory ff = source.getDataStore().getFilterFactory();
-            return ff.and(filter, configuredFilter);
-        }
-        return filter;
-    }
-
     private SimpleFeature readNext() {
         rawGranule = (SimpleFeature) granuleIterator.next();
-        SimpleFeature peek = mergeGranuleAndDelegate(rawGranule, delegateFeature, query);
+        SimpleFeature peek = mergeGranuleAndDelegate(rawGranule, delegateFeature);
         if (query.getFilter().evaluate(peek)) {
             if (retypeBuilder != null) {
                 return SimpleFeatureBuilder.retype(peek, retypeBuilder);
@@ -205,7 +156,7 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
      * @return the merged feature
      */
     private SimpleFeature mergeGranuleAndDelegate(
-            SimpleFeature peekGranule, SimpleFeature delegateFeature, Query query) {
+            SimpleFeature peekGranule, SimpleFeature delegateFeature) {
         // collect attributes from the granule and the delegate, making no assumption
         // on the order, the query might have imposed one that does not match the
         // normal layout of the mosaic features
@@ -261,21 +212,17 @@ class VectorMosaicFeatureReader implements SimpleFeatureReader {
     @Override
     public void close() throws IOException {
         try {
-            if (delegateIterator != null) {
-                delegateIterator.close();
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.WARNING, "Failed to close delegate iterator", e);
-        }
-        try {
             if (granuleIterator != null) {
                 granuleIterator.close();
             }
-        } catch (Exception e2) {
-            LOGGER.log(Level.WARNING, "Failed to close granule iterator", e2);
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Failed to close granule iterator", e);
         }
-        if (granuleDataStore != null) {
-            granuleDataStore.dispose();
+        try {
+            if (granuleSourceProvider != null) granuleSourceProvider.close();
+
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, "Failed to close granule source provider", e);
         }
     }
 }

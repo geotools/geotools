@@ -54,16 +54,18 @@ public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
 
     private FlatBufferBuilder builder;
 
+    private FlatGeobufDataStore flatGeobufDataStore;
+
     public FlatGeobufFeatureWriter(ContentState state, Query query) throws IOException {
         this.state = state;
         String typeName = query.getTypeName();
         DataStore dataStore = state.getEntry().getDataStore();
-        FlatGeobufDataStore flatGeobufDataStore;
         if (dataStore instanceof FlatGeobufDirectoryDataStore) {
-            flatGeobufDataStore = ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(typeName);
+            this.flatGeobufDataStore =
+                    ((FlatGeobufDirectoryDataStore) dataStore).getDataStore(typeName);
             this.file = flatGeobufDataStore.getFile();
         } else {
-            flatGeobufDataStore = (FlatGeobufDataStore) dataStore;
+            this.flatGeobufDataStore = (FlatGeobufDataStore) dataStore;
             this.file = flatGeobufDataStore.getFile();
         }
         File directory = file.getParentFile();
@@ -156,5 +158,8 @@ public class FlatGeobufFeatureWriter implements FeatureWriter<SimpleFeatureType,
         }
         Files.copy(temp.toPath(), this.file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         temp.delete();
+
+        // invalidate the header cache after write
+        flatGeobufDataStore.clearHeaderMeta();
     }
 }

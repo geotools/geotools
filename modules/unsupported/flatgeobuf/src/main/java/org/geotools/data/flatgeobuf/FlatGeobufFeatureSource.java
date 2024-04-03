@@ -17,6 +17,8 @@
 package org.geotools.data.flatgeobuf;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.Query;
@@ -24,6 +26,7 @@ import org.geotools.api.feature.FeatureVisitor;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.store.ContentEntry;
@@ -32,6 +35,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Envelope;
 import org.wololo.flatgeobuf.HeaderMeta;
+import org.wololo.flatgeobuf.PackedRTree;
 
 public class FlatGeobufFeatureSource extends ContentFeatureSource {
 
@@ -57,7 +61,7 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        if (query.getFilter() != Filter.INCLUDE) {
+        if (query.getFilter() != Filter.INCLUDE && !(query.getFilter() instanceof BBOX)) {
             return null;
         }
 
@@ -69,48 +73,70 @@ public class FlatGeobufFeatureSource extends ContentFeatureSource {
             throw new IOException(e);
         }
         Envelope env = headerMeta.envelope;
-        if (env != null) {
-            return new ReferencedEnvelope(env, crs);
+
+        if (env == null) return null;
+        ReferencedEnvelope result = new ReferencedEnvelope(env, crs);
+
+        if (query.getFilter() == Filter.INCLUDE) {
+            return result;
+        } else if (query.getFilter() instanceof BBOX) {
+            ReferencedEnvelope bbox =
+                    ReferencedEnvelope.reference(((BBOX) query.getFilter()).getBounds());
+            if (bbox.contains(env)) {
+                return result;
+            }
         }
 
-        // NOTE: header does not contain envelope will enumerate features to calculate
-        try (FlatGeobufFeatureReader reader = (FlatGeobufFeatureReader) getReaderInternal(query)) {
-            SimpleFeature feature;
-            ReferencedEnvelope referencedEnvelope = null;
-            while (reader.hasNext()) {
-                feature = reader.next();
-                if (referencedEnvelope == null) {
-                    referencedEnvelope = new ReferencedEnvelope(feature.getBounds());
-                } else {
-                    referencedEnvelope.expandToInclude(new ReferencedEnvelope(feature.getBounds()));
-                }
-            }
-            return referencedEnvelope;
-        }
+        // if there is no fast way, let the caller decide wheter to enumerate or not
+        return null;
     }
 
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        int count = -1;
-        if (query.getFilter() != Filter.INCLUDE) {
-            return count;
-        }
+        // if we cannot get the header, there is no point
+        HeaderMeta headerMeta = getDataStore().getHeaderMeta();
+        if (headerMeta == null) return -1;
 
-        count = (int) getDataStore().getHeaderMeta().featuresCount;
-
-        if (count > 0) {
-            return count;
-        }
-
-        // NOTE: header does not contain feature count will enumerate features to calculate
-        try (FlatGeobufFeatureReader reader = (FlatGeobufFeatureReader) getReaderInternal(query)) {
-            count = 0;
-            while (reader.hasNext()) {
-                reader.next();
-                count++;
+        // all features count, pick from header if possible
+        Filter filter = query.getFilter();
+        if (filter == null || filter == Filter.INCLUDE) {
+            int count = (int) getDataStore().getHeaderMeta().featuresCount;
+            if (count > 0) {
+                return count;
             }
-            return count;
         }
+
+        // bbox filter
+        if (filter instanceof BBOX && headerMeta.indexNodeSize > 0) {
+            ReferencedEnvelope bounds = ReferencedEnvelope.reference(((BBOX) filter).getBounds());
+            if (bounds != null) {
+                // first check, if the file bbox is withing the query bbox, then all features match
+                Envelope headerEnvelope = headerMeta.envelope;
+                if (headerEnvelope != null && bounds.contains(headerEnvelope)) {
+                    int count = (int) getDataStore().getHeaderMeta().featuresCount;
+                    if (count > 0) {
+                        return count;
+                    }
+                }
+
+                // otherwise scan the index (might be fooled by features crossing the dateline)
+                URL url = getDataStore().getURL();
+                try (InputStream is = url.openStream()) {
+                    FlatGeobufFeatureReader.skipNBytes(is, headerMeta.offset);
+                    PackedRTree.SearchResult result =
+                            PackedRTree.search(
+                                    is,
+                                    headerMeta.offset,
+                                    (int) headerMeta.featuresCount,
+                                    headerMeta.indexNodeSize,
+                                    ReferencedEnvelope.reference(bounds));
+                    return result.hits.size();
+                }
+            }
+        }
+
+        // no other optimized paths, give up
+        return -1;
     }
 
     @Override

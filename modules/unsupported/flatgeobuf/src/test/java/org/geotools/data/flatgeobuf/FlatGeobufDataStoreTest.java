@@ -16,6 +16,7 @@
  */
 package org.geotools.data.flatgeobuf;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,6 +36,7 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -191,6 +193,13 @@ public class FlatGeobufDataStoreTest {
             }
         }
         store.dispose();
+    }
+
+    private void assertEnvelope(Envelope expected, ReferencedEnvelope actual) {
+        assertEquals(expected.getMinX(), actual.getMinX(), 1e-6);
+        assertEquals(expected.getMaxX(), actual.getMaxX(), 1e-6);
+        assertEquals(expected.getMinY(), actual.getMinY(), 1e-6);
+        assertEquals(expected.getMaxY(), actual.getMaxY(), 1e-6);
     }
 
     @Test
@@ -839,6 +848,24 @@ public class FlatGeobufDataStoreTest {
             }
             assertEquals(179, count);
         }
+        // count and envelope in the headers
+        assertEquals(179, featureSource.getCount(Query.ALL));
+        assertEnvelope(new Envelope(-180, 180, -85.609038, 83.64513), featureSource.getBounds());
+
+        // try out the count with a bbox filter that catches all
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        BBOX bbox = ff.bbox(ff.property(""), new ReferencedEnvelope(-180, 180, -90, 90, WGS84));
+        Query q = new Query();
+        q.setFilter(bbox);
+        assertEquals(179, featureSource.getCount(q));
+
+        // now limit to the Austrailia region
+        bbox = ff.bbox(ff.property(""), new ReferencedEnvelope(112, 154, -44, -11, WGS84));
+        q.setFilter(bbox);
+        // Australia, but also Fiji bbox happens to cross the dateline
+        assertEquals(2, featureSource.getCount(q));
+        // however, the actual features are only Australia...
+        assertEquals(1, DataUtilities.count(featureSource.getFeatures(q)));
     }
 
     @Test

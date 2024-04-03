@@ -180,9 +180,34 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
         return bounds;
     }
 
+    /**
+     * Counts the matching granules by delegating to the underlying granule stores. The stores could
+     * potentially return a mix of "-1" and actual counts, the current implementation assumes that
+     * the it's convenient to grab the count forcefully when it's not available from the fast count,
+     * should still be better than counting all features after they got merged with the delegate
+     * ones.
+     *
+     * <p>A take that a single "-1" would make this method also return "-1" could also be reasoable,
+     * we might want to make the behavior configurable in the future. Currently most code really
+     * wants the actual count, not an estimate, hence the current implementation.
+     */
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        return -1;
+        int count = 0;
+        SimpleFeatureCollection features = getDelegateFeatures(query);
+        try (GranuleSourceProvider provider = new GranuleSourceProvider(this, features, query)) {
+            SimpleFeatureSource source;
+            while ((source = provider.getNextGranuleSource()) != null) {
+                Query granuleQuery = provider.getGranuleQuery();
+                int granuleCount = source.getCount(granuleQuery);
+                if (granuleCount < 0) {
+                    granuleCount = source.getFeatures(granuleQuery).size();
+                }
+                count += granuleCount;
+            }
+        }
+
+        return count;
     }
 
     @Override
@@ -190,7 +215,18 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
     @SuppressWarnings("PMD.CloseResource")
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = null;
+        SimpleFeatureCollection features = getDelegateFeatures(query);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+
+        // The reader merges the features from delegate and granule, filters contents, and
+        // retypes to the target feature type
+        GranuleSourceProvider granuleSources = new GranuleSourceProvider(this, features, query);
+        reader = new VectorMosaicFeatureReader(granuleSources, this);
+
+        return reader;
+    }
+
+    private SimpleFeatureCollection getDelegateFeatures(Query query) throws IOException {
         Name dsname = buildName(delegateStoreName);
         DataStore delegateDataStore = repository.dataStore(dsname);
         Filter splitFilterIndex =
@@ -205,12 +241,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             delegateQuery.setPropertyNames(filteredArray);
         }
         SimpleFeatureCollection features = delegateFeatureSource.getFeatures(delegateQuery);
-
-        // The reader merges the features from delegate and granule, filters contents, and
-        // retypes to the target feature type
-        reader = new VectorMosaicFeatureReader(features, query, this);
-
-        return reader;
+        return features;
     }
 
     static String[] getOnlyTypeMatchingAttributes(

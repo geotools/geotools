@@ -47,9 +47,41 @@ import org.junit.Test;
 public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
 
     @Test
-    public void testGetCount() throws Exception {
+    public void testCountAll() throws Exception {
         FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
-        assertEquals(-1, featureSource.getCount(Query.ALL));
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        assertEquals(4, featureSource.getCount(Query.ALL));
+        assertEquals(4, tracker.getCount());
+    }
+
+    @Test
+    public void testCountFilterDelegate() throws Exception {
+        FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        Query query = new Query();
+        query.setFilter(FF.lessOrEqual(FF.property("rank"), FF.literal(2)));
+        assertEquals(2, featureSource.getCount(query));
+        assertEquals(2, tracker.getCount());
+    }
+
+    @Test
+    public void testCountFilterGranules() throws Exception {
+        FeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        // this one has to visit all granules to find the actual count
+        Query query = new Query();
+        query.setFilter(FF.lessOrEqual(FF.property("tractorid"), FF.literal("deere2")));
+        assertEquals(2, featureSource.getCount(query));
+        assertEquals(4, tracker.getCount());
     }
 
     @Test

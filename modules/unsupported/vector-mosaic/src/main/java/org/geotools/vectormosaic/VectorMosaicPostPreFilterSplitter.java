@@ -49,6 +49,8 @@ public class VectorMosaicPostPreFilterSplitter extends PostPreProcessFilterSplit
         indexAttributeDescriptors.stream()
                 .map(AttributeDescriptor::getLocalName)
                 .forEach(this.attributeNames::add);
+        // add the "default geometry" attribute
+        this.attributeNames.add("");
     }
 
     /**

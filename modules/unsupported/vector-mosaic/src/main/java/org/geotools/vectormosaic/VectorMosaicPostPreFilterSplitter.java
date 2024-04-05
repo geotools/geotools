@@ -33,6 +33,7 @@ import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.BinarySpatialOperator;
 import org.geotools.api.filter.temporal.BinaryTemporalOperator;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 
 public class VectorMosaicPostPreFilterSplitter extends PostPreProcessFilterSplittingVisitor {
@@ -49,6 +50,8 @@ public class VectorMosaicPostPreFilterSplitter extends PostPreProcessFilterSplit
         indexAttributeDescriptors.stream()
                 .map(AttributeDescriptor::getLocalName)
                 .forEach(this.attributeNames::add);
+        // add the "default geometry" attribute (conventional property name)
+        this.attributeNames.add(SimpleFeaturePropertyAccessorFactory.DEFAULT_GEOMETRY_NAME);
     }
 
     /**

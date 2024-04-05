@@ -17,6 +17,7 @@
 package org.geotools.filter.expression;
 
 import java.util.regex.Pattern;
+import org.geotools.api.feature.Feature;
 import org.geotools.api.feature.IllegalAttributeException;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -45,6 +46,14 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
     public static final PropertyAccessor DEFAULT_GEOMETRY_ACCESS =
             new DefaultGeometrySimpleFeaturePropertyAccessor();
     public static final PropertyAccessor FID_ACCESS = new FidSimpleFeaturePropertyAccessor();
+
+    /**
+     * Conventional property name used to indicate the "efault gedometry" of a feature, that is, the
+     * one returned by {@link Feature#getDefaultGeometryProperty()} or {@link
+     * SimpleFeature.getDefaultGeometry()}.
+     */
+    public static final String DEFAULT_GEOMETRY_NAME = "";
+
     static Pattern idPattern = Pattern.compile("@(\\w+:)?id");
 
     private static final String NAME_START_CHAR =
@@ -89,8 +98,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
                 && !SimpleFeatureType.class.isAssignableFrom(type))
             return null; // we only work with simple feature
 
-        // if ("".equals(xpath) && target == Geometry.class)
-        if ("".equals(xpath)) return DEFAULT_GEOMETRY_ACCESS;
+        if (DEFAULT_GEOMETRY_NAME.equals(xpath)) return DEFAULT_GEOMETRY_ACCESS;
 
         // check for fid access
         if (idPattern.matcher(xpath).matches()) return FID_ACCESS;
@@ -155,7 +163,7 @@ public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFac
 
         @Override
         public boolean canHandle(Object object, String xpath, Class target) {
-            if (!"".equals(xpath)) return false;
+            if (!DEFAULT_GEOMETRY_NAME.equals(xpath)) return false;
 
             //        	if ( target != Geometry.class )
             //        		return false;

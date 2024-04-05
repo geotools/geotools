@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex.expression;
 
+import static org.geotools.filter.expression.SimpleFeaturePropertyAccessorFactory.DEFAULT_GEOMETRY_NAME;
+
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -95,9 +97,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         if (!ComplexAttribute.class.isAssignableFrom(type)
                 && !ComplexType.class.isAssignableFrom(type)
                 && !AttributeDescriptor.class.isAssignableFrom(type)) return null;
-        if ("".equals(xpath))
-            // if ("".equals(xpath) && target == Geometry.class)
-            return DEFAULT_GEOMETRY_ACCESS;
+        if (DEFAULT_GEOMETRY_NAME.equals(xpath)) return DEFAULT_GEOMETRY_ACCESS;
 
         // check for fid access
         if (FID_PATTERN.matcher(xpath).matches()) return FID_ACCESS;
@@ -151,7 +151,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
         @Override
         public boolean canHandle(Object object, String xpath, Class target) {
-            if (!"".equals(xpath)) return false;
+            if (!DEFAULT_GEOMETRY_NAME.equals(xpath)) return false;
 
             // if (target != Geometry.class || target != GeometryAttribute.class)
             //    return false;

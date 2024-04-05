@@ -276,4 +276,21 @@ public class VectorMosaicReaderTest extends VectorMosaicTest {
         // once, when running along with other tests, schema has been computed already)
         verify(spy, Mockito.atMost(1)).getFeatureType(any(), any());
     }
+
+    @Test
+    public void testBBOXFilter() throws Exception {
+        SimpleFeatureSource featureSource = MOSAIC_STORE.getFeatureSource(MOSAIC_TYPE_NAME);
+        GranuleTracker tracker = new GranuleTracker();
+        GranuleStoreFinder finder = ((VectorMosaicFeatureSource) featureSource).finder;
+        finder.granuleTracker = tracker;
+
+        Query q = new Query();
+        Filter bbox = FF.bbox("", -88, -76, 33, 39, "EPSG:4326");
+        q.setFilter(bbox);
+        assertEquals(3, featureSource.getCount(q));
+        FilterTracker filterTracker = ((VectorMosaicFeatureSource) featureSource).filterTracker;
+        // the bbox filter actually applies to both
+        assertEquals(bbox, filterTracker.getDelegateFilter());
+        assertEquals(bbox, filterTracker.getGranuleFilter());
+    }
 }

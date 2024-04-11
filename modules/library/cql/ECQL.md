@@ -198,7 +198,7 @@ New Syntax (since 2.7.rc1)
     <general literal> ::=
         <character string literal>
         | <boolean literal>
-        | <geography literal
+        | <geometry literal
 
     <boolean literal> ::= "TRUE" | "FALSE" 
 ```

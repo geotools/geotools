@@ -262,7 +262,7 @@ public class GeoJSONWriter implements AutoCloseable {
         } else if (binding == Boolean.class) {
             g.writeBoolean((boolean) value);
         } else if (Date.class.isAssignableFrom(binding)) {
-            g.writeString(DEFAULT_DATE_FORMATTER.format(value));
+            g.writeString(this.dateFormatter.format(value));
         } else if (Object.class.isAssignableFrom(binding) && value instanceof JsonNode) {
             ((JsonNode) value)
                     .serialize(

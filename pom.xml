@@ -1890,8 +1890,7 @@
           <maxmemory>${javadoc.maxHeapSize}</maxmemory>
           <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
-          <!-- Set an additional parameter for the command line. -->
-          <additionalparam>-keywords -Xdoclint:none</additionalparam>
+          <!-- Set an additional parameter for the javac command call. -->
           <additionalJOption>-Xdoclint:none</additionalJOption>
 
           <breakiterator>true</breakiterator>
@@ -2100,7 +2099,7 @@
           <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
           <!-- Set an additional parameter for the command line. -->
-          <additionalparam>-keywords</additionalparam>
+          <additionalOptions>-keywords</additionalOptions>
           <breakiterator>true</breakiterator>
           <excludePackageNames>org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions</excludePackageNames>
 

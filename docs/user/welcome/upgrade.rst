@@ -57,7 +57,7 @@ If a GRIB dataset stopped working:
     .. figure:: /images/grib_auxiliary_files.png
 
 Additional steps needed in case of ImageMosaic of GRIBs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 #. Remove any automatically created ImageMosaic configuration file within the ImageMosaic root folder. Assuming the underlying ImageMosaic was named mosaicM, containing coverages related to VariableA, VariableB, VariableC, …:
 
@@ -1363,7 +1363,7 @@ The filter system was upgrade to match Filter 2.0 resulting in a few additions. 
 effects people writing their own functions (as now we need to know about parameter types).
 
 FeatureId
-''''''''''
+'''''''''
 
 * BEFORE::
 

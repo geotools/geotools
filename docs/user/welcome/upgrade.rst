@@ -29,6 +29,49 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
         ....
     </dependencies>
 
+.. _update32:
+
+GeoTools 32.x
+-------------
+
+NetCDF Version upgrade to 5.5.3
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GeoTools 32.0 upgraded underlying Unidata NetCDF libraries from 4.6.15 to 5.5.3 which includes internal GRIB mapping table 
+updates and GRIB parameters interpretation updates. The upgrade impacted the way the GRIB parameters are being retrieved as
+well the way the temporal information is being extracted from the underlying data which may affect the construction of the
+names and the reported temporal ranges as well, resulting in some breakage with the upgrade.
+
+Refer to `GEOT-7547 <https://osgeo-org.atlassian.net/browse/GEOT-7547>`_ for relevant details on what has been broken.
+
+If a GRIB dataset stopped working:
+
+#. Remove any auxiliary/cache file associated with the underlying GRIB file (assuming the file is named gribfile.grib2):
+
+   * gribfile.ncx3
+   * gribfile.ncx4
+   * gribfile.gbx9
+   * .gribfile_hash folder (if not previously deleted) located beside the original file.
+
+   * The screenshot below, represents an actual example of a tpcprblty.2019100912.incremental.grib2 file with related auxiliary/cache files
+
+    .. figure:: /images/grib_auxiliary_files.png
+
+Additional steps needed in case of ImageMosaic of GRIBs
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+#. Remove any automatically created ImageMosaic configuration file within the ImageMosaic root folder. Assuming the underlying ImageMosaic was named mosaicM, containing coverages related to VariableA, VariableB, VariableC, …:
+
+   * VariableA.properties, VariableB.properties, VariableC.properties, …
+   * VariableAsample_image.dat, VariableBsample_image.dat, VariableCsample_image.dat, …
+   * mosaicM.xml
+
+#. If using a datastore.properties connecting to an actual DB, cleanup the tables from the DB
+
+   * Assuming that all the grib files belonging to the same ImageMosaic are affected by the same issue, you can delete the related tables and allow the imageMosaic reconfiguration to recreate them.
+   * Based on the above example, the naming convention is that granules for VariableA are stored on table named VariableA and so on.
+
+#. Recreate the indexer.xml and _auxiliary.xml file as reported in the `NetCDF documentation <https://docs.geoserver.org/main/en/user/extensions/netcdf/netcdf.html#setting-up-a-basic-mosaic>`__ . (At the end, GRIB file are served through the NetCDF libraries)
+
 .. _update31:
 
 GeoTools 31.x
@@ -1320,7 +1363,7 @@ The filter system was upgrade to match Filter 2.0 resulting in a few additions. 
 effects people writing their own functions (as now we need to know about parameter types).
 
 FeatureId
-''''''''''
+'''''''''
 
 * BEFORE::
 

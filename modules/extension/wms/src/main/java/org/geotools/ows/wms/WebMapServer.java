@@ -411,6 +411,27 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
      * specified by serverURL.
      *
      * @param serverURL a URL that points to the capabilities document of a server
+     * @param httpClient The client to be used when performing HTTP requests
+     * @param hints A map of hints. Can be used to control some aspects of the XML parsing, see
+     *     {@link XMLHandlerHints} for a reference
+     * @param headers A map of headers. These will be added when making the HTTP request
+     * @throws IOException if there is an error communicating with the server
+     * @throws ServiceException if the server responds with an error
+     */
+    public WebMapServer(
+            final URL serverURL,
+            final HTTPClient httpClient,
+            Map<String, Object> hints,
+            Map<String, String> headers)
+            throws IOException, ServiceException {
+        super(serverURL, httpClient, null, hints, headers);
+    }
+
+    /**
+     * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
+     * specified by serverURL.
+     *
+     * @param serverURL a URL that points to the capabilities document of a server
      * @param timeout a time to be wait a server response
      * @throws IOException if there is an error communicating with the server
      * @throws ServiceException if the server responds with an error

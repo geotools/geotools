@@ -103,4 +103,43 @@ public class SimpleHttpClientTest {
                 postRequestedFor(urlEqualTo("/test"))
                         .withHeader("Authorization", equalTo(headerValue)));
     }
+
+    /**
+     * Tests if authKey is added to requests as expected
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testRequestsWithAuthKey() throws IOException {
+        SimpleHttpClient client = new SimpleHttpClient();
+
+        String testAuthKey = "some_api_key=123";
+
+        URL urlWithoutAuthKey = new URL("http://localhost:" + wireMockRule.port() + "/test");
+
+        // Mock the expected request and response
+        UrlPattern urlPattern = urlEqualTo("/test?" + testAuthKey);
+        ResponseDefinitionBuilder response =
+                aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "text/xml")
+                        .withBody("<response>Some content</response>");
+        stubFor(get(urlPattern).willReturn(response));
+        stubFor(post(urlPattern).willReturn(response));
+
+        client.setAuthKey(testAuthKey);
+
+        // GET
+        client.get(urlWithoutAuthKey);
+        verify(
+                getRequestedFor(urlEqualTo("/test?" + testAuthKey))
+                        .withQueryParam("some_api_key", equalTo("123")));
+
+        // POST
+        ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
+        client.post(urlWithoutAuthKey, postBody, "text/plain");
+        verify(
+                postRequestedFor(urlEqualTo("/test?" + testAuthKey))
+                        .withQueryParam("some_api_key", equalTo("123")));
+    }
 }

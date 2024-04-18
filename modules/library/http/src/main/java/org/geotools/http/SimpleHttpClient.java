@@ -120,17 +120,17 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
 
     private URLConnection openConnection(URL finalURL, Map<String, String> headers)
             throws IOException {
+        String authKey = getAuthKey();
+        if (authKey != null) {
+            finalURL = appendURL(finalURL, authKey);
+        }
+
         URLConnection connection = finalURL.openConnection();
         final boolean http = connection instanceof HttpURLConnection;
         if (headers == null) {
             headers = new HashMap<>();
         } else {
             headers = new HashMap<>(headers); // avoid parameter modification
-        }
-
-        String authKey = getAuthKey();
-        if (http && authKey != null) {
-            finalURL = appendURL(finalURL, authKey);
         }
 
         if (http && tryGzip) {

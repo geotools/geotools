@@ -73,6 +73,16 @@ public class DelegateHTTPClient implements HTTPClient {
     }
 
     @Override
+    public String getAuthKey() {
+        return delegate.getAuthKey();
+    }
+
+    @Override
+    public void setAuthKey(String authKey) {
+        delegate.setAuthKey(authKey);
+    }
+
+    @Override
     public int getConnectTimeout() {
         return delegate.getConnectTimeout();
     }

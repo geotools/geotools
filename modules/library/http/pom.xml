@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>32-SNAPSHOT</version>
+    <version>peter-geotools-eclipse</version>
   </parent>
   <artifactId>gt-http</artifactId>
   <name>HTTP Clients</name>

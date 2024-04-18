@@ -127,6 +127,12 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         } else {
             headers = new HashMap<>(headers); // avoid parameter modification
         }
+
+        String authKey = getAuthKey();
+        if (http && authKey != null) {
+            finalURL = appendURL(finalURL, authKey);
+        }
+
         if (http && tryGzip) {
             headers.put("Accept-Encoding", "gzip");
         }

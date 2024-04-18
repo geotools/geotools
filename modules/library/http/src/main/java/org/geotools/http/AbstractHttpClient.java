@@ -18,6 +18,7 @@ package org.geotools.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -31,6 +32,8 @@ public abstract class AbstractHttpClient implements HTTPClient {
     protected String user;
 
     protected String password;
+
+    protected String authKey;
 
     protected int connectTimeout;
 
@@ -51,6 +54,16 @@ public abstract class AbstractHttpClient implements HTTPClient {
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public void setAuthKey(String authKey) {
+        this.authKey = authKey;
+    }
+
+    @Override
+    public String getAuthKey() {
+        return this.authKey;
     }
 
     @Override
@@ -88,6 +101,22 @@ public abstract class AbstractHttpClient implements HTTPClient {
     @Override
     public boolean isTryGzip() {
         return tryGzip;
+    }
+
+    protected static URL appendURL(URL oldUrl, String appendQuery) throws MalformedURLException {
+        String oldQuery = oldUrl.getQuery();
+        String newQuery = oldQuery != null ? oldQuery + "&" + appendQuery : appendQuery;
+
+        String newUrlString =
+                oldUrl.getProtocol() + "://" + oldUrl.getAuthority() + oldUrl.getPath();
+        if (newQuery != null && !newQuery.isEmpty()) {
+            newUrlString += "?" + newQuery;
+        }
+        if (oldUrl.getRef() != null) {
+            newUrlString += "#" + oldUrl.getRef();
+        }
+
+        return new URL(newUrlString);
     }
 
     protected boolean isFile(URL url) {

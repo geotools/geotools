@@ -72,6 +72,14 @@ public class MockHTTPClient implements HTTPClient {
     public void setPassword(String password) {}
 
     @Override
+    public String getAuthKey() {
+        return null;
+    }
+
+    @Override
+    public void setAuthKey(String authKey) {}
+
+    @Override
     public int getConnectTimeout() {
         return 0;
     }

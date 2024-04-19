@@ -109,7 +109,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
 
         return new URL(
                 oldUrl.getProtocol(),
-                oldUrl.getAuthority(),
+                oldUrl.getHost(),
                 oldUrl.getPort(),
                 oldUrl.getPath() + "?" + newQuery);
     }

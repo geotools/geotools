@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>30-SNAPSHOT</version>
+    <version>30.3</version>
   </parent>
 
   <artifactId>gt-stac-store</artifactId>

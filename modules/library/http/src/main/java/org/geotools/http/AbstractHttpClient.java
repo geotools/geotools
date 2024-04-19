@@ -107,16 +107,11 @@ public abstract class AbstractHttpClient implements HTTPClient {
         String oldQuery = oldUrl.getQuery();
         String newQuery = oldQuery != null ? oldQuery + "&" + appendQuery : appendQuery;
 
-        String newUrlString =
-                oldUrl.getProtocol() + "://" + oldUrl.getAuthority() + oldUrl.getPath();
-        if (newQuery != null && !newQuery.isEmpty()) {
-            newUrlString += "?" + newQuery;
-        }
-        if (oldUrl.getRef() != null) {
-            newUrlString += "#" + oldUrl.getRef();
-        }
-
-        return new URL(newUrlString);
+        return new URL(
+                oldUrl.getProtocol(),
+                oldUrl.getAuthority(),
+                oldUrl.getPort(),
+                oldUrl.getPath() + "?" + newQuery);
     }
 
     protected boolean isFile(URL url) {

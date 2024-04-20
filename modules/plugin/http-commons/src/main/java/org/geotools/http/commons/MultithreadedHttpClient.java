@@ -223,9 +223,9 @@ public class MultithreadedHttpClient extends AbstractHttpClient
             headers = new HashMap<>(headers); // avoid parameter modification
         }
 
-        String authKey = getAuthKey();
-        if (authKey != null) {
-            url = appendURL(url, authKey);
+        Map<String, Object> extraParams = getExtraParams();
+        if (extraParams != null) {
+            url = appendURL(url, extraParams);
         }
 
         HttpGet getMethod = new HttpGet(url.toExternalForm());

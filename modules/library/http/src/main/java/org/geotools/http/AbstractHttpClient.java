@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * A base class for HTTPClient, that implements everything except the get and post methods.
@@ -33,7 +35,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
 
     protected String password;
 
-    protected String authKey;
+    protected Map<String, Object> extraParams;
 
     protected int connectTimeout;
 
@@ -57,13 +59,13 @@ public abstract class AbstractHttpClient implements HTTPClient {
     }
 
     @Override
-    public void setAuthKey(String authKey) {
-        this.authKey = authKey;
+    public void setExtraParams(Map<String, Object> extraParams) {
+        this.extraParams = extraParams;
     }
 
     @Override
-    public String getAuthKey() {
-        return this.authKey;
+    public Map<String, Object> getExtraParams() {
+        return this.extraParams;
     }
 
     @Override
@@ -103,9 +105,15 @@ public abstract class AbstractHttpClient implements HTTPClient {
         return tryGzip;
     }
 
-    protected static URL appendURL(URL oldUrl, String appendQuery) throws MalformedURLException {
+    protected static URL appendURL(URL oldUrl, Map<String, Object> appendQuery)
+            throws MalformedURLException {
         String oldQuery = oldUrl.getQuery();
-        String newQuery = oldQuery != null ? oldQuery + "&" + appendQuery : appendQuery;
+
+        StringJoiner stringJoiner = new StringJoiner("&");
+        appendQuery.forEach((key, value) -> stringJoiner.add(key + "=" + value));
+        String query = stringJoiner.toString();
+
+        String newQuery = oldQuery != null ? oldQuery + "&" + query : query;
 
         return new URL(
                 oldUrl.getProtocol(),

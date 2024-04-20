@@ -133,11 +133,11 @@ public interface HTTPClient {
     /** @param password the HTTP BASIC Authentication password */
     public void setPassword(String password);
 
-    /** @return the optional querystring AuthKey, or {@code null} if not set */
-    public String getAuthKey();
+    /** @return the optional querystring ExtraParams, or {@code null} if not set */
+    public Map<String, Object> getExtraParams();
 
-    /** @param authKey the optional querystring AuthKey to be appended to finalURL */
-    public void setAuthKey(String authKey);
+    /** @param extraParams the optional querystring ExtraParams to be appended to finalURL */
+    public void setExtraParams(Map<String, Object> extraParams);
 
     /** @return the tcp/ip connect timeout in seconds */
     public int getConnectTimeout();

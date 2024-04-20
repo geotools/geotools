@@ -120,9 +120,9 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
 
     private URLConnection openConnection(URL finalURL, Map<String, String> headers)
             throws IOException {
-        String authKey = getAuthKey();
-        if (authKey != null) {
-            finalURL = appendURL(finalURL, authKey);
+        Map<String, Object> extraParams = getExtraParams();
+        if (extraParams != null) {
+            finalURL = appendURL(finalURL, extraParams);
         }
 
         URLConnection connection = finalURL.openConnection();

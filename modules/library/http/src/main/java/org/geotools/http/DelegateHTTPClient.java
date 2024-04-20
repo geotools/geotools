@@ -73,13 +73,13 @@ public class DelegateHTTPClient implements HTTPClient {
     }
 
     @Override
-    public String getAuthKey() {
-        return delegate.getAuthKey();
+    public Map<String, Object> getExtraParams() {
+        return delegate.getExtraParams();
     }
 
     @Override
-    public void setAuthKey(String authKey) {
-        delegate.setAuthKey(authKey);
+    public void setExtraParams(Map<String, Object> extraParams) {
+        delegate.setExtraParams(extraParams);
     }
 
     @Override

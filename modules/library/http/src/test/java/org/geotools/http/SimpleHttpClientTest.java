@@ -24,6 +24,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static java.util.Collections.singletonMap;
 
@@ -35,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
+import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -105,20 +107,20 @@ public class SimpleHttpClientTest {
     }
 
     /**
-     * Tests if authKey is added to requests as expected
+     * Tests if extraParams are added to requests as expected
      *
      * @throws IOException
      */
     @Test
-    public void testRequestsWithAuthKey() throws IOException {
+    public void testRequestsWithExtraParams() throws IOException {
         SimpleHttpClient client = new SimpleHttpClient();
 
-        String testAuthKey = "some_api_key=123";
+        Map<String, Object> testExtraParams = Map.of("key1", 123, "key2", "value2");
 
-        URL urlWithoutAuthKey = new URL("http://localhost:" + wireMockRule.port() + "/test");
+        URL urlWithoutExtraParams = new URL("http://localhost:" + wireMockRule.port() + "/test");
 
         // Mock the expected request and response
-        UrlPattern urlPattern = urlEqualTo("/test?" + testAuthKey);
+        UrlPattern urlPattern = urlMatching("/test?.*");
         ResponseDefinitionBuilder response =
                 aResponse()
                         .withStatus(200)
@@ -127,19 +129,21 @@ public class SimpleHttpClientTest {
         stubFor(get(urlPattern).willReturn(response));
         stubFor(post(urlPattern).willReturn(response));
 
-        client.setAuthKey(testAuthKey);
+        client.setExtraParams(testExtraParams);
 
         // GET
-        client.get(urlWithoutAuthKey);
+        client.get(urlWithoutExtraParams);
         verify(
-                getRequestedFor(urlEqualTo("/test?" + testAuthKey))
-                        .withQueryParam("some_api_key", equalTo("123")));
+                getRequestedFor(urlMatching("/test?.*"))
+                        .withQueryParam("key1", equalTo("123"))
+                        .withQueryParam("key2", equalTo("value2")));
 
         // POST
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
-        client.post(urlWithoutAuthKey, postBody, "text/plain");
+        client.post(urlWithoutExtraParams, postBody, "text/plain");
         verify(
-                postRequestedFor(urlEqualTo("/test?" + testAuthKey))
-                        .withQueryParam("some_api_key", equalTo("123")));
+                postRequestedFor(urlMatching("/test?.*"))
+                        .withQueryParam("key1", equalTo("123"))
+                        .withQueryParam("key2", equalTo("value2")));
     }
 }

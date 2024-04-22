@@ -115,12 +115,13 @@ public class SimpleHttpClientTest {
     public void testRequestsWithExtraParams() throws IOException {
         SimpleHttpClient client = new SimpleHttpClient();
 
-        Map<String, Object> testExtraParams = Map.of("key1", 123, "key2", "value2");
+        Map<String, Object> testExtraParams =
+                Map.of("key1", 123, "key2", "value2", "key%3", "value/3");
 
         URL urlWithoutExtraParams = new URL("http://localhost:" + wireMockRule.port() + "/test");
 
         // Mock the expected request and response
-        UrlPattern urlPattern = urlMatching("/test?.*");
+        UrlPattern urlPattern = urlMatching("/test[\\w?&=%]*"); // \w or any of ?&=%
         ResponseDefinitionBuilder response =
                 aResponse()
                         .withStatus(200)
@@ -134,16 +135,21 @@ public class SimpleHttpClientTest {
         // GET
         client.get(urlWithoutExtraParams);
         verify(
-                getRequestedFor(urlMatching("/test?.*"))
+                getRequestedFor(urlMatching("/test[\\w?&=%]*"))
                         .withQueryParam("key1", equalTo("123"))
-                        .withQueryParam("key2", equalTo("value2")));
+                        .withQueryParam("key2", equalTo("value2"))
+                        .withQueryParam(
+                                "key%3",
+                                equalTo("value/3"))); // % and / are URL-encoded and then decoded
+        // again
 
         // POST
         ByteArrayInputStream postBody = new ByteArrayInputStream("GeoTools".getBytes());
         client.post(urlWithoutExtraParams, postBody, "text/plain");
         verify(
-                postRequestedFor(urlMatching("/test?.*"))
+                postRequestedFor(urlMatching("/test[\\w?&=%]*"))
                         .withQueryParam("key1", equalTo("123"))
-                        .withQueryParam("key2", equalTo("value2")));
+                        .withQueryParam("key2", equalTo("value2"))
+                        .withQueryParam("key%3", equalTo("value/3")));
     }
 }

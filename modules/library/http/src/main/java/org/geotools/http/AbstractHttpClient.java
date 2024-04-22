@@ -18,9 +18,12 @@ package org.geotools.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -110,7 +113,17 @@ public abstract class AbstractHttpClient implements HTTPClient {
         String oldQuery = oldUrl.getQuery();
 
         StringJoiner stringJoiner = new StringJoiner("&");
-        appendQuery.forEach((key, value) -> stringJoiner.add(key + "=" + value));
+        appendQuery.forEach(
+                (key, value) -> {
+                    try {
+                        stringJoiner.add(
+                                URLEncoder.encode(key, "UTF-8")
+                                        + "="
+                                        + URLEncoder.encode(value.toString(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                });
         String query = stringJoiner.toString();
 
         String newQuery = oldQuery != null ? oldQuery + "&" + query : query;

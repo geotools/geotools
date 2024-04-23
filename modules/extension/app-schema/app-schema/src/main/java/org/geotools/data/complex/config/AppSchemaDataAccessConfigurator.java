@@ -121,6 +121,9 @@ public class AppSchemaDataAccessConfigurator {
 
     public static final String PROPERTY_REPLACE_OR_UNION = "app-schema.orUnionReplace";
 
+    /** Whether the mapping is for an include. */
+    private boolean isInclude = false;
+
     private AppSchemaDataAccessDTO config;
 
     private AppSchemaFeatureTypeRegistry typeRegistry;
@@ -172,9 +175,10 @@ public class AppSchemaDataAccessConfigurator {
 
     /** Creates a new ComplexDataStoreConfigurator object. */
     private AppSchemaDataAccessConfigurator(
-            AppSchemaDataAccessDTO config, DataAccessMap dataStoreMap) {
+            AppSchemaDataAccessDTO config, DataAccessMap dataStoreMap, boolean isInclude) {
         this.config = config;
         this.dataStoreMap = dataStoreMap;
+        this.isInclude = isInclude;
         namespaces = new NamespaceSupport();
         declareNamespaces(config);
     }
@@ -233,9 +237,22 @@ public class AppSchemaDataAccessConfigurator {
      *     FeatureType mapping definitions
      * @throws IOException if any error occurs while creating the mappings
      */
+    public static Set<FeatureTypeMapping> buildMappings(
+            AppSchemaDataAccessDTO config, boolean isInclude) throws IOException {
+        return buildMappings(config, new DataAccessMap(), isInclude);
+    }
+
+    /**
+     * Takes a config object and creates a set of mappings, assumes the mappings are not from
+     * includes
+     *
+     * @param config the configuration object
+     * @return a Set of {@link org.geotools.data.complex.FeatureTypeMapping} source to target
+     * @throws IOException if any error occurs while creating the mappings
+     */
     public static Set<FeatureTypeMapping> buildMappings(AppSchemaDataAccessDTO config)
             throws IOException {
-        return buildMappings(config, new DataAccessMap());
+        return buildMappings(config, new DataAccessMap(), false);
     }
 
     /**
@@ -245,12 +262,14 @@ public class AppSchemaDataAccessConfigurator {
      * @see AppSchemaDataAccessConfigurator#buildMappings(AppSchemaDataAccessDTO)
      * @param sourceDataStoreMap map holding the source data stores created so far, e.g. while
      *     parsing App-Schema configuration files included by the one currently being processed
+     * @param isInclude whether the mappings are for an include
      */
     public static Set<FeatureTypeMapping> buildMappings(
-            AppSchemaDataAccessDTO config, DataAccessMap sourceDataStoreMap) throws IOException {
+            AppSchemaDataAccessDTO config, DataAccessMap sourceDataStoreMap, boolean isInclude)
+            throws IOException {
 
         AppSchemaDataAccessConfigurator mappingsBuilder =
-                new AppSchemaDataAccessConfigurator(config, sourceDataStoreMap);
+                new AppSchemaDataAccessConfigurator(config, sourceDataStoreMap, isInclude);
         Set<FeatureTypeMapping> mappingObjects = mappingsBuilder.buildMappings();
 
         return mappingObjects;
@@ -272,7 +291,7 @@ public class AppSchemaDataAccessConfigurator {
                 // -create source datastores
                 sourceDataStores = acquireSourceDatastores();
                 // -create FeatureType mappings
-                featureTypeMappings = createFeatureTypeMappings(sourceDataStores);
+                featureTypeMappings = createFeatureTypeMappings(sourceDataStores, isInclude);
                 return featureTypeMappings;
             } finally {
                 disposeUnusedSourceDataStores(sourceDataStores, featureTypeMappings);
@@ -315,7 +334,8 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     private Set<FeatureTypeMapping> createFeatureTypeMappings(
-            Map<String, DataAccess<FeatureType, Feature>> sourceDataStores) throws IOException {
+            Map<String, DataAccess<FeatureType, Feature>> sourceDataStores, boolean isInclude)
+            throws IOException {
         Set mappingsConfigs = config.getTypeMappings();
 
         Set<FeatureTypeMapping> featureTypeMappings = new HashSet<>();
@@ -376,6 +396,8 @@ public class AppSchemaDataAccessConfigurator {
                 if (mappingName != null) {
                     mapping.setName(Types.degloseName(mappingName, namespaces));
                 }
+                // indicate whether the mapping is from an include
+                mapping.setInclude(isInclude);
                 featureTypeMappings.add(mapping);
             } catch (Exception e) {
                 LOGGER.warning(

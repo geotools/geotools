@@ -144,11 +144,20 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
                     // check both mappings and the registry, because the data access is
                     // only registered at the bottom of this constructor, so it might not
                     // be in the registry yet
-                    throw new DataSourceException(
-                            "Duplicate mappingName or targetElement across FeatureTypeMapping instances detected.\n"
-                                    + "They have to be unique, or app-schema doesn't know which one to get.\n"
-                                    + "Please check your mapping file(s) with mappingName or targetElement of: "
-                                    + name);
+                    // if the mapping is from an include and is identical to the previous one, log
+                    // and continue
+                    if (isIncludeAndDeepSame(mapping)) {
+                        LOGGER.fine(
+                                "Duplicate mappingName detected, but no error thrown because it comes from an include: "
+                                        + name);
+                        continue;
+                    } else {
+                        throw new DataSourceException(
+                                "Duplicate mappingName or targetElement across FeatureTypeMapping instances detected.\n"
+                                        + "They have to be unique, or app-schema doesn't know which one to get.\n"
+                                        + "Please check your mapping file(s) with mappingName or targetElement of: "
+                                        + name);
+                    }
                 }
                 this.mappings.put(name, mapping);
                 // if the type is not a feature, it should be wrapped with
@@ -167,6 +176,59 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
             throw e;
         }
         register();
+    }
+
+    /**
+     * If the provided feature type mapping does not result from an include directive, we return
+     * false immediately. We then check if a previous mapping has already been registered for the
+     * provided feature type name. If that's the case, we verify if the new provided mapping is
+     * deeply equal to the already registered one. If this comparison holds true, we return true.
+     *
+     * <p>The objective here is to ensure that if a feature type mapping has already included this
+     * specific feature type mapping, it is indeed the same mapping definition. The intention is to
+     * prevent different mappings for the same feature type from coexisting.
+     *
+     * @param mapping the mapping to check
+     * @return true if the mapping is an include and is identical to the previous one
+     */
+    private boolean isIncludeAndDeepSame(FeatureTypeMapping mapping) {
+        // Not an include, so no need to check
+        if (!Boolean.TRUE.equals(mapping.isInclude())) {
+            return false;
+        }
+        FeatureTypeMapping compareMapping = null;
+        // Get the mapping to compare with
+        Name name = null;
+        if (mapping.getMappingName() != null) {
+            name = mapping.getMappingName();
+        } else {
+            // lookup by mapping name failed, try to lookup by target element
+            name = mapping.getTargetFeature().getName();
+        }
+        if (name != null) {
+            if (this.mappings.containsKey(name)) {
+                compareMapping = this.mappings.get(name);
+            } else {
+                try {
+                    // We already checked the mappings for this AppSchemaDataAccess, to see if we
+                    // previously encountered this mapping in this root. If we didn't, we need to
+                    // check the registry to see if it was in other roots.
+                    if (DataAccessRegistry.hasName(name)) {
+                        AppSchemaDataAccess appSchemaDataAccess =
+                                (AppSchemaDataAccess) DataAccessRegistry.getDataAccess(name);
+                        compareMapping = appSchemaDataAccess.getMappingByName(name);
+                    }
+                } catch (IOException | ClassCastException e) {
+                    LOGGER.fine(
+                            "Could not get mapping from registry for "
+                                    + name
+                                    + " while trying to test for duplicates");
+                    return false;
+                }
+            }
+            return mapping.equals(compareMapping);
+        }
+        return false;
     }
 
     /** Registers this data access to the registry so the mappings can be retrieved globally */

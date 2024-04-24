@@ -133,7 +133,9 @@ public interface HTTPClient {
     /** @param password the HTTP BASIC Authentication password */
     public void setPassword(String password);
 
-    /** @return the optional querystring ExtraParams, or {@code null} if not set */
+    /** Optional query parameters.
+      * @return querystring ExtraParams, or {@code null} if not set
+      */
     public Map<String, Object> getExtraParams();
 
     /** @param extraParams the optional querystring ExtraParams to be appended to finalURL */

@@ -47,7 +47,6 @@
 
   <properties>
     <!-- This is needed by Parboiled generated code, see https://github.com/sirthias/parboiled/issues/175 -->
-    <test.otherJVMParams>--add-opens=java.base/java.lang=ALL-UNNAMED</test.otherJVMParams>
   </properties>
 
   <dependencies>

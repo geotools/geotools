@@ -109,14 +109,14 @@ public abstract class AbstractHttpClient implements HTTPClient {
         return tryGzip;
     }
 
-+    /**
-+     * Appends query parameters to an existing URL.
-+     *
-+     * @param oldUrl The original URL to which parameters will be appended.
-+     * @param appendQuery A map containing key-value pairs to be appended as query parameters.
-+     * @return A new URL with the appended query parameters.
-+     * @throws MalformedURLException If the resulting URL is malformed.
-+     */
+    /**
+     * Appends query parameters to an existing URL.
+     *
+     * @param oldUrl The original URL to which parameters will be appended.
+     * @param appendQuery A map containing key-value pairs to be appended as query parameters.
+     * @return A new URL with the appended query parameters.
+     * @throws MalformedURLException If the resulting URL is malformed.
+     */
     protected static URL appendURL(URL oldUrl, Map<String, String> appendQuery)
             throws MalformedURLException {
         String oldQuery = oldUrl.getQuery();

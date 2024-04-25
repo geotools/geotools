@@ -116,7 +116,7 @@ public class SimpleHttpClientTest {
         SimpleHttpClient client = new SimpleHttpClient();
 
         Map<String, String> testExtraParams =
-                Map.of("key1", 123, "key2", "value2", "key%3", "value/3");
+                Map.of("key1", "123", "key2", "value2", "key%3", "value/3");
 
         URL urlWithoutExtraParams =
                 new URL("http://localhost:" + wireMockRule.port() + "/test?key2=duplicate");

@@ -224,7 +224,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         }
 
         Map<String, String> extraParams = getExtraParams();
-        if (extraParams != null) {
+        if (!extraParams.isEmpty()) {
             url = appendURL(url, extraParams);
         }
 

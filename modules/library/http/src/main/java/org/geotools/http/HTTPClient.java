@@ -134,7 +134,7 @@ public interface HTTPClient {
     public void setPassword(String password);
 
     /** Optional query parameters.
-      * @return querystring ExtraParams, or {@code null} if not set
+      * @return querystring ExtraParams, or {@code emptyMap()} if not set
       */
     public Map<String, String> getExtraParams();
 

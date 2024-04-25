@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -38,7 +39,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
 
     protected String password;
 
-    protected Map<String, String> extraParams;
+    protected Map<String, String> extraParams = Collections.emptyMap();
 
     protected int connectTimeout;
 
@@ -108,6 +109,14 @@ public abstract class AbstractHttpClient implements HTTPClient {
         return tryGzip;
     }
 
++    /**
++     * Appends query parameters to an existing URL.
++     *
++     * @param oldUrl The original URL to which parameters will be appended.
++     * @param appendQuery A map containing key-value pairs to be appended as query parameters.
++     * @return A new URL with the appended query parameters.
++     * @throws MalformedURLException If the resulting URL is malformed.
++     */
     protected static URL appendURL(URL oldUrl, Map<String, String> appendQuery)
             throws MalformedURLException {
         String oldQuery = oldUrl.getQuery();

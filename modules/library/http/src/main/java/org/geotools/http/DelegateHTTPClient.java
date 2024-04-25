@@ -73,12 +73,12 @@ public class DelegateHTTPClient implements HTTPClient {
     }
 
     @Override
-    public Map<String, Object> getExtraParams() {
+    public Map<String, String> getExtraParams() {
         return delegate.getExtraParams();
     }
 
     @Override
-    public void setExtraParams(Map<String, Object> extraParams) {
+    public void setExtraParams(Map<String, String> extraParams) {
         delegate.setExtraParams(extraParams);
     }
 

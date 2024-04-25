@@ -115,7 +115,7 @@ public class SimpleHttpClientTest {
     public void testRequestsWithExtraParams() throws IOException {
         SimpleHttpClient client = new SimpleHttpClient();
 
-        Map<String, Object> testExtraParams =
+        Map<String, String> testExtraParams =
                 Map.of("key1", 123, "key2", "value2", "key%3", "value/3");
 
         URL urlWithoutExtraParams = new URL("http://localhost:" + wireMockRule.port() + "/test");

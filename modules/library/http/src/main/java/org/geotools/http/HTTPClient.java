@@ -136,10 +136,10 @@ public interface HTTPClient {
     /** Optional query parameters.
       * @return querystring ExtraParams, or {@code null} if not set
       */
-    public Map<String, Object> getExtraParams();
+    public Map<String, String> getExtraParams();
 
     /** @param extraParams the optional querystring ExtraParams to be appended to finalURL */
-    public void setExtraParams(Map<String, Object> extraParams);
+    public void setExtraParams(Map<String, String> extraParams);
 
     /** @return the tcp/ip connect timeout in seconds */
     public int getConnectTimeout();

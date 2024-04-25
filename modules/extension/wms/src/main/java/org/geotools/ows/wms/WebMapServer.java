@@ -407,8 +407,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer>
     }
 
     /**
-     * Creates a new WebMapServer instance and retrieve the Capabilities document.
-     * specified by serverURL.
+     * Creates a new WebMapServer instance and retrieve the Capabilities document specified by serverURL.
      *
      * @param serverURL a URL that points to the capabilities document of a server
      * @param httpClient The client to be used when performing HTTP requests

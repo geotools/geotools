@@ -118,7 +118,8 @@ public class SimpleHttpClientTest {
         Map<String, String> testExtraParams =
                 Map.of("key1", 123, "key2", "value2", "key%3", "value/3");
 
-        URL urlWithoutExtraParams = new URL("http://localhost:" + wireMockRule.port() + "/test");
+        URL urlWithoutExtraParams =
+                new URL("http://localhost:" + wireMockRule.port() + "/test?key2=duplicate");
 
         // Mock the expected request and response
         UrlPattern urlPattern = urlMatching("/test[\\w?&=%]*"); // \w or any of ?&=%
@@ -138,6 +139,7 @@ public class SimpleHttpClientTest {
                 getRequestedFor(urlMatching("/test[\\w?&=%]*"))
                         .withQueryParam("key1", equalTo("123"))
                         .withQueryParam("key2", equalTo("value2"))
+                        .withQueryParam("key2", equalTo("duplicate"))
                         .withQueryParam(
                                 "key%3",
                                 equalTo("value/3"))); // % and / are URL-encoded and then decoded
@@ -150,6 +152,7 @@ public class SimpleHttpClientTest {
                 postRequestedFor(urlMatching("/test[\\w?&=%]*"))
                         .withQueryParam("key1", equalTo("123"))
                         .withQueryParam("key2", equalTo("value2"))
+                        .withQueryParam("key2", equalTo("duplicate"))
                         .withQueryParam("key%3", equalTo("value/3")));
     }
 }

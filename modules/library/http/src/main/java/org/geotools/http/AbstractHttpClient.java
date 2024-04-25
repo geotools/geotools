@@ -38,7 +38,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
 
     protected String password;
 
-    protected Map<String, Object> extraParams;
+    protected Map<String, String> extraParams;
 
     protected int connectTimeout;
 
@@ -62,12 +62,12 @@ public abstract class AbstractHttpClient implements HTTPClient {
     }
 
     @Override
-    public void setExtraParams(Map<String, Object> extraParams) {
+    public void setExtraParams(Map<String, String> extraParams) {
         this.extraParams = extraParams;
     }
 
     @Override
-    public Map<String, Object> getExtraParams() {
+    public Map<String, String> getExtraParams() {
         return this.extraParams;
     }
 
@@ -108,7 +108,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
         return tryGzip;
     }
 
-    protected static URL appendURL(URL oldUrl, Map<String, Object> appendQuery)
+    protected static URL appendURL(URL oldUrl, Map<String, String> appendQuery)
             throws MalformedURLException {
         String oldQuery = oldUrl.getQuery();
 
@@ -119,7 +119,7 @@ public abstract class AbstractHttpClient implements HTTPClient {
                         stringJoiner.add(
                                 URLEncoder.encode(key, "UTF-8")
                                         + "="
-                                        + URLEncoder.encode(value.toString(), "UTF-8"));
+                                        + URLEncoder.encode(value, "UTF-8"));
                     } catch (UnsupportedEncodingException e) {
                         throw new UncheckedIOException(e);
                     }

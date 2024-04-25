@@ -223,7 +223,7 @@ public class MultithreadedHttpClient extends AbstractHttpClient
             headers = new HashMap<>(headers); // avoid parameter modification
         }
 
-        Map<String, Object> extraParams = getExtraParams();
+        Map<String, String> extraParams = getExtraParams();
         if (extraParams != null) {
             url = appendURL(url, extraParams);
         }

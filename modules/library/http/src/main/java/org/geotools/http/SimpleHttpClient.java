@@ -120,7 +120,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
 
     private URLConnection openConnection(URL finalURL, Map<String, String> headers)
             throws IOException {
-        Map<String, Object> extraParams = getExtraParams();
+        Map<String, String> extraParams = getExtraParams();
         if (extraParams != null) {
             finalURL = appendURL(finalURL, extraParams);
         }

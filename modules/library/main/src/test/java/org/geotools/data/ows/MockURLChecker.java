@@ -46,7 +46,7 @@ public class MockURLChecker implements URLChecker {
     }
 
     @Override
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 

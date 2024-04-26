@@ -31,7 +31,7 @@ public interface URLChecker {
     String getName();
 
     /** @return Boolean flag indicating if this URLChecker should be used */
-    boolean isEnabled();
+    Boolean isEnabled();
 
     /**
      * Used to confirm location is allowed for use.

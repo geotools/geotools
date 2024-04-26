@@ -43,7 +43,7 @@ import org.geotools.util.logging.Logging;
 class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListener {
 
     static final Logger LOGGER = Logging.getLogger(RATCollectorListener.class);
-    private final CatalogBuilderConfiguration configuration;
+    private final File pamFile;
 
     private List<RATCollector> collectors = new ArrayList<>();
 
@@ -52,7 +52,13 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
     boolean stopCollection = false;
 
     public RATCollectorListener(CatalogBuilderConfiguration configuration) {
-        this.configuration = configuration;
+        String root = configuration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR);
+        String name = configuration.getParameter(Utils.Prop.INDEX_NAME);
+        this.pamFile = new File(root, name + ".aux.xml");
+    }
+
+    public RATCollectorListener(File pamFile) {
+        this.pamFile = pamFile;
     }
 
     @Override
@@ -64,22 +70,29 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
             // skip non ingested files
             if (!fileEvent.isIngested()) return;
             File file = fileEvent.getFile();
-            File pamFile = new File(file.getParent(), file.getName() + ".aux.xml");
-            if (pamFile.exists() && pamFile.isFile() && pamFile.canRead()) {
-                collectRAT(pamFile);
-            } else {
-                collectInternalRAT(file);
-            }
+            collectRAT(file);
         } else if (event instanceof CompletionEvent) {
             generateMosaicRAT();
         }
     }
 
-    private void generateMosaicRAT() {
-        String root = configuration.getParameter(Utils.Prop.ROOT_MOSAIC_DIR);
-        String name = configuration.getParameter(Utils.Prop.INDEX_NAME);
-        File pamFile = new File(root, name + ".aux.xml");
+    /**
+     * Collects a specific RAT from a file.
+     *
+     * @param file
+     */
+    public void collectRAT(File file) {
+        File pamFile = new File(file.getParent(), file.getName() + ".aux.xml");
+        if (pamFile.exists() && pamFile.isFile() && pamFile.canRead()) {
+            collectExternalRAT(pamFile);
+        } else {
+            collectInternalRAT(file);
+        }
+    }
 
+    /** Generates the mosaic RAT from the collected RATs. */
+    public void generateMosaicRAT() {
+        if (stopCollection) return;
         for (int band = 0; band < collectors.size(); band++) {
             RATCollector collector = collectors.get(band);
             if (collector != null) collector.replaceRows(first, band);
@@ -96,7 +109,7 @@ class RATCollectorListener extends ImageMosaicEventHandlers.ProcessingEventListe
         }
     }
 
-    private void collectRAT(File pamFile) {
+    private void collectExternalRAT(File pamFile) {
         try {
             PAMParser parser = new PAMParser();
             PAMDataset pam = parser.parsePAM(pamFile);

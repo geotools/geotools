@@ -1182,7 +1182,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
 
         double[] noData = getNoData(wrapper);
         if (noData != null) {
-            metadata.setNoData(noData);
+            Double[] noDataValues = Arrays.stream(noData).boxed().toArray(n -> new Double[n]);
+            metadata.setNoDataValues(noDataValues);
         }
 
         return metadata;

@@ -73,6 +73,16 @@ public class DelegateHTTPClient implements HTTPClient {
     }
 
     @Override
+    public Map<String, String> getExtraParams() {
+        return delegate.getExtraParams();
+    }
+
+    @Override
+    public void setExtraParams(Map<String, String> extraParams) {
+        delegate.setExtraParams(extraParams);
+    }
+
+    @Override
     public int getConnectTimeout() {
         return delegate.getConnectTimeout();
     }

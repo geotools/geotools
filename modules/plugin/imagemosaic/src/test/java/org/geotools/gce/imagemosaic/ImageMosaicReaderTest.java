@@ -5475,7 +5475,7 @@ public class ImageMosaicReaderTest {
                     failed = true;
                 }
             }
-            assertFalse("Terminating test due to previus failures", failed);
+            assertFalse("Terminating test due to previous failures", failed);
 
             // check that all the files are there
             assertEquals(

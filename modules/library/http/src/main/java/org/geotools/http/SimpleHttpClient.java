@@ -120,6 +120,11 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
 
     private URLConnection openConnection(URL finalURL, Map<String, String> headers)
             throws IOException {
+        Map<String, String> extraParams = getExtraParams();
+        if (!extraParams.isEmpty()) {
+            finalURL = appendURL(finalURL, extraParams);
+        }
+
         URLConnection connection = finalURL.openConnection();
         final boolean http = connection instanceof HttpURLConnection;
         if (headers == null) {
@@ -127,6 +132,7 @@ public class SimpleHttpClient extends AbstractHttpClient implements HTTPProxy {
         } else {
             headers = new HashMap<>(headers); // avoid parameter modification
         }
+
         if (http && tryGzip) {
             headers.put("Accept-Encoding", "gzip");
         }

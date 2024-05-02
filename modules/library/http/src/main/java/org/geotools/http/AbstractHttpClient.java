@@ -18,8 +18,15 @@ package org.geotools.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.Map;
+import java.util.StringJoiner;
 
 /**
  * A base class for HTTPClient, that implements everything except the get and post methods.
@@ -31,6 +38,8 @@ public abstract class AbstractHttpClient implements HTTPClient {
     protected String user;
 
     protected String password;
+
+    protected Map<String, String> extraParams = Collections.emptyMap();
 
     protected int connectTimeout;
 
@@ -51,6 +60,16 @@ public abstract class AbstractHttpClient implements HTTPClient {
     @Override
     public String getPassword() {
         return this.password;
+    }
+
+    @Override
+    public void setExtraParams(Map<String, String> extraParams) {
+        this.extraParams = extraParams;
+    }
+
+    @Override
+    public Map<String, String> getExtraParams() {
+        return this.extraParams;
     }
 
     @Override
@@ -88,6 +107,41 @@ public abstract class AbstractHttpClient implements HTTPClient {
     @Override
     public boolean isTryGzip() {
         return tryGzip;
+    }
+
+    /**
+     * Appends query parameters to an existing URL.
+     *
+     * @param oldUrl The original URL to which parameters will be appended.
+     * @param appendQuery A map containing key-value pairs to be appended as query parameters.
+     * @return A new URL with the appended query parameters.
+     * @throws MalformedURLException If the resulting URL is malformed.
+     */
+    protected static URL appendURL(URL oldUrl, Map<String, String> appendQuery)
+            throws MalformedURLException {
+        String oldQuery = oldUrl.getQuery();
+
+        StringJoiner stringJoiner = new StringJoiner("&");
+        appendQuery.forEach(
+                (key, value) -> {
+                    try {
+                        stringJoiner.add(
+                                URLEncoder.encode(key, "UTF-8")
+                                        + "="
+                                        + URLEncoder.encode(value, "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                });
+        String query = stringJoiner.toString();
+
+        String newQuery = oldQuery != null ? oldQuery + "&" + query : query;
+
+        return new URL(
+                oldUrl.getProtocol(),
+                oldUrl.getHost(),
+                oldUrl.getPort(),
+                oldUrl.getPath() + "?" + newQuery);
     }
 
     protected boolean isFile(URL url) {

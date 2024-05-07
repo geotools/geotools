@@ -135,6 +135,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
     static final String RUSSIAN = "shapes/rus-windows-1251.shp";
     static final String UTF8 = "shapes/wgs1snt.shp";
     static final String SPECIAL_CHAR_NAME = "test-data/special-characters/Åéìòù.shp";
+    static final String TAZ_SHAPES = "taz_shapes/tasmania_roads.shp";
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private ShapefileDataStore store;
 
@@ -2073,4 +2074,55 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         Name name = store.getTypeName();
         assertEquals("Åéìòù", name.getLocalPart());
     }
+
+    @Test
+    public void testIgnoreIndexStaleness() throws Exception {
+        File shpFile = copyShapefiles(STATE_POP);
+
+        ShpFileType fix = ShpFileType.FIX;
+        File fixFile = sibling(shpFile, fix.extension);
+        fixFile.delete();
+
+        ShapefileDataStore ds = new ShapefileDataStore(shpFile.toURI().toURL());
+        SimpleFeatureSource fs = ds.getFeatureSource(ds.getTypeNames()[0]);
+
+        ds.indexManager.createFidIndex();
+        long fixModified = fixFile.lastModified();
+        shpFile.setLastModified(fixModified + 1000000);
+        assertTrue(ds.indexManager.isIndexStale(fix));
+        assertFalse(ds.isIgnoringIndexStaleness()); // default value should be false
+
+        ds.setIgnoreIndexStaleness(true);
+        assertTrue(ds.isIgnoringIndexStaleness());
+
+        assertFalse(ds.indexManager.isIndexStale(fix)); // indexes are no longer considered stale
+
+        try(SimpleFeatureIterator sfi = fs.getFeatures(Query.ALL).features()){};
+        assertEquals(fixModified, fixFile.lastModified());
+
+        ds.setIgnoreIndexStaleness(false);
+        assertTrue(ds.indexManager.isIndexStale(fix));
+
+        try(SimpleFeatureIterator sfi = fs.getFeatures(Query.ALL).features()){};
+        assertTrue(fixModified < fixFile.lastModified());
+
+        ds.dispose();
+    }
+
+
+    @Test
+    public void testIgnoreIndexStalenessFactoryParam() throws Exception {
+        for(boolean mustIgnore : new boolean[]{true, false}) {
+            ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
+
+            Map<String, Serializable> map = new HashMap<>();
+            map.put(ShapefileDataStoreFactory.URLP.key, TestData.url(STATE_POP));
+            map.put(ShapefileDataStoreFactory.IGNORE_STALENESS.key, mustIgnore);
+
+            ShapefileDataStore store = (ShapefileDataStore) factory.createDataStore(map);
+            assertEquals(store.isIgnoringIndexStaleness(), mustIgnore);
+            store.dispose();
+        }
+    }
+
 }

@@ -150,7 +150,8 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             gray,
             grayAlpha,
             imageWithNodata,
-            imageWithNodata2;
+            imageWithNodata2,
+            imageWithNan;
 
     /** {@code true} if the image should be visualized. */
     private static final boolean SHOW = TestData.isInteractiveTest();
@@ -180,6 +181,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         final BufferedImage image = new BufferedImage(cm, raster, false, null);
         return image;
     }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -364,6 +366,13 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             }
         }
 
+        if (imageWithNan == null) {
+            try (InputStream input =
+                    org.geotools.test.TestData.openStream(this, "nodataNan.tiff")) {
+                imageWithNan = ImageIO.read(input);
+            }
+        }
+
         if (imageWithNodata2 == null) {
             try (InputStream input = org.geotools.test.TestData.openStream(this, "nodata.tiff")) {
                 imageWithNodata2 = ImageIO.read(input);
@@ -432,6 +441,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertFalse(worker.isTranslucent());
         assertNoData(worker, null);
     }
+
     /**
      * Tests capability to write GIF image.
      *
@@ -1167,6 +1177,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertSame("Expected 64.", 64, worker.getRenderedImage().getTileWidth());
         assertSame("Expected 64.", 64, worker.getRenderedImage().getTileHeight());
     }
+
     /**
      * Visualize the content of given image if {@link #SHOW} is {@code true}.
      *
@@ -1740,6 +1751,38 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         RenderedOp op = (RenderedOp) ri2;
         assertEquals(gray, op.getSourceObject(0));
         assertNoData(op, null);
+    }
+
+    @Test
+    public void testNanCrop() {
+        ImageWorker iw = new ImageWorker(imageWithNan);
+        iw.crop(10, 10, 50, 50);
+        RenderedImage ri = iw.getRenderedImage();
+
+        assertEquals(10, ri.getMinX());
+        assertEquals(10, ri.getMinY());
+        assertEquals(50, ri.getWidth());
+        assertEquals(50, ri.getHeight());
+
+        // check the nodata has been preserved
+        iw.setImage(ri);
+        Range noData = iw.getNoData();
+        assertNotNull(noData);
+        assertTrue(Double.isNaN(noData.getMin().doubleValue()));
+        assertTrue(Double.isNaN(noData.getMax().doubleValue()));
+    }
+
+    @Test
+    public void testNanRescale() {
+        ImageWorker iw = new ImageWorker(imageWithNan);
+        iw.rescale(new double[] {0, 0.1}, new double[] {10});
+        RenderedImage ri = iw.getRenderedImage();
+        // check the nodata has been preserved
+        iw.setImage(ri);
+        Range noData = iw.getNoData();
+        assertNotNull(noData);
+        assertTrue(Double.isNaN(noData.getMin().doubleValue()));
+        assertTrue(Double.isNaN(noData.getMax().doubleValue()));
     }
 
     @Test

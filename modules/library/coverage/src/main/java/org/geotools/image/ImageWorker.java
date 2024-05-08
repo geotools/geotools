@@ -4605,9 +4605,7 @@ public class ImageWorker {
                             : (background != null && background.length > 0)
                                     ? background[0]
                                     : Double.NaN;
-            if (!Double.isNaN(destinationNoData)) {
-                pb.set(new double[] {destinationNoData}, 6);
-            }
+            pb.set(new double[] {destinationNoData}, 6);
         }
 
         image = JAI.create("Crop", pb, commonHints);
@@ -5072,9 +5070,7 @@ public class ImageWorker {
             }
         }
 
-        if (!Double.isNaN(destNodata)) {
-            pb.set(destNodata, 5);
-        }
+        pb.set(destNodata, 5);
         image = JAI.create("Rescale", pb, getRenderingHints());
         if (!Double.isNaN(destNodata)) {
             setNoData(RangeFactory.create((byte) destNodata, (byte) destNodata));

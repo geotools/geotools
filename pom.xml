@@ -476,7 +476,7 @@
     <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
-    <imageio.ext.version>1.4.9</imageio.ext.version>
+    <imageio.ext.version>1.4.10</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
     <jackson2.databind.version>2.15.2</jackson2.databind.version>
     <jackson2.version>2.15.2</jackson2.version>
@@ -1198,7 +1198,7 @@
       <dependency>
         <groupId>org.xmlunit</groupId>
         <artifactId>xmlunit-core</artifactId>
-        <version>2.9.1</version>
+        <version>2.10.0</version>
       </dependency>
       <dependency>
         <groupId>org.xmlunit</groupId>

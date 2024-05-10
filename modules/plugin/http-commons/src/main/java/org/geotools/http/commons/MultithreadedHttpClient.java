@@ -222,6 +222,12 @@ public class MultithreadedHttpClient extends AbstractHttpClient
         } else {
             headers = new HashMap<>(headers); // avoid parameter modification
         }
+
+        Map<String, String> extraParams = getExtraParams();
+        if (!extraParams.isEmpty()) {
+            url = appendURL(url, extraParams);
+        }
+
         HttpGet getMethod = new HttpGet(url.toExternalForm());
         getMethod.setConfig(connectionConfig);
 

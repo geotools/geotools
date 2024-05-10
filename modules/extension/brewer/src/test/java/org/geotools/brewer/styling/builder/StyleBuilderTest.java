@@ -17,9 +17,13 @@ import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.AnchorPoint;
 import org.geotools.api.style.Description;
+import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.FeatureTypeConstraint;
 import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Fill;
+import org.geotools.api.style.Graphic;
+import org.geotools.api.style.GraphicLegend;
+import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.Halo;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.Stroke;
@@ -30,6 +34,7 @@ import org.geotools.api.style.UserLayer;
 import org.geotools.brewer.styling.filter.expression.ExpressionBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.GrowableInternationalString;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -397,6 +402,41 @@ public class StyleBuilderTest {
         RuleBuilder b = new RuleBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
+    }
+
+    /**
+     * Testing if the ExternalGraphic within LegendGraphic is kept after a call to
+     * RuleBuilder.reset(Rule)
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testRuleBuilderWithLegendGraphicClone() throws Exception {
+        org.geotools.styling.StyleBuilder builder = new org.geotools.styling.StyleBuilder();
+        Graphic pointGraphic =
+                builder.createGraphic(
+                        builder.createExternalGraphic("file:/point-symbolizer.png", "image/png"),
+                        null,
+                        null);
+        Rule rule = builder.createRule(builder.createPointSymbolizer(pointGraphic));
+
+        Graphic legendGraphic =
+                builder.createGraphic(
+                        builder.createExternalGraphic("file:/nice-legend.png", "image/png"),
+                        null,
+                        null);
+
+        rule.setLegend((GraphicLegend) legendGraphic);
+
+        RuleBuilder rb = new RuleBuilder();
+        Rule cloneRule = rb.reset(rule).build();
+        Assert.assertEquals(1, cloneRule.getLegend().graphicalSymbols().size());
+        GraphicalSymbol symbol = cloneRule.getLegend().graphicalSymbols().get(0);
+        Assert.assertTrue(symbol instanceof ExternalGraphic);
+        ExternalGraphic cloneExternal = (ExternalGraphic) symbol;
+        Assert.assertNotNull(cloneExternal.getLocation());
+        Assert.assertEquals(
+                "file:/nice-legend.png", cloneExternal.getOnlineResource().getLinkage().toString());
     }
 
     @Test

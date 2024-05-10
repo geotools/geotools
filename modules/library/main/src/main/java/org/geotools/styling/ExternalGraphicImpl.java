@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import javax.swing.Icon;
 import org.geotools.api.metadata.citation.OnLineResource;
 import org.geotools.api.style.ColorReplacement;
+import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.GraphicalSymbol;
 import org.geotools.api.style.StyleVisitor;
 import org.geotools.api.style.Symbol;
@@ -40,18 +41,17 @@ import org.geotools.util.Utilities;
  * @author Ian Turton, CCG
  * @version $Id$
  */
-public class ExternalGraphicImpl
-        implements Symbol, Cloneable, org.geotools.api.style.ExternalGraphic {
-    /** The logger for the default core module. */
-    // private static final java.util.logging.Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger(ExternalGraphicImpl.class);
+public class ExternalGraphicImpl implements Symbol, Cloneable, ExternalGraphic {
+
     private Icon inlineContent;
 
+    // online, location and uri should correspond
     private OnLineResource online;
-
     private URL location = null;
-    private String format = null;
     private String uri = null;
+
+    private String format = null;
+
     private Map<String, Object> customProps = null;
 
     private final Set<ColorReplacement> colorReplacements;
@@ -69,11 +69,16 @@ public class ExternalGraphicImpl
             colorReplacements = new TreeSet<>(replaces);
         }
         this.online = source;
+        if (source != null) {
+            this.uri = source.getLinkage().toString();
+        }
     }
 
     @Override
     public void setURI(String uri) {
         this.uri = uri;
+        online = null;
+        location = null;
     }
 
     @Override
@@ -98,7 +103,7 @@ public class ExternalGraphicImpl
      * @throws MalformedURLException If unable to represent external graphic as a URL
      */
     @Override
-    public java.net.URL getLocation() throws MalformedURLException {
+    public URL getLocation() throws MalformedURLException {
         if (uri == null) {
             return null;
         }
@@ -125,12 +130,13 @@ public class ExternalGraphicImpl
      * @param location New value of property location.
      */
     @Override
-    public void setLocation(java.net.URL location) {
+    public void setLocation(URL location) {
         if (location == null) {
             throw new IllegalArgumentException("ExternalGraphic location URL cannot be null");
         }
         this.uri = location.toString();
         this.location = location;
+        online = null;
     }
 
     @Override
@@ -176,18 +182,6 @@ public class ExternalGraphicImpl
             result = (PRIME * result) + uri.hashCode();
         }
 
-        //        if (inlineContent != null) {
-        //            result = (PRIME * result) + inlineContent.hashCode();
-        //        }
-        //
-        //        if (online != null) {
-        //            result = (PRIME * result) + online.hashCode();
-        //        }
-        //
-        //        if (replacements != null) {
-        //            result = (PRIME * result) + replacements.hashCode();
-        //        }
-
         return result;
     }
 
@@ -215,12 +209,12 @@ public class ExternalGraphicImpl
     }
 
     @Override
-    public java.util.Map<String, Object> getCustomProperties() {
+    public Map<String, Object> getCustomProperties() {
         return customProps;
     }
 
     @Override
-    public void setCustomProperties(java.util.Map<String, Object> list) {
+    public void setCustomProperties(Map<String, Object> list) {
         customProps = list;
     }
 
@@ -240,6 +234,8 @@ public class ExternalGraphicImpl
 
     public void setOnlineResource(OnLineResource online) {
         this.online = online;
+        this.uri = (online != null ? online.getLinkage().toString() : null);
+        this.location = null;
     }
 
     @Override
@@ -265,9 +261,8 @@ public class ExternalGraphicImpl
             return null;
         } else if (item instanceof ExternalGraphicImpl) {
             return item;
-        } else if (item instanceof org.geotools.api.style.ExternalGraphic) {
-            org.geotools.api.style.ExternalGraphic graphic =
-                    (org.geotools.api.style.ExternalGraphic) item;
+        } else if (item instanceof ExternalGraphic) {
+            ExternalGraphic graphic = (ExternalGraphic) item;
             ExternalGraphicImpl copy = new ExternalGraphicImpl();
             copy.colorReplacements().addAll(graphic.getColorReplacements());
             copy.setFormat(graphic.getFormat());

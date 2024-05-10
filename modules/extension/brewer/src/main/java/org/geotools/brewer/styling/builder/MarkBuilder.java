@@ -29,10 +29,16 @@ public class MarkBuilder extends AbstractStyleBuilder<Mark> {
     Expression wellKnownName;
 
     public MarkBuilder() {
-        this(null);
+        super(null);
+        reset();
     }
 
     MarkBuilder(GraphicBuilder parent) {
+        super(parent);
+        reset();
+    }
+
+    MarkBuilder(GraphicLegendBuilder parent) {
         super(parent);
         reset();
     }

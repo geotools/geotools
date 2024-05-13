@@ -34,6 +34,18 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 32.x
 -------------
 
+JDBC: Method signature change in PreparedStatementSQLDialect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Custom implementations of ``org.geotools.jdbc.PreparedStatementSQLDialect`` must be adjusted. 
+With `GEOT-7571 <https://osgeo-org.atlassian.net/browse/GEOT-7571>`_ ``setValue(Object, Class<?>, PreparedStatement, int, Connection)`` 
+was refactored to receive an additional argument.
+The new signature is ``setValue(Object, Class<?>, AttributeDescriptor, PreparedStatement, int, Connection)``. The AttributeDescriptor passed
+corresponds to the feature's attribute and maybe be null in cases where no attribute is directly available.
+
+From now on, the sqlType for a specific feature attribute is taken into consideration for ``INSERT`` and ``UPDATE`` operations, rather than solely the attribute's class. 
+The type is now determined by the new method ``org.geotools.jdbc.JDBCDataStore.getMapping(Class<?>, AttributeDescriptor): Integer``.
+
+
 NetCDF Version upgrade to 5.5.3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 GeoTools 32.0 upgraded underlying Unidata NetCDF libraries from 4.6.15 to 5.5.3 which includes internal GRIB mapping table 

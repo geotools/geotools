@@ -658,6 +658,35 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     /**
+     * Returns the sqlType of the given attribute, if present. Falls back to sqlType of class.
+     * Considering the specific attribute first, enables binding multiple sqlTypes to a single
+     * class.
+     *
+     * @param binding
+     * @param d optional descriptor
+     * @return sqlType or Types.OTHER if no such mapping exists.
+     */
+    public Integer getMapping(Class<?> binding, AttributeDescriptor d) {
+        Integer mapping = null;
+        Object nativeType = null;
+        if (d != null && d.getUserData() != null) {
+            nativeType = d.getUserData().get(JDBC_NATIVE_TYPE);
+        }
+        if (nativeType != null) {
+            mapping = (Integer) nativeType;
+        }
+        if (mapping == null) {
+            mapping = getMapping(binding);
+        } else if (mapping == Types.DISTINCT) {
+            // DINSTINCT is:
+            // - UDT type based on DB build-in type (currently GT postgis.BigDate)
+            // - not meaningful itself -> fallback to class
+            mapping = getMapping(binding);
+        }
+        return mapping;
+    }
+
+    /**
      * Returns the sql type mapped to the specified java type.
      *
      * <p>If there is no such type mapped to <tt>clazz</tt>, <code>Types.OTHER</code> is returned.
@@ -1937,7 +1966,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             value = mapper.fromString((String) value);
                             binding = Integer.class;
                         }
-                        dialect.setValue(value, binding, ps, i, cx);
+
+                        dialect.setValue(value, binding, att, ps, i, cx);
                     }
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine((i) + " = " + value);
@@ -3839,7 +3869,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             } else if (ad != null && this.dialect.isArray(ad)) {
                 dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
             } else {
-                dialect.setValue(value, binding, ps, offset + i + 1, cx);
+                dialect.setValue(value, binding, ad, ps, offset + i + 1, cx);
             }
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine((i + 1) + " = " + value);
@@ -4683,7 +4713,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 continue;
             }
 
-            Class binding = att.getType().getBinding();
+            Class<?> binding = att.getType().getBinding();
             Object value = values[i];
             if (Geometry.class.isAssignableFrom(binding)) {
                 Geometry g = linearize(value, binding);
@@ -4695,7 +4725,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                     value = mapper.fromString(Converters.convert(value, String.class));
                     binding = Integer.class;
                 }
-                dialect.setValue(value, binding, ps, j + 1, cx);
+                dialect.setValue(value, binding, att, ps, j + 1, cx);
             }
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine((j + 1) + " = " + value);

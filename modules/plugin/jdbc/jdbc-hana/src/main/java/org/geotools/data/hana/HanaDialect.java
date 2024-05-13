@@ -875,13 +875,18 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void setValue(
-            Object value, Class binding, PreparedStatement ps, int column, Connection cx)
+            Object value,
+            Class<?> binding,
+            AttributeDescriptor att,
+            PreparedStatement ps,
+            int column,
+            Connection cx)
             throws SQLException {
         if (value == null) {
-            super.setValue(value, binding, ps, column, cx);
+            super.setValue(value, binding, att, ps, column, cx);
             return;
         }
-        Integer sqlType = dataStore.getMapping(binding);
+        Integer sqlType = dataStore.getMapping(binding, att);
         switch (sqlType) {
             case Types.TIME:
                 // HANA cannot deal with time instances where the date part is before 1970.
@@ -890,7 +895,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
                 ps.setTime(column, time);
                 break;
             default:
-                super.setValue(value, binding, ps, column, cx);
+                super.setValue(value, binding, att, ps, column, cx);
         }
     }
 

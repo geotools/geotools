@@ -20,12 +20,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
+import org.geotools.jdbc.JDBCTestSetup;
 import org.postgresql.util.PSQLException;
 
 public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
 
     protected PostGISJsonTestSetup() {
-        super(new PostGISTestSetup());
+        this(new PostGISTestSetup());
+    }
+
+    protected PostGISJsonTestSetup(JDBCTestSetup setup) {
+        super(setup);
     }
 
     protected boolean supportJsonB = false;

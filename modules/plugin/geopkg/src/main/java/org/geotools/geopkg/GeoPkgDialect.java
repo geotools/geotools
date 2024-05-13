@@ -662,10 +662,17 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     @Override
     public void setValue(
-            Object value, Class binding, PreparedStatement ps, int column, Connection cx)
+            Object value,
+            Class<?> binding,
+            AttributeDescriptor att,
+            PreparedStatement ps,
+            int column,
+            Connection cx)
             throws SQLException {
-        // get the sql type
-        Integer sqlType = dataStore.getMapping(binding);
+        // get the sql type: sqlite's metadata currently seems wrong (contains sqlType INTEGER for
+        // TINYINT, SMALLINT columns) which breaks mapping. So do not rely on attributDescriptor
+        // native type here, but on the GT registered binding
+        Integer sqlType = dataStore.getMapping(binding, null);
 
         // handle null case
         if (value == null) {
@@ -686,7 +693,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, value.toString() + "Z");
                 break;
             default:
-                super.setValue(value, binding, ps, column, cx);
+                // null: see comment regarding native type above
+                super.setValue(value, binding, null, ps, column, cx);
         }
     }
 

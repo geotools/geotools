@@ -119,16 +119,23 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
      *
      * @param value the value.
      * @param binding The class of the value.
+     * @param att Optionally the descriptor of the respective attribute to provide native type
+     *     information.
      * @param ps The prepared statement.
      * @param column The column the value maps to.
      * @param cx The database connection.
      */
     public void setValue(
-            Object value, Class binding, PreparedStatement ps, int column, Connection cx)
+            Object value,
+            Class<?> binding,
+            AttributeDescriptor att,
+            PreparedStatement ps,
+            int column,
+            Connection cx)
             throws SQLException {
 
         // get the sql type
-        Integer sqlType = dataStore.getMapping(binding);
+        Integer sqlType = dataStore.getMapping(binding, att);
 
         // handle null case
         if (value == null) {
@@ -138,11 +145,17 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
 
         switch (sqlType) {
             case Types.VARCHAR:
+            case Types.CHAR:
+            case Types.NCHAR:
+            case Types.LONGVARCHAR:
+            case Types.NVARCHAR:
                 ps.setString(column, convert(value, String.class));
                 break;
+            case Types.BIT:
             case Types.BOOLEAN:
                 ps.setBoolean(column, convert(value, Boolean.class));
                 break;
+            case Types.TINYINT:
             case Types.SMALLINT:
                 ps.setShort(column, convert(value, Short.class));
                 break;
@@ -153,11 +166,13 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
                 ps.setLong(column, convert(value, Long.class));
                 break;
             case Types.REAL:
+            case Types.FLOAT:
                 ps.setFloat(column, convert(value, Float.class));
                 break;
             case Types.DOUBLE:
                 ps.setDouble(column, convert(value, Double.class));
                 break;
+            case Types.DECIMAL:
             case Types.NUMERIC:
                 ps.setBigDecimal(column, (BigDecimal) convert(value, BigDecimal.class));
                 break;
@@ -170,6 +185,8 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
             case Types.TIMESTAMP:
                 ps.setTimestamp(column, convert(value, Timestamp.class));
                 break;
+            case Types.BINARY:
+            case Types.VARBINARY:
             case Types.BLOB:
                 ps.setBytes(column, convert(value, byte[].class));
                 break;

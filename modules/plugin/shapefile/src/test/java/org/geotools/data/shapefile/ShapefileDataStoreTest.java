@@ -2097,22 +2097,21 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
 
         assertFalse(ds.indexManager.isIndexStale(fix)); // indexes are no longer considered stale
 
-        try(SimpleFeatureIterator sfi = fs.getFeatures(Query.ALL).features()){};
+        try (SimpleFeatureIterator sfi = fs.getFeatures(Query.ALL).features()) {}
         assertEquals(fixModified, fixFile.lastModified());
 
         ds.setIgnoreIndexStaleness(false);
         assertTrue(ds.indexManager.isIndexStale(fix));
 
-        try(SimpleFeatureIterator sfi = fs.getFeatures(Query.ALL).features()){};
+        try (SimpleFeatureIterator sfi = fs.getFeatures(Query.ALL).features()) {}
         assertTrue(fixModified < fixFile.lastModified());
 
         ds.dispose();
     }
 
-
     @Test
     public void testIgnoreIndexStalenessFactoryParam() throws Exception {
-        for(boolean mustIgnore : new boolean[]{true, false}) {
+        for (boolean mustIgnore : new boolean[] {true, false}) {
             ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
 
             Map<String, Serializable> map = new HashMap<>();
@@ -2124,5 +2123,4 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
             store.dispose();
         }
     }
-
 }

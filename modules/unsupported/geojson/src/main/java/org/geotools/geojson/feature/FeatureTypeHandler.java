@@ -31,6 +31,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.DelegatingHandler;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Obtains a complete feature type from GeoJSON by parsing beyond first feature and finding
@@ -57,10 +58,15 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
 
     private boolean nullValuesEncoded;
 
-    private GeometryDescriptor geom;
+    private boolean checkAllGeometryTypes;
 
-    public FeatureTypeHandler(boolean nullValuesEncoded) {
+    private String geomLocalName;
+
+    private Class<?> geomBinding;
+
+    public FeatureTypeHandler(boolean nullValuesEncoded, boolean checkAllGeometryTypes) {
         this.nullValuesEncoded = nullValuesEncoded;
+        this.checkAllGeometryTypes = checkAllGeometryTypes;
     }
 
     @Override
@@ -92,18 +98,18 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
     }
 
     @Override
-    public boolean startArray() throws ParseException, IOException {
-
+    public boolean startObject() throws ParseException, IOException {
         /*
-         * Use FeatureHandler for the first feature only, to initialize the property
-         * list and obtain the geometry attribute descriptor
+         * If we aren't checking all geometry types then use FeatureHandler for the first feature only.
+         * FeatureHandler is used to initialize the property list and infer the geometry attribute descriptor.
          */
-        if (delegate == UNINITIALIZED) {
+        if (inFeatures
+                && (delegate == UNINITIALIZED || checkAllGeometryTypes)
+                && !(delegate instanceof FeatureHandler)) {
             delegate = new FeatureHandler(null, new DefaultAttributeIO());
-            return true;
         }
 
-        return super.startArray();
+        return super.startObject();
     }
 
     @Override
@@ -114,11 +120,26 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
             // obtain a type from the first feature
             SimpleFeature feature = ((FeatureHandler) delegate).getValue();
             if (feature != null) {
-                geom = feature.getFeatureType().getGeometryDescriptor();
+                /*
+                 * Set the geometry binding if it is unset.  If it is set and the new
+                 * type doesn't match the previous type, use Geometry as the type and
+                 * stop checking geometry types for subsequent features.
+                 */
+                GeometryDescriptor geometryDescriptor =
+                        feature.getFeatureType().getGeometryDescriptor();
+                if (geometryDescriptor != null) {
+                    geomLocalName = geometryDescriptor.getLocalName();
+                    if (geomBinding == null) {
+                        geomBinding = geometryDescriptor.getType().getBinding();
+                    } else if (geomBinding != geometryDescriptor.getType().getBinding()) {
+                        geomBinding = Geometry.class;
+                        checkAllGeometryTypes = false;
+                    }
+                }
                 List<AttributeDescriptor> attributeDescriptors =
                         feature.getFeatureType().getAttributeDescriptors();
                 for (AttributeDescriptor ad : attributeDescriptors) {
-                    if (!ad.equals(geom)) {
+                    if (!ad.equals(geometryDescriptor)) {
                         propertyTypes.put(ad.getLocalName(), ad.getType().getBinding());
                     }
                 }
@@ -175,7 +196,12 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
      * parsing earlier, i.e.: as soon as all data types and the crs are found.
      */
     private boolean foundAllValues() {
-        return nullValuesEncoded && geom != null && crs != null && !thereAreUnknownDataTypes();
+        return !checkAllGeometryTypes
+                && nullValuesEncoded
+                && geomLocalName != null
+                && geomBinding != null
+                && crs != null
+                && !thereAreUnknownDataTypes();
     }
 
     private boolean thereAreUnknownDataTypes() {
@@ -217,8 +243,8 @@ public class FeatureTypeHandler extends DelegatingHandler<SimpleFeatureType>
         typeBuilder.setName("feature");
         typeBuilder.setNamespaceURI("http://geotools.org");
 
-        if (geom != null) {
-            typeBuilder.add(geom.getLocalName(), geom.getType().getBinding(), crs);
+        if (geomLocalName != null && geomBinding != null) {
+            typeBuilder.add(geomLocalName, geomBinding, crs);
         }
 
         if (propertyTypes != null) {

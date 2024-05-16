@@ -2,7 +2,7 @@
 :Author: Micheal Bedward
 :Thanks: geotools-user list
 :Version: |release|
-:License: Create Commons with attribution
+:License: Creative Commons with attribution (CC-BY)
 
 .. include:: <isonum.txt>
 
@@ -75,7 +75,7 @@ We are going to use these same facilities now to prompt the user:
       :start-after: // docs start get layers
       :end-before: // docs end get layers
 
-Observer the use of ``Parameter`` objects for each input file. The arguments passed to the Parameter
+Observe the use of ``Parameter`` objects for each input file. The arguments passed to the Parameter
 constructor are:
    
 :key: an identifier for the Parameter
@@ -153,7 +153,7 @@ If you need some sample data to display you can download the `uDig sample data s
 * ``countries.shp``
 
 
-1. When you run the program you will first see the wizard dialog prompting your for the image
+1. When you run the program you will first see the wizard dialog prompting you for the image
    and shapefile.
   
   .. image:: images/ImageLab_dialog.png
@@ -214,10 +214,10 @@ World plus image
     Formats such as TIFF do not have this limitation,
 
 GeoTiff
-    A normal tiff image that has geospatial information stored in the image metadata fields. This
+    A normal TIFF image that has geospatial information stored in the image metadata fields. This
     is generally a safe bet for fast performance; especially if it has been prepared with an
     internal overlay (which can be used when zoomed out) or internal tiling (allowing for fast
-    pans when zoomed in.
+    pans when zoomed in).
     
     Performs best when your computer has faster disks than CPUs.
 
@@ -225,7 +225,7 @@ JPEG2000
     The sequel to ``jpeg`` that uses wavelet compression  to handle massive images. The file
     format also supports metadata fields that can be used to store geospatial information.
    
-    This format performs best when you have more faster CPUs than disk access.
+    This format performs best when you have faster CPUs than disk access.
     
 There are also more exotic formats such as ECW and MRSID that can be supported if you have installed
 the ``imageio-ext`` project into your JRE.

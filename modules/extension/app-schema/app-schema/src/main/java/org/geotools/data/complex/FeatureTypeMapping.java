@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import javax.xml.namespace.QName;
 import org.geotools.api.data.FeatureSource;
@@ -80,6 +81,9 @@ public class FeatureTypeMapping {
     private Expression featureFidMapping;
 
     private boolean isDenormalised;
+
+    // whether the mapping came from an XML include
+    private boolean isInclude;
 
     /**
      * User-provided XPath expression specifying a property to be used as default geometry for the
@@ -389,6 +393,37 @@ public class FeatureTypeMapping {
         return clientPropertyExpressions;
     }
 
+    @Override
+    // null check is needed to see if we should use target feature name or mapping name
+    @SuppressWarnings("PMD.UnusedNullCheckInEquals")
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FeatureTypeMapping that = (FeatureTypeMapping) o;
+        return Objects.equals(attributeMappings, that.attributeMappings)
+                && Objects.equals(sourceDatastoreId, that.sourceDatastoreId)
+                && isDenormalised == that.isDenormalised
+                && ((mappingName != null && Objects.equals(mappingName, that.mappingName))
+                        || Objects.equals(
+                                getTargetFeature().getName(), that.getTargetFeature().getName()));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                source,
+                sourceDatastoreId,
+                indexSource,
+                target,
+                attributeMappings,
+                namespaces,
+                mappingName,
+                featureFidMapping,
+                isDenormalised,
+                isInclude,
+                defaultGeometryXPath);
+    }
+
     /** Extracts the source Expressions from a list of {@link AttributeMapping}s */
     private List<Expression> getExpressions(
             List<AttributeMapping> attributeMappings, boolean includeNestedMappings) {
@@ -422,6 +457,14 @@ public class FeatureTypeMapping {
 
     public void setDenormalised(boolean isDenormalised) {
         this.isDenormalised = isDenormalised;
+    }
+
+    public boolean isInclude() {
+        return isInclude;
+    }
+
+    public void setInclude(boolean isInclude) {
+        this.isInclude = isInclude;
     }
 
     /**

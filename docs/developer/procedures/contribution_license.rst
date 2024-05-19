@@ -8,6 +8,8 @@ All new :doc:`contributors </roles/contributor>` will be required to grant copyr
 * `individual_contributor <https://www.osgeo.org/resources/individual-contributor-license/>`__
 * `corporate_contributor <https://www.osgeo.org/resources/corporate-contributor-license/>`__
 
+These licenses are directly derived from the Apache code contribution licenses (CLA V2.0 and CCLA v r190612).
+
 GeoTools is grateful that organizations of all shapes and sizes support our project with in-kind participation of their employees. Extending commit access is made to individuals directly based on their expertise demonstrated over time.
 
 #. Contributors must print out a copy of the Contribution License document(s) and either sign it themselves or have their employer sign the document, depending on the circumstances governing when and where the Contributor develops the code. It is up to the Contributor to understand the legal status of the code which the Contributor produces.

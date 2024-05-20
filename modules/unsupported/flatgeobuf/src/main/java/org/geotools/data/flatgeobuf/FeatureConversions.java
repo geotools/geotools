@@ -17,6 +17,12 @@
 package org.geotools.data.flatgeobuf;
 
 import static java.nio.charset.CodingErrorAction.REPLACE;
+import static java.time.format.DateTimeFormatter.ISO_INSTANT;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+import static java.time.format.DateTimeFormatter.ISO_OFFSET_TIME;
 
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.flatbuffers.FlatBufferBuilder;
@@ -190,21 +196,25 @@ public class FeatureConversions {
             else if (type == ColumnType.DateTime) {
                 String isoDateTime = "";
                 if (value instanceof LocalDateTime) {
-                    isoDateTime = ((LocalDateTime) value).toString();
+                    isoDateTime = ISO_LOCAL_DATE_TIME.format((LocalDateTime) value);
                 } else if (value instanceof LocalDate) {
-                    isoDateTime = ((LocalDate) value).toString();
+                    isoDateTime = ISO_LOCAL_DATE.format((LocalDate) value);
                 } else if (value instanceof LocalTime) {
-                    isoDateTime = ((LocalTime) value).toString();
+                    isoDateTime = ISO_LOCAL_TIME.format((LocalTime) value);
                 } else if (value instanceof OffsetDateTime) {
-                    isoDateTime = ((OffsetDateTime) value).toString();
+                    isoDateTime = ISO_OFFSET_DATE_TIME.format((OffsetDateTime) value);
                 } else if (value instanceof OffsetTime) {
-                    isoDateTime = ((OffsetTime) value).toString();
+                    isoDateTime = ISO_OFFSET_TIME.format((OffsetTime) value);
                 } else if (value instanceof java.sql.Date) {
-                    isoDateTime = ((java.sql.Date) value).toString();
+                    isoDateTime = ISO_LOCAL_DATE.format(((java.sql.Date) value).toLocalDate());
                 } else if (value instanceof java.sql.Time) {
-                    isoDateTime = ((java.sql.Time) value).toString();
+                    isoDateTime = ISO_LOCAL_TIME.format(((java.sql.Time) value).toLocalTime());
                 } else if (value instanceof java.sql.Timestamp) {
-                    isoDateTime = ((java.sql.Timestamp) value).toString();
+                    isoDateTime =
+                            ISO_LOCAL_DATE_TIME.format(
+                                    ((java.sql.Timestamp) value).toLocalDateTime());
+                } else if (value instanceof java.util.Date) {
+                    isoDateTime = ISO_INSTANT.format(((java.util.Date) value).toInstant());
                 } else {
                     throw new RuntimeException(
                             "Cannot handle datetime type " + value.getClass().getName());

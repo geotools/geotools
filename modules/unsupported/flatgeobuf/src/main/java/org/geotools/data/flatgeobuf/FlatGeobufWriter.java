@@ -38,11 +38,13 @@ public class FlatGeobufWriter {
 
     public void writeFeature(SimpleFeature feature) throws IOException {
         FeatureConversions.serialize(feature, this.headerMeta, this.outputStream, this.builder);
+        builder.clear();
     }
 
     public void writeFeatureType(SimpleFeatureType featureType) throws IOException {
         outputStream.write(Constants.MAGIC_BYTES);
         headerMeta = HeaderMetaUtil.fromFeatureType(featureType, 0);
         HeaderMeta.write(headerMeta, outputStream, builder);
+        builder.clear();
     }
 }

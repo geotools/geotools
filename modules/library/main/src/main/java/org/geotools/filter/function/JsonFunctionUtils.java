@@ -72,7 +72,7 @@ public final class JsonFunctionUtils {
                 token = parser.nextToken()) {
             switch (parser.currentTokenId()) {
                 case JsonTokenId.ID_FIELD_NAME:
-                    generator.writeFieldName(parser.getCurrentName());
+                    generator.writeFieldName(parser.currentName());
                     break;
                 case JsonTokenId.ID_STRING:
                     generator.writeString(parser.getText());

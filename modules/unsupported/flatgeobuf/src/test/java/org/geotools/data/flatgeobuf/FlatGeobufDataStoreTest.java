@@ -133,6 +133,8 @@ public class FlatGeobufDataStoreTest {
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
 
+        assertEquals(408, file.length());
+
         // Read
         SimpleFeatureCollection featureCollection = featureStore.getFeatures();
         assertEquals(2, featureCollection.size());

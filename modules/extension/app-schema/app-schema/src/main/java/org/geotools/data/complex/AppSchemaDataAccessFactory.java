@@ -74,6 +74,9 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
                     "URL to an application schema datastore XML configuration file",
                     true);
 
+    // marks whether data store is based on an XML include, need to handle duplicates
+    public static final String IS_INCLUDE = "isInclude";
+
     public AppSchemaDataAccessFactory() {}
 
     @Override
@@ -110,6 +113,8 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         List<String> includes = config.getIncludes();
         Map<String, Object> extendedParams = new HashMap<>(params);
         for (String include : includes) {
+            // mark this as an include, so that the DataAccess can handle it properly
+            extendedParams.put(IS_INCLUDE, true);
             extendedParams.put("url", buildIncludeUrl(configFileUrl, include));
             // this will register the related data access, to enable feature chaining;
             // sourceDataStoreMap is passed on to keep track of the already created source data
@@ -125,8 +130,11 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
                     parentUrl == null ? configFileUrl : parentUrl);
         }
 
+        boolean isInclude = Boolean.TRUE.equals(params.get(IS_INCLUDE));
+
         Set<FeatureTypeMapping> mappings =
-                AppSchemaDataAccessConfigurator.buildMappings(config, sourceDataStoreMap);
+                AppSchemaDataAccessConfigurator.buildMappings(
+                        config, sourceDataStoreMap, isInclude);
 
         AppSchemaDataAccess dataStore = new AppSchemaDataAccess(mappings, hidden);
         dataStore.url = configFileUrl;

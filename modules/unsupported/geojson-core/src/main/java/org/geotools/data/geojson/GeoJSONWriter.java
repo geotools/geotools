@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
+import com.fasterxml.jackson.databind.cfg.CacheProvider;
 import com.fasterxml.jackson.databind.ser.DefaultSerializerProvider;
 import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import java.io.BufferedOutputStream;
@@ -274,6 +275,12 @@ public class GeoJSONWriter implements AutoCloseable {
                                 @Override
                                 public DefaultSerializerProvider createInstance(
                                         SerializationConfig config, SerializerFactory jsf) {
+                                    throw new UnsupportedOperationException();
+                                }
+
+                                @Override
+                                public DefaultSerializerProvider withCaches(
+                                        CacheProvider cacheProvider) {
                                     throw new UnsupportedOperationException();
                                 }
                             });

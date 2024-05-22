@@ -501,7 +501,7 @@
     <solrj.version>8.9.0</solrj.version>
     <!-- javadoc configuration -->
     <javadoc.maxHeapSize>1536M</javadoc.maxHeapSize>
-    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.6.3</maven.javadoc.plugin.version>
     <!-- surefire configuration -->
     <allow.test.failure.ignore>false</allow.test.failure.ignore>
     <allow.test.skip>true</allow.test.skip>
@@ -2172,6 +2172,22 @@
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
         </configuration>
+        <!-- only works with package javadoc:aggregate for use of META-INF/MANIFEST.MF Automatic-Module-Name -->
+        <reportSets>
+          <reportSet>
+            <id>aggregate</id>
+            <reports>
+              <report>aggregate</report>
+            </reports>
+            <inherited>false</inherited>
+          </reportSet>
+          <reportSet>
+            <id>default</id>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
 
       <!-- ======================================================= -->

@@ -12970,7 +12970,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfacePropertyType"),
-                        org.geotools.geometry.jts.MultiSurface.class,
+                        MultiSurface.class,
                         false,
                         false,
                         Collections.emptyList(),

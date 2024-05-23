@@ -21,6 +21,8 @@ import static org.junit.Assert.assertEquals;
 import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.geotools.gml3.GMLSchema;
+import org.junit.Assert;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
@@ -55,5 +57,11 @@ public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
         MultiSurface mpoly = (MultiSurface) parse();
 
         assertEquals(2, mpoly.getNumGeometries());
+    }
+
+    @Test
+    public void testMultiSurfaceTypeAssignable() {
+        Assert.assertTrue(
+                GMLSchema.MULTISURFACETYPE_TYPE.getBinding().isAssignableFrom(MultiSurface.class));
     }
 }

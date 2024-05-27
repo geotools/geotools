@@ -364,4 +364,10 @@ public class ImageMosaicFileResourceInfo extends DefaultResourceInfo
     public PAMDataset getPAMDataset() {
         return rasterManager.getPamDataset();
     }
+
+    @Override
+    public boolean reloadPAMDataset() throws IOException {
+        rasterManager.reloadPamDataset();
+        return true;
+    }
 }

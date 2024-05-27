@@ -29,6 +29,7 @@ import org.junit.Test;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /** Test UnidataTimeUtilities */
 public final class NetCDFCRSUtilitiesTest extends Assert {
@@ -36,7 +37,7 @@ public final class NetCDFCRSUtilitiesTest extends Assert {
     public void testBuildVerticalCRS() throws IOException {
         final String url = TestData.url(this, "O3-NO2.nc").toExternalForm();
 
-        try (NetcdfDataset dataset = NetcdfDataset.openDataset(url)) {
+        try (NetcdfDataset dataset = NetcdfDatasets.openDataset(url)) {
             assertNotNull(dataset);
             final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
             assertNotNull(cvs);

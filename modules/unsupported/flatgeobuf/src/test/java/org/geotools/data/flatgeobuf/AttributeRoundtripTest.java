@@ -15,9 +15,15 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.geojson.GeoJSONReader;
@@ -87,16 +93,20 @@ public class AttributeRoundtripTest {
         sftb.add("exotic1_6", BigDecimal.class);
         sftb.add("exotic1_7", Byte.class);
         sftb.add("exotic1_8", Short.class);
+        sftb.add("exotic1_9", Date.class);
         SimpleFeatureType ft = sftb.buildFeatureType();
         SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
-        sfb.set("exotic1_1", Integer.parseInt("99"));
+        sfb.set("exotic1_1", Integer.valueOf("99"));
         sfb.set("exotic1_2", new BigInteger("1111111111111111111"));
-        sfb.set("exotic1_3", LocalDateTime.now());
+        sfb.set("exotic1_3", LocalDateTime.now().withNano(0));
         sfb.set("exotic1_4", LocalDate.now());
-        sfb.set("exotic1_5", LocalTime.now());
+        sfb.set("exotic1_5", LocalTime.now().withNano(0));
         sfb.set("exotic1_6", new BigDecimal("1.1111"));
         sfb.set("exotic1_7", Byte.parseByte("99"));
         sfb.set("exotic1_8", Short.parseShort("9999"));
+        Calendar cal = Calendar.getInstance();
+        cal.set(2020, 1, 1, 0, 0, 0);
+        sfb.set("exotic1_9", cal.getTime());
         SimpleFeature sf = sfb.buildFeature("0");
         MemoryFeatureCollection expected = new MemoryFeatureCollection(ft);
         expected.add(sf);
@@ -135,5 +145,10 @@ public class AttributeRoundtripTest {
         assertEquals(
                 expectedFeature.getAttribute(8).toString(),
                 actualFeature.getAttribute(8).toString());
+        Date date = (Date) expectedFeature.getAttribute(9);
+        Instant instant = date.toInstant();
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
+        String isoString = zonedDateTime.format(DateTimeFormatter.ISO_INSTANT);
+        assertEquals(isoString, actualFeature.getAttribute(9).toString());
     }
 }

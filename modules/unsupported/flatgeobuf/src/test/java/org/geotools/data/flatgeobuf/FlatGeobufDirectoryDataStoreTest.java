@@ -19,6 +19,7 @@ package org.geotools.data.flatgeobuf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -85,9 +86,11 @@ public class FlatGeobufDirectoryDataStoreTest {
         // Make sure we can get layers
         for (String name : names) {
             SimpleFeatureSource fs = store.getFeatureSource(name);
-            assertNotNull(fs.getBounds());
+            // this FGB does not have an envelope in the header
+            assertNull(fs.getBounds());
             assertNotNull(fs.getSchema());
-            assertTrue(fs.getCount(Query.ALL) > 0);
+            // this FGB does not have a feature count in the header either
+            assertEquals(-1, fs.getCount(Query.ALL));
         }
 
         // Write a new Layer
@@ -116,7 +119,9 @@ public class FlatGeobufDirectoryDataStoreTest {
                         "location.2");
         SimpleFeatureCollection collection = DataUtilities.collection(feature1, feature2);
         featureStore.addFeatures(collection);
-        assertEquals(2, featureStore.getCount(Query.ALL));
+        // no count in header, but we can count features one by one
+        assertEquals(-1, featureStore.getCount(Query.ALL));
+        assertEquals(2, featureStore.getFeatures(Query.ALL).size());
     }
 
     @Test

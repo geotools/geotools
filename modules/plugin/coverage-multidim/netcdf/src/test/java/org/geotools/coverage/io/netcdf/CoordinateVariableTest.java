@@ -18,7 +18,8 @@ package org.geotools.coverage.io.netcdf;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -35,25 +36,19 @@ import org.geotools.imageio.netcdf.cv.CoordinateHandlerFinder;
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import ucar.nc2.Dimension;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
-public class CoordinateVariableTest extends Assert {
-
-    @BeforeClass
-    public static void init() {
-        System.setProperty("user.timezone", "GMT");
-        System.setProperty("netcdf.coordinates.enablePlugins", "true");
-    }
+public class CoordinateVariableTest extends NetCDFBaseTest {
 
     @AfterClass
     public static void close() {
@@ -70,6 +65,7 @@ public class CoordinateVariableTest extends Assert {
             return units;
         }
 
+        @SuppressWarnings("deprecation") // No alternative provided
         CoordinateAxis1DUnitWrapper(NetcdfDataset ncd, CoordinateAxis1D axis, String units) {
             super(ncd, axis);
             this.units = units;
@@ -78,9 +74,9 @@ public class CoordinateVariableTest extends Assert {
 
     @Test
     public void timeUnitsTest() throws Exception {
-
-        try (NetcdfDataset dataset =
-                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
+        String url = TestData.url(this, "O3-NO2.nc").toExternalForm();
+        URI uri = new URI(url);
+        try (NetcdfDataset dataset = NetCDFUtilities.acquireDataset(uri)) {
             Dimension dim = dataset.findDimension("time");
 
             // check type
@@ -213,9 +209,9 @@ public class CoordinateVariableTest extends Assert {
     @Test
     public void polyphemus() throws Exception {
 
-        // acquire dataset
-        try (NetcdfDataset dataset =
-                NetcdfDataset.openDataset(TestData.url(this, "O3-NO2.nc").toExternalForm())) {
+        String url = TestData.url(this, "O3-NO2.nc").toExternalForm();
+        URI uri = new URI(url);
+        try (NetcdfDataset dataset = NetCDFUtilities.acquireDataset(uri)) {
             assertNotNull(dataset);
             final List<CoordinateAxis> cvs = dataset.getCoordinateAxes();
             assertNotNull(cvs);
@@ -299,7 +295,7 @@ public class CoordinateVariableTest extends Assert {
 
         // acquire dataset
         try (final NetcdfDataset dataset =
-                NetcdfDataset.openDataset(
+                NetcdfDatasets.openDataset(
                         TestData.url(this, "IASI_C_EUMP_20121120062959_31590_eps_o_l2.nc")
                                 .toExternalForm())) {
             assertNotNull(dataset);
@@ -410,7 +406,7 @@ public class CoordinateVariableTest extends Assert {
     }
 
     @Test
-    public void testClimatologicalTimeVariable() throws MalformedURLException, IOException {
+    public void testClimatologicalTimeVariable() throws IOException, URISyntaxException {
         // Selection of the input file
         final File workDir = new File(TestData.file(this, "."), "climatologicalaxis");
         if (!workDir.mkdir()) {
@@ -421,11 +417,9 @@ public class CoordinateVariableTest extends Assert {
         FileUtils.copyFile(
                 TestData.file(this, "climatological.zip"), new File(workDir, "climatological.zip"));
         TestData.unzipFile(this, "climatologicalaxis/climatological.zip");
-
-        try (NetcdfDataset dataset =
-                NetcdfDataset.openDataset(
-                        TestData.url(this, "climatologicalaxis/climatological.nc")
-                                .toExternalForm())) {
+        String url = TestData.url(this, "climatologicalaxis/climatological.nc").toExternalForm();
+        URI uri = new URI(url);
+        try (NetcdfDataset dataset = NetCDFUtilities.acquireDataset(uri)) {
             Dimension dim = dataset.findDimension("time");
             CoordinateAxis1D coordinateAxis =
                     (CoordinateAxis1D) dataset.findCoordinateAxis(dim.getShortName());
@@ -458,7 +452,7 @@ public class CoordinateVariableTest extends Assert {
                     timeVariable.read(Collections.singletonMap("time", 2)).getTime());
 
         } finally {
-            FileUtils.deleteDirectory(TestData.file(this, "climatologicalaxis"));
+            cleanupData(TestData.file(this, "climatologicalaxis"), false);
         }
     }
 }

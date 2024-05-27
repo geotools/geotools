@@ -476,10 +476,10 @@
     <db2.jdbc.version>11.5.9.0</db2.jdbc.version>
     <eclipse.emf.version>2.15.0</eclipse.emf.version>
     <elasticsearch.version>7.14.0</elasticsearch.version>
-    <imageio.ext.version>1.4.9</imageio.ext.version>
+    <imageio.ext.version>1.4.11</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
-    <jackson2.databind.version>2.15.2</jackson2.databind.version>
-    <jackson2.version>2.15.2</jackson2.version>
+    <jackson2.version>2.17.1</jackson2.version>
+    <jackson2.databind.version>${jackson2.version}</jackson2.databind.version>
     <jaiext.version>1.1.25</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
@@ -492,9 +492,9 @@
     <mockito.core.version>5.6.0</mockito.core.version>
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
-    <netcdf.version>4.6.15</netcdf.version>
+    <netcdf.version>5.5.3</netcdf.version>
     <ojdbc8.version>19.18.0.0</ojdbc8.version>
-    <postgresql.jdbc.version>42.7.2</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.7.3</postgresql.jdbc.version>
     <reload4j.version>1.2.19</reload4j.version>
     <sl4j.version>1.7.32</sl4j.version>
     <solrj.version>8.11.3</solrj.version>
@@ -940,12 +940,17 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.12.0</version>
+        <version>2.16.1</version>
       </dependency>
       <dependency>
         <groupId>commons-cli</groupId>
         <artifactId>commons-cli</artifactId>
         <version>1.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-text</artifactId>
+        <version>1.12.0</version>
       </dependency>
       <!-- replaces log4j:log4j -->
       <dependency>
@@ -1089,7 +1094,7 @@
       <!-- Grid data formats -->
       <dependency>
         <groupId>edu.ucar</groupId>
-        <artifactId>cdm</artifactId>
+        <artifactId>cdm-core</artifactId>
         <version>${netcdf.version}</version>
       </dependency>
       <dependency>
@@ -1139,7 +1144,12 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>32.0.0-jre</version>
+        <version>33.2.0-jre</version>
+      </dependency>
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>2.2</version>
       </dependency>
 
       <!-- Quality control dependencies -->
@@ -1198,7 +1208,7 @@
       <dependency>
         <groupId>org.xmlunit</groupId>
         <artifactId>xmlunit-core</artifactId>
-        <version>2.9.1</version>
+        <version>2.10.0</version>
       </dependency>
       <dependency>
         <groupId>org.xmlunit</groupId>
@@ -1890,8 +1900,7 @@
           <maxmemory>${javadoc.maxHeapSize}</maxmemory>
           <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
-          <!-- Set an additional parameter for the command line. -->
-          <additionalparam>-keywords -Xdoclint:none</additionalparam>
+          <!-- Set an additional parameter for the javac command call. -->
           <additionalJOption>-Xdoclint:none</additionalJOption>
 
           <breakiterator>true</breakiterator>
@@ -1950,7 +1959,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
@@ -2100,7 +2109,7 @@
           <!-- Specifies the encoding name of the source files.-->
           <encoding>UTF-8</encoding>
           <!-- Set an additional parameter for the command line. -->
-          <additionalparam>-keywords</additionalparam>
+          <additionalOptions>-keywords</additionalOptions>
           <breakiterator>true</breakiterator>
           <excludePackageNames>org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions</excludePackageNames>
 
@@ -2157,7 +2166,7 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://docs.oracle.com/javase/11/docs/api/</link>
+            <link>https://docs.oracle.com/javase/11/docs/api/</link>
             <link>https://javaee.github.io/javaee-spec/javadocs/</link>
             <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>

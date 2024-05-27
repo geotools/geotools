@@ -44,6 +44,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
 import org.geotools.test.TestData;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public class ImageMosaicRATTest {
@@ -132,6 +133,65 @@ public class ImageMosaicRATTest {
         assertEquals(Double.NaN, new ImageWorker(ri).getNoData().getMin().doubleValue(), 0d);
 
         coverage.dispose(true);
+        reader.dispose();
+    }
+
+    @Test
+    public void testReloadRAT() throws IOException, FactoryException {
+        // setup data
+        File mosaicSource = TestData.file(this, "bluetopo");
+        String mosaicName = "bluetopoReload";
+        File mosaicDirectory = new File("target", mosaicName);
+        FileUtils.deleteQuietly(mosaicDirectory);
+        FileUtils.copyDirectory(mosaicSource, mosaicDirectory);
+
+        // the aux files
+        String pamFileName = "BlueTopo_BH4JS577_20230918.tiff.aux.xml";
+        File small = new File(mosaicDirectory, "BlueTopo_BH4JS577_20230918.tiff.small.aux.xml");
+        File full = new File(mosaicDirectory, pamFileName);
+
+        // rename p1 so that it won't be found
+        File hideMe = new File(full.getParent(), "hideme.xml");
+        assertTrue(full.renameTo(hideMe));
+        assertTrue(small.renameTo(full));
+
+        // create mosaic and grab the pam databset from resource info
+        ImageMosaicReader reader = getReader(fileToUrl(mosaicDirectory));
+        ResourceInfo info = reader.getInfo(mosaicName);
+        assertThat(info, CoreMatchers.instanceOf(PAMResourceInfo.class));
+        PAMResourceInfo pamInfo = (PAMResourceInfo) info;
+        PAMDataset pam = pamInfo.getPAMDataset();
+
+        // grab the raster attribute table
+        assertNotNull(pam);
+        List<PAMDataset.PAMRasterBand> bands = pam.getPAMRasterBand();
+        PAMDataset.PAMRasterBand b2 = bands.get(2);
+        GDALRasterAttributeTable rat = b2.getGdalRasterAttributeTable();
+
+        List<Row> originalRows = rat.getRow();
+
+        // now add back the PAM file and force reload
+        assertTrue(full.delete());
+        assertTrue(hideMe.renameTo(full));
+        assertTrue(pamInfo.reloadPAMDataset());
+
+        // grab the PAM dataset again
+        rat = pamInfo.getPAMDataset().getPAMRasterBand().get(2).getGdalRasterAttributeTable();
+        List<Row> reloadedRows = rat.getRow();
+
+        // check all the rows in the original are already available in the reloaded, but reloaded
+        // has more
+        assertThat(reloadedRows.size(), Matchers.greaterThan(originalRows.size()));
+        for (Row row : originalRows) {
+            String originalValue = row.getF().get(0);
+            assertTrue(
+                    "Could not find " + originalValue,
+                    reloadedRows.stream()
+                            .filter(r -> r.getF().get(0).equals(originalValue))
+                            .findFirst()
+                            .isPresent());
+        }
+
         reader.dispose();
     }
 

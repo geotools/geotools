@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2024, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,22 +14,20 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gml3;
+package org.geotools.data.postgis;
 
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Polygon;
+import org.geotools.data.postgis.ps.PostGISPSTestSetup;
+import org.geotools.jdbc.JDBCTestSetup;
 
-public class MultiSurface extends MultiPolygon {
-
-    private static final String TYPENAME_MULTISURFACE = "MultiSurface";
-
-    public MultiSurface(Polygon[] polygons, GeometryFactory factory) {
-        super(polygons, factory);
-    }
+/**
+ * Subclass of {@link PostGISJsonWriterOnlineTest} uses prepared statements for INSERT and UPDATE.
+ *
+ * @author awaterme
+ */
+public class PostGISJsonWriterPSOnlineTest extends PostGISJsonWriterOnlineTest {
 
     @Override
-    public String getGeometryType() {
-        return TYPENAME_MULTISURFACE;
+    protected JDBCTestSetup createTestSetup() {
+        return new PostGISJsonTestSetup(new PostGISPSTestSetup());
     }
 }

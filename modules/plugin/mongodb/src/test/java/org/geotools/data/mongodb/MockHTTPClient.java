@@ -72,6 +72,14 @@ public class MockHTTPClient implements HTTPClient {
     public void setPassword(String password) {}
 
     @Override
+    public Map<String, String> getExtraParams() {
+        return null;
+    }
+
+    @Override
+    public void setExtraParams(Map<String, String> extraParams) {}
+
+    @Override
     public int getConnectTimeout() {
         return 0;
     }

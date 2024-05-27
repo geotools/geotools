@@ -78,7 +78,7 @@ abstract class KeysFetcher {
             final PrimaryKeyColumn col = key.getColumns().get(i);
             final Object value = keyValues.get(i);
             if (value != NOT_SET_BEFORE_INSERT) {
-                dialect.setValue(value, col.getType(), ps, curFieldPos++, cx);
+                dialect.setValue(value, col.getType(), null, ps, curFieldPos++, cx);
             }
         }
 

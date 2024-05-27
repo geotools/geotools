@@ -61,13 +61,14 @@ import org.junit.Assert;
 import org.junit.Test;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+import ucar.nc2.dataset.NetcdfDatasets;
 
 /**
  * Testing Low level reader infrastructure.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
-public final class NetCDFBasicTest extends Assert {
+public final class NetCDFBasicTest extends NetCDFBaseTest {
 
     private static final Logger LOGGER = Logger.getLogger(NetCDFBasicTest.class.toString());
 
@@ -252,7 +253,7 @@ public final class NetCDFBasicTest extends Assert {
     public void testNoValid2DVariable() throws Exception {
         final File file = TestData.file(this, "noVars.nc");
         NetCDFImageReader reader = null;
-        try (NetcdfDataset dataset = NetcdfDataset.acquireDataset(file.getAbsolutePath(), null)) {
+        try (NetcdfDataset dataset = NetcdfDatasets.openDataset(file.getAbsolutePath())) {
             List<Variable> variables = dataset.getVariables();
             boolean speedVariableIsPresent = false;
             String speedVariableName = "";
@@ -771,7 +772,7 @@ public final class NetCDFBasicTest extends Assert {
     }
 
     @Test
-    public void testNetCDFWithDifferentTimeDimensions() throws MalformedURLException, IOException {
+    public void testNetCDFWithDifferentTimeDimensions() throws IOException {
         // Selection of the input file
         final File workDir = new File(TestData.file(this, "."), "times");
         if (!workDir.mkdir()) {

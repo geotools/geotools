@@ -47,19 +47,29 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
 
     final int ordinateIdx;
 
+    final boolean isPreFlipped;
+
     /**
      * Builds a new wrapper
      *
      * @param wrapLimit Subsequent coordinates whose X differ from more than {@code wrapLimit} are
      *     supposed to be wrapping the dateline and need to be offsetted
      * @param offset The offset to be applied to coordinates to unwrap them
+     * @param mt The math transform to use to detect the wrapping
+     * @param wrapOnY If true, the wrapping is supposed to happen on the Y axis, otherwise on the X
+     * @param isPreFlipped If true, the coordinates are already flipped and wrapping is needed
      */
     public WrappingCoordinateFilter(
-            double wrapLimit, double offset, MathTransform mt, boolean wrapOnY) {
+            double wrapLimit,
+            double offset,
+            MathTransform mt,
+            boolean wrapOnY,
+            boolean isPreFlipped) {
         this.wrapLimit = wrapLimit;
         this.offset = offset;
         this.mt = mt;
         this.ordinateIdx = wrapOnY ? 1 : 0;
+        this.isPreFlipped = isPreFlipped;
     }
 
     @Override
@@ -75,7 +85,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             boolean ring =
                     geom instanceof LinearRing
                             || cs.getCoordinate(0).equals(cs.getCoordinate(cs.size() - 1));
-            applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2, ring);
+            applyOffset(cs, direction == EAST_TO_WEST ? 0 : wrapLimit * 2, ring, isPreFlipped);
         }
     }
 
@@ -92,7 +102,16 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
         return NOWRAP;
     }
 
-    private void applyOffset(CoordinateSequence cs, double offset, boolean ring) {
+    /**
+     * Applies the offset to the coordinates
+     *
+     * @param cs The coordinate sequence to modify
+     * @param offset The offset to apply
+     * @param ring If true, the sequence is supposed to be a ring
+     * @param preFlipped If true, the coordinates are already flipped
+     */
+    private void applyOffset(
+            CoordinateSequence cs, double offset, boolean ring, boolean preFlipped) {
         final double maxWrap = wrapLimit * 1.9;
         double lastOrdinate = cs.getOrdinate(0, ordinateIdx);
         int last = ring ? cs.size() - 1 : cs.size();
@@ -100,9 +119,10 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
             final double ordinate = cs.getOrdinate(i, ordinateIdx);
             final double distance = Math.abs(ordinate - lastOrdinate);
             // heuristic: an object crossing the dateline is not as big as the world, if it
-            // is, it's probably something like Antarctica that does not need coordinate rewrapping
+            // is, it's probably something like Antarctica that does not need coordinate rewrapping,
+            // the exception is when the object is already flipped
             if (distance > wrapLimit) {
-                boolean wraps = distance < maxWrap;
+                boolean wraps = (distance < maxWrap) || preFlipped;
                 // if we fail here, revert to more expensive calculation if
                 // we have a reverse transform
                 // this is analagous to the technique mentioned here:

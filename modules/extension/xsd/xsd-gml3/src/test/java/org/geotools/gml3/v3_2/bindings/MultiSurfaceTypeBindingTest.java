@@ -22,6 +22,8 @@ import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.geotools.gml3.v3_2.GMLSchema;
+import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -54,5 +56,11 @@ public class MultiSurfaceTypeBindingTest extends GML32TestSupport {
         MultiSurface mpoly = (MultiSurface) parse();
 
         assertEquals(2, mpoly.getNumGeometries());
+    }
+
+    @Test
+    public void testMultiSurfaceTypeAssignable() {
+        Assert.assertTrue(
+                GMLSchema.MULTISURFACETYPE_TYPE.getBinding().isAssignableFrom(MultiSurface.class));
     }
 }

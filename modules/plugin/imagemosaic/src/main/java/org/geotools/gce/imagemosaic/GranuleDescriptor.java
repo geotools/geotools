@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -129,6 +130,7 @@ public class GranuleDescriptor {
             return pathType.resolvePath(parentLocation, granuleLocation);
         }
     }
+
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GranuleDescriptor.class);
@@ -603,11 +605,14 @@ public class GranuleDescriptor {
             if (metadata instanceof CoreCommonImageMetadata) {
                 CoreCommonImageMetadata ccm = (CoreCommonImageMetadata) metadata;
 
-                double[] noData = ccm.getNoData();
-                if (noData != null) {
-                    this.noData = new NoDataContainer(noData);
+                double[] noDataArray = null;
+                if (ccm.getNoDataValues() != null) {
+                    noDataArray =
+                            Arrays.stream(ccm.getNoDataValues())
+                                    .mapToDouble(d -> d == null ? Double.NaN : d)
+                                    .toArray();
+                    this.noData = new NoDataContainer(noDataArray);
                 }
-
                 this.scales = ccm.getScales();
                 this.offsets = ccm.getOffsets();
             }

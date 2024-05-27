@@ -91,6 +91,7 @@ import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.feature.visitor.MaxVisitor;
@@ -1153,17 +1154,28 @@ public class RasterManager implements Cloneable {
      */
     private void loadPamDataset(MosaicConfigurationBean configuration) {
         if (this.parentReader.sourceURL == null) {
-            // TODO: I need to define the sampleImage somehow for the ImageMosaicDescriptor case
             return;
         }
 
+        File pamDatasetFile = getPamDatasetFile(configuration);
+        if (pamDatasetFile == null || !pamDatasetFile.exists()) return;
+
+        try {
+            PAMParser parser = new PAMParser();
+            this.pamDataset = parser.parsePAM(pamDatasetFile);
+        } catch (IOException e) {
+            LOGGER.warning("Failed to load PAM dataset: " + e);
+        }
+    }
+
+    private File getPamDatasetFile(MosaicConfigurationBean configuration) {
         final URL baseURL = this.parentReader.sourceURL;
         final File baseFile = URLs.urlToFile(baseURL);
         // in case we do not manage to convert the source URL we leave right awaycd sr
         if (baseFile == null) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("Unable to find PAM dataset for path " + baseURL);
-            return;
+            return null;
         }
         String baseName = baseFile.getParent() + "/";
         String fileName = null;
@@ -1179,15 +1191,7 @@ public class RasterManager implements Cloneable {
         if (pamDatasetFile == null) {
             pamDatasetFile = new File(baseName + Utils.PAM_DATASET_NAME);
         }
-
-        if (!pamDatasetFile.exists()) return;
-
-        try {
-            PAMParser parser = new PAMParser();
-            this.pamDataset = parser.parsePAM(pamDatasetFile);
-        } catch (IOException e) {
-            LOGGER.warning("Failed to load PAM dataset: " + e);
-        }
+        return pamDatasetFile;
     }
 
     /**
@@ -1952,5 +1956,38 @@ public class RasterManager implements Cloneable {
     /** Returns the PAM dataset for this coverage, if one is available */
     public PAMDataset getPamDataset() {
         return pamDataset;
+    }
+
+    /**
+     * Recomputes the summary PAM databaset
+     *
+     * @throws IOException
+     */
+    public void reloadPamDataset() throws IOException {
+        // TODO: PAM collection works only on local files, eventually we'll want to
+        // make it work also on remote ones
+        Query query = new Query(typeName);
+        SimpleFeatureCollection granules = getGranuleCatalog().getGranules(query);
+        File pamDatasetFile = getPamDatasetFile(configuration);
+        RATCollectorListener ratCollector = new RATCollectorListener(pamDatasetFile);
+        GranuleDescriptor.PathResolver pathResolver =
+                new GranuleDescriptor.PathResolver(pathType, getParentLocation());
+        try (SimpleFeatureIterator it = granules.features()) {
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                String location = (String) feature.getAttribute(getLocationAttribute());
+                if (location != null) {
+                    URL resolved = pathResolver.resolve(location);
+                    if (resolved != null) {
+                        File file = URLs.urlToFile(resolved);
+                        if (file.exists()) {
+                            ratCollector.collectRAT(file);
+                        }
+                    }
+                }
+            }
+        }
+        ratCollector.generateMosaicRAT();
+        loadPamDataset(configuration);
     }
 }

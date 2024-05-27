@@ -35,6 +35,7 @@ import org.geotools.feature.type.ProfileImpl;
 import org.geotools.feature.type.SchemaImpl;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.MultiCurvedGeometry;
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.smil.SMIL20LANGSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;

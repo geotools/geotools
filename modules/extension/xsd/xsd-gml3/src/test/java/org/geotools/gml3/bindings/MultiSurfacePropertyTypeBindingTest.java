@@ -18,8 +18,11 @@ package org.geotools.gml3.bindings;
 
 import static org.junit.Assert.assertEquals;
 
+import org.geotools.geometry.jts.MultiSurface;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.geotools.gml3.GMLSchema;
+import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -36,5 +39,13 @@ public class MultiSurfacePropertyTypeBindingTest extends GML3TestSupport {
                 2,
                 dom.getElementsByTagNameNS(GML.NAMESPACE, GML.surfaceMember.getLocalPart())
                         .getLength());
+    }
+
+    @Test
+    public void testMultiSurfacePropertyTypeAssignable() {
+        Assert.assertTrue(
+                GMLSchema.MULTISURFACEPROPERTYTYPE_TYPE
+                        .getBinding()
+                        .isAssignableFrom(MultiSurface.class));
     }
 }

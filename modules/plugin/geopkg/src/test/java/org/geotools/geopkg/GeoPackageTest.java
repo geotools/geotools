@@ -16,6 +16,8 @@
  */
 package org.geotools.geopkg;
 
+import static org.geotools.jdbc.JDBCDataStore.JDBC_NATIVE_TYPE;
+import static org.geotools.jdbc.JDBCDataStore.JDBC_NATIVE_TYPENAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -31,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -569,6 +572,117 @@ public class GeoPackageTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    // schema with JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE metadata
+    public SimpleFeatureType createJDBCSchema() {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("testCaseFeature");
+
+        builder.add("geometry", Geometry.class);
+        builder.add("int1", Integer.class);
+        builder.add("int2", Byte.class);
+
+        builder.add("string1", String.class);
+        builder.add("float1", Float.class);
+        builder.add("float2", Double.class);
+
+        var schema = builder.buildFeatureType();
+
+        schema.getDescriptor("int1")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPENAME, JDBCType.SMALLINT.getName());
+        schema.getDescriptor("int1")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPE, JDBCType.SMALLINT.getVendorTypeNumber());
+
+        schema.getDescriptor("int1").getUserData().put("test-case-key", "test-case-value");
+
+        schema.getDescriptor("int2")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPENAME, JDBCType.TINYINT.getName());
+        schema.getDescriptor("int2")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPE, JDBCType.TINYINT.getVendorTypeNumber());
+
+        schema.getDescriptor("string1")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPENAME, JDBCType.VARCHAR.getName());
+        schema.getDescriptor("string1")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPE, JDBCType.VARCHAR.getVendorTypeNumber());
+
+        schema.getDescriptor("float1")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPENAME, JDBCType.FLOAT.getName());
+        schema.getDescriptor("float1")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPE, JDBCType.FLOAT.getVendorTypeNumber());
+
+        schema.getDescriptor("float2")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPENAME, JDBCType.DOUBLE.getName());
+        schema.getDescriptor("float2")
+                .getUserData()
+                .put(JDBC_NATIVE_TYPE, JDBCType.DOUBLE.getVendorTypeNumber());
+
+        return schema;
+    }
+
+    // tests that the correctSchema() result is without JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE
+    // metadata
+    @Test
+    public void testCorrectSchema() {
+        var schema = createJDBCSchema();
+        var schema2 = geopkg.correctSchema(schema);
+
+        // JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE are in the userdata #size() == 0 means
+        // not there
+        assertEquals(1, schema2.getDescriptor("int1").getUserData().size());
+        // verify other user-data items are still there
+        assertEquals(
+                "test-case-value",
+                schema2.getDescriptor("int1").getUserData().get("test-case-key"));
+
+        assertEquals(0, schema2.getDescriptor("int2").getUserData().size());
+        assertEquals(0, schema2.getDescriptor("float1").getUserData().size());
+        assertEquals(0, schema2.getDescriptor("float2").getUserData().size());
+        assertEquals(0, schema2.getDescriptor("string1").getUserData().size());
+    }
+
+    // tests that the geopackage has the correct column types even if
+    // JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE metadata are attached to the schema.
+    @Test
+    public void testMetadataColumns() throws IOException {
+        var schema = createJDBCSchema();
+        FeatureEntry entry = new FeatureEntry();
+        entry.setBounds(new ReferencedEnvelope());
+        entry.setTableName(schema.getTypeName());
+
+        geopkg.create(entry, schema);
+
+        JDBCDataStore store = geopkg.dataStore();
+        SimpleFeatureType createdType = store.getSchema(schema.getTypeName());
+
+        // check that the created metadata column have the CORRECT geopackage type names (not the
+        // ones from JDBC
+        // or put in the attribute descriptors userdata).
+        assertEquals(
+                "TEXT",
+                createdType.getDescriptor("string1").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals(
+                "FLOAT",
+                createdType.getDescriptor("float1").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals(
+                "DOUBLE",
+                createdType.getDescriptor("float2").getUserData().get(JDBC_NATIVE_TYPENAME));
+
+        assertEquals(
+                "MEDIUMINT",
+                createdType.getDescriptor("int1").getUserData().get(JDBC_NATIVE_TYPENAME));
+        assertEquals(
+                "TINYINT",
+                createdType.getDescriptor("int2").getUserData().get(JDBC_NATIVE_TYPENAME));
     }
 
     @Test

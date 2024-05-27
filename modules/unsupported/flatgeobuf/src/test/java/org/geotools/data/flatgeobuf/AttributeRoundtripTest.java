@@ -114,22 +114,16 @@ public class AttributeRoundtripTest {
                 FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
         SimpleFeature expectedFeature = (SimpleFeature) expected.toArray()[0];
         SimpleFeature actualFeature = (SimpleFeature) actual.toArray()[0];
-        assertEquals(expectedFeature.getAttribute(1), actualFeature.getAttribute(1));
-        assertEquals(expectedFeature.getAttribute(2), actualFeature.getAttribute(2));
-        assertEquals(
-                ISO_LOCAL_DATE_TIME.format((LocalDateTime) expectedFeature.getAttribute(3)),
-                actualFeature.getAttribute(3));
-        assertEquals(
-                ISO_LOCAL_DATE.format((LocalDate) expectedFeature.getAttribute(4)),
-                actualFeature.getAttribute(4));
-        assertEquals(
-                ISO_LOCAL_TIME.format((LocalTime) expectedFeature.getAttribute(5)),
-                actualFeature.getAttribute(5));
-        assertEquals(expectedFeature.getAttribute(6), actualFeature.getAttribute(6));
-        assertEquals(expectedFeature.getAttribute(7), actualFeature.getAttribute(7));
-        assertEquals(expectedFeature.getAttribute(8), actualFeature.getAttribute(8));
-        assertEquals(
-                ISO_INSTANT.format(((java.util.Date) expectedFeature.getAttribute(9)).toInstant()),
-                actualFeature.getAttribute(9));
+        var e = expectedFeature.getAttributes();
+        var a = actualFeature.getAttributes();
+        assertEquals(e.get(1), a.get(1));
+        assertEquals(e.get(2), a.get(2));
+        assertEquals(ISO_LOCAL_DATE_TIME.format((LocalDateTime) e.get(3)), a.get(3));
+        assertEquals(ISO_LOCAL_DATE.format((LocalDate) e.get(4)), a.get(4));
+        assertEquals(ISO_LOCAL_TIME.format((LocalTime) e.get(5)), a.get(5));
+        assertEquals(e.get(6), a.get(6));
+        assertEquals(e.get(7), a.get(7));
+        assertEquals(e.get(8), a.get(8));
+        assertEquals(ISO_INSTANT.format(((java.util.Date) e.get(9)).toInstant()), a.get(9));
     }
 }

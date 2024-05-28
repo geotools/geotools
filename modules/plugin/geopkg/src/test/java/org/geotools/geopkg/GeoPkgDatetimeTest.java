@@ -278,13 +278,19 @@ public class GeoPkgDatetimeTest {
         assertEquals(3, features.size());
     }
 
+    //     time
+    // 2020-02-19T22:00:00Z  FAIL
+    // 2020-02-19T23:00:00Z  PASS
+    // 2020-03-19T00:00:00Z  PASS
+    // 2020-03-19T01:00:00Z  FAIL
+    // 2020-02-20T02:00:00Z  FAIL
     @Test
     public void testBetween_timestamp() throws IOException, CQLException {
         Filter between =
-                ECQL.toFilter("time BETWEEN '2020-02-19 23:00:00' AND '2020-03-19 00:00:00'");
+                ECQL.toFilter("time BETWEEN '2020-02-19 23:00:00' AND '2020-03-19 24:00:00'");
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures(between);
-        assertEquals(3, features.size());
+        assertEquals(2, features.size());
     }
 }

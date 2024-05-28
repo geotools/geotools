@@ -28,13 +28,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.api.feature.FeatureVisitor;
@@ -279,8 +284,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
         // Temporal
         overrides.put(Types.DATE, "DATE");
-        overrides.put(Types.TIME, "TIME");
-        overrides.put(Types.TIMESTAMP, "TIMESTAMP");
+        // NOTE: geopkg doesn't actually support TIME (cf geopkg spec, table 1)
+        overrides.put(Types.TIME, "DATETIME");
+        overrides.put(Types.TIMESTAMP, "DATETIME");
     }
 
     @Override
@@ -681,13 +687,27 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, value.toString());
                 break;
             case Types.TIMESTAMP:
-                // 2020-02-19 23:00:00.0  --> 2020-02-19 23:00:00.0Z
+                // 2020-02-19 23:00:00.0  --> 2020-02-19T23:00:00.0Z
                 // We need the "Z" or sql lite will interpret the value as local time
-                ps.setString(column, value.toString() + "Z");
+                // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
+                if (value != null) {
+                    Date date = new Date();
+                    date.setTime(((Timestamp) value).getTime());
+                    ps.setString(column, geopkgDateFormat.format(date));
+                } else {
+                    ps.setString(column, null);
+                }
                 break;
             default:
                 super.setValue(value, binding, ps, column, cx);
         }
+    }
+
+    // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
+    static SimpleDateFormat geopkgDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+
+    static {
+        geopkgDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     @Override
@@ -987,6 +1007,16 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                     ad.getType().getBinding().getComponentType(),
                     (EnumMapper) ad.getUserData().get(GPKG_ARRAY_ENUM_MAP));
         }
+        if (ad.getType().getBinding() == Timestamp.class) {
+            if (value == null) {
+                return null;
+            }
+            // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
+            Instant instant = Instant.parse((String) value);
+            Timestamp timestamp = Timestamp.from(instant);
+            return timestamp;
+        }
+
         return super.convertValue(value, ad);
     }
 

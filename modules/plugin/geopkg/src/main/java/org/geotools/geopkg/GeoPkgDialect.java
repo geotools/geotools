@@ -711,14 +711,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 // We need the "Z" or sql lite will interpret the value as local time
                 // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
                 if (value != null) {
-                    //  var v =((Timestamp)
-                    // value).toLocalDateTime().atZone(ZoneOffset.UTC).toString();
                     var v = ((Timestamp) value).toInstant().toString();
                     ps.setString(column, v);
-                    //                    Date date = new Date();
-                    //                    date.setTime(((Timestamp) value).getTime());
-                    //                    var valToSet = geopkgDateFormat.format(date);
-                    //                    ps.setString(column, valToSet);
                 } else {
                     ps.setString(column, null);
                 }
@@ -1039,7 +1033,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             Instant instant = Instant.parse(strValue);
             Timestamp timestamp = Timestamp.from(instant);
             return timestamp; // this will be in local time
-            // return instant;
         }
 
         return super.convertValue(value, ad);

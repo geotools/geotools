@@ -33,7 +33,6 @@ import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,9 +116,25 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         geopkgDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
+    public String sqlLiteVersion;
+    public boolean supportsSubSeconds;
+
+    public void setupVersion(Connection cx) throws SQLException {
+        var sql = "SELECT sqlite_version()";
+        try (var stmt = cx.createStatement()) {
+            try (var rs = stmt.executeQuery(sql)) {
+                sqlLiteVersion = rs.getString(1);
+                var parts = sqlLiteVersion.split("\\.");
+                var minor = Integer.parseInt(parts[1]);
+                supportsSubSeconds = minor >= 42;
+            }
+        }
+    }
+
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
         GeoPackage.init(cx);
+        setupVersion(cx);
     }
 
     /**
@@ -703,9 +718,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 // We need the "Z" or sql lite will interpret the value as local time
                 // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
                 if (value != null) {
-                    Date date = new Date();
-                    date.setTime(((Timestamp) value).getTime());
-                    ps.setString(column, geopkgDateFormat.format(date));
+                    //  var v =((Timestamp)
+                    // value).toLocalDateTime().atZone(ZoneOffset.UTC).toString();
+                    var v = ((Timestamp) value).toInstant().toString();
+                    ps.setString(column, v);
+                    //                    Date date = new Date();
+                    //                    date.setTime(((Timestamp) value).getTime());
+                    //                    var valToSet = geopkgDateFormat.format(date);
+                    //                    ps.setString(column, valToSet);
                 } else {
                     ps.setString(column, null);
                 }
@@ -1025,7 +1045,8 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             }
             Instant instant = Instant.parse(strValue);
             Timestamp timestamp = Timestamp.from(instant);
-            return timestamp;
+            return timestamp; // this will be in local time
+            // return instant;
         }
 
         return super.convertValue(value, ad);

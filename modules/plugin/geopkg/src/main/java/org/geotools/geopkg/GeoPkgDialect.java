@@ -102,14 +102,19 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
 
     private JSONArrayIO jsonArrayIO = new JSONArrayIO();
 
+    // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
+    SimpleDateFormat geopkgDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
         super(dataStore);
         this.geomWriterConfig = writerConfig;
+        geopkgDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     public GeoPkgDialect(JDBCDataStore dataStore) {
         super(dataStore);
         geomWriterConfig = new GeoPkgGeomWriter.Configuration();
+        geopkgDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     @Override
@@ -709,13 +714,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 // null: see comment regarding native type above
                 super.setValue(value, binding, null, ps, column, cx);
         }
-    }
-
-    // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-    static SimpleDateFormat geopkgDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-    static {
-        geopkgDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     @Override

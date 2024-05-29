@@ -34,7 +34,6 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -51,7 +50,6 @@ import org.locationtech.jts.geom.LineString;
 public class GeoPackageTestWriteDatetime {
 
     GeoPackage geopkg;
-    private ContentFeatureSource fs;
 
     @BeforeClass
     public static void setUpOnce() {
@@ -157,12 +155,13 @@ public class GeoPackageTestWriteDatetime {
     void assertIsDatetimeColumn(String table, String column) throws Exception {
         String query =
                 "SELECT type AS data_type" + " FROM pragma_table_info(?)" + " WHERE name = ?";
-        try (Connection cx = geopkg.getDataSource().getConnection(); ) {
-            PreparedStatement ps = cx.prepareStatement(query);
+        try (Connection cx = geopkg.getDataSource().getConnection();
+                PreparedStatement ps = cx.prepareStatement(query)) {
             ps.setString(1, table);
             ps.setString(2, column);
-            ResultSet rs = ps.executeQuery();
-            assertEquals("DATETIME", rs.getString(1));
+            try (ResultSet rs = ps.executeQuery(); ) {
+                assertEquals("DATETIME", rs.getString(1));
+            }
         }
     }
 }

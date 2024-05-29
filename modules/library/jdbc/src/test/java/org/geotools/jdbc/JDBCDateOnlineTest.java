@@ -7,19 +7,12 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
-import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Test;
 
 public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
@@ -111,8 +104,6 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
                                         .parse("15:12:41,28-2009-06")));
         assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
     }
-
-
 
     @Test
     public void testFilterByTime() throws Exception {

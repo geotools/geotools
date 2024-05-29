@@ -1018,7 +1018,12 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 return null;
             }
             // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-            Instant instant = Instant.parse((String) value);
+            var strValue = (String) value;
+            // this is for support with "bad" geopkgs
+            if (!strValue.endsWith("Z")) {
+                strValue += "Z";
+            }
+            Instant instant = Instant.parse(strValue);
             Timestamp timestamp = Timestamp.from(instant);
             return timestamp;
         }

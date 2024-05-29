@@ -704,7 +704,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-    static SimpleDateFormat geopkgDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+    static SimpleDateFormat geopkgDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     static {
         geopkgDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));

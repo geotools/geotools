@@ -345,6 +345,16 @@ public class GeoPackage implements Closeable {
             cx = ((DelegatingConnection) cx).getDelegate();
         }
 
+        try (var stmt = cx.createStatement()) {
+            try (var rs =
+                    stmt.executeQuery(
+                            "select exists(select 1 from pragma_function_list where name='ST_MinX')")) {
+                if (rs.getInt(1) == 1) {
+                    return; // already exist
+                }
+            }
+        }
+
         // minx
         Function.create(
                 cx,

@@ -51,9 +51,9 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
      *
      * <p>There is different handling for Date (DATE) and Timestamp (DATETIME).
      *
-     * <p>For Timestamp (DATETIME), we use the datetime(XYZ, 'utc'):
+     * <p>For Timestamp (DATETIME), we use the datetime(XYZ, 'utc','subsec'):
      *
-     * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc') AND datetime(?,'utc')
+     * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc','subsec') AND datetime(?,'utc','subsec')
      *
      * <p>For Date (DATE), we do no conversion in the sql lite:
      *
@@ -74,9 +74,12 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
             if (Time.class.isAssignableFrom(binding)) {
                 return "time(" + super_result + ",'utc')";
             } else if (Timestamp.class.isAssignableFrom(binding)) {
+                if (dialect.supportsSubSeconds) {
+                    return "datetime(" + super_result + ",'utc','subsec' )";
+                }
                 return "datetime("
                         + super_result
-                        + ",'utc')"; // utc -- everything must be consistent -- see
+                        + ",'utc' )"; // utc -- everything must be consistent -- see
                 // literal visitor
             } else if (java.sql.Date.class.isAssignableFrom(binding)) {
                 return "date(" + super_result + ")";
@@ -150,7 +153,12 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                 } else if (Time.class.isAssignableFrom(literalValue.getClass())) {
                     sb.append("time(?,'utc')");
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("datetime(?,'utc')");
+                    if (dialect.supportsSubSeconds) {
+                        sb.append("datetime(?,'utc','subsec' )");
+                    } else {
+                        sb.append("datetime(?,'utc' )");
+                    }
+
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
                     sb.append("date(?)");
                 } else if (encodingFunction) {

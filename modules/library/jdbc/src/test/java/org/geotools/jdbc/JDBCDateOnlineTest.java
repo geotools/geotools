@@ -7,12 +7,19 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 import org.geotools.api.data.FeatureSource;
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Test;
 
 public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
@@ -92,16 +99,46 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = dataStore.getFilterFactory();
 
-        // equal to
-        Filter f = ff.equals(ff.property(aname("dt")), ff.literal("2009-06-28 15:12:41"));
+        // geopackage DB has UTC times in it
+
+        var list =
+                new ListFeatureCollection((SimpleFeatureCollection) fs.getFeatures())
+                        .stream().collect(Collectors.toList());
+
+        // test 1 - we create a literal in UTC
+        var utcDateTime = "2009-06-28T15:12:41Z";
+        Filter f = ff.equals(ff.property(aname("dt")), ff.literal(utcDateTime));
         assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
 
+        // test 2 - we create the literal in local time
+        // this time will be equal to 2009-06-28T15:12:41Z but in local time
+        var instant = Instant.parse(utcDateTime);
+        ZoneId zone = ZoneId.systemDefault();
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
+        // localLiteral will be like "2009-06-28 16:12:41" (if you are in UTC+1)
+        var localLiteral = localDateTime.toString().replace("T", " ");
+        f = ff.equals(ff.property(aname("dt")), ff.literal(localLiteral));
+        assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
+
+        // test 3 - with fractional seconds
+        utcDateTime = "2009-06-28T15:12:41.00Z";
+        f = ff.equals(ff.property(aname("dt")), ff.literal(utcDateTime));
+        assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
+
+        // test 4 - local with fractional
+        localLiteral = localDateTime.toString().replace("T", " ") + ".000";
+        f = ff.equals(ff.property(aname("dt")), ff.literal(localLiteral));
+        assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
+
+        // test different construction
+        var format = DateTimeFormatter.ofPattern("HH:mm:ss,dd-yyyy-MM");
+        var localDateTimeDifferentFormat = localDateTime.format(format);
         f =
                 ff.equals(
                         ff.property(aname("dt")),
                         ff.literal(
                                 new SimpleDateFormat("HH:mm:ss,dd-yyyy-MM")
-                                        .parse("15:12:41,28-2009-06")));
+                                        .parse(localDateTimeDifferentFormat)));
         assertEquals(1, fs.getCount(new Query(tname("dates"), f)));
     }
 

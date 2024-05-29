@@ -1,10 +1,10 @@
 package org.geotools.geopkg;
 
-import org.geotools.jdbc.JDBCDateTestSetup;
-import org.geotools.jdbc.JDBCTestSetup;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import org.geotools.jdbc.JDBCDateTestSetup;
+import org.geotools.jdbc.JDBCTestSetup;
 
 public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
 
@@ -17,19 +17,24 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
 
         // we are doing direct inserts into the database
         // dates MUST be in ISO-8601 date/time string in the form YYYY-MM-DDTHH:MM[:SS.SSS]Z
-        //However, the online test cases use local time
+        // However, the online test cases use local time
 
         var localStr = "2009-06-28 15:12:41";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date parsedDate = dateFormat.parse(localStr);
 
-        Date gmt = new Date(parsedDate.getTime() - Calendar.getInstance().getTimeZone().getOffset(parsedDate.getTime()));;
+        Date gmt =
+                new Date(
+                        parsedDate.getTime()
+                                - Calendar.getInstance()
+                                        .getTimeZone()
+                                        .getOffset(parsedDate.getTime()));
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         var gmt2 = sdf.format(gmt);
 
-//        ZoneId zone = ZoneId.systemDefault();
-//        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
-
+        //        ZoneId zone = ZoneId.systemDefault();
+        //        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
 
         // NOTE: geopackage does NOT support TIME columns - just DATE and DATETIME
         run("CREATE TABLE dates (id INTEGER PRIMARY KEY, d DATE, dt DATETIME, t TIME)");
@@ -37,7 +42,9 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
         run(
                 "INSERT INTO dates VALUES (1,"
                         + "DATE('2009-06-28','localtime'), "
-                        + "'"+gmt2+"',"
+                        + "'"
+                        + gmt2
+                        + "',"
                         + "strftime('%H:%M:%S','15:12:41','utc')  )");
 
         run(

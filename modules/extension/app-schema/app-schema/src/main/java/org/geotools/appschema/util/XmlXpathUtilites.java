@@ -18,10 +18,10 @@
 package org.geotools.appschema.util;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.jxpath.JXPathContext;
+import org.geotools.xsd.impl.jxpath.JXPathUtils;
 import org.jdom2.Document;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -41,7 +41,7 @@ public class XmlXpathUtilites {
      */
     public static List<String> getXPathValues(
             NamespaceSupport ns, String xpathString, Document doc) {
-        JXPathContext context = initialiseContext(ns, doc);
+        JXPathContext context = JXPathUtils.newSafeContext(doc, true, ns, false);
         return getXPathValues(xpathString, context);
     }
 
@@ -69,31 +69,13 @@ public class XmlXpathUtilites {
     public static String getSingleXPathValue(
             NamespaceSupport ns, String xpathString, Document doc) {
         String id = null;
-        JXPathContext context = initialiseContext(ns, doc);
         try {
-            Object ob = context.getValue(xpathString);
+            Object ob = JXPathUtils.newSafeContext(doc, true, ns, false).getValue(xpathString);
             id = (String) ob;
         } catch (RuntimeException e) {
             throw new RuntimeException("Error reading xpath " + xpathString, e);
         }
         return id;
-    }
-
-    private static JXPathContext initialiseContext(NamespaceSupport ns, Document doc) {
-        JXPathContext context = JXPathContext.newContext(doc);
-        addNamespaces(ns, context);
-        context.setLenient(true);
-        return context;
-    }
-
-    private static void addNamespaces(NamespaceSupport ns, JXPathContext context) {
-        @SuppressWarnings("unchecked")
-        Enumeration<String> prefixes = ns.getPrefixes();
-        while (prefixes.hasMoreElements()) {
-            String prefix = prefixes.nextElement();
-            String uri = ns.getURI(prefix);
-            context.registerNamespace(prefix, uri);
-        }
     }
 
     /**

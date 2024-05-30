@@ -17,6 +17,7 @@
 package org.geotools.xsd;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import javax.xml.namespace.QName;
@@ -38,5 +39,17 @@ public class StreamingParserTest {
         parser.setEntityResolver(PreventLocalEntityResolver.INSTANCE);
         // StreamingParser returns null if the parsing fails
         assertNull(parser.parse());
+    }
+
+    @Test
+    public void testParseWithJavaMethod() throws Exception {
+        ByteArrayInputStream in = new ByteArrayInputStream("<mails></mails>".getBytes());
+        StreamingParser parser =
+                new StreamingParser(new MLConfiguration(), in, "java.lang.Thread.sleep(30000)");
+        // StreamingParser returns null if the parsing fails
+        long start = System.currentTimeMillis();
+        assertNull(parser.parse());
+        long runtime = System.currentTimeMillis() - start;
+        assertTrue("java.lang.Thread.sleep(30000) was executed", runtime < 30000);
     }
 }

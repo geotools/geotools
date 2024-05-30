@@ -17,8 +17,6 @@
 package org.geotools.xsd.impl.jxpath;
 
 import java.util.Iterator;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathIntrospector;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Node;
@@ -47,11 +45,7 @@ public class JXPathStreamingParserHandler extends StreamingParserHandler {
         //        ElementHandler rootHandler =
         //        	((DocumentHandler) handlers.firstElement()).getDocumentElementHandler();
         Node root = handlers.firstElement().getParseNode();
-        JXPathContext jxpContext = JXPathContextFactory.newInstance().newContext(null, root);
-
-        jxpContext.setLenient(true);
-
-        Iterator itr = jxpContext.iterate(xpath);
+        Iterator itr = JXPathUtils.newSafeContext(root, true).iterate(xpath);
 
         while (itr.hasNext()) {
             Object obj = itr.next();

@@ -18,10 +18,10 @@
 package org.geotools.data.complex.expression;
 
 import java.util.Map;
-import org.apache.commons.jxpath.JXPathContext;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
+import org.geotools.xsd.impl.jxpath.JXPathUtils;
 import org.opengis.feature.IllegalAttributeException;
 
 /**
@@ -63,9 +63,7 @@ public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
                 @SuppressWarnings("unchecked")
                 public <T> T get(Object object, String xpath, Class<T> target)
                         throws IllegalArgumentException {
-                    JXPathContext context = JXPathContext.newContext(object);
-                    context.setLenient(true);
-                    return (T) context.getValue(xpath);
+                    return (T) JXPathUtils.newSafeContext(object, true).getValue(xpath);
                 }
 
                 @Override

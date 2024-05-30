@@ -18,7 +18,6 @@
 package org.geotools.data.complex.expression;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -30,6 +29,7 @@ import org.geotools.data.complex.feature.xpath.AttributeNodePointerFactory;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
+import org.geotools.xsd.impl.jxpath.JXPathUtils;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
@@ -37,6 +37,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
@@ -81,7 +82,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
     public PropertyAccessor createPropertyAccessor(
             Class type, String xpath, Class target, Hints hints) {
 
-        if (SimpleFeature.class.isAssignableFrom(type)) {
+        if (SimpleFeature.class.isAssignableFrom(type)
+                || SimpleFeatureType.class.isAssignableFrom(type)) {
             /*
              * This class is not intended for use with SimpleFeature and causes problems when
              * discovered via SPI and used by code expecting SimpleFeature behaviour. In particular
@@ -260,14 +262,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         public <T> T get(Object object, String xpath, Class<T> target)
                 throws IllegalArgumentException {
 
-            JXPathContext context = JXPathContext.newContext(object);
-            Enumeration declaredPrefixes = namespaces.getDeclaredPrefixes();
-            while (declaredPrefixes.hasMoreElements()) {
-                String prefix = (String) declaredPrefixes.nextElement();
-                String uri = namespaces.getURI(prefix);
-                context.registerNamespace(prefix, uri);
-            }
-
+            JXPathContext context =
+                    JXPathUtils.newSafeContext(object, false, this.namespaces, true);
             Iterator it = context.iteratePointers(xpath);
             List results = new ArrayList<>();
             while (it.hasNext()) {
@@ -296,13 +292,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 throw new IllegalAttributeException(null, "feature type is immutable");
             }
 
-            JXPathContext context = JXPathContext.newContext(object);
-            Enumeration declaredPrefixes = namespaces.getDeclaredPrefixes();
-            while (declaredPrefixes.hasMoreElements()) {
-                String prefix = (String) declaredPrefixes.nextElement();
-                String uri = namespaces.getURI(prefix);
-                context.registerNamespace(prefix, uri);
-            }
+            JXPathContext context =
+                    JXPathUtils.newSafeContext(object, false, this.namespaces, true);
             context.setValue(xpath, value);
 
             assert value == context.getValue(xpath);

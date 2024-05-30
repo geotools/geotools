@@ -290,6 +290,20 @@ public class FeaturePropertyAccessorTest {
                         "eg:complexAttribute/eg:rootAttribute/eg:multiLeafAttribute",
                         new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
         assertEquals(multiLeafDesc, ex.evaluate(fType));
+
+        // test that executing Java methods is blocked
+        ex =
+                new AttributeExpressionImpl(
+                        "java.lang.Thread.sleep(30000)",
+                        new Hints(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT, NAMESPACES));
+        long start = System.currentTimeMillis();
+        assertNull(ex.evaluate(feature));
+        long runtime = System.currentTimeMillis() - start;
+        assertTrue("java.lang.Thread.sleep(30000) was executed", runtime < 30000);
+        start = System.currentTimeMillis();
+        assertNull(ex.evaluate(fType));
+        runtime = System.currentTimeMillis() - start;
+        assertTrue("java.lang.Thread.sleep(30000) was executed", runtime < 30000);
     }
 
     public static FeatureType createFeatureType() {

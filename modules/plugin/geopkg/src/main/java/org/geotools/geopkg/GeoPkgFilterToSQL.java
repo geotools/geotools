@@ -51,9 +51,9 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
      *
      * <p>There is different handling for Date (DATE) and Timestamp (DATETIME).
      *
-     * <p>For Timestamp (DATETIME), we use the datetime(XYZ, 'utc','subsec'):
+     * <p>For Timestamp (DATETIME), we use the datetime(XYZ, 'utc'):
      *
-     * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc','subsec') AND datetime(?,'utc','subsec')
+     * <p>datetime("Time",'utc') BETWEEN datetime(?,'utc') AND datetime(?,'utc')
      *
      * <p>For Date (DATE), we do no conversion in the sql lite:
      *
@@ -72,11 +72,8 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
             Class<?> binding = desc.getType().getBinding();
             // utc -- everything must be consistent -- see literal visitor
             if (Time.class.isAssignableFrom(binding)) {
-                return "time(" + super_result + ",'utc')";
+                return "time(" + super_result + ")";
             } else if (Timestamp.class.isAssignableFrom(binding)) {
-                if (dialect.supportsSubSeconds) {
-                    return "datetime(" + super_result + ",'utc','subsec' )";
-                }
                 return "datetime("
                         + super_result
                         + ",'utc' )"; // utc -- everything must be consistent -- see
@@ -151,14 +148,9 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                     dialect.prepareGeometryValue(
                             (Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 } else if (Time.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("time(?,'utc')");
+                    sb.append("time(?)");
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
-                    if (dialect.supportsSubSeconds) {
-                        sb.append("datetime(?,'utc','subsec' )");
-                    } else {
-                        sb.append("datetime(?,'utc' )");
-                    }
-
+                    sb.append("datetime(?,'utc' )");
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
                     sb.append("date(?)");
                 } else if (encodingFunction) {

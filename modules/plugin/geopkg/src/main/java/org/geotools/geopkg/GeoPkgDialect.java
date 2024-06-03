@@ -109,25 +109,9 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         geomWriterConfig = new GeoPkgGeomWriter.Configuration();
     }
 
-    public String sqlLiteVersion;
-    public boolean supportsSubSeconds;
-
-    public void setupVersion(Connection cx) throws SQLException {
-        var sql = "SELECT sqlite_version()";
-        try (var stmt = cx.createStatement()) {
-            try (var rs = stmt.executeQuery(sql)) {
-                sqlLiteVersion = rs.getString(1);
-                var parts = sqlLiteVersion.split("\\.");
-                var minor = Integer.parseInt(parts[1]);
-                supportsSubSeconds = minor >= 42;
-            }
-        }
-    }
-
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
         GeoPackage.init(cx);
-        setupVersion(cx);
     }
 
     /**
@@ -704,18 +688,25 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 ps.setString(column, value.toString());
                 break;
             case Types.TIME:
-                ps.setString(column, value.toString());
+                var time = value.toString();
+                //                if (!time.endsWith("Z")) {
+                //                     //convert from local to Zulu
+                //                    var time1 = convert(value, Time.class);
+                //                    var gmt = new Date(time1.getTime() - Calendar.getInstance()
+                // .getTimeZone().getOffset(time1.getTime()));
+                //                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss'Z'");
+                //                    var gmt2 = sdf.format(gmt);
+                //                    ps.setString(column, gmt2);
+                //                    break;
+                //                }
+                ps.setString(column, time);
                 break;
             case Types.TIMESTAMP:
                 // 2020-02-19 23:00:00.0  --> 2020-02-19T23:00:00.0Z
                 // We need the "Z" or sql lite will interpret the value as local time
                 // geopkg - format will be ISO-8601 - YYYY-MM-DDTHH:MM[:SS.SSS]Z
-                if (value != null) {
-                    var v = ((Timestamp) value).toInstant().toString();
-                    ps.setString(column, v);
-                } else {
-                    ps.setString(column, null);
-                }
+                var v = ((Timestamp) value).toInstant().toString();
+                ps.setString(column, v);
                 break;
             default:
                 // null: see comment regarding native type above
@@ -1030,9 +1021,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             if (!strValue.endsWith("Z")) {
                 strValue += "Z";
             }
-            Instant instant = Instant.parse(strValue);
-            Timestamp timestamp = Timestamp.from(instant);
-            return timestamp; // this will be in local time
+            try {
+                Instant instant = Instant.parse(strValue);
+                Timestamp timestamp = Timestamp.from(instant);
+                return timestamp; // this will be in local time
+            } catch (Exception e) {
+                // couldnt parse - fallback to standard GT converters
+                return super.convertValue(value, ad);
+            }
         }
 
         return super.convertValue(value, ad);

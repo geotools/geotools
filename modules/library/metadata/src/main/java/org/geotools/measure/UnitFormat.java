@@ -20,22 +20,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import tech.units.indriya.format.SimpleUnitFormat;
 
 /** A factory for unit formatters that support the units required by GeoTools. */
-public final class UnitFormat {
+public final class UnitFormat extends BaseUnitFormatter {
 
-    public static UnitFormatter getInstance() {
+    public static UnitFormat getInstance() {
         return INSTANCE;
     }
 
-    // Only required because a mutable instance is required in NetCDFFormat.
-    // Ideally, we would move all the construction logic for NetCDFFormat to that class.
-    public static SimpleUnitFormat create() {
-        return new BaseUnitFormatter(UNIT_DEFINITIONS);
+    public static UnitFormat create() {
+        return new UnitFormat(UNIT_DEFINITIONS);
     }
 
-    private UnitFormat() {}
+    private UnitFormat(List<UnitDefinition> unitDefinitions) {
+        super(unitDefinitions);
+    }
 
     private static final List<UnitDefinition> UNIT_DEFINITIONS =
             Stream.of(
@@ -47,7 +46,7 @@ public final class UnitFormat {
                             UnitDefinitions.US_CUSTOMARY,
                             UnitDefinitions.GEOTOOLS)
                     .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
 
-    private static final BaseUnitFormatter INSTANCE = (BaseUnitFormatter) create();
+    private static final UnitFormat INSTANCE = new UnitFormat(UNIT_DEFINITIONS);
 }

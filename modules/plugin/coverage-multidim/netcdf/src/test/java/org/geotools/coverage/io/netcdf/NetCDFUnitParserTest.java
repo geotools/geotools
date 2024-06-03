@@ -35,11 +35,12 @@ import static tech.units.indriya.unit.Units.WATT;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.format.MeasurementParseException;
 import org.geotools.imageio.netcdf.NetCDFUnitFormat;
-import org.junit.After;
+import org.geotools.measure.UnitFormat;
+import org.geotools.measure.UnitFormatter;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -47,7 +48,6 @@ import org.junit.runners.Parameterized;
 import si.uom.NonSI;
 import si.uom.SI;
 import tech.units.indriya.AbstractUnit;
-import tech.units.indriya.format.SimpleUnitFormat;
 import tech.units.indriya.function.LogConverter;
 
 @RunWith(Enclosed.class)
@@ -141,7 +141,7 @@ public class NetCDFUnitParserTest {
         public void test() {
             // compare the symbols, as using direct comparison checks also the parent
             // units which are not always the same
-            Unit<?> actual = NetCDFUnitFormat.parse(input);
+            Unit<?> actual = NetCDFUnitFormat.createWithBuiltInConfig().parse(input);
             String message = actual + " !-> " + expected;
             assertTrue("Not compatible, " + message, expected.isCompatible(actual));
             assertEquals(expected.toString(), actual.toString());
@@ -150,39 +150,36 @@ public class NetCDFUnitParserTest {
 
     public static class SimpleTests {
 
-        @After
-        public void reset() {
-            // clean up any configuration
-            NetCDFUnitFormat.reset();
-        }
-
         @Test
-        public void testDU() throws Exception {
+        public void testDU() {
             // could not find a way to make this work with the above test, so doing it another way
-            Unit<?> unit = NetCDFUnitFormat.parse("DU");
+            Unit<?> unit = NetCDFUnitFormat.createWithBuiltInConfig().parse("DU");
             assertEquals("μmol·(1/m²)*446.2", unit.toString());
         }
 
         @Test(expected = MeasurementParseException.class)
         public void testIsolation() {
-            // the normal instance should be isolated, the configuration of the the NetCDF
+            // the normal instance should be isolated, the configuration of the NetCDF
             // unit parse should not affect the normal parser
-            SimpleUnitFormat instance = SimpleUnitFormat.getInstance();
+            UnitFormatter instance = UnitFormat.getInstance();
             instance.parse("degree");
         }
 
         @Test
         public void testReconfigureAliases() {
-            NetCDFUnitFormat.setAliases(Collections.singletonMap("foobar", "m^3"));
-            Unit<?> parsed = NetCDFUnitFormat.parse("foobar");
+            Map<String, String> aliases = NetCDFUnitFormat.builtInAliases();
+            aliases.put("foobar", "m^3");
+            var format = NetCDFUnitFormat.create(NetCDFUnitFormat.builtInReplacements(), aliases);
+            Unit<?> parsed = format.parse("foobar");
             assertEquals(parsed, METRE.pow(3));
         }
 
         @Test
         public void testReconfigureReplacements() {
-            NetCDFUnitFormat.setReplacements(
-                    Collections.singletonMap("one two three four!", "g*m^2*s^-2"));
-            Unit<?> parsed = NetCDFUnitFormat.parse("one two three four!");
+            var replacements = NetCDFUnitFormat.builtInReplacements();
+            replacements.put("one two three four!", "g*m^2*s^-2");
+            var format = NetCDFUnitFormat.create(replacements, NetCDFUnitFormat.builtInAliases());
+            Unit<?> parsed = format.parse("one two three four!");
             Unit<?> expected = GRAM.multiply(METRE.pow(2)).multiply(SECOND.pow(-2));
             assertEquals(expected, parsed);
         }

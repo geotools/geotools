@@ -17,6 +17,8 @@
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
+import static org.geotools.jdbc.JDBCDataStore.JDBC_NATIVE_TYPE;
+import static org.geotools.jdbc.JDBCDataStore.JDBC_NATIVE_TYPENAME;
 import static org.geotools.jdbc.util.SqlUtil.prepare;
 
 import java.io.Closeable;
@@ -69,6 +71,8 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ReprojectingFeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.Geometries;
@@ -749,6 +753,41 @@ public class GeoPackage implements Closeable {
     }
 
     /**
+     * In some cases (ie. from JDBC) the schema will have JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE
+     * metadata attached to them (i.e. 'varchar'). However, these cause problems because GT will
+     * create non-GeoPackage allowed column types (according to the GeoPackage Specification).
+     *
+     * <p>This clones the input schema and removes the JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE
+     * metadata.
+     *
+     * @param schema input schema
+     * @return clone of the input schema without JDBC_NATIVE_TYPENAME and JDBC_NATIVE_TYPE metadata
+     */
+    SimpleFeatureType correctSchema(SimpleFeatureType schema) {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+
+        builder.init(schema);
+        // remove the attributes, we are going to put in new ones
+        builder.setAttributes(new ArrayList<>());
+
+        for (var attribute : schema.getAttributeDescriptors()) {
+            var modifiedAttribute =
+                    new AttributeDescriptorImpl(
+                            attribute.getType(),
+                            attribute.getName(),
+                            attribute.getMinOccurs(),
+                            attribute.getMaxOccurs(),
+                            attribute.isNillable(),
+                            attribute.getDefaultValue());
+            modifiedAttribute.getUserData().putAll(attribute.getUserData());
+            modifiedAttribute.getUserData().remove(JDBC_NATIVE_TYPENAME);
+            modifiedAttribute.getUserData().remove(JDBC_NATIVE_TYPE);
+            builder.add(modifiedAttribute);
+        }
+        return builder.buildFeatureType();
+    }
+
+    /**
      * Creates a new feature entry in the geopackage.
      *
      * <p>The resulting feature dataset will be empty. The {@link #writer(FeatureEntry, boolean,
@@ -759,6 +798,7 @@ public class GeoPackage implements Closeable {
      * @throws IOException Any errors occurring while creating the new feature entry.
      */
     public void create(FeatureEntry entry, SimpleFeatureType schema) throws IOException {
+        schema = correctSchema(schema);
         // clone entry so we can work on it
         FeatureEntry e = new FeatureEntry();
         e.init(entry);

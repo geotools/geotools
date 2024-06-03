@@ -167,7 +167,7 @@ public final class UnitDefinitions {
                     UnitDefinition.of(USCustomary.ELECTRON_VOLT, emptyList(), "eV", emptyList()),
 
                     // power
-                    UnitDefinition.of(USCustomary.HORSEPOWER, emptyList(), "HP", emptyList()),
+                    UnitDefinition.of(USCustomary.HORSEPOWER, emptyList(), "hp", emptyList()),
 
                     // volume
                     UnitDefinition.of(USCustomary.LITER, emptyList(), "L", emptyList()),

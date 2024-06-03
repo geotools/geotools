@@ -1,5 +1,9 @@
 package org.geotools.data.flatgeobuf;
 
+import static java.time.format.DateTimeFormatter.ISO_INSTANT;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
@@ -7,22 +11,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -86,27 +83,25 @@ public class AttributeRoundtripTest {
         sftb.setName("testName");
         sftb.add("geometryPropertyName", Geometry.class);
         sftb.add("exotic1_1", Integer.class);
-        sftb.add("exotic1_2", BigInteger.class);
+        sftb.add("exotic1_2", Long.class);
         sftb.add("exotic1_3", LocalDateTime.class);
         sftb.add("exotic1_4", LocalDate.class);
         sftb.add("exotic1_5", LocalTime.class);
-        sftb.add("exotic1_6", BigDecimal.class);
+        sftb.add("exotic1_6", Double.class);
         sftb.add("exotic1_7", Byte.class);
         sftb.add("exotic1_8", Short.class);
         sftb.add("exotic1_9", Date.class);
         SimpleFeatureType ft = sftb.buildFeatureType();
         SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
         sfb.set("exotic1_1", Integer.valueOf("99"));
-        sfb.set("exotic1_2", new BigInteger("1111111111111111111"));
+        sfb.set("exotic1_2", Long.valueOf("1111111111111111111"));
         sfb.set("exotic1_3", LocalDateTime.now().withNano(0));
         sfb.set("exotic1_4", LocalDate.now());
         sfb.set("exotic1_5", LocalTime.now().withNano(0));
-        sfb.set("exotic1_6", new BigDecimal("1.1111"));
-        sfb.set("exotic1_7", Byte.parseByte("99"));
-        sfb.set("exotic1_8", Short.parseShort("9999"));
-        Calendar cal = Calendar.getInstance();
-        cal.set(2020, 1, 1, 0, 0, 0);
-        sfb.set("exotic1_9", cal.getTime());
+        sfb.set("exotic1_6", Double.valueOf("1.1111"));
+        sfb.set("exotic1_7", Byte.valueOf("99"));
+        sfb.set("exotic1_8", Short.valueOf("9999"));
+        sfb.set("exotic1_9", new Date());
         SimpleFeature sf = sfb.buildFeature("0");
         MemoryFeatureCollection expected = new MemoryFeatureCollection(ft);
         expected.add(sf);
@@ -119,36 +114,16 @@ public class AttributeRoundtripTest {
                 FeatureCollectionConversions.deserializeSFC(new ByteArrayInputStream(bytes));
         SimpleFeature expectedFeature = (SimpleFeature) expected.toArray()[0];
         SimpleFeature actualFeature = (SimpleFeature) actual.toArray()[0];
-        // assertEquals(expectedFeature.getAttribute(0).toString(),
-        // actualFeature.getAttribute(0).toString());
-        assertEquals(
-                expectedFeature.getAttribute(1).toString(),
-                actualFeature.getAttribute(1).toString());
-        assertEquals(
-                expectedFeature.getAttribute(2).toString(),
-                actualFeature.getAttribute(2).toString());
-        assertEquals(
-                expectedFeature.getAttribute(3).toString(),
-                actualFeature.getAttribute(3).toString());
-        assertEquals(
-                expectedFeature.getAttribute(4).toString(),
-                actualFeature.getAttribute(4).toString());
-        assertEquals(
-                expectedFeature.getAttribute(5).toString(),
-                actualFeature.getAttribute(5).toString());
-        assertEquals(
-                expectedFeature.getAttribute(6).toString(),
-                actualFeature.getAttribute(6).toString());
-        assertEquals(
-                expectedFeature.getAttribute(7).toString(),
-                actualFeature.getAttribute(7).toString());
-        assertEquals(
-                expectedFeature.getAttribute(8).toString(),
-                actualFeature.getAttribute(8).toString());
-        Date date = (Date) expectedFeature.getAttribute(9);
-        Instant instant = date.toInstant();
-        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
-        String isoString = zonedDateTime.format(DateTimeFormatter.ISO_INSTANT);
-        assertEquals(isoString, actualFeature.getAttribute(9).toString());
+        var e = expectedFeature.getAttributes();
+        var a = actualFeature.getAttributes();
+        assertEquals(e.get(1), a.get(1));
+        assertEquals(e.get(2), a.get(2));
+        assertEquals(ISO_LOCAL_DATE_TIME.format((LocalDateTime) e.get(3)), a.get(3));
+        assertEquals(ISO_LOCAL_DATE.format((LocalDate) e.get(4)), a.get(4));
+        assertEquals(ISO_LOCAL_TIME.format((LocalTime) e.get(5)), a.get(5));
+        assertEquals(e.get(6), a.get(6));
+        assertEquals(e.get(7), a.get(7));
+        assertEquals(e.get(8), a.get(8));
+        assertEquals(ISO_INSTANT.format(((java.util.Date) e.get(9)).toInstant()), a.get(9));
     }
 }

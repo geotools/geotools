@@ -16,12 +16,10 @@
  */
 package org.geotools.measure;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
 import static javax.measure.MetricPrefix.ATTO;
 import static javax.measure.MetricPrefix.CENTI;
+import static javax.measure.MetricPrefix.DECA;
 import static javax.measure.MetricPrefix.DECI;
-import static javax.measure.MetricPrefix.DEKA;
 import static javax.measure.MetricPrefix.EXA;
 import static javax.measure.MetricPrefix.FEMTO;
 import static javax.measure.MetricPrefix.GIGA;
@@ -33,6 +31,10 @@ import static javax.measure.MetricPrefix.MILLI;
 import static javax.measure.MetricPrefix.NANO;
 import static javax.measure.MetricPrefix.PETA;
 import static javax.measure.MetricPrefix.PICO;
+import static javax.measure.MetricPrefix.QUECTO;
+import static javax.measure.MetricPrefix.QUETTA;
+import static javax.measure.MetricPrefix.RONNA;
+import static javax.measure.MetricPrefix.RONTO;
 import static javax.measure.MetricPrefix.TERA;
 import static javax.measure.MetricPrefix.YOCTO;
 import static javax.measure.MetricPrefix.YOTTA;
@@ -48,28 +50,31 @@ public final class PrefixDefinitions {
      * A list of metric prefix definitions from YOTTA (10<sup>24</sup>) to YOCTO (10<sup>-24</sup>).
      */
     public static List<PrefixDefinition> STANDARD =
-            unmodifiableList(
-                    asList(
-                            PrefixDefinition.of(YOTTA),
-                            PrefixDefinition.of(ZETTA),
-                            PrefixDefinition.of(EXA),
-                            PrefixDefinition.of(PETA),
-                            PrefixDefinition.of(TERA),
-                            PrefixDefinition.of(GIGA),
-                            PrefixDefinition.of(MEGA),
-                            PrefixDefinition.of(KILO),
-                            PrefixDefinition.of(HECTO),
-                            PrefixDefinition.of(DEKA),
-                            PrefixDefinition.of(DECI),
-                            PrefixDefinition.of(CENTI),
-                            PrefixDefinition.of(MILLI),
-                            PrefixDefinition.of(MICRO, "\u03BC"),
-                            PrefixDefinition.of(NANO),
-                            PrefixDefinition.of(PICO),
-                            PrefixDefinition.of(FEMTO),
-                            PrefixDefinition.of(ATTO),
-                            PrefixDefinition.of(ZEPTO),
-                            PrefixDefinition.of(YOCTO)));
+            List.of(
+                    PrefixDefinition.of(QUETTA),
+                    PrefixDefinition.of(RONNA),
+                    PrefixDefinition.of(YOTTA),
+                    PrefixDefinition.of(ZETTA),
+                    PrefixDefinition.of(EXA),
+                    PrefixDefinition.of(PETA),
+                    PrefixDefinition.of(TERA),
+                    PrefixDefinition.of(GIGA),
+                    PrefixDefinition.of(MEGA),
+                    PrefixDefinition.of(KILO),
+                    PrefixDefinition.of(HECTO),
+                    PrefixDefinition.of(DECA),
+                    PrefixDefinition.of(DECI),
+                    PrefixDefinition.of(CENTI),
+                    PrefixDefinition.of(MILLI),
+                    PrefixDefinition.of(MICRO, "\u03BC"),
+                    PrefixDefinition.of(NANO),
+                    PrefixDefinition.of(PICO),
+                    PrefixDefinition.of(FEMTO),
+                    PrefixDefinition.of(ATTO),
+                    PrefixDefinition.of(ZEPTO),
+                    PrefixDefinition.of(YOCTO),
+                    PrefixDefinition.of(RONTO),
+                    PrefixDefinition.of(QUECTO));
 
     /**
      * A prefix definition that leaves out KILO, which is used for the definition of units of mass:
@@ -78,26 +83,29 @@ public final class PrefixDefinitions {
      * then define gram, with all prefixes but KIL0.
      */
     static List<PrefixDefinition> GRAM =
-            unmodifiableList(
-                    asList(
-                            PrefixDefinition.of(YOTTA),
-                            PrefixDefinition.of(ZETTA),
-                            PrefixDefinition.of(EXA),
-                            PrefixDefinition.of(PETA),
-                            PrefixDefinition.of(TERA),
-                            PrefixDefinition.of(GIGA),
-                            PrefixDefinition.of(MEGA),
-                            // no kilo
-                            PrefixDefinition.of(HECTO),
-                            PrefixDefinition.of(DEKA),
-                            PrefixDefinition.of(DECI),
-                            PrefixDefinition.of(CENTI),
-                            PrefixDefinition.of(MILLI),
-                            PrefixDefinition.of(MICRO, "\u03BC"),
-                            PrefixDefinition.of(NANO),
-                            PrefixDefinition.of(PICO),
-                            PrefixDefinition.of(FEMTO),
-                            PrefixDefinition.of(ATTO),
-                            PrefixDefinition.of(ZEPTO),
-                            PrefixDefinition.of(YOCTO)));
+            List.of(
+                    PrefixDefinition.of(QUETTA),
+                    PrefixDefinition.of(RONNA),
+                    PrefixDefinition.of(YOTTA),
+                    PrefixDefinition.of(ZETTA),
+                    PrefixDefinition.of(EXA),
+                    PrefixDefinition.of(PETA),
+                    PrefixDefinition.of(TERA),
+                    PrefixDefinition.of(GIGA),
+                    PrefixDefinition.of(MEGA),
+                    // no kilo
+                    PrefixDefinition.of(HECTO),
+                    PrefixDefinition.of(DECA),
+                    PrefixDefinition.of(DECI),
+                    PrefixDefinition.of(CENTI),
+                    PrefixDefinition.of(MILLI),
+                    PrefixDefinition.of(MICRO, "\u03BC"),
+                    PrefixDefinition.of(NANO),
+                    PrefixDefinition.of(PICO),
+                    PrefixDefinition.of(FEMTO),
+                    PrefixDefinition.of(ATTO),
+                    PrefixDefinition.of(ZEPTO),
+                    PrefixDefinition.of(YOCTO),
+                    PrefixDefinition.of(RONTO),
+                    PrefixDefinition.of(QUECTO));
 }

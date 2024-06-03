@@ -901,7 +901,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
             unit = UNITS_CACHE.get(unitString);
             if (unit == null) {
                 try {
-                    unit = NetCDFUnitFormat.parse(unitString);
+                    unit = NetCDFUnitFormat.getInstance().parse(unitString);
                     UNITS_CACHE.put(unitString, unit);
                 } catch (MeasurementParseException parseException) {
                     if (LOGGER.isLoggable(Level.FINE)) {

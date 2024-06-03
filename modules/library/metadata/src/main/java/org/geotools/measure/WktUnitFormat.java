@@ -36,7 +36,7 @@ import tech.units.indriya.unit.TransformedUnit;
  */
 // this is in `org.geotools.measure` instead of `org.geotools.referencing.wkt`, because
 // `Units.autoCorrect` depends on it & we need `Units` for the unit definitions in gt-measure there
-public final class WktUnitFormat {
+public final class WktUnitFormat extends BaseUnitFormatter {
 
     public static UnitFormatter getInstance() {
         return INSTANCE;
@@ -52,38 +52,33 @@ public final class WktUnitFormat {
                             UnitDefinitions.US_CUSTOMARY,
                             UnitDefinitions.WKT)
                     .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
 
-    private static final WktUnitFormatterImpl INSTANCE = new WktUnitFormatterImpl(UNIT_DEFINITIONS);
+    private static final WktUnitFormat INSTANCE = new WktUnitFormat(UNIT_DEFINITIONS);
 
-    private WktUnitFormat() {}
+    private HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap;
 
-    static class WktUnitFormatterImpl extends BaseUnitFormatter implements UnitFormatter {
+    WktUnitFormat(List<UnitDefinition> unitDefinitions) {
+        super(unitDefinitions);
+    }
 
-        private HashMap<UnitWrapper, Unit<?>> unitWrapperToUnitMap;
-
-        WktUnitFormatterImpl(List<UnitDefinition> unitDefinitions) {
-            super(unitDefinitions);
+    @Override
+    public void addLabel(Unit<?> unit, String label) {
+        super.addLabel(unit, label);
+        if (unitWrapperToUnitMap == null) {
+            unitWrapperToUnitMap = new HashMap<>();
         }
+        unitWrapperToUnitMap.put(new UnitWrapper(unit), unit);
+    }
 
-        @Override
-        protected void addUnit(Unit<?> unit) {
-            if (unitWrapperToUnitMap == null) {
-                unitWrapperToUnitMap = new HashMap<>();
-            }
-            unitWrapperToUnitMap.put(new UnitWrapper(unit), unit);
-        }
-
-        /**
-         * Returns an equivalent unit instance based on the provided unit. First, it tries to get
-         * one of the reference units defined in the JSR 385 implementation in use. If no equivalent
-         * reference unit is defined, it returns the provided unit
-         */
-        @SuppressWarnings("unchecked")
-        public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
-            return (Unit<Q>)
-                    INSTANCE.unitWrapperToUnitMap.getOrDefault(new UnitWrapper(unit), unit);
-        }
+    /**
+     * Returns an equivalent unit instance based on the provided unit. First, it tries to get one of
+     * the reference units defined in the JSR 385 implementation in use. If no equivalent reference
+     * unit is defined, it returns the provided unit
+     */
+    @SuppressWarnings("unchecked")
+    public <Q extends Quantity<Q>> Unit<Q> getEquivalentUnit(Unit<Q> unit) {
+        return (Unit<Q>) INSTANCE.unitWrapperToUnitMap.getOrDefault(new UnitWrapper(unit), unit);
     }
 
     /**

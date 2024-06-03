@@ -58,7 +58,7 @@ public class GeoPackageTestWriteDatetime {
 
     @Before
     public void setUp() throws Exception {
-        geopkg = new GeoPackage(File.createTempFile("geopkg", "db", new File("target")));
+        geopkg = new GeoPackage(File.createTempFile("geopkg", ".gpkg", new File("target")));
         geopkg.init();
     }
 
@@ -98,6 +98,29 @@ public class GeoPackageTestWriteDatetime {
         featureBuilder.add(createGeometry());
         featureBuilder.add(value);
         return featureBuilder.buildFeature(null);
+    }
+
+    /**
+     * For backwards compatibility, this tests the old GT DateTime format ("2024-02-27
+     * 00:13:00.0Z"). Older versions of GT stored the value as a "TIMESTAMP" (instead of the correct
+     * DateTime).
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testOldGTDateFormat() throws Exception {
+        var dialect = new GeoPkgDialect(null);
+
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setName("testCaseFT");
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.add("the_geom", LineString.class);
+        builder.add("datetime", Timestamp.class);
+        var descriptor = builder.buildFeatureType().getDescriptor(1);
+
+        var oldGTFormat = "2024-02-27 00:13:00.0Z";
+        var converted = (Timestamp) dialect.convertValue(oldGTFormat, descriptor);
+        assertEquals("27 Feb 2024 00:13:00 GMT", converted.toGMTString());
     }
 
     @Test

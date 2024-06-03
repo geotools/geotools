@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -37,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.logging.Level;
 import org.geotools.api.feature.FeatureVisitor;
@@ -1018,8 +1021,18 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 Timestamp timestamp = Timestamp.from(instant);
                 return timestamp; // this will be in local time
             } catch (Exception e) {
-                // couldnt parse - fallback to standard GT converters
-                return super.convertValue(value, ad);
+                //could be an old GT datetime i.e. '2024-02-27 00:13:00.0Z'
+                try {
+                    var dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    java.util.Date date=  dateFormat.parse(strValue);
+                    Instant dateInstant = date.toInstant();
+                    Timestamp timestamp = Timestamp.from(dateInstant);
+                    return timestamp;
+                } catch (ParseException ex) {
+                    // couldnt parse - fallback to standard GT converters
+                    return super.convertValue(value, ad);
+                }
             }
         }
 

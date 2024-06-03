@@ -1029,11 +1029,11 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 Timestamp timestamp = Timestamp.from(instant);
                 return timestamp; // this will be in local time
             } catch (Exception e) {
-                //could be an old GT datetime i.e. '2024-02-27 00:13:00.0Z'
+                // could be an old GT datetime i.e. '2024-02-27 00:13:00.0Z'
                 try {
                     var dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    java.util.Date date=  dateFormat.parse(strValue);
+                    java.util.Date date = dateFormat.parse(strValue);
                     Instant dateInstant = date.toInstant();
                     Timestamp timestamp = Timestamp.from(dateInstant);
                     return timestamp;

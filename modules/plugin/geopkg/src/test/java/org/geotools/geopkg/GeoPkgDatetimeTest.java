@@ -26,7 +26,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -289,13 +292,40 @@ public class GeoPkgDatetimeTest {
     //  '2020-03-19 24:00:00' is the start of the next day
     //
     @Test
-    public void testBetween_timestamp() throws IOException, CQLException {
+    public void testBetween_timestamp() throws IOException, CQLException, ParseException {
+        // try ISO format for literals
         Filter between =
-                ECQL.toFilter("time BETWEEN '2020-02-19 23:00:00' AND '2020-03-19 00:00:00'");
+                ECQL.toFilter("time BETWEEN '2020-02-19T23:00:00Z' AND '2020-03-19T00:00:00Z'");
 
         SimpleFeatureSource fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
         SimpleFeatureCollection features = fs.getFeatures(between);
-        // var list = new ListFeatureCollection(features).stream().collect(Collectors.toList());
+        // to see features returned: new
+        // ListFeatureCollection(features).stream().collect(Collectors.toList());
         assertEquals(3, features.size());
+
+        var lower = gmt2Local("2020-02-19T23:00:00Z");
+        var upper = gmt2Local("2020-03-19T00:00:00Z");
+
+        between = ECQL.toFilter("time BETWEEN '" + lower + "' AND '" + upper + "'");
+
+        fs = gpkg.getFeatureSource(gpkg.getTypeNames()[0]);
+        features = fs.getFeatures(between);
+        assertEquals(3, features.size());
+    }
+
+    // converts a gmt (ie '2020-02-19T23:00:00Z') to local time
+    public String gmt2Local(String gmt) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss'Z'");
+        java.util.Date parsedDate = dateFormat.parse(gmt);
+        java.util.Date local =
+                new java.util.Date(
+                        parsedDate.getTime()
+                                + Calendar.getInstance()
+                                        .getTimeZone()
+                                        .getOffset(parsedDate.getTime()));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        var localStr = sdf.format(local);
+        return localStr;
     }
 }

@@ -108,10 +108,9 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
     @Test
     public void testFilterByTime() throws Exception {
         FeatureSource fs = dataStore.getFeatureSource(tname("dates"));
-
         FilterFactory ff = dataStore.getFilterFactory();
 
-        // greather than or equal to
+        // greater than or equal to
         Filter f = ff.greaterOrEqual(ff.property(aname("t")), ff.literal("13:10:12"));
         assertEquals(3, fs.getCount(new Query(tname("dates"), f)));
 

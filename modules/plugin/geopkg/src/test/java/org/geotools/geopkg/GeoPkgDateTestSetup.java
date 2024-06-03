@@ -1,5 +1,6 @@
 package org.geotools.geopkg;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +38,8 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
         //        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
 
         // NOTE: geopackage does NOT support TIME columns - just DATE and DATETIME
+        // For TIME columns, we use a time like '15:12:41Z' to explicitly show it is Zulu-time
+        //  (this is consistent with the DataTime handling).
         run("CREATE TABLE dates (id INTEGER PRIMARY KEY, d DATE, dt DATETIME, t TIME)");
 
         run(
@@ -45,19 +48,25 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
                         + "'"
                         + gmt2
                         + "',"
-                        + "strftime('%H:%M:%S','15:12:41','utc')  )");
+                        + "'"
+                        + ("15:12:41")
+                        + "')");
 
         run(
                 "INSERT INTO dates VALUES (2,"
                         + "DATE('2009-01-15','localtime'), "
                         + "'2009-01-15T13:10:12Z',"
-                        + "strftime('%H:%M:%S','13:10:12','utc')  )");
+                        + "'"
+                        + ("13:10:12")
+                        + "')");
 
         run(
                 "INSERT INTO dates VALUES (3,"
                         + "DATE('2009-09-29','localtime'), "
                         + "'2009-09-29T17:54:23Z',"
-                        + "strftime('%H:%M:%S','17:54:23','utc')  )");
+                        + "'"
+                        + ("17:54:23")
+                        + "')");
         String sql =
                 "INSERT INTO gpkg_contents (table_name, data_type, identifier, srs_id) VALUES "
                         + "('dates', 'features', 'dates', 4326)";

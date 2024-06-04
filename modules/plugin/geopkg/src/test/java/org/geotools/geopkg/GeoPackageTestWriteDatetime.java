@@ -27,7 +27,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.TimeZone;
 import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.SimpleFeatureReader;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -120,7 +122,14 @@ public class GeoPackageTestWriteDatetime {
 
         var oldGTFormat = "2024-02-27 00:13:00.0Z";
         var converted = (Timestamp) dialect.convertValue(oldGTFormat, descriptor);
-        assertEquals("27 Feb 2024 00:13:00 GMT", converted.toGMTString());
+
+        // convert to standard GMT format
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdf.applyPattern("dd MMM yyyy HH:mm:ss z");
+
+        var result = sdf.format(converted);
+        assertEquals("27 Feb 2024 00:13:00 GMT", result);
     }
 
     @Test

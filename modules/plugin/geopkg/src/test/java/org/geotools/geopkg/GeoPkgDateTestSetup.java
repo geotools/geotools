@@ -33,9 +33,6 @@ public class GeoPkgDateTestSetup extends JDBCDateTestSetup {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         var gmt2 = sdf.format(gmt);
 
-        //        ZoneId zone = ZoneId.systemDefault();
-        //        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, zone);
-
         // NOTE: geopackage does NOT support TIME columns - just DATE and DATETIME
         // For TIME columns, we use a time like '15:12:41Z' to explicitly show it is Zulu-time
         //  (this is consistent with the DataTime handling).

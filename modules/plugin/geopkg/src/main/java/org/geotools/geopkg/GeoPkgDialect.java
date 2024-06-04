@@ -692,16 +692,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
                 break;
             case Types.TIME:
                 var time = value.toString();
-                //                if (!time.endsWith("Z")) {
-                //                     //convert from local to Zulu
-                //                    var time1 = convert(value, Time.class);
-                //                    var gmt = new Date(time1.getTime() - Calendar.getInstance()
-                // .getTimeZone().getOffset(time1.getTime()));
-                //                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss'Z'");
-                //                    var gmt2 = sdf.format(gmt);
-                //                    ps.setString(column, gmt2);
-                //                    break;
-                //                }
                 ps.setString(column, time);
                 break;
             case Types.TIMESTAMP:

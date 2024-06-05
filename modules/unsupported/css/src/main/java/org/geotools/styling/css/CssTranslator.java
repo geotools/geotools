@@ -145,7 +145,7 @@ public class CssTranslator {
 
     static final String DIRECTIVE_STYLE_ABSTRACT = "styleAbstract";
 
-    static final String DIRECTIVE_UNIQUE_RULE_NAMES = "uniqueRuleNames";
+    static final String DIRECTIVE_AUTO_RULE_NAMES = "autoRuleNames";
 
     static final int MAX_OUTPUT_RULES_DEFAULT =
             Integer.valueOf(
@@ -325,7 +325,7 @@ public class CssTranslator {
         }
         Style translated = styleBuilder.build();
 
-        if (Boolean.parseBoolean(stylesheet.getDirectiveValue(DIRECTIVE_UNIQUE_RULE_NAMES))) {
+        if (Boolean.parseBoolean(stylesheet.getDirectiveValue(DIRECTIVE_AUTO_RULE_NAMES))) {
             int ruleNbr = 0;
             for (FeatureTypeStyle ftStyle : translated.featureTypeStyles()) {
                 for (Rule rule : ftStyle.rules()) {

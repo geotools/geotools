@@ -36,12 +36,12 @@ public class CssTranslatorTest {
         stylesheet = new Stylesheet();
     }
     /**
-     * Test to ensure that the 'uniqueRuleNames' directive in the CssTranslator assigns unique names
+     * Test to ensure that the 'autoRuleNames' directive in the CssTranslator assigns unique names
      * to each rule in the translated style.
      */
     @Test
-    public void testTranslateWithUniqueNames(){
-        stylesheet.addDirective(CssTranslator.DIRECTIVE_UNIQUE_RULE_NAMES, "true");
+    public void testTranslateWithAutoNames(){
+        stylesheet.addDirective(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true");
 
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;

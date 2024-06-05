@@ -72,11 +72,11 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
             Class<?> binding = desc.getType().getBinding();
             // utc -- everything must be consistent -- see literal visitor
             if (Time.class.isAssignableFrom(binding)) {
-                return "time(" + super_result + ",'utc')";
+                return "time(" + super_result + ")";
             } else if (Timestamp.class.isAssignableFrom(binding)) {
                 return "datetime("
                         + super_result
-                        + ",'utc')"; // utc -- everything must be consistent -- see
+                        + ",'utc' )"; // utc -- everything must be consistent -- see
                 // literal visitor
             } else if (java.sql.Date.class.isAssignableFrom(binding)) {
                 return "date(" + super_result + ")";
@@ -148,9 +148,9 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                     dialect.prepareGeometryValue(
                             (Geometry) literalValue, dimension, srid, Geometry.class, sb);
                 } else if (Time.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("time(?,'utc')");
+                    sb.append("time(?)");
                 } else if (Timestamp.class.isAssignableFrom(literalValue.getClass())) {
-                    sb.append("datetime(?,'utc')");
+                    sb.append("datetime(?,'utc' )");
                 } else if (java.sql.Date.class.isAssignableFrom(literalValue.getClass())) {
                     sb.append("date(?)");
                 } else if (encodingFunction) {

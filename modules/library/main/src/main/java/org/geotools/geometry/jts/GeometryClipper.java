@@ -35,6 +35,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.precision.GeometryPrecisionReducer;
+import javax.annotation.Nullable;
 
 /**
  * A stateful geometry clipper, can clip linestring on a specified rectangle. Trivial benchmarks
@@ -94,6 +95,7 @@ public class GeometryClipper {
      * @param scale Scale used to snap geometry to precision model, 0 to disable
      * @return a clipped geometry, which may be empty, or null
      */
+    @Nullable
     public Geometry clipSafe(Geometry g, boolean ensureValid, double scale) {
         try {
             return clip(g, ensureValid);
@@ -142,6 +144,7 @@ public class GeometryClipper {
      * @param ensureValid If false there is no guarantee the polygons returned will be valid
      *     according to JTS rules (but should still be good enough to be used for pure rendering)
      */
+    @Nullable
     public Geometry clip(Geometry g, boolean ensureValid) {
         // basic pre-flight checks
         if (g == null) {

@@ -174,6 +174,8 @@ public class PostGISDialect extends BasicSQLDialect {
 
     static final Version PGSQL_V_9_1 = new Version("9.1");
 
+    static final Version PGSQL_V_12_0 = new Version("12.0");
+
     public PostGISDialect(JDBCDataStore dataStore) {
         super(dataStore);
         this.forceLongitudeFirst =
@@ -1407,7 +1409,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public FilterToSQL createFilterToSQL() {
-        PostgisFilterToSQL sql = new PostgisFilterToSQL(this);
+        PostgisFilterToSQL sql = new PostgisFilterToSQL(this, pgsqlVersion);
         sql.setLooseBBOXEnabled(looseBBOXEnabled);
         sql.setEncodeBBOXFilterAsEnvelope(encodeBBOXFilterAsEnvelope);
         sql.setFunctionEncodingEnabled(functionEncodingEnabled);

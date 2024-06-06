@@ -19,6 +19,7 @@ package org.geotools.geometry.jts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Envelope;
@@ -35,7 +36,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.precision.GeometryPrecisionReducer;
-import javax.annotation.Nullable;
 
 /**
  * A stateful geometry clipper, can clip linestring on a specified rectangle. Trivial benchmarks

@@ -259,7 +259,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
 
     @Override
     public PreparedFilterToSQL createPreparedFilterToSQL() {
-        PostgisPSFilterToSql fts = new PostgisPSFilterToSql(this);
+        PostgisPSFilterToSql fts = new PostgisPSFilterToSql(this, delegate.pgsqlVersion);
         fts.setFunctionEncodingEnabled(delegate.isFunctionEncodingEnabled());
         fts.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
         fts.setEncodeBBOXFilterAsEnvelope(delegate.isEncodeBBOXFilterAsEnvelope());

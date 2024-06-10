@@ -90,6 +90,7 @@ import org.geotools.data.DefaultFileServiceInfo;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.geometry.GeneralBounds;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
@@ -618,58 +619,38 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
      */
     protected final void decimationOnReadingControl(
             String coverageName, Integer imageChoice, ImageReadParam readP, double[] requestedRes) {
-        {
-            int w, h;
-            double[] selectedRes = new double[2];
-            final int choice = imageChoice.intValue();
-            if (choice == 0) {
-                // highest resolution
-                w = getOriginalGridRange(coverageName).getSpan(0);
-                h = getOriginalGridRange(coverageName).getSpan(1);
-                selectedRes[0] = getHighestRes()[0];
-                selectedRes[1] = getHighestRes()[1];
-            } else {
-                // some overview
-                selectedRes[0] = overViewResolutions[choice - 1][0];
-                selectedRes[1] = overViewResolutions[choice - 1][1];
-                w = (int) Math.round(getOriginalEnvelope(coverageName).getSpan(0) / selectedRes[0]);
-                h = (int) Math.round(getOriginalEnvelope(coverageName).getSpan(1) / selectedRes[1]);
-            }
-            // /////////////////////////////////////////////////////////////////////
-            // DECIMATION ON READING
-            // Setting subsampling factors with some checkings
-            // 1) the subsampling factors cannot be zero
-            // 2) the subsampling factors cannot be such that the w or h are
-            // zero
-            // /////////////////////////////////////////////////////////////////////
-            if (requestedRes == null) {
-                readP.setSourceSubsampling(1, 1, 0, 0);
 
-            } else {
-                int subSamplingFactorX = (int) Math.floor(requestedRes[0] / selectedRes[0]);
-                subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
+        int w, h;
+        double[] selectedRes = new double[2];
+        final int choice = imageChoice.intValue();
+        if (choice == 0) {
+            // highest resolution
+            w = getOriginalGridRange(coverageName).getSpan(0);
+            h = getOriginalGridRange(coverageName).getSpan(1);
+            selectedRes[0] = getHighestRes()[0];
+            selectedRes[1] = getHighestRes()[1];
+        } else {
+            // some overview
+            selectedRes[0] = overViewResolutions[choice - 1][0];
+            selectedRes[1] = overViewResolutions[choice - 1][1];
+            w = (int) Math.round(getOriginalEnvelope(coverageName).getSpan(0) / selectedRes[0]);
+            h = (int) Math.round(getOriginalEnvelope(coverageName).getSpan(1) / selectedRes[1]);
+        }
+        // decimation on reading
+        if (requestedRes == null) {
+            readP.setSourceSubsampling(1, 1, 0, 0);
+        } else {
+            ImageUtilities.setSubsamplingFactors(readP, requestedRes, selectedRes, w, h);
 
-                while (w / subSamplingFactorX <= 0 && subSamplingFactorX >= 0) subSamplingFactorX--;
-                subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
-
-                int subSamplingFactorY = (int) Math.floor(requestedRes[1] / selectedRes[1]);
-                subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
-
-                while (h / subSamplingFactorY <= 0 && subSamplingFactorY >= 0) subSamplingFactorY--;
-                subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
-
-                readP.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
-
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.log(
-                            Level.FINE,
-                            String.format(
-                                    "coverageName:%s,imageChoice:%d,subSamplingFactorX:%d,subSamplingFactorY:%d",
-                                    coverageName,
-                                    imageChoice.intValue(),
-                                    subSamplingFactorX,
-                                    subSamplingFactorY));
-            }
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(
+                        Level.FINE,
+                        String.format(
+                                "coverageName:%s,imageChoice:%d,subSamplingFactorX:%d,subSamplingFactorY:%d",
+                                coverageName,
+                                imageChoice.intValue(),
+                                readP.getSourceXSubsampling(),
+                                readP.getSourceYSubsampling()));
         }
     }
 

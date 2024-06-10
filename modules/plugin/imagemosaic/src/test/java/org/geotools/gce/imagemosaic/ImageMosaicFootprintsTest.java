@@ -1415,14 +1415,14 @@ public class ImageMosaicFootprintsTest {
         assertEquals(results[2], 0);
         assertEquals(results[3], 0);
         // Should be > 0
-        position.setLocation(-89.084, 27.133);
+        position.setLocation(-89.084, 27.1);
         results = coverage.evaluate(position, results);
         assertNotEquals(results[0], 0);
         assertNotEquals(results[1], 0);
         assertNotEquals(results[2], 0);
         assertNotEquals(results[3], 0);
         // Should be 0
-        position.setLocation(-89.763, 25.167);
+        position.setLocation(-89.763, 25.2);
         results = coverage.evaluate(position, results);
         assertEquals(results[0], 0);
         assertEquals(results[1], 0);

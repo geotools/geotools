@@ -72,6 +72,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.util.XRectangle2D;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.measure.UnitFormat;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -709,23 +710,7 @@ public class Utilities {
             if (requestedRes == null) {
                 readP.setSourceSubsampling(1, 1, 0, 0);
             } else {
-                int subSamplingFactorX = (int) Math.floor(requestedRes[0] / highestRes[0]);
-                subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
-
-                while (((w / subSamplingFactorX) <= 0) && (subSamplingFactorX >= 0))
-                    subSamplingFactorX--;
-
-                subSamplingFactorX = (subSamplingFactorX == 0) ? 1 : subSamplingFactorX;
-
-                int subSamplingFactorY = (int) Math.floor(requestedRes[1] / highestRes[1]);
-                subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
-
-                while (((h / subSamplingFactorY) <= 0) && (subSamplingFactorY >= 0))
-                    subSamplingFactorY--;
-
-                subSamplingFactorY = (subSamplingFactorY == 0) ? 1 : subSamplingFactorY;
-
-                readP.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
+                ImageUtilities.setSubsamplingFactors(readP, requestedRes, highestRes, w, h);
             }
         }
     }

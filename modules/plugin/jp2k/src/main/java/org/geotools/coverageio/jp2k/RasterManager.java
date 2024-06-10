@@ -263,27 +263,8 @@ class RasterManager {
                                         spatialDomainManager.coverageBBox.getSpan(1)
                                                 / selectedRes[1]);
             }
-            // /////////////////////////////////////////////////////////////////////
-            // DECIMATION ON READING
-            // Setting subsampling factors with some checks
-            // 1) the subsampling factors cannot be zero
-            // 2) the subsampling factors cannot be such that the w or h are zero
-            // /////////////////////////////////////////////////////////////////////
-            int subSamplingFactorX = (int) Math.floor(requestedRes[0] / selectedRes[0]);
-            subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
-
-            while (rasterWidth / subSamplingFactorX <= 0 && subSamplingFactorX >= 0)
-                subSamplingFactorX--;
-            subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
-
-            int subSamplingFactorY = (int) Math.floor(requestedRes[1] / selectedRes[1]);
-            subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
-
-            while (rasterHeight / subSamplingFactorY <= 0 && subSamplingFactorY >= 0)
-                subSamplingFactorY--;
-            subSamplingFactorY = subSamplingFactorY <= 0 ? 1 : subSamplingFactorY;
-
-            readParameters.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
+            ImageUtilities.setSubsamplingFactors(
+                    readParameters, requestedRes, selectedRes, rasterWidth, rasterHeight);
         }
     }
 

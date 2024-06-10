@@ -107,6 +107,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.data.CloseableIterator;
 import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.FileGroupProvider.FileGroup;
@@ -6047,5 +6048,36 @@ public class ImageMosaicReaderTest {
         assertEquals(10, reader.getGranules(mosaicName, true).getCount(Query.ALL));
 
         reader.dispose();
+    }
+
+    @Test
+    public void testWhiteSlivers() throws Exception {
+        URL slivers = TestData.url(this, "sliver/");
+        final AbstractGridFormat format = TestUtils.getFormat(slivers);
+        File mosaicFile = URLs.urlToFile(slivers);
+        final ImageMosaicReader reader =
+                (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
+        GridCoverage2D coverage = null;
+        try {
+            final ParameterValue<GridGeometry2D> gg =
+                    AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+            final GeneralBounds envelope = reader.getOriginalEnvelope();
+            final Dimension dim = new Dimension();
+            GridEnvelope gridRange = reader.getOriginalGridRange();
+            dim.setSize(gridRange.getSpan(0) / 15.8, gridRange.getSpan(1) / 15.8);
+            final Rectangle rasterArea = ((GridEnvelope2D) gridRange);
+            rasterArea.setSize(dim);
+            final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+            gg.setValue(new GridGeometry2D(range, envelope));
+
+            coverage = reader.read(new GeneralParameterValue[] {gg});
+            File sample =
+                    new File(
+                            "src/test/resources/org/geotools/gce/imagemosaic/test-data/no-slivers.png");
+            ImageAssert.assertEquals(sample, coverage.getRenderedImage(), 0);
+        } finally {
+            if (coverage != null) coverage.dispose(true);
+            reader.dispose();
+        }
     }
 }

@@ -1190,6 +1190,7 @@ public final class ImageUtilities {
         }
         return values;
     }
+
     /**
      * Allow to dispose this image, as well as the related image sources, readers, stream, ROI.
      *
@@ -1425,5 +1426,39 @@ public final class ImageUtilities {
         }
 
         return result;
+    }
+
+    /**
+     * Shared method to compute suitable subsampling factors on the provided <code>readParameters
+     * </code>, based on requested resolution, selected resolution, and raster width and height
+     */
+    public static void setSubsamplingFactors(
+            ImageReadParam readParameters,
+            double[] requestedRes,
+            double[] selectedRes,
+            int rasterWidth,
+            int rasterHeight) {
+        // DECIMATION ON READING
+        // Setting subsampling factors with some checks
+        // 1) the subsampling factors cannot be zero
+        // 2) the subsampling factors cannot be such that the w or h are zero
+        // Note: using "round" instead of floor to go for the closest subsampling factory
+        // improves quality
+        // /////////////////////////////////////////////////////////////////////
+        int subSamplingFactorX = (int) Math.round(requestedRes[0] / selectedRes[0]);
+        subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
+
+        while (subSamplingFactorX > 0 && rasterWidth / subSamplingFactorX <= 0)
+            subSamplingFactorX--;
+        subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
+
+        int subSamplingFactorY = (int) Math.round(requestedRes[1] / selectedRes[1]);
+        subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
+
+        while (subSamplingFactorY > 0 && rasterHeight / subSamplingFactorY <= 0)
+            subSamplingFactorY--;
+        subSamplingFactorY = subSamplingFactorY <= 0 ? 1 : subSamplingFactorY;
+
+        readParameters.setSourceSubsampling(subSamplingFactorX, subSamplingFactorY, 0, 0);
     }
 }

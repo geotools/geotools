@@ -34,7 +34,8 @@ jobs:
         : # See https://github.com/OSGeo/gdal/pull/8226
         cmake -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
         cmake --build .
-        cmake --build . --target install
+        : # jni needs install prefix to be set
+        cmake -DCMAKE_INSTALL_PREFIX=/opt/homebrew/ --build . --target install
     - name: Maven repository caching
       uses: actions/cache@v1
       with:

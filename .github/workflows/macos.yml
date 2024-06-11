@@ -6,6 +6,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env: 
+  OSX_GDAL_VERSION: 3.9.0
+
 jobs:
   build:
 
@@ -26,9 +29,9 @@ jobs:
         : # gdal is automatically installed as a dependency for postgis
         brew uninstall --ignore-dependencies gdal
         : # TODO: Replace version with variable
-        wget https://github.com/OSGeo/gdal/releases/download/v3.9.0/gdal-3.9.0.tar.gz
-        tar -xvf gdal-3.9.0.tar.gz
-        cd gdal-3.9.0
+        wget https://github.com/OSGeo/gdal/releases/download/v$OSX_GDAL_VERSION/gdal-$OSX_GDAL_VERSION.tar.gz
+        tar -xvf gdal-$OSX_GDAL_VERSION.tar.gz
+        cd gdal-$OSX_GDAL_VERSION
         mkdir build
         cd build
         : # See https://github.com/OSGeo/gdal/pull/8226

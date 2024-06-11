@@ -16,6 +16,7 @@
  */
 package org.geotools.filter;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.geotools.api.filter.FilterFactory;
@@ -84,5 +85,18 @@ public class LikeFilterImplTest {
         } catch (IllegalArgumentException e) {
             // as expected, no OOM anylonger
         }
+    }
+
+    /** Verifies patterns containing ampersand are working as expected */
+    @Test
+    public void testAmpersandHandling() {
+        String input = "this is foo & bar geospatial";
+        String pattern = "*foo & bar*";
+        PropertyIsLike pil = ff.like(ff.literal(input), pattern);
+        String msg = String.format("Expecting '%s' to match '%s'.", pattern, input);
+        assertTrue(msg, pil.evaluate(null));
+
+        pil = ff.like(ff.literal(input), pattern, "*", "?", "!");
+        assertTrue(msg, pil.evaluate(null));
     }
 }

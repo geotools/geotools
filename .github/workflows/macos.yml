@@ -22,15 +22,16 @@ jobs:
       run: |
         brew update
         brew upgrade
-        brew install cmake
-        brew install pkg-config freexl libxml2 libspatialite geos proj libgeotiff openjpeg giflib libaec postgis poppler doxygen unixodbc jpeg-turbo aom jpeg-xl libheif libarchive libkml boost
-        brew install ccache swig
+        brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec postgis poppler doxygen unixodbc aom jpeg-xl libheif libarchive libkml boost ccache swig python-setuptools
+        : # gdal is automatically installed as a dependency for postgis
         brew uninstall --ignore-dependencies gdal
+        : # TODO: Replace version with variable
         wget https://github.com/OSGeo/gdal/releases/download/v3.9.0/gdal-3.9.0.tar.gz
         tar -xvf gdal-3.9.0.tar.gz
         cd gdal-3.9.0
         mkdir build
         cd build
+        : # See https://github.com/OSGeo/gdal/pull/8226
         cmake -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
         cmake --build .
         cmake --build . --target install

@@ -149,8 +149,7 @@ public class LikeToRegexConverter {
                 || (chr == '(')
                 || (chr == ')')
                 || (chr == '|')
-                || (chr == '\\')
-                || (chr == '&'));
+                || (chr == '\\'));
     }
 
     /**

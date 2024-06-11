@@ -18,6 +18,22 @@ jobs:
       with:
         java-version: 11
         distribution: 'temurin'
+    - name: Build GDAL
+      run: |
+        brew update
+        brew upgrade
+        brew install cmake
+        brew install pkg-config freexl libxml2 libspatialite geos proj libgeotiff openjpeg giflib libaec postgis poppler doxygen unixodbc jpeg-turbo aom jpeg-xl libheif libarchive libkml boost
+        brew install ccache swig
+        brew uninstall --ignore-dependencies gdal
+        wget https://github.com/OSGeo/gdal/releases/download/v3.9.0/gdal-3.9.0.tar.gz
+        tar -xvf gdal-3.9.0.tar.gz
+        cd gdal-3.9.0
+        mkdir build
+        cd build
+        cmake -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
+        cmake --build .
+        cmake --build . --target install
     - name: Maven repository caching
       uses: actions/cache@v1
       with:

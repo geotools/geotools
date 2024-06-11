@@ -8,8 +8,8 @@ concurrency:
 
 env: 
   OSX_GDAL_VERSION: 3.9.0
-  DYLD_LIBRARY_PATH: /opt/homebrew/lib/
-  DYLD_FALLBACK_LIBRARY_PATH: /opt/homebrew/lib/
+  DYLD_LIBRARY_PATH: /usr/lib/java
+  DYLD_FALLBACK_LIBRARY_PATH: /usr/lib/java
 
 jobs:
   build:
@@ -36,8 +36,8 @@ jobs:
         cd gdal-$OSX_GDAL_VERSION
         mkdir build
         cd build
-        : # See https://github.com/OSGeo/gdal/pull/8226
-        cmake -DCMAKE_INSTALL_PREFIX=/opt/homebrew -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
+        : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet)
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DJAVA_HOME=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home -DGDAL_JAVA_INSTALL_DIR=/usr/lib/java -DGDAL_JAVA_JNI_INSTALL_DIR=/usr/lib/java  -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
         cmake --build .
         cmake --build . --target install
     - name: Maven repository caching
@@ -53,7 +53,7 @@ jobs:
           sudo sysctl -w net.link.generic.system.hwcksum_tx=0
           sudo sysctl -w net.link.generic.system.hwcksum_rx=0
     - name: Build with Maven
-      run: mvn -B clean install -T2 -Dall --file pom.xml -Dspotless.apply.skip=true -Djava.library.path="/opt/homebrew/share/java/:/opt/homebrew/lib/:/opt/homebrew/lib/jni/:/Users/runner/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."
+      run: mvn -B clean install -T2 -Dall --file pom.xml -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

@@ -7,7 +7,7 @@ concurrency:
   cancel-in-progress: true
 
 env: 
-  OSX_GDAL_VERSION: 3.9.0
+  OSX_GDAL_VERSION: 3.7.0
   DYLD_LIBRARY_PATH: /Users/runner/Library/Java/Extensions
   DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/Library/Java/Extensions
 

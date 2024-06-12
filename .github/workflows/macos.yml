@@ -37,7 +37,7 @@ jobs:
         mkdir build
         cd build
         : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet)
-        cmake -DCMAKE_INSTALL_PREFIX=/opt/homebrew -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DJAVA_HOME=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home -DGDAL_JAVA_INSTALL_DIR=/Users/runner/Library/Java/Extensions -DGDAL_JAVA_JNI_INSTALL_DIR=/Users/runner/Library/Java/Extensions  -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
+        cmake -DCMAKE_INSTALL_PREFIX=/opt/homebrew -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DJAVA_HOME=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home -DGDAL_JAVA_INSTALL_DIR=/Users/runner/Library/Java/Extensions -DGDAL_JAVA_JNI_INSTALL_DIR=/Users/runner/Library/Java/Extensions -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_JXL=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
         cmake --build .
         cmake --build . --target install
     - name: Maven repository caching

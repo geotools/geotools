@@ -43,7 +43,7 @@ jobs:
         mvn -B clean install -DskipTests -Dall -T2 --file pom.xml
     - name: Javadoc build
       run: |
-        mvn -B -DskipTests -Dfmt.skip=true javadoc:aggregate
+        mvn -B -DskipTests -Dfmt.skip=true javadoc:aggregate --file modules/pom.xml
     - name: Assemble downloads
       run: |
         mvn -B -DskipTests assembly:single -file release/pom.xml

@@ -151,7 +151,7 @@ public class ProcessFunction implements Function {
 
             // some processes have the bad habit of not throwing exceptions, but to
             // report them to the listener
-            if (listener.getExceptions().size() > 0) {
+            if (!listener.getExceptions().isEmpty()) {
                 // uh oh, an exception occurred during processing
                 Throwable t = listener.getExceptions().get(0);
                 throw new RuntimeException("Failed to evaluate process function, error is: " + t.getMessage(), t);

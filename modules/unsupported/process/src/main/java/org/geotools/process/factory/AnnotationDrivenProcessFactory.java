@@ -157,7 +157,7 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         // the method return type
         if (result.isEmpty()) {
             if (!Void.class.equals(method.getReturnType())) {
-                Parameter<?> VALUE = new Parameter(
+                Parameter<?> VALUE = new Parameter<>(
                         "result", method.getReturnType(), "Process result", "No description is available");
                 result.put(VALUE.key, VALUE);
             }

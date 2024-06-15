@@ -126,6 +126,7 @@ class H2GISTest extends H2GISTestSetup {
     }
 
     @Test
+    @SuppressWarnings("PMD.CheckResultSet")
     void createSpatialTables() throws SQLException {
         st.execute("DROP SCHEMA IF EXISTS h2gis; COMMIT;");
         st.execute("CREATE SCHEMA h2gis;");
@@ -139,12 +140,12 @@ class H2GISTest extends H2GISTestSetup {
         st.execute(sql);
 
         try (ResultSet rs = st.executeQuery("select count(id) from h2gis.geomtable")) {
-            rs.next();
+            assertTrue(rs.next());
             assertEquals(1, rs.getInt(1));
         }
 
         try (ResultSet rs = st.executeQuery("select * from h2gis.geomtable;")) {
-            rs.next();
+            assertTrue(rs.next());
             assertEquals(0, rs.getInt(1));
             assertEquals("SRID=4326;POINT (12 0)", rs.getString(2));
         }
@@ -172,19 +173,20 @@ class H2GISTest extends H2GISTestSetup {
     }
 
     @Test
+    @SuppressWarnings("PMD.CheckResultSet")
     void getFeatureSchemaLinkedTable() throws SQLException, IOException {
         st.execute("drop table if exists LANDCOVER_LINKED");
         st.execute("CALL FILE_TABLE('"
                 + H2GISTest.class.getResource("landcover.shp").getPath()
                 + "', 'LANDCOVER_LINKED');");
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER_LINKED");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER_LINKED");
         SimpleFeatureType schema = fs.getSchema();
         GeometryDescriptor geomDesc = schema.getGeometryDescriptor();
         assertEquals("THE_GEOM", geomDesc.getLocalName());
         assertNotNull(geomDesc.getCoordinateReferenceSystem());
 
         try (ResultSet rs = st.executeQuery("SELECT ST_EXTENT(THE_GEOM) FROM LANDCOVER_LINKED")) {
-            rs.next();
+            assertTrue(rs.next());
             assertTrue(JTS.toEnvelope(((Geometry) rs.getObject(1))).boundsEquals2D(fs.getBounds(), 0.01));
         }
         st.execute("drop table LANDCOVER_LINKED");
@@ -197,7 +199,7 @@ class H2GISTest extends H2GISTestSetup {
                 + " THE_GEOM GEOMETRY(POLYGON));"
                 + "INSERT INTO FORESTS VALUES(109, 'Green Forest', 'POLYGON((0 0,10 0,10 10, 0 10, 0 0))');");
 
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("FORESTS");
+        SimpleFeatureSource fs = ds.getFeatureSource("FORESTS");
         SimpleFeatureType schema = fs.getSchema();
         Query query = new Query(schema.getTypeName(), Filter.INCLUDE);
         ReferencedEnvelope bounds = fs.getBounds(query);
@@ -220,7 +222,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER");
         SimpleFeatureCollection featureCollection = fs.getFeatures(Filter.INCLUDE);
 
         double sumArea = 0;
@@ -248,7 +250,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER");
         SimpleFeatureCollection features = fs.getFeatures(Filter.INCLUDE);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
         Function sum = ff.function("Collection_Sum", ff.property("FID"));
@@ -267,7 +269,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER");
         Filter filter = CQL.toFilter("FID >2");
         SimpleFeatureCollection features = fs.getFeatures(filter);
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
@@ -286,7 +288,7 @@ class H2GISTest extends H2GISTestSetup {
                 + "INSERT INTO LANDCOVER VALUES(2, 3, 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                 + "INSERT INTO LANDCOVER VALUES(3, -1, 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER");
         Filter filter = CQL.toFilter("FID < abs(CODE)");
         SimpleFeatureCollection features = fs.getFeatures(filter);
         assertEquals(1, features.size());
@@ -337,7 +339,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "INSERT INTO LANDCOVER VALUES(2, 'Cereal', 'POLYGON((200 220, 310 220, 310 160, 200 160, 200 220))');"
                         + "INSERT INTO LANDCOVER VALUES(3, 'Building', 'POLYGON((90 130, 140 130, 140 110, 90 110, 90 130))');");
 
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER");
         SimpleFeatureCollection features = fs.getFeatures(Filter.INCLUDE);
         CoordinateReferenceSystem crs = features.getBounds().getCoordinateReferenceSystem();
         assertNull(crs);
@@ -416,7 +418,7 @@ class H2GISTest extends H2GISTestSetup {
                 + H2GISTest.class.getResource("landcover.shp").getPath()
                 + "', 'LANDCOVER');");
         assertTrue(st.execute("SELECT * FROM LANDCOVER LIMIT 0;"));
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("LANDCOVER");
+        SimpleFeatureSource fs = ds.getFeatureSource("LANDCOVER");
         SimpleFeatureType schema = fs.getSchema();
         Query query = new Query(schema.getTypeName(), Filter.INCLUDE);
         assertEquals(3, fs.getCount(query));
@@ -465,7 +467,7 @@ class H2GISTest extends H2GISTestSetup {
                         + "    'MULTIPOINT EMPTY', 'MULTILINESTRING EMPTY', 'MULTIPOLYGON EMPTY',\n"
                         + "    'GEOMETRYCOLLECTION EMPTY','POLYGON Z EMPTY','POLYGON M EMPTY','POLYGON ZM EMPTY');";
         st.execute(sql);
-        SimpleFeatureSource fs = (SimpleFeatureSource) ds.getFeatureSource("GEOMTYPES");
+        SimpleFeatureSource fs = ds.getFeatureSource("GEOMTYPES");
         SimpleFeatureType schema = fs.getSchema();
         GeometryType geomType = (GeometryType) schema.getDescriptor("G").getType();
         assertTrue(geomType.getBinding().isAssignableFrom(Geometry.class));

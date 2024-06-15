@@ -132,8 +132,8 @@ public class GrassBinaryRasterWriteHandler implements Closeable {
         imageOS = ImageIO.createImageOutputStream(writerGrassEnv.getFCELL());
         imageNullFileOS = ImageIO.createImageOutputStream(writerGrassEnv.getCELLMISC_NULL());
 
-        double east = west + ((double) columns) * xRes;
-        double north = south + ((double) rows) * yRes;
+        double east = west + columns * xRes;
+        double north = south + rows * yRes;
 
         JGrassRegion dataWindow = new JGrassRegion(west, east, south, north, rows, columns);
 

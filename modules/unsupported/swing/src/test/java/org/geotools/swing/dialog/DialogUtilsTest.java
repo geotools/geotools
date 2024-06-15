@@ -88,7 +88,7 @@ public class DialogUtilsTest extends GraphicsTestBase {
         final int labelWidth = 300;
         final Dimension dim = DialogUtils.getHtmlLabelTextExtent(sb.toString(), labelWidth, true);
 
-        JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
+        JFrame frame = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected JFrame executeInEDT() throws Throwable {
                 JFrame frame = new JFrame();

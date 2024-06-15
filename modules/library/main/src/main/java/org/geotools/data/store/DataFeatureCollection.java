@@ -101,8 +101,8 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     protected void fireChange(Collection coll, int type) {
-        @SuppressWarnings("unchecked")
-        SimpleFeature[] features = (SimpleFeature[]) coll.toArray(new SimpleFeature[coll.size()]);
+        @SuppressWarnings({"unchecked", "PMD.UnnecessaryCast"})
+        SimpleFeature[] features = (SimpleFeature[]) coll.toArray(n -> new SimpleFeature[n]);
         fireChange(features, type);
     }
 
@@ -120,8 +120,6 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     public abstract ReferencedEnvelope getBounds();
 
     public abstract int getCount() throws IOException;
-    ;
-
     // public abstract SimpleFeatureCollection collection() throws IOException;
 
     //
@@ -192,6 +190,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      *
      * @return Iterator, should be closed closeIterator
      */
+    @SuppressWarnings("PMD.CloseResource")
     protected Iterator<SimpleFeature> openIterator() throws IOException {
         try {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = writer();

@@ -429,7 +429,7 @@ public class RasterManager implements Cloneable {
             try {
 
                 // implicit ordering
-                final Set result = new TreeSet(extractDomain(propertyName));
+                final Set result = new TreeSet<>(extractDomain(propertyName));
                 // check result
                 if (result.isEmpty()) {
                     return "";
@@ -939,7 +939,7 @@ public class RasterManager implements Cloneable {
             // it would be useful to cache the result of a query for
             // a specific EPSG code on the index, so that a DB access won't be
             // repeated while the info is in cache.
-            CacheLoader<Integer, Boolean> loader = new CacheLoader<Integer, Boolean>() {
+            CacheLoader<Integer, Boolean> loader = new CacheLoader<>() {
 
                 @Override
                 public Boolean load(Integer epsgCode) throws Exception {

@@ -250,7 +250,6 @@ public abstract class RendererBaseTest {
                     locator.setSourceUrl(surl);
                     container.registerComponentInstance(ResourceLocator.class, locator);
                 }
-                ;
             };
             Parser parser = new Parser(configuration);
 

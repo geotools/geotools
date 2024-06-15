@@ -93,7 +93,7 @@ public class RestElasticClient implements ElasticClient {
         try {
             final Response response = performRequest("GET", "/", null, true);
             try (final InputStream inputStream = response.getEntity().getContent()) {
-                Map<String, Object> info = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
+                Map<String, Object> info = mapper.readValue(inputStream, new TypeReference<>() {});
                 @SuppressWarnings("unchecked")
                 Map<String, Object> ver = (Map<String, Object>) info.getOrDefault("version", Collections.emptyMap());
                 final Matcher m = pattern.matcher((String) ver.get("number"));
@@ -152,10 +152,10 @@ public class RestElasticClient implements ElasticClient {
         try (final InputStream inputStream = response.getEntity().getContent()) {
             final Map<String, ElasticMappings> values;
             if (getVersion() < 7) {
-                values = this.mapper.readValue(inputStream, new TypeReference<Map<String, ElasticMappings>>() {});
+                values = this.mapper.readValue(inputStream, new TypeReference<>() {});
             } else {
-                final Map<String, ElasticMappings.Untyped> res = this.mapper.readValue(
-                        inputStream, new TypeReference<Map<String, ElasticMappings.Untyped>>() {});
+                final Map<String, ElasticMappings.Untyped> res =
+                        this.mapper.readValue(inputStream, new TypeReference<>() {});
                 values = new HashMap<>();
                 for (final Entry<String, ElasticMappings.Untyped> entry : res.entrySet()) {
                     final ElasticMappings mappings = new ElasticMappings();
@@ -316,6 +316,7 @@ public class RestElasticClient implements ElasticClient {
     }
 
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public void close() throws IOException {
         LOGGER.fine("Closing proxyClient: " + this.client);
         try {
@@ -351,8 +352,7 @@ public class RestElasticClient implements ElasticClient {
         try {
             final Response response = performRequest("GET", "/_alias/" + alias, null, true);
             try (final InputStream inputStream = response.getEntity().getContent()) {
-                final Map<String, Object> result =
-                        this.mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
+                final Map<String, Object> result = this.mapper.readValue(inputStream, new TypeReference<>() {});
                 indices = result.keySet();
             }
         } catch (IOException e) {

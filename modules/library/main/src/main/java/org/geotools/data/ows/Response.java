@@ -85,10 +85,8 @@ public abstract class Response {
     }
 
     protected ServiceException parseException(InputStream inputStream) throws IOException {
-        try {
+        try (inputStream) {
             return ServiceExceptionParser.parse(inputStream);
-        } finally {
-            inputStream.close();
         }
     }
 }

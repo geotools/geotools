@@ -192,7 +192,7 @@ public class MapLayerTable extends JPanel {
      */
     private void initComponents() {
         listModel = new DnDListModel<>();
-        list = new DnDList<Layer>(listModel) {
+        list = new DnDList<>(listModel) {
             private static final long serialVersionUID = 1289744440656016412L;
             /*
              * We override setToolTipText to provide tool tips

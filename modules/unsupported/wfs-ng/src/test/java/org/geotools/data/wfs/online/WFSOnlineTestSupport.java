@@ -127,7 +127,7 @@ public class WFSOnlineTestSupport {
         String fid = null;
         // get
         try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
-                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT); ) {
+                wfs.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertNotNull("FeatureType was null", ft);
 
             SimpleFeatureType featureType = fr.getFeatureType();

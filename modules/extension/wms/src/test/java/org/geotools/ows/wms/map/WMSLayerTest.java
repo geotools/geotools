@@ -56,7 +56,6 @@ public class WMSLayerTest {
         }
         return result;
     }
-    ;
     /** @throws java.lang.Exception */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {}

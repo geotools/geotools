@@ -44,7 +44,7 @@ public class ImageComparator {
         IgnoreAntialiasing,
         /** Ignores the colors and compares only the brightness */
         IgnoreColors
-    };
+    }
 
     final class Pixel {
         int r;

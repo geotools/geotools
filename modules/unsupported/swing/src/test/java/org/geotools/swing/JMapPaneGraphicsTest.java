@@ -63,7 +63,7 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
     public void setup() {
         listener = new WaitingMapPaneListener();
 
-        TestFrame frame = GuiActionRunner.execute(new GuiQuery<TestFrame>() {
+        TestFrame frame = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected TestFrame executeInEDT() throws Throwable {
                 return new TestFrame(listener);

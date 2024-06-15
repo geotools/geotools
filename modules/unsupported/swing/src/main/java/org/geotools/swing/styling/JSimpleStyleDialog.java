@@ -108,7 +108,7 @@ public class JSimpleStyleDialog extends JDialog {
 
     private static enum SourceType {
         DATA_STORE,
-        MAP_LAYER;
+        MAP_LAYER
     }
 
     private Color lineColor;
@@ -134,7 +134,7 @@ public class JSimpleStyleDialog extends JDialog {
     private static enum ControlCategory {
         LINE,
         FILL,
-        POINT;
+        POINT
     }
 
     private Map<Component, ControlCategory> controls;
@@ -826,7 +826,7 @@ public class JSimpleStyleDialog extends JDialog {
         MutableComboBoxModel<Integer> model = (MutableComboBoxModel) pointSizeCBox.getModel();
         int insert = -1;
         for (int i = 0; i < model.getSize(); i++) {
-            int elValue = ((Number) model.getElementAt(i)).intValue();
+            int elValue = model.getElementAt(i).intValue();
             if (elValue == newValue) {
                 pointSizeCBox.setSelectedIndex(i);
                 return;

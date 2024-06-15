@@ -52,7 +52,7 @@ public class JDataStoreWizard extends JWizard {
 
     /** Open up a wizard up with an initial page to choose a datastore factory. */
     public JDataStoreWizard() {
-        this(null, new HashMap<String, Object>());
+        this(null, new HashMap<>());
     }
     /**
      * Quick transition from JFileDataStoreChooser; allowing applications to migrate to connection parameters.
@@ -65,7 +65,7 @@ public class JDataStoreWizard extends JWizard {
 
     /** Set up the wizard with a "default" set of parameters. */
     public JDataStoreWizard(DataStoreFactorySpi format) {
-        this(format, new HashMap<String, Object>());
+        this(format, new HashMap<>());
     }
 
     @SuppressWarnings("unchecked")

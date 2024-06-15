@@ -35,8 +35,7 @@ public interface MultiValuedFilter extends Filter {
         ANY,
         ALL,
         ONE
-    };
-
+    }
     /**
      * * Flag Controlling MatchAction property When one or more of the operands evaluates to multiple values rather than
      * a single value, which action should be taken? If there are n values for the left operand and m values for the

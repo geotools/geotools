@@ -88,7 +88,7 @@ public class RuleImpl implements Rule, Cloneable {
         this.symbolizers = new ArrayList<>();
         for (org.geotools.api.style.Symbolizer sym : rule.symbolizers()) {
             if (sym instanceof Symbolizer) {
-                this.symbolizers.add((Symbolizer) sym);
+                this.symbolizers.add(sym);
             }
         }
         if (rule.getDescription() != null && rule.getDescription().getTitle() != null) {

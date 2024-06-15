@@ -28,7 +28,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseBeforeAnnotation")
+@SuppressWarnings("PMD.UnitTestShouldUseBeforeAnnotation")
 public abstract class JDBCGeometryTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCGeometryTestSetup(JDBCTestSetup delegate) {

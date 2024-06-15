@@ -211,9 +211,7 @@ public abstract class SwtWorker<T, V> implements Future<T>, Runnable {
 
         /** {@code SwingWorker} is {@code DONE} after {@code doInBackground} method is finished. */
         DONE
-    };
-
-    /** Constructs this {@code SwingWorker}. */
+    }/** Constructs this {@code SwingWorker}. */
     public SwtWorker() {
         Callable<T> callable =
                 new Callable<T>() {
@@ -639,7 +637,6 @@ public abstract class SwtWorker<T, V> implements Future<T>, Runnable {
                             name.append(threadNumber.getAndIncrement());
 
                             Thread t = new Thread(r, name.toString());
-                            ;
                             if (t.isDaemon()) t.setDaemon(false);
                             if (t.getPriority() != Thread.NORM_PRIORITY)
                                 t.setPriority(Thread.NORM_PRIORITY);

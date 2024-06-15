@@ -417,8 +417,6 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             } else {
                 prefs.put(GRID_LOCATION, args[0]);
             }
-
-            return;
         } else {
             final String location = prefs.get(GRID_LOCATION, DEFAULT_GRID_LOCATION);
             out.println("Usage: java org.geotools.referencing.operation.transform.NADCONTransform "
@@ -426,8 +424,6 @@ public class NADCONTransform extends AbstractMathTransform implements MathTransf
             out.print("Grid location: \"");
             out.print(location);
             out.println('"');
-
-            return;
         }
     }
 

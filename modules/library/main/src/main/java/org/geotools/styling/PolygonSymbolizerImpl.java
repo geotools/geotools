@@ -162,7 +162,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
             }
 
             if (stroke != null) {
-                clone.stroke = (StrokeImpl) ((Cloneable) stroke).clone();
+                clone.stroke = (StrokeImpl) stroke.clone();
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e); // this should never happen.

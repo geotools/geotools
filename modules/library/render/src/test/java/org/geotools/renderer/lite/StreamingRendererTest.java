@@ -414,7 +414,7 @@ public class StreamingRendererTest {
 
         // setup the renderer and listen for errors
         final AtomicInteger commandsCount = new AtomicInteger(0);
-        final BlockingQueue<RenderingRequest> queue = new ArrayBlockingQueue<RenderingRequest>(10) {
+        final BlockingQueue<RenderingRequest> queue = new ArrayBlockingQueue<>(10) {
             @Override
             public void put(RenderingRequest e) throws InterruptedException {
                 commandsCount.incrementAndGet();

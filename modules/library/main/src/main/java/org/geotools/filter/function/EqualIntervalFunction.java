@@ -135,11 +135,11 @@ public class EqualIntervalFunction extends ClassificationFunction {
         // obtain of list of unique values, so we can enumerate
         UniqueVisitor uniqueVisit = new UniqueVisitor(getParameters().get(0));
         featureCollection.accepts(uniqueVisit, new NullProgressListener());
-        List result = uniqueVisit.getResult().toList();
+        List<Comparable> result = uniqueVisit.getResult().toList();
         // sort the results and put them in an array
         Collections.sort(result);
 
-        Comparable[] values = (Comparable[]) result.toArray(new Comparable[result.size()]);
+        Comparable[] values = result.toArray(new Comparable[result.size()]);
 
         // size arrays
         classNum = Math.min(classNum, values.length);

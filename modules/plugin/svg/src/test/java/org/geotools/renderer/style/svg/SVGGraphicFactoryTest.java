@@ -178,7 +178,7 @@ public class SVGGraphicFactoryTest {
         Assert.assertTrue(RenderableSVGCache.glyphCache.containsKey(evaluatedUrl));
         Assert.assertNotNull(RenderableSVGCache.glyphCache.get(evaluatedUrl));
 
-        ((GraphicCache) svg).clearCache();
+        svg.clearCache();
         Assert.assertTrue(RenderableSVGCache.glyphCache.isEmpty());
     }
 

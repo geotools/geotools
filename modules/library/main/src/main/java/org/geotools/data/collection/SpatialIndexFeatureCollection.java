@@ -172,7 +172,7 @@ public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
                 Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
         final ProgressListener progress = listener != null ? listener : new NullProgressListener();
         progress.started();
-        final float size = (float) size();
+        final float size = size();
         final IOException[] problem = new IOException[1];
         index.query(everything, new ItemVisitor() {
             float count = 0f;

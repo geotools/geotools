@@ -56,7 +56,6 @@ public class DimensionParsingTest {
             }
         }
     }
-    ;
 
     @Test
     public void testDimensionExtent130() throws Exception {

@@ -67,7 +67,7 @@ public class SnapProcess implements VectorProcess {
         Map<String, Parameter<?>> outputInfo = new HashMap<>();
         outputInfo.put(
                 "result",
-                new Parameter(
+                new Parameter<>(
                         "result", FeatureCollection.class, Text.text("Result"), Text.text("The nearest feature")));
         return outputInfo;
     }

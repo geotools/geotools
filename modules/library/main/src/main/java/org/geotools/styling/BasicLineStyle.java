@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import org.geotools.api.style.FeatureTypeStyle;
 import org.geotools.api.style.Stroke;
 import org.geotools.api.style.Style;
 
@@ -41,7 +40,7 @@ public class BasicLineStyle extends StyleImpl implements Style {
 
         FeatureTypeStyleImpl fts = new FeatureTypeStyleImpl();
         fts.rules().add(rule);
-        this.featureTypeStyles().add((FeatureTypeStyle) fts);
+        this.featureTypeStyles().add(fts);
     }
 
     public String getAbstract() {

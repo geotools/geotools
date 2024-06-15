@@ -412,12 +412,10 @@ public class VPFLibrary extends ContentDataStore {
         // Get the type names for each coverage
         ArrayList<Name> result = new ArrayList<>();
         int coveragesCount = coverages.size();
-        int featureTypesCount = 0;
         // int index = 0;
         List[] coverageTypes = new List[coveragesCount];
         for (int inx = 0; inx < coveragesCount; inx++) {
             coverageTypes[inx] = coverages.get(inx).getFeatureTypes();
-            featureTypesCount += coverageTypes[inx].size();
         }
         // result = new String[featureTypesCount];
         for (int inx = 0; inx < coveragesCount; inx++) {

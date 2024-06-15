@@ -330,7 +330,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
     public Object visit(Beyond filter, Object extraData) {
         return demultiply(
                 filter,
-                new FilterReplacer<Beyond>() { // beyond filter takes extra properties, therefore needs its own
+                new FilterReplacer<>() { // beyond filter takes extra properties, therefore needs its own
                     // filterreplacer
 
                     @Override
@@ -374,7 +374,7 @@ public class LiteralDemultiplyingFilterVisitor extends DuplicatingFilterVisitor 
     public Object visit(DWithin filter, Object extraData) {
         return demultiply(
                 filter,
-                new FilterReplacer<DWithin>() { // DWithin filter takes extra properties, therefore needs its
+                new FilterReplacer<>() { // DWithin filter takes extra properties, therefore needs its
                     // own filterreplacer
 
                     @Override

@@ -584,10 +584,7 @@ public class Utils {
         }
 
         // check that nothing bad happened
-        if (exceptions.size() > 0) {
-            return false;
-        }
-        return true;
+        return !exceptions.isEmpty();
     }
 
     /** Simple listener collecting exceptions and logging events */
@@ -732,9 +729,6 @@ public class Utils {
             if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Unable to load mosaic properties file");
             return null;
         }
-
-        String[] pairs = null;
-        String[] pair = null;
 
         //
         // imposed bbox is optional

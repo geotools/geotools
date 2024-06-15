@@ -157,7 +157,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
      * An immutable list of grid coverages to be used for testing purpose. Coverages are read when a the
      * {@code get(int)} method is invoked.
      */
-    protected static final List<GridCoverage2D> EXAMPLES = new AbstractList<GridCoverage2D>() {
+    protected static final List<GridCoverage2D> EXAMPLES = new AbstractList<>() {
         /** The coverages returned by previous invocations. */
         private final GridCoverage2D[] cached = new GridCoverage2D[6];
 

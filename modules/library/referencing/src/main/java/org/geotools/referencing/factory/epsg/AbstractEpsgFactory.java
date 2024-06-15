@@ -830,6 +830,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                  */
                 stmt.setString(1, epsg);
                 try (final ResultSet result = stmt.executeQuery()) {
+                    @SuppressWarnings("PMD.CheckResultSet") // return of next is checked...
                     final boolean present = result.next();
                     if (present) {
                         if (index >= 0) {
@@ -1940,7 +1941,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
                     @SuppressWarnings("unchecked")
                     final ParameterDescriptor<?> descriptor =
-                            new DefaultParameterDescriptor(properties, type, null, null, null, null, unit, true);
+                            new DefaultParameterDescriptor<>(properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
                 }
             }

@@ -407,7 +407,7 @@ public class MBTilesFile implements AutoCloseable {
                             .set(entry.getTileRow())
                             .log(Level.FINE)
                             .statement();
-                    ResultSet rs = ps.executeQuery(); ) {
+                    ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     entry.setData(rs.getBytes(1));
                 } else {
@@ -439,7 +439,7 @@ public class MBTilesFile implements AutoCloseable {
                                 .set(entry.getTileRow())
                                 .log(Level.FINE)
                                 .statement();
-                        ResultSet rs = ps.executeQuery(); ) {
+                        ResultSet rs = ps.executeQuery()) {
 
                     if (rs.next()) {
                         entry.setGrid(rs.getBytes(1));
@@ -458,7 +458,7 @@ public class MBTilesFile implements AutoCloseable {
                                 .set(entry.getTileRow())
                                 .log(Level.FINE)
                                 .statement();
-                        ResultSet rs = ps.executeQuery(); ) {
+                        ResultSet rs = ps.executeQuery()) {
 
                     while (rs.next()) {
                         entry.setGridDataKey(rs.getString(1), rs.getString(2));

@@ -79,7 +79,7 @@ import org.xml.sax.ext.LexicalHandler;
  *
  * @author GDavis
  */
-@SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")
+@SuppressWarnings("PMD.UnitTestShouldUseTestAnnotation")
 public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     private WebProcessingService wps;

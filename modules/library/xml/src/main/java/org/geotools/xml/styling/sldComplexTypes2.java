@@ -195,8 +195,6 @@ public class sldComplexTypes2 {
         private static Attribute[] attrs = null;
         private static Element[] elems = {new sldElement("Graphic", _Graphic.getInstance(), null, 1, 1)};
 
-        private static int GRAPHIC = 0;
-
         private static ElementGrouping child = new SequenceGT(
                 null, new ElementGrouping[] {new sldElement("Graphic", _Graphic.getInstance(), null, 1, 1)}, 1, 1);
 
@@ -719,7 +717,6 @@ public class sldComplexTypes2 {
                     null,
                     false)
         };
-        private static final int EXPRESSION = 0;
 
         private static final ElementGrouping child = new SequenceGT(
                 null,

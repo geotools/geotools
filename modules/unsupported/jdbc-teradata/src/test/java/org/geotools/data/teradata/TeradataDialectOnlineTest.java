@@ -148,6 +148,7 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         assertInline(id, expectInline);
     }
 
+    @SuppressWarnings("PMD.CheckResultSet")
     private void assertInline(final int startIdx, boolean... expectInline) throws Exception {
         SimpleFeatureSource featureSource = dataStore.getFeatureSource("ft3");
         // verify dialect encodes LOB workadound and reads correctly

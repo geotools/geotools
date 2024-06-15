@@ -679,7 +679,7 @@ public class ImageMosaicReaderTest {
         store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
         store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
         try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
-                Statement st = conn.createStatement(); ) {
+                Statement st = conn.createStatement()) {
             st.execute("alter table \"" + mosaicName + "\" rename to \"customIndex\"");
             st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'customIndex'");
         }
@@ -1081,12 +1081,12 @@ public class ImageMosaicReaderTest {
             for (ParameterDescriptor param : params) {
                 if (param.getName().getCode().equalsIgnoreCase("DATE")) {
                     @SuppressWarnings("unchecked")
-                    ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                    ParameterValue<List<String>> value = param.createValue();
                     dateValue = value;
                     dateValue.setValue(List.of(selectedDate));
                 } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                     @SuppressWarnings("unchecked")
-                    ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                    ParameterValue<List<String>> value = param.createValue();
                     waveLength = value;
                     waveLength.setValue(List.of(selectedWaveLength));
                 }
@@ -1297,7 +1297,7 @@ public class ImageMosaicReaderTest {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
         ImageMosaicReader reader = getReader(timeAdditionalDomainsRangeURL, format);
 
-        GranuleSource source = ((StructuredGridCoverage2DReader) reader).getGranules("time_domainsRanges", true);
+        GranuleSource source = reader.getGranules("time_domainsRanges", true);
         final int granules = source.getCount(null);
         final SimpleFeatureType type = source.getSchema();
         assertEquals(
@@ -1353,12 +1353,12 @@ public class ImageMosaicReaderTest {
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("DATE")) {
                 @SuppressWarnings("unchecked")
-                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                ParameterValue<List<String>> value = param.createValue();
                 dateValue = value;
                 dateValue.setValue(List.of(selectedDate));
             } else if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                 @SuppressWarnings("unchecked")
-                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                ParameterValue<List<String>> value = param.createValue();
                 waveLength = value;
                 waveLength.setValue(List.of(selectedWaveLength));
             }
@@ -1398,8 +1398,7 @@ public class ImageMosaicReaderTest {
     public void testDimensionsDescriptor() throws Exception {
         final AbstractGridFormat format = TestUtils.getFormat(timeAdditionalDomainsRangeURL);
         ImageMosaicReader reader = getReader(timeAdditionalDomainsRangeURL, format);
-        List<DimensionDescriptor> descriptors =
-                ((StructuredGridCoverage2DReader) reader).getDimensionDescriptors("time_domainsRanges");
+        List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors("time_domainsRanges");
         assertNotNull(descriptors);
         assertEquals(4, descriptors.size());
 
@@ -1511,7 +1510,7 @@ public class ImageMosaicReaderTest {
         for (ParameterDescriptor param : params) {
             if (param.getName().getCode().equalsIgnoreCase("WAVELENGTH")) {
                 @SuppressWarnings("unchecked")
-                ParameterValue<List<String>> value = (ParameterValue) param.createValue();
+                ParameterValue<List<String>> value = param.createValue();
                 waveLength = value;
                 waveLength.setValue(List.of(selectedWaveLength));
             }
@@ -2743,7 +2742,6 @@ public class ImageMosaicReaderTest {
         private Collection<File> files;
         private URL harvestSingleURL;
         private AbstractGridFormat format;
-        private ImageMosaicReader reader;
 
         public Collection<File> getFiles() {
             return files;

@@ -63,22 +63,16 @@ public class GraticuleLabelPointProcess implements VectorProcess {
     public static final double DELTA = 0.0;
 
     public enum PositionEnum {
-        TOPLEFT("topleft"),
-        BOTTOMLEFT("bottomleft"),
-        TOPRIGHT("topright"),
-        BOTTOMRIGHT("bottomright"),
-        BOTH("both"),
-        TOP("top"),
-        BOTTOM("bottom"),
-        LEFT("left"),
-        RIGHT("right"),
-        NONE("none");
-
-        private final String value;
-
-        PositionEnum(String position) {
-            value = position;
-        }
+        TOPLEFT(),
+        BOTTOMLEFT(),
+        TOPRIGHT(),
+        BOTTOMRIGHT(),
+        BOTH(),
+        TOP(),
+        BOTTOM(),
+        LEFT(),
+        RIGHT(),
+        NONE();
 
         static Optional<PositionEnum> byName(String givenName) {
             return Arrays.stream(values())

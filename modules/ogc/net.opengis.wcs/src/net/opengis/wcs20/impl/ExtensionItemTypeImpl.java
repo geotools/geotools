@@ -270,7 +270,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
 				setSimpleContent((String)newValue);
 				return;
 			case Wcs20Package.EXTENSION_ITEM_TYPE__OBJECT_CONTENT:
-				setObjectContent((Object)newValue);
+				setObjectContent(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -294,7 +294,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
 				setSimpleContent(SIMPLE_CONTENT_EDEFAULT);
 				return;
 			case Wcs20Package.EXTENSION_ITEM_TYPE__OBJECT_CONTENT:
-				setObjectContent((Object)null);
+				setObjectContent(null);
 				return;
 		}
 		super.eUnset(featureID);

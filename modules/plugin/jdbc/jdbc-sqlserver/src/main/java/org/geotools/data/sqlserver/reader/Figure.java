@@ -27,8 +27,7 @@ public class Figure {
     enum SequenceType {
         STRAIGHT,
         CURVED
-    };
-
+    }
     /** Determines the role of this figure within the GEOMETRY structure. */
     private int attribute;
 

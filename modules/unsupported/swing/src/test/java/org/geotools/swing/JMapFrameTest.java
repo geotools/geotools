@@ -98,7 +98,7 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         showWithStaticMethod(mapContent);
 
         // map pane displayed
-        JPanelFixture mapPane = windowFixture.panel(new GenericTypeMatcher<JPanel>(JPanel.class) {
+        JPanelFixture mapPane = windowFixture.panel(new GenericTypeMatcher<>(JPanel.class) {
             @Override
             protected boolean isMatching(JPanel component) {
                 return component instanceof JMapPane;
@@ -111,7 +111,7 @@ public class JMapFrameTest extends GraphicsTestBase<FrameFixture, Frame, FrameDr
         windowFixture.toolBar().requireEnabled().requireVisible();
 
         // status bar displayed
-        JPanelFixture statusBar = windowFixture.panel(new GenericTypeMatcher<JPanel>(JPanel.class) {
+        JPanelFixture statusBar = windowFixture.panel(new GenericTypeMatcher<>(JPanel.class) {
             @Override
             protected boolean isMatching(JPanel component) {
                 return component instanceof JMapStatusBar;

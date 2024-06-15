@@ -144,65 +144,63 @@ public class WorldFileReader {
     private void parseWorldFile(final BufferedReader bufferedreader) throws IOException, DataSourceException {
         int index = 0;
         String str;
-        try {
-            while ((str = bufferedreader.readLine()) != null) {
-
-                double value = 0;
-
-                try {
-                    value = Double.parseDouble(str.trim());
-                } catch (Throwable t) {
-                    // A trick to bypass invalid lines ...
-                    if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
-                    continue;
-                }
-
-                switch (index) {
-                    case 0:
-                        xPixelSize = value;
-
-                        break;
-
-                    case 1:
-                        rotationX = value;
-
-                        break;
-
-                    case 2:
-                        rotationY = value;
-
-                        break;
-
-                    case 3:
-                        yPixelSize = value;
-
-                        break;
-
-                    case 4:
-                        xULC = value;
-
-                        break;
-
-                    case 5:
-                        yULC = value;
-
-                        break;
-
-                    default:
-                        break;
-                }
-
-                index++;
-            }
-        } catch (Exception e) {
-            // TODO: handle exception
-        } finally {
+        try (bufferedreader) {
             try {
-                bufferedreader.close();
-            } catch (Throwable t) {
-                // A trick to bypass invalid lines ...
-                if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                while ((str = bufferedreader.readLine()) != null) {
+
+                    double value = 0;
+
+                    try {
+                        value = Double.parseDouble(str.trim());
+                    } catch (Throwable t) {
+                        // A trick to bypass invalid lines ...
+                        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
+                        continue;
+                    }
+
+                    switch (index) {
+                        case 0:
+                            xPixelSize = value;
+
+                            break;
+
+                        case 1:
+                            rotationX = value;
+
+                            break;
+
+                        case 2:
+                            rotationY = value;
+
+                            break;
+
+                        case 3:
+                            yPixelSize = value;
+
+                            break;
+
+                        case 4:
+                            xULC = value;
+
+                            break;
+
+                        case 5:
+                            yULC = value;
+
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    index++;
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
             }
+        } catch (Throwable t) {
+            // A trick to bypass invalid lines ...
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
         }
 
         // did we find all we were looking for?

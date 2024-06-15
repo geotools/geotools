@@ -206,7 +206,7 @@ public class LiteralExpressionImpl extends DefaultExpression implements Literal 
                 // final attemp with a string to string comparison
                 String str1 = this.evaluate(null, String.class);
                 String str2 = expLit.evaluate(null, String.class);
-                return str1 != null && str2 != null && str1.equals(str2);
+                return str1 != null && str1.equals(str2);
             }
         } else if (obj instanceof Literal) {
             // some other Literal implementation like ConstantExpression

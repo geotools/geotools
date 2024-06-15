@@ -103,7 +103,7 @@ public class GeoParquetTestSupportTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.CheckResultSet"})
     public void testGeoParquetMetadataStructure() throws IOException, SQLException {
         File pointsFile = testData.getWorldgridFile("points.parquet");
 

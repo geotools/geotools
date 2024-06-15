@@ -69,7 +69,7 @@ public class OpacityViewer {
     private class Listener implements ModifyListener {
         public void modifyText(ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
-        };
+        }
 
         private void sync(SelectionEvent e) {
             try {
@@ -92,7 +92,7 @@ public class OpacityViewer {
             } catch (Throwable t) {
             }
         }
-    };
+    }
 
     Listener sync = new Listener();
 

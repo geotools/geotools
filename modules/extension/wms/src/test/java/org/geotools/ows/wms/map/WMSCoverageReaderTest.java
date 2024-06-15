@@ -240,7 +240,6 @@ public class WMSCoverageReaderTest {
                             disposeCalled.set(true);
                             super.dispose();
                         }
-                        ;
                     };
                 } else {
                     throw new IllegalArgumentException(

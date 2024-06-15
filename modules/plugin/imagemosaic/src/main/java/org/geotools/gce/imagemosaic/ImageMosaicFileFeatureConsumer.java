@@ -198,7 +198,7 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
 
                 final Hints configurationHints =
                         configHandler.getRunConfiguration().getHints();
-                coverageReader = (GridCoverage2DReader) format.getReader(file, configurationHints);
+                coverageReader = format.getReader(file, configurationHints);
 
                 // Setting of the ReaderSPI to use
                 if (configHandler.getCachedReaderSPI() == null) {
@@ -264,7 +264,6 @@ public class ImageMosaicFileFeatureConsumer implements ImageMosaicElementConsume
                 eventHandler.fireException(e);
 
                 provider.stop();
-                return;
             } finally {
                 // STEP 5
                 // release resources

@@ -186,7 +186,7 @@ class ColorMapUtilities {
                 // the no data element must be a linear transform mapping to a single value
                 if (!(preservingElements[i] instanceof ConstantColorMapElement))
                     throw new IllegalArgumentException(
-                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, (Object) preservingElements));
+                            MessageFormat.format(ErrorKeys.ILLEGAL_ARGUMENT_$1, preservingElements));
                 final ConstantColorMapElement nc = (ConstantColorMapElement) preservingElements[i];
                 if (nc.getColors().length != 1) {
                     final Object arg0 = nc.getColors();

@@ -410,96 +410,94 @@ public class MapInfoFileReader {
         Pattern patternCoordSys = Pattern.compile("CoordSys *Earth *Projection *([0-9]*) *, *([0-9]*) *,?(.*)");
         Pattern patternUnit = Pattern.compile(" *\"([^\"]*)\" *,?(.*)");
 
-        try {
-            while ((str = bufferedreader.readLine()) != null) {
-                Matcher matcherPoint = patternPoint.matcher(str);
-                if (matcherPoint.find()) {
-                    double d1 = Double.parseDouble(matcherPoint.group(1));
-                    double d2 = Double.parseDouble(matcherPoint.group(2));
-                    double d3 = Double.parseDouble(matcherPoint.group(3));
-                    double d4 = Double.parseDouble(matcherPoint.group(4));
+        try (bufferedreader) {
+            try {
+                while ((str = bufferedreader.readLine()) != null) {
+                    Matcher matcherPoint = patternPoint.matcher(str);
+                    if (matcherPoint.find()) {
+                        double d1 = Double.parseDouble(matcherPoint.group(1));
+                        double d2 = Double.parseDouble(matcherPoint.group(2));
+                        double d3 = Double.parseDouble(matcherPoint.group(3));
+                        double d4 = Double.parseDouble(matcherPoint.group(4));
 
-                    Position p1 = new Position2D(null, d1, d2);
-                    Position p2 = new Position2D(null, d3, d4);
+                        Position p1 = new Position2D(null, d1, d2);
+                        Position p2 = new Position2D(null, d3, d4);
 
-                    controlPoints.add(new MappedPosition(p2, p1));
-                } else {
-                    Matcher matcherCoordSys = patternCoordSys.matcher(str);
-                    if (matcherCoordSys.find()) {
-                        try {
-                            int projectionType = Integer.parseInt(matcherCoordSys.group(1));
-                            int datum = Integer.parseInt(matcherCoordSys.group(2));
-                            String rest = matcherCoordSys.group(3);
-                            String unit = "m";
+                        controlPoints.add(new MappedPosition(p2, p1));
+                    } else {
+                        Matcher matcherCoordSys = patternCoordSys.matcher(str);
+                        if (matcherCoordSys.find()) {
+                            try {
+                                int projectionType = Integer.parseInt(matcherCoordSys.group(1));
+                                int datum = Integer.parseInt(matcherCoordSys.group(2));
+                                String rest = matcherCoordSys.group(3);
+                                String unit = "m";
 
-                            Matcher matcherUnit = patternUnit.matcher(rest);
-                            if (matcherUnit.find()) {
-                                unit = matcherUnit.group(1);
-                                rest = matcherUnit.group(2);
-                            }
-
-                            String s = "PROJCS[\"Unnamed\", " + DATUMS.get(datum) + ",";
-
-                            String proj = PROJECTIONS.get(projectionType);
-                            if (proj != null) {
-                                s += " PROJECTION[\"" + proj + "\"], ";
-                            }
-
-                            String[] parts = rest.split(",");
-
-                            final String[] PARAMETERS;
-                            if (parts.length > 5) {
-                                PARAMETERS = PARAMETERS1;
-                            } else {
-                                PARAMETERS = PARAMETERS2;
-                            }
-
-                            boolean flag = false;
-                            for (int i = 0; i < parts.length && i < PARAMETERS.length; i++) {
-                                String n = parts[i].trim();
-                                int space = n.indexOf(" ");
-                                if (space > 0) {
-                                    n = n.substring(0, space);
+                                Matcher matcherUnit = patternUnit.matcher(rest);
+                                if (matcherUnit.find()) {
+                                    unit = matcherUnit.group(1);
+                                    rest = matcherUnit.group(2);
                                 }
-                                double d = Double.parseDouble(n);
 
-                                if (i == 3 && flag) {
-                                    s += " PARAMETER[\"scale_factor\"," + d + "],";
-                                } else if (i == 2 && d == 0) {
-                                    flag = true;
+                                String s = "PROJCS[\"Unnamed\", " + DATUMS.get(datum) + ",";
+
+                                String proj = PROJECTIONS.get(projectionType);
+                                if (proj != null) {
+                                    s += " PROJECTION[\"" + proj + "\"], ";
+                                }
+
+                                String[] parts = rest.split(",");
+
+                                final String[] PARAMETERS;
+                                if (parts.length > 5) {
+                                    PARAMETERS = PARAMETERS1;
                                 } else {
-                                    s += " PARAMETER[\"" + PARAMETERS[i] + "\"," + d + "],";
+                                    PARAMETERS = PARAMETERS2;
                                 }
+
+                                boolean flag = false;
+                                for (int i = 0; i < parts.length && i < PARAMETERS.length; i++) {
+                                    String n = parts[i].trim();
+                                    int space = n.indexOf(" ");
+                                    if (space > 0) {
+                                        n = n.substring(0, space);
+                                    }
+                                    double d = Double.parseDouble(n);
+
+                                    if (i == 3 && flag) {
+                                        s += " PARAMETER[\"scale_factor\"," + d + "],";
+                                    } else if (i == 2 && d == 0) {
+                                        flag = true;
+                                    } else {
+                                        s += " PARAMETER[\"" + PARAMETERS[i] + "\"," + d + "],";
+                                    }
+                                }
+
+                                s += " " + UNITS.get(unit);
+
+                                s += "]";
+
+                                if (LOGGER.isLoggable(Level.FINE)) {
+                                    LOGGER.log(Level.FINE, "Mapinfo converted CRS: " + s);
+                                }
+
+                                coordinateReferenceSystem = CRS.parseWKT(s);
+                            } catch (Exception e) {
+                                LOGGER.log(
+                                        Level.WARNING,
+                                        "Failed to parse and encode mapinfo crs: " + e.getLocalizedMessage(),
+                                        e);
+                                // ignore coordinate reference system
                             }
-
-                            s += " " + UNITS.get(unit);
-
-                            s += "]";
-
-                            if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.log(Level.FINE, "Mapinfo converted CRS: " + s);
-                            }
-
-                            coordinateReferenceSystem = CRS.parseWKT(s);
-                        } catch (Exception e) {
-                            LOGGER.log(
-                                    Level.WARNING,
-                                    "Failed to parse and encode mapinfo crs: " + e.getLocalizedMessage(),
-                                    e);
-                            // ignore coordinate reference system
                         }
                     }
                 }
+            } catch (Exception e) {
+                throw new DataSourceException(e);
             }
-        } catch (Exception e) {
-            throw new DataSourceException(e);
-        } finally {
-            try {
-                bufferedreader.close();
-            } catch (Throwable t) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
-                }
+        } catch (Throwable t) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, t.getLocalizedMessage(), t);
             }
         }
         // did we find all we were looking for?

@@ -151,7 +151,7 @@ public class GMLEncodingUtils {
         }
 
         List particles = Schemas.getChildElementParticles(type, true);
-        List properties = new ArrayList();
+        List properties = new ArrayList<>();
         Set<Name> unsubstPropertyNames = null;
 
         O:
@@ -575,7 +575,7 @@ public class GMLEncodingUtils {
     @SuppressWarnings("unchecked")
     void setMetadata(Geometry g, String metadata, String value) {
         if (g.getUserData() == null) {
-            g.setUserData(new HashMap());
+            g.setUserData(new HashMap<>());
         }
         if (g.getUserData() instanceof Map) {
             ((Map) g.getUserData()).put(metadata, value);

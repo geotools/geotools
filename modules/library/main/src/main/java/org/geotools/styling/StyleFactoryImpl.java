@@ -114,7 +114,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public Style createStyle() {
-        return (Style) new StyleImpl();
+        return new StyleImpl();
     }
 
     @Override
@@ -124,12 +124,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public PointSymbolizer createPointSymbolizer() {
-        return (PointSymbolizer) new PointSymbolizerImpl();
+        return new PointSymbolizerImpl();
     }
 
     @Override
     public PointSymbolizer createPointSymbolizer(Graphic graphic, String geometryPropertyName) {
-        PointSymbolizer pSymb = (PointSymbolizer) new PointSymbolizerImpl();
+        PointSymbolizer pSymb = new PointSymbolizerImpl();
         pSymb.setGeometryPropertyName(geometryPropertyName);
         pSymb.setGraphic(graphic);
 
@@ -138,12 +138,12 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public PolygonSymbolizer createPolygonSymbolizer() {
-        return (PolygonSymbolizer) new PolygonSymbolizerImpl();
+        return new PolygonSymbolizerImpl();
     }
 
     @Override
     public PolygonSymbolizer createPolygonSymbolizer(Stroke stroke, Fill fill, String geometryPropertyName) {
-        PolygonSymbolizer pSymb = (PolygonSymbolizer) new PolygonSymbolizerImpl();
+        PolygonSymbolizer pSymb = new PolygonSymbolizerImpl();
         pSymb.setGeometryPropertyName(geometryPropertyName);
         pSymb.setStroke(stroke);
         pSymb.setFill(fill);
@@ -167,7 +167,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public TextSymbolizer createTextSymbolizer() {
-        return (TextSymbolizer) new TextSymbolizerImpl(filterFactory);
+        return new TextSymbolizerImpl(filterFactory);
     }
 
     @Override
@@ -201,7 +201,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             LabelPlacement labelPlacement,
             String geometryPropertyName,
             Graphic graphic) {
-        TextSymbolizer tSymb = (TextSymbolizer) new TextSymbolizerImpl(filterFactory);
+        TextSymbolizer tSymb = new TextSymbolizerImpl(filterFactory);
         tSymb.setFill(fill);
         if (fonts != null) {
             tSymb.fonts().addAll(Arrays.asList(fonts));
@@ -245,7 +245,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public FeatureTypeStyle createFeatureTypeStyle() {
-        return (FeatureTypeStyle) new FeatureTypeStyleImpl();
+        return new FeatureTypeStyleImpl();
     }
 
     @Override
@@ -255,7 +255,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public Rule createRule() {
-        return (Rule) new RuleImpl();
+        return new RuleImpl();
     }
 
     public Rule createRule(
@@ -340,7 +340,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
             Expression dashOffset,
             Graphic graphicFill,
             Graphic graphicStroke) {
-        Stroke stroke = (Stroke) new StrokeImpl(filterFactory);
+        Stroke stroke = new StrokeImpl(filterFactory);
 
         if (color == null) {
             // use default
@@ -552,7 +552,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public Font createFont(Expression fontFamily, Expression fontStyle, Expression fontWeight, Expression fontSize) {
-        Font font = (Font) new FontImpl();
+        Font font = new FontImpl();
 
         if (fontFamily == null) {
             throw new IllegalArgumentException("Null font family specified");
@@ -597,7 +597,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
     @Override
     public PointPlacement createPointPlacement(
             AnchorPoint anchorPoint, Displacement displacement, Expression rotation) {
-        PointPlacement pointp = (PointPlacement) new PointPlacementImpl(filterFactory);
+        PointPlacement pointp = new PointPlacementImpl(filterFactory);
         pointp.setAnchorPoint(anchorPoint);
         pointp.setDisplacement(displacement);
         pointp.setRotation(rotation);
@@ -807,7 +807,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public ChannelSelection createChannelSelection(SelectedChannelType[] channels) {
-        ChannelSelection channelSel = (ChannelSelection) new ChannelSelectionImpl();
+        ChannelSelection channelSel = new ChannelSelectionImpl();
 
         if ((channels != null) && (channels.length > 0)) {
             if (channels.length == 1) {
@@ -845,7 +845,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public SelectedChannelType createSelectedChannelType(Expression name, ContrastEnhancement enhancement) {
-        SelectedChannelType sct = (SelectedChannelType) new SelectedChannelTypeImpl(filterFactory);
+        SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(enhancement);
 
@@ -860,7 +860,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue) {
-        SelectedChannelType sct = (SelectedChannelType) new SelectedChannelTypeImpl(filterFactory);
+        SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(createContrastEnhancement(gammaValue));
 
@@ -893,7 +893,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory implements StyleFacto
 
     @Override
     public ShadedRelief createShadedRelief(Expression reliefFactor) {
-        ShadedRelief relief = (ShadedRelief) new ShadedReliefImpl(filterFactory);
+        ShadedRelief relief = new ShadedReliefImpl(filterFactory);
         relief.setReliefFactor(reliefFactor);
 
         return relief;

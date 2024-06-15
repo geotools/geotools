@@ -26,5 +26,5 @@ public enum ClassificationMethod {
     QUANTILE,
 
     /** Classifies data into ranges such that ranges correspond to "clusters" of values. */
-    NATURAL_BREAKS;
+    NATURAL_BREAKS
 }

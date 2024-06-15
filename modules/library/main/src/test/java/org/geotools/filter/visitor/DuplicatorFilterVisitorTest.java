@@ -55,7 +55,7 @@ public class DuplicatorFilterVisitorTest {
 
         And oldFilter = fac.and(filters);
         // duplicate it
-        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory) fac);
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor(fac);
         Filter newFilter = (Filter) oldFilter.accept(visitor, null);
 
         // compare it
@@ -81,7 +81,7 @@ public class DuplicatorFilterVisitorTest {
         Expression internalFunction = new TestInternalFunction();
         Filter filter = fac.isNull(internalFunction);
 
-        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor((FilterFactory) fac);
+        DuplicatingFilterVisitor visitor = new DuplicatingFilterVisitor(fac);
         Filter newFilter = (Filter) filter.accept(visitor, null);
 
         Assert.assertTrue(newFilter instanceof PropertyIsNull);

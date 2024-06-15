@@ -179,7 +179,7 @@ public class SLDTransformer extends TransformerBase {
         // add pre-configured namespace mappings
         if (!uri2prefix.isEmpty()) {
             for (Entry<URI, String> uriStringEntry : uri2prefix.entrySet()) {
-                Entry e = (Entry) uriStringEntry;
+                Entry e = uriStringEntry;
                 URI uri = (URI) e.getKey();
                 if (uri != null) {
                     String prefix = (String) e.getValue();
@@ -842,7 +842,7 @@ public class SLDTransformer extends TransformerBase {
             if (rule.getDescription() != null && rule.getDescription().getAbstract() != null)
                 element("Abstract", rule.getDescription().getAbstract());
 
-            Graphic legend = (Graphic) rule.getLegend();
+            Graphic legend = rule.getLegend();
             if (legend != null) {
                 start("LegendGraphic");
                 legend.accept(this);
@@ -1215,7 +1215,7 @@ public class SLDTransformer extends TransformerBase {
             if (fts.getDescription() != null && fts.getDescription().getAbstract() != null)
                 element("Abstract", fts.getDescription().getAbstract());
 
-            if ((fts.featureTypeNames() != null) && (fts.featureTypeNames().size() > 0)) {
+            if (fts.featureTypeNames() != null && !fts.featureTypeNames().isEmpty()) {
                 element(
                         "FeatureTypeName",
                         fts.featureTypeNames().iterator().next().toString());

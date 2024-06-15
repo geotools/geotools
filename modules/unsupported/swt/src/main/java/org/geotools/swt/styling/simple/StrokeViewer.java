@@ -74,15 +74,15 @@ public class StrokeViewer {
     private class Listener implements SelectionListener, ModifyListener {
         public void widgetSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
-        };
+        }
 
         public void modifyText(final ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
-        };
+        }
 
         private void sync(SelectionEvent cause) {
             try {
@@ -117,7 +117,7 @@ public class StrokeViewer {
                 StrokeViewer.this.percent.setEnabled(StrokeViewer.this.enabled);
             }
         }
-    };
+    }
 
     Listener sync = new Listener();
 

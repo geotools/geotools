@@ -229,7 +229,7 @@ public class SLDStyleFactory {
     }
 
     public double getHitRatio() {
-        return (double) hits / (double) requests;
+        return hits / (double) requests;
     }
 
     public long getHits() {
@@ -704,7 +704,7 @@ public class SLDStyleFactory {
             }
 
             // rotation
-            if ((symbolizer instanceof TextSymbolizer) && (((TextSymbolizer) symbolizer).getGraphic() != null)) {
+            if (symbolizer.getGraphic() != null) {
                 // don't rotate labels that are being placed on shields.
                 rotation = 0.0;
             } else {
@@ -956,7 +956,9 @@ public class SLDStyleFactory {
         // if a graphic fill is to be used, prepare the paint accordingly....
         org.geotools.api.style.Graphic gr = stroke.getGraphicFill();
 
-        if (gr != null && gr.graphicalSymbols() != null && gr.graphicalSymbols().size() > 0) {
+        if (gr != null
+                && gr.graphicalSymbols() != null
+                && !gr.graphicalSymbols().isEmpty()) {
             contourPaint = getTexturePaint(gr, feature, null);
         }
 
@@ -986,7 +988,9 @@ public class SLDStyleFactory {
         // if a graphic fill is to be used, prepare the paint accordingly....
         org.geotools.api.style.Graphic gr = fill.getGraphicFill();
 
-        if (gr != null && gr.graphicalSymbols() != null && gr.graphicalSymbols().size() > 0) {
+        if (gr != null
+                && gr.graphicalSymbols() != null
+                && !gr.graphicalSymbols().isEmpty()) {
             fillPaint = getTexturePaint(gr, feature, symbolizer);
         }
 

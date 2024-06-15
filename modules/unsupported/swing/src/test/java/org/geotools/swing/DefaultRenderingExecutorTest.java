@@ -110,8 +110,6 @@ public class DefaultRenderingExecutorTest extends RenderingExecutorTestBase {
                 }
             }
         }
-        ;
-
         FailableMockRenderer failableRenderer = new FailableMockRenderer(mapContent);
         this.renderer = failableRenderer;
         renderer.setPaintTime(10);

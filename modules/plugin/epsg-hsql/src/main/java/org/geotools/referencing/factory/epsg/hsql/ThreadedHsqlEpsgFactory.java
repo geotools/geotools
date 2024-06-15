@@ -235,7 +235,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * @throws SQLException if connection to the database failed.
      */
     @Override
-    @SuppressWarnings("PMD.CloseResource")
+    @SuppressWarnings({"PMD.CloseResource", "PMD.UseTryWithResources"})
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
         final Logger logger = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
         logger.log(Level.FINE, "Building backing store for " + getClass().getName());

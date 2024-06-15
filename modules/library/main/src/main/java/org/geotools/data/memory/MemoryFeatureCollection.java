@@ -118,8 +118,6 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection
         }
         return null;
     }
-    ;
-
     /** Calculates the bounds of the features without caching. */
     @Override
     public ReferencedEnvelope getBounds() {

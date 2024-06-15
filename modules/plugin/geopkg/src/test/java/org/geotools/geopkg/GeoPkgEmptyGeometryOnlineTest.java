@@ -86,7 +86,7 @@ public class GeoPkgEmptyGeometryOnlineTest extends JDBCEmptyGeometryOnlineTest {
                 SimpleFeature feature = writer.next();
                 feature.setAttribute(aname("id"), Integer.valueOf(100));
                 feature.setAttribute(aname("geom_" + type.toLowerCase()), emptyGeometry);
-                feature.setAttribute(aname("name"), new String("empty " + type));
+                feature.setAttribute(aname("name"), "empty " + type);
                 writer.write();
             }
             tx.commit();

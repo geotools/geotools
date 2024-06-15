@@ -198,7 +198,7 @@ public class AppSchemaDataAccessConfigurator {
             AppSchemaDataAccessDTO config = configReader.parse(url);
             for (Entry<String, String> stringStringEntry :
                     config.getNamespaces().entrySet()) {
-                Entry entry = (Entry) stringStringEntry;
+                Entry entry = stringStringEntry;
                 String prefix = (String) entry.getKey();
                 String namespace = (String) entry.getValue();
                 if (namespaces.getURI(prefix) == null) namespaces.declarePrefix(prefix, namespace);
@@ -292,9 +292,9 @@ public class AppSchemaDataAccessConfigurator {
     private void disposeUnusedSourceDataStores(
             Map<String, DataAccess<FeatureType, Feature>> sourceDataStores,
             Set<FeatureTypeMapping> featureTypeMappings) {
-        if (sourceDataStores == null) {
-            return;
-        } else if (featureTypeMappings == null) {
+        if (sourceDataStores == null) return;
+
+        if (featureTypeMappings == null) {
             for (DataAccess<FeatureType, Feature> dataAccess : sourceDataStores.values()) {
                 dataAccess.dispose();
             }
@@ -673,7 +673,7 @@ public class AppSchemaDataAccessConfigurator {
      */
     public static Expression parseOgcCqlExpression(String sourceExpr, FilterFactory ff) throws DataSourceException {
         Expression expression = Expression.NIL;
-        if (sourceExpr != null && sourceExpr.trim().length() > 0) {
+        if (sourceExpr != null && !sourceExpr.trim().isEmpty()) {
             try {
                 expression = CQL.toExpression(sourceExpr, ff);
             } catch (CQLException e) {
@@ -696,10 +696,10 @@ public class AppSchemaDataAccessConfigurator {
             throws DataSourceException {
         final Map<Name, Expression> clientProperties = new HashMap<>();
 
-        if (dto.getClientProperties().size() > 0) {
+        if (!dto.getClientProperties().isEmpty()) {
             for (Entry<String, String> stringStringEntry :
                     dto.getClientProperties().entrySet()) {
-                Entry entry = (Entry) stringStringEntry;
+                Entry entry = stringStringEntry;
                 String name = (String) entry.getKey();
                 Name qName = Types.degloseName(name, namespaces);
                 String cqlExpression = (String) entry.getValue();
@@ -970,7 +970,7 @@ public class AppSchemaDataAccessConfigurator {
      */
     @SuppressWarnings("unchecked")
     private Map filterDatastoreParams(Map datastoreParams) {
-        Map filteredDatastoreParams = new LinkedHashMap();
+        Map filteredDatastoreParams = new LinkedHashMap<>();
         for (String key : SAFE_DATASTORE_PARAMS) {
             if (datastoreParams.containsKey(key)) {
                 filteredDatastoreParams.put(key, datastoreParams.get(key));

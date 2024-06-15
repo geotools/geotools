@@ -182,8 +182,8 @@ public class PointPlacementImpl implements PointPlacement, Cloneable {
     public Object clone() {
         try {
             PointPlacementImpl clone = (PointPlacementImpl) super.clone();
-            clone.anchorPoint = (AnchorPointImpl) ((Cloneable) anchorPoint).clone();
-            clone.displacement = (DisplacementImpl) ((Cloneable) displacement).clone();
+            clone.anchorPoint = (AnchorPointImpl) anchorPoint.clone();
+            clone.displacement = (DisplacementImpl) displacement.clone();
 
             return clone;
         } catch (CloneNotSupportedException e) {

@@ -405,7 +405,7 @@ public class GeoParquetDialect extends DuckDBDialect {
 
         try (PreparedStatement ps = cx.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
-            rs.next();
+            if (!rs.next()) throw new RuntimeException("Could not compute bounds from bbox column, no result found");
             Geometry fullBounds = parseWKB(rs.getBlob(1));
             GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
             CoordinateReferenceSystem crs = geometryDescriptor.getCoordinateReferenceSystem();

@@ -187,7 +187,6 @@ public class ImageMosaicURIFeatureConsumer implements ImageMosaicElementConsumer
                 // we got an exception, we should stop the walk
                 eventHandler.fireException(e);
                 walker.stop();
-                return;
             } finally {
 
                 try {

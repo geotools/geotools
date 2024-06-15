@@ -53,7 +53,7 @@ public class JCRSStatusBarItemGraphicsTest extends GraphicsTestBase<FrameFixture
 
     @Before
     public void setup() {
-        JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
+        JFrame frame = GuiActionRunner.execute(new GuiQuery<>() {
 
             @Override
             protected JFrame executeInEDT() throws Throwable {

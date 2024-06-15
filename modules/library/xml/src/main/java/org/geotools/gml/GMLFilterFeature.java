@@ -196,8 +196,6 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
             }
 
             insideAttribute = true;
-
-            return;
         } else if (!insideAttribute) {
             parent.startElement(namespaceURI, localName, qName, atts);
         }

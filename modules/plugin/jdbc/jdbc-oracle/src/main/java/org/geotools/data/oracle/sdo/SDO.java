@@ -781,8 +781,6 @@ public final class SDO {
      * <p>The double array will contain all the ordinates in the Coordinate sequence.
      */
     private static void addCoordinates(List<double[]> list, CoordinateSequence sequence) {
-        double[] ords;
-
         if (sequence instanceof CoordinateAccess) {
             CoordinateAccess access = (CoordinateAccess) sequence;
 
@@ -1803,8 +1801,6 @@ public final class SDO {
             GeometryFactory gf, final int GTYPE, final int SRID, double[] point, int[] elemInfo, double[] ordinates) {
         final int L = SDO.L(GTYPE);
         final int TT = SDO.TT(GTYPE);
-        double[] list;
-        double[][] lists;
 
         CoordinateSequence coords;
 

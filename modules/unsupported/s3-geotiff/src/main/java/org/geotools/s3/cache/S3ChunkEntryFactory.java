@@ -55,7 +55,7 @@ public class S3ChunkEntryFactory implements CacheEntryFactory, CacheLoader {
         int nBytes;
         byte[] buffer = new byte[cacheBlockSize];
         try (S3Object object = this.initStream(
-                (long) entryKey.getBlock() * (long) this.cacheBlockSize,
+                entryKey.getBlock() * (long) this.cacheBlockSize,
                 entryKey.getBucket(),
                 entryKey.getKey(),
                 entryKey.getBlockSize(),

@@ -1279,7 +1279,7 @@ public class DocumentWriter {
             Schema[] imports = getSchemaOrdering();
             String s = "";
             Map schemaLocs = (Map) ((arg0 == null) ? null : arg0.get(SCHEMA_LOCATION_HINT));
-            schemaLocs = (schemaLocs == null) ? new HashMap() : schemaLocs;
+            schemaLocs = (schemaLocs == null) ? new HashMap<>() : schemaLocs;
 
             for (Schema anImport : imports) {
                 if (anImport != null) {

@@ -76,8 +76,7 @@ public class InformixFilterToSQL extends FilterToSQL {
     protected Object visitBinarySpatialOperator(
             BinarySpatialOperator filter, PropertyName property, Literal geometry, boolean swapped, Object extraData) {
 
-        return visitBinarySpatialOperatorEnhanced(
-                filter, (Expression) property, (Expression) geometry, swapped, extraData);
+        return visitBinarySpatialOperatorEnhanced(filter, property, geometry, swapped, extraData);
     }
 
     @Override

@@ -28,5 +28,5 @@ package org.geotools.filter.text.commons;
  */
 public enum Language {
     ECQL,
-    CQL;
+    CQL
 }

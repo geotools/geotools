@@ -324,7 +324,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         private final Set<Object> domainExtent = new TreeSet<>();
 
         /** The merged domain extent */
-        private final Set<Object> globalDomainExtent = new TreeSet<>(new Comparator<Object>() {
+        private final Set<Object> globalDomainExtent = new TreeSet<>(new Comparator<>() {
             private NumberRangeComparator numberRangeComparator = new NumberRangeComparator();
             private DateRangeComparator dateRangeComparator = new DateRangeComparator();
 

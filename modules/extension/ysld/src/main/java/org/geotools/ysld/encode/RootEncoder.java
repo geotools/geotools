@@ -52,8 +52,6 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
      */
     @Override
     protected void encode(StyledLayerDescriptor sld) {
-        StyledLayer[] layers = sld.getStyledLayers();
-
         put("sld-name", sld.getName());
         put("sld-title", sld.getTitle());
         put("sld-abstract", sld.getAbstract());
@@ -100,7 +98,7 @@ public class RootEncoder extends YsldEncodeHandler<StyledLayerDescriptor> {
         if (style == null) return null;
 
         return sld.layers().stream()
-                .filter(new Predicate<StyledLayer>() {
+                .filter(new Predicate<>() {
                     @Override
                     public boolean test(StyledLayer styledLayer) {
                         List<Style> styles;

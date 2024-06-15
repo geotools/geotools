@@ -135,6 +135,7 @@ public class MBStyle {
     public List<MBLayer> layers() {
         JSONArray layers = parse.getJSONArray(json, "layers");
         List<MBLayer> layersList = new ArrayList<>();
+        @SuppressWarnings("PMD.UnusedLocalVariable")
         int labelPriority = 0;
         for (Object obj : layers) {
             if (obj instanceof JSONObject) {
@@ -145,7 +146,7 @@ public class MBStyle {
                 if (jsonObject.containsKey("ref")) {
                     String refLayer = jsonObject.get("ref").toString();
                     JSONObject refObject = referenceLayer(layers, refLayer);
-                    if (refObject.size() > 0) {
+                    if (!refObject.isEmpty()) {
                         // At a minimum, a type is needed to create a layer
                         applyReferenceObject(jsonObject, refObject);
                         mbLayer = MBLayer.create(jsonObject);
@@ -211,7 +212,7 @@ public class MBStyle {
                     String refLayer = jsonObject.get("ref").toString();
                     JSONObject refObject = referenceLayer(layers, refLayer);
 
-                    if (refObject.size() > 0) {
+                    if (!refObject.isEmpty()) {
                         applyReferenceObject(jsonObject, refObject);
 
                         MBLayer layer = MBLayer.create(jsonObject);

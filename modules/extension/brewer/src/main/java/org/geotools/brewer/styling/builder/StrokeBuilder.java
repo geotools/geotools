@@ -40,9 +40,9 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
 
     Expression dashOffset;
 
-    GraphicBuilder graphicFill = (GraphicBuilder) new GraphicBuilder(this).unset();
+    GraphicBuilder graphicFill = new GraphicBuilder(this).unset();
 
-    GraphicBuilder graphicStroke = (GraphicBuilder) new GraphicBuilder(this).unset();
+    GraphicBuilder graphicStroke = new GraphicBuilder(this).unset();
 
     public StrokeBuilder() {
         this(null);
@@ -87,7 +87,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         lineCap = stroke.getLineCap();
         lineJoin = stroke.getLineJoin();
         dashArray = stroke.getDashArray();
-        dashArrayExpressions = (stroke instanceof Stroke) ? ((Stroke) stroke).dashArray() : null;
+        dashArrayExpressions = stroke.dashArray();
         dashOffset = stroke.getDashOffset();
         graphicFill.reset(stroke.getGraphicFill());
         graphicStroke.reset(stroke.getGraphicStroke());

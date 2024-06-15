@@ -122,7 +122,7 @@ public class XlinkValidator extends EObjectValidator {
             case XlinkPackage.TITLE_ELT_TYPE:
                 return validateTitleEltType((TitleEltType)value, diagnostics, context);
             case XlinkPackage.OBJECT:
-                return validateObject((Object)value, diagnostics, context);
+                return validateObject(value, diagnostics, context);
             case XlinkPackage.ACTUATE_TYPE:
                 return validateActuateType((ActuateType)value, diagnostics, context);
             case XlinkPackage.SHOW_TYPE:

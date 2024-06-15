@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -106,7 +105,7 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         // read bounding box (not needed)
-        ((Buffer) buffer).position(buffer.position() + 4 * 8);
+        buffer.position(buffer.position() + 4 * 8);
 
         int numpoints = buffer.getInt();
         int dimensions = shapeType == ShapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
@@ -127,7 +126,7 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.MULTIPOINTZ && !flatGeometry) {
-            ((Buffer) dbuffer).position(dbuffer.position() + 2);
+            dbuffer.position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);
             for (int t = 0; t < numpoints; t++) {
@@ -137,7 +136,7 @@ public class MultiPointHandler implements ShapeHandler {
 
         boolean isArcZWithM = shapeType == ShapeType.MULTIPOINTZ && (dbuffer.remaining() >= numpoints + 2);
         if ((isArcZWithM || shapeType == ShapeType.MULTIPOINTM) && !flatGeometry) {
-            ((Buffer) dbuffer).position(dbuffer.position() + 2);
+            dbuffer.position(dbuffer.position() + 2);
 
             dbuffer.get(ordinates, 0, numpoints);
             for (int t = 0; t < numpoints; t++) {

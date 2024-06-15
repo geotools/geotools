@@ -22,7 +22,7 @@ public class SortBy {
     public enum Direction {
         asc,
         desc
-    };
+    }
 
     String field;
     Direction direction;

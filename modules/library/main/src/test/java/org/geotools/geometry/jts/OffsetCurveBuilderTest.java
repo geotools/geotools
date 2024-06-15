@@ -75,7 +75,6 @@ public class OffsetCurveBuilderTest {
                 displayCurves(false);
             }
         }
-        ;
 
         @Override
         protected void failed(Throwable e, org.junit.runner.Description description) {
@@ -126,7 +125,6 @@ public class OffsetCurveBuilderTest {
 
             return bi;
         }
-        ;
     };
 
     @SuppressWarnings("deprecation")

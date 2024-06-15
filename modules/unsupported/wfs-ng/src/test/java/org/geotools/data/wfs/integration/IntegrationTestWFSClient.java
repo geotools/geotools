@@ -211,7 +211,7 @@ public class IntegrationTestWFSClient extends WFSClient {
 
         final DiffFeatureReader<SimpleFeatureType, SimpleFeature> serverFilteredReader =
                 new DiffFeatureReader<>(allFeaturesReader, diff, serverFiler);
-        final GetParser<SimpleFeature> filteredParser = new GetParser<SimpleFeature>() {
+        final GetParser<SimpleFeature> filteredParser = new GetParser<>() {
 
             @Override
             public void setGeometryFactory(GeometryFactory geometryFactory) {

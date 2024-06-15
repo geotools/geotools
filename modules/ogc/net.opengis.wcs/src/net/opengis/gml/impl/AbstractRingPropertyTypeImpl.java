@@ -160,7 +160,7 @@ public class AbstractRingPropertyTypeImpl extends EObjectImpl implements Abstrac
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.ABSTRACT_RING_PROPERTY_TYPE__LINEAR_RING:
-				setLinearRing((LinearRingType)null);
+				setLinearRing(null);
 				return;
 		}
 		super.eUnset(featureID);

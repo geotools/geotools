@@ -1337,7 +1337,7 @@ public class SLDParser {
      * values.
      */
     Expression parseParameterValueExpression(Node root, boolean mixedText) {
-        ExpressionDOMParser parser = new ExpressionDOMParser((FilterFactory) ff);
+        ExpressionDOMParser parser = new ExpressionDOMParser(ff);
         Expression expr = parser.expression(root); // try the provided node first
         if (expr != null) return expr;
         NodeList children = root.getChildNodes();

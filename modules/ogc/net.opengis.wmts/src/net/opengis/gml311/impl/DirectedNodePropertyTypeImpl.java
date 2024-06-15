@@ -745,7 +745,7 @@ public class DirectedNodePropertyTypeImpl extends MinimalEObjectImpl.Container i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTED_NODE_PROPERTY_TYPE__NODE:
-                setNode((NodeType)null);
+                setNode(null);
                 return;
             case Gml311Package.DIRECTED_NODE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

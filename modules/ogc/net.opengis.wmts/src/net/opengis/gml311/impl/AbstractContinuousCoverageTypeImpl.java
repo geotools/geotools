@@ -154,7 +154,7 @@ public abstract class AbstractContinuousCoverageTypeImpl extends AbstractCoverag
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_CONTINUOUS_COVERAGE_TYPE__COVERAGE_FUNCTION:
-                setCoverageFunction((CoverageFunctionType)null);
+                setCoverageFunction(null);
                 return;
         }
         super.eUnset(featureID);

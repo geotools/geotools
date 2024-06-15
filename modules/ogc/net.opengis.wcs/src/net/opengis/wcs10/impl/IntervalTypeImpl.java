@@ -158,7 +158,7 @@ public class IntervalTypeImpl extends ValueRangeTypeImpl implements IntervalType
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.INTERVAL_TYPE__RES:
-				setRes((TypedLiteralType)null);
+				setRes(null);
 				return;
 		}
 		super.eUnset(featureID);

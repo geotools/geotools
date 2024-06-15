@@ -692,7 +692,7 @@ public class FeatureTypeRegistry {
 
     protected void importSchema(Schema schema) {
         for (Entry<Name, AttributeType> nameAttributeTypeEntry : schema.entrySet()) {
-            Entry entry = (Entry) nameAttributeTypeEntry;
+            Entry entry = nameAttributeTypeEntry;
             Name key = (Name) entry.getKey();
             Object value = entry.getValue();
             if (typeRegistry.containsKey(key)) {

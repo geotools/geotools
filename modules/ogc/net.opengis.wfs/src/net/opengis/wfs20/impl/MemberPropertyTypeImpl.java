@@ -318,7 +318,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
    */
     @Override
     public void setTuple(TupleType newTuple) {
-    ((FeatureMap.Internal)getMixed()).set(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__TUPLE, newTuple);
+    getMixed().set(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__TUPLE, newTuple);
   }
 
     /**
@@ -357,7 +357,7 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
    */
     @Override
     public void setSimpleFeatureCollection(SimpleFeatureCollectionType newSimpleFeatureCollection) {
-    ((FeatureMap.Internal)getSimpleFeatureCollectionGroup()).set(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
+    getSimpleFeatureCollectionGroup().set(Wfs20Package.Literals.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
   }
 
     /**
@@ -754,13 +754,13 @@ public class MemberPropertyTypeImpl extends EObjectImpl implements MemberPropert
         getAny().clear();
         return;
       case Wfs20Package.MEMBER_PROPERTY_TYPE__TUPLE:
-        setTuple((TupleType)null);
+        setTuple(null);
         return;
       case Wfs20Package.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION_GROUP:
         getSimpleFeatureCollectionGroup().clear();
         return;
       case Wfs20Package.MEMBER_PROPERTY_TYPE__SIMPLE_FEATURE_COLLECTION:
-        setSimpleFeatureCollection((SimpleFeatureCollectionType)null);
+        setSimpleFeatureCollection(null);
         return;
       case Wfs20Package.MEMBER_PROPERTY_TYPE__ACTUATE:
         unsetActuate();

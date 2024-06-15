@@ -459,22 +459,22 @@ public class TimePeriodTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
-                setBeginPosition((TimePositionType)null);
+                setBeginPosition(null);
                 return;
             case Gml311Package.TIME_PERIOD_TYPE__BEGIN:
-                setBegin((TimeInstantPropertyType)null);
+                setBegin(null);
                 return;
             case Gml311Package.TIME_PERIOD_TYPE__END_POSITION:
-                setEndPosition((TimePositionType)null);
+                setEndPosition(null);
                 return;
             case Gml311Package.TIME_PERIOD_TYPE__END:
-                setEnd((TimeInstantPropertyType)null);
+                setEnd(null);
                 return;
             case Gml311Package.TIME_PERIOD_TYPE__DURATION:
                 setDuration(DURATION_EDEFAULT);
                 return;
             case Gml311Package.TIME_PERIOD_TYPE__TIME_INTERVAL:
-                setTimeInterval((TimeIntervalLengthType)null);
+                setTimeInterval(null);
                 return;
         }
         super.eUnset(featureID);

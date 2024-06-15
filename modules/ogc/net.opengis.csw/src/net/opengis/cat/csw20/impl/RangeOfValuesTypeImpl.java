@@ -222,10 +222,10 @@ public class RangeOfValuesTypeImpl extends EObjectImpl implements RangeOfValuesT
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.RANGE_OF_VALUES_TYPE__MIN_VALUE:
-                setMinValue((EObject)null);
+                setMinValue(null);
                 return;
             case Csw20Package.RANGE_OF_VALUES_TYPE__MAX_VALUE:
-                setMaxValue((EObject)null);
+                setMaxValue(null);
                 return;
         }
         super.eUnset(featureID);

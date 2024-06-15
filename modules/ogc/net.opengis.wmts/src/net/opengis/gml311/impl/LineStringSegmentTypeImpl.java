@@ -416,10 +416,10 @@ public class LineStringSegmentTypeImpl extends AbstractCurveSegmentTypeImpl impl
                 getPointRep().clear();
                 return;
             case Gml311Package.LINE_STRING_SEGMENT_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.LINE_STRING_SEGMENT_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.LINE_STRING_SEGMENT_TYPE__INTERPOLATION:
                 unsetInterpolation();

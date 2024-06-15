@@ -33,7 +33,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.TestData;
 import org.geotools.api.coverage.grid.Format;
-import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
@@ -314,8 +313,7 @@ public class GridCoverageReaderHelperTest {
 
                     {
                         this.crs = DefaultGeographicCRS.WGS84;
-                        this.originalEnvelope =
-                                new GeneralBounds((BoundingBox) coverage.getEnvelope2D());
+                        this.originalEnvelope = new GeneralBounds(coverage.getEnvelope2D());
                         this.originalGridRange = coverage.getGridGeometry().getGridRange();
                     }
 

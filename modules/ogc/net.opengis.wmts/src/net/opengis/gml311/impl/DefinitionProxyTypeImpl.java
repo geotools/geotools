@@ -154,7 +154,7 @@ public class DefinitionProxyTypeImpl extends DefinitionTypeImpl implements Defin
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DEFINITION_PROXY_TYPE__DEFINITION_REF:
-                setDefinitionRef((ReferenceType)null);
+                setDefinitionRef(null);
                 return;
         }
         super.eUnset(featureID);

@@ -154,7 +154,7 @@ public class TopoPointTypeImpl extends AbstractTopologyTypeImpl implements TopoP
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPO_POINT_TYPE__DIRECTED_NODE:
-                setDirectedNode((DirectedNodePropertyType)null);
+                setDirectedNode(null);
                 return;
         }
         super.eUnset(featureID);

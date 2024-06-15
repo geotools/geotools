@@ -41,7 +41,7 @@ public class PointSymbolizerImpl extends AbstractSymbolizer implements PointSymb
     /** Creates a new instance of DefaultPointSymbolizer */
     protected PointSymbolizerImpl() {
         this(
-                (Graphic) new GraphicImpl(),
+                new GraphicImpl(),
                 null,
                 null,
                 null,

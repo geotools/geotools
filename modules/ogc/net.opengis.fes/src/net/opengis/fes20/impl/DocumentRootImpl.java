@@ -365,7 +365,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setAfter(BinaryTemporalOpType newAfter) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__AFTER, newAfter);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__AFTER, newAfter);
     }
 
     /**
@@ -413,7 +413,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setAnd(BinaryLogicOpType newAnd) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__AND, newAnd);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__AND, newAnd);
     }
 
     /**
@@ -461,7 +461,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setAnyInteracts(BinaryTemporalOpType newAnyInteracts) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__ANY_INTERACTS, newAnyInteracts);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__ANY_INTERACTS, newAnyInteracts);
     }
 
     /**
@@ -490,7 +490,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setBBOX(BBOXType newBBOX) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BBOX, newBBOX);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__BBOX, newBBOX);
     }
 
     /**
@@ -538,7 +538,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setBefore(BinaryTemporalOpType newBefore) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEFORE, newBefore);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__BEFORE, newBefore);
     }
 
     /**
@@ -567,7 +567,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setBegins(BinaryTemporalOpType newBegins) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEGINS, newBegins);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__BEGINS, newBegins);
     }
 
     /**
@@ -596,7 +596,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setBegunBy(BinaryTemporalOpType newBegunBy) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEGUN_BY, newBegunBy);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__BEGUN_BY, newBegunBy);
     }
 
     /**
@@ -625,7 +625,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setBeyond(DistanceBufferType newBeyond) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__BEYOND, newBeyond);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__BEYOND, newBeyond);
     }
 
     /**
@@ -673,7 +673,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setContains(BinarySpatialOpType newContains) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__CONTAINS, newContains);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__CONTAINS, newContains);
     }
 
     /**
@@ -702,7 +702,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setCrosses(BinarySpatialOpType newCrosses) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__CROSSES, newCrosses);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__CROSSES, newCrosses);
     }
 
     /**
@@ -731,7 +731,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setDisjoint(BinarySpatialOpType newDisjoint) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__DISJOINT, newDisjoint);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__DISJOINT, newDisjoint);
     }
 
     /**
@@ -760,7 +760,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setDuring(BinaryTemporalOpType newDuring) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__DURING, newDuring);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__DURING, newDuring);
     }
 
     /**
@@ -789,7 +789,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setDWithin(DistanceBufferType newDWithin) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__DWITHIN, newDWithin);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__DWITHIN, newDWithin);
     }
 
     /**
@@ -818,7 +818,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setEndedBy(BinaryTemporalOpType newEndedBy) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__ENDED_BY, newEndedBy);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__ENDED_BY, newEndedBy);
     }
 
     /**
@@ -847,7 +847,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setEnds(BinaryTemporalOpType newEnds) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__ENDS, newEnds);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__ENDS, newEnds);
     }
 
     /**
@@ -876,7 +876,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setEquals(BinarySpatialOpType newEquals) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__EQUALS, newEquals);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__EQUALS, newEquals);
     }
 
     /**
@@ -943,7 +943,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setFilter(FilterType newFilter) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__FILTER, newFilter);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__FILTER, newFilter);
     }
 
     /**
@@ -972,7 +972,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setFilterCapabilities(FilterCapabilitiesType newFilterCapabilities) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__FILTER_CAPABILITIES, newFilterCapabilities);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__FILTER_CAPABILITIES, newFilterCapabilities);
     }
 
     /**
@@ -1001,7 +1001,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setFunction(FunctionType newFunction) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__FUNCTION, newFunction);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__FUNCTION, newFunction);
     }
 
     /**
@@ -1030,7 +1030,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setIntersects(BinarySpatialOpType newIntersects) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__INTERSECTS, newIntersects);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__INTERSECTS, newIntersects);
     }
 
     /**
@@ -1059,7 +1059,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setLiteral(LiteralType newLiteral) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__LITERAL, newLiteral);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__LITERAL, newLiteral);
     }
 
     /**
@@ -1088,7 +1088,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setLogicalOperators(LogicalOperatorsType newLogicalOperators) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__LOGICAL_OPERATORS, newLogicalOperators);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__LOGICAL_OPERATORS, newLogicalOperators);
     }
 
     /**
@@ -1117,7 +1117,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setMeets(BinaryTemporalOpType newMeets) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__MEETS, newMeets);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__MEETS, newMeets);
     }
 
     /**
@@ -1146,7 +1146,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setMetBy(BinaryTemporalOpType newMetBy) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__MET_BY, newMetBy);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__MET_BY, newMetBy);
     }
 
     /**
@@ -1175,7 +1175,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setNot(UnaryLogicOpType newNot) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__NOT, newNot);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__NOT, newNot);
     }
 
     /**
@@ -1204,7 +1204,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setOr(BinaryLogicOpType newOr) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__OR, newOr);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__OR, newOr);
     }
 
     /**
@@ -1233,7 +1233,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setOverlappedBy(BinaryTemporalOpType newOverlappedBy) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPPED_BY, newOverlappedBy);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPPED_BY, newOverlappedBy);
     }
 
     /**
@@ -1262,7 +1262,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setOverlaps(BinarySpatialOpType newOverlaps) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPS, newOverlaps);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__OVERLAPS, newOverlaps);
     }
 
     /**
@@ -1291,7 +1291,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsBetween(PropertyIsBetweenType newPropertyIsBetween) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_BETWEEN, newPropertyIsBetween);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_BETWEEN, newPropertyIsBetween);
     }
 
     /**
@@ -1320,7 +1320,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsEqualTo(BinaryComparisonOpType newPropertyIsEqualTo) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_EQUAL_TO, newPropertyIsEqualTo);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_EQUAL_TO, newPropertyIsEqualTo);
     }
 
     /**
@@ -1349,7 +1349,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsGreaterThan(BinaryComparisonOpType newPropertyIsGreaterThan) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN, newPropertyIsGreaterThan);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN, newPropertyIsGreaterThan);
     }
 
     /**
@@ -1378,7 +1378,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsGreaterThanOrEqualTo(BinaryComparisonOpType newPropertyIsGreaterThanOrEqualTo) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN_OR_EQUAL_TO, newPropertyIsGreaterThanOrEqualTo);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN_OR_EQUAL_TO, newPropertyIsGreaterThanOrEqualTo);
     }
 
     /**
@@ -1407,7 +1407,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsLessThan(BinaryComparisonOpType newPropertyIsLessThan) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN, newPropertyIsLessThan);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN, newPropertyIsLessThan);
     }
 
     /**
@@ -1436,7 +1436,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsLessThanOrEqualTo(BinaryComparisonOpType newPropertyIsLessThanOrEqualTo) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN_OR_EQUAL_TO, newPropertyIsLessThanOrEqualTo);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN_OR_EQUAL_TO, newPropertyIsLessThanOrEqualTo);
     }
 
     /**
@@ -1465,7 +1465,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsLike(PropertyIsLikeType newPropertyIsLike) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LIKE, newPropertyIsLike);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_LIKE, newPropertyIsLike);
     }
 
     /**
@@ -1494,7 +1494,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsNil(PropertyIsNilType newPropertyIsNil) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NIL, newPropertyIsNil);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NIL, newPropertyIsNil);
     }
 
     /**
@@ -1523,7 +1523,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsNotEqualTo(BinaryComparisonOpType newPropertyIsNotEqualTo) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NOT_EQUAL_TO, newPropertyIsNotEqualTo);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NOT_EQUAL_TO, newPropertyIsNotEqualTo);
     }
 
     /**
@@ -1552,7 +1552,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setPropertyIsNull(PropertyIsNullType newPropertyIsNull) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NULL, newPropertyIsNull);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__PROPERTY_IS_NULL, newPropertyIsNull);
     }
 
     /**
@@ -1581,7 +1581,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setResourceId(ResourceIdType newResourceId) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__RESOURCE_ID, newResourceId);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__RESOURCE_ID, newResourceId);
     }
 
     /**
@@ -1610,7 +1610,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setSortBy(SortByType newSortBy) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__SORT_BY, newSortBy);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__SORT_BY, newSortBy);
     }
 
     /**
@@ -1639,7 +1639,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setTContains(BinaryTemporalOpType newTContains) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TCONTAINS, newTContains);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__TCONTAINS, newTContains);
     }
 
     /**
@@ -1668,7 +1668,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setTEquals(BinaryTemporalOpType newTEquals) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TEQUALS, newTEquals);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__TEQUALS, newTEquals);
     }
 
     /**
@@ -1697,7 +1697,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setTouches(BinarySpatialOpType newTouches) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TOUCHES, newTouches);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__TOUCHES, newTouches);
     }
 
     /**
@@ -1726,7 +1726,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setTOverlaps(BinaryTemporalOpType newTOverlaps) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__TOVERLAPS, newTOverlaps);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__TOVERLAPS, newTOverlaps);
     }
 
     /**
@@ -1746,7 +1746,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setValueReference(String newValueReference) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__VALUE_REFERENCE, newValueReference);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__VALUE_REFERENCE, newValueReference);
     }
 
     /**
@@ -1775,7 +1775,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setWithin(BinarySpatialOpType newWithin) {
-        ((FeatureMap.Internal)getMixed()).set(Fes20Package.Literals.DOCUMENT_ROOT__WITHIN, newWithin);
+        getMixed().set(Fes20Package.Literals.DOCUMENT_ROOT__WITHIN, newWithin);
     }
 
     /**
@@ -2224,142 +2224,142 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 getXSISchemaLocation().clear();
                 return;
             case Fes20Package.DOCUMENT_ROOT__AFTER:
-                setAfter((BinaryTemporalOpType)null);
+                setAfter(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__AND:
-                setAnd((BinaryLogicOpType)null);
+                setAnd(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__ANY_INTERACTS:
-                setAnyInteracts((BinaryTemporalOpType)null);
+                setAnyInteracts(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__BBOX:
-                setBBOX((BBOXType)null);
+                setBBOX(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__BEFORE:
-                setBefore((BinaryTemporalOpType)null);
+                setBefore(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__BEGINS:
-                setBegins((BinaryTemporalOpType)null);
+                setBegins(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__BEGUN_BY:
-                setBegunBy((BinaryTemporalOpType)null);
+                setBegunBy(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__BEYOND:
-                setBeyond((DistanceBufferType)null);
+                setBeyond(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__CONTAINS:
-                setContains((BinarySpatialOpType)null);
+                setContains(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__CROSSES:
-                setCrosses((BinarySpatialOpType)null);
+                setCrosses(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__DISJOINT:
-                setDisjoint((BinarySpatialOpType)null);
+                setDisjoint(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__DURING:
-                setDuring((BinaryTemporalOpType)null);
+                setDuring(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__DWITHIN:
-                setDWithin((DistanceBufferType)null);
+                setDWithin(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__ENDED_BY:
-                setEndedBy((BinaryTemporalOpType)null);
+                setEndedBy(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__ENDS:
-                setEnds((BinaryTemporalOpType)null);
+                setEnds(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__EQUALS:
-                setEquals((BinarySpatialOpType)null);
+                setEquals(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__FILTER:
-                setFilter((FilterType)null);
+                setFilter(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__FILTER_CAPABILITIES:
-                setFilterCapabilities((FilterCapabilitiesType)null);
+                setFilterCapabilities(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__FUNCTION:
-                setFunction((FunctionType)null);
+                setFunction(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__INTERSECTS:
-                setIntersects((BinarySpatialOpType)null);
+                setIntersects(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__LITERAL:
-                setLiteral((LiteralType)null);
+                setLiteral(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__LOGICAL_OPERATORS:
-                setLogicalOperators((LogicalOperatorsType)null);
+                setLogicalOperators(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__MEETS:
-                setMeets((BinaryTemporalOpType)null);
+                setMeets(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__MET_BY:
-                setMetBy((BinaryTemporalOpType)null);
+                setMetBy(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__NOT:
-                setNot((UnaryLogicOpType)null);
+                setNot(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__OR:
-                setOr((BinaryLogicOpType)null);
+                setOr(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__OVERLAPPED_BY:
-                setOverlappedBy((BinaryTemporalOpType)null);
+                setOverlappedBy(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__OVERLAPS:
-                setOverlaps((BinarySpatialOpType)null);
+                setOverlaps(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_BETWEEN:
-                setPropertyIsBetween((PropertyIsBetweenType)null);
+                setPropertyIsBetween(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_EQUAL_TO:
-                setPropertyIsEqualTo((BinaryComparisonOpType)null);
+                setPropertyIsEqualTo(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN:
-                setPropertyIsGreaterThan((BinaryComparisonOpType)null);
+                setPropertyIsGreaterThan(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_GREATER_THAN_OR_EQUAL_TO:
-                setPropertyIsGreaterThanOrEqualTo((BinaryComparisonOpType)null);
+                setPropertyIsGreaterThanOrEqualTo(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN:
-                setPropertyIsLessThan((BinaryComparisonOpType)null);
+                setPropertyIsLessThan(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_LESS_THAN_OR_EQUAL_TO:
-                setPropertyIsLessThanOrEqualTo((BinaryComparisonOpType)null);
+                setPropertyIsLessThanOrEqualTo(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_LIKE:
-                setPropertyIsLike((PropertyIsLikeType)null);
+                setPropertyIsLike(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_NIL:
-                setPropertyIsNil((PropertyIsNilType)null);
+                setPropertyIsNil(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_NOT_EQUAL_TO:
-                setPropertyIsNotEqualTo((BinaryComparisonOpType)null);
+                setPropertyIsNotEqualTo(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__PROPERTY_IS_NULL:
-                setPropertyIsNull((PropertyIsNullType)null);
+                setPropertyIsNull(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__RESOURCE_ID:
-                setResourceId((ResourceIdType)null);
+                setResourceId(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__SORT_BY:
-                setSortBy((SortByType)null);
+                setSortBy(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__TCONTAINS:
-                setTContains((BinaryTemporalOpType)null);
+                setTContains(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__TEQUALS:
-                setTEquals((BinaryTemporalOpType)null);
+                setTEquals(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__TOUCHES:
-                setTouches((BinarySpatialOpType)null);
+                setTouches(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__TOVERLAPS:
-                setTOverlaps((BinaryTemporalOpType)null);
+                setTOverlaps(null);
                 return;
             case Fes20Package.DOCUMENT_ROOT__VALUE_REFERENCE:
                 setValueReference(VALUE_REFERENCE_EDEFAULT);
                 return;
             case Fes20Package.DOCUMENT_ROOT__WITHIN:
-                setWithin((BinarySpatialOpType)null);
+                setWithin(null);
                 return;
         }
         super.eUnset(featureID);

@@ -336,7 +336,7 @@ public class DatasetDescriptionSummaryBaseTypeImpl extends DescriptionTypeImpl i
         getWGS84BoundingBox().clear();
         return;
       case Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows20Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__BOUNDING_BOX_GROUP:
         getBoundingBoxGroup().clear();

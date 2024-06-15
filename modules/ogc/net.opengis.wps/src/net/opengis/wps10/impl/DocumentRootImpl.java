@@ -197,7 +197,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setCapabilities(WPSCapabilitiesType newCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
   }
 
     /**
@@ -226,7 +226,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setDescribeProcess(DescribeProcessType newDescribeProcess) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__DESCRIBE_PROCESS, newDescribeProcess);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__DESCRIBE_PROCESS, newDescribeProcess);
   }
 
     /**
@@ -255,7 +255,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setExecute(ExecuteType newExecute) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE, newExecute);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE, newExecute);
   }
 
     /**
@@ -284,7 +284,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setExecuteResponse(ExecuteResponseType newExecuteResponse) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE_RESPONSE, newExecuteResponse);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__EXECUTE_RESPONSE, newExecuteResponse);
   }
 
     /**
@@ -313,7 +313,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
   }
 
     /**
@@ -342,7 +342,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setLanguages(LanguagesType1 newLanguages) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__LANGUAGES, newLanguages);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__LANGUAGES, newLanguages);
   }
 
     /**
@@ -371,7 +371,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setProcessDescriptions(ProcessDescriptionsType newProcessDescriptions) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_DESCRIPTIONS, newProcessDescriptions);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_DESCRIPTIONS, newProcessDescriptions);
   }
 
     /**
@@ -400,7 +400,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setProcessOfferings(ProcessOfferingsType newProcessOfferings) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERINGS, newProcessOfferings);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERINGS, newProcessOfferings);
   }
 
     /**
@@ -429,7 +429,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
     @Override
     public void setWSDL(WSDLType newWSDL) {
-    ((FeatureMap.Internal)getMixed()).set(Wps10Package.Literals.DOCUMENT_ROOT__WSDL, newWSDL);
+    getMixed().set(Wps10Package.Literals.DOCUMENT_ROOT__WSDL, newWSDL);
   }
 
     /**
@@ -601,31 +601,31 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         getXSISchemaLocation().clear();
         return;
       case Wps10Package.DOCUMENT_ROOT__CAPABILITIES:
-        setCapabilities((WPSCapabilitiesType)null);
+        setCapabilities(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__DESCRIBE_PROCESS:
-        setDescribeProcess((DescribeProcessType)null);
+        setDescribeProcess(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__EXECUTE:
-        setExecute((ExecuteType)null);
+        setExecute(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__EXECUTE_RESPONSE:
-        setExecuteResponse((ExecuteResponseType)null);
+        setExecuteResponse(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-        setGetCapabilities((GetCapabilitiesType)null);
+        setGetCapabilities(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__LANGUAGES:
-        setLanguages((LanguagesType1)null);
+        setLanguages(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__PROCESS_DESCRIPTIONS:
-        setProcessDescriptions((ProcessDescriptionsType)null);
+        setProcessDescriptions(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__PROCESS_OFFERINGS:
-        setProcessOfferings((ProcessOfferingsType)null);
+        setProcessOfferings(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__WSDL:
-        setWSDL((WSDLType)null);
+        setWSDL(null);
         return;
       case Wps10Package.DOCUMENT_ROOT__PROCESS_VERSION:
         setProcessVersion(PROCESS_VERSION_EDEFAULT);

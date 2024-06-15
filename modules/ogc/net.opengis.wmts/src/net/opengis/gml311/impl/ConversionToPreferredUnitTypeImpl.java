@@ -242,7 +242,7 @@ public class ConversionToPreferredUnitTypeImpl extends UnitOfMeasureTypeImpl imp
                 unsetFactor();
                 return;
             case Gml311Package.CONVERSION_TO_PREFERRED_UNIT_TYPE__FORMULA:
-                setFormula((FormulaType)null);
+                setFormula(null);
                 return;
         }
         super.eUnset(featureID);

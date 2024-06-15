@@ -288,13 +288,13 @@ public class DataTypeImpl extends EObjectImpl implements DataType {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DATA_TYPE__COMPLEX_DATA:
-        setComplexData((ComplexDataType)null);
+        setComplexData(null);
         return;
       case Wps10Package.DATA_TYPE__LITERAL_DATA:
-        setLiteralData((LiteralDataType)null);
+        setLiteralData(null);
         return;
       case Wps10Package.DATA_TYPE__BOUNDING_BOX_DATA:
-        setBoundingBoxData((BoundingBoxType)null);
+        setBoundingBoxData(null);
         return;
     }
     super.eUnset(featureID);

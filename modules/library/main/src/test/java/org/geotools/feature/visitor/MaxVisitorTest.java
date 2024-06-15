@@ -70,7 +70,7 @@ public class MaxVisitorTest {
         visitor.reset();
 
         collection.accepts(visitor, null);
-        Assert.assertEquals(Long.valueOf(Integer.MIN_VALUE - 1), (Long) visitor.getMax());
+        Assert.assertEquals(Long.valueOf(Integer.MIN_VALUE - 1), visitor.getMax());
     }
 
     /** A MaxVisitor that set's visitied without maxvalue being set. */

@@ -206,7 +206,7 @@ public class LabelStyleTypeImpl extends BaseStyleDescriptorTypeImpl implements L
                 setStyle(STYLE_EDEFAULT);
                 return;
             case Gml311Package.LABEL_STYLE_TYPE__LABEL:
-                setLabel((LabelType)null);
+                setLabel(null);
                 return;
         }
         super.eUnset(featureID);

@@ -209,7 +209,7 @@ public class GridFunctionTypeImpl extends MinimalEObjectImpl.Container implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GRID_FUNCTION_TYPE__SEQUENCE_RULE:
-                setSequenceRule((SequenceRuleType)null);
+                setSequenceRule(null);
                 return;
             case Gml311Package.GRID_FUNCTION_TYPE__START_POINT:
                 setStartPoint(START_POINT_EDEFAULT);

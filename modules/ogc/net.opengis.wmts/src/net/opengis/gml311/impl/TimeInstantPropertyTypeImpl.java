@@ -659,7 +659,7 @@ public class TimeInstantPropertyTypeImpl extends MinimalEObjectImpl.Container im
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_INSTANT_PROPERTY_TYPE__TIME_INSTANT:
-                setTimeInstant((TimeInstantType)null);
+                setTimeInstant(null);
                 return;
             case Gml311Package.TIME_INSTANT_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

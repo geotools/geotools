@@ -415,19 +415,19 @@ public class InputTypeImpl extends EObjectImpl implements InputType {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Wps10Package.INPUT_TYPE__TITLE:
-        setTitle((LanguageStringType)null);
+        setTitle(null);
         return;
       case Wps10Package.INPUT_TYPE__ABSTRACT:
-        setAbstract((LanguageStringType)null);
+        setAbstract(null);
         return;
       case Wps10Package.INPUT_TYPE__REFERENCE:
-        setReference((InputReferenceType)null);
+        setReference(null);
         return;
       case Wps10Package.INPUT_TYPE__DATA:
-        setData((DataType)null);
+        setData(null);
         return;
     }
     super.eUnset(featureID);

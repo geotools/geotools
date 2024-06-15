@@ -155,7 +155,7 @@ public abstract class AbstractPositionalAccuracyTypeImpl extends MinimalEObjectI
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_POSITIONAL_ACCURACY_TYPE__MEASURE_DESCRIPTION:
-                setMeasureDescription((CodeType)null);
+                setMeasureDescription(null);
                 return;
         }
         super.eUnset(featureID);

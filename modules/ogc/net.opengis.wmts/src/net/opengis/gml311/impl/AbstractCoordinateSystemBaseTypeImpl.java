@@ -154,7 +154,7 @@ public abstract class AbstractCoordinateSystemBaseTypeImpl extends DefinitionTyp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_COORDINATE_SYSTEM_BASE_TYPE__CS_NAME:
-                setCsName((CodeType)null);
+                setCsName(null);
                 return;
         }
         super.eUnset(featureID);

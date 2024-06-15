@@ -836,10 +836,10 @@ public class LocationPropertyTypeImpl extends MinimalEObjectImpl.Container imple
                 getGeometryGroup().clear();
                 return;
             case Gml311Package.LOCATION_PROPERTY_TYPE__LOCATION_KEY_WORD:
-                setLocationKeyWord((CodeType)null);
+                setLocationKeyWord(null);
                 return;
             case Gml311Package.LOCATION_PROPERTY_TYPE__LOCATION_STRING:
-                setLocationString((StringOrRefType)null);
+                setLocationString(null);
                 return;
             case Gml311Package.LOCATION_PROPERTY_TYPE__NULL:
                 setNull(NULL_EDEFAULT);

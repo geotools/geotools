@@ -257,7 +257,7 @@ public class DistanceBufferTypeImpl extends SpatialOpsTypeImpl implements Distan
                 getAny().clear();
                 return;
             case Fes20Package.DISTANCE_BUFFER_TYPE__DISTANCE:
-                setDistance((MeasureType)null);
+                setDistance(null);
                 return;
         }
         super.eUnset(featureID);

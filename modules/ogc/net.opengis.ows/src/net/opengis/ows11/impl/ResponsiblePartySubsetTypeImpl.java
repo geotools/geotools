@@ -323,10 +323,10 @@ public void eUnset(int featureID) {
         setPositionName(POSITION_NAME_EDEFAULT);
         return;
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__CONTACT_INFO:
-        setContactInfo((ContactType)null);
+        setContactInfo(null);
         return;
       case Ows11Package.RESPONSIBLE_PARTY_SUBSET_TYPE__ROLE:
-        setRole((CodeType)null);
+        setRole(null);
         return;
     }
     super.eUnset(featureID);

@@ -214,10 +214,10 @@ public class SimpleContentTypeImpl extends AnnotatedImpl implements SimpleConten
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.SIMPLE_CONTENT_TYPE__RESTRICTION:
-				setRestriction((SimpleRestrictionType)null);
+				setRestriction(null);
 				return;
 			case SchemaPackage.SIMPLE_CONTENT_TYPE__EXTENSION:
-				setExtension((SimpleExtensionType)null);
+				setExtension(null);
 				return;
 		}
 		super.eUnset(featureID);

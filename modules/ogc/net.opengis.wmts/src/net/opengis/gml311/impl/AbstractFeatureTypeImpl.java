@@ -158,7 +158,7 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
      */
     @Override
     public void setLocation(LocationPropertyType newLocation) {
-        ((FeatureMap.Internal)getLocationGroup()).set(Gml311Package.eINSTANCE.getAbstractFeatureType_Location(), newLocation);
+        getLocationGroup().set(Gml311Package.eINSTANCE.getAbstractFeatureType_Location(), newLocation);
     }
 
     /**
@@ -228,13 +228,13 @@ public abstract class AbstractFeatureTypeImpl extends AbstractGMLTypeImpl implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_FEATURE_TYPE__BOUNDED_BY:
-                setBoundedBy((BoundingShapeType)null);
+                setBoundedBy(null);
                 return;
             case Gml311Package.ABSTRACT_FEATURE_TYPE__LOCATION_GROUP:
                 getLocationGroup().clear();
                 return;
             case Gml311Package.ABSTRACT_FEATURE_TYPE__LOCATION:
-                setLocation((LocationPropertyType)null);
+                setLocation(null);
                 return;
         }
         super.eUnset(featureID);

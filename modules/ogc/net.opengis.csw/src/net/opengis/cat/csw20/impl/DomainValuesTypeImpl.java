@@ -493,13 +493,13 @@ public class DomainValuesTypeImpl extends EObjectImpl implements DomainValuesTyp
                 setParameterName(PARAMETER_NAME_EDEFAULT);
                 return;
             case Csw20Package.DOMAIN_VALUES_TYPE__LIST_OF_VALUES:
-                setListOfValues((ListOfValuesType)null);
+                setListOfValues(null);
                 return;
             case Csw20Package.DOMAIN_VALUES_TYPE__CONCEPTUAL_SCHEME:
-                setConceptualScheme((ConceptualSchemeType)null);
+                setConceptualScheme(null);
                 return;
             case Csw20Package.DOMAIN_VALUES_TYPE__RANGE_OF_VALUES:
-                setRangeOfValues((RangeOfValuesType)null);
+                setRangeOfValues(null);
                 return;
             case Csw20Package.DOMAIN_VALUES_TYPE__TYPE:
                 setType(TYPE_EDEFAULT);

@@ -155,7 +155,7 @@ public class TopoPointPropertyTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPO_POINT_PROPERTY_TYPE__TOPO_POINT:
-                setTopoPoint((TopoPointType)null);
+                setTopoPoint(null);
                 return;
         }
         super.eUnset(featureID);

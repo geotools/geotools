@@ -154,7 +154,7 @@ public abstract class AbstractTimeTopologyPrimitiveTypeImpl extends AbstractTime
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_TIME_TOPOLOGY_PRIMITIVE_TYPE__COMPLEX:
-                setComplex((ReferenceType)null);
+                setComplex(null);
                 return;
         }
         super.eUnset(featureID);

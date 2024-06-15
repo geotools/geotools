@@ -841,19 +841,19 @@ public class RestrictionTypeImpl extends AnnotatedImpl implements RestrictionTyp
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.RESTRICTION_TYPE__GROUP:
-				setGroup((GroupRef)null);
+				setGroup(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__ALL:
-				setAll((All)null);
+				setAll(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__CHOICE:
-				setChoice((ExplicitGroup)null);
+				setChoice(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__SEQUENCE:
-				setSequence((ExplicitGroup)null);
+				setSequence(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__SIMPLE_TYPE:
-				setSimpleType((LocalSimpleType)null);
+				setSimpleType(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__FACETS:
 				getFacets().clear();
@@ -904,7 +904,7 @@ public class RestrictionTypeImpl extends AnnotatedImpl implements RestrictionTyp
 				getAttributeGroup().clear();
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__ANY_ATTRIBUTE1:
-				setAnyAttribute1((Wildcard)null);
+				setAnyAttribute1(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE__BASE:
 				setBase(BASE_EDEFAULT);

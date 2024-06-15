@@ -659,7 +659,7 @@ public class TemporalDatumRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TEMPORAL_DATUM_REF_TYPE__TEMPORAL_DATUM:
-                setTemporalDatum((TemporalDatumType)null);
+                setTemporalDatum(null);
                 return;
             case Gml311Package.TEMPORAL_DATUM_REF_TYPE__ACTUATE:
                 unsetActuate();

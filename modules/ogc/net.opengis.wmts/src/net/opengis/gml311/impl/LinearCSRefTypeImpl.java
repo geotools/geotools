@@ -659,7 +659,7 @@ public class LinearCSRefTypeImpl extends MinimalEObjectImpl.Container implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.LINEAR_CS_REF_TYPE__LINEAR_CS:
-                setLinearCS((LinearCSType)null);
+                setLinearCS(null);
                 return;
             case Gml311Package.LINEAR_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

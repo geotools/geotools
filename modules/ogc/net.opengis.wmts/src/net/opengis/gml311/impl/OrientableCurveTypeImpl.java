@@ -240,7 +240,7 @@ public class OrientableCurveTypeImpl extends AbstractCurveTypeImpl implements Or
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ORIENTABLE_CURVE_TYPE__BASE_CURVE:
-                setBaseCurve((CurvePropertyType)null);
+                setBaseCurve(null);
                 return;
             case Gml311Package.ORIENTABLE_CURVE_TYPE__ORIENTATION:
                 unsetOrientation();

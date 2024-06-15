@@ -251,7 +251,7 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
-                setTransactionSummary((TransactionSummaryType)null);
+                setTransactionSummary(null);
                 return;
             case Csw20Package.TRANSACTION_RESPONSE_TYPE__INSERT_RESULT:
                 getInsertResult().clear();

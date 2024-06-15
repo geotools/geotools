@@ -163,7 +163,7 @@ public class AdditionalValuesTypeImpl extends EObjectImpl implements AdditionalV
    */
     @Override
     public void setSimpleFeatureCollection(SimpleFeatureCollectionType newSimpleFeatureCollection) {
-    ((FeatureMap.Internal)getSimpleFeatureCollectionGroup()).set(Wfs20Package.Literals.ADDITIONAL_VALUES_TYPE__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
+    getSimpleFeatureCollectionGroup().set(Wfs20Package.Literals.ADDITIONAL_VALUES_TYPE__SIMPLE_FEATURE_COLLECTION, newSimpleFeatureCollection);
   }
 
     /**
@@ -233,13 +233,13 @@ public class AdditionalValuesTypeImpl extends EObjectImpl implements AdditionalV
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.ADDITIONAL_VALUES_TYPE__VALUE_COLLECTION:
-        setValueCollection((ValueCollectionType)null);
+        setValueCollection(null);
         return;
       case Wfs20Package.ADDITIONAL_VALUES_TYPE__SIMPLE_FEATURE_COLLECTION_GROUP:
         getSimpleFeatureCollectionGroup().clear();
         return;
       case Wfs20Package.ADDITIONAL_VALUES_TYPE__SIMPLE_FEATURE_COLLECTION:
-        setSimpleFeatureCollection((SimpleFeatureCollectionType)null);
+        setSimpleFeatureCollection(null);
         return;
     }
     super.eUnset(featureID);

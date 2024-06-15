@@ -756,10 +756,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         RasterManager manager = getRasterManager(coverageName);
         @SuppressWarnings("unchecked")
         Set<ParameterDescriptor<List>> params =
-                (Set<ParameterDescriptor<List>>)
-                        (manager.domainsManager != null
-                                ? manager.domainsManager.getDynamicParameters()
-                                : Collections.emptySet());
+                manager.domainsManager != null
+                        ? manager.domainsManager.getDynamicParameters()
+                        : Collections.emptySet();
         return params;
     }
 

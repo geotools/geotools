@@ -154,7 +154,7 @@ public class RectifiedGridCoverageTypeImpl extends AbstractDiscreteCoverageTypeI
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.RECTIFIED_GRID_COVERAGE_TYPE__RECTIFIED_GRID_DOMAIN:
-                setRectifiedGridDomain((RectifiedGridDomainType)null);
+                setRectifiedGridDomain(null);
                 return;
         }
         super.eUnset(featureID);

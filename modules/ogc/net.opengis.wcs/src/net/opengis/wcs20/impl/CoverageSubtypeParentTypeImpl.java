@@ -208,7 +208,7 @@ public class CoverageSubtypeParentTypeImpl extends EObjectImpl implements Covera
 				setCoverageSubtype(COVERAGE_SUBTYPE_EDEFAULT);
 				return;
 			case Wcs20Package.COVERAGE_SUBTYPE_PARENT_TYPE__COVERAGE_SUBTYPE_PARENT:
-				setCoverageSubtypeParent((CoverageSubtypeParentType)null);
+				setCoverageSubtypeParent(null);
 				return;
 		}
 		super.eUnset(featureID);

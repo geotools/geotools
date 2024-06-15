@@ -367,13 +367,13 @@ public void eSet(int featureID, Object newValue) {
 public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.RANGE_TYPE__MINIMUM_VALUE:
-        setMinimumValue((ValueType)null);
+        setMinimumValue(null);
         return;
       case Ows11Package.RANGE_TYPE__MAXIMUM_VALUE:
-        setMaximumValue((ValueType)null);
+        setMaximumValue(null);
         return;
       case Ows11Package.RANGE_TYPE__SPACING:
-        setSpacing((ValueType)null);
+        setSpacing(null);
         return;
       case Ows11Package.RANGE_TYPE__RANGE_CLOSURE:
         unsetRangeClosure();

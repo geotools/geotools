@@ -708,7 +708,7 @@ public class LabelStylePropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.LABEL_STYLE_PROPERTY_TYPE__LABEL_STYLE:
-                setLabelStyle((LabelStyleType)null);
+                setLabelStyle(null);
                 return;
             case Gml311Package.LABEL_STYLE_PROPERTY_TYPE__ABOUT:
                 setAbout(ABOUT_EDEFAULT);

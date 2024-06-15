@@ -367,13 +367,13 @@ public class RangeTypeImpl extends EObjectImpl implements RangeType {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.RANGE_TYPE__MINIMUM_VALUE:
-        setMinimumValue((ValueType)null);
+        setMinimumValue(null);
         return;
       case Ows20Package.RANGE_TYPE__MAXIMUM_VALUE:
-        setMaximumValue((ValueType)null);
+        setMaximumValue(null);
         return;
       case Ows20Package.RANGE_TYPE__SPACING:
-        setSpacing((ValueType)null);
+        setSpacing(null);
         return;
       case Ows20Package.RANGE_TYPE__RANGE_CLOSURE:
         unsetRangeClosure();

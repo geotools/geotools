@@ -324,10 +324,10 @@ public class ElementTypeImpl extends EObjectImpl implements ElementType {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.ELEMENT_TYPE__METADATA:
-        setMetadata((MetadataType)null);
+        setMetadata(null);
         return;
       case Wfs20Package.ELEMENT_TYPE__VALUE_LIST:
-        setValueList((ValueListType)null);
+        setValueList(null);
         return;
       case Wfs20Package.ELEMENT_TYPE__NAME:
         setName(NAME_EDEFAULT);

@@ -381,10 +381,10 @@ public class CoverageDescriptionTypeImpl extends DescriptionTypeImpl implements 
                 getMetadata().clear();
                 return;
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__DOMAIN:
-                setDomain((CoverageDomainType)null);
+                setDomain(null);
                 return;
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__RANGE:
-                setRange((RangeType)null);
+                setRange(null);
                 return;
             case Wcs111Package.COVERAGE_DESCRIPTION_TYPE__SUPPORTED_CRS:
                 getSupportedCRS().clear();

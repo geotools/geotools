@@ -321,7 +321,7 @@ public class GeodesicStringTypeImpl extends AbstractCurveSegmentTypeImpl impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEODESIC_STRING_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.GEODESIC_STRING_TYPE__GEOMETRIC_POSITION_GROUP:
                 getGeometricPositionGroup().clear();

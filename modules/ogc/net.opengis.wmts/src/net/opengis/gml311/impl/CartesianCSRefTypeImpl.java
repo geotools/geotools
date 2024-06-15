@@ -659,7 +659,7 @@ public class CartesianCSRefTypeImpl extends MinimalEObjectImpl.Container impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CARTESIAN_CS_REF_TYPE__CARTESIAN_CS:
-                setCartesianCS((CartesianCSType)null);
+                setCartesianCS(null);
                 return;
             case Gml311Package.CARTESIAN_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

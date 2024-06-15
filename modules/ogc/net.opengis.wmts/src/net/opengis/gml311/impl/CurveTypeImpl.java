@@ -154,7 +154,7 @@ public class CurveTypeImpl extends AbstractCurveTypeImpl implements CurveType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CURVE_TYPE__SEGMENTS:
-                setSegments((CurveSegmentArrayPropertyType)null);
+                setSegments(null);
                 return;
         }
         super.eUnset(featureID);

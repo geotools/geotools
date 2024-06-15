@@ -198,7 +198,7 @@ public class ParameterValueGroupTypeImpl extends AbstractGeneralParameterValueTy
                 getIncludesValue().clear();
                 return;
             case Gml311Package.PARAMETER_VALUE_GROUP_TYPE__VALUES_OF_GROUP:
-                setValuesOfGroup((OperationParameterGroupRefType)null);
+                setValuesOfGroup(null);
                 return;
         }
         super.eUnset(featureID);

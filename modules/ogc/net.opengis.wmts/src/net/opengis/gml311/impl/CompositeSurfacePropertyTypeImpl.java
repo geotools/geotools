@@ -659,7 +659,7 @@ public class CompositeSurfacePropertyTypeImpl extends MinimalEObjectImpl.Contain
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.COMPOSITE_SURFACE_PROPERTY_TYPE__COMPOSITE_SURFACE:
-                setCompositeSurface((CompositeSurfaceType)null);
+                setCompositeSurface(null);
                 return;
             case Gml311Package.COMPOSITE_SURFACE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

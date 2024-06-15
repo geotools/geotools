@@ -659,7 +659,7 @@ public class CoordinateSystemAxisRefTypeImpl extends MinimalEObjectImpl.Containe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.COORDINATE_SYSTEM_AXIS_REF_TYPE__COORDINATE_SYSTEM_AXIS:
-                setCoordinateSystemAxis((CoordinateSystemAxisType)null);
+                setCoordinateSystemAxis(null);
                 return;
             case Gml311Package.COORDINATE_SYSTEM_AXIS_REF_TYPE__ACTUATE:
                 unsetActuate();

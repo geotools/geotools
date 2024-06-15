@@ -282,13 +282,13 @@ public class PointTypeImpl extends AbstractGeometricPrimitiveTypeImpl implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.POINT_TYPE__POS:
-                setPos((DirectPositionType)null);
+                setPos(null);
                 return;
             case Gml311Package.POINT_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.POINT_TYPE__COORD:
-                setCoord((CoordType)null);
+                setCoord(null);
                 return;
         }
         super.eUnset(featureID);

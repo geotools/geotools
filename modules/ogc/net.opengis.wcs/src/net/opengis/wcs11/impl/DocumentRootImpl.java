@@ -252,7 +252,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setAvailableKeys(AvailableKeysType newAvailableKeys) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__AVAILABLE_KEYS, newAvailableKeys);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__AVAILABLE_KEYS, newAvailableKeys);
     }
 
     /**
@@ -281,7 +281,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setAxisSubset(AxisSubsetType newAxisSubset) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__AXIS_SUBSET, newAxisSubset);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__AXIS_SUBSET, newAxisSubset);
     }
 
     /**
@@ -310,7 +310,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setCapabilities(CapabilitiesType newCapabilities) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
     }
 
     /**
@@ -339,7 +339,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setContents(ContentsType newContents) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__CONTENTS, newContents);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__CONTENTS, newContents);
     }
 
     /**
@@ -368,7 +368,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setCoverage(ReferenceGroupType newCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGE, newCoverage);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGE, newCoverage);
     }
 
     /**
@@ -397,7 +397,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setCoverageDescriptions(CoverageDescriptionsType newCoverageDescriptions) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGE_DESCRIPTIONS, newCoverageDescriptions);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGE_DESCRIPTIONS, newCoverageDescriptions);
     }
 
     /**
@@ -426,7 +426,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setCoverages(CoveragesType newCoverages) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGES, newCoverages);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGES, newCoverages);
     }
 
     /**
@@ -455,7 +455,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setCoverageSummary(CoverageSummaryType newCoverageSummary) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGE_SUMMARY, newCoverageSummary);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__COVERAGE_SUMMARY, newCoverageSummary);
     }
 
     /**
@@ -484,7 +484,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setDescribeCoverage(DescribeCoverageType newDescribeCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__DESCRIBE_COVERAGE, newDescribeCoverage);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__DESCRIBE_COVERAGE, newDescribeCoverage);
     }
 
     /**
@@ -513,7 +513,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
     }
 
     /**
@@ -542,7 +542,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGetCoverage(GetCoverageType newGetCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GET_COVERAGE, newGetCoverage);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GET_COVERAGE, newGetCoverage);
     }
 
     /**
@@ -562,7 +562,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGridBaseCRS(String newGridBaseCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_BASE_CRS, newGridBaseCRS);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_BASE_CRS, newGridBaseCRS);
     }
 
     /**
@@ -591,7 +591,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGridCRS(GridCrsType newGridCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_CRS, newGridCRS);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_CRS, newGridCRS);
     }
 
     /**
@@ -611,7 +611,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGridCS(String newGridCS) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_CS, newGridCS);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_CS, newGridCS);
     }
 
     /**
@@ -631,7 +631,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGridOffsets(Object newGridOffsets) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_OFFSETS, newGridOffsets);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_OFFSETS, newGridOffsets);
     }
 
     /**
@@ -651,7 +651,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGridOrigin(Object newGridOrigin) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_ORIGIN, newGridOrigin);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_ORIGIN, newGridOrigin);
     }
 
     /**
@@ -671,7 +671,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setGridType(String newGridType) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_TYPE, newGridType);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__GRID_TYPE, newGridType);
     }
 
     /**
@@ -691,7 +691,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setIdentifier(String newIdentifier) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__IDENTIFIER, newIdentifier);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__IDENTIFIER, newIdentifier);
     }
 
     /**
@@ -720,7 +720,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setInterpolationMethods(InterpolationMethodsType newInterpolationMethods) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__INTERPOLATION_METHODS, newInterpolationMethods);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__INTERPOLATION_METHODS, newInterpolationMethods);
     }
 
     /**
@@ -749,7 +749,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setTemporalDomain(TimeSequenceType newTemporalDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__TEMPORAL_DOMAIN, newTemporalDomain);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__TEMPORAL_DOMAIN, newTemporalDomain);
     }
 
     /**
@@ -778,7 +778,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
      */
     @Override
     public void setTemporalSubset(TimeSequenceType newTemporalSubset) {
-        ((FeatureMap.Internal)getMixed()).set(Wcs111Package.Literals.DOCUMENT_ROOT__TEMPORAL_SUBSET, newTemporalSubset);
+        getMixed().set(Wcs111Package.Literals.DOCUMENT_ROOT__TEMPORAL_SUBSET, newTemporalSubset);
     }
 
     /**
@@ -994,43 +994,43 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 getXSISchemaLocation().clear();
                 return;
             case Wcs111Package.DOCUMENT_ROOT__AVAILABLE_KEYS:
-                setAvailableKeys((AvailableKeysType)null);
+                setAvailableKeys(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__AXIS_SUBSET:
-                setAxisSubset((AxisSubsetType)null);
+                setAxisSubset(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__CAPABILITIES:
-                setCapabilities((CapabilitiesType)null);
+                setCapabilities(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__CONTENTS:
-                setContents((ContentsType)null);
+                setContents(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__COVERAGE:
-                setCoverage((ReferenceGroupType)null);
+                setCoverage(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__COVERAGE_DESCRIPTIONS:
-                setCoverageDescriptions((CoverageDescriptionsType)null);
+                setCoverageDescriptions(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__COVERAGES:
-                setCoverages((CoveragesType)null);
+                setCoverages(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__COVERAGE_SUMMARY:
-                setCoverageSummary((CoverageSummaryType)null);
+                setCoverageSummary(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__DESCRIBE_COVERAGE:
-                setDescribeCoverage((DescribeCoverageType)null);
+                setDescribeCoverage(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-                setGetCapabilities((GetCapabilitiesType)null);
+                setGetCapabilities(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__GET_COVERAGE:
-                setGetCoverage((GetCoverageType)null);
+                setGetCoverage(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__GRID_BASE_CRS:
                 setGridBaseCRS(GRID_BASE_CRS_EDEFAULT);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__GRID_CRS:
-                setGridCRS((GridCrsType)null);
+                setGridCRS(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__GRID_CS:
                 setGridCS(GRID_CS_EDEFAULT);
@@ -1048,13 +1048,13 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
                 setIdentifier(IDENTIFIER_EDEFAULT);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__INTERPOLATION_METHODS:
-                setInterpolationMethods((InterpolationMethodsType)null);
+                setInterpolationMethods(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__TEMPORAL_DOMAIN:
-                setTemporalDomain((TimeSequenceType)null);
+                setTemporalDomain(null);
                 return;
             case Wcs111Package.DOCUMENT_ROOT__TEMPORAL_SUBSET:
-                setTemporalSubset((TimeSequenceType)null);
+                setTemporalSubset(null);
                 return;
         }
         super.eUnset(featureID);

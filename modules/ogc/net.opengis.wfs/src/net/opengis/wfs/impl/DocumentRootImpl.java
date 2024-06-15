@@ -219,7 +219,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setDelete(DeleteElementType newDelete) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__DELETE, newDelete);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__DELETE, newDelete);
   }
 
 	/**
@@ -248,7 +248,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setDescribeFeatureType(DescribeFeatureTypeType newDescribeFeatureType) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__DESCRIBE_FEATURE_TYPE, newDescribeFeatureType);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__DESCRIBE_FEATURE_TYPE, newDescribeFeatureType);
   }
 
 	/**
@@ -277,7 +277,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setFeatureCollection(FeatureCollectionType newFeatureCollection) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__FEATURE_COLLECTION, newFeatureCollection);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__FEATURE_COLLECTION, newFeatureCollection);
   }
 
 	/**
@@ -306,7 +306,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setFeatureTypeList(FeatureTypeListType newFeatureTypeList) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__FEATURE_TYPE_LIST, newFeatureTypeList);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__FEATURE_TYPE_LIST, newFeatureTypeList);
   }
 
 	/**
@@ -335,7 +335,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
   }
 
 	/**
@@ -364,7 +364,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setGetFeature(GetFeatureType newGetFeature) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__GET_FEATURE, newGetFeature);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__GET_FEATURE, newGetFeature);
   }
 
 	/**
@@ -393,7 +393,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setGetFeatureWithLock(GetFeatureWithLockType newGetFeatureWithLock) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__GET_FEATURE_WITH_LOCK, newGetFeatureWithLock);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__GET_FEATURE_WITH_LOCK, newGetFeatureWithLock);
   }
 
 	/**
@@ -422,7 +422,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setGetGmlObject(GetGmlObjectType newGetGmlObject) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__GET_GML_OBJECT, newGetGmlObject);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__GET_GML_OBJECT, newGetGmlObject);
   }
 
 	/**
@@ -451,7 +451,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setInsert(InsertElementType newInsert) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__INSERT, newInsert);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__INSERT, newInsert);
   }
 
 	/**
@@ -480,7 +480,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setLockFeature(LockFeatureType newLockFeature) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__LOCK_FEATURE, newLockFeature);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__LOCK_FEATURE, newLockFeature);
   }
 
 	/**
@@ -509,7 +509,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setLockFeatureResponse(LockFeatureResponseType newLockFeatureResponse) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__LOCK_FEATURE_RESPONSE, newLockFeatureResponse);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__LOCK_FEATURE_RESPONSE, newLockFeatureResponse);
   }
 
 	/**
@@ -529,7 +529,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setLockId(String newLockId) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__LOCK_ID, newLockId);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__LOCK_ID, newLockId);
   }
 
 	/**
@@ -558,7 +558,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setNative(NativeType newNative) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__NATIVE, newNative);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__NATIVE, newNative);
   }
 
 	/**
@@ -587,7 +587,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setProperty(PropertyType newProperty) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__PROPERTY, newProperty);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__PROPERTY, newProperty);
   }
 
 	/**
@@ -607,7 +607,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setPropertyName(String newPropertyName) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__PROPERTY_NAME, newPropertyName);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__PROPERTY_NAME, newPropertyName);
   }
 
 	/**
@@ -636,7 +636,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setQuery(QueryType newQuery) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__QUERY, newQuery);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__QUERY, newQuery);
   }
 
 	/**
@@ -665,7 +665,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setServesGMLObjectTypeList(GMLObjectTypeListType newServesGMLObjectTypeList) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__SERVES_GML_OBJECT_TYPE_LIST, newServesGMLObjectTypeList);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__SERVES_GML_OBJECT_TYPE_LIST, newServesGMLObjectTypeList);
   }
 
 	/**
@@ -694,7 +694,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setSupportsGMLObjectTypeList(GMLObjectTypeListType newSupportsGMLObjectTypeList) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__SUPPORTS_GML_OBJECT_TYPE_LIST, newSupportsGMLObjectTypeList);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__SUPPORTS_GML_OBJECT_TYPE_LIST, newSupportsGMLObjectTypeList);
   }
 
 	/**
@@ -723,7 +723,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setTransaction(TransactionType newTransaction) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__TRANSACTION, newTransaction);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__TRANSACTION, newTransaction);
   }
 
 	/**
@@ -752,7 +752,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setTransactionResponse(TransactionResponseType newTransactionResponse) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__TRANSACTION_RESPONSE, newTransactionResponse);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__TRANSACTION_RESPONSE, newTransactionResponse);
   }
 
 	/**
@@ -781,7 +781,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setUpdate(UpdateElementType newUpdate) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__UPDATE, newUpdate);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__UPDATE, newUpdate);
   }
 
 	/**
@@ -810,7 +810,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setWfsCapabilities(WFSCapabilitiesType newWfsCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__WFS_CAPABILITIES, newWfsCapabilities);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__WFS_CAPABILITIES, newWfsCapabilities);
   }
 
 	/**
@@ -839,7 +839,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setXlinkPropertyName(XlinkPropertyNameType newXlinkPropertyName) {
-    ((FeatureMap.Internal)getMixed()).set(WfsPackage.Literals.DOCUMENT_ROOT__XLINK_PROPERTY_NAME, newXlinkPropertyName);
+    getMixed().set(WfsPackage.Literals.DOCUMENT_ROOT__XLINK_PROPERTY_NAME, newXlinkPropertyName);
   }
 
 	/**
@@ -1077,73 +1077,73 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         getXSISchemaLocation().clear();
         return;
       case WfsPackage.DOCUMENT_ROOT__DELETE:
-        setDelete((DeleteElementType)null);
+        setDelete(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__DESCRIBE_FEATURE_TYPE:
-        setDescribeFeatureType((DescribeFeatureTypeType)null);
+        setDescribeFeatureType(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__FEATURE_COLLECTION:
-        setFeatureCollection((FeatureCollectionType)null);
+        setFeatureCollection(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__FEATURE_TYPE_LIST:
-        setFeatureTypeList((FeatureTypeListType)null);
+        setFeatureTypeList(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__GET_CAPABILITIES:
-        setGetCapabilities((GetCapabilitiesType)null);
+        setGetCapabilities(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__GET_FEATURE:
-        setGetFeature((GetFeatureType)null);
+        setGetFeature(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__GET_FEATURE_WITH_LOCK:
-        setGetFeatureWithLock((GetFeatureWithLockType)null);
+        setGetFeatureWithLock(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__GET_GML_OBJECT:
-        setGetGmlObject((GetGmlObjectType)null);
+        setGetGmlObject(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__INSERT:
-        setInsert((InsertElementType)null);
+        setInsert(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__LOCK_FEATURE:
-        setLockFeature((LockFeatureType)null);
+        setLockFeature(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__LOCK_FEATURE_RESPONSE:
-        setLockFeatureResponse((LockFeatureResponseType)null);
+        setLockFeatureResponse(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);
         return;
       case WfsPackage.DOCUMENT_ROOT__NATIVE:
-        setNative((NativeType)null);
+        setNative(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__PROPERTY:
-        setProperty((PropertyType)null);
+        setProperty(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__PROPERTY_NAME:
         setPropertyName(PROPERTY_NAME_EDEFAULT);
         return;
       case WfsPackage.DOCUMENT_ROOT__QUERY:
-        setQuery((QueryType)null);
+        setQuery(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__SERVES_GML_OBJECT_TYPE_LIST:
-        setServesGMLObjectTypeList((GMLObjectTypeListType)null);
+        setServesGMLObjectTypeList(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__SUPPORTS_GML_OBJECT_TYPE_LIST:
-        setSupportsGMLObjectTypeList((GMLObjectTypeListType)null);
+        setSupportsGMLObjectTypeList(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__TRANSACTION:
-        setTransaction((TransactionType)null);
+        setTransaction(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__TRANSACTION_RESPONSE:
-        setTransactionResponse((TransactionResponseType)null);
+        setTransactionResponse(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__UPDATE:
-        setUpdate((UpdateElementType)null);
+        setUpdate(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__WFS_CAPABILITIES:
-        setWfsCapabilities((WFSCapabilitiesType)null);
+        setWfsCapabilities(null);
         return;
       case WfsPackage.DOCUMENT_ROOT__XLINK_PROPERTY_NAME:
-        setXlinkPropertyName((XlinkPropertyNameType)null);
+        setXlinkPropertyName(null);
         return;
     }
     super.eUnset(featureID);

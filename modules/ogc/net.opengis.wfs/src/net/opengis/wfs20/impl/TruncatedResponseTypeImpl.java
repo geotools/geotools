@@ -160,7 +160,7 @@ public class TruncatedResponseTypeImpl extends EObjectImpl implements TruncatedR
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.TRUNCATED_RESPONSE_TYPE__EXCEPTION_REPORT:
-        setExceptionReport((ExceptionReportType)null);
+        setExceptionReport(null);
         return;
     }
     super.eUnset(featureID);

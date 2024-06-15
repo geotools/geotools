@@ -201,7 +201,7 @@ public class ListTypeImpl extends AnnotatedImpl implements ListType {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.LIST_TYPE__SIMPLE_TYPE:
-				setSimpleType((LocalSimpleType)null);
+				setSimpleType(null);
 				return;
 			case SchemaPackage.LIST_TYPE__ITEM_TYPE:
 				setItemType(ITEM_TYPE_EDEFAULT);

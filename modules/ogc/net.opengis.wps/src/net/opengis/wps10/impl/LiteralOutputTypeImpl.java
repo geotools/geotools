@@ -224,10 +224,10 @@ public class LiteralOutputTypeImpl extends EObjectImpl implements LiteralOutputT
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_OUTPUT_TYPE__DATA_TYPE:
-        setDataType((DomainMetadataType)null);
+        setDataType(null);
         return;
       case Wps10Package.LITERAL_OUTPUT_TYPE__UO_MS:
-        setUOMs((SupportedUOMsType)null);
+        setUOMs(null);
         return;
     }
     super.eUnset(featureID);

@@ -50,7 +50,7 @@ public class CharsetConverterFactory implements ConverterFactory {
             return new Converter() {
                 @Override
                 public <T> T convert(Object source, Class<T> target) throws Exception {
-                    return target.cast(((Charset) source).toString());
+                    return target.cast(source.toString());
                 }
             };
         }

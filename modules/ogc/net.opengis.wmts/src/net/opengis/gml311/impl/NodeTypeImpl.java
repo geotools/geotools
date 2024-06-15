@@ -198,7 +198,7 @@ public class NodeTypeImpl extends AbstractTopoPrimitiveTypeImpl implements NodeT
                 getDirectedEdge().clear();
                 return;
             case Gml311Package.NODE_TYPE__POINT_PROPERTY:
-                setPointProperty((PointPropertyType)null);
+                setPointProperty(null);
                 return;
         }
         super.eUnset(featureID);

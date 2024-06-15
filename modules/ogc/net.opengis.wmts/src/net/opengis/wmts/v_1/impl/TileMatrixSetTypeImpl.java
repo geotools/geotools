@@ -220,7 +220,7 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
      */
     @Override
     public void setBoundingBox(BoundingBoxType newBoundingBox) {
-        ((FeatureMap.Internal)getBoundingBoxGroup()).set(wmtsv_1Package.Literals.TILE_MATRIX_SET_TYPE__BOUNDING_BOX, newBoundingBox);
+        getBoundingBoxGroup().set(wmtsv_1Package.Literals.TILE_MATRIX_SET_TYPE__BOUNDING_BOX, newBoundingBox);
     }
 
     /**
@@ -368,13 +368,13 @@ public class TileMatrixSetTypeImpl extends DescriptionTypeImpl implements TileMa
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.TILE_MATRIX_SET_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
+                setIdentifier(null);
                 return;
             case wmtsv_1Package.TILE_MATRIX_SET_TYPE__BOUNDING_BOX_GROUP:
                 getBoundingBoxGroup().clear();
                 return;
             case wmtsv_1Package.TILE_MATRIX_SET_TYPE__BOUNDING_BOX:
-                setBoundingBox((BoundingBoxType)null);
+                setBoundingBox(null);
                 return;
             case wmtsv_1Package.TILE_MATRIX_SET_TYPE__SUPPORTED_CRS:
                 setSupportedCRS(SUPPORTED_CRS_EDEFAULT);

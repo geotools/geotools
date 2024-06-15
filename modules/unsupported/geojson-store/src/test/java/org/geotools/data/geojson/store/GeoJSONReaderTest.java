@@ -153,7 +153,7 @@ public class GeoJSONReaderTest {
         SimpleFeatureCollection features = GeoJSONReader.parseFeatureCollection(geojson1);
         assertNotNull(features);
         assertFalse(features.isEmpty());
-        f = (SimpleFeature) DataUtilities.first(features);
+        f = DataUtilities.first(features);
 
         assertNotNull(f);
         assertEquals("features.0", f.getID());
@@ -253,7 +253,7 @@ public class GeoJSONReaderTest {
             FeatureCollection<SimpleFeatureType, SimpleFeature> features = reader.getFeatures();
             assertNotNull(features);
             assertFalse(features.isEmpty());
-            f = (SimpleFeature) DataUtilities.first(features);
+            f = DataUtilities.first(features);
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "", e);
         }

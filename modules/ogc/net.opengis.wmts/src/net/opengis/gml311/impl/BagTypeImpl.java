@@ -198,7 +198,7 @@ public class BagTypeImpl extends AbstractGMLTypeImpl implements BagType {
                 getMember().clear();
                 return;
             case Gml311Package.BAG_TYPE__MEMBERS:
-                setMembers((ArrayAssociationType)null);
+                setMembers(null);
                 return;
         }
         super.eUnset(featureID);

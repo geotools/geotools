@@ -773,28 +773,28 @@ public class ArcByCenterPointTypeImpl extends AbstractCurveSegmentTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__POS:
-                setPos((DirectPositionType)null);
+                setPos(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__POINT_PROPERTY:
-                setPointProperty((PointPropertyType)null);
+                setPointProperty(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__POINT_REP:
-                setPointRep((PointPropertyType)null);
+                setPointRep(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__RADIUS:
-                setRadius((LengthType)null);
+                setRadius(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__START_ANGLE:
-                setStartAngle((AngleType)null);
+                setStartAngle(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__END_ANGLE:
-                setEndAngle((AngleType)null);
+                setEndAngle(null);
                 return;
             case Gml311Package.ARC_BY_CENTER_POINT_TYPE__INTERPOLATION:
                 unsetInterpolation();

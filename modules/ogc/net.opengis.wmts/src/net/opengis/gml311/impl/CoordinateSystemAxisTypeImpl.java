@@ -374,13 +374,13 @@ public class CoordinateSystemAxisTypeImpl extends CoordinateSystemAxisBaseTypeIm
                 getAxisID().clear();
                 return;
             case Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__AXIS_ABBREV:
-                setAxisAbbrev((CodeType)null);
+                setAxisAbbrev(null);
                 return;
             case Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__AXIS_DIRECTION:
-                setAxisDirection((CodeType)null);
+                setAxisDirection(null);
                 return;
             case Gml311Package.COORDINATE_SYSTEM_AXIS_TYPE__UOM:
                 setUom(UOM_EDEFAULT);

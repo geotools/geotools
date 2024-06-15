@@ -159,7 +159,7 @@ public class ComplexDataCombinationTypeImpl extends EObjectImpl implements Compl
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.COMPLEX_DATA_COMBINATION_TYPE__FORMAT:
-        setFormat((ComplexDataDescriptionType)null);
+        setFormat(null);
         return;
     }
     super.eUnset(featureID);

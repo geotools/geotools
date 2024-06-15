@@ -236,7 +236,7 @@ public class ControlPointTypeImpl extends MinimalEObjectImpl.Container implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CONTROL_POINT_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.CONTROL_POINT_TYPE__GEOMETRIC_POSITION_GROUP:
                 getGeometricPositionGroup().clear();

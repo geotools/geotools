@@ -154,7 +154,7 @@ public class TriangulatedSurfaceTypeImpl extends SurfaceTypeImpl implements Tria
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TRIANGULATED_SURFACE_TYPE__TRIANGLE_PATCHES:
-                setTrianglePatches((TrianglePatchArrayPropertyType)null);
+                setTrianglePatches(null);
                 return;
         }
         super.eUnset(featureID);

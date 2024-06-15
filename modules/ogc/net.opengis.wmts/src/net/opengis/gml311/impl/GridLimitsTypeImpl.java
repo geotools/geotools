@@ -155,7 +155,7 @@ public class GridLimitsTypeImpl extends MinimalEObjectImpl.Container implements 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GRID_LIMITS_TYPE__GRID_ENVELOPE:
-                setGridEnvelope((GridEnvelopeType)null);
+                setGridEnvelope(null);
                 return;
         }
         super.eUnset(featureID);

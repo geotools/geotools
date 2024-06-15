@@ -659,7 +659,7 @@ public class ImageCRSRefTypeImpl extends MinimalEObjectImpl.Container implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.IMAGE_CRS_REF_TYPE__IMAGE_CRS:
-                setImageCRS((ImageCRSType)null);
+                setImageCRS(null);
                 return;
             case Gml311Package.IMAGE_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

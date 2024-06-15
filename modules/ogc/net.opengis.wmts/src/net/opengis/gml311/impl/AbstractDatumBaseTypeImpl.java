@@ -154,7 +154,7 @@ public abstract class AbstractDatumBaseTypeImpl extends DefinitionTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_DATUM_BASE_TYPE__DATUM_NAME:
-                setDatumName((CodeType)null);
+                setDatumName(null);
                 return;
         }
         super.eUnset(featureID);

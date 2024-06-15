@@ -119,7 +119,7 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
      */
     @Override
     public void setBoundingBox(BoundingBoxType newBoundingBox) {
-        ((FeatureMap.Internal)getBoundingBoxGroup()).set(Wcs111Package.Literals.DOMAIN_SUBSET_TYPE__BOUNDING_BOX, newBoundingBox);
+        getBoundingBoxGroup().set(Wcs111Package.Literals.DOMAIN_SUBSET_TYPE__BOUNDING_BOX, newBoundingBox);
     }
 
     /**
@@ -237,10 +237,10 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
                 getBoundingBoxGroup().clear();
                 return;
             case Wcs111Package.DOMAIN_SUBSET_TYPE__BOUNDING_BOX:
-                setBoundingBox((BoundingBoxType)null);
+                setBoundingBox(null);
                 return;
             case Wcs111Package.DOMAIN_SUBSET_TYPE__TEMPORAL_SUBSET:
-                setTemporalSubset((TimeSequenceType)null);
+                setTemporalSubset(null);
                 return;
         }
         super.eUnset(featureID);

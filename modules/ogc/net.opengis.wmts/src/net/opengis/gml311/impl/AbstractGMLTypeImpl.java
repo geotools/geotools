@@ -302,7 +302,7 @@ public abstract class AbstractGMLTypeImpl extends MinimalEObjectImpl.Container i
                 getMetaDataProperty().clear();
                 return;
             case Gml311Package.ABSTRACT_GML_TYPE__DESCRIPTION:
-                setDescription((StringOrRefType)null);
+                setDescription(null);
                 return;
             case Gml311Package.ABSTRACT_GML_TYPE__NAME_GROUP:
                 getNameGroup().clear();

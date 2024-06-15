@@ -538,7 +538,7 @@ public class InputReferenceTypeImpl extends EObjectImpl implements InputReferenc
         setBody(BODY_EDEFAULT);
         return;
       case Wps10Package.INPUT_REFERENCE_TYPE__BODY_REFERENCE:
-        setBodyReference((BodyReferenceType)null);
+        setBodyReference(null);
         return;
       case Wps10Package.INPUT_REFERENCE_TYPE__ENCODING:
         setEncoding(ENCODING_EDEFAULT);

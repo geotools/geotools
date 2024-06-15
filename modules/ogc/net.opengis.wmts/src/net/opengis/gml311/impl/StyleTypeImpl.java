@@ -198,7 +198,7 @@ public class StyleTypeImpl extends AbstractStyleTypeImpl implements StyleType {
                 getFeatureStyle().clear();
                 return;
             case Gml311Package.STYLE_TYPE__GRAPH_STYLE:
-                setGraphStyle((GraphStylePropertyType)null);
+                setGraphStyle(null);
                 return;
         }
         super.eUnset(featureID);

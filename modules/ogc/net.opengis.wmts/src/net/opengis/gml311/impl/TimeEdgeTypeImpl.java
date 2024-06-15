@@ -281,13 +281,13 @@ public class TimeEdgeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_EDGE_TYPE__START:
-                setStart((TimeNodePropertyType)null);
+                setStart(null);
                 return;
             case Gml311Package.TIME_EDGE_TYPE__END:
-                setEnd((TimeNodePropertyType)null);
+                setEnd(null);
                 return;
             case Gml311Package.TIME_EDGE_TYPE__EXTENT:
-                setExtent((TimePeriodPropertyType)null);
+                setExtent(null);
                 return;
         }
         super.eUnset(featureID);

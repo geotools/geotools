@@ -350,7 +350,7 @@ public void eSet(int featureID, Object newValue) {
 public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
-        setServiceType((CodeType)null);
+        setServiceType(null);
         return;
       case Ows11Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE_VERSION:
         setServiceTypeVersion(SERVICE_TYPE_VERSION_EDEFAULT);

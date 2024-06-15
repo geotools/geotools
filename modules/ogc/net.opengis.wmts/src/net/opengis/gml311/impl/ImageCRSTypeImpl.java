@@ -282,13 +282,13 @@ public class ImageCRSTypeImpl extends AbstractReferenceSystemTypeImpl implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.IMAGE_CRS_TYPE__USES_CARTESIAN_CS:
-                setUsesCartesianCS((CartesianCSRefType)null);
+                setUsesCartesianCS(null);
                 return;
             case Gml311Package.IMAGE_CRS_TYPE__USES_OBLIQUE_CARTESIAN_CS:
-                setUsesObliqueCartesianCS((ObliqueCartesianCSRefType)null);
+                setUsesObliqueCartesianCS(null);
                 return;
             case Gml311Package.IMAGE_CRS_TYPE__USES_IMAGE_DATUM:
-                setUsesImageDatum((ImageDatumRefType)null);
+                setUsesImageDatum(null);
                 return;
         }
         super.eUnset(featureID);

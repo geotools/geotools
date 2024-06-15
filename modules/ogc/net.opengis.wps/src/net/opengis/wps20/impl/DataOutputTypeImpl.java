@@ -323,13 +323,13 @@ public class DataOutputTypeImpl extends MinimalEObjectImpl.Container implements 
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.DATA_OUTPUT_TYPE__DATA:
-				setData((DataType)null);
+				setData(null);
 				return;
 			case Wps20Package.DATA_OUTPUT_TYPE__REFERENCE:
-				setReference((ReferenceType)null);
+				setReference(null);
 				return;
 			case Wps20Package.DATA_OUTPUT_TYPE__OUTPUT:
-				setOutput((DataOutputType)null);
+				setOutput(null);
 				return;
 			case Wps20Package.DATA_OUTPUT_TYPE__ID:
 				setId(ID_EDEFAULT);

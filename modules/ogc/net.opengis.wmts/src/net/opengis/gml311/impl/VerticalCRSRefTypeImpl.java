@@ -659,7 +659,7 @@ public class VerticalCRSRefTypeImpl extends MinimalEObjectImpl.Container impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.VERTICAL_CRS_REF_TYPE__VERTICAL_CRS:
-                setVerticalCRS((VerticalCRSType)null);
+                setVerticalCRS(null);
                 return;
             case Gml311Package.VERTICAL_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

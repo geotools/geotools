@@ -526,16 +526,16 @@ public class ExtensionTypeImpl extends AnnotatedImpl implements ExtensionType {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.EXTENSION_TYPE__GROUP:
-				setGroup((GroupRef)null);
+				setGroup(null);
 				return;
 			case SchemaPackage.EXTENSION_TYPE__ALL:
-				setAll((All)null);
+				setAll(null);
 				return;
 			case SchemaPackage.EXTENSION_TYPE__CHOICE:
-				setChoice((ExplicitGroup)null);
+				setChoice(null);
 				return;
 			case SchemaPackage.EXTENSION_TYPE__SEQUENCE:
-				setSequence((ExplicitGroup)null);
+				setSequence(null);
 				return;
 			case SchemaPackage.EXTENSION_TYPE__GROUP1:
 				getGroup1().clear();
@@ -547,7 +547,7 @@ public class ExtensionTypeImpl extends AnnotatedImpl implements ExtensionType {
 				getAttributeGroup().clear();
 				return;
 			case SchemaPackage.EXTENSION_TYPE__ANY_ATTRIBUTE1:
-				setAnyAttribute1((Wildcard)null);
+				setAnyAttribute1(null);
 				return;
 			case SchemaPackage.EXTENSION_TYPE__BASE:
 				setBase(BASE_EDEFAULT);

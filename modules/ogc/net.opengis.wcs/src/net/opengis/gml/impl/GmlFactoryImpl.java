@@ -423,7 +423,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 		List result = new ArrayList();
 		for (StringTokenizer stringTokenizer = new StringTokenizer(initialValue); stringTokenizer.hasMoreTokens(); ) {
 			String item = stringTokenizer.nextToken();
-			result.add((Double)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DOUBLE, item));
+			result.add(
+                    XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.DOUBLE, item));
 		}
 		return result;
 	}
@@ -455,7 +456,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 		List result = new ArrayList();
 		for (StringTokenizer stringTokenizer = new StringTokenizer(initialValue); stringTokenizer.hasMoreTokens(); ) {
 			String item = stringTokenizer.nextToken();
-			result.add((BigInteger)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.INTEGER, item));
+			result.add(
+                    XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.INTEGER, item));
 		}
 		return result;
 	}
@@ -487,7 +489,8 @@ public class GmlFactoryImpl extends EFactoryImpl implements GmlFactory {
 		List result = new ArrayList();
 		for (StringTokenizer stringTokenizer = new StringTokenizer(initialValue); stringTokenizer.hasMoreTokens(); ) {
 			String item = stringTokenizer.nextToken();
-			result.add((String)XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.NAME, item));
+			result.add(
+                    XMLTypeFactory.eINSTANCE.createFromString(XMLTypePackage.Literals.NAME, item));
 		}
 		return result;
 	}

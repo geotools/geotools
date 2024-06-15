@@ -218,10 +218,10 @@ public class EngineeringCRSTypeImpl extends AbstractReferenceSystemTypeImpl impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ENGINEERING_CRS_TYPE__USES_CS:
-                setUsesCS((CoordinateSystemRefType)null);
+                setUsesCS(null);
                 return;
             case Gml311Package.ENGINEERING_CRS_TYPE__USES_ENGINEERING_DATUM:
-                setUsesEngineeringDatum((EngineeringDatumRefType)null);
+                setUsesEngineeringDatum(null);
                 return;
         }
         super.eUnset(featureID);

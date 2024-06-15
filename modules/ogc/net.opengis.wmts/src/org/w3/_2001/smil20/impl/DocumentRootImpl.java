@@ -161,7 +161,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAnimate(AnimateType newAnimate) {
-        ((FeatureMap.Internal)getMixed()).set(Smil20Package.Literals.DOCUMENT_ROOT__ANIMATE, newAnimate);
+        getMixed().set(Smil20Package.Literals.DOCUMENT_ROOT__ANIMATE, newAnimate);
     }
 
     /**
@@ -190,7 +190,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAnimateColor(AnimateColorType newAnimateColor) {
-        ((FeatureMap.Internal)getMixed()).set(Smil20Package.Literals.DOCUMENT_ROOT__ANIMATE_COLOR, newAnimateColor);
+        getMixed().set(Smil20Package.Literals.DOCUMENT_ROOT__ANIMATE_COLOR, newAnimateColor);
     }
 
     /**
@@ -219,7 +219,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAnimateMotion(AnimateMotionType newAnimateMotion) {
-        ((FeatureMap.Internal)getMixed()).set(Smil20Package.Literals.DOCUMENT_ROOT__ANIMATE_MOTION, newAnimateMotion);
+        getMixed().set(Smil20Package.Literals.DOCUMENT_ROOT__ANIMATE_MOTION, newAnimateMotion);
     }
 
     /**
@@ -248,7 +248,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSet(SetType newSet) {
-        ((FeatureMap.Internal)getMixed()).set(Smil20Package.Literals.DOCUMENT_ROOT__SET, newSet);
+        getMixed().set(Smil20Package.Literals.DOCUMENT_ROOT__SET, newSet);
     }
 
     /**
@@ -357,16 +357,16 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 getXSISchemaLocation().clear();
                 return;
             case Smil20Package.DOCUMENT_ROOT__ANIMATE:
-                setAnimate((AnimateType)null);
+                setAnimate(null);
                 return;
             case Smil20Package.DOCUMENT_ROOT__ANIMATE_COLOR:
-                setAnimateColor((AnimateColorType)null);
+                setAnimateColor(null);
                 return;
             case Smil20Package.DOCUMENT_ROOT__ANIMATE_MOTION:
-                setAnimateMotion((AnimateMotionType)null);
+                setAnimateMotion(null);
                 return;
             case Smil20Package.DOCUMENT_ROOT__SET:
-                setSet((SetType)null);
+                setSet(null);
                 return;
         }
         super.eUnset(featureID);

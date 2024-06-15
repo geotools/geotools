@@ -301,7 +301,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
      */
     @Override
     public void setDefinition(DefinitionType newDefinition) {
-        ((FeatureMap.Internal)getDefinitionGroup()).set(Gml311Package.eINSTANCE.getDictionaryEntryType_Definition(), newDefinition);
+        getDefinitionGroup().set(Gml311Package.eINSTANCE.getDictionaryEntryType_Definition(), newDefinition);
     }
 
     /**
@@ -672,7 +672,7 @@ public class DictionaryEntryTypeImpl extends MinimalEObjectImpl.Container implem
                 getDefinitionGroup().clear();
                 return;
             case Gml311Package.DICTIONARY_ENTRY_TYPE__DEFINITION:
-                setDefinition((DefinitionType)null);
+                setDefinition(null);
                 return;
             case Gml311Package.DICTIONARY_ENTRY_TYPE__ACTUATE:
                 unsetActuate();

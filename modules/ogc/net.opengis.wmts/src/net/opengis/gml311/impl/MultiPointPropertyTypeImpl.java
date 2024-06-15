@@ -659,7 +659,7 @@ public class MultiPointPropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_POINT_PROPERTY_TYPE__MULTI_POINT:
-                setMultiPoint((MultiPointType)null);
+                setMultiPoint(null);
                 return;
             case Gml311Package.MULTI_POINT_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

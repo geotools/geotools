@@ -154,7 +154,7 @@ public class AbsoluteExternalPositionalAccuracyTypeImpl extends AbstractPosition
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSOLUTE_EXTERNAL_POSITIONAL_ACCURACY_TYPE__RESULT:
-                setResult((MeasureType)null);
+                setResult(null);
                 return;
         }
         super.eUnset(featureID);

@@ -659,7 +659,7 @@ public class TimePeriodPropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_PERIOD_PROPERTY_TYPE__TIME_PERIOD:
-                setTimePeriod((TimePeriodType)null);
+                setTimePeriod(null);
                 return;
             case Gml311Package.TIME_PERIOD_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

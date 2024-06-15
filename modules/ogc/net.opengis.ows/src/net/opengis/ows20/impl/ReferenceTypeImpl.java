@@ -298,7 +298,7 @@ public class ReferenceTypeImpl extends AbstractReferenceBaseTypeImpl implements 
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.REFERENCE_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows20Package.REFERENCE_TYPE__ABSTRACT:
         getAbstract().clear();

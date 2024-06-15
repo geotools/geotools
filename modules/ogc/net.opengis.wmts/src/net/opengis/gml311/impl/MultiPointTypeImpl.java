@@ -198,7 +198,7 @@ public class MultiPointTypeImpl extends AbstractGeometricAggregateTypeImpl imple
                 getPointMember().clear();
                 return;
             case Gml311Package.MULTI_POINT_TYPE__POINT_MEMBERS:
-                setPointMembers((PointArrayPropertyType)null);
+                setPointMembers(null);
                 return;
         }
         super.eUnset(featureID);

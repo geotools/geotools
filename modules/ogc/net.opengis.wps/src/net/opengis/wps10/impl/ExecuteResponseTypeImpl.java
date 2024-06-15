@@ -512,19 +512,19 @@ public class ExecuteResponseTypeImpl extends ResponseBaseTypeImpl implements Exe
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS:
-        setProcess((ProcessBriefType)null);
+        setProcess(null);
         return;
       case Wps10Package.EXECUTE_RESPONSE_TYPE__STATUS:
-        setStatus((StatusType)null);
+        setStatus(null);
         return;
       case Wps10Package.EXECUTE_RESPONSE_TYPE__DATA_INPUTS:
-        setDataInputs((DataInputsType1)null);
+        setDataInputs(null);
         return;
       case Wps10Package.EXECUTE_RESPONSE_TYPE__OUTPUT_DEFINITIONS:
-        setOutputDefinitions((OutputDefinitionsType)null);
+        setOutputDefinitions(null);
         return;
       case Wps10Package.EXECUTE_RESPONSE_TYPE__PROCESS_OUTPUTS:
-        setProcessOutputs((ProcessOutputsType1)null);
+        setProcessOutputs(null);
         return;
       case Wps10Package.EXECUTE_RESPONSE_TYPE__SERVICE_INSTANCE:
         setServiceInstance(SERVICE_INSTANCE_EDEFAULT);

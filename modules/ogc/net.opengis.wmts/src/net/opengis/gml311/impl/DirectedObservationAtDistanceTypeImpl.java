@@ -154,7 +154,7 @@ public class DirectedObservationAtDistanceTypeImpl extends DirectedObservationTy
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTED_OBSERVATION_AT_DISTANCE_TYPE__DISTANCE:
-                setDistance((MeasureType)null);
+                setDistance(null);
                 return;
         }
         super.eUnset(featureID);

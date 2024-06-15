@@ -441,10 +441,10 @@ public class DimensionTypeImpl extends DescriptionTypeImpl implements DimensionT
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.DIMENSION_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
+                setIdentifier(null);
                 return;
             case wmtsv_1Package.DIMENSION_TYPE__UOM:
-                setUOM((DomainMetadataType)null);
+                setUOM(null);
                 return;
             case wmtsv_1Package.DIMENSION_TYPE__UNIT_SYMBOL:
                 setUnitSymbol(UNIT_SYMBOL_EDEFAULT);

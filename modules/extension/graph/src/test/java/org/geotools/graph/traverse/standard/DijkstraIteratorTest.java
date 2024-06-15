@@ -69,8 +69,7 @@ public class DijkstraIteratorTest {
         GraphVisitor visitor =
                 component -> {
                     Assert.assertTrue(component.isVisited());
-                    Assert.assertEquals(
-                            iterator.getCost(component), (double) component.getID(), 0d);
+                    Assert.assertEquals(iterator.getCost(component), component.getID(), 0d);
                     if (component.getID() == 0) Assert.assertNull(iterator.getParent(component));
                     else
                         Assert.assertEquals(
@@ -141,8 +140,7 @@ public class DijkstraIteratorTest {
         visitor =
                 component -> {
                     Assert.assertTrue(component.isVisited());
-                    Assert.assertEquals(
-                            iterator.getCost(component), (double) component.getID(), 0d);
+                    Assert.assertEquals(iterator.getCost(component), component.getID(), 0d);
                     if (component.getID() == 0) Assert.assertNull(iterator.getParent(component));
                     else
                         Assert.assertEquals(
@@ -397,8 +395,7 @@ public class DijkstraIteratorTest {
                 component -> {
                     Graphable parent = iterator.getParent(component);
                     if (component.getID() < 50 && component.getID() > 0) {
-                        Assert.assertEquals(
-                                iterator.getCost(component), (double) component.getID(), 0d);
+                        Assert.assertEquals(iterator.getCost(component), component.getID(), 0d);
                         Assert.assertEquals(parent.getID(), component.getID() - 1, 0d);
                     } else if (component.getID() > 50 && component.getID() < 99) {
                         Assert.assertEquals(

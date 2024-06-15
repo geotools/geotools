@@ -161,8 +161,7 @@ public class DbaseFileTest extends TestCaseSupport {
         f.deleteOnExit();
         try (FileOutputStream fout = new FileOutputStream(f);
                 DbaseFileWriter dbf =
-                        new DbaseFileWriter(
-                                header, fout.getChannel(), Charset.defaultCharset())) {
+                        new DbaseFileWriter(header, fout.getChannel(), Charset.defaultCharset())) {
 
             for (int i = 0; i < header.getNumRecords(); i++) {
                 dbf.write(new Object[6]);

@@ -85,7 +85,7 @@ public class MBObjectParser {
      */
     public MBObjectParser(Class<?> context) {
         this.context = context;
-        this.sf = (StyleFactory) CommonFactoryFinder.getStyleFactory();
+        this.sf = CommonFactoryFinder.getStyleFactory();
         this.ff = CommonFactoryFinder.getFilterFactory();
     }
 
@@ -97,10 +97,7 @@ public class MBObjectParser {
      */
     public MBObjectParser(Class<MBFilter> context, MBObjectParser parse) {
         this.context = context;
-        sf =
-                parse == null
-                        ? (StyleFactory) CommonFactoryFinder.getStyleFactory()
-                        : parse.getStyleFactory();
+        sf = parse == null ? CommonFactoryFinder.getStyleFactory() : parse.getStyleFactory();
         ff = parse == null ? CommonFactoryFinder.getFilterFactory() : parse.getFilterFactory();
     }
 

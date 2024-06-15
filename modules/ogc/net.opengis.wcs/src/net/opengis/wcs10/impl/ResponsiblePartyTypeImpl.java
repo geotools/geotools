@@ -367,7 +367,7 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
 				setPositionName(POSITION_NAME_EDEFAULT);
 				return;
 			case Wcs10Package.RESPONSIBLE_PARTY_TYPE__CONTACT_INFO:
-				setContactInfo((ContactType)null);
+				setContactInfo(null);
 				return;
 		}
 		super.eUnset(featureID);

@@ -154,7 +154,7 @@ public abstract class AbstractCoordinateOperationBaseTypeImpl extends Definition
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_BASE_TYPE__COORDINATE_OPERATION_NAME:
-                setCoordinateOperationName((CodeType)null);
+                setCoordinateOperationName(null);
                 return;
         }
         super.eUnset(featureID);

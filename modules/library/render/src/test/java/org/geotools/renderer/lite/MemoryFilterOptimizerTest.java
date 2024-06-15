@@ -187,7 +187,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         List<String> inLiterals =
                 inFunction.getParameters().stream()
                         .filter(ex -> ex instanceof Literal)
-                        .map(ex -> ((Literal) ex).evaluate(null, String.class))
+                        .map(ex -> ex.evaluate(null, String.class))
                         .collect(Collectors.toList());
         assertTrue(inLiterals.contains("r1"));
         assertTrue(inLiterals.contains("r2"));
@@ -254,7 +254,7 @@ public class MemoryFilterOptimizerTest extends DataTestCase {
         List<String> inLiterals =
                 inFunction.getParameters().stream()
                         .filter(ex -> ex instanceof Literal)
-                        .map(ex -> ((Literal) ex).evaluate(null, String.class))
+                        .map(ex -> ex.evaluate(null, String.class))
                         .collect(Collectors.toList());
         assertTrue(inLiterals.contains("r1"));
         assertTrue(inLiterals.contains("r2"));

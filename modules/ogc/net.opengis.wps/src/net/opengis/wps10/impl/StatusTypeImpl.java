@@ -438,16 +438,16 @@ public class StatusTypeImpl extends EObjectImpl implements StatusType {
         setProcessAccepted(PROCESS_ACCEPTED_EDEFAULT);
         return;
       case Wps10Package.STATUS_TYPE__PROCESS_STARTED:
-        setProcessStarted((ProcessStartedType)null);
+        setProcessStarted(null);
         return;
       case Wps10Package.STATUS_TYPE__PROCESS_PAUSED:
-        setProcessPaused((ProcessStartedType)null);
+        setProcessPaused(null);
         return;
       case Wps10Package.STATUS_TYPE__PROCESS_SUCCEEDED:
         setProcessSucceeded(PROCESS_SUCCEEDED_EDEFAULT);
         return;
       case Wps10Package.STATUS_TYPE__PROCESS_FAILED:
-        setProcessFailed((ProcessFailedType)null);
+        setProcessFailed(null);
         return;
       case Wps10Package.STATUS_TYPE__CREATION_TIME:
         setCreationTime(CREATION_TIME_EDEFAULT);

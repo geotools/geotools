@@ -353,10 +353,10 @@ public class LineStringTypeImpl extends AbstractCurveTypeImpl implements LineStr
                 getCoord().clear();
                 return;
             case Gml311Package.LINE_STRING_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.LINE_STRING_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
         }
         super.eUnset(featureID);

@@ -158,7 +158,7 @@ public class ValuesTypeImpl extends ValueEnumTypeImpl implements ValuesType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUES_TYPE__DEFAULT:
-				setDefault((TypedLiteralType)null);
+				setDefault(null);
 				return;
 		}
 		super.eUnset(featureID);

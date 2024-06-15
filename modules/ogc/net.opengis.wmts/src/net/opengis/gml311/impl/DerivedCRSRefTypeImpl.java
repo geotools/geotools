@@ -659,7 +659,7 @@ public class DerivedCRSRefTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DERIVED_CRS_REF_TYPE__DERIVED_CRS:
-                setDerivedCRS((DerivedCRSType)null);
+                setDerivedCRS(null);
                 return;
             case Gml311Package.DERIVED_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

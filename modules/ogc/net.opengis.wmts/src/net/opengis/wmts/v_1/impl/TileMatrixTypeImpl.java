@@ -492,7 +492,7 @@ public class TileMatrixTypeImpl extends DescriptionTypeImpl implements TileMatri
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.TILE_MATRIX_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
+                setIdentifier(null);
                 return;
             case wmtsv_1Package.TILE_MATRIX_TYPE__SCALE_DENOMINATOR:
                 unsetScaleDenominator();

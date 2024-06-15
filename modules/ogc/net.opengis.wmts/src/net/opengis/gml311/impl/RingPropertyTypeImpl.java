@@ -155,7 +155,7 @@ public class RingPropertyTypeImpl extends MinimalEObjectImpl.Container implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.RING_PROPERTY_TYPE__RING:
-                setRing((RingType)null);
+                setRing(null);
                 return;
         }
         super.eUnset(featureID);

@@ -72,7 +72,7 @@ import org.w3c.dom.Node;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class FilterMockData {
-    static FilterFactory f = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory f = CommonFactoryFinder.getFilterFactory(null);
 
     public static Id id() {
         return f.id(

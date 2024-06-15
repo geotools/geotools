@@ -155,7 +155,7 @@ public class IndirectEntryTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.INDIRECT_ENTRY_TYPE__DEFINITION_PROXY:
-                setDefinitionProxy((DefinitionProxyType)null);
+                setDefinitionProxy(null);
                 return;
         }
         super.eUnset(featureID);

@@ -482,13 +482,13 @@ public void eSet(int featureID, Object newValue) {
 public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
-        setAcceptVersions((AcceptVersionsType)null);
+        setAcceptVersions(null);
         return;
       case Ows11Package.GET_CAPABILITIES_TYPE__SECTIONS:
-        setSections((SectionsType)null);
+        setSections(null);
         return;
       case Ows11Package.GET_CAPABILITIES_TYPE__ACCEPT_FORMATS:
-        setAcceptFormats((AcceptFormatsType)null);
+        setAcceptFormats(null);
         return;
       case Ows11Package.GET_CAPABILITIES_TYPE__UPDATE_SEQUENCE:
         setUpdateSequence(UPDATE_SEQUENCE_EDEFAULT);

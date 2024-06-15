@@ -211,7 +211,7 @@ public class ResourceIdentifierTypeImpl extends EObjectImpl implements ResourceI
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.RESOURCE_IDENTIFIER_TYPE__METADATA:
-                setMetadata((MetadataType)null);
+                setMetadata(null);
                 return;
             case Fes20Package.RESOURCE_IDENTIFIER_TYPE__NAME:
                 setName(NAME_EDEFAULT);

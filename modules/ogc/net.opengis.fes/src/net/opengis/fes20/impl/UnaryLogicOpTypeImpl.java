@@ -512,7 +512,7 @@ public class UnaryLogicOpTypeImpl extends LogicOpsTypeImpl implements UnaryLogic
                 getExtensionOpsGroup().clear();
                 return;
             case Fes20Package.UNARY_LOGIC_OP_TYPE__FUNCTION:
-                setFunction((FunctionType)null);
+                setFunction(null);
                 return;
             case Fes20Package.UNARY_LOGIC_OP_TYPE__ID_GROUP:
                 getIdGroup().clear();

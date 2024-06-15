@@ -537,13 +537,13 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
                 getCoordinateOperationID().clear();
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__OPERATION_VERSION:
                 setOperationVersion(OPERATION_VERSION_EDEFAULT);
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__VALID_AREA:
-                setValidArea((ExtentType)null);
+                setValidArea(null);
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__SCOPE:
                 setScope(SCOPE_EDEFAULT);
@@ -552,10 +552,10 @@ public abstract class AbstractCoordinateOperationTypeImpl extends AbstractCoordi
                 getPositionalAccuracyGroup().clear();
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__SOURCE_CRS:
-                setSourceCRS((CRSRefType)null);
+                setSourceCRS(null);
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_OPERATION_TYPE__TARGET_CRS:
-                setTargetCRS((CRSRefType)null);
+                setTargetCRS(null);
                 return;
         }
         super.eUnset(featureID);

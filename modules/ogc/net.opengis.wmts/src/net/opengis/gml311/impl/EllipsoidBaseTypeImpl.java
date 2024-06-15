@@ -154,7 +154,7 @@ public abstract class EllipsoidBaseTypeImpl extends DefinitionTypeImpl implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ELLIPSOID_BASE_TYPE__ELLIPSOID_NAME:
-                setEllipsoidName((CodeType)null);
+                setEllipsoidName(null);
                 return;
         }
         super.eUnset(featureID);

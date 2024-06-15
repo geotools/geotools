@@ -904,22 +904,22 @@ public abstract class ComplexTypeImpl extends AnnotatedImpl implements ComplexTy
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.COMPLEX_TYPE__SIMPLE_CONTENT:
-				setSimpleContent((SimpleContentType)null);
+				setSimpleContent(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__COMPLEX_CONTENT:
-				setComplexContent((ComplexContentType)null);
+				setComplexContent(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__GROUP:
-				setGroup((GroupRef)null);
+				setGroup(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__ALL:
-				setAll((All)null);
+				setAll(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__CHOICE:
-				setChoice((ExplicitGroup)null);
+				setChoice(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__SEQUENCE:
-				setSequence((ExplicitGroup)null);
+				setSequence(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__GROUP1:
 				getGroup1().clear();
@@ -931,7 +931,7 @@ public abstract class ComplexTypeImpl extends AnnotatedImpl implements ComplexTy
 				getAttributeGroup().clear();
 				return;
 			case SchemaPackage.COMPLEX_TYPE__ANY_ATTRIBUTE1:
-				setAnyAttribute1((Wildcard)null);
+				setAnyAttribute1(null);
 				return;
 			case SchemaPackage.COMPLEX_TYPE__ABSTRACT:
 				unsetAbstract();

@@ -154,7 +154,7 @@ public class ImageDatumTypeImpl extends AbstractDatumTypeImpl implements ImageDa
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.IMAGE_DATUM_TYPE__PIXEL_IN_CELL:
-                setPixelInCell((PixelInCellType)null);
+                setPixelInCell(null);
                 return;
         }
         super.eUnset(featureID);

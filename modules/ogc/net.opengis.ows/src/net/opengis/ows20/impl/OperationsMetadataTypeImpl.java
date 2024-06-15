@@ -270,7 +270,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
         getConstraint().clear();
         return;
       case Ows20Package.OPERATIONS_METADATA_TYPE__EXTENDED_CAPABILITIES:
-        setExtendedCapabilities((EObject)null);
+        setExtendedCapabilities(null);
         return;
     }
     super.eUnset(featureID);

@@ -381,13 +381,13 @@ public void eSet(int featureID, Object newValue) {
 public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_IDENTIFICATION:
-        setServiceIdentification((ServiceIdentificationType)null);
+        setServiceIdentification(null);
         return;
       case Ows11Package.CAPABILITIES_BASE_TYPE__SERVICE_PROVIDER:
-        setServiceProvider((ServiceProviderType)null);
+        setServiceProvider(null);
         return;
       case Ows11Package.CAPABILITIES_BASE_TYPE__OPERATIONS_METADATA:
-        setOperationsMetadata((OperationsMetadataType)null);
+        setOperationsMetadata(null);
         return;
       case Ows11Package.CAPABILITIES_BASE_TYPE__UPDATE_SEQUENCE:
         setUpdateSequence(UPDATE_SEQUENCE_EDEFAULT);

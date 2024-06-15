@@ -350,13 +350,13 @@ public class FieldTypeImpl extends DescriptionTypeImpl implements FieldType {
                 setIdentifier(IDENTIFIER_EDEFAULT);
                 return;
             case Wcs111Package.FIELD_TYPE__DEFINITION:
-                setDefinition((UnNamedDomainType)null);
+                setDefinition(null);
                 return;
             case Wcs111Package.FIELD_TYPE__NULL_VALUE:
                 getNullValue().clear();
                 return;
             case Wcs111Package.FIELD_TYPE__INTERPOLATION_METHODS:
-                setInterpolationMethods((InterpolationMethodsType)null);
+                setInterpolationMethods(null);
                 return;
             case Wcs111Package.FIELD_TYPE__AXIS:
                 getAxis().clear();

@@ -55,7 +55,7 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
         if (rule.getLegend() != null) {
             Graphic graphic = null;
             if (rule.getLegend() instanceof Graphic) {
-                graphic = (Graphic) rule.getLegend();
+                graphic = rule.getLegend();
             } else {
                 // convert org.geotools.api.style.GraphicLegend to org.geotools.api.style.Graphic
                 PointSymbolizer point = sf.createPointSymbolizer();

@@ -231,7 +231,7 @@ public abstract class AbstractCoordinateSystemTypeImpl extends AbstractCoordinat
                 getCsID().clear();
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_SYSTEM_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.ABSTRACT_COORDINATE_SYSTEM_TYPE__USES_AXIS:
                 getUsesAxis().clear();

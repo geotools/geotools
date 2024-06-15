@@ -903,7 +903,7 @@ public class RangeParametersTypeImpl extends MinimalEObjectImpl.Container implem
      */
     @Override
     public void setCompositeValue(CompositeValueType newCompositeValue) {
-        ((FeatureMap.Internal)getCompositeValueGroup()).set(Gml311Package.eINSTANCE.getRangeParametersType_CompositeValue(), newCompositeValue);
+        getCompositeValueGroup().set(Gml311Package.eINSTANCE.getRangeParametersType_CompositeValue(), newCompositeValue);
     }
 
     /**
@@ -1342,10 +1342,10 @@ public class RangeParametersTypeImpl extends MinimalEObjectImpl.Container implem
                 unsetBoolean();
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__CATEGORY:
-                setCategory((CodeType)null);
+                setCategory(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__QUANTITY:
-                setQuantity((MeasureType)null);
+                setQuantity(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__COUNT:
                 setCount(COUNT_EDEFAULT);
@@ -1354,19 +1354,19 @@ public class RangeParametersTypeImpl extends MinimalEObjectImpl.Container implem
                 setBooleanList(BOOLEAN_LIST_EDEFAULT);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__CATEGORY_LIST:
-                setCategoryList((CodeOrNullListType)null);
+                setCategoryList(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__QUANTITY_LIST:
-                setQuantityList((MeasureOrNullListType)null);
+                setQuantityList(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__COUNT_LIST:
                 setCountList(COUNT_LIST_EDEFAULT);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__CATEGORY_EXTENT:
-                setCategoryExtent((CategoryExtentType)null);
+                setCategoryExtent(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__QUANTITY_EXTENT:
-                setQuantityExtent((QuantityExtentType)null);
+                setQuantityExtent(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__COUNT_EXTENT:
                 setCountExtent(COUNT_EXTENT_EDEFAULT);
@@ -1375,7 +1375,7 @@ public class RangeParametersTypeImpl extends MinimalEObjectImpl.Container implem
                 getCompositeValueGroup().clear();
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__COMPOSITE_VALUE:
-                setCompositeValue((CompositeValueType)null);
+                setCompositeValue(null);
                 return;
             case Gml311Package.RANGE_PARAMETERS_TYPE__ACTUATE:
                 unsetActuate();

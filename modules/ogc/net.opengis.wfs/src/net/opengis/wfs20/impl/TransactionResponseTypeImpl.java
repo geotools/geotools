@@ -434,16 +434,16 @@ public class TransactionResponseTypeImpl extends EObjectImpl implements Transact
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.TRANSACTION_RESPONSE_TYPE__TRANSACTION_SUMMARY:
-        setTransactionSummary((TransactionSummaryType)null);
+        setTransactionSummary(null);
         return;
       case Wfs20Package.TRANSACTION_RESPONSE_TYPE__INSERT_RESULTS:
-        setInsertResults((ActionResultsType)null);
+        setInsertResults(null);
         return;
       case Wfs20Package.TRANSACTION_RESPONSE_TYPE__UPDATE_RESULTS:
-        setUpdateResults((ActionResultsType)null);
+        setUpdateResults(null);
         return;
       case Wfs20Package.TRANSACTION_RESPONSE_TYPE__REPLACE_RESULTS:
-        setReplaceResults((ActionResultsType)null);
+        setReplaceResults(null);
         return;
       case Wfs20Package.TRANSACTION_RESPONSE_TYPE__VERSION:
         unsetVersion();

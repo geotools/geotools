@@ -304,10 +304,10 @@ public class SecondDefiningParameterTypeImpl extends MinimalEObjectImpl.Containe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.SECOND_DEFINING_PARAMETER_TYPE__INVERSE_FLATTENING:
-                setInverseFlattening((MeasureType)null);
+                setInverseFlattening(null);
                 return;
             case Gml311Package.SECOND_DEFINING_PARAMETER_TYPE__SEMI_MINOR_AXIS:
-                setSemiMinorAxis((MeasureType)null);
+                setSemiMinorAxis(null);
                 return;
             case Gml311Package.SECOND_DEFINING_PARAMETER_TYPE__IS_SPHERE:
                 unsetIsSphere();

@@ -659,7 +659,7 @@ public class GeodeticDatumRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEODETIC_DATUM_REF_TYPE__GEODETIC_DATUM:
-                setGeodeticDatum((GeodeticDatumType)null);
+                setGeodeticDatum(null);
                 return;
             case Gml311Package.GEODETIC_DATUM_REF_TYPE__ACTUATE:
                 unsetActuate();

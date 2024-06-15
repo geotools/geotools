@@ -272,10 +272,10 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-        setFeaturesLocked((FeaturesLockedType)null);
+        setFeaturesLocked(null);
         return;
       case Wfs20Package.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-        setFeaturesNotLocked((FeaturesNotLockedType)null);
+        setFeaturesNotLocked(null);
         return;
       case Wfs20Package.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);

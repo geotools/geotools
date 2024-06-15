@@ -154,7 +154,7 @@ public class PolyhedralSurfaceTypeImpl extends SurfaceTypeImpl implements Polyhe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.POLYHEDRAL_SURFACE_TYPE__POLYGON_PATCHES:
-                setPolygonPatches((PolygonPatchArrayPropertyType)null);
+                setPolygonPatches(null);
                 return;
         }
         super.eUnset(featureID);

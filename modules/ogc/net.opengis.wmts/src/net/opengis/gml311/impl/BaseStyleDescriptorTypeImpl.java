@@ -328,7 +328,7 @@ public class BaseStyleDescriptorTypeImpl extends AbstractGMLTypeImpl implements 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__SPATIAL_RESOLUTION:
-                setSpatialResolution((ScaleType)null);
+                setSpatialResolution(null);
                 return;
             case Gml311Package.BASE_STYLE_DESCRIPTOR_TYPE__STYLE_VARIATION:
                 getStyleVariation().clear();

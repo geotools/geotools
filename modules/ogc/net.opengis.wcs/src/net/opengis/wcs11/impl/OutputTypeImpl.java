@@ -293,7 +293,7 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.OUTPUT_TYPE__GRID_CRS:
-                setGridCRS((GridCrsType)null);
+                setGridCRS(null);
                 return;
             case Wcs111Package.OUTPUT_TYPE__FORMAT:
                 setFormat(FORMAT_EDEFAULT);

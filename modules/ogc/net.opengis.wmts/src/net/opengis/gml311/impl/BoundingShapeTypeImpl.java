@@ -123,7 +123,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
      */
     @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
-        ((FeatureMap.Internal)getEnvelopeGroup()).set(Gml311Package.eINSTANCE.getBoundingShapeType_Envelope(), newEnvelope);
+        getEnvelopeGroup().set(Gml311Package.eINSTANCE.getBoundingShapeType_Envelope(), newEnvelope);
     }
 
     /**
@@ -217,7 +217,7 @@ public class BoundingShapeTypeImpl extends MinimalEObjectImpl.Container implemen
                 getEnvelopeGroup().clear();
                 return;
             case Gml311Package.BOUNDING_SHAPE_TYPE__ENVELOPE:
-                setEnvelope((EnvelopeType)null);
+                setEnvelope(null);
                 return;
             case Gml311Package.BOUNDING_SHAPE_TYPE__NULL:
                 setNull(NULL_EDEFAULT);

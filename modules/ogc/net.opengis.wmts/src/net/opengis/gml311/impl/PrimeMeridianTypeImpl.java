@@ -262,10 +262,10 @@ public class PrimeMeridianTypeImpl extends PrimeMeridianBaseTypeImpl implements 
                 getMeridianID().clear();
                 return;
             case Gml311Package.PRIME_MERIDIAN_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.PRIME_MERIDIAN_TYPE__GREENWICH_LONGITUDE:
-                setGreenwichLongitude((AngleChoiceType)null);
+                setGreenwichLongitude(null);
                 return;
         }
         super.eUnset(featureID);

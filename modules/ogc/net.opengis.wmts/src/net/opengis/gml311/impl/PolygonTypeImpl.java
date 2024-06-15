@@ -114,7 +114,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
      */
     @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
-        ((FeatureMap.Internal)getExteriorGroup()).set(Gml311Package.eINSTANCE.getPolygonType_Exterior(), newExterior);
+        getExteriorGroup().set(Gml311Package.eINSTANCE.getPolygonType_Exterior(), newExterior);
     }
 
     /**
@@ -220,7 +220,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
                 getExteriorGroup().clear();
                 return;
             case Gml311Package.POLYGON_TYPE__EXTERIOR:
-                setExterior((AbstractRingPropertyType)null);
+                setExterior(null);
                 return;
             case Gml311Package.POLYGON_TYPE__INTERIOR_GROUP:
                 getInteriorGroup().clear();

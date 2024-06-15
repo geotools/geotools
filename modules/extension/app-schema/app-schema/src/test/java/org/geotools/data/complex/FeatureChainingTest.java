@@ -213,7 +213,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                     String[] guIds = this.mfToGuMap.get(mfId).split(";");
 
                     // make sure we have the right number of nested features
-                    nestedGuFeatures = (Collection<Property>) mfFeature.getProperties(NESTED_LINK);
+                    nestedGuFeatures = mfFeature.getProperties(NESTED_LINK);
                     assertEquals(guIds.length, nestedGuFeatures.size());
 
                     ArrayList<String> nestedGuIds = new ArrayList<>();
@@ -240,8 +240,7 @@ public class FeatureChainingTest extends AppSchemaTestSupport {
                         /** Test compositional part */
                         // make sure the right number of nested features are there
                         String[] cpIds = this.guToCpMap.get(guId).split(";");
-                        nestedCpFeatures =
-                                (Collection<Property>) guFeature.getProperties("composition");
+                        nestedCpFeatures = guFeature.getProperties("composition");
                         assertEquals(cpIds.length, nestedCpFeatures.size());
 
                         ArrayList<String> nestedCpIds = new ArrayList<>();

@@ -144,7 +144,7 @@ public void setUOM(javax.measure.Unit newUOM) {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DEFAULT_TYPE1__UOM:
-        setUOM((javax.measure.Unit)null);
+        setUOM(null);
         return;
     }
     super.eUnset(featureID);

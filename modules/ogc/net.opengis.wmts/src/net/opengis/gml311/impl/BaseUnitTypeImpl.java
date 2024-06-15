@@ -154,7 +154,7 @@ public class BaseUnitTypeImpl extends UnitDefinitionTypeImpl implements BaseUnit
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.BASE_UNIT_TYPE__UNITS_SYSTEM:
-                setUnitsSystem((ReferenceType)null);
+                setUnitsSystem(null);
                 return;
         }
         super.eUnset(featureID);

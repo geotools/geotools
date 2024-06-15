@@ -521,10 +521,10 @@ public class FeatureCollectionTypeImpl extends SimpleFeatureCollectionTypeImpl i
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.FEATURE_COLLECTION_TYPE__ADDITIONAL_OBJECTS:
-        setAdditionalObjects((AdditionalObjectsType)null);
+        setAdditionalObjects(null);
         return;
       case Wfs20Package.FEATURE_COLLECTION_TYPE__TRUNCATED_RESPONSE:
-        setTruncatedResponse((TruncatedResponseType)null);
+        setTruncatedResponse(null);
         return;
       case Wfs20Package.FEATURE_COLLECTION_TYPE__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);

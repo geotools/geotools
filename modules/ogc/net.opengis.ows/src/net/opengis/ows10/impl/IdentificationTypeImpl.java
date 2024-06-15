@@ -259,7 +259,7 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
    */
 	@Override
     public void setAvailableCRS(String newAvailableCRS) {
-    ((FeatureMap.Internal)getAvailableCRSGroup()).set(Ows10Package.eINSTANCE.getIdentificationType_AvailableCRS(), newAvailableCRS);
+    getAvailableCRSGroup().set(Ows10Package.eINSTANCE.getIdentificationType_AvailableCRS(), newAvailableCRS);
   }
 
 	/**
@@ -370,7 +370,7 @@ public class IdentificationTypeImpl extends DescriptionTypeImpl implements Ident
   public void eUnset(int featureID) {
     switch (featureID) {
       case Ows10Package.IDENTIFICATION_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows10Package.IDENTIFICATION_TYPE__BOUNDING_BOX_GROUP:
         getBoundingBoxGroup().clear();

@@ -239,7 +239,7 @@ public class KeybaseImpl extends AnnotatedImpl implements Keybase {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.KEYBASE__SELECTOR:
-				setSelector((SelectorType)null);
+				setSelector(null);
 				return;
 			case SchemaPackage.KEYBASE__FIELD:
 				getField().clear();

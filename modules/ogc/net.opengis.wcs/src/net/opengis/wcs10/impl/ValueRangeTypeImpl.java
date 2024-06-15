@@ -491,10 +491,10 @@ public class ValueRangeTypeImpl extends EObjectImpl implements ValueRangeType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.VALUE_RANGE_TYPE__MIN:
-				setMin((TypedLiteralType)null);
+				setMin(null);
 				return;
 			case Wcs10Package.VALUE_RANGE_TYPE__MAX:
-				setMax((TypedLiteralType)null);
+				setMax(null);
 				return;
 			case Wcs10Package.VALUE_RANGE_TYPE__ATOMIC:
 				unsetAtomic();

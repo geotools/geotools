@@ -222,10 +222,10 @@ public class OutputDataTypeImpl extends DescriptionTypeImpl implements OutputDat
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DATA_TYPE__REFERENCE:
-        setReference((OutputReferenceType)null);
+        setReference(null);
         return;
       case Wps10Package.OUTPUT_DATA_TYPE__DATA:
-        setData((DataType)null);
+        setData(null);
         return;
     }
     super.eUnset(featureID);

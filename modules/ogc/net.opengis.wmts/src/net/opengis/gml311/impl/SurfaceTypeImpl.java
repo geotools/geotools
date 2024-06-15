@@ -98,7 +98,7 @@ public class SurfaceTypeImpl extends AbstractSurfaceTypeImpl implements SurfaceT
      */
     @Override
     public void setPatches(SurfacePatchArrayPropertyType newPatches) {
-        ((FeatureMap.Internal)getPatchesGroup()).set(Gml311Package.eINSTANCE.getSurfaceType_Patches(), newPatches);
+        getPatchesGroup().set(Gml311Package.eINSTANCE.getSurfaceType_Patches(), newPatches);
     }
 
     /**
@@ -164,7 +164,7 @@ public class SurfaceTypeImpl extends AbstractSurfaceTypeImpl implements SurfaceT
                 getPatchesGroup().clear();
                 return;
             case Gml311Package.SURFACE_TYPE__PATCHES:
-                setPatches((SurfacePatchArrayPropertyType)null);
+                setPatches(null);
                 return;
         }
         super.eUnset(featureID);

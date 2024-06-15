@@ -659,7 +659,7 @@ public class CompositeSolidPropertyTypeImpl extends MinimalEObjectImpl.Container
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.COMPOSITE_SOLID_PROPERTY_TYPE__COMPOSITE_SOLID:
-                setCompositeSolid((CompositeSolidType)null);
+                setCompositeSolid(null);
                 return;
             case Gml311Package.COMPOSITE_SOLID_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

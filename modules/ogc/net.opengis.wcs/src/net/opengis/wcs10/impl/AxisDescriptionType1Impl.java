@@ -159,7 +159,7 @@ public class AxisDescriptionType1Impl extends EObjectImpl implements AxisDescrip
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE1__AXIS_DESCRIPTION:
-				setAxisDescription((AxisDescriptionType)null);
+				setAxisDescription(null);
 				return;
 		}
 		super.eUnset(featureID);

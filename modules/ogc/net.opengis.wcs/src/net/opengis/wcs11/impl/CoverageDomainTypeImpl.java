@@ -223,10 +223,10 @@ public class CoverageDomainTypeImpl extends EObjectImpl implements CoverageDomai
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__SPATIAL_DOMAIN:
-                setSpatialDomain((SpatialDomainType)null);
+                setSpatialDomain(null);
                 return;
             case Wcs111Package.COVERAGE_DOMAIN_TYPE__TEMPORAL_DOMAIN:
-                setTemporalDomain((TimeSequenceType)null);
+                setTemporalDomain(null);
                 return;
         }
         super.eUnset(featureID);

@@ -467,10 +467,10 @@ public class ArcStringTypeImpl extends AbstractCurveSegmentTypeImpl implements A
                 getPointRep().clear();
                 return;
             case Gml311Package.ARC_STRING_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.ARC_STRING_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.ARC_STRING_TYPE__INTERPOLATION:
                 unsetInterpolation();

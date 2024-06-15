@@ -335,7 +335,7 @@ public abstract class AttributeGroupImpl extends AnnotatedImpl implements Attrib
 				getAttributeGroup().clear();
 				return;
 			case SchemaPackage.ATTRIBUTE_GROUP__ANY_ATTRIBUTE1:
-				setAnyAttribute1((Wildcard)null);
+				setAnyAttribute1(null);
 				return;
 			case SchemaPackage.ATTRIBUTE_GROUP__NAME:
 				setName(NAME_EDEFAULT);

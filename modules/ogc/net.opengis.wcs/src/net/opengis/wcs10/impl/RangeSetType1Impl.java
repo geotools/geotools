@@ -159,7 +159,7 @@ public class RangeSetType1Impl extends EObjectImpl implements RangeSetType1 {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.RANGE_SET_TYPE1__RANGE_SET:
-				setRangeSet((RangeSetType)null);
+				setRangeSet(null);
 				return;
 		}
 		super.eUnset(featureID);

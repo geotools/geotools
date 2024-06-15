@@ -249,7 +249,7 @@ public class FieldSubsetTypeImpl extends EObjectImpl implements FieldSubsetType 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.FIELD_SUBSET_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
+                setIdentifier(null);
                 return;
             case Wcs111Package.FIELD_SUBSET_TYPE__INTERPOLATION_TYPE:
                 setInterpolationType(INTERPOLATION_TYPE_EDEFAULT);

@@ -379,10 +379,10 @@ public class ResponsiblePartyTypeImpl extends EObjectImpl implements Responsible
         setPositionName(POSITION_NAME_EDEFAULT);
         return;
       case Ows10Package.RESPONSIBLE_PARTY_TYPE__CONTACT_INFO:
-        setContactInfo((ContactType)null);
+        setContactInfo(null);
         return;
       case Ows10Package.RESPONSIBLE_PARTY_TYPE__ROLE:
-        setRole((CodeType)null);
+        setRole(null);
         return;
     }
     super.eUnset(featureID);

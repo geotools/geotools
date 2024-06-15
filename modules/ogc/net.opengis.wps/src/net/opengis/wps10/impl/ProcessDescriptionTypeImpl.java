@@ -392,10 +392,10 @@ public class ProcessDescriptionTypeImpl extends ProcessBriefTypeImpl implements 
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__DATA_INPUTS:
-        setDataInputs((DataInputsType)null);
+        setDataInputs(null);
         return;
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__PROCESS_OUTPUTS:
-        setProcessOutputs((ProcessOutputsType)null);
+        setProcessOutputs(null);
         return;
       case Wps10Package.PROCESS_DESCRIPTION_TYPE__STATUS_SUPPORTED:
         unsetStatusSupported();

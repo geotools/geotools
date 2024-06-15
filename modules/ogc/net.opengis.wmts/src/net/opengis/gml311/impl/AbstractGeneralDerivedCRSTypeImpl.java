@@ -218,10 +218,10 @@ public abstract class AbstractGeneralDerivedCRSTypeImpl extends AbstractReferenc
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_GENERAL_DERIVED_CRS_TYPE__BASE_CRS:
-                setBaseCRS((CoordinateReferenceSystemRefType)null);
+                setBaseCRS(null);
                 return;
             case Gml311Package.ABSTRACT_GENERAL_DERIVED_CRS_TYPE__DEFINED_BY_CONVERSION:
-                setDefinedByConversion((GeneralConversionRefType)null);
+                setDefinedByConversion(null);
                 return;
         }
         super.eUnset(featureID);

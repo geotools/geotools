@@ -229,10 +229,10 @@ public class SpatialCapabilitiesTypeImpl extends EObjectImpl implements SpatialC
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.SPATIAL_CAPABILITIES_TYPE__GEOMETRY_OPERANDS:
-                setGeometryOperands((GeometryOperandsType)null);
+                setGeometryOperands(null);
                 return;
             case Fes20Package.SPATIAL_CAPABILITIES_TYPE__SPATIAL_OPERATORS:
-                setSpatialOperators((SpatialOperatorsType)null);
+                setSpatialOperators(null);
                 return;
         }
         super.eUnset(featureID);

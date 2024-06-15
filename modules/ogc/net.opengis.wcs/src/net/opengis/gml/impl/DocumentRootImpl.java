@@ -375,7 +375,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setBoundedBy(BoundingShapeType newBoundedBy) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__BOUNDED_BY, newBoundedBy);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__BOUNDED_BY, newBoundedBy);
 	}
 
     /**
@@ -404,7 +404,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setDescription(StringOrRefType newDescription) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__DESCRIPTION, newDescription);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__DESCRIPTION, newDescription);
 	}
 
     /**
@@ -433,7 +433,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE, newEnvelope);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE, newEnvelope);
 	}
 
     /**
@@ -462,7 +462,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setEnvelopeWithTimePeriod(EnvelopeWithTimePeriodType newEnvelopeWithTimePeriod) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE_WITH_TIME_PERIOD, newEnvelopeWithTimePeriod);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__ENVELOPE_WITH_TIME_PERIOD, newEnvelopeWithTimePeriod);
 	}
 
     /**
@@ -491,7 +491,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__EXTERIOR, newExterior);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__EXTERIOR, newExterior);
 	}
 
     /**
@@ -520,7 +520,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setGrid(GridType newGrid) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__GRID, newGrid);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__GRID, newGrid);
 	}
 
     /**
@@ -549,7 +549,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setInterior(AbstractRingPropertyType newInterior) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__INTERIOR, newInterior);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__INTERIOR, newInterior);
 	}
 
     /**
@@ -578,7 +578,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setLinearRing(LinearRingType newLinearRing) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__LINEAR_RING, newLinearRing);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__LINEAR_RING, newLinearRing);
 	}
 
     /**
@@ -607,7 +607,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setMetaDataProperty(MetaDataPropertyType newMetaDataProperty) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__META_DATA_PROPERTY, newMetaDataProperty);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__META_DATA_PROPERTY, newMetaDataProperty);
 	}
 
     /**
@@ -636,7 +636,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setName(CodeType newName) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__NAME, newName);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__NAME, newName);
 	}
 
     /**
@@ -665,7 +665,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setPolygon(PolygonType newPolygon) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__POLYGON, newPolygon);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__POLYGON, newPolygon);
 	}
 
     /**
@@ -694,7 +694,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setPos(DirectPositionType newPos) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__POS, newPos);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__POS, newPos);
 	}
 
     /**
@@ -723,7 +723,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setRectifiedGrid(RectifiedGridType newRectifiedGrid) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__RECTIFIED_GRID, newRectifiedGrid);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__RECTIFIED_GRID, newRectifiedGrid);
 	}
 
     /**
@@ -752,7 +752,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setTimePosition(TimePositionType newTimePosition) {
-		((FeatureMap.Internal)getMixed()).set(GmlPackage.Literals.DOCUMENT_ROOT__TIME_POSITION, newTimePosition);
+		getMixed().set(GmlPackage.Literals.DOCUMENT_ROOT__TIME_POSITION, newTimePosition);
 	}
 
     /**
@@ -1015,46 +1015,46 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 				getXSISchemaLocation().clear();
 				return;
 			case GmlPackage.DOCUMENT_ROOT__BOUNDED_BY:
-				setBoundedBy((BoundingShapeType)null);
+				setBoundedBy(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__DESCRIPTION:
-				setDescription((StringOrRefType)null);
+				setDescription(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__ENVELOPE:
-				setEnvelope((EnvelopeType)null);
+				setEnvelope(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__ENVELOPE_WITH_TIME_PERIOD:
-				setEnvelopeWithTimePeriod((EnvelopeWithTimePeriodType)null);
+				setEnvelopeWithTimePeriod(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__EXTERIOR:
-				setExterior((AbstractRingPropertyType)null);
+				setExterior(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__GRID:
-				setGrid((GridType)null);
+				setGrid(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__INTERIOR:
-				setInterior((AbstractRingPropertyType)null);
+				setInterior(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__LINEAR_RING:
-				setLinearRing((LinearRingType)null);
+				setLinearRing(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__META_DATA_PROPERTY:
-				setMetaDataProperty((MetaDataPropertyType)null);
+				setMetaDataProperty(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__NAME:
-				setName((CodeType)null);
+				setName(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__POLYGON:
-				setPolygon((PolygonType)null);
+				setPolygon(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__POS:
-				setPos((DirectPositionType)null);
+				setPos(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__RECTIFIED_GRID:
-				setRectifiedGrid((RectifiedGridType)null);
+				setRectifiedGrid(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__TIME_POSITION:
-				setTimePosition((TimePositionType)null);
+				setTimePosition(null);
 				return;
 			case GmlPackage.DOCUMENT_ROOT__ID:
 				setId(ID_EDEFAULT);

@@ -351,19 +351,19 @@ public class QueryTypeImpl extends AbstractQueryTypeImpl implements QueryType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.QUERY_TYPE__ELEMENT_SET_NAME:
-                setElementSetName((ElementSetNameType)null);
+                setElementSetName(null);
                 return;
             case Csw20Package.QUERY_TYPE__ELEMENT_NAME:
                 getElementName().clear();
                 return;
             case Csw20Package.QUERY_TYPE__CONSTRAINT:
-                setConstraint((QueryConstraintType)null);
+                setConstraint(null);
                 return;
             case Csw20Package.QUERY_TYPE__SORT_BY:
                 setSortBy(SORT_BY_EDEFAULT);
                 return;
             case Csw20Package.QUERY_TYPE__TYPE_NAMES:
-                setTypeNames((List<QName>)null);
+                setTypeNames(null);
                 return;
         }
         super.eUnset(featureID);

@@ -395,7 +395,7 @@ public class Crop extends Operation2D {
         // Check the intersection and, if needed, do the crop operation.
         //
         // //
-        final GeneralBounds intersectionEnvelope = new GeneralBounds((Bounds) destinationEnvelope);
+        final GeneralBounds intersectionEnvelope = new GeneralBounds(destinationEnvelope);
         intersectionEnvelope.setCoordinateReferenceSystem(source.getCoordinateReferenceSystem());
         // intersect the envelopes
         intersectionEnvelope.intersect(sourceEnvelope);

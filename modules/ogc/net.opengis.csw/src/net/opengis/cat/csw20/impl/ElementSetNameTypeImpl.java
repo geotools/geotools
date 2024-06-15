@@ -214,7 +214,7 @@ public class ElementSetNameTypeImpl extends EObjectImpl implements ElementSetNam
                 unsetValue();
                 return;
             case Csw20Package.ELEMENT_SET_NAME_TYPE__TYPE_NAMES:
-                setTypeNames((List<QName>)null);
+                setTypeNames(null);
                 return;
         }
         super.eUnset(featureID);

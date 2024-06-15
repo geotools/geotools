@@ -81,7 +81,7 @@ public class ContourProcess implements VectorProcess {
             double max = Double.NEGATIVE_INFINITY;
             try (SimpleFeatureIterator it = (SimpleFeatureIterator) features.features()) {
                 while (it.hasNext()) {
-                    SimpleFeature feature = (SimpleFeature) it.next();
+                    SimpleFeature feature = it.next();
                     double value = (Double) feature.getAttribute(propertyName);
                     min = Math.min(min, value);
                     max = Math.max(max, value);

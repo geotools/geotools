@@ -357,10 +357,10 @@ public class TimePeriodTypeImpl extends EObjectImpl implements TimePeriodType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.TIME_PERIOD_TYPE__BEGIN_POSITION:
-				setBeginPosition((TimePositionType)null);
+				setBeginPosition(null);
 				return;
 			case Wcs10Package.TIME_PERIOD_TYPE__END_POSITION:
-				setEndPosition((TimePositionType)null);
+				setEndPosition(null);
 				return;
 			case Wcs10Package.TIME_PERIOD_TYPE__TIME_RESOLUTION:
 				setTimeResolution(TIME_RESOLUTION_EDEFAULT);

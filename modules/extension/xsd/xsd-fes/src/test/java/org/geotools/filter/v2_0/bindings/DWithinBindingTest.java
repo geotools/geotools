@@ -21,7 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class DWithinBindingTest extends FESTestSupport {
-    static FilterFactory filterFact = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory filterFact = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
     public void testEncode() throws Exception {

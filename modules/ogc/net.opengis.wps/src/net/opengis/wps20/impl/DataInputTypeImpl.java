@@ -301,10 +301,10 @@ public class DataInputTypeImpl extends MinimalEObjectImpl.Container implements D
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.DATA_INPUT_TYPE__DATA:
-				setData((DataType)null);
+				setData(null);
 				return;
 			case Wps20Package.DATA_INPUT_TYPE__REFERENCE:
-				setReference((ReferenceType)null);
+				setReference(null);
 				return;
 			case Wps20Package.DATA_INPUT_TYPE__INPUT:
 				getInput().clear();

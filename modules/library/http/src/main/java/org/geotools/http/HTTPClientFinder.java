@@ -127,7 +127,7 @@ public class HTTPClientFinder extends FactoryFinder {
         Object val = hints.get(Hints.HTTP_CLIENT_FACTORY);
         return (val instanceof String
                 ? fact.getClass().getName().equalsIgnoreCase((String) val)
-                : fact.getClass() == (Class<?>) val);
+                : fact.getClass() == val);
     }
 
     /** Check if any of then factory's clients can process the hints and behaviors */

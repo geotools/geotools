@@ -659,7 +659,7 @@ public class CylindricalCSRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CYLINDRICAL_CS_REF_TYPE__CYLINDRICAL_CS:
-                setCylindricalCS((CylindricalCSType)null);
+                setCylindricalCS(null);
                 return;
             case Gml311Package.CYLINDRICAL_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

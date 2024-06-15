@@ -291,7 +291,7 @@ public class UpdateTypeImpl extends EObjectImpl implements UpdateType {
                 getRecordProperty().clear();
                 return;
             case Csw20Package.UPDATE_TYPE__CONSTRAINT:
-                setConstraint((QueryConstraintType)null);
+                setConstraint(null);
                 return;
             case Csw20Package.UPDATE_TYPE__HANDLE:
                 setHandle(HANDLE_EDEFAULT);

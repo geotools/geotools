@@ -389,10 +389,10 @@ public class RangeSetTypeImpl extends MinimalEObjectImpl.Container implements Ra
                 getCountList().clear();
                 return;
             case Gml311Package.RANGE_SET_TYPE__DATA_BLOCK:
-                setDataBlock((DataBlockType)null);
+                setDataBlock(null);
                 return;
             case Gml311Package.RANGE_SET_TYPE__FILE:
-                setFile((FileType)null);
+                setFile(null);
                 return;
         }
         super.eUnset(featureID);

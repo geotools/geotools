@@ -1540,7 +1540,7 @@ public final class CRS {
     public static Rectangle2D transform(
             final MathTransform2D transform, final Rectangle2D rectangle)
             throws TransformException {
-        return transform(transform, rectangle, (Rectangle2D) null);
+        return transform(transform, rectangle, null);
     }
     /**
      * Transforms a rectangular envelope using the given {@linkplain MathTransform math transform}.

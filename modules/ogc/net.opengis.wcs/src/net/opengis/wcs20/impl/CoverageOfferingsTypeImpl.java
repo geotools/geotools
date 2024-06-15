@@ -196,7 +196,7 @@ public class CoverageOfferingsTypeImpl extends EObjectImpl implements CoverageOf
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__SERVICE_METADATA:
-				setServiceMetadata((ServiceMetadataType)null);
+				setServiceMetadata(null);
 				return;
 			case Wcs20Package.COVERAGE_OFFERINGS_TYPE__OFFERED_COVERAGE:
 				getOfferedCoverage().clear();

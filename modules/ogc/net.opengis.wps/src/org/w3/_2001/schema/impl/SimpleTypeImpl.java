@@ -370,13 +370,13 @@ public abstract class SimpleTypeImpl extends AnnotatedImpl implements SimpleType
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.SIMPLE_TYPE__RESTRICTION:
-				setRestriction((RestrictionType1)null);
+				setRestriction(null);
 				return;
 			case SchemaPackage.SIMPLE_TYPE__LIST:
-				setList((ListType)null);
+				setList(null);
 				return;
 			case SchemaPackage.SIMPLE_TYPE__UNION:
-				setUnion((UnionType)null);
+				setUnion(null);
 				return;
 			case SchemaPackage.SIMPLE_TYPE__FINAL:
 				setFinal(FINAL_EDEFAULT);

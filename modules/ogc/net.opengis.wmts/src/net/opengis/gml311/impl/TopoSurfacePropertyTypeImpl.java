@@ -155,7 +155,7 @@ public class TopoSurfacePropertyTypeImpl extends MinimalEObjectImpl.Container im
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPO_SURFACE_PROPERTY_TYPE__TOPO_SURFACE:
-                setTopoSurface((TopoSurfaceType)null);
+                setTopoSurface(null);
                 return;
         }
         super.eUnset(featureID);

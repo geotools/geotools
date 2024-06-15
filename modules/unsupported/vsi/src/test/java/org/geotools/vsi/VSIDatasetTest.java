@@ -105,7 +105,7 @@ public final class VSIDatasetTest {
             utils.when(() -> VSIUtils.openDataset(eq(location))).thenReturn(datasetIn);
             utils.when(() -> VSIUtils.datasetToVRT(eq(datasetIn), any())).thenReturn(datasetOut);
 
-            final VSIDataset dataset = spy(VSIDataset.fromObject((Object) location));
+            final VSIDataset dataset = spy(VSIDataset.fromObject(location));
 
             utils.verify(() -> VSIUtils.openDataset(eq(location)), times(1));
             utils.verify(() -> VSIUtils.datasetToVRT(eq(datasetIn), any()), times(1));

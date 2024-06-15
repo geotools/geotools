@@ -198,7 +198,7 @@ public class MultiGeometryTypeImpl extends AbstractGeometricAggregateTypeImpl im
                 getGeometryMember().clear();
                 return;
             case Gml311Package.MULTI_GEOMETRY_TYPE__GEOMETRY_MEMBERS:
-                setGeometryMembers((GeometryArrayPropertyType)null);
+                setGeometryMembers(null);
                 return;
         }
         super.eUnset(featureID);

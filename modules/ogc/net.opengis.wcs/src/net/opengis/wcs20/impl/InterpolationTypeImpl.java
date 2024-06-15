@@ -194,10 +194,10 @@ public class InterpolationTypeImpl extends EObjectImpl implements InterpolationT
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_METHOD:
-				setInterpolationMethod((InterpolationMethodType)null);
+				setInterpolationMethod(null);
 				return;
 			case Wcs20Package.INTERPOLATION_TYPE__INTERPOLATION_AXES:
-				setInterpolationAxes((InterpolationAxesType)null);
+				setInterpolationAxes(null);
 				return;
 		}
 		super.eUnset(featureID);

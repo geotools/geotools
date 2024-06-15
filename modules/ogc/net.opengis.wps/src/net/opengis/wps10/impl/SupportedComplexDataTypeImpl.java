@@ -223,10 +223,10 @@ public class SupportedComplexDataTypeImpl extends EObjectImpl implements Support
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__DEFAULT:
-        setDefault((ComplexDataCombinationType)null);
+        setDefault(null);
         return;
       case Wps10Package.SUPPORTED_COMPLEX_DATA_TYPE__SUPPORTED:
-        setSupported((ComplexDataCombinationsType)null);
+        setSupported(null);
         return;
     }
     super.eUnset(featureID);

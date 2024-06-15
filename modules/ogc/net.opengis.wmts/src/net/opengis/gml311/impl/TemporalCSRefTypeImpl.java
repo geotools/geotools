@@ -659,7 +659,7 @@ public class TemporalCSRefTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TEMPORAL_CS_REF_TYPE__TEMPORAL_CS:
-                setTemporalCS((TemporalCSType)null);
+                setTemporalCS(null);
                 return;
             case Gml311Package.TEMPORAL_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

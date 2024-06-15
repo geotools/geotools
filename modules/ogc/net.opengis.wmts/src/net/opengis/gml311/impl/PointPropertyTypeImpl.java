@@ -659,7 +659,7 @@ public class PointPropertyTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.POINT_PROPERTY_TYPE__POINT:
-                setPoint((PointType)null);
+                setPoint(null);
                 return;
             case Gml311Package.POINT_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

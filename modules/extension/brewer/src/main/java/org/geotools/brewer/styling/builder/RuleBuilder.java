@@ -172,7 +172,7 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     public ExtensionSymbolizerBuilder extension() {
         unset = false;
         if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
-        symbolizerBuilder = (Builder<? extends Symbolizer>) new ExtensionSymbolizerBuilder(this);
+        symbolizerBuilder = new ExtensionSymbolizerBuilder(this);
         return (ExtensionSymbolizerBuilder) symbolizerBuilder;
     }
 

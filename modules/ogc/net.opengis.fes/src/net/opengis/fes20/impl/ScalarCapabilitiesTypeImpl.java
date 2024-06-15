@@ -226,10 +226,10 @@ public class ScalarCapabilitiesTypeImpl extends EObjectImpl implements ScalarCap
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.SCALAR_CAPABILITIES_TYPE__LOGICAL_OPERATORS:
-                setLogicalOperators((LogicalOperatorsType)null);
+                setLogicalOperators(null);
                 return;
             case Fes20Package.SCALAR_CAPABILITIES_TYPE__COMPARISON_OPERATORS:
-                setComparisonOperators((ComparisonOperatorsType)null);
+                setComparisonOperators(null);
                 return;
         }
         super.eUnset(featureID);

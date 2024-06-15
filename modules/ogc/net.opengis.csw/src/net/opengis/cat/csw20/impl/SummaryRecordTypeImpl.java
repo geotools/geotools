@@ -450,7 +450,7 @@ public class SummaryRecordTypeImpl extends AbstractRecordTypeImpl implements Sum
                 getTitle().clear();
                 return;
             case Csw20Package.SUMMARY_RECORD_TYPE__TYPE:
-                setType((SimpleLiteral)null);
+                setType(null);
                 return;
             case Csw20Package.SUMMARY_RECORD_TYPE__SUBJECT:
                 getSubject().clear();

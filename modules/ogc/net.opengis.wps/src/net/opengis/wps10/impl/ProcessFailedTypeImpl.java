@@ -160,7 +160,7 @@ public class ProcessFailedTypeImpl extends EObjectImpl implements ProcessFailedT
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.PROCESS_FAILED_TYPE__EXCEPTION_REPORT:
-        setExceptionReport((ExceptionReportType)null);
+        setExceptionReport(null);
         return;
     }
     super.eUnset(featureID);

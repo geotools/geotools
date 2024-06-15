@@ -632,10 +632,10 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.PARAMETER_VALUE_TYPE__VALUE:
-                setValue((MeasureType)null);
+                setValue(null);
                 return;
             case Gml311Package.PARAMETER_VALUE_TYPE__DMS_ANGLE_VALUE:
-                setDmsAngleValue((DMSAngleType)null);
+                setDmsAngleValue(null);
                 return;
             case Gml311Package.PARAMETER_VALUE_TYPE__STRING_VALUE:
                 setStringValue(STRING_VALUE_EDEFAULT);
@@ -647,7 +647,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
                 unsetBooleanValue();
                 return;
             case Gml311Package.PARAMETER_VALUE_TYPE__VALUE_LIST:
-                setValueList((MeasureListType)null);
+                setValueList(null);
                 return;
             case Gml311Package.PARAMETER_VALUE_TYPE__INTEGER_VALUE_LIST:
                 setIntegerValueList(INTEGER_VALUE_LIST_EDEFAULT);
@@ -656,7 +656,7 @@ public class ParameterValueTypeImpl extends AbstractGeneralParameterValueTypeImp
                 setValueFile(VALUE_FILE_EDEFAULT);
                 return;
             case Gml311Package.PARAMETER_VALUE_TYPE__VALUE_OF_PARAMETER:
-                setValueOfParameter((OperationParameterRefType)null);
+                setValueOfParameter(null);
                 return;
         }
         super.eUnset(featureID);

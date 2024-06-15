@@ -389,7 +389,7 @@ public class ExecuteRequestTypeImpl extends RequestBaseTypeImpl implements Execu
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.EXECUTE_REQUEST_TYPE__IDENTIFIER:
-				setIdentifier((CodeType)null);
+				setIdentifier(null);
 				return;
 			case Wps20Package.EXECUTE_REQUEST_TYPE__INPUT:
 				getInput().clear();

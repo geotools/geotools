@@ -297,8 +297,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
 
         if (text instanceof TextSymbolizer) {
-            if (((TextSymbolizer) text).getGraphic() != null)
-                ((TextSymbolizer) text).getGraphic().accept(this);
+            if (text.getGraphic() != null) text.getGraphic().accept(this);
         }
 
         if (text.getFill() != null) {
@@ -352,7 +351,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
     public void visit(Graphic gr) {
         for (GraphicalSymbol symbol : gr.graphicalSymbols()) {
             if (symbol instanceof Symbol) {
-                ((Symbol) symbol).accept(this);
+                symbol.accept(this);
             } else {
                 throw new RuntimeException("Don't know how to visit " + symbol);
             }

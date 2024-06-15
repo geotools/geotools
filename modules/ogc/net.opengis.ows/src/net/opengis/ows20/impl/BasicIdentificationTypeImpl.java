@@ -215,7 +215,7 @@ public class BasicIdentificationTypeImpl extends DescriptionTypeImpl implements 
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.BASIC_IDENTIFICATION_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows20Package.BASIC_IDENTIFICATION_TYPE__METADATA_GROUP:
         getMetadataGroup().clear();

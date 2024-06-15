@@ -223,10 +223,10 @@ public class LanguagesType1Impl extends EObjectImpl implements LanguagesType1 {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LANGUAGES_TYPE1__DEFAULT:
-        setDefault((DefaultType2)null);
+        setDefault(null);
         return;
       case Wps10Package.LANGUAGES_TYPE1__SUPPORTED:
-        setSupported((LanguagesType)null);
+        setSupported(null);
         return;
     }
     super.eUnset(featureID);

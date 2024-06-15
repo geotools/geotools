@@ -287,13 +287,13 @@ public class ExecuteTypeImpl extends RequestBaseTypeImpl implements ExecuteType 
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.EXECUTE_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Wps10Package.EXECUTE_TYPE__DATA_INPUTS:
-        setDataInputs((DataInputsType1)null);
+        setDataInputs(null);
         return;
       case Wps10Package.EXECUTE_TYPE__RESPONSE_FORM:
-        setResponseForm((ResponseFormType)null);
+        setResponseForm(null);
         return;
     }
     super.eUnset(featureID);

@@ -68,7 +68,7 @@ public class MinVisitorTest {
         visitor.reset();
 
         collection.accepts(visitor, null);
-        Assert.assertEquals(Integer.valueOf(1), (Integer) visitor.getMin());
+        Assert.assertEquals(Integer.valueOf(1), visitor.getMin());
     }
 
     /** A MinVisitor that set's visited without minvalue being set. */

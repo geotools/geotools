@@ -159,7 +159,7 @@ public class GetTypeImpl extends EObjectImpl implements GetType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.GET_TYPE__ONLINE_RESOURCE:
-				setOnlineResource((OnlineResourceType)null);
+				setOnlineResource(null);
 				return;
 		}
 		super.eUnset(featureID);

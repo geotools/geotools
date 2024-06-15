@@ -155,7 +155,7 @@ public class KnotPropertyTypeImpl extends MinimalEObjectImpl.Container implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.KNOT_PROPERTY_TYPE__KNOT:
-                setKnot((KnotType)null);
+                setKnot(null);
                 return;
         }
         super.eUnset(featureID);

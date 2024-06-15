@@ -198,7 +198,7 @@ public abstract class AbstractTopoPrimitiveTypeImpl extends AbstractTopologyType
                 getIsolated().clear();
                 return;
             case Gml311Package.ABSTRACT_TOPO_PRIMITIVE_TYPE__CONTAINER:
-                setContainer((ContainerPropertyType)null);
+                setContainer(null);
                 return;
         }
         super.eUnset(featureID);

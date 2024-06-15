@@ -659,7 +659,7 @@ public class EllipsoidRefTypeImpl extends MinimalEObjectImpl.Container implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ELLIPSOID_REF_TYPE__ELLIPSOID:
-                setEllipsoid((EllipsoidType)null);
+                setEllipsoid(null);
                 return;
             case Gml311Package.ELLIPSOID_REF_TYPE__ACTUATE:
                 unsetActuate();

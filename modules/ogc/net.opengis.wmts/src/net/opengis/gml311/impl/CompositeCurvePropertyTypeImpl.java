@@ -659,7 +659,7 @@ public class CompositeCurvePropertyTypeImpl extends MinimalEObjectImpl.Container
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.COMPOSITE_CURVE_PROPERTY_TYPE__COMPOSITE_CURVE:
-                setCompositeCurve((CompositeCurveType)null);
+                setCompositeCurve(null);
                 return;
             case Gml311Package.COMPOSITE_CURVE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

@@ -209,7 +209,7 @@ public class GeoJSONDataStoreFactory implements FileDataStoreFactorySpi {
     public boolean canProcess(URL url) {
         final String s = url.toString().toLowerCase();
         String extension = s.substring(s.lastIndexOf(".") + 1);
-        Set<String> set = (Set<String>) Stream.of(EXTENSIONS).collect(Collectors.toSet());
+        Set<String> set = Stream.of(EXTENSIONS).collect(Collectors.toSet());
 
         return set.contains(extension);
     }

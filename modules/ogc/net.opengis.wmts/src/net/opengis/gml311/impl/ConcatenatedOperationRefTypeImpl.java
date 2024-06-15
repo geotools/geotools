@@ -659,7 +659,7 @@ public class ConcatenatedOperationRefTypeImpl extends MinimalEObjectImpl.Contain
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CONCATENATED_OPERATION_REF_TYPE__CONCATENATED_OPERATION:
-                setConcatenatedOperation((ConcatenatedOperationType)null);
+                setConcatenatedOperation(null);
                 return;
             case Gml311Package.CONCATENATED_OPERATION_REF_TYPE__ACTUATE:
                 unsetActuate();

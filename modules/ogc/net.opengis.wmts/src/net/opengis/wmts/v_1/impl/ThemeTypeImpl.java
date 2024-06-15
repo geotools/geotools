@@ -228,7 +228,7 @@ public class ThemeTypeImpl extends DescriptionTypeImpl implements ThemeType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.THEME_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
+                setIdentifier(null);
                 return;
             case wmtsv_1Package.THEME_TYPE__THEME:
                 getTheme().clear();

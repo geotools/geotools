@@ -198,7 +198,7 @@ public void eUnset(int featureID) {
         getKeyword().clear();
         return;
       case Ows11Package.KEYWORDS_TYPE__TYPE:
-        setType((CodeType)null);
+        setType(null);
         return;
     }
     super.eUnset(featureID);

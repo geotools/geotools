@@ -659,7 +659,7 @@ public class PassThroughOperationRefTypeImpl extends MinimalEObjectImpl.Containe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.PASS_THROUGH_OPERATION_REF_TYPE__PASS_THROUGH_OPERATION:
-                setPassThroughOperation((PassThroughOperationType)null);
+                setPassThroughOperation(null);
                 return;
             case Gml311Package.PASS_THROUGH_OPERATION_REF_TYPE__ACTUATE:
                 unsetActuate();

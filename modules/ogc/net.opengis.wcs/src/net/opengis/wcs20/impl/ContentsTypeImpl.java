@@ -200,7 +200,7 @@ public class ContentsTypeImpl extends ContentsBaseTypeImpl implements ContentsTy
 				getCoverageSummary().clear();
 				return;
 			case Wcs20Package.CONTENTS_TYPE__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 		}
 		super.eUnset(featureID);

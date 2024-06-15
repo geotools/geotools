@@ -659,7 +659,7 @@ public class EngineeringDatumRefTypeImpl extends MinimalEObjectImpl.Container im
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ENGINEERING_DATUM_REF_TYPE__ENGINEERING_DATUM:
-                setEngineeringDatum((EngineeringDatumType)null);
+                setEngineeringDatum(null);
                 return;
             case Gml311Package.ENGINEERING_DATUM_REF_TYPE__ACTUATE:
                 unsetActuate();

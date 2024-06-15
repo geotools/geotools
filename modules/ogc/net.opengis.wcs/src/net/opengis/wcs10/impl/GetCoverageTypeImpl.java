@@ -695,16 +695,16 @@ public class GetCoverageTypeImpl extends EObjectImpl implements GetCoverageType 
 				setSourceCoverage(SOURCE_COVERAGE_EDEFAULT);
 				return;
 			case Wcs10Package.GET_COVERAGE_TYPE__DOMAIN_SUBSET:
-				setDomainSubset((DomainSubsetType)null);
+				setDomainSubset(null);
 				return;
 			case Wcs10Package.GET_COVERAGE_TYPE__RANGE_SUBSET:
-				setRangeSubset((RangeSubsetType)null);
+				setRangeSubset(null);
 				return;
 			case Wcs10Package.GET_COVERAGE_TYPE__INTERPOLATION_METHOD:
 				unsetInterpolationMethod();
 				return;
 			case Wcs10Package.GET_COVERAGE_TYPE__OUTPUT:
-				setOutput((OutputType)null);
+				setOutput(null);
 				return;
 			case Wcs10Package.GET_COVERAGE_TYPE__SERVICE:
 				unsetService();

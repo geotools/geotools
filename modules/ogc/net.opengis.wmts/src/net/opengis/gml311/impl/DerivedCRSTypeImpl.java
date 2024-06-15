@@ -218,10 +218,10 @@ public class DerivedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DERIVED_CRS_TYPE__DERIVED_CRS_TYPE:
-                setDerivedCRSType((DerivedCRSTypeType)null);
+                setDerivedCRSType(null);
                 return;
             case Gml311Package.DERIVED_CRS_TYPE__USES_CS:
-                setUsesCS((CoordinateSystemRefType)null);
+                setUsesCS(null);
                 return;
         }
         super.eUnset(featureID);

@@ -213,7 +213,7 @@ public class RecordPropertyTypeImpl extends EObjectImpl implements RecordPropert
                 setName(NAME_EDEFAULT);
                 return;
             case Csw20Package.RECORD_PROPERTY_TYPE__VALUE:
-                setValue((EObject)null);
+                setValue(null);
                 return;
         }
         super.eUnset(featureID);

@@ -154,7 +154,7 @@ public class MultiSurfaceDomainTypeImpl extends DomainSetTypeImpl implements Mul
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_SURFACE_DOMAIN_TYPE__MULTI_SURFACE:
-                setMultiSurface((MultiSurfaceType)null);
+                setMultiSurface(null);
                 return;
         }
         super.eUnset(featureID);

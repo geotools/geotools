@@ -610,10 +610,10 @@ public void setOutputFormats(OutputFormatListType newOutputFormats) {
         getOtherCRS().clear();
         return;
       case Wfs20Package.FEATURE_TYPE_TYPE__NO_CRS:
-        setNoCRS((NoCRSType)null);
+        setNoCRS(null);
         return;
       case Wfs20Package.FEATURE_TYPE_TYPE__OUTPUT_FORMATS:
-        setOutputFormats((OutputFormatListType)null);
+        setOutputFormats(null);
         return;
       case Wfs20Package.FEATURE_TYPE_TYPE__WGS84_BOUNDING_BOX:
         getWGS84BoundingBox().clear();
@@ -622,7 +622,7 @@ public void setOutputFormats(OutputFormatListType newOutputFormats) {
         getMetadataURL().clear();
         return;
       case Wfs20Package.FEATURE_TYPE_TYPE__EXTENDED_DESCRIPTION:
-        setExtendedDescription((ExtendedDescriptionType)null);
+        setExtendedDescription(null);
         return;
     }
     super.eUnset(featureID);

@@ -1097,10 +1097,10 @@ public abstract class ElementImpl extends AnnotatedImpl implements Element {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.ELEMENT__SIMPLE_TYPE:
-				setSimpleType((LocalSimpleType)null);
+				setSimpleType(null);
 				return;
 			case SchemaPackage.ELEMENT__COMPLEX_TYPE:
-				setComplexType((LocalComplexType)null);
+				setComplexType(null);
 				return;
 			case SchemaPackage.ELEMENT__IDENTITY_CONSTRAINT:
 				getIdentityConstraint().clear();

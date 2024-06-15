@@ -198,7 +198,7 @@ public class RectifiedGridTypeImpl extends GridTypeImpl implements RectifiedGrid
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.RECTIFIED_GRID_TYPE__ORIGIN:
-				setOrigin((PointType)null);
+				setOrigin(null);
 				return;
 			case GmlPackage.RECTIFIED_GRID_TYPE__OFFSET_VECTOR:
 				getOffsetVector().clear();

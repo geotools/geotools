@@ -723,10 +723,10 @@ public class IsolatedPropertyTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ISOLATED_PROPERTY_TYPE__NODE:
-                setNode((NodeType)null);
+                setNode(null);
                 return;
             case Gml311Package.ISOLATED_PROPERTY_TYPE__EDGE:
-                setEdge((EdgeType)null);
+                setEdge(null);
                 return;
             case Gml311Package.ISOLATED_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

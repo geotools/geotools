@@ -155,7 +155,7 @@ public class LinearRingPropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.LINEAR_RING_PROPERTY_TYPE__LINEAR_RING:
-                setLinearRing((LinearRingType)null);
+                setLinearRing(null);
                 return;
         }
         super.eUnset(featureID);

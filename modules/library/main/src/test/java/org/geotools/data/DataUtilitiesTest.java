@@ -458,7 +458,7 @@ public class DataUtilitiesTest extends DataTestCase {
         Assert.assertEquals(2, rd3.getAttributeCount());
         Assert.assertEquals(rd1.getID(), rd3.getID());
         Assert.assertEquals(rd1.getAttribute("id"), rd3.getAttribute("id"));
-        assertEquals((Geometry) rd1.getAttribute("geom"), (Geometry) rd3.getAttribute("geom"));
+        assertEquals(rd1.getAttribute("geom"), rd3.getAttribute("geom"));
         assertNotNull(rd3.getDefaultGeometry());
 
         SimpleFeature rv1 = riverFeatures[0];
@@ -611,7 +611,7 @@ public class DataUtilitiesTest extends DataTestCase {
         Point point = fac.createPoint(coordinate);
 
         Geometry geometry = fac.createGeometry(point);
-        assertEquals(geometry, (Geometry) DataUtilities.defaultValue(Geometry.class));
+        assertEquals(geometry, DataUtilities.defaultValue(Geometry.class));
     }
 
     @Test

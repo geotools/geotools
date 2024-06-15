@@ -659,7 +659,7 @@ public class EngineeringCRSRefTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ENGINEERING_CRS_REF_TYPE__ENGINEERING_CRS:
-                setEngineeringCRS((EngineeringCRSType)null);
+                setEngineeringCRS(null);
                 return;
             case Gml311Package.ENGINEERING_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

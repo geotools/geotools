@@ -853,7 +853,7 @@ public class DbaseFileHeader {
             buffer.position(0);
 
             int r = buffer.remaining();
-            while ((r -= out.write(buffer)) > 0) {// do nothing
+            while ((r -= out.write(buffer)) > 0) { // do nothing
             }
         } finally {
             NIOUtilities.clean(buffer, false);

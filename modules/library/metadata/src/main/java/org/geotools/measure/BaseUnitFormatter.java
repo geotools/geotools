@@ -299,8 +299,8 @@ public class BaseUnitFormatter implements UnitFormatter {
         // Searches label database.
         String label = unitToName.get(unit);
         if (label != null) return label;
-        if (unit instanceof BaseUnit) return ((BaseUnit<?>) unit).getSymbol();
-        if (unit instanceof AlternateUnit) return ((AlternateUnit<?>) unit).getSymbol();
+        if (unit instanceof BaseUnit) return unit.getSymbol();
+        if (unit instanceof AlternateUnit) return unit.getSymbol();
         if (unit instanceof TransformedUnit) {
             TransformedUnit<?> tfmUnit = (TransformedUnit<?>) unit;
             if (tfmUnit.getSymbol() != null) {

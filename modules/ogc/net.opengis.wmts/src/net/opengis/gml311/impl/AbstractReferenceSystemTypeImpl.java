@@ -311,10 +311,10 @@ public abstract class AbstractReferenceSystemTypeImpl extends AbstractReferenceS
                 getSrsID().clear();
                 return;
             case Gml311Package.ABSTRACT_REFERENCE_SYSTEM_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.ABSTRACT_REFERENCE_SYSTEM_TYPE__VALID_AREA:
-                setValidArea((ExtentType)null);
+                setValidArea(null);
                 return;
             case Gml311Package.ABSTRACT_REFERENCE_SYSTEM_TYPE__SCOPE:
                 setScope(SCOPE_EDEFAULT);

@@ -383,7 +383,7 @@ public LanguageStringType getAbstract() {
    */
   @Override
 public void setAbstract(LanguageStringType newAbstract) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__ABSTRACT, newAbstract);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__ABSTRACT, newAbstract);
   }
 
   /**
@@ -441,7 +441,7 @@ public String getAccessConstraints() {
    */
   @Override
 public void setAccessConstraints(String newAccessConstraints) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__ACCESS_CONSTRAINTS, newAccessConstraints);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__ACCESS_CONSTRAINTS, newAccessConstraints);
   }
 
   /**
@@ -470,7 +470,7 @@ public AllowedValuesType getAllowedValues() {
    */
   @Override
 public void setAllowedValues(AllowedValuesType newAllowedValues) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__ALLOWED_VALUES, newAllowedValues);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__ALLOWED_VALUES, newAllowedValues);
   }
 
   /**
@@ -499,7 +499,7 @@ public AnyValueType getAnyValue() {
    */
   @Override
 public void setAnyValue(AnyValueType newAnyValue) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__ANY_VALUE, newAnyValue);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__ANY_VALUE, newAnyValue);
   }
 
   /**
@@ -519,7 +519,7 @@ public String getAvailableCRS() {
    */
   @Override
 public void setAvailableCRS(String newAvailableCRS) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__AVAILABLE_CRS, newAvailableCRS);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__AVAILABLE_CRS, newAvailableCRS);
   }
 
   /**
@@ -548,7 +548,7 @@ public BoundingBoxType getBoundingBox() {
    */
   @Override
 public void setBoundingBox(BoundingBoxType newBoundingBox) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__BOUNDING_BOX, newBoundingBox);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__BOUNDING_BOX, newBoundingBox);
   }
 
   /**
@@ -577,7 +577,7 @@ public ContactType getContactInfo() {
    */
   @Override
 public void setContactInfo(ContactType newContactInfo) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__CONTACT_INFO, newContactInfo);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__CONTACT_INFO, newContactInfo);
   }
 
   /**
@@ -606,7 +606,7 @@ public DatasetDescriptionSummaryBaseType getDatasetDescriptionSummary() {
    */
   @Override
 public void setDatasetDescriptionSummary(DatasetDescriptionSummaryBaseType newDatasetDescriptionSummary) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__DATASET_DESCRIPTION_SUMMARY, newDatasetDescriptionSummary);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__DATASET_DESCRIPTION_SUMMARY, newDatasetDescriptionSummary);
   }
 
   /**
@@ -635,7 +635,7 @@ public DomainMetadataType getDataType() {
    */
   @Override
 public void setDataType(DomainMetadataType newDataType) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__DATA_TYPE, newDataType);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__DATA_TYPE, newDataType);
   }
 
   /**
@@ -664,7 +664,7 @@ public DCPType getDCP() {
    */
   @Override
 public void setDCP(DCPType newDCP) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__DCP, newDCP);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__DCP, newDCP);
   }
 
   /**
@@ -693,7 +693,7 @@ public ValueType getDefaultValue() {
    */
   @Override
 public void setDefaultValue(ValueType newDefaultValue) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__DEFAULT_VALUE, newDefaultValue);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__DEFAULT_VALUE, newDefaultValue);
   }
 
   /**
@@ -722,7 +722,7 @@ public ExceptionType getException() {
    */
   @Override
 public void setException(ExceptionType newException) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__EXCEPTION, newException);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__EXCEPTION, newException);
   }
 
   /**
@@ -751,7 +751,7 @@ public ExceptionReportType getExceptionReport() {
    */
   @Override
 public void setExceptionReport(ExceptionReportType newExceptionReport) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__EXCEPTION_REPORT, newExceptionReport);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__EXCEPTION_REPORT, newExceptionReport);
   }
 
   /**
@@ -780,7 +780,7 @@ public EObject getExtendedCapabilities() {
    */
   @Override
 public void setExtendedCapabilities(EObject newExtendedCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__EXTENDED_CAPABILITIES, newExtendedCapabilities);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__EXTENDED_CAPABILITIES, newExtendedCapabilities);
   }
 
   /**
@@ -800,7 +800,7 @@ public String getFees() {
    */
   @Override
 public void setFees(String newFees) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__FEES, newFees);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__FEES, newFees);
   }
 
   /**
@@ -829,7 +829,7 @@ public GetCapabilitiesType getGetCapabilities() {
    */
   @Override
 public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
   }
 
   /**
@@ -858,7 +858,7 @@ public GetResourceByIdType getGetResourceByID() {
    */
   @Override
 public void setGetResourceByID(GetResourceByIdType newGetResourceByID) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__GET_RESOURCE_BY_ID, newGetResourceByID);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__GET_RESOURCE_BY_ID, newGetResourceByID);
   }
 
   /**
@@ -887,7 +887,7 @@ public HTTPType getHTTP() {
    */
   @Override
 public void setHTTP(HTTPType newHTTP) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__HTTP, newHTTP);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__HTTP, newHTTP);
   }
 
   /**
@@ -916,7 +916,7 @@ public CodeType getIdentifier() {
    */
   @Override
 public void setIdentifier(CodeType newIdentifier) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__IDENTIFIER, newIdentifier);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__IDENTIFIER, newIdentifier);
   }
 
   /**
@@ -936,7 +936,7 @@ public String getIndividualName() {
    */
   @Override
 public void setIndividualName(String newIndividualName) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__INDIVIDUAL_NAME, newIndividualName);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__INDIVIDUAL_NAME, newIndividualName);
   }
 
   /**
@@ -965,7 +965,7 @@ public ManifestType getInputData() {
    */
   @Override
 public void setInputData(ManifestType newInputData) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__INPUT_DATA, newInputData);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__INPUT_DATA, newInputData);
   }
 
   /**
@@ -994,7 +994,7 @@ public KeywordsType getKeywords() {
    */
   @Override
 public void setKeywords(KeywordsType newKeywords) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__KEYWORDS, newKeywords);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__KEYWORDS, newKeywords);
   }
 
   /**
@@ -1014,7 +1014,7 @@ public String getLanguage() {
    */
   @Override
 public void setLanguage(String newLanguage) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__LANGUAGE, newLanguage);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__LANGUAGE, newLanguage);
   }
 
   /**
@@ -1043,7 +1043,7 @@ public ManifestType getManifest() {
    */
   @Override
 public void setManifest(ManifestType newManifest) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__MANIFEST, newManifest);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__MANIFEST, newManifest);
   }
 
   /**
@@ -1072,7 +1072,7 @@ public ValueType getMaximumValue() {
    */
   @Override
 public void setMaximumValue(ValueType newMaximumValue) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__MAXIMUM_VALUE, newMaximumValue);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__MAXIMUM_VALUE, newMaximumValue);
   }
 
   /**
@@ -1101,7 +1101,7 @@ public DomainMetadataType getMeaning() {
    */
   @Override
 public void setMeaning(DomainMetadataType newMeaning) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__MEANING, newMeaning);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__MEANING, newMeaning);
   }
 
   /**
@@ -1130,7 +1130,7 @@ public MetadataType getMetadata() {
    */
   @Override
 public void setMetadata(MetadataType newMetadata) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__METADATA, newMetadata);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__METADATA, newMetadata);
   }
 
   /**
@@ -1159,7 +1159,7 @@ public ValueType getMinimumValue() {
    */
   @Override
 public void setMinimumValue(ValueType newMinimumValue) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__MINIMUM_VALUE, newMinimumValue);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__MINIMUM_VALUE, newMinimumValue);
   }
 
   /**
@@ -1188,7 +1188,7 @@ public NoValuesType getNoValues() {
    */
   @Override
 public void setNoValues(NoValuesType newNoValues) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__NO_VALUES, newNoValues);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__NO_VALUES, newNoValues);
   }
 
   /**
@@ -1217,7 +1217,7 @@ public OperationType getOperation() {
    */
   @Override
 public void setOperation(OperationType newOperation) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__OPERATION, newOperation);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__OPERATION, newOperation);
   }
 
   /**
@@ -1246,7 +1246,7 @@ public ManifestType getOperationResponse() {
    */
   @Override
 public void setOperationResponse(ManifestType newOperationResponse) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__OPERATION_RESPONSE, newOperationResponse);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__OPERATION_RESPONSE, newOperationResponse);
   }
 
   /**
@@ -1275,7 +1275,7 @@ public OperationsMetadataType getOperationsMetadata() {
    */
   @Override
 public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__OPERATIONS_METADATA, newOperationsMetadata);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__OPERATIONS_METADATA, newOperationsMetadata);
   }
 
   /**
@@ -1295,7 +1295,7 @@ public String getOrganisationName() {
    */
   @Override
 public void setOrganisationName(String newOrganisationName) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__ORGANISATION_NAME, newOrganisationName);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__ORGANISATION_NAME, newOrganisationName);
   }
 
   /**
@@ -1324,7 +1324,7 @@ public MetadataType getOtherSource() {
    */
   @Override
 public void setOtherSource(MetadataType newOtherSource) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__OTHER_SOURCE, newOtherSource);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__OTHER_SOURCE, newOtherSource);
   }
 
   /**
@@ -1344,7 +1344,7 @@ public String getOutputFormat() {
    */
   @Override
 public void setOutputFormat(String newOutputFormat) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__OUTPUT_FORMAT, newOutputFormat);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__OUTPUT_FORMAT, newOutputFormat);
   }
 
   /**
@@ -1373,7 +1373,7 @@ public ResponsiblePartyType getPointOfContact() {
    */
   @Override
 public void setPointOfContact(ResponsiblePartyType newPointOfContact) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__POINT_OF_CONTACT, newPointOfContact);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__POINT_OF_CONTACT, newPointOfContact);
   }
 
   /**
@@ -1393,7 +1393,7 @@ public String getPositionName() {
    */
   @Override
 public void setPositionName(String newPositionName) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__POSITION_NAME, newPositionName);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__POSITION_NAME, newPositionName);
   }
 
   /**
@@ -1422,7 +1422,7 @@ public RangeType getRange() {
    */
   @Override
 public void setRange(RangeType newRange) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__RANGE, newRange);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__RANGE, newRange);
   }
 
   /**
@@ -1451,7 +1451,7 @@ public ReferenceType getReference() {
    */
   @Override
 public void setReference(ReferenceType newReference) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__REFERENCE, newReference);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__REFERENCE, newReference);
   }
 
   /**
@@ -1480,7 +1480,7 @@ public ReferenceGroupType getReferenceGroup() {
    */
   @Override
 public void setReferenceGroup(ReferenceGroupType newReferenceGroup) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__REFERENCE_GROUP, newReferenceGroup);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__REFERENCE_GROUP, newReferenceGroup);
   }
 
   /**
@@ -1509,7 +1509,7 @@ public DomainMetadataType getReferenceSystem() {
    */
   @Override
 public void setReferenceSystem(DomainMetadataType newReferenceSystem) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__REFERENCE_SYSTEM, newReferenceSystem);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__REFERENCE_SYSTEM, newReferenceSystem);
   }
 
   /**
@@ -1538,7 +1538,7 @@ public EObject getResource() {
    */
   @Override
 public void setResource(EObject newResource) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__RESOURCE, newResource);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__RESOURCE, newResource);
   }
 
   /**
@@ -1567,7 +1567,7 @@ public CodeType getRole() {
    */
   @Override
 public void setRole(CodeType newRole) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__ROLE, newRole);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__ROLE, newRole);
   }
 
   /**
@@ -1596,7 +1596,7 @@ public ServiceIdentificationType getServiceIdentification() {
    */
   @Override
 public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__SERVICE_IDENTIFICATION, newServiceIdentification);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__SERVICE_IDENTIFICATION, newServiceIdentification);
   }
 
   /**
@@ -1625,7 +1625,7 @@ public ServiceProviderType getServiceProvider() {
    */
   @Override
 public void setServiceProvider(ServiceProviderType newServiceProvider) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__SERVICE_PROVIDER, newServiceProvider);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__SERVICE_PROVIDER, newServiceProvider);
   }
 
   /**
@@ -1654,7 +1654,7 @@ public ServiceReferenceType getServiceReference() {
    */
   @Override
 public void setServiceReference(ServiceReferenceType newServiceReference) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__SERVICE_REFERENCE, newServiceReference);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__SERVICE_REFERENCE, newServiceReference);
   }
 
   /**
@@ -1683,7 +1683,7 @@ public ValueType getSpacing() {
    */
   @Override
 public void setSpacing(ValueType newSpacing) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__SPACING, newSpacing);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__SPACING, newSpacing);
   }
 
   /**
@@ -1703,7 +1703,7 @@ public String getSupportedCRS() {
    */
   @Override
 public void setSupportedCRS(String newSupportedCRS) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__SUPPORTED_CRS, newSupportedCRS);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__SUPPORTED_CRS, newSupportedCRS);
   }
 
   /**
@@ -1732,7 +1732,7 @@ public LanguageStringType getTitle() {
    */
   @Override
 public void setTitle(LanguageStringType newTitle) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__TITLE, newTitle);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__TITLE, newTitle);
   }
 
   /**
@@ -1761,7 +1761,7 @@ public DomainMetadataType getUOM() {
    */
   @Override
 public void setUOM(DomainMetadataType newUOM) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__UOM, newUOM);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__UOM, newUOM);
   }
 
   /**
@@ -1790,7 +1790,7 @@ public ValueType getValue() {
    */
   @Override
 public void setValue(ValueType newValue) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__VALUE, newValue);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__VALUE, newValue);
   }
 
   /**
@@ -1819,7 +1819,7 @@ public ValuesReferenceType getValuesReference() {
    */
   @Override
 public void setValuesReference(ValuesReferenceType newValuesReference) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__VALUES_REFERENCE, newValuesReference);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__VALUES_REFERENCE, newValuesReference);
   }
 
   /**
@@ -1848,7 +1848,7 @@ public WGS84BoundingBoxType getWGS84BoundingBox() {
    */
   @Override
 public void setWGS84BoundingBox(WGS84BoundingBoxType newWGS84BoundingBox) {
-    ((FeatureMap.Internal)getMixed()).set(Ows11Package.Literals.DOCUMENT_ROOT__WGS84_BOUNDING_BOX, newWGS84BoundingBox);
+    getMixed().set(Ows11Package.Literals.DOCUMENT_ROOT__WGS84_BOUNDING_BOX, newWGS84BoundingBox);
   }
 
   /**
@@ -2373,163 +2373,163 @@ public void eUnset(int featureID) {
         getXSISchemaLocation().clear();
         return;
       case Ows11Package.DOCUMENT_ROOT__ABSTRACT:
-        setAbstract((LanguageStringType)null);
+        setAbstract(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__ACCESS_CONSTRAINTS:
         setAccessConstraints(ACCESS_CONSTRAINTS_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__ALLOWED_VALUES:
-        setAllowedValues((AllowedValuesType)null);
+        setAllowedValues(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__ANY_VALUE:
-        setAnyValue((AnyValueType)null);
+        setAnyValue(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__AVAILABLE_CRS:
         setAvailableCRS(AVAILABLE_CRS_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__BOUNDING_BOX:
-        setBoundingBox((BoundingBoxType)null);
+        setBoundingBox(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__CONTACT_INFO:
-        setContactInfo((ContactType)null);
+        setContactInfo(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__DATASET_DESCRIPTION_SUMMARY:
-        setDatasetDescriptionSummary((DatasetDescriptionSummaryBaseType)null);
+        setDatasetDescriptionSummary(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__DATA_TYPE:
-        setDataType((DomainMetadataType)null);
+        setDataType(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__DCP:
-        setDCP((DCPType)null);
+        setDCP(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__DEFAULT_VALUE:
-        setDefaultValue((ValueType)null);
+        setDefaultValue(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__EXCEPTION:
-        setException((ExceptionType)null);
+        setException(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-        setExceptionReport((ExceptionReportType)null);
+        setExceptionReport(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-        setExtendedCapabilities((EObject)null);
+        setExtendedCapabilities(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__FEES:
         setFees(FEES_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-        setGetCapabilities((GetCapabilitiesType)null);
+        setGetCapabilities(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__GET_RESOURCE_BY_ID:
-        setGetResourceByID((GetResourceByIdType)null);
+        setGetResourceByID(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__HTTP:
-        setHTTP((HTTPType)null);
+        setHTTP(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
         setIndividualName(INDIVIDUAL_NAME_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__INPUT_DATA:
-        setInputData((ManifestType)null);
+        setInputData(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__KEYWORDS:
-        setKeywords((KeywordsType)null);
+        setKeywords(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__LANGUAGE:
         setLanguage(LANGUAGE_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__MANIFEST:
-        setManifest((ManifestType)null);
+        setManifest(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__MAXIMUM_VALUE:
-        setMaximumValue((ValueType)null);
+        setMaximumValue(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__MEANING:
-        setMeaning((DomainMetadataType)null);
+        setMeaning(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__METADATA:
-        setMetadata((MetadataType)null);
+        setMetadata(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__MINIMUM_VALUE:
-        setMinimumValue((ValueType)null);
+        setMinimumValue(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__NO_VALUES:
-        setNoValues((NoValuesType)null);
+        setNoValues(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__OPERATION:
-        setOperation((OperationType)null);
+        setOperation(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__OPERATION_RESPONSE:
-        setOperationResponse((ManifestType)null);
+        setOperationResponse(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-        setOperationsMetadata((OperationsMetadataType)null);
+        setOperationsMetadata(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__ORGANISATION_NAME:
         setOrganisationName(ORGANISATION_NAME_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__OTHER_SOURCE:
-        setOtherSource((MetadataType)null);
+        setOtherSource(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
         setOutputFormat(OUTPUT_FORMAT_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-        setPointOfContact((ResponsiblePartyType)null);
+        setPointOfContact(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__POSITION_NAME:
         setPositionName(POSITION_NAME_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__RANGE:
-        setRange((RangeType)null);
+        setRange(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__REFERENCE:
-        setReference((ReferenceType)null);
+        setReference(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__REFERENCE_GROUP:
-        setReferenceGroup((ReferenceGroupType)null);
+        setReferenceGroup(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__REFERENCE_SYSTEM:
-        setReferenceSystem((DomainMetadataType)null);
+        setReferenceSystem(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__RESOURCE:
-        setResource((EObject)null);
+        setResource(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__ROLE:
-        setRole((CodeType)null);
+        setRole(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-        setServiceIdentification((ServiceIdentificationType)null);
+        setServiceIdentification(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-        setServiceProvider((ServiceProviderType)null);
+        setServiceProvider(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__SERVICE_REFERENCE:
-        setServiceReference((ServiceReferenceType)null);
+        setServiceReference(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__SPACING:
-        setSpacing((ValueType)null);
+        setSpacing(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__SUPPORTED_CRS:
         setSupportedCRS(SUPPORTED_CRS_EDEFAULT);
         return;
       case Ows11Package.DOCUMENT_ROOT__TITLE:
-        setTitle((LanguageStringType)null);
+        setTitle(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__UOM:
-        setUOM((DomainMetadataType)null);
+        setUOM(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__VALUE:
-        setValue((ValueType)null);
+        setValue(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__VALUES_REFERENCE:
-        setValuesReference((ValuesReferenceType)null);
+        setValuesReference(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__WGS84_BOUNDING_BOX:
-        setWGS84BoundingBox((WGS84BoundingBoxType)null);
+        setWGS84BoundingBox(null);
         return;
       case Ows11Package.DOCUMENT_ROOT__RANGE_CLOSURE:
         unsetRangeClosure();

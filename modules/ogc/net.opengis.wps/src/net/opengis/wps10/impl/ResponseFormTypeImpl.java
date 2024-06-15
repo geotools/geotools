@@ -223,10 +223,10 @@ public class ResponseFormTypeImpl extends EObjectImpl implements ResponseFormTyp
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.RESPONSE_FORM_TYPE__RESPONSE_DOCUMENT:
-        setResponseDocument((ResponseDocumentType)null);
+        setResponseDocument(null);
         return;
       case Wps10Package.RESPONSE_FORM_TYPE__RAW_DATA_OUTPUT:
-        setRawDataOutput((OutputDefinitionType)null);
+        setRawDataOutput(null);
         return;
     }
     super.eUnset(featureID);

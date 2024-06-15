@@ -159,7 +159,7 @@ public class PointTypeImpl extends AbstractGeometryTypeImpl implements PointType
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.POINT_TYPE__POS:
-				setPos((DirectPositionType)null);
+				setPos(null);
 				return;
 		}
 		super.eUnset(featureID);

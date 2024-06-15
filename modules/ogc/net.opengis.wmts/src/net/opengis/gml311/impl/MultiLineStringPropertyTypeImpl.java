@@ -659,7 +659,7 @@ public class MultiLineStringPropertyTypeImpl extends MinimalEObjectImpl.Containe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_LINE_STRING_PROPERTY_TYPE__MULTI_LINE_STRING:
-                setMultiLineString((MultiLineStringType)null);
+                setMultiLineString(null);
                 return;
             case Gml311Package.MULTI_LINE_STRING_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

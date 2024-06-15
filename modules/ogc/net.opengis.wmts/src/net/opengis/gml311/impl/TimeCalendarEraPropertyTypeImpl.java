@@ -659,7 +659,7 @@ public class TimeCalendarEraPropertyTypeImpl extends MinimalEObjectImpl.Containe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_CALENDAR_ERA_PROPERTY_TYPE__TIME_CALENDAR_ERA:
-                setTimeCalendarEra((TimeCalendarEraType)null);
+                setTimeCalendarEra(null);
                 return;
             case Gml311Package.TIME_CALENDAR_ERA_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

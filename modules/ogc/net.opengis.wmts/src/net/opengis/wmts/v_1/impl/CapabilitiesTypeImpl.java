@@ -263,7 +263,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.CAPABILITIES_TYPE__CONTENTS:
-                setContents((ContentsType)null);
+                setContents(null);
                 return;
             case wmtsv_1Package.CAPABILITIES_TYPE__THEMES:
                 getThemes().clear();

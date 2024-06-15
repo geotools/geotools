@@ -294,7 +294,7 @@ public class ExtentTypeImpl extends MinimalEObjectImpl.Container implements Exte
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.EXTENT_TYPE__DESCRIPTION:
-                setDescription((StringOrRefType)null);
+                setDescription(null);
                 return;
             case Gml311Package.EXTENT_TYPE__BOUNDING_BOX:
                 getBoundingBox().clear();

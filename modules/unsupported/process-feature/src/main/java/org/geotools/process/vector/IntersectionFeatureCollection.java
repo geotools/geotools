@@ -758,7 +758,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 return factory.createMultiPoint(array);
             }
             if (Point.class.isAssignableFrom(binding) && !collection.isEmpty()) {
-                return (Point) collection.get(0);
+                return collection.get(0);
             }
             return null;
         }

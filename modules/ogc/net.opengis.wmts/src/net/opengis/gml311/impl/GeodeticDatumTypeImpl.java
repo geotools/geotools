@@ -218,10 +218,10 @@ public class GeodeticDatumTypeImpl extends AbstractDatumTypeImpl implements Geod
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEODETIC_DATUM_TYPE__USES_PRIME_MERIDIAN:
-                setUsesPrimeMeridian((PrimeMeridianRefType)null);
+                setUsesPrimeMeridian(null);
                 return;
             case Gml311Package.GEODETIC_DATUM_TYPE__USES_ELLIPSOID:
-                setUsesEllipsoid((EllipsoidRefType)null);
+                setUsesEllipsoid(null);
                 return;
         }
         super.eUnset(featureID);

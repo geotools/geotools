@@ -414,19 +414,19 @@ public class CoverageOfferingTypeImpl extends CoverageOfferingBriefTypeImpl impl
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__DOMAIN_SET:
-				setDomainSet((DomainSetType)null);
+				setDomainSet(null);
 				return;
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__RANGE_SET:
-				setRangeSet((RangeSetType1)null);
+				setRangeSet(null);
 				return;
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__SUPPORTED_CR_SS:
-				setSupportedCRSs((SupportedCRSsType)null);
+				setSupportedCRSs(null);
 				return;
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__SUPPORTED_FORMATS:
-				setSupportedFormats((SupportedFormatsType)null);
+				setSupportedFormats(null);
 				return;
 			case Wcs10Package.COVERAGE_OFFERING_TYPE__SUPPORTED_INTERPOLATIONS:
-				setSupportedInterpolations((SupportedInterpolationsType)null);
+				setSupportedInterpolations(null);
 				return;
 		}
 		super.eUnset(featureID);

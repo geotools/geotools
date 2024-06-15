@@ -233,7 +233,7 @@ public class TimeNodeTypeImpl extends AbstractTimeTopologyPrimitiveTypeImpl impl
                 getNextEdge().clear();
                 return;
             case Gml311Package.TIME_NODE_TYPE__POSITION:
-                setPosition((TimeInstantPropertyType)null);
+                setPosition(null);
                 return;
         }
         super.eUnset(featureID);

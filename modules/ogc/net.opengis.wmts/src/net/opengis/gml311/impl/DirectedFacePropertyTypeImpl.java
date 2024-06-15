@@ -745,7 +745,7 @@ public class DirectedFacePropertyTypeImpl extends MinimalEObjectImpl.Container i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTED_FACE_PROPERTY_TYPE__FACE:
-                setFace((FaceType)null);
+                setFace(null);
                 return;
             case Gml311Package.DIRECTED_FACE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

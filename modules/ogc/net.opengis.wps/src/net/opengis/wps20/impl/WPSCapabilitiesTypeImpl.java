@@ -297,10 +297,10 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.WPS_CAPABILITIES_TYPE__CONTENTS:
-				setContents((ContentsType)null);
+				setContents(null);
 				return;
 			case Wps20Package.WPS_CAPABILITIES_TYPE__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 			case Wps20Package.WPS_CAPABILITIES_TYPE__SERVICE:
 				unsetService();

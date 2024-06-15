@@ -282,7 +282,7 @@ public class OperationParameterGroupTypeImpl extends OperationParameterGroupBase
                 getGroupID().clear();
                 return;
             case Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.OPERATION_PARAMETER_GROUP_TYPE__MAXIMUM_OCCURS:
                 setMaximumOccurs(MAXIMUM_OCCURS_EDEFAULT);

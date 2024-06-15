@@ -203,7 +203,7 @@ public void eSet(int featureID, Object newValue) {
 public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
-        setRequestMessage((EObject)null);
+        setRequestMessage(null);
         return;
       case Ows11Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE_REFERENCE:
         setRequestMessageReference(REQUEST_MESSAGE_REFERENCE_EDEFAULT);

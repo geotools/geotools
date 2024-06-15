@@ -271,10 +271,10 @@ public class DataBlockTypeImpl extends MinimalEObjectImpl.Container implements D
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DATA_BLOCK_TYPE__RANGE_PARAMETERS:
-                setRangeParameters((RangeParametersType)null);
+                setRangeParameters(null);
                 return;
             case Gml311Package.DATA_BLOCK_TYPE__TUPLE_LIST:
-                setTupleList((CoordinatesType)null);
+                setTupleList(null);
                 return;
             case Gml311Package.DATA_BLOCK_TYPE__DOUBLE_OR_NULL_TUPLE_LIST:
                 setDoubleOrNullTupleList(DOUBLE_OR_NULL_TUPLE_LIST_EDEFAULT);

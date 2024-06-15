@@ -348,7 +348,7 @@ public class RangeSetTypeImpl extends AbstractDescriptionTypeImpl implements Ran
 				getAxisDescription().clear();
 				return;
 			case Wcs10Package.RANGE_SET_TYPE__NULL_VALUES:
-				setNullValues((ValueEnumType)null);
+				setNullValues(null);
 				return;
 			case Wcs10Package.RANGE_SET_TYPE__REF_SYS:
 				setRefSys(REF_SYS_EDEFAULT);

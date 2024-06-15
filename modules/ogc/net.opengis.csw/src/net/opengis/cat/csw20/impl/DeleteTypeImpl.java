@@ -259,7 +259,7 @@ public class DeleteTypeImpl extends EObjectImpl implements DeleteType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.DELETE_TYPE__CONSTRAINT:
-                setConstraint((QueryConstraintType)null);
+                setConstraint(null);
                 return;
             case Csw20Package.DELETE_TYPE__HANDLE:
                 setHandle(HANDLE_EDEFAULT);

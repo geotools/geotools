@@ -154,7 +154,7 @@ public class MultiCurveDomainTypeImpl extends DomainSetTypeImpl implements Multi
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_CURVE_DOMAIN_TYPE__MULTI_CURVE:
-                setMultiCurve((MultiCurveType)null);
+                setMultiCurve(null);
                 return;
         }
         super.eUnset(featureID);

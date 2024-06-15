@@ -641,13 +641,13 @@ public class FeatureTypeTypeImpl extends EObjectImpl implements FeatureTypeType 
         getOtherSRS().clear();
         return;
       case WfsPackage.FEATURE_TYPE_TYPE__NO_SRS:
-        setNoSRS((NoSRSType)null);
+        setNoSRS(null);
         return;
       case WfsPackage.FEATURE_TYPE_TYPE__OPERATIONS:
-        setOperations((OperationsType)null);
+        setOperations(null);
         return;
       case WfsPackage.FEATURE_TYPE_TYPE__OUTPUT_FORMATS:
-        setOutputFormats((OutputFormatListType)null);
+        setOutputFormats(null);
         return;
       case WfsPackage.FEATURE_TYPE_TYPE__WGS84_BOUNDING_BOX:
         getWGS84BoundingBox().clear();

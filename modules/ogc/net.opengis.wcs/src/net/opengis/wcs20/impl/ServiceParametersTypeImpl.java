@@ -322,13 +322,13 @@ public class ServiceParametersTypeImpl extends EObjectImpl implements ServicePar
 				setCoverageSubtype(COVERAGE_SUBTYPE_EDEFAULT);
 				return;
 			case Wcs20Package.SERVICE_PARAMETERS_TYPE__COVERAGE_SUBTYPE_PARENT:
-				setCoverageSubtypeParent((CoverageSubtypeParentType)null);
+				setCoverageSubtypeParent(null);
 				return;
 			case Wcs20Package.SERVICE_PARAMETERS_TYPE__NATIVE_FORMAT:
 				setNativeFormat(NATIVE_FORMAT_EDEFAULT);
 				return;
 			case Wcs20Package.SERVICE_PARAMETERS_TYPE__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 		}
 		super.eUnset(featureID);

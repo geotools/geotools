@@ -284,7 +284,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
                         .filter(s -> s != null)
                         .collect(Collectors.toList());
 
-        GraphicLegend legendCopy = (GraphicLegend) copy((Graphic) rule.getLegend());
+        GraphicLegend legendCopy = (GraphicLegend) copy(rule.getLegend());
 
         Description descCopy = rule.getDescription();
         descCopy = copy(descCopy);
@@ -308,7 +308,7 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
     @Override
     public void visit(FeatureTypeStyle fts) {
 
-        FeatureTypeStyle copy = (FeatureTypeStyle) new FeatureTypeStyleImpl(fts);
+        FeatureTypeStyle copy = new FeatureTypeStyleImpl(fts);
 
         List<Rule> rulesCopy =
                 fts.rules().stream()
@@ -757,8 +757,8 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
         copy.getOptions().putAll(text.getOptions());
 
         if (text instanceof TextSymbolizer) {
-            TextSymbolizer text2 = (TextSymbolizer) text;
-            TextSymbolizer copy2 = (TextSymbolizer) copy;
+            TextSymbolizer text2 = text;
+            TextSymbolizer copy2 = copy;
 
             copy2.setGraphic(copy(text2.getGraphic()));
             copy2.setSnippet(copy(text2.getSnippet()));

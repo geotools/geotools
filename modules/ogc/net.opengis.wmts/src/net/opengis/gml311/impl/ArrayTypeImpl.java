@@ -154,7 +154,7 @@ public class ArrayTypeImpl extends AbstractGMLTypeImpl implements ArrayType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ARRAY_TYPE__MEMBERS:
-                setMembers((ArrayAssociationType)null);
+                setMembers(null);
                 return;
         }
         super.eUnset(featureID);

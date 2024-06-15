@@ -32,7 +32,6 @@ import static com.bedatadriven.jackson.datatype.jts.GeoJson.TYPE;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.io.Closeable;
 import java.util.HashMap;
 import java.util.Map;
 import org.locationtech.jts.geom.Geometry;
@@ -63,7 +62,7 @@ public class GenericGeometryParser extends BaseParser implements GeometryParser<
             return parser.geometryFromJson(node);
         } else {
             // TODO find a better way of doing this!
-            throw new JsonMappingException((Closeable) null, "Invalid geometry type: " + typeName);
+            throw new JsonMappingException(null, "Invalid geometry type: " + typeName);
         }
     }
 }

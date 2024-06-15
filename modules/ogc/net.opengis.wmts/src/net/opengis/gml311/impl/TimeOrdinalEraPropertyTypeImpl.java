@@ -659,7 +659,7 @@ public class TimeOrdinalEraPropertyTypeImpl extends MinimalEObjectImpl.Container
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_ORDINAL_ERA_PROPERTY_TYPE__TIME_ORDINAL_ERA:
-                setTimeOrdinalEra((TimeOrdinalEraType)null);
+                setTimeOrdinalEra(null);
                 return;
             case Gml311Package.TIME_ORDINAL_ERA_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

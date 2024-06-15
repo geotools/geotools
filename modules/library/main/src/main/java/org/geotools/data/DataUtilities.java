@@ -742,7 +742,7 @@ public class DataUtilities {
             Map<Object, Object> copy = new HashMap<>(map.size());
 
             for (Map.Entry<Object, Object> objectObjectEntry : map.entrySet()) {
-                Map.Entry entry = (Map.Entry) objectObjectEntry;
+                Map.Entry entry = objectObjectEntry;
                 copy.put(entry.getKey(), duplicate(entry.getValue()));
             }
 

@@ -663,7 +663,7 @@ public class GetRecordsTypeImpl extends RequestBaseTypeImpl implements GetRecord
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.GET_RECORDS_TYPE__DISTRIBUTED_SEARCH:
-                setDistributedSearch((DistributedSearchType)null);
+                setDistributedSearch(null);
                 return;
             case Csw20Package.GET_RECORDS_TYPE__RESPONSE_HANDLER:
                 setResponseHandler(RESPONSE_HANDLER_EDEFAULT);

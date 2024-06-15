@@ -517,10 +517,10 @@ public class ValueCollectionTypeImpl extends EObjectImpl implements ValueCollect
         getMember().clear();
         return;
       case Wfs20Package.VALUE_COLLECTION_TYPE__ADDITIONAL_VALUES:
-        setAdditionalValues((AdditionalValuesType)null);
+        setAdditionalValues(null);
         return;
       case Wfs20Package.VALUE_COLLECTION_TYPE__TRUNCATED_RESPONSE:
-        setTruncatedResponse((TruncatedResponseType)null);
+        setTruncatedResponse(null);
         return;
       case Wfs20Package.VALUE_COLLECTION_TYPE__NEXT:
         setNext(NEXT_EDEFAULT);

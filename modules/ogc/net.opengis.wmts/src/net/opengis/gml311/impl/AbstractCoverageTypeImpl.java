@@ -136,7 +136,7 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
      */
     @Override
     public void setDomainSet(DomainSetType newDomainSet) {
-        ((FeatureMap.Internal)getDomainSetGroup()).set(Gml311Package.eINSTANCE.getAbstractCoverageType_DomainSet(), newDomainSet);
+        getDomainSetGroup().set(Gml311Package.eINSTANCE.getAbstractCoverageType_DomainSet(), newDomainSet);
     }
 
     /**
@@ -282,10 +282,10 @@ public abstract class AbstractCoverageTypeImpl extends AbstractFeatureTypeImpl i
                 getDomainSetGroup().clear();
                 return;
             case Gml311Package.ABSTRACT_COVERAGE_TYPE__DOMAIN_SET:
-                setDomainSet((DomainSetType)null);
+                setDomainSet(null);
                 return;
             case Gml311Package.ABSTRACT_COVERAGE_TYPE__RANGE_SET:
-                setRangeSet((RangeSetType)null);
+                setRangeSet(null);
                 return;
             case Gml311Package.ABSTRACT_COVERAGE_TYPE__DIMENSION:
                 setDimension(DIMENSION_EDEFAULT);

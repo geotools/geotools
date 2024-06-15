@@ -659,7 +659,7 @@ public class PrimeMeridianRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.PRIME_MERIDIAN_REF_TYPE__PRIME_MERIDIAN:
-                setPrimeMeridian((PrimeMeridianType)null);
+                setPrimeMeridian(null);
                 return;
             case Gml311Package.PRIME_MERIDIAN_REF_TYPE__ACTUATE:
                 unsetActuate();

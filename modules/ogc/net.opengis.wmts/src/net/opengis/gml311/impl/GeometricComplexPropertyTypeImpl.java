@@ -851,16 +851,16 @@ public class GeometricComplexPropertyTypeImpl extends MinimalEObjectImpl.Contain
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEOMETRIC_COMPLEX_PROPERTY_TYPE__GEOMETRIC_COMPLEX:
-                setGeometricComplex((GeometricComplexType)null);
+                setGeometricComplex(null);
                 return;
             case Gml311Package.GEOMETRIC_COMPLEX_PROPERTY_TYPE__COMPOSITE_CURVE:
-                setCompositeCurve((CompositeCurveType)null);
+                setCompositeCurve(null);
                 return;
             case Gml311Package.GEOMETRIC_COMPLEX_PROPERTY_TYPE__COMPOSITE_SURFACE:
-                setCompositeSurface((CompositeSurfaceType)null);
+                setCompositeSurface(null);
                 return;
             case Gml311Package.GEOMETRIC_COMPLEX_PROPERTY_TYPE__COMPOSITE_SOLID:
-                setCompositeSolid((CompositeSolidType)null);
+                setCompositeSolid(null);
                 return;
             case Gml311Package.GEOMETRIC_COMPLEX_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

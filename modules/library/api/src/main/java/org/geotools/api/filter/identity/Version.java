@@ -110,7 +110,7 @@ public final class Version {
             throw new IllegalArgumentException(
                     "Invalid version index: " + index + ". Must be a positive integer > 0.");
         }
-        this.union = UNION_INTEGER | (long) index;
+        this.union = UNION_INTEGER | index;
     }
 
     public Version(final Date dateTime) {

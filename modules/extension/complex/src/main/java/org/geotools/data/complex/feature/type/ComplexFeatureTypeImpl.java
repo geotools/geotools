@@ -60,13 +60,12 @@ public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
             InternationalString description) {
         super(
                 name,
-                new ArrayList<PropertyDescriptor>(schema) {
+                new ArrayList<>(schema) {
                     private static final long serialVersionUID = 1L;
 
                     {
                         add(ComplexFeatureConstants.FEATURE_CHAINING_LINK);
                     }
-                    ;
                 },
                 defaultGeometry,
                 isAbstract,

@@ -416,12 +416,10 @@ public final class MongoComplexUtilities {
      */
     public static Map<String, Class> findMappings(DBCursor cursor) {
         Map<String, Class> mappings = new HashMap<>();
-        try {
+        try (cursor) {
             while (cursor.hasNext()) {
                 findMappingsHelper(cursor.next(), "", mappings);
             }
-        } finally {
-            cursor.close();
         }
         return mappings;
     }

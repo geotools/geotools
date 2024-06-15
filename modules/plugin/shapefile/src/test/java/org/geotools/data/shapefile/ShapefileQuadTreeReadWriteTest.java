@@ -172,17 +172,14 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
     }
 
     static void compare(SimpleFeatureIterator fs1, SimpleFeatureIterator fs2) throws Exception {
-        try {
+        try (fs1;
+                fs2) {
             while (fs1.hasNext()) {
                 SimpleFeature f1 = fs1.next();
                 SimpleFeature f2 = fs2.next();
 
                 compare(f1, f2);
             }
-
-        } finally {
-            fs1.close();
-            fs2.close();
         }
     }
 
@@ -224,7 +221,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
         ShapefileDataStore ds = (ShapefileDataStore) fac.createDataStore(params);
 
-        FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
         FeatureId featureId = ff.featureId("streams.84");
         Id filter = ff.id(Collections.singleton(featureId));

@@ -29,6 +29,7 @@ import javax.media.jai.Warp;
 import javax.media.jai.WarpGrid;
 import javax.media.jai.WarpPolynomial;
 import org.geotools.api.coverage.grid.GridGeometry;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.MathTransform2D;
 import org.geotools.referencing.crs.DefaultDerivedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
@@ -470,7 +471,7 @@ public class LocalizationGrid implements Serializable {
      * @param step The amount to increment {@code offset} in order to reach the next element.
      */
     private static void replaceSingularity(final double[] grid, int offset, int num, final int step) {
-        final double increment = (grid[offset + (num - 1) * step] - grid[offset]) / ((double) (num - 1));
+        final double increment = (grid[offset + (num - 1) * step] - grid[offset]) / (num - 1);
         final double value = grid[offset];
         offset += step;
         for (int i = 0; i < (num - 2); i++, offset += step) {

@@ -187,8 +187,7 @@ abstract class GeoHashGrid {
                     if (feature.getAttribute("_aggregation") != null) {
                         final byte[] data = (byte[]) feature.getAttribute("_aggregation");
                         try {
-                            final Map<String, Object> aggregation =
-                                    mapper.readValue(data, new TypeReference<Map<String, Object>>() {});
+                            final Map<String, Object> aggregation = mapper.readValue(data, new TypeReference<>() {});
                             buckets.add(aggregation);
                         } catch (IOException e) {
                             LOGGER.fine("Failed to parse aggregation value: " + e);

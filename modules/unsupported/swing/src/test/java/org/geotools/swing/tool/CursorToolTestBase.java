@@ -64,7 +64,7 @@ public abstract class CursorToolTestBase extends GraphicsTestBase {
     public void setupPaneAndTool() throws Exception {
         mapContent = new MockMapContent();
         mapContent.addLayer(getTestLayer());
-        JFrame frame = GuiActionRunner.execute(new GuiQuery<JFrame>() {
+        JFrame frame = GuiActionRunner.execute(new GuiQuery<>() {
 
             @Override
             protected JFrame executeInEDT() throws Throwable {

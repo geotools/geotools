@@ -119,7 +119,7 @@ public class StyleBuilder {
      */
     public StyleBuilder(StyleFactory styleFactory, FilterFactory filterFactory) {
         this.sf = styleFactory;
-        this.ff = (FilterFactory) filterFactory;
+        this.ff = filterFactory;
     }
 
     /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
@@ -137,7 +137,7 @@ public class StyleBuilder {
 
     /** Documented setter injection, StyleBuilder uses a StyleFactory for creation. */
     public void setFilterFactory(FilterFactory factory) {
-        ff = (FilterFactory) factory;
+        ff = factory;
     }
 
     /**

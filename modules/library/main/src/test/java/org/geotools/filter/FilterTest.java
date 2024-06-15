@@ -45,7 +45,6 @@ import org.geotools.api.filter.expression.ExpressionVisitor;
 import org.geotools.api.filter.expression.Function;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.PropertyName;
-import org.geotools.api.filter.identity.FeatureId;
 import org.geotools.api.filter.spatial.BBOX;
 import org.geotools.api.filter.spatial.Beyond;
 import org.geotools.api.filter.spatial.Contains;
@@ -956,7 +955,7 @@ public class FilterTest {
 
     @Test
     public void testFid() {
-        Id ff = fac.id(new HashSet<FeatureId>());
+        Id ff = fac.id(new HashSet<>());
         Assert.assertFalse(ff.evaluate(testFeature));
         ff = fac.id(Collections.singleton(fac.featureId(testFeature.getID())));
         Assert.assertTrue(ff.evaluate(testFeature));

@@ -81,9 +81,7 @@ public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         // extract the value
         Object attribValue = expr.evaluate(feature);
-        if (attribValue == null) {
-            return;
-        } else {
+        if (attribValue != null) {
             visited |= accumulator.visit(attribValue);
         }
     }

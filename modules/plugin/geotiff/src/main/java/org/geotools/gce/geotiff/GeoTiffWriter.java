@@ -341,6 +341,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
     }
 
     /** Writes the provided rendered image to the provided image output stream using the supplied geotiff metadata. */
+    @SuppressWarnings("PMD.UseTryWithResources")
     private boolean writeImage(
             final RenderedImage image,
             final ImageOutputStream outputStream,
@@ -359,7 +360,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements GridCov
         //
         // GETTING READER AND METADATA
         //
-        final TIFFImageWriter writer = (TIFFImageWriter) GeoTiffFormat.IMAGEIO_WRITER_FACTORY.createWriterInstance();
+        TIFFImageWriter writer = (TIFFImageWriter) GeoTiffFormat.IMAGEIO_WRITER_FACTORY.createWriterInstance();
         try {
             final IIOMetadata metadata = createGeoTiffIIOMetadata(
                     writer, ImageTypeSpecifier.createFromRenderedImage(image), geoTIFFMetadata, params);

@@ -91,7 +91,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
     }
 
     @Test
-    @SuppressWarnings("PMD.EmptyControlStatement")
+    @SuppressWarnings({"PMD.EmptyControlStatement", "PMD.UnusedLocalVariable"})
     public void testCreateSchema() throws Exception {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));

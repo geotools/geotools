@@ -53,7 +53,7 @@ public class DescribeLayerResponse extends Response {
 
             Object object;
 
-            try (InputStream inputStream = getInputStream(); ) {
+            try (InputStream inputStream = getInputStream()) {
                 object = DocumentFactory.getInstance(inputStream, hints, Level.WARNING);
             } catch (SAXException e) {
                 throw (IOException) new IOException().initCause(e);

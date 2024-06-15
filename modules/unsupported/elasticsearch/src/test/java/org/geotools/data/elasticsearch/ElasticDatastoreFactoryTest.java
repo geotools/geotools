@@ -17,8 +17,8 @@
 package org.geotools.data.elasticsearch;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -220,7 +220,7 @@ public class ElasticDatastoreFactoryTest {
     public void testBuildClientWithSslRejectUnauthorizedDisabled() throws IOException {
         params.put(ElasticDataStoreFactory.SSL_REJECT_UNAUTHORIZED.key, false);
         assertNotNull(dataStoreFactory.createDataStore(params));
-        assertTrue(configCallbackCaptor.getAllValues().size() > 0);
+        assertFalse(configCallbackCaptor.getAllValues().isEmpty());
         configCallbackCaptor.getAllValues().get(0).customizeHttpClient(httpClientBuilder);
         verify(httpClientBuilder, times(1)).setSSLContext(any());
     }
@@ -230,7 +230,7 @@ public class ElasticDatastoreFactoryTest {
     public void testBuildClientWithSslRejectUnauthorizedDisabledAndInvalidSSLContext() throws IOException {
         params.put(ElasticDataStoreFactory.SSL_REJECT_UNAUTHORIZED.key, false);
         assertNotNull(dataStoreFactory.createDataStore(params));
-        assertTrue(configCallbackCaptor.getAllValues().size() > 0);
+        assertFalse(configCallbackCaptor.getAllValues().isEmpty());
         when(httpClientBuilder.setSSLContext(any())).thenThrow(KeyStoreException.class);
         configCallbackCaptor.getAllValues().get(0).customizeHttpClient(httpClientBuilder);
     }

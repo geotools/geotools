@@ -387,7 +387,7 @@ public abstract class DataTestCase {
             return -1;
         }
         int count = 0;
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 reader.next();
                 count++;
@@ -397,8 +397,6 @@ public abstract class DataTestCase {
             throw new DataSourceException("hasNext() lied to me at:" + count, e);
         } catch (Exception e) {
             throw new DataSourceException("next() could not understand feature at:" + count, e);
-        } finally {
-            reader.close();
         }
         return count;
     }
@@ -408,13 +406,11 @@ public abstract class DataTestCase {
             throws NoSuchElementException, IOException {
         int count = 0;
 
-        try {
+        try (writer) {
             while (writer.hasNext()) {
                 writer.next();
                 count++;
             }
-        } finally {
-            writer.close();
         }
 
         return count;

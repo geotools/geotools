@@ -119,7 +119,7 @@ public class ConfigurationTemplate
     stringBuffer.append(TEXT_11);
 
         for (XSDTypeDefinition element : elements) {
-            XSDNamedComponent named = (XSDNamedComponent) element;
+            XSDNamedComponent named = element;
             if (named.getName() == null) continue;
 
             String nQName = prefix.toUpperCase() + "." + named.getName();
@@ -142,7 +142,7 @@ public class ConfigurationTemplate
     stringBuffer.append(TEXT_16);
 
         for (XSDAttributeDeclaration attribute : attributes) {
-            XSDNamedComponent named = (XSDNamedComponent) attribute;
+            XSDNamedComponent named = attribute;
             if (named.getName() == null) continue;
 
             String nQName = prefix.toUpperCase() + "." + named.getName();

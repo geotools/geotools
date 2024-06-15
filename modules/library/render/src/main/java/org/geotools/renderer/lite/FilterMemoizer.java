@@ -78,7 +78,7 @@ class FilterMemoizer {
         T result = (T) Proxy.newProxyInstance(
                 FilterMemoizer.class.getClassLoader(),
                 delegate.getClass().getInterfaces(),
-                new MemoizingHandler(delegate));
+                new MemoizingHandler<>(delegate));
         return result;
     }
 

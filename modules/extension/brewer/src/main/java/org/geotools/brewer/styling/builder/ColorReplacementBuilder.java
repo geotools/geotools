@@ -63,7 +63,7 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         }
         mapping.clear();
         if (replacement.getRecoding() != null
-                && replacement.getRecoding().getParameters().size() > 0) {
+                && !replacement.getRecoding().getParameters().isEmpty()) {
             List<Expression> params = replacement.getRecoding().getParameters();
             propertyName = params.get(0);
             for (Expression param : params) {

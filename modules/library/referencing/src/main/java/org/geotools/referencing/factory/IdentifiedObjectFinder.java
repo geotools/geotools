@@ -221,7 +221,7 @@ public class IdentifiedObjectFinder {
         final Citation authority = getProxy().getAuthorityFactory().getAuthority();
         final boolean isAll = ReferencingFactory.ALL.equals(authority);
         for (ReferenceIdentifier referenceIdentifier : object.getIdentifiers()) {
-            final Identifier id = (Identifier) referenceIdentifier;
+            final Identifier id = referenceIdentifier;
             if (!isAll && !Citations.identifierMatches(authority, id.getAuthority())) {
                 // The identifier is not for this authority. Looks the other ones.
                 continue;

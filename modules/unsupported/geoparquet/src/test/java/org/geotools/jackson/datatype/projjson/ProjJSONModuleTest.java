@@ -17,6 +17,7 @@
 package org.geotools.jackson.datatype.projjson;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -244,7 +245,7 @@ public class ProjJSONModuleTest {
 
         // Check parameters
         assertNotNull(projCrs.getConversion().getParameters());
-        assertTrue(projCrs.getConversion().getParameters().size() > 0);
+        assertFalse(projCrs.getConversion().getParameters().isEmpty());
     }
 
     @Test
@@ -289,7 +290,7 @@ public class ProjJSONModuleTest {
 
         // Check parameters
         assertNotNull(transform.getParameters());
-        assertTrue(transform.getParameters().size() > 0);
+        assertFalse(transform.getParameters().isEmpty());
         assertEquals("0.5", transform.getAccuracy());
     }
 }

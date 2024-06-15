@@ -235,7 +235,7 @@ public class WMTSTileService extends TileService {
             throw new IllegalArgumentException("Layer must have a non-null boundingBox");
         }
 
-        if (format == null && layer.getFormats().size() > 0) {
+        if (format == null && !layer.getFormats().isEmpty()) {
             this.format = layer.getFormats().get(0);
         } else {
             this.format = format;

@@ -247,7 +247,7 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     @Override
     public Collection getComponentAdapters() {
-        List adapters = new ArrayList();
+        List adapters = new ArrayList<>();
 
         for (Object o : entrySet()) {
             Entry entry = (Entry) o;
@@ -263,7 +263,7 @@ public class PicoMap implements Map, MutablePicoContainer {
             return Collections.emptyList();
         }
 
-        List adapters = new ArrayList();
+        List adapters = new ArrayList<>();
 
         for (Object o : entrySet()) {
             Entry entry = (Entry) o;
@@ -338,7 +338,7 @@ public class PicoMap implements Map, MutablePicoContainer {
 
     @Override
     public List getComponentInstances() {
-        ArrayList instances = new ArrayList();
+        ArrayList instances = new ArrayList<>();
 
         for (Object o : entrySet()) {
             Entry entry = (Entry) o;
@@ -354,7 +354,7 @@ public class PicoMap implements Map, MutablePicoContainer {
             return Collections.emptyList();
         }
 
-        ArrayList instances = new ArrayList();
+        ArrayList instances = new ArrayList<>();
         for (Object o : entrySet()) {
             Entry entry = (Entry) o;
 

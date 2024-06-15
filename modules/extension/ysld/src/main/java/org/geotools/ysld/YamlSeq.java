@@ -169,7 +169,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
     @Override
     public Iterator<YamlObject<Object>> iterator() {
         final Iterator<Object> it = raw.iterator();
-        return new Iterator<YamlObject<Object>>() {
+        return new Iterator<>() {
             @Override
             public boolean hasNext() {
                 return it.hasNext();

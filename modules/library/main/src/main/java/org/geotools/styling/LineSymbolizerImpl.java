@@ -111,7 +111,7 @@ public class LineSymbolizerImpl extends AbstractSymbolizer implements LineSymbol
             clone = (LineSymbolizerImpl) super.clone();
 
             if (stroke != null && stroke instanceof Cloneable) {
-                clone.stroke = (StrokeImpl) ((Cloneable) stroke).clone();
+                clone.stroke = (StrokeImpl) stroke.clone();
             }
 
         } catch (CloneNotSupportedException e) {

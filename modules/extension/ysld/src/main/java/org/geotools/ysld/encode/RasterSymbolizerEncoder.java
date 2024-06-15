@@ -154,7 +154,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         protected void encode(ChannelSelection next) {
             push("channels");
             for (Band band : Band.values()) {
-                SelectedChannelType channel = (SelectedChannelType) band.getFrom(next);
+                SelectedChannelType channel = band.getFrom(next);
                 if (channel != null) {
                     inline(new SelectedChannelTypeEncoder(band, channel));
                 }

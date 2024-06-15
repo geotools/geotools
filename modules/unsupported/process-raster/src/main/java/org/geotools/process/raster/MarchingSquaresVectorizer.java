@@ -1218,7 +1218,7 @@ public final class MarchingSquaresVectorizer {
 
     public static class ImageAnalysisResultThdLocal {
 
-        private static final InheritableThreadLocal<Exception> tl = new InheritableThreadLocal<Exception>() {
+        private static final InheritableThreadLocal<Exception> tl = new InheritableThreadLocal<>() {
             @Override
             protected Exception initialValue() {
 

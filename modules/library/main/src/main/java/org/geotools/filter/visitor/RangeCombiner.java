@@ -178,7 +178,7 @@ abstract class RangeCombiner {
                         Expression expression = pb.getExpression();
                         @SuppressWarnings("unchecked")
                         Range<?> range = new Range(binding, (Comparable) min, (Comparable) max);
-                        addRange(rangeMap, expression, new MultiRange(range));
+                        addRange(rangeMap, expression, new MultiRange<>(range));
                     }
                 }
             } else if (f instanceof PropertyIsNotEqualTo) {
@@ -211,7 +211,7 @@ abstract class RangeCombiner {
                 // behave as if they were case sensitive regardgless of the setting.
                 // TODO: change the logic to consider matchcase when
                 if (er.range != null && (!(op instanceof PropertyIsEqualTo) || (op.isMatchingCase()))) {
-                    addRange(rangeMap, er.expression, new MultiRange(er.range));
+                    addRange(rangeMap, er.expression, new MultiRange<>(er.range));
                 } else {
                     otherFilters.add(f);
                 }
@@ -259,15 +259,15 @@ abstract class RangeCombiner {
                 Object value = evaluate(op.getExpression2(), binding);
                 if (value != null) {
                     if (op instanceof PropertyIsLessThan) {
-                        range = new Range(binding, null, false, (Comparable) value, false);
+                        range = new Range<>(binding, null, false, (Comparable) value, false);
                     } else if (op instanceof PropertyIsLessThanOrEqualTo) {
-                        range = new Range(binding, null, false, (Comparable) value, true);
+                        range = new Range<>(binding, null, false, (Comparable) value, true);
                     } else if (op instanceof PropertyIsEqualTo) {
-                        range = new Range(binding, (Comparable) value, (Comparable) value);
+                        range = new Range<>(binding, (Comparable) value, (Comparable) value);
                     } else if (op instanceof PropertyIsGreaterThanOrEqualTo) {
-                        range = new Range(binding, (Comparable) value, true, null, false);
+                        range = new Range<>(binding, (Comparable) value, true, null, false);
                     } else if (op instanceof PropertyIsGreaterThan) {
-                        range = new Range(binding, (Comparable) value, false, null, false);
+                        range = new Range<>(binding, (Comparable) value, false, null, false);
                     }
                 }
             }
@@ -278,15 +278,15 @@ abstract class RangeCombiner {
                 Object value = evaluate(op.getExpression1(), binding);
                 if (value != null) {
                     if (op instanceof PropertyIsLessThan) {
-                        range = new Range(binding, (Comparable) value, true, null, false);
+                        range = new Range<>(binding, (Comparable) value, true, null, false);
                     } else if (op instanceof PropertyIsLessThanOrEqualTo) {
-                        range = new Range(binding, (Comparable) value, false, null, false);
+                        range = new Range<>(binding, (Comparable) value, false, null, false);
                     } else if (op instanceof PropertyIsEqualTo) {
-                        range = new Range(binding, (Comparable) value, (Comparable) value);
+                        range = new Range<>(binding, (Comparable) value, (Comparable) value);
                     } else if (op instanceof PropertyIsGreaterThanOrEqualTo) {
-                        range = new Range(binding, null, false, (Comparable) value, false);
+                        range = new Range<>(binding, null, false, (Comparable) value, false);
                     } else if (op instanceof PropertyIsGreaterThan) {
-                        range = new Range(binding, null, false, (Comparable) value, true);
+                        range = new Range<>(binding, null, false, (Comparable) value, true);
                     }
                 }
             }

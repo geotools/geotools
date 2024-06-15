@@ -14,7 +14,6 @@ import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.identity.FeatureId;
-import org.geotools.api.filter.identity.Identifier;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
@@ -78,7 +77,7 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
                 lobSchema, new Object[] {new byte[] {6, 7, 8}, "newclob", new byte[] {11, 12, 13}}, null);
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(sf));
 
-        Filter filter = ff.id(new HashSet<Identifier>(fids));
+        Filter filter = ff.id(new HashSet<>(fids));
         try (FeatureIterator<SimpleFeature> fi = fs.getFeatures(filter).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();

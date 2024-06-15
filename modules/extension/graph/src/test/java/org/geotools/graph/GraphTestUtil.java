@@ -74,7 +74,7 @@ public class GraphTestUtil {
         Node[] ends = new Node[2];
 
         for (int i = 0; i < nnodes; i++) {
-            nodes[i] = new String(String.valueOf(i));
+            nodes[i] = String.valueOf(i);
             if (i > 0) {
                 Edge e = (Edge) gen.add(new String[] {nodes[i - 1], nodes[i]});
                 if (i == 1) ends[0] = e.getNodeA();

@@ -234,8 +234,8 @@ public class JProgressWindow implements ProgressListener {
     @Override
     public float getProgress() {
         BoundedRangeModel model = progressBar.getModel();
-        float progress = (float) (model.getValue() - model.getMinimum());
-        float limit = (float) model.getMaximum();
+        float progress = model.getValue() - model.getMinimum();
+        float limit = model.getMaximum();
 
         return progress / limit;
     }

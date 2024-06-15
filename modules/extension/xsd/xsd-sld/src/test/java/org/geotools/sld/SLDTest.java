@@ -17,6 +17,7 @@
 package org.geotools.sld;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -144,7 +145,7 @@ public class SLDTest {
         TextSymbolizer symbolizer = (TextSymbolizer)
                 (s.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0));
         Font font = symbolizer.fonts().get(0);
-        assertTrue(font.getFamily().size() > 0);
+        assertFalse(font.getFamily().isEmpty());
 
         assertEquals("", font.getFamily().get(0).toString());
     }

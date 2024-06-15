@@ -242,7 +242,6 @@ public class UniqueVisitor implements FeatureCalc, FeatureAttributeVisitor, Limi
 
     public static class UniqueResult extends AbstractCalcResult {
 
-        private List<String> attributeNames;
         private Set<Object> unique;
         private boolean preserveOrder = false;
 

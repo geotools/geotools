@@ -205,7 +205,6 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter implem
                 iee.initCause(e);
                 throw iee;
             }
-            return;
         }
 
         // /////////////////////////////////////////////////////////////////////

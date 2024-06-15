@@ -40,7 +40,7 @@ public class GeoPackageProcessRequest {
     public enum LayerType {
         FEATURES,
         TILES
-    };
+    }
 
     public abstract static class Layer {
 

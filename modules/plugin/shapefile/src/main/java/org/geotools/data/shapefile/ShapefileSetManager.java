@@ -100,7 +100,6 @@ class ShapefileSetManager implements FileReader {
         }
         if (shpFiles.isLocal() && shpFiles.exists(DBF)) {
             File file = URLs.urlToFile(new URL(shpFiles.get(DBF)));
-            byte[] bytes;
             DbaseFileHeader header = new DbaseFileHeader();
             InputStream in;
             if (shpFiles.isGz()) {
@@ -108,7 +107,7 @@ class ShapefileSetManager implements FileReader {
             } else {
                 in = new FileInputStream(file);
             }
-            try (ReadableByteChannel channel = Channels.newChannel(in); ) {
+            try (ReadableByteChannel channel = Channels.newChannel(in)) {
                 header.readHeader(channel);
             } catch (IOException e) {
                 // finished too soon

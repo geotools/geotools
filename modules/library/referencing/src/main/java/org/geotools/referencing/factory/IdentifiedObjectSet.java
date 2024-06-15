@@ -329,7 +329,7 @@ public class IdentifiedObjectSet extends AbstractSet implements Serializable {
      */
     @SuppressWarnings("unchecked")
     protected Object writeReplace() throws ObjectStreamException {
-        return new LinkedHashSet(this);
+        return new LinkedHashSet<>(this);
     }
 
     /**

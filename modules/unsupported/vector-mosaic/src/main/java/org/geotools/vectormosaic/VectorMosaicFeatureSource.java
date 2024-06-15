@@ -163,7 +163,7 @@ public class VectorMosaicFeatureSource extends ContentFeatureSource {
             bounds = new ReferencedEnvelope(source.getSchema().getCoordinateReferenceSystem());
 
             try (SimpleFeatureIterator features =
-                    (SimpleFeatureIterator) source.getFeatures(boundsQuery).features(); ) {
+                    (SimpleFeatureIterator) source.getFeatures(boundsQuery).features()) {
                 while (features.hasNext()) {
                     SimpleFeature feature = features.next();
                     bounds.expandToInclude((ReferencedEnvelope) feature.getBounds());

@@ -112,7 +112,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws DataSourceException See IOException
      */
     public void addFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
-        try {
+        try (reader) {
             SimpleFeature feature = reader.next();
 
             if (feature == null) {
@@ -129,8 +129,6 @@ public class MemoryDataStore extends ContentDataStore {
 
         } catch (IllegalAttributeException e) {
             throw new DataSourceException("Problem using reader", e);
-        } finally {
-            reader.close();
         }
     }
 
@@ -142,7 +140,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws DataSourceException See IOException
      */
     public void addFeatures(SimpleFeatureIterator reader) throws IOException {
-        try {
+        try (reader) {
             SimpleFeature feature = reader.next();
 
             if (feature == null) {
@@ -156,8 +154,6 @@ public class MemoryDataStore extends ContentDataStore {
                 feature = reader.next();
                 addFeatureInternal(feature);
             }
-        } finally {
-            reader.close();
         }
     }
     /**

@@ -17,7 +17,6 @@
 package org.geotools.data.shapefile.index.quadtree.fs;
 
 import java.io.IOException;
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
@@ -47,7 +46,7 @@ public class IndexHeader {
         ByteBuffer buf = ByteBuffer.allocate(8);
 
         channel.read(buf);
-        ((Buffer) buf).flip();
+        buf.flip();
 
         byte[] tmp = new byte[3];
         buf.get(tmp);

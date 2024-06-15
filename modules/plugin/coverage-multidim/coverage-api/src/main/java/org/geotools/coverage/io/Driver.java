@@ -51,7 +51,7 @@ public interface Driver extends OptionalFactory, Factory {
     public enum DriverCapabilities {
         CONNECT,
         CREATE,
-        DELETE;
+        DELETE
     }
 
     /**

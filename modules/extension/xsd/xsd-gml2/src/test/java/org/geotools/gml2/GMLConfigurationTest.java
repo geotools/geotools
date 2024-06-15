@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2;
 
-import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xsd.SchemaLocationResolver;
@@ -60,11 +59,11 @@ public class GMLConfigurationTest {
     public void testSchemaLocationResolver() {
         Assert.assertEquals(
                 GMLConfiguration.class.getResource("feature.xsd").toString(),
-                ((XSDSchemaLocationResolver) new SchemaLocationResolver(configuration.getXSD()))
+                new SchemaLocationResolver(configuration.getXSD())
                         .resolveSchemaLocation(null, GML.NAMESPACE, "feature.xsd"));
         Assert.assertEquals(
                 GMLConfiguration.class.getResource("geometry.xsd").toString(),
-                ((XSDSchemaLocationResolver) new SchemaLocationResolver(configuration.getXSD()))
+                new SchemaLocationResolver(configuration.getXSD())
                         .resolveSchemaLocation(null, GML.NAMESPACE, "geometry.xsd"));
     }
 

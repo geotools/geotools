@@ -245,7 +245,6 @@ class RasterLayerResponse {
             granulesNumber = granuleIndex;
             if (granulesNumber == 0) {
                 if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "Unable to load any data ");
-                return;
             }
         }
     }

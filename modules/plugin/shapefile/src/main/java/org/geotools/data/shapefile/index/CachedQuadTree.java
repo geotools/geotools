@@ -39,7 +39,6 @@ public class CachedQuadTree {
         DATA_DEFINITION.addField(Integer.class);
         DATA_DEFINITION.addField(Long.class);
     }
-    ;
 
     MemoryNode root;
     Indices offsets;
@@ -84,7 +83,7 @@ public class CachedQuadTree {
         collectIndices(indices, root, bounds);
         indices.sort();
         final Data data = new Data(DATA_DEFINITION);
-        return new CloseableIterator<Data>() {
+        return new CloseableIterator<>() {
             boolean read = true;
             int idx = 0;
 

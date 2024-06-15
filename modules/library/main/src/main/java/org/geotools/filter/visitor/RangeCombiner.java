@@ -181,7 +181,7 @@ abstract class RangeCombiner {
                         Expression expression = pb.getExpression();
                         @SuppressWarnings("unchecked")
                         Range<?> range = new Range(binding, (Comparable) min, (Comparable) max);
-                        addRange(rangeMap, expression, new MultiRange(range));
+                        addRange(rangeMap, expression, new MultiRange<>(range));
                     }
                 }
             } else if (f instanceof PropertyIsNotEqualTo) {
@@ -215,7 +215,7 @@ abstract class RangeCombiner {
                 // TODO: change the logic to consider matchcase when
                 if (er.range != null
                         && (!(op instanceof PropertyIsEqualTo) || (op.isMatchingCase()))) {
-                    addRange(rangeMap, er.expression, new MultiRange(er.range));
+                    addRange(rangeMap, er.expression, new MultiRange<>(er.range));
                 } else {
                     otherFilters.add(f);
                 }

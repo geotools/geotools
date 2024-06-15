@@ -212,7 +212,7 @@ public class DefaultProgressListener extends NullProgressListener
      * @return <code>true</code> if there are exceptions, <code>false</code> otherwise.
      */
     public boolean hasExceptions() {
-        return exceptionQueue.size() > 0;
+        return !exceptionQueue.isEmpty();
     }
 
     /**

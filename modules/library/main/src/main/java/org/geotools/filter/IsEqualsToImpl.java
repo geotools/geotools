@@ -123,7 +123,7 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
             final double fp1 = n1.doubleValue();
             final double fp2 = n2.doubleValue();
             final long lg1, lg2; // 'lg2' will not be initialized if not needed.
-            if (fp1 == (double) (lg1 = n1.longValue()) && fp2 == (double) (lg2 = n2.longValue())) {
+            if (fp1 == (lg1 = n1.longValue()) && fp2 == (lg2 = n2.longValue())) {
                 // Compares the values as 'long' if and only if the 'double' values
                 // do not contains any additional informations.
                 return lg1 == lg2;

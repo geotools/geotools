@@ -112,6 +112,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IOException If problems are encountered while adding
      * @throws DataSourceException See IOException
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public void addFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         try {
@@ -143,6 +144,7 @@ public class MemoryDataStore extends ContentDataStore {
      * @throws IOException If problems are encountered while adding
      * @throws DataSourceException See IOException
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public void addFeatures(SimpleFeatureIterator reader) throws IOException {
         try {
             SimpleFeature feature = reader.next();

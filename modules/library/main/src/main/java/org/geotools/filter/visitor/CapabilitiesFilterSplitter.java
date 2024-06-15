@@ -145,20 +145,20 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
      * The stack holding the bits of the filter that are not processable by something with the given
      * {@link FilterCapabilities}
      */
-    private Stack postStack = new Stack();
+    private Stack postStack = new Stack<>();
 
     /**
      * The stack holding the bits of the filter that <b>are</b> processable by something with the
      * given {@link FilterCapabilities}
      */
-    private Stack preStack = new Stack();
+    private Stack preStack = new Stack<>();
 
     /**
      * Operates similar to postStack. When a update is determined to affect an attribute expression
      * the update filter is pushed on to the stack, then ored with the filter that contains the
      * expression.
      */
-    private Set changedStack = new HashSet();
+    private Set changedStack = new HashSet<>();
 
     /** The given filterCapabilities that we're splitting on. */
     private Capabilities fcs = null;
@@ -988,7 +988,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         // ~~(a|b) == ~(~a + ~b) substitution
         // a|b == ~(~a + ~b) negative simpilification
         Iterator i = filter.getChildren().iterator();
-        List translated = new ArrayList();
+        List translated = new ArrayList<>();
 
         while (i.hasNext()) {
             Filter f = (Filter) i.next();

@@ -269,7 +269,7 @@ public class InProcessLockingManager implements LockingManager {
         SimpleFeatureType featureType = writer.getFeatureType();
         final String typeName = featureType.getTypeName();
 
-        return new DelegatingFeatureWriter<SimpleFeatureType, SimpleFeature>() {
+        return new DelegatingFeatureWriter<>() {
             SimpleFeature live = null;
 
             @Override

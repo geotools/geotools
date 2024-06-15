@@ -408,6 +408,7 @@ public class MapInfoFileReader {
      *
      * @param bufferedreader the buffered reader
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     private void parseTabFile(final BufferedReader bufferedreader)
             throws IOException, DataSourceException {
         String str;

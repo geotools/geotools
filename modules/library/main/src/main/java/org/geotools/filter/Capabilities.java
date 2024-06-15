@@ -314,6 +314,7 @@ public class Capabilities {
      *
      * @param name FilterCapabilities Operand name such as "BBOX", "Like" or "MUL"
      */
+    @SuppressWarnings("PMD.UnnecessaryReturn")
     public void addName(String name) {
         if (name == null) {
             return;

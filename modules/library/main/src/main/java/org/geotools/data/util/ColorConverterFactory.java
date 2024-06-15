@@ -144,7 +144,7 @@ public class ColorConverterFactory implements ConverterFactory {
                         rgba.append(color.getBlue());
                         rgba.append(",");
 
-                        float opacity = ((float) color.getAlpha()) / 256.0f;
+                        float opacity = color.getAlpha() / 256f;
 
                         rgba.append(FORMAT.format(opacity));
 

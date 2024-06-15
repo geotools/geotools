@@ -83,6 +83,7 @@ public abstract class Response {
         }
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources")
     protected ServiceException parseException(InputStream inputStream) throws IOException {
         try {
             return ServiceExceptionParser.parse(inputStream);

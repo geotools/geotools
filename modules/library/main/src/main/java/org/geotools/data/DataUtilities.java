@@ -975,7 +975,7 @@ public class DataUtilities {
             throw new IOException("Provided features where empty");
         }
 
-        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+        return new FeatureReader<>() {
             SimpleFeature[] array = features;
 
             int offset = -1;
@@ -1578,6 +1578,7 @@ public class DataUtilities {
      *
      * @return FeatureCollection
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public static SimpleFeatureCollection collection(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
@@ -1610,6 +1611,7 @@ public class DataUtilities {
      *
      * @return FeatureCollection
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public static SimpleFeatureCollection collection(SimpleFeatureIterator reader)
             throws IOException {
         DefaultFeatureCollection collection = new DefaultFeatureCollection(null, null);
@@ -2673,6 +2675,7 @@ public class DataUtilities {
      *
      * @return number of featuers in feature collection
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public static int count(FeatureIterator<?> iterator) {
         int count = 0;
         if (iterator != null) {
@@ -2714,6 +2717,7 @@ public class DataUtilities {
      * intended for FeatureCollection implementors and test case verification. Client code should
      * always call {@link FeatureCollection#getBounds()}.
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     public static ReferencedEnvelope bounds(FeatureIterator<?> iterator) {
         if (iterator == null) {
             return null;

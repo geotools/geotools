@@ -385,6 +385,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
      * @see #contains(Object)
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean containsAll(Collection<?> c) {
         Iterator<?> e = c.iterator();
         try {
@@ -402,26 +403,6 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
     }
 
     public boolean remove(Object o) {
-        //        if( featureSource instanceof SimpleFeatureStore){
-        //            SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-        //            if( o instanceof SimpleFeature ){
-        //                SimpleFeature feature = (SimpleFeature) o;
-        //                FeatureId fid = feature.getIdentifier();
-        //                FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        //                Set<FeatureId> ids = Collections.singleton(fid);
-        //                Filter remove = ff.id(ids);
-        //                try {
-        //                    featureStore.removeFeatures( remove );
-        //                    return true;
-        //                } catch (IOException e) {
-        //                    //LOGGER.log(Level.FINER, e.getMessage(), e);
-        //                    return false; // unable to remove
-        //                }
-        //            }
-        //            else {
-        //                return false; // nothing to do; we can only remove features
-        //            }
-        //        }
         throw new UnsupportedOperationException(
                 "Content is not writable; FeatureStore not available");
     }

@@ -326,6 +326,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * this is the same as calling getSchema(), but in the view case the underlying "true" schema is
      * returned.
      */
+    @SuppressWarnings("PMD.DoubleCheckedLocking") // performance only, no state issues
     protected final SimpleFeatureType getAbsoluteSchema() {
         // load the type from the state shared among feature sources
         ContentState state = entry.getState(transaction);

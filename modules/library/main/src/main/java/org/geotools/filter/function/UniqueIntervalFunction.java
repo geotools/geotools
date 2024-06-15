@@ -103,7 +103,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 int itemIndex = 0;
                 // for each bin
                 for (int binIndex = 0; binIndex < classNum; binIndex++) {
-                    HashSet val = new HashSet();
+                    HashSet val = new HashSet<>();
                     // add the items
                     for (int binItem = 0; binItem < binPop; binItem++)
                         val.add(results[itemIndex++]);
@@ -121,7 +121,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
                 values = new Set[classNum];
                 // assign straight-across (1 item per class)
                 for (int i = 0; i < classNum; i++) {
-                    HashSet val = new HashSet();
+                    HashSet val = new HashSet<>();
                     val.add(results[i]);
                     values[i] = val;
                 }
@@ -169,7 +169,7 @@ public class UniqueIntervalFunction extends ClassificationFunction {
             double value = 0.0;
             for (Object o : s) {
                 List key = Arrays.asList(o);
-                value += (double) queryResult.get(key);
+                value += queryResult.get(key);
             }
             if (value > 0.0) {
                 percentages[i] = (value / totalSize) * 100;

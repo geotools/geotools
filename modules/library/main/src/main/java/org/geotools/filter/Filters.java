@@ -711,7 +711,7 @@ public class Filters {
             return Collections.emptySet();
         }
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
-        filter.accept(extractor, new HashSet<String>());
+        filter.accept(extractor, new HashSet<>());
         return extractor.getAttributeNameSet();
     }
 

@@ -448,6 +448,7 @@ public abstract class DataTestCase {
      *
      * <p>This method will close the reader.
      */
+    @SuppressWarnings("PMD.UseTryWithResources")
     protected int count(FeatureReader<SimpleFeatureType, SimpleFeature> reader) throws IOException {
         if (reader == null) {
             return -1;
@@ -470,6 +471,7 @@ public abstract class DataTestCase {
     }
 
     /** Counts the number of Features in the specified writer. This method will close the writer. */
+    @SuppressWarnings("PMD.UseTryWithResources")
     protected int count(FeatureWriter<SimpleFeatureType, SimpleFeature> writer)
             throws NoSuchElementException, IOException {
         int count = 0;

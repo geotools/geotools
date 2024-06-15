@@ -101,7 +101,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     }
 
     protected void fireChange(Collection coll, int type) {
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({"unchecked", "PMD.UnnecessaryCast"})
         SimpleFeature[] features = (SimpleFeature[]) coll.toArray(new SimpleFeature[coll.size()]);
         fireChange(features, type);
     }
@@ -192,6 +192,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
      *
      * @return Iterator, should be closed closeIterator
      */
+    @SuppressWarnings("PMD.CloseResource")
     protected Iterator<SimpleFeature> openIterator() throws IOException {
         try {
             FeatureWriter<SimpleFeatureType, SimpleFeature> writer = writer();

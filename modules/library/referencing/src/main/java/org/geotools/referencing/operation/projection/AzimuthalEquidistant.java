@@ -77,9 +77,8 @@ public class AzimuthalEquidistant {
         NORTH_POLAR,
         SOUTH_POLAR,
         EQUATORIAL,
-        OBLIQUE;
-    };
-
+        OBLIQUE
+    }
     /** Abstract base class for Azimuthal Equidistant projections. */
     @SuppressWarnings("serial")
     public abstract static class Abstract extends MapProjection {
@@ -150,8 +149,6 @@ public class AzimuthalEquidistant {
             return values;
         }
     }
-    ;
-
     /** Spherical Azimuthal Equidistant projection. */
     @SuppressWarnings("serial")
     public static class Spherical extends Abstract {

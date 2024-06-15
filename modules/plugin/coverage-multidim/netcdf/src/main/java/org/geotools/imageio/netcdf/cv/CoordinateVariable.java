@@ -98,7 +98,7 @@ public abstract class CoordinateVariable<T> {
         public synchronized List<T> getAll() {
             // Made it synchronized since axis1D values retrieval
             // does cached read on its underlying
-            return new AbstractList<T>() {
+            return new AbstractList<>() {
                 @Override
                 public T get(int index) {
                     return convertValue(axis1D.getCoordValue(index));

@@ -35,6 +35,7 @@ public class TeradataTestSetup extends JDBCTestSetup {
     }
 
     @Override
+    @SuppressWarnings("PMD.CheckResultSet")
     protected void initializeDatabase() throws Exception {
         super.initializeDatabase();
 

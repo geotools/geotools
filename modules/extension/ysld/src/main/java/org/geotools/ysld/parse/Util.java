@@ -64,7 +64,6 @@ public class Util {
             for (Expression param : ((Function) expr).getParameters()) {
                 collectExpressions(list, param);
             }
-            return;
         } else {
             if (expr instanceof Literal) {
                 Object value = ((Literal) expr).getValue();

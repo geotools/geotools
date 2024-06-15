@@ -181,7 +181,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
             expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
 
             for (Entry<Name, Name> nameNameEntry : expectedNamesAndTypes.entrySet()) {
-                Entry entry = (Entry) nameNameEntry;
+                Entry entry = nameNameEntry;
                 Name dName = (Name) entry.getKey();
                 Name tName = (Name) entry.getValue();
 

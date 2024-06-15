@@ -64,8 +64,6 @@ public class DijkstraShortestPathFinderWithTurnCostsTest {
     @Test
     public void test1() {
 
-        double[] expected = {0.0, 1.0, 3.0, 3.0};
-
         List<Double> gotArray = new ArrayList<>(4);
 
         Iterator it = graph.getNodes().iterator();

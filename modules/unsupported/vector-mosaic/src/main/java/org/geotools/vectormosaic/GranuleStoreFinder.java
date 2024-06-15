@@ -43,7 +43,7 @@ public abstract class GranuleStoreFinder {
      */
     @SuppressWarnings("unchecked")
     protected Map propertiesToMap(Properties connProps) {
-        Map params = new java.util.HashMap();
+        Map params = new java.util.HashMap<>();
         for (Object key : connProps.keySet()) {
             params.put(key, connProps.get(key));
         }

@@ -47,7 +47,6 @@ public class WMSCoverageReaderTest {
         }
         return result;
     }
-    ;
 
     @Before
     public void setup() {
@@ -172,7 +171,6 @@ public class WMSCoverageReaderTest {
                             disposeCalled.set(true);
                             super.dispose();
                         }
-                        ;
                     };
                 } else {
                     throw new IllegalArgumentException(

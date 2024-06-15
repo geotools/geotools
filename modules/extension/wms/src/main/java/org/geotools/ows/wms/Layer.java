@@ -573,7 +573,7 @@ public class Layer implements Comparable<Layer> {
      * @return list of children
      */
     public List<Layer> getLayerChildren() {
-        return new AbstractList<Layer>() {
+        return new AbstractList<>() {
             @Override
             public Layer get(int index) {
                 return children.get(index);

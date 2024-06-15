@@ -184,9 +184,9 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(1, gf.graphicalSymbols().size());
         Mark mark = (Mark) gf.graphicalSymbols().get(0);
         assertLiteral("circle", mark.getWellKnownName());
-        Fill markFill = (Fill) mark.getFill();
+        Fill markFill = mark.getFill();
         assertLiteral("#808080", markFill.getColor());
-        Stroke markStroke = (Stroke) mark.getStroke();
+        Stroke markStroke = mark.getStroke();
         assertLiteral("#000000", markStroke.getColor());
         assertLiteral("1", markStroke.getWidth());
         assertNull(gf.getSize());
@@ -918,7 +918,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals(2, fts.getOptions().size());
         assertEquals("multiply", fts.getOptions().get("composite"));
         assertNull(fts.getOptions().get("composite-base"));
@@ -934,7 +934,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals("true", fts.getOptions().get("composite-base"));
         assertNull(fts.getOptions().get("composite"));
     }
@@ -949,7 +949,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals("true", fts.getOptions().get("composite-base"));
         assertEquals("multiply", fts.getOptions().get("composite"));
     }
@@ -964,7 +964,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals("cat A, name D", fts.getOptions().get(FeatureTypeStyle.SORT_BY));
     }
 
@@ -1842,7 +1842,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     public void testBackgroundColor() throws CQLException {
         String css = "* { background: yellow; background-opacity: 0.5; stroke: red }";
         Style style = translate(css);
-        Fill background = ((org.geotools.api.style.Style) style).getBackground();
+        Fill background = style.getBackground();
         assertNotNull(background);
         assertEquals(Color.YELLOW, background.getColor().evaluate(null, Color.class));
         assertEquals(0.5, background.getOpacity().evaluate(null, Double.class), 0d);

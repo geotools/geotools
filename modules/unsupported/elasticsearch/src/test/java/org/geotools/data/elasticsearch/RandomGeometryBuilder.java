@@ -151,7 +151,7 @@ class RandomGeometryBuilder {
 
     public Map<String, Object> toMap(Geometry geometry) throws IOException {
         final String json = GeoJSONWriter.toGeoJSON(geometry);
-        return new ObjectMapper().readValue(json, new TypeReference<Map<String, Object>>() {});
+        return new ObjectMapper().readValue(json, new TypeReference<>() {});
     }
 
     public String toWkt(Geometry geometry) {

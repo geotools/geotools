@@ -251,7 +251,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                 if (j < 0) {
                     sort(query.getTypeName(), null, sort, orderByFields, joinOrders);
 
-                    if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
+                    if (query.getQueryJoins() != null && !query.getQueryJoins().isEmpty()) {
                         addMultiValuedSort(
                                 query.getTypeName(),
                                 orderByFields,
@@ -463,7 +463,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             sql.append(",");
         }
 
-        if (query.getQueryJoins() != null && query.getQueryJoins().size() > 0) {
+        if (query.getQueryJoins() != null && !query.getQueryJoins().isEmpty()) {
             for (int i = 0; i < query.getQueryJoins().size(); i++) {
                 List<String> ids = query.getQueryJoins().get(i).getIds();
                 for (int j = 0; j < ids.size(); j++) {
@@ -534,7 +534,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
         sql.append(joinClause);
 
         boolean isRootFeature =
-                (query.getQueryJoins() == null || query.getQueryJoins().size() == 0);
+                (query.getQueryJoins() == null || query.getQueryJoins().isEmpty());
 
         boolean pagingApplied = false;
 
@@ -551,7 +551,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
                     lastSortBy = isRootFeature
                             ? query.getSortBy()
                             : (query.getQueryJoins() == null
-                                            || query.getQueryJoins().size() == 0
+                                            || query.getQueryJoins().isEmpty()
                                     ? query.getSortBy()
                                     : query.getQueryJoins()
                                             .get(query.getQueryJoins().size() - 1)

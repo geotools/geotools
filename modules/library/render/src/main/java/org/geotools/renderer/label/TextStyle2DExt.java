@@ -22,7 +22,6 @@ import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.prep.PreparedGeometry;
 
 /**
  * Helper class that keeps the state of the alternate polygon labelling angle to avoid its (sometime expensive)
@@ -39,10 +38,6 @@ class TextStyle2DExt extends TextStyle2D {
     public TextStyle2DExt(LabelCacheItem item) {
         super(item.getTextStyle());
         this.item = item;
-    }
-
-    void setupPolygonAlign(PreparedGeometry pg) {
-        if (item.getPolygonAlign() == TextSymbolizer.PolygonAlignOptions.NONE) return;
     }
 
     boolean flipRotation(Geometry geometry) {

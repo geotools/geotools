@@ -212,7 +212,7 @@ public class QueryTypeBinding extends AbstractComplexEMFBinding {
         if ("typeName".equals(property)) {
             QueryType query = (QueryType) eObject;
             if (query.getTypeName() == null) {
-                query.setTypeName(new ArrayList());
+                query.setTypeName(new ArrayList<>());
             }
         }
 

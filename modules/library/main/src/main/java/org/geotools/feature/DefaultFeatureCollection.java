@@ -195,6 +195,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @see #add(Object)
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean addAll(Collection<? extends SimpleFeature> collection) {
         // TODO check inheritance with FeatureType here!!!
         boolean changed = false;
@@ -264,6 +265,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @return true if collection is completly covered
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean containsAll(Collection<?> collection) {
         Iterator<?> iterator = collection.iterator();
         try {
@@ -301,7 +303,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
     public Iterator<SimpleFeature> iterator() {
         // return contents.values().iterator();
         final Iterator<SimpleFeature> iterator = contents.values().iterator();
-        return new Iterator<SimpleFeature>() {
+        return new Iterator<>() {
             SimpleFeature currFeature = null;
 
             @Override
@@ -361,6 +363,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
      * @see #contains(Object)
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean removeAll(Collection<?> collection) {
         boolean changed = false;
         Iterator<?> iterator = collection.iterator();
@@ -481,7 +484,7 @@ public class DefaultFeatureCollection implements SimpleFeatureCollection, Collec
     public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
         @SuppressWarnings("PMD.CloseResource") // wrapped and returned
         final SimpleFeatureIterator iterator = features();
-        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+        return new FeatureReader<>() {
             @Override
             public SimpleFeatureType getFeatureType() {
                 return getSchema();

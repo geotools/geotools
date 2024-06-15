@@ -108,7 +108,7 @@ public class UniqueVisitorTest {
         featureCollection.accepts(uniqueVisitor, null);
         Set result = uniqueVisitor.getResult().toSet();
 
-        Set expected = new HashSet(8);
+        Set expected = new HashSet<>(8);
         addValues(expected, "A", 500d);
         addValues(expected, "C", 30d);
         addValues(expected, "C", 20d);
@@ -129,7 +129,7 @@ public class UniqueVisitorTest {
         featureCollection.accepts(uniqueVisitor, null);
         Set result = uniqueVisitor.getResult().toSet();
 
-        Set expected = new HashSet(9);
+        Set expected = new HashSet<>(9);
         addValues(expected, "C", 20d, 10);
         addValues(expected, "A", 500d, 12);
         addValues(expected, "E", 10d, 7);

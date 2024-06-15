@@ -83,8 +83,6 @@ public class RasterLayerRequest {
     private FootprintBehavior footprintBehavior = FootprintBehavior.None;
 
     private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
-    ;
-
     private double artifactsFilterPTileThreshold;
 
     private double[] virtualNativeResolution;
@@ -911,7 +909,6 @@ public class RasterLayerRequest {
 
         if (name.equals(AbstractGridFormat.RESCALE_PIXELS.getName())) {
             rescalingEnabled = Boolean.TRUE.equals(param.getValue());
-            return;
         }
     }
 

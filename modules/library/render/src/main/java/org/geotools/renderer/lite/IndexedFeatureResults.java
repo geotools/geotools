@@ -69,7 +69,7 @@ public final class IndexedFeatureResults extends DataFeatureCollection {
         List results = index.query(envelope);
         final Iterator resultsIterator = results.iterator();
 
-        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+        return new FeatureReader<>() {
             /** @see FeatureReader#getFeatureType() */
             @Override
             public SimpleFeatureType getFeatureType() {

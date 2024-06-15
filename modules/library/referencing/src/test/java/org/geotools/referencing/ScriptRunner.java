@@ -77,7 +77,7 @@ public final class ScriptRunner extends Console {
                 table.write("Success rate:");
                 table.nextColumn();
                 table.setAlignment(TableWriter.ALIGN_RIGHT);
-                table.write(f.format((double) testPassed / (double) testRun));
+                table.write(f.format(testPassed / (double) testRun));
                 table.nextLine();
             }
             table.writeHorizontalSeparator();

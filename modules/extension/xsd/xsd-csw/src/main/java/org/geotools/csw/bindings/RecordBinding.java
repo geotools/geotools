@@ -66,7 +66,7 @@ public class RecordBinding extends ComplexEMFBinding {
             }
         }
 
-        if (record.getBoundingBox() != null && record.getBoundingBox().size() > 0) {
+        if (record.getBoundingBox() != null && !record.getBoundingBox().isEmpty()) {
             for (Object box : record.getBoundingBox()) {
                 XSDElementDeclaration bboxElement;
                 if (box instanceof WGS84BoundingBoxType) {

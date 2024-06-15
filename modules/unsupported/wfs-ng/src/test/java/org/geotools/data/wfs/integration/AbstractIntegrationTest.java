@@ -669,7 +669,7 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -680,8 +680,6 @@ public abstract class AbstractIntegrationTest {
                 }
                 count++;
             }
-        } finally {
-            reader.close();
         }
         assertEquals("covers", count, array.length);
         return true;
@@ -691,7 +689,7 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -702,8 +700,6 @@ public abstract class AbstractIntegrationTest {
                 }
                 count++;
             }
-        } finally {
-            reader.close();
         }
         assertEquals("covers", count, array.length);
         return true;
@@ -713,7 +709,7 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -723,8 +719,6 @@ public abstract class AbstractIntegrationTest {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
         return count == array.length;
     }
@@ -733,7 +727,7 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
 
@@ -743,8 +737,6 @@ public abstract class AbstractIntegrationTest {
 
                 count++;
             }
-        } finally {
-            reader.close();
         }
         return count == array.length;
     }
@@ -753,14 +745,12 @@ public abstract class AbstractIntegrationTest {
         SimpleFeature feature;
         int count = 0;
 
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 feature = reader.next();
                 LOGGER.fine(count + " feature:" + feature);
                 count++;
             }
-        } finally {
-            reader.close();
         }
     }
 
@@ -1047,6 +1037,7 @@ public abstract class AbstractIntegrationTest {
         }
     }
 
+    @SuppressWarnings("PMD.UnusedLocalVariable")
     protected void testGetFeatureSource(TestDataType test) throws Exception {
         SimpleFeatureSource source = data.getFeatureSource(test.typeName);
 
@@ -1308,7 +1299,7 @@ public abstract class AbstractIntegrationTest {
         } catch (IOException expected) {
         }
 
-        try (Transaction t = new DefaultTransaction(); ) {
+        try (Transaction t = new DefaultTransaction()) {
             road.setTransaction(t);
 
             try {
@@ -1452,7 +1443,7 @@ public abstract class AbstractIntegrationTest {
             return -1;
         }
         int count = 0;
-        try {
+        try (reader) {
             while (reader.hasNext()) {
                 reader.next();
                 count++;
@@ -1462,8 +1453,6 @@ public abstract class AbstractIntegrationTest {
             throw new DataSourceException("hasNext() lied to me at:" + count, e);
         } catch (Exception e) {
             throw new DataSourceException("next() could not understand feature at:" + count, e);
-        } finally {
-            reader.close();
         }
         return count;
     }
@@ -1473,13 +1462,11 @@ public abstract class AbstractIntegrationTest {
             throws NoSuchElementException, IOException {
         int count = 0;
 
-        try {
+        try (writer) {
             while (writer.hasNext()) {
                 writer.next();
                 count++;
             }
-        } finally {
-            writer.close();
         }
 
         return count;

@@ -46,8 +46,6 @@ import org.geotools.measure.Measure;
 public class DefaultVerticalCS extends AbstractCS implements VerticalCS {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1201155778896630499L;
-    ;
-
     /**
      * A one-dimensional vertical CS with <var>{@linkplain DefaultCoordinateSystemAxis#GRAVITY_RELATED_HEIGHT
      * gravity-related height}</var> axis in metres.

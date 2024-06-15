@@ -125,7 +125,7 @@ public class AbstractSimpleDialogTest extends GraphicsTestBase<DialogFixture, Di
     }
 
     private void createWindowFixture() {
-        dialog = GuiActionRunner.execute(new GuiQuery<MockDialog>() {
+        dialog = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected MockDialog executeInEDT() throws Throwable {
                 MockDialog dialog = new MockDialog(TITLE);
@@ -138,7 +138,7 @@ public class AbstractSimpleDialogTest extends GraphicsTestBase<DialogFixture, Di
     }
 
     private void createWindowFixture(final boolean modal, final boolean resizable) {
-        dialog = GuiActionRunner.execute(new GuiQuery<MockDialog>() {
+        dialog = GuiActionRunner.execute(new GuiQuery<>() {
             @Override
             protected MockDialog executeInEDT() throws Throwable {
                 MockDialog dialog = new MockDialog(TITLE, modal, resizable);
@@ -164,7 +164,7 @@ public class AbstractSimpleDialogTest extends GraphicsTestBase<DialogFixture, Di
     public static class MockDialog extends AbstractSimpleDialog {
         public static enum EventType {
             OK,
-            CANCEL;
+            CANCEL
         }
 
         private static final int NUM_EVENT_TYPES = EventType.values().length;

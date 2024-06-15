@@ -532,7 +532,7 @@ public class BandMerge extends OperationJAI {
             GridCoverage2D[] sources,
             BandMergeParams parameters) {
         // Merge the coverage properties
-        Map properties = new HashMap();
+        Map properties = new HashMap<>();
 
         for (GridCoverage2D cov : sources) {
             if (cov != null && cov.getProperties() != null) {

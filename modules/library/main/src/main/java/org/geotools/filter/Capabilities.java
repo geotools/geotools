@@ -303,9 +303,9 @@ public class Capabilities {
      * @param name FilterCapabilities Operand name such as "BBOX", "Like" or "MUL"
      */
     public void addName(String name) {
-        if (name == null) {
-            return;
-        } else if (spatialNames.containsValue(name)) {
+        if (name == null) return;
+
+        if (spatialNames.containsValue(name)) {
             SpatialOperatorsImpl operators = contents.getSpatialCapabilities().getSpatialOperators();
             if (operators.getOperator(name) == null) {
                 SpatialOperatorImpl operator = new SpatialOperatorImpl(name);

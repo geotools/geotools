@@ -251,7 +251,7 @@ public class StyleBuilderTest {
 
     @Test
     public void testExtentBuilder() {
-        ExtentBuilder b = new ExtentBuilder();
+        ExtentBuilder b = new ExtentBuilder<>();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
 
@@ -323,7 +323,7 @@ public class StyleBuilderTest {
 
     @Test
     public void testLayerFeatureConstraintsBuilder() {
-        LayerFeatureConstraintsBuilder b = new LayerFeatureConstraintsBuilder();
+        LayerFeatureConstraintsBuilder b = new LayerFeatureConstraintsBuilder<>();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
 

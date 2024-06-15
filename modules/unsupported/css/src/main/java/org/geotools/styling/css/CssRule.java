@@ -49,7 +49,7 @@ public class CssRule {
 
     enum ZIndexMode {
         NoZIndexAll,
-        NoZIndexZero;
+        NoZIndexZero
     }
 
     Selector selector;

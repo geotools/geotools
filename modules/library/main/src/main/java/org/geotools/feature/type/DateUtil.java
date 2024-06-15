@@ -1592,6 +1592,6 @@ public abstract class DateUtil {
      * @return new <code>java.util.ArrayList</code>
      */
     public static List arrayListFactory() {
-        return new ArrayList();
+        return new ArrayList<>();
     }
 }

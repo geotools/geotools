@@ -204,6 +204,7 @@ public class ImageIOExt {
      *     the provided input, use it to try creating an {@link ImageInputStream} on top of the input.
      * @return an {@link ImageInputStreamSpi} instance.
      */
+    @SuppressWarnings("PMD.UnusedLocalVariable") // stream in the try-with-resources
     public static final ImageInputStreamSpi getImageInputStreamSPI(
             final Object input, final boolean streamCreationCheck) {
 
@@ -243,7 +244,7 @@ public class ImageIOExt {
      * Tells me whether or not the native libraries for JAI/ImageIO are active or not.
      *
      * @return <code>false</code> in case the JAI/ImageIO native libs are not in the path, <code>
-     *     true</code> otherwise.
+     * true</code> otherwise.
      */
     public static boolean isCLibAvailable() {
         return PackageUtil.isCodecLibAvailable();

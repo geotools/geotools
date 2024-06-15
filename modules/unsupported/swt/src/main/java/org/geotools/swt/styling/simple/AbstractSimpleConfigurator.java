@@ -161,5 +161,5 @@ public class AbstractSimpleConfigurator extends Dialog {
                 return e.getSource();
             }
         };
-    };
+    }
 }

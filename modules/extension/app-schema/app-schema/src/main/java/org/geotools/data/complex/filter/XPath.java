@@ -464,7 +464,7 @@ public class XPath extends XPathUtil {
             ((ComplexAttributeImpl) parent).addValue(attribute);
         } else {
             Collection currValue = (Collection) parent.getValue();
-            List newValue = new ArrayList(currValue);
+            List newValue = new ArrayList<>(currValue);
             newValue.add(attribute);
             parent.setValue(newValue);
         }

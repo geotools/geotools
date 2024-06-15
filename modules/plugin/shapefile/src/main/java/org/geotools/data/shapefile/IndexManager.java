@@ -164,7 +164,8 @@ class IndexManager {
     }
 
     /** Returns true if the specified index exists, is up to date, and can be read */
-    @SuppressWarnings("PMD.UseTryWithResources") // opened as a test, should not throw on close
+    // opened as a test, should not throw on close
+    @SuppressWarnings({"PMD.UseTryWithResources", "PMD.UnusedLocalVariable", "PMD.EmptyControlStatement"})
     boolean isIndexUseable(ShpFileType indexType) {
         if (shpFiles.isLocal()) {
             if (isIndexStale(indexType) || !shpFiles.exists(indexType)) {
@@ -172,19 +173,9 @@ class IndexManager {
             }
         } else {
 
-            ReadableByteChannel read = null;
-            try {
-                read = shpFiles.getReadChannel(indexType, writer);
+            try (ReadableByteChannel read = shpFiles.getReadChannel(indexType, writer)) {
             } catch (IOException e) {
                 return false;
-            } finally {
-                if (read != null) {
-                    try {
-                        read.close();
-                    } catch (IOException e) {
-                        ShapefileDataStoreFactory.LOGGER.log(Level.WARNING, "could not close stream", e);
-                    }
-                }
             }
         }
 

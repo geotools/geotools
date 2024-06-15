@@ -125,7 +125,7 @@ public final class ColorUtilities {
          * Prepares the coefficients for the iteration.
          * The non-final ones will be updated inside the loop.
          */
-        final double scale = (double) (colors.length - 1) / (double) (upper - 1 - lower);
+        final double scale = (colors.length - 1) / (double) (upper - 1 - lower);
         final int maxBase = colors.length - 2;
         double index = 0;
         int base = 0;

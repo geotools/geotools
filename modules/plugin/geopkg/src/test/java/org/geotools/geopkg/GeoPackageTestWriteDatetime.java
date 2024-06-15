@@ -184,7 +184,7 @@ public class GeoPackageTestWriteDatetime {
                 PreparedStatement ps = cx.prepareStatement(query)) {
             ps.setString(1, table);
             ps.setString(2, column);
-            try (ResultSet rs = ps.executeQuery(); ) {
+            try (ResultSet rs = ps.executeQuery()) {
                 assertEquals("DATETIME", rs.getString(1));
             }
         }

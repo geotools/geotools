@@ -61,7 +61,6 @@ public class FlatBuffers {
             }
         }
     }
-    ;
 
     private static class ReleasingFlatBufferBuilder extends FlatBufferBuilder {
 

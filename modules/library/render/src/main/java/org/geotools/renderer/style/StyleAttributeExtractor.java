@@ -294,8 +294,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor implements
         }
 
         if (text instanceof TextSymbolizer) {
-            if (((TextSymbolizer) text).getGraphic() != null)
-                ((TextSymbolizer) text).getGraphic().accept(this);
+            if (text.getGraphic() != null) text.getGraphic().accept(this);
         }
 
         if (text.getFill() != null) {

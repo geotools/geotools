@@ -322,6 +322,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * Helper method for returning the underlying schema of the feature source. This is a non-view this is the same as
      * calling getSchema(), but in the view case the underlying "true" schema is returned.
      */
+    @SuppressWarnings("PMD.DoubleCheckedLocking")
     protected final SimpleFeatureType getAbsoluteSchema() {
         // load the type from the state shared among feature sources
         ContentState state = entry.getState(transaction);

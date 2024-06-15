@@ -28,7 +28,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.util.factory.GeoTools;
 import org.mockito.Mockito;
 
-@SuppressWarnings("PMD.JUnit4TestShouldUseAfterAnnotation")
+@SuppressWarnings("PMD.UnitTestShouldUseAfterAnnotation")
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
     private BasicDataSource dataSource;

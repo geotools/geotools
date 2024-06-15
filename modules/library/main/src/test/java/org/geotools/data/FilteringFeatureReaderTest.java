@@ -107,7 +107,7 @@ public class FilteringFeatureReaderTest extends DataTestCase {
         assertNotNull(expected);
         SimpleFeature feature;
         int count = 0;
-        try {
+        try (reader) {
             for (SimpleFeature simpleFeature : expected) {
                 assertTrue(reader.hasNext());
                 feature = reader.next();
@@ -121,8 +121,6 @@ public class FilteringFeatureReaderTest extends DataTestCase {
             throw new DataSourceException("hasNext() lied to me at:" + count, e);
         } catch (IllegalAttributeException e) {
             throw new DataSourceException("next() could not understand feature at:" + count, e);
-        } finally {
-            reader.close();
         }
     }
 }

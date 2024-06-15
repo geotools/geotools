@@ -87,7 +87,6 @@ class ZGroupLayer extends Layer {
             public boolean isCanceled() {
                 return renderer.renderingStopRequested;
             }
-            ;
         };
 
         List<ZGroupLayerPainter> painters = null;

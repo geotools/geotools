@@ -154,6 +154,7 @@ public class HeatmapSurface {
     }
 
     /** Normalizes grid values to range [0,1] */
+    @SuppressWarnings("PMD.ForLoopCanBeForeach")
     private void normalize(float[][] grid) {
         float max = Float.NEGATIVE_INFINITY;
         for (float[] floats : grid) {

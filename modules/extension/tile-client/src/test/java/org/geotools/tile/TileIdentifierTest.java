@@ -100,7 +100,6 @@ public class TileIdentifierTest {
     protected TileIdentifier createTestTileIdentifier(int z, int x, int y, String name) {
         return createTestTileIdentifier(new WebMercatorZoomLevel(z), x, y, name);
     }
-    ;
 
     @Test
     public void testEquals() {

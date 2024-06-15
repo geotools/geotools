@@ -178,7 +178,7 @@ public class CalcUtil {
             } else if (type == Double.class) {
                 return Double.valueOf(newNum.doubleValue());
             } else if (type == String.class) {
-                return new String(newNum.toString());
+                return newNum.toString();
             }
         } else { // direct cast
 
@@ -191,7 +191,7 @@ public class CalcUtil {
             } else if (type == Double.class) {
                 return Double.valueOf(((Double) var).doubleValue());
             } else if (type == String.class) {
-                return new String(var.toString());
+                return var.toString();
             }
         }
 
@@ -216,7 +216,7 @@ public class CalcUtil {
                 return null;
             }
         } else if (newVar instanceof String) {
-            return new String((String) newVar);
+            return (String) newVar;
         } else {
             // TODO: add other classes
             return null;

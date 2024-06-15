@@ -152,11 +152,11 @@ public class DbaseFileWriter implements Closeable {
         buffer = NIOUtilities.allocate(header.getRecordLength());
     }
 
+    @SuppressWarnings({"PMD.UnusedLocalVariable", "PMD.EmptyControlStatement"})
     private void write() throws IOException {
         buffer.position(0);
         int r = buffer.remaining();
-        while ((r -= channel.write(buffer)) > 0) {
-            ; // do nothing
+        while ((r -= channel.write(buffer)) > 0) { // do nothing
         }
     }
 

@@ -68,7 +68,6 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.util.CoverageUtilities;
@@ -269,8 +268,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 assertEquals("10.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
                 assertEquals("450.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
 
-                List<DimensionDescriptor> descriptors =
-                        ((StructuredGridCoverage2DReader) reader).getDimensionDescriptors(coverageName);
+                List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(coverageName);
                 assertNotNull(descriptors);
                 assertEquals(2, descriptors.size());
 
@@ -1080,8 +1078,7 @@ public class NetCDFReaderTest extends NetCDFBaseTest {
                 assertEquals("0.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MINIMUM"));
                 assertEquals("75.0", reader.getMetadataValue(coverageName, "ELEVATION_DOMAIN_MAXIMUM"));
 
-                List<DimensionDescriptor> descriptors =
-                        ((StructuredGridCoverage2DReader) reader).getDimensionDescriptors(coverageName);
+                List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(coverageName);
                 assertNotNull(descriptors);
                 assertEquals(2, descriptors.size());
 

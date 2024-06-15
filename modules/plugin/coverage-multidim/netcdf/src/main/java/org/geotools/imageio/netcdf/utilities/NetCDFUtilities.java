@@ -341,7 +341,7 @@ public class NetCDFUtilities {
         X,
         Y,
         Z,
-        T;
+        T
     }
 
     public enum CheckType {
@@ -753,6 +753,7 @@ public class NetCDFUtilities {
         return "file".equalsIgnoreCase(scheme);
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources")
     private static FileFormat getFormatFromUri(URI uri) throws IOException {
         // try binary
         try (InputStream input = uri.toURL().openStream()) {

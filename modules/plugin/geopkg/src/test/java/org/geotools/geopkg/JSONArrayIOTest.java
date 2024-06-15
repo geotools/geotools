@@ -54,7 +54,7 @@ public class JSONArrayIOTest {
     @Test
     public void testParseNestedObject() {
         assertThrows(java.lang.IllegalArgumentException.class, () -> {
-            String[] parsed = io.parse("[\"a\",\"b\", { \"key\" = \"value\"}]", String.class, null);
+            io.parse("[\"a\",\"b\", { \"key\" = \"value\"}]", String.class, null);
         });
     }
 

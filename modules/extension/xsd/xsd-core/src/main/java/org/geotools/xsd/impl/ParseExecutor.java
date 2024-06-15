@@ -269,7 +269,7 @@ public class ParseExecutor implements Visitor {
                             @Override
                             public XSDNamedComponent getDeclaration() {
                                 return element;
-                            };
+                            }
                         };
 
                 for (String s : list) {

@@ -765,7 +765,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer1 =
                         data.getFeatureWriter("road", rd1Filter, t1);
                 FeatureWriter<SimpleFeatureType, SimpleFeature> writer2 =
-                        data.getFeatureWriterAppend("road", t2); ) {
+                        data.getFeatureWriterAppend("road", t2)) {
             SimpleFeature feature;
             SimpleFeature[] ORIGIONAL = roadFeatures;
             SimpleFeature[] REMOVE = new SimpleFeature[ORIGIONAL.length - 1];

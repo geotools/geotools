@@ -44,7 +44,7 @@ public class GeoPkgExtension {
         public String getSqlValue() {
             return sqlValue;
         }
-    };
+    }
 
     public static class Association {
         String tableName;

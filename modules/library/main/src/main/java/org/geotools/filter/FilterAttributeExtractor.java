@@ -155,7 +155,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
             }
         }
         return super.visit(expression, data);
-    };
+    }
 
     /**
      * Returns true if the last visited expression is a constant, that is, does not depend on any

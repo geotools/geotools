@@ -79,8 +79,8 @@ public class AzimuthalEquidistant {
         NORTH_POLAR,
         SOUTH_POLAR,
         EQUATORIAL,
-        OBLIQUE;
-    };
+        OBLIQUE
+    }
 
     /** Abstract base class for Azimuthal Equidistant projections. */
     @SuppressWarnings("serial")
@@ -153,7 +153,7 @@ public class AzimuthalEquidistant {
             set(descriptors, Provider.LATITUDE_OF_CENTRE, values, latitudeOfOrigin);
             return values;
         }
-    };
+    }
 
     /** Spherical Azimuthal Equidistant projection. */
     @SuppressWarnings("serial")

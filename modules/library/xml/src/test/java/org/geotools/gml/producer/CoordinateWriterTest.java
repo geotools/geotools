@@ -225,7 +225,7 @@ public class CoordinateWriterTest {
 
         @Override
         public void startPrefixMapping(String prefix, String uri) throws SAXException {}
-    };
+    }
 
     Coordinate[] coords2D(int[] array) {
         Coordinate[] coords = new Coordinate[array.length / 2];

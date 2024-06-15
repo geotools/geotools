@@ -445,7 +445,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureType type = dataStore.getSchema(tname("road"));
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 dataStore.getFeatureReader(
-                        new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT); ) {
+                        new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
             assertFalse(reader instanceof FilteringFeatureReader);
             assertEquals(type, reader.getFeatureType());
             assertEquals(td.roadFeatures.length, count(reader));

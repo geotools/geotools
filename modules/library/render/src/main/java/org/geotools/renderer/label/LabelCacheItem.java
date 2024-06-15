@@ -40,7 +40,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         NONE,
         STRETCH,
         PROPORTIONAL
-    };
+    }
 
     TextStyle2D textStyle;
 

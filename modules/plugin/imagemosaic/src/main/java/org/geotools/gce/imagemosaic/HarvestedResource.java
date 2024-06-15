@@ -342,7 +342,7 @@ enum HarvestedResource {
                     @Override
                     protected GranuleCatalog buildCatalog() throws IOException {
                         return reader.granuleCatalog;
-                    };
+                    }
                 };
         // Creation of the Walker for the File List
         ImageMosaicReader.ImageMosaicFileCollectionWalker walker =

@@ -112,7 +112,7 @@ public class DatabaseCreationScript {
          *
          */
         try (InputStream propertyIn = new FileInputStream(propertyFile);
-                OutputStream out = new FileOutputStream(propertyFile); ) {
+                OutputStream out = new FileOutputStream(propertyFile)) {
             final Properties properties = new Properties();
             properties.load(propertyIn);
             properties.put("epsg.version", ThreadedHsqlEpsgFactory.VERSION.toString());

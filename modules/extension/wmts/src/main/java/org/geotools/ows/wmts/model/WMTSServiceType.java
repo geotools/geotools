@@ -19,5 +19,5 @@ package org.geotools.ows.wmts.model;
 /** @author ian */
 public enum WMTSServiceType {
     REST,
-    KVP;
+    KVP
 }

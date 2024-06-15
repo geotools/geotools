@@ -394,7 +394,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             // read the prj serviceInfo from the file
             try (FileInputStream inStream = new FileInputStream(prj);
                     FileChannel channel = inStream.getChannel();
-                    PrjFileReader projReader = new PrjFileReader(channel); ) {
+                    PrjFileReader projReader = new PrjFileReader(channel)) {
                 this.crs = projReader.getCoordinateReferenceSystem();
                 // If some exception occurs, warn about the error but proceed
                 // using a default CRS

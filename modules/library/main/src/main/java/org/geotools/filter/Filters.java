@@ -799,7 +799,7 @@ public class Filters {
                 }
                 return data;
             }
-        };
+        }
         SearchFilterVisitor search = new SearchFilterVisitor();
         boolean found = (Boolean) filter.accept(search, false);
         return found;
@@ -976,7 +976,7 @@ public class Filters {
             public Object visit(PropertyName name, Object data) {
                 return name.getPropertyName();
             }
-        };
+        }
         SearchFilterVisitor search = new SearchFilterVisitor();
         return (String) filter.accept(search, null);
     }

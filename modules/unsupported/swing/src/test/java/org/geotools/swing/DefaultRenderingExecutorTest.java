@@ -112,7 +112,7 @@ public class DefaultRenderingExecutorTest extends RenderingExecutorTestBase {
                                                     "Simulated layer rendering failure")));
                 }
             }
-        };
+        }
 
         FailableMockRenderer failableRenderer = new FailableMockRenderer(mapContent);
         this.renderer = failableRenderer;

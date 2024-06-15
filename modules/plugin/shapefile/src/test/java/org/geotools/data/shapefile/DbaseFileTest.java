@@ -162,7 +162,7 @@ public class DbaseFileTest extends TestCaseSupport {
         try (FileOutputStream fout = new FileOutputStream(f);
                 DbaseFileWriter dbf =
                         new DbaseFileWriter(
-                                header, fout.getChannel(), Charset.defaultCharset()); ) {
+                                header, fout.getChannel(), Charset.defaultCharset())) {
 
             for (int i = 0; i < header.getNumRecords(); i++) {
                 dbf.write(new Object[6]);

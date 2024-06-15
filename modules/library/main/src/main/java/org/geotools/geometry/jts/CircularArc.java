@@ -94,7 +94,7 @@ public class CircularArc {
                     "Invalid control point array, it must be made of 6 ordinates for a total of 3 control points, start, mid and end");
         }
         this.controlPoints = controlPoints;
-    };
+    }
 
     public CircularArc(double sx, double sy, double mx, double my, double ex, double ey) {
         this(new double[] {sx, sy, mx, my, ex, ey});

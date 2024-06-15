@@ -246,7 +246,7 @@ public class CSVTest {
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
 
         List<String> list = new ArrayList<>();
-        try (SimpleFeatureIterator features = featureCollection.features(); ) {
+        try (SimpleFeatureIterator features = featureCollection.features()) {
             while (features.hasNext()) {
                 list.add(features.next().getID());
             }

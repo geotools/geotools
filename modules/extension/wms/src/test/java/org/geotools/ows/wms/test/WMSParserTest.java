@@ -58,7 +58,7 @@ public class WMSParserTest {
                         "Don't know how to handle a get request over " + url.toExternalForm());
             }
         }
-    };
+    }
 
     @Test
     public void testWMS111EntityResolver() throws Exception {

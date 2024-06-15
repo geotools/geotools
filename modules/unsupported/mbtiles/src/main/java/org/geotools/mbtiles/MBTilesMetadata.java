@@ -60,7 +60,7 @@ public class MBTilesMetadata {
                                     new IllegalArgumentException(
                                             String.format("Unknown mbtiles type '%s'", s)));
         }
-    };
+    }
 
     public enum t_format {
         JPG,
@@ -69,7 +69,7 @@ public class MBTilesMetadata {
 
         /** Not part of the spec but used by some implementations of MBTiles for vector tiles */
         PBF
-    };
+    }
 
     protected String name;
 

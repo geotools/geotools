@@ -1207,7 +1207,7 @@ public class FilterFactoryImpl implements Factory, org.geotools.api.filter.Filte
             T defaultValue) {
         return new org.geotools.api.data.Parameter<>(
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
-    };
+    }
 
     @Override
     public FunctionName functionName(String name, int nargs) {

@@ -119,7 +119,7 @@ public abstract class DataFeatureCollection implements SimpleFeatureCollection {
     @Override
     public abstract ReferencedEnvelope getBounds();
 
-    public abstract int getCount() throws IOException;;
+    public abstract int getCount() throws IOException;
 
     // public abstract SimpleFeatureCollection collection() throws IOException;
 

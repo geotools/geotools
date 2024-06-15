@@ -111,7 +111,7 @@ public class JSimpleStyleDialog extends JDialog {
 
     private static enum SourceType {
         DATA_STORE,
-        MAP_LAYER;
+        MAP_LAYER
     }
 
     private Color lineColor;
@@ -137,7 +137,7 @@ public class JSimpleStyleDialog extends JDialog {
     private static enum ControlCategory {
         LINE,
         FILL,
-        POINT;
+        POINT
     }
 
     private Map<Component, ControlCategory> controls;

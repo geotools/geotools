@@ -148,7 +148,7 @@ public class GeoPackageTest {
 
     void assertDefaultSpatialReferencesExist() throws Exception {
         try (Connection cx = geopkg.getDataSource().getConnection();
-                Statement st = cx.createStatement(); ) {
+                Statement st = cx.createStatement()) {
             try (ResultSet rs =
                     st.executeQuery("SELECT srs_id FROM gpkg_spatial_ref_sys WHERE srs_id = -1")) {
                 assertEquals(rs.getInt(1), -1);

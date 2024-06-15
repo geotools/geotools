@@ -100,7 +100,7 @@ public class PointStackerProcess implements VectorProcess {
          * conflicts among the symbolizers for the
          */
         Never
-    };
+    }
 
     public static final String ATTR_GEOM = "geom";
 

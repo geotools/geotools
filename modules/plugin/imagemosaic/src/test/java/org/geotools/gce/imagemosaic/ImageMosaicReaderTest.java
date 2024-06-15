@@ -732,7 +732,7 @@ public class ImageMosaicReaderTest {
         store.createSchema(DataUtilities.createType("aaa_noFootprint", "a:String,b:Integer"));
         store.createSchema(DataUtilities.createType("bbb_noLocation", "geom:Polygon,b:String"));
         try (Connection conn = store.getConnection(Transaction.AUTO_COMMIT);
-                Statement st = conn.createStatement(); ) {
+                Statement st = conn.createStatement()) {
             st.execute("alter table \"" + mosaicName + "\" rename to \"customIndex\"");
             st.execute("UPDATE GEOMETRY_COLUMNS SET F_TABLE_NAME = 'customIndex'");
         }

@@ -83,7 +83,7 @@ public class CSVDataStoreTest {
     @Test
     public void testFeatureReader() throws IOException {
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
-                csvDataStore.getFeatureReader(); ) {
+                csvDataStore.getFeatureReader()) {
 
             assertNotNull(reader);
             int count = 0;

@@ -63,7 +63,7 @@ public class GranuleDescriptorTest {
                 assertEquals(10, granuleBBOX.getMaximum(0), 0d);
                 assertEquals(0, granuleBBOX.getMinimum(1), 0d);
                 assertEquals(10, granuleBBOX.getMaximum(1), 0d);
-            };
+            }
         };
     }
 

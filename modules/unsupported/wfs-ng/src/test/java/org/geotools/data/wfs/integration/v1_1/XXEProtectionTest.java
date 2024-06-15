@@ -102,7 +102,7 @@ public class XXEProtectionTest {
                         HTTPResponse httpResp =
                                 new TestHttpResponse("text/xml", "UTF-8", contentUrl);
                         return request.createResponse(httpResp);
-                    };
+                    }
                 };
         WFSDataStore store = new WFSDataStore(client);
         SimpleFeatureStore fs =

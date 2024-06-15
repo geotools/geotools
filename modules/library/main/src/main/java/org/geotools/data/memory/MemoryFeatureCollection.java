@@ -118,7 +118,7 @@ public class MemoryFeatureCollection extends AbstractFeatureCollection
             return old;
         }
         return null;
-    };
+    }
 
     /** Calculates the bounds of the features without caching. */
     @Override

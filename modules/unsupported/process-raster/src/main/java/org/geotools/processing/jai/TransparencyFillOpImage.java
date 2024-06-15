@@ -335,7 +335,7 @@ public class TransparencyFillOpImage extends AreaOpImage {
                 int srcStride1,
                 int srcStride2,
                 int dstOffset);
-    };
+    }
 
     private TransparencyFillAlgorithm fillAlgorithm = null;
 

@@ -40,7 +40,7 @@ import si.uom.NonSI;
  */
 public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements PrimeMeridian {
     /** Serial number for interoperability with different versions. */
-    private static final long serialVersionUID = 541978454643213305L;;
+    private static final long serialVersionUID = 541978454643213305L;
 
     /** The Greenwich meridian, with angular measurements in decimal degrees. */
     public static final DefaultPrimeMeridian GREENWICH =

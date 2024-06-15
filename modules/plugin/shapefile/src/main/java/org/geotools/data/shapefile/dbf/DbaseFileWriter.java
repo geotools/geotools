@@ -162,7 +162,7 @@ public class DbaseFileWriter implements Closeable {
     private void write() throws IOException {
         buffer.position(0);
         int r = buffer.remaining();
-        while ((r -= channel.write(buffer)) > 0) {; // do nothing
+        while ((r -= channel.write(buffer)) > 0) {// do nothing
         }
     }
 

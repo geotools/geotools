@@ -74,7 +74,7 @@ public class SelectionLab {
         POINT,
         LINE,
         POLYGON
-    };
+    }
 
     /*
      * Some default style variables

@@ -51,7 +51,7 @@ public class WMSLayerCrsTest {
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;
-    };
+    }
 
     @Before
     public void setUp() throws Exception {

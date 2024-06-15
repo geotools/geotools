@@ -104,7 +104,7 @@ class GeometrySmoother {
             };
 
     /** The current SmootherControl instance. */
-    private SmootherControl control;;
+    private SmootherControl control;
 
     /** The current {@code GeometryFactory} being used. */
     private final GeometryFactory geomFactory;

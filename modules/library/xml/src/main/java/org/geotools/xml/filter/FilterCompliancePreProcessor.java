@@ -427,7 +427,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
             throw new UnsupportedFilterException("Exception creating filter", e);
         }
         return extraData;
-    };
+    }
 
     private Data createMediumLevelLogicFilter(short filterType, int startOfFilterStack)
             throws IllegalFilterException {
@@ -745,7 +745,7 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
     public Object visit(PropertyIsNull filter, Object extraData) {
         current.push(new Data(filter));
         return extraData;
-    };
+    }
 
     // NilFilter
     @Override

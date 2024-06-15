@@ -105,7 +105,7 @@ public class JMapFrame extends JFrame {
         /** The zoom display cursor tools. */
         ZOOM,
         /** The map should zoom with the mouse wheel. No button shown for this. */
-        SCROLLWHEEL;
+        SCROLLWHEEL
     }
 
     private boolean showToolBar;

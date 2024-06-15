@@ -109,7 +109,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         TYPE_NAME_TO_CLASS.put("ST_POINT", Point.class);
         TYPE_NAME_TO_CLASS.put("ST_GEOMETRY", Geometry.class);
         TYPE_NAME_TO_CLASS.put("BOOLEAN", Boolean.class);
-    };
+    }
 
     private static final Map<Integer, Class<?>> SQL_TYPE_TO_CLASS = new HashMap<>();
 

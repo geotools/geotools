@@ -1148,8 +1148,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                  */
                 stmt.setString(1, epsg);
                 try (final ResultSet result = stmt.executeQuery()) {
-                    final boolean present = result.next();
-                    if (present) {
+                    if (result.next()) {
                         if (index >= 0) {
                             throw new FactoryException(
                                     MessageFormat.format(ErrorKeys.DUPLICATED_VALUES_$1, code));

@@ -258,7 +258,7 @@ public class IndexedResourceBundle extends ResourceBundle {
     public final Enumeration<String> getKeys() {
         // Synchronization performed by 'ensureLoaded'
         final String[] values = ensureLoaded(null);
-        return new Enumeration<String>() {
+        return new Enumeration<>() {
             private int i = 0;
 
             @Override

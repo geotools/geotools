@@ -71,7 +71,7 @@ import org.xml.sax.EntityResolver;
  */
 public class Hints extends RenderingHints {
     /** A set of system-wide hints to use by default. */
-    private static volatile Map<RenderingHints.Key, Object> GLOBAL = new ConcurrentHashMap<>();
+    private static Map<RenderingHints.Key, Object> GLOBAL = new ConcurrentHashMap<>();
 
     /** {@code true} if {@link #scanSystemProperties} needs to be invoked. */
     private static AtomicBoolean needScan = new AtomicBoolean(true);
@@ -1827,7 +1827,7 @@ public class Hints extends RenderingHints {
      * @author Sampo Savolainen
      */
     public static final class ConfigurationMetadataKey extends Key {
-        private static Map<String, ConfigurationMetadataKey> map = new HashMap<>();
+        private static Map<String, ConfigurationMetadataKey> map = new ConcurrentHashMap<>();
 
         /** The constructor is private to avoid multiple instances sharing the same key. */
         private ConfigurationMetadataKey(String key) {
@@ -1841,18 +1841,7 @@ public class Hints extends RenderingHints {
          * @return Key object for the requested key
          */
         public static ConfigurationMetadataKey get(String key) {
-            ConfigurationMetadataKey ret = map.get(key);
-            if (ret == null) {
-                synchronized (ConfigurationMetadataKey.class) {
-                    ret = map.get(key);
-                    if (ret == null) {
-                        ret = new ConfigurationMetadataKey(key);
-                        map.put(key, ret);
-                    }
-                }
-            }
-
-            return ret;
+            return map.computeIfAbsent(key, k -> new ConfigurationMetadataKey(k));
         }
 
         /** Configuration metadata can be of any class, but it should be non-null. */

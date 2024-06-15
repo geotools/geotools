@@ -646,7 +646,7 @@ final class PropertyAccessor {
      * instance of {@link CheckedCollection}, so the check will be performed at runtime. However
      * other implementations could use unchecked collection. There is not much we can do.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.UnnecessaryCast"})
     private static void addUnsafe(final Collection<?> addTo, final Object element) {
         ((Collection) addTo).add(element);
     }

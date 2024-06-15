@@ -267,7 +267,7 @@ public class DateTimeParser {
         }
 
         final Set result =
-                new TreeSet(
+                new TreeSet<>(
                         (o1, o2) -> {
                             final boolean o1Date = o1 instanceof Date;
                             final boolean o2Date = o2 instanceof Date;
@@ -360,7 +360,7 @@ public class DateTimeParser {
             checkMaxTimes(result, maxValues);
         }
 
-        return new ArrayList(result);
+        return new ArrayList<>(result);
     }
 
     public void checkMaxTimes(Set result, int maxValues) {

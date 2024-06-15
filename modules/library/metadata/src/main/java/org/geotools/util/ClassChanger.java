@@ -56,7 +56,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      */
     private static ClassChanger<?, ?>[] changers =
             new ClassChanger[] {
-                new ClassChanger<Date, Long>(Date.class, Long.class) {
+                new ClassChanger<>(Date.class, Long.class) {
                     @Override
                     protected Long convert(final Date object) {
                         return object.getTime();
@@ -353,7 +353,7 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
             if (lg >= Long.MIN_VALUE && lg <= Long.MAX_VALUE) return Long.class;
         }
         final float fv = (float) value;
-        if (value == (double) fv) {
+        if (value == fv) {
             return Float.class;
         }
         return Double.class;

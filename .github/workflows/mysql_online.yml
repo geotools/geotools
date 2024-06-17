@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mysql: [ '5.7', '8.0', '8.2' ]
+        # 8.0 and 8.4 are LTS versions
+        mysql: [ '8.0', '8.2', '8.4' ]
         java: [ 11 ]
 
     steps:

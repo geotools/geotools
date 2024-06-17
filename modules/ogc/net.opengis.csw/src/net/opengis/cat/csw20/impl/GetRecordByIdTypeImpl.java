@@ -331,7 +331,7 @@ public class GetRecordByIdTypeImpl extends RequestBaseTypeImpl implements GetRec
                 getId().clear();
                 return;
             case Csw20Package.GET_RECORD_BY_ID_TYPE__ELEMENT_SET_NAME:
-                setElementSetName((ElementSetNameType)null);
+                setElementSetName(null);
                 return;
             case Csw20Package.GET_RECORD_BY_ID_TYPE__OUTPUT_FORMAT:
                 unsetOutputFormat();

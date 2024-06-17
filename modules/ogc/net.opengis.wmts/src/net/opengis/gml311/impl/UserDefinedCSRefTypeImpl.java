@@ -659,7 +659,7 @@ public class UserDefinedCSRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.USER_DEFINED_CS_REF_TYPE__USER_DEFINED_CS:
-                setUserDefinedCS((UserDefinedCSType)null);
+                setUserDefinedCS(null);
                 return;
             case Gml311Package.USER_DEFINED_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

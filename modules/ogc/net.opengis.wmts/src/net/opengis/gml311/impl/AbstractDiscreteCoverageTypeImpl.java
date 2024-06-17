@@ -154,7 +154,7 @@ public abstract class AbstractDiscreteCoverageTypeImpl extends AbstractCoverageT
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_DISCRETE_COVERAGE_TYPE__COVERAGE_FUNCTION:
-                setCoverageFunction((CoverageFunctionType)null);
+                setCoverageFunction(null);
                 return;
         }
         super.eUnset(featureID);

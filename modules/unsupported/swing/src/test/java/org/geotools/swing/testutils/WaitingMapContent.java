@@ -12,7 +12,7 @@ public class WaitingMapContent extends MapContent {
 
     public static enum Type {
         BOUNDS,
-        SCREEN_AREA;
+        SCREEN_AREA
     }
 
     public WaitingMapContent() {

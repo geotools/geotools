@@ -46,7 +46,7 @@ public class WMSCoverageReaderTest {
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;
-    };
+    }
 
     @Before
     public void setup() {
@@ -177,7 +177,7 @@ public class WMSCoverageReaderTest {
                                 public void dispose() {
                                     disposeCalled.set(true);
                                     super.dispose();
-                                };
+                                }
                             };
                         } else {
                             throw new IllegalArgumentException(

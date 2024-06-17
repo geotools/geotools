@@ -170,7 +170,7 @@ public class AbstractSimpleDialogTest
     public static class MockDialog extends AbstractSimpleDialog {
         public static enum EventType {
             OK,
-            CANCEL;
+            CANCEL
         }
 
         private static final int NUM_EVENT_TYPES = EventType.values().length;

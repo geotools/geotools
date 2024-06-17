@@ -659,7 +659,7 @@ public class MultiSolidPropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_SOLID_PROPERTY_TYPE__MULTI_SOLID:
-                setMultiSolid((MultiSolidType)null);
+                setMultiSolid(null);
                 return;
             case Gml311Package.MULTI_SOLID_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

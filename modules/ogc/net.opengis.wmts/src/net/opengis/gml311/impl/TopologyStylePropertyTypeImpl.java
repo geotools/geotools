@@ -708,7 +708,7 @@ public class TopologyStylePropertyTypeImpl extends MinimalEObjectImpl.Container 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPOLOGY_STYLE_PROPERTY_TYPE__TOPOLOGY_STYLE:
-                setTopologyStyle((TopologyStyleType)null);
+                setTopologyStyle(null);
                 return;
             case Gml311Package.TOPOLOGY_STYLE_PROPERTY_TYPE__ABOUT:
                 setAbout(ABOUT_EDEFAULT);

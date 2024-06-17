@@ -122,7 +122,7 @@ public final class VSIUtilsTest {
         final Band band = mock(Band.class);
         final Map<String, Object> metadata = new Hashtable<>();
 
-        metadata.put("source_0", (Object) "<SourceBand>0");
+        metadata.put("source_0", "<SourceBand>0");
         doReturn(band).when(dataset).GetRasterBand(anyInt());
         doReturn(metadata).when(band).GetMetadata_Dict(eq("vrt_sources"));
 
@@ -150,7 +150,7 @@ public final class VSIUtilsTest {
         final File file = mock(File.class);
 
         final Map<String, Object> metadata = new Hashtable<>();
-        metadata.put("source_0", (Object) "<SourceBand>0");
+        metadata.put("source_0", "<SourceBand>0");
 
         doReturn(path).when(file).getAbsolutePath();
         doReturn(destination).when(driver).CreateCopy(eq(path), eq(source));

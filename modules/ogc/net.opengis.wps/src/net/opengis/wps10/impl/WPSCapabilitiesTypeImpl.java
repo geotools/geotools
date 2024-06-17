@@ -422,13 +422,13 @@ public class WPSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.WPS_CAPABILITIES_TYPE__PROCESS_OFFERINGS:
-        setProcessOfferings((ProcessOfferingsType)null);
+        setProcessOfferings(null);
         return;
       case Wps10Package.WPS_CAPABILITIES_TYPE__LANGUAGES:
-        setLanguages((LanguagesType1)null);
+        setLanguages(null);
         return;
       case Wps10Package.WPS_CAPABILITIES_TYPE__WSDL:
-        setWSDL((WSDLType)null);
+        setWSDL(null);
         return;
       case Wps10Package.WPS_CAPABILITIES_TYPE__LANG:
         setLang(LANG_EDEFAULT);

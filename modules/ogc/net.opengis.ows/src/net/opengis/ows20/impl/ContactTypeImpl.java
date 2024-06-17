@@ -381,13 +381,13 @@ public class ContactTypeImpl extends EObjectImpl implements ContactType {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.CONTACT_TYPE__PHONE:
-        setPhone((TelephoneType)null);
+        setPhone(null);
         return;
       case Ows20Package.CONTACT_TYPE__ADDRESS:
-        setAddress((AddressType)null);
+        setAddress(null);
         return;
       case Ows20Package.CONTACT_TYPE__ONLINE_RESOURCE:
-        setOnlineResource((OnlineResourceType)null);
+        setOnlineResource(null);
         return;
       case Ows20Package.CONTACT_TYPE__HOURS_OF_SERVICE:
         setHoursOfService(HOURS_OF_SERVICE_EDEFAULT);

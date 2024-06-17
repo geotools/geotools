@@ -111,7 +111,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
             }
             addMatch(match);
         }
-    };
+    }
 
     @Override
     public void setProperties(Map<String, Object> map) {

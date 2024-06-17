@@ -1493,7 +1493,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefinition(DefinitionType newDefinition) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Definition(), newDefinition);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Definition(), newDefinition);
     }
 
     /**
@@ -2282,7 +2282,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAbsoluteExternalPositionalAccuracy(AbsoluteExternalPositionalAccuracyType newAbsoluteExternalPositionalAccuracy) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AbsoluteExternalPositionalAccuracy(), newAbsoluteExternalPositionalAccuracy);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AbsoluteExternalPositionalAccuracy(), newAbsoluteExternalPositionalAccuracy);
     }
 
     /**
@@ -2311,7 +2311,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAbstractGeneralOperationParameterRef(AbstractGeneralOperationParameterRefType newAbstractGeneralOperationParameterRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AbstractGeneralOperationParameterRef(), newAbstractGeneralOperationParameterRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AbstractGeneralOperationParameterRef(), newAbstractGeneralOperationParameterRef);
     }
 
     /**
@@ -2340,7 +2340,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAffinePlacement(AffinePlacementType newAffinePlacement) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AffinePlacement(), newAffinePlacement);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AffinePlacement(), newAffinePlacement);
     }
 
     /**
@@ -2369,7 +2369,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAnchorPoint(CodeType newAnchorPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AnchorPoint(), newAnchorPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AnchorPoint(), newAnchorPoint);
     }
 
     /**
@@ -2398,7 +2398,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAngle(MeasureType newAngle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Angle(), newAngle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Angle(), newAngle);
     }
 
     /**
@@ -2427,7 +2427,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setArc(ArcType newArc) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Arc(), newArc);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Arc(), newArc);
     }
 
     /**
@@ -2456,7 +2456,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setArcString(ArcStringType newArcString) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcString(), newArcString);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ArcString(), newArcString);
     }
 
     /**
@@ -2485,7 +2485,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setArcByBulge(ArcByBulgeType newArcByBulge) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcByBulge(), newArcByBulge);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ArcByBulge(), newArcByBulge);
     }
 
     /**
@@ -2514,7 +2514,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setArcStringByBulge(ArcStringByBulgeType newArcStringByBulge) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcStringByBulge(), newArcStringByBulge);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ArcStringByBulge(), newArcStringByBulge);
     }
 
     /**
@@ -2543,7 +2543,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setArcByCenterPoint(ArcByCenterPointType newArcByCenterPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ArcByCenterPoint(), newArcByCenterPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ArcByCenterPoint(), newArcByCenterPoint);
     }
 
     /**
@@ -2572,7 +2572,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setArray(ArrayType newArray) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Array(), newArray);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Array(), newArray);
     }
 
     /**
@@ -2601,7 +2601,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAxisAbbrev(CodeType newAxisAbbrev) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AxisAbbrev(), newAxisAbbrev);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AxisAbbrev(), newAxisAbbrev);
     }
 
     /**
@@ -2630,7 +2630,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAxisDirection(CodeType newAxisDirection) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AxisDirection(), newAxisDirection);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AxisDirection(), newAxisDirection);
     }
 
     /**
@@ -2659,7 +2659,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setAxisID(IdentifierType newAxisID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_AxisID(), newAxisID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_AxisID(), newAxisID);
     }
 
     /**
@@ -2688,7 +2688,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBag(BagType newBag) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Bag(), newBag);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Bag(), newBag);
     }
 
     /**
@@ -2717,7 +2717,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBaseCRS(CoordinateReferenceSystemRefType newBaseCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseCRS(), newBaseCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BaseCRS(), newBaseCRS);
     }
 
     /**
@@ -2746,7 +2746,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBaseCurve(CurvePropertyType newBaseCurve) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseCurve(), newBaseCurve);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BaseCurve(), newBaseCurve);
     }
 
     /**
@@ -2775,7 +2775,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBaseSurface(SurfacePropertyType newBaseSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseSurface(), newBaseSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BaseSurface(), newBaseSurface);
     }
 
     /**
@@ -2804,7 +2804,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBaseUnit(BaseUnitType newBaseUnit) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BaseUnit(), newBaseUnit);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BaseUnit(), newBaseUnit);
     }
 
     /**
@@ -2833,7 +2833,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUnitDefinition(UnitDefinitionType newUnitDefinition) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UnitDefinition(), newUnitDefinition);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UnitDefinition(), newUnitDefinition);
     }
 
     /**
@@ -2862,7 +2862,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBezier(BezierType newBezier) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Bezier(), newBezier);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Bezier(), newBezier);
     }
 
     /**
@@ -2891,7 +2891,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBSpline(BSplineType newBSpline) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BSpline(), newBSpline);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BSpline(), newBSpline);
     }
 
     /**
@@ -2911,7 +2911,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBoolean(boolean newBoolean) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Boolean(), newBoolean);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Boolean(), newBoolean);
     }
 
     /**
@@ -2932,7 +2932,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBooleanList(List<Object> newBooleanList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BooleanList(), newBooleanList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BooleanList(), newBooleanList);
     }
 
     /**
@@ -2952,7 +2952,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBooleanValue(boolean newBooleanValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BooleanValue(), newBooleanValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BooleanValue(), newBooleanValue);
     }
 
     /**
@@ -2981,7 +2981,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBoundedBy(BoundingShapeType newBoundedBy) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BoundedBy(), newBoundedBy);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BoundedBy(), newBoundedBy);
     }
 
     /**
@@ -3010,7 +3010,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBoundingBox(EnvelopeType newBoundingBox) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
     }
 
     /**
@@ -3039,7 +3039,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBoundingPolygon(PolygonType newBoundingPolygon) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_BoundingPolygon(), newBoundingPolygon);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_BoundingPolygon(), newBoundingPolygon);
     }
 
     /**
@@ -3068,7 +3068,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCartesianCS(CartesianCSType newCartesianCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCS(), newCartesianCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCS(), newCartesianCS);
     }
 
     /**
@@ -3097,7 +3097,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCartesianCSRef(CartesianCSRefType newCartesianCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCSRef(), newCartesianCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CartesianCSRef(), newCartesianCSRef);
     }
 
     /**
@@ -3126,7 +3126,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCatalogSymbol(CodeType newCatalogSymbol) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CatalogSymbol(), newCatalogSymbol);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CatalogSymbol(), newCatalogSymbol);
     }
 
     /**
@@ -3155,7 +3155,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCategory(CodeType newCategory) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Category(), newCategory);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Category(), newCategory);
     }
 
     /**
@@ -3184,7 +3184,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCategoryExtent(CategoryExtentType newCategoryExtent) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CategoryExtent(), newCategoryExtent);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CategoryExtent(), newCategoryExtent);
     }
 
     /**
@@ -3213,7 +3213,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCategoryList(CodeOrNullListType newCategoryList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CategoryList(), newCategoryList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CategoryList(), newCategoryList);
     }
 
     /**
@@ -3242,7 +3242,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCenterLineOf(CurvePropertyType newCenterLineOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CenterLineOf(), newCenterLineOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CenterLineOf(), newCenterLineOf);
     }
 
     /**
@@ -3271,7 +3271,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCenterOf(PointPropertyType newCenterOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CenterOf(), newCenterOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CenterOf(), newCenterOf);
     }
 
     /**
@@ -3300,7 +3300,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCircle(CircleType newCircle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Circle(), newCircle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Circle(), newCircle);
     }
 
     /**
@@ -3329,7 +3329,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCircleByCenterPoint(CircleByCenterPointType newCircleByCenterPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CircleByCenterPoint(), newCircleByCenterPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CircleByCenterPoint(), newCircleByCenterPoint);
     }
 
     /**
@@ -3358,7 +3358,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setClothoid(ClothoidType newClothoid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Clothoid(), newClothoid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Clothoid(), newClothoid);
     }
 
     /**
@@ -3378,7 +3378,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setColumnIndex(BigInteger newColumnIndex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ColumnIndex(), newColumnIndex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ColumnIndex(), newColumnIndex);
     }
 
     /**
@@ -3398,7 +3398,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompassPoint(CompassPointEnumeration newCompassPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompassPoint(), newCompassPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompassPoint(), newCompassPoint);
     }
 
     /**
@@ -3427,7 +3427,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompositeCurve(CompositeCurveType newCompositeCurve) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeCurve(), newCompositeCurve);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeCurve(), newCompositeCurve);
     }
 
     /**
@@ -3456,7 +3456,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompositeSolid(CompositeSolidType newCompositeSolid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSolid(), newCompositeSolid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSolid(), newCompositeSolid);
     }
 
     /**
@@ -3485,7 +3485,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompositeSurface(CompositeSurfaceType newCompositeSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSurface(), newCompositeSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeSurface(), newCompositeSurface);
     }
 
     /**
@@ -3514,7 +3514,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompositeValue(CompositeValueType newCompositeValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeValue(), newCompositeValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompositeValue(), newCompositeValue);
     }
 
     /**
@@ -3543,7 +3543,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompoundCRS(CompoundCRSType newCompoundCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRS(), newCompoundCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRS(), newCompoundCRS);
     }
 
     /**
@@ -3572,7 +3572,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCompoundCRSRef(CompoundCRSRefType newCompoundCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRSRef(), newCompoundCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CompoundCRSRef(), newCompoundCRSRef);
     }
 
     /**
@@ -3601,7 +3601,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setConcatenatedOperation(ConcatenatedOperationType newConcatenatedOperation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperation(), newConcatenatedOperation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperation(), newConcatenatedOperation);
     }
 
     /**
@@ -3630,7 +3630,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setConcatenatedOperationRef(ConcatenatedOperationRefType newConcatenatedOperationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperationRef(), newConcatenatedOperationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ConcatenatedOperationRef(), newConcatenatedOperationRef);
     }
 
     /**
@@ -3659,7 +3659,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCone(ConeType newCone) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Cone(), newCone);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Cone(), newCone);
     }
 
     /**
@@ -3688,7 +3688,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setContainer(ContainerPropertyType newContainer) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Container(), newContainer);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Container(), newContainer);
     }
 
     /**
@@ -3717,7 +3717,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setConventionalUnit(ConventionalUnitType newConventionalUnit) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConventionalUnit(), newConventionalUnit);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ConventionalUnit(), newConventionalUnit);
     }
 
     /**
@@ -3746,7 +3746,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setConversion(ConversionType newConversion) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Conversion(), newConversion);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Conversion(), newConversion);
     }
 
     /**
@@ -3775,7 +3775,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setConversionRef(ConversionRefType newConversionRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConversionRef(), newConversionRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ConversionRef(), newConversionRef);
     }
 
     /**
@@ -3804,7 +3804,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setConversionToPreferredUnit(ConversionToPreferredUnitType newConversionToPreferredUnit) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ConversionToPreferredUnit(), newConversionToPreferredUnit);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ConversionToPreferredUnit(), newConversionToPreferredUnit);
     }
 
     /**
@@ -3833,7 +3833,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoord(CoordType newCoord) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Coord(), newCoord);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Coord(), newCoord);
     }
 
     /**
@@ -3862,7 +3862,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateOperationID(IdentifierType newCoordinateOperationID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationID(), newCoordinateOperationID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationID(), newCoordinateOperationID);
     }
 
     /**
@@ -3891,7 +3891,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateOperationName(CodeType newCoordinateOperationName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationName(), newCoordinateOperationName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationName(), newCoordinateOperationName);
     }
 
     /**
@@ -3920,7 +3920,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setName(CodeType newName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Name(), newName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Name(), newName);
     }
 
     /**
@@ -3949,7 +3949,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateOperationRef(CoordinateOperationRefType newCoordinateOperationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationRef(), newCoordinateOperationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateOperationRef(), newCoordinateOperationRef);
     }
 
     /**
@@ -3978,7 +3978,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateReferenceSystemRef(CoordinateReferenceSystemRefType newCoordinateReferenceSystemRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateReferenceSystemRef(), newCoordinateReferenceSystemRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateReferenceSystemRef(), newCoordinateReferenceSystemRef);
     }
 
     /**
@@ -4007,7 +4007,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinates(CoordinatesType newCoordinates) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Coordinates(), newCoordinates);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Coordinates(), newCoordinates);
     }
 
     /**
@@ -4036,7 +4036,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateSystemAxis(CoordinateSystemAxisType newCoordinateSystemAxis) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxis(), newCoordinateSystemAxis);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxis(), newCoordinateSystemAxis);
     }
 
     /**
@@ -4065,7 +4065,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateSystemAxisRef(CoordinateSystemAxisRefType newCoordinateSystemAxisRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxisRef(), newCoordinateSystemAxisRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemAxisRef(), newCoordinateSystemAxisRef);
     }
 
     /**
@@ -4094,7 +4094,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoordinateSystemRef(CoordinateSystemRefType newCoordinateSystemRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemRef(), newCoordinateSystemRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoordinateSystemRef(), newCoordinateSystemRef);
     }
 
     /**
@@ -4114,7 +4114,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCount(BigInteger newCount) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Count(), newCount);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Count(), newCount);
     }
 
     /**
@@ -4135,7 +4135,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCountExtent(List<Object> newCountExtent) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CountExtent(), newCountExtent);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CountExtent(), newCountExtent);
     }
 
     /**
@@ -4156,7 +4156,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCountList(List<Object> newCountList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CountList(), newCountList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CountList(), newCountList);
     }
 
     /**
@@ -4176,7 +4176,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCovariance(double newCovariance) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Covariance(), newCovariance);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Covariance(), newCovariance);
     }
 
     /**
@@ -4205,7 +4205,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCovarianceMatrix(CovarianceMatrixType newCovarianceMatrix) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CovarianceMatrix(), newCovarianceMatrix);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CovarianceMatrix(), newCovarianceMatrix);
     }
 
     /**
@@ -4234,7 +4234,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCoverageFunction(CoverageFunctionType newCoverageFunction) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CoverageFunction(), newCoverageFunction);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CoverageFunction(), newCoverageFunction);
     }
 
     /**
@@ -4263,7 +4263,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCrsRef(CRSRefType newCrsRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CrsRef(), newCrsRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CrsRef(), newCrsRef);
     }
 
     /**
@@ -4292,7 +4292,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCsID(IdentifierType newCsID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CsID(), newCsID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CsID(), newCsID);
     }
 
     /**
@@ -4321,7 +4321,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCsName(CodeType newCsName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CsName(), newCsName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CsName(), newCsName);
     }
 
     /**
@@ -4350,7 +4350,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCubicSpline(CubicSplineType newCubicSpline) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CubicSpline(), newCubicSpline);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CubicSpline(), newCubicSpline);
     }
 
     /**
@@ -4379,7 +4379,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCurve1(CurveType newCurve1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Curve1(), newCurve1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Curve1(), newCurve1);
     }
 
     /**
@@ -4408,7 +4408,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCurveArrayProperty(CurveArrayPropertyType newCurveArrayProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveArrayProperty(), newCurveArrayProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CurveArrayProperty(), newCurveArrayProperty);
     }
 
     /**
@@ -4437,7 +4437,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCurveMember(CurvePropertyType newCurveMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveMember(), newCurveMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CurveMember(), newCurveMember);
     }
 
     /**
@@ -4466,7 +4466,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCurveMembers(CurveArrayPropertyType newCurveMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveMembers(), newCurveMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CurveMembers(), newCurveMembers);
     }
 
     /**
@@ -4495,7 +4495,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCurveProperty(CurvePropertyType newCurveProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CurveProperty(), newCurveProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CurveProperty(), newCurveProperty);
     }
 
     /**
@@ -4524,7 +4524,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCylinder(CylinderType newCylinder) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Cylinder(), newCylinder);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Cylinder(), newCylinder);
     }
 
     /**
@@ -4553,7 +4553,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCylindricalCS(CylindricalCSType newCylindricalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCS(), newCylindricalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCS(), newCylindricalCS);
     }
 
     /**
@@ -4582,7 +4582,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCylindricalCSRef(CylindricalCSRefType newCylindricalCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCSRef(), newCylindricalCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_CylindricalCSRef(), newCylindricalCSRef);
     }
 
     /**
@@ -4611,7 +4611,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDataBlock(DataBlockType newDataBlock) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DataBlock(), newDataBlock);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DataBlock(), newDataBlock);
     }
 
     /**
@@ -4640,7 +4640,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDataSource(StringOrRefType newDataSource) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DataSource(), newDataSource);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DataSource(), newDataSource);
     }
 
     /**
@@ -4669,7 +4669,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDatumID(IdentifierType newDatumID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DatumID(), newDatumID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DatumID(), newDatumID);
     }
 
     /**
@@ -4698,7 +4698,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDatumName(CodeType newDatumName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DatumName(), newDatumName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DatumName(), newDatumName);
     }
 
     /**
@@ -4727,7 +4727,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDatumRef(DatumRefType newDatumRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DatumRef(), newDatumRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DatumRef(), newDatumRef);
     }
 
     /**
@@ -4747,7 +4747,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDecimalMinutes(BigDecimal newDecimalMinutes) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DecimalMinutes(), newDecimalMinutes);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DecimalMinutes(), newDecimalMinutes);
     }
 
     /**
@@ -4776,7 +4776,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefaultStyle(DefaultStylePropertyType newDefaultStyle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefaultStyle(), newDefaultStyle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DefaultStyle(), newDefaultStyle);
     }
 
     /**
@@ -4805,7 +4805,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefinedByConversion(GeneralConversionRefType newDefinedByConversion) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinedByConversion(), newDefinedByConversion);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DefinedByConversion(), newDefinedByConversion);
     }
 
     /**
@@ -4834,7 +4834,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefinitionCollection(DictionaryType newDefinitionCollection) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionCollection(), newDefinitionCollection);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionCollection(), newDefinitionCollection);
     }
 
     /**
@@ -4863,7 +4863,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefinitionMember(DictionaryEntryType newDefinitionMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionMember(), newDefinitionMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionMember(), newDefinitionMember);
     }
 
     /**
@@ -4892,7 +4892,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDictionaryEntry(DictionaryEntryType newDictionaryEntry) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DictionaryEntry(), newDictionaryEntry);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DictionaryEntry(), newDictionaryEntry);
     }
 
     /**
@@ -4921,7 +4921,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefinitionProxy(DefinitionProxyType newDefinitionProxy) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionProxy(), newDefinitionProxy);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionProxy(), newDefinitionProxy);
     }
 
     /**
@@ -4950,7 +4950,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDefinitionRef(ReferenceType newDefinitionRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionRef(), newDefinitionRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DefinitionRef(), newDefinitionRef);
     }
 
     /**
@@ -4979,7 +4979,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDegrees(DegreesType newDegrees) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Degrees(), newDegrees);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Degrees(), newDegrees);
     }
 
     /**
@@ -5008,7 +5008,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDerivationUnitTerm(DerivationUnitTermType newDerivationUnitTerm) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivationUnitTerm(), newDerivationUnitTerm);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DerivationUnitTerm(), newDerivationUnitTerm);
     }
 
     /**
@@ -5037,7 +5037,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDerivedCRS(DerivedCRSType newDerivedCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRS(), newDerivedCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRS(), newDerivedCRS);
     }
 
     /**
@@ -5066,7 +5066,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDerivedCRSRef(DerivedCRSRefType newDerivedCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSRef(), newDerivedCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSRef(), newDerivedCRSRef);
     }
 
     /**
@@ -5095,7 +5095,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDerivedCRSType(DerivedCRSTypeType newDerivedCRSType) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSType(), newDerivedCRSType);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedCRSType(), newDerivedCRSType);
     }
 
     /**
@@ -5124,7 +5124,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDerivedUnit(DerivedUnitType newDerivedUnit) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedUnit(), newDerivedUnit);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DerivedUnit(), newDerivedUnit);
     }
 
     /**
@@ -5153,7 +5153,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDescription(StringOrRefType newDescription) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Description(), newDescription);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Description(), newDescription);
     }
 
     /**
@@ -5182,7 +5182,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDictionary(DictionaryType newDictionary) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Dictionary(), newDictionary);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Dictionary(), newDictionary);
     }
 
     /**
@@ -5211,7 +5211,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectedEdge(DirectedEdgePropertyType newDirectedEdge) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedEdge(), newDirectedEdge);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedEdge(), newDirectedEdge);
     }
 
     /**
@@ -5240,7 +5240,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectedFace(DirectedFacePropertyType newDirectedFace) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedFace(), newDirectedFace);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedFace(), newDirectedFace);
     }
 
     /**
@@ -5269,7 +5269,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectedNode(DirectedNodePropertyType newDirectedNode) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedNode(), newDirectedNode);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedNode(), newDirectedNode);
     }
 
     /**
@@ -5298,7 +5298,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectedObservation(DirectedObservationType newDirectedObservation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservation(), newDirectedObservation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservation(), newDirectedObservation);
     }
 
     /**
@@ -5327,7 +5327,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setObservation(ObservationType newObservation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Observation(), newObservation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Observation(), newObservation);
     }
 
     /**
@@ -5356,7 +5356,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectedObservationAtDistance(DirectedObservationAtDistanceType newDirectedObservationAtDistance) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservationAtDistance(), newDirectedObservationAtDistance);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedObservationAtDistance(), newDirectedObservationAtDistance);
     }
 
     /**
@@ -5385,7 +5385,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectedTopoSolid(DirectedTopoSolidPropertyType newDirectedTopoSolid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedTopoSolid(), newDirectedTopoSolid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectedTopoSolid(), newDirectedTopoSolid);
     }
 
     /**
@@ -5414,7 +5414,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirection(DirectionPropertyType newDirection) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Direction(), newDirection);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Direction(), newDirection);
     }
 
     /**
@@ -5443,7 +5443,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDirectionVector(DirectionVectorType newDirectionVector) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DirectionVector(), newDirectionVector);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DirectionVector(), newDirectionVector);
     }
 
     /**
@@ -5472,7 +5472,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDmsAngle(DMSAngleType newDmsAngle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngle(), newDmsAngle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngle(), newDmsAngle);
     }
 
     /**
@@ -5501,7 +5501,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDmsAngleValue(DMSAngleType newDmsAngleValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngleValue(), newDmsAngleValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DmsAngleValue(), newDmsAngleValue);
     }
 
     /**
@@ -5530,7 +5530,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDomainSet(DomainSetType newDomainSet) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DomainSet(), newDomainSet);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DomainSet(), newDomainSet);
     }
 
     /**
@@ -5551,7 +5551,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDoubleOrNullTupleList(List<Object> newDoubleOrNullTupleList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_DoubleOrNullTupleList(), newDoubleOrNullTupleList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_DoubleOrNullTupleList(), newDoubleOrNullTupleList);
     }
 
     /**
@@ -5571,7 +5571,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDuration(Duration newDuration) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Duration(), newDuration);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Duration(), newDuration);
     }
 
     /**
@@ -5600,7 +5600,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEdge(EdgeType newEdge) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Edge(), newEdge);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Edge(), newEdge);
     }
 
     /**
@@ -5629,7 +5629,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEdgeOf(CurvePropertyType newEdgeOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EdgeOf(), newEdgeOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EdgeOf(), newEdgeOf);
     }
 
     /**
@@ -5658,7 +5658,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEllipsoid(EllipsoidType newEllipsoid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Ellipsoid(), newEllipsoid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Ellipsoid(), newEllipsoid);
     }
 
     /**
@@ -5687,7 +5687,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEllipsoidalCS(EllipsoidalCSType newEllipsoidalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCS(), newEllipsoidalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCS(), newEllipsoidalCS);
     }
 
     /**
@@ -5716,7 +5716,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEllipsoidalCSRef(EllipsoidalCSRefType newEllipsoidalCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCSRef(), newEllipsoidalCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidalCSRef(), newEllipsoidalCSRef);
     }
 
     /**
@@ -5745,7 +5745,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEllipsoidID(IdentifierType newEllipsoidID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidID(), newEllipsoidID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidID(), newEllipsoidID);
     }
 
     /**
@@ -5774,7 +5774,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEllipsoidName(CodeType newEllipsoidName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidName(), newEllipsoidName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidName(), newEllipsoidName);
     }
 
     /**
@@ -5803,7 +5803,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEllipsoidRef(EllipsoidRefType newEllipsoidRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidRef(), newEllipsoidRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EllipsoidRef(), newEllipsoidRef);
     }
 
     /**
@@ -5832,7 +5832,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEngineeringCRS(EngineeringCRSType newEngineeringCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRS(), newEngineeringCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRS(), newEngineeringCRS);
     }
 
     /**
@@ -5861,7 +5861,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEngineeringCRSRef(EngineeringCRSRefType newEngineeringCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRSRef(), newEngineeringCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringCRSRef(), newEngineeringCRSRef);
     }
 
     /**
@@ -5890,7 +5890,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEngineeringDatum(EngineeringDatumType newEngineeringDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatum(), newEngineeringDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatum(), newEngineeringDatum);
     }
 
     /**
@@ -5919,7 +5919,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEngineeringDatumRef(EngineeringDatumRefType newEngineeringDatumRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatumRef(), newEngineeringDatumRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EngineeringDatumRef(), newEngineeringDatumRef);
     }
 
     /**
@@ -5948,7 +5948,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Envelope(), newEnvelope);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Envelope(), newEnvelope);
     }
 
     /**
@@ -5977,7 +5977,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setEnvelopeWithTimePeriod(EnvelopeWithTimePeriodType newEnvelopeWithTimePeriod) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_EnvelopeWithTimePeriod(), newEnvelopeWithTimePeriod);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_EnvelopeWithTimePeriod(), newEnvelopeWithTimePeriod);
     }
 
     /**
@@ -6006,7 +6006,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setExtentOf(SurfacePropertyType newExtentOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ExtentOf(), newExtentOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ExtentOf(), newExtentOf);
     }
 
     /**
@@ -6035,7 +6035,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Exterior(), newExterior);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Exterior(), newExterior);
     }
 
     /**
@@ -6064,7 +6064,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFace(FaceType newFace) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Face(), newFace);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Face(), newFace);
     }
 
     /**
@@ -6093,7 +6093,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureCollection1(FeatureCollectionType newFeatureCollection1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureCollection1(), newFeatureCollection1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureCollection1(), newFeatureCollection1);
     }
 
     /**
@@ -6122,7 +6122,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureMember(FeaturePropertyType newFeatureMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMember(), newFeatureMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMember(), newFeatureMember);
     }
 
     /**
@@ -6151,7 +6151,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureMembers(FeatureArrayPropertyType newFeatureMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMembers(), newFeatureMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureMembers(), newFeatureMembers);
     }
 
     /**
@@ -6180,7 +6180,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureProperty(FeaturePropertyType newFeatureProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureProperty(), newFeatureProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureProperty(), newFeatureProperty);
     }
 
     /**
@@ -6209,7 +6209,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureStyle(FeatureStylePropertyType newFeatureStyle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle(), newFeatureStyle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle(), newFeatureStyle);
     }
 
     /**
@@ -6238,7 +6238,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureStyle1(FeatureStyleType newFeatureStyle1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle1(), newFeatureStyle1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_FeatureStyle1(), newFeatureStyle1);
     }
 
     /**
@@ -6267,7 +6267,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFile(FileType newFile) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_File(), newFile);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_File(), newFile);
     }
 
     /**
@@ -6296,7 +6296,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeneralConversionRef(GeneralConversionRefType newGeneralConversionRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeneralConversionRef(), newGeneralConversionRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeneralConversionRef(), newGeneralConversionRef);
     }
 
     /**
@@ -6325,7 +6325,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeneralTransformationRef(GeneralTransformationRefType newGeneralTransformationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeneralTransformationRef(), newGeneralTransformationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeneralTransformationRef(), newGeneralTransformationRef);
     }
 
     /**
@@ -6354,7 +6354,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGenericMetaData(GenericMetaDataType newGenericMetaData) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GenericMetaData(), newGenericMetaData);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GenericMetaData(), newGenericMetaData);
     }
 
     /**
@@ -6383,7 +6383,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeocentricCRS(GeocentricCRSType newGeocentricCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRS(), newGeocentricCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRS(), newGeocentricCRS);
     }
 
     /**
@@ -6412,7 +6412,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeocentricCRSRef(GeocentricCRSRefType newGeocentricCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRSRef(), newGeocentricCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeocentricCRSRef(), newGeocentricCRSRef);
     }
 
     /**
@@ -6441,7 +6441,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeodesic(GeodesicType newGeodesic) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Geodesic(), newGeodesic);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Geodesic(), newGeodesic);
     }
 
     /**
@@ -6470,7 +6470,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeodesicString(GeodesicStringType newGeodesicString) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeodesicString(), newGeodesicString);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeodesicString(), newGeodesicString);
     }
 
     /**
@@ -6499,7 +6499,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeodeticDatum(GeodeticDatumType newGeodeticDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatum(), newGeodeticDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatum(), newGeodeticDatum);
     }
 
     /**
@@ -6528,7 +6528,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeodeticDatumRef(GeodeticDatumRefType newGeodeticDatumRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatumRef(), newGeodeticDatumRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeodeticDatumRef(), newGeodeticDatumRef);
     }
 
     /**
@@ -6557,7 +6557,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeographicCRS(GeographicCRSType newGeographicCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRS(), newGeographicCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRS(), newGeographicCRS);
     }
 
     /**
@@ -6586,7 +6586,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeographicCRSRef(GeographicCRSRefType newGeographicCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRSRef(), newGeographicCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeographicCRSRef(), newGeographicCRSRef);
     }
 
     /**
@@ -6615,7 +6615,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeometricComplex(GeometricComplexType newGeometricComplex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometricComplex(), newGeometricComplex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeometricComplex(), newGeometricComplex);
     }
 
     /**
@@ -6644,7 +6644,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeometryMember(GeometryPropertyType newGeometryMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMember(), newGeometryMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMember(), newGeometryMember);
     }
 
     /**
@@ -6673,7 +6673,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeometryMembers(GeometryArrayPropertyType newGeometryMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMembers(), newGeometryMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryMembers(), newGeometryMembers);
     }
 
     /**
@@ -6702,7 +6702,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeometryStyle(GeometryStylePropertyType newGeometryStyle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle(), newGeometryStyle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle(), newGeometryStyle);
     }
 
     /**
@@ -6731,7 +6731,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGeometryStyle1(GeometryStyleType newGeometryStyle1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle1(), newGeometryStyle1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GeometryStyle1(), newGeometryStyle1);
     }
 
     /**
@@ -6760,7 +6760,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGraphStyle(GraphStylePropertyType newGraphStyle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle(), newGraphStyle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle(), newGraphStyle);
     }
 
     /**
@@ -6789,7 +6789,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGraphStyle1(GraphStyleType newGraphStyle1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle1(), newGraphStyle1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GraphStyle1(), newGraphStyle1);
     }
 
     /**
@@ -6818,7 +6818,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGreenwichLongitude(AngleChoiceType newGreenwichLongitude) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GreenwichLongitude(), newGreenwichLongitude);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GreenwichLongitude(), newGreenwichLongitude);
     }
 
     /**
@@ -6847,7 +6847,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGrid(GridType newGrid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Grid(), newGrid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Grid(), newGrid);
     }
 
     /**
@@ -6876,7 +6876,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGridCoverage(GridCoverageType newGridCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GridCoverage(), newGridCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GridCoverage(), newGridCoverage);
     }
 
     /**
@@ -6905,7 +6905,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGridDomain(GridDomainType newGridDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GridDomain(), newGridDomain);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GridDomain(), newGridDomain);
     }
 
     /**
@@ -6934,7 +6934,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGridFunction(GridFunctionType newGridFunction) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GridFunction(), newGridFunction);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GridFunction(), newGridFunction);
     }
 
     /**
@@ -6963,7 +6963,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGroupID(IdentifierType newGroupID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GroupID(), newGroupID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GroupID(), newGroupID);
     }
 
     /**
@@ -6992,7 +6992,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGroupName(CodeType newGroupName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_GroupName(), newGroupName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_GroupName(), newGroupName);
     }
 
     /**
@@ -7021,7 +7021,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setHistory(HistoryPropertyType newHistory) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_History(), newHistory);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_History(), newHistory);
     }
 
     /**
@@ -7050,7 +7050,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setImageCRS(ImageCRSType newImageCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRS(), newImageCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRS(), newImageCRS);
     }
 
     /**
@@ -7079,7 +7079,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setImageCRSRef(ImageCRSRefType newImageCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRSRef(), newImageCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ImageCRSRef(), newImageCRSRef);
     }
 
     /**
@@ -7108,7 +7108,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setImageDatum(ImageDatumType newImageDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatum(), newImageDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatum(), newImageDatum);
     }
 
     /**
@@ -7137,7 +7137,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setImageDatumRef(ImageDatumRefType newImageDatumRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatumRef(), newImageDatumRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ImageDatumRef(), newImageDatumRef);
     }
 
     /**
@@ -7166,7 +7166,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIncludesCRS(CoordinateReferenceSystemRefType newIncludesCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesCRS(), newIncludesCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesCRS(), newIncludesCRS);
     }
 
     /**
@@ -7195,7 +7195,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIncludesElement(CovarianceElementType newIncludesElement) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesElement(), newIncludesElement);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesElement(), newIncludesElement);
     }
 
     /**
@@ -7224,7 +7224,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIncludesParameter(AbstractGeneralOperationParameterRefType newIncludesParameter) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesParameter(), newIncludesParameter);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesParameter(), newIncludesParameter);
     }
 
     /**
@@ -7253,7 +7253,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIncludesValue(AbstractGeneralParameterValueType newIncludesValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesValue(), newIncludesValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IncludesValue(), newIncludesValue);
     }
 
     /**
@@ -7282,7 +7282,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIndexMap(IndexMapType newIndexMap) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IndexMap(), newIndexMap);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IndexMap(), newIndexMap);
     }
 
     /**
@@ -7311,7 +7311,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIndirectEntry(IndirectEntryType newIndirectEntry) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IndirectEntry(), newIndirectEntry);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IndirectEntry(), newIndirectEntry);
     }
 
     /**
@@ -7340,7 +7340,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setInnerBoundaryIs(AbstractRingPropertyType newInnerBoundaryIs) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_InnerBoundaryIs(), newInnerBoundaryIs);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_InnerBoundaryIs(), newInnerBoundaryIs);
     }
 
     /**
@@ -7369,7 +7369,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setInterior(AbstractRingPropertyType newInterior) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Interior(), newInterior);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Interior(), newInterior);
     }
 
     /**
@@ -7389,7 +7389,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIntegerValue(BigInteger newIntegerValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValue(), newIntegerValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValue(), newIntegerValue);
     }
 
     /**
@@ -7410,7 +7410,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIntegerValueList(List<BigInteger> newIntegerValueList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValueList(), newIntegerValueList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IntegerValueList(), newIntegerValueList);
     }
 
     /**
@@ -7439,7 +7439,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setInverseFlattening(MeasureType newInverseFlattening) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_InverseFlattening(), newInverseFlattening);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_InverseFlattening(), newInverseFlattening);
     }
 
     /**
@@ -7468,7 +7468,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIsolated(IsolatedPropertyType newIsolated) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Isolated(), newIsolated);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Isolated(), newIsolated);
     }
 
     /**
@@ -7488,7 +7488,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setIsSphere(IsSphereType newIsSphere) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_IsSphere(), newIsSphere);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_IsSphere(), newIsSphere);
     }
 
     /**
@@ -7517,7 +7517,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLabelStyle(LabelStylePropertyType newLabelStyle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle(), newLabelStyle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle(), newLabelStyle);
     }
 
     /**
@@ -7546,7 +7546,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLabelStyle1(LabelStyleType newLabelStyle1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle1(), newLabelStyle1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LabelStyle1(), newLabelStyle1);
     }
 
     /**
@@ -7575,7 +7575,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLinearCS(LinearCSType newLinearCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LinearCS(), newLinearCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LinearCS(), newLinearCS);
     }
 
     /**
@@ -7604,7 +7604,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLinearCSRef(LinearCSRefType newLinearCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LinearCSRef(), newLinearCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LinearCSRef(), newLinearCSRef);
     }
 
     /**
@@ -7633,7 +7633,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLinearRing(LinearRingType newLinearRing) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LinearRing(), newLinearRing);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LinearRing(), newLinearRing);
     }
 
     /**
@@ -7662,7 +7662,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLineString(LineStringType newLineString) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineString(), newLineString);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LineString(), newLineString);
     }
 
     /**
@@ -7691,7 +7691,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLineStringMember(LineStringPropertyType newLineStringMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringMember(), newLineStringMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringMember(), newLineStringMember);
     }
 
     /**
@@ -7720,7 +7720,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLineStringProperty(LineStringPropertyType newLineStringProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringProperty(), newLineStringProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringProperty(), newLineStringProperty);
     }
 
     /**
@@ -7749,7 +7749,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLineStringSegment(LineStringSegmentType newLineStringSegment) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringSegment(), newLineStringSegment);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LineStringSegment(), newLineStringSegment);
     }
 
     /**
@@ -7778,7 +7778,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLocation(LocationPropertyType newLocation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Location(), newLocation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Location(), newLocation);
     }
 
     /**
@@ -7807,7 +7807,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLocationKeyWord(CodeType newLocationKeyWord) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LocationKeyWord(), newLocationKeyWord);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LocationKeyWord(), newLocationKeyWord);
     }
 
     /**
@@ -7836,7 +7836,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLocationString(StringOrRefType newLocationString) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_LocationString(), newLocationString);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_LocationString(), newLocationString);
     }
 
     /**
@@ -7865,7 +7865,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMappingRule(StringOrRefType newMappingRule) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MappingRule(), newMappingRule);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MappingRule(), newMappingRule);
     }
 
     /**
@@ -7894,7 +7894,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMaximalComplex(TopoComplexMemberType newMaximalComplex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MaximalComplex(), newMaximalComplex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MaximalComplex(), newMaximalComplex);
     }
 
     /**
@@ -7914,7 +7914,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMaximumOccurs(BigInteger newMaximumOccurs) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MaximumOccurs(), newMaximumOccurs);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MaximumOccurs(), newMaximumOccurs);
     }
 
     /**
@@ -7943,7 +7943,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMeasure(MeasureType newMeasure) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Measure(), newMeasure);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Measure(), newMeasure);
     }
 
     /**
@@ -7972,7 +7972,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMeasureDescription(CodeType newMeasureDescription) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MeasureDescription(), newMeasureDescription);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MeasureDescription(), newMeasureDescription);
     }
 
     /**
@@ -8001,7 +8001,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMember(AssociationType newMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Member(), newMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Member(), newMember);
     }
 
     /**
@@ -8030,7 +8030,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMembers(ArrayAssociationType newMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Members(), newMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Members(), newMembers);
     }
 
     /**
@@ -8059,7 +8059,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMeridianID(IdentifierType newMeridianID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MeridianID(), newMeridianID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MeridianID(), newMeridianID);
     }
 
     /**
@@ -8088,7 +8088,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMeridianName(CodeType newMeridianName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MeridianName(), newMeridianName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MeridianName(), newMeridianName);
     }
 
     /**
@@ -8117,7 +8117,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMetaDataProperty(MetaDataPropertyType newMetaDataProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MetaDataProperty(), newMetaDataProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MetaDataProperty(), newMetaDataProperty);
     }
 
     /**
@@ -8146,7 +8146,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMethodFormula(CodeType newMethodFormula) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MethodFormula(), newMethodFormula);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MethodFormula(), newMethodFormula);
     }
 
     /**
@@ -8175,7 +8175,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMethodID(IdentifierType newMethodID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MethodID(), newMethodID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MethodID(), newMethodID);
     }
 
     /**
@@ -8204,7 +8204,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMethodName(CodeType newMethodName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MethodName(), newMethodName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MethodName(), newMethodName);
     }
 
     /**
@@ -8224,7 +8224,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMinimumOccurs(BigInteger newMinimumOccurs) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MinimumOccurs(), newMinimumOccurs);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MinimumOccurs(), newMinimumOccurs);
     }
 
     /**
@@ -8244,7 +8244,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMinutes(BigInteger newMinutes) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Minutes(), newMinutes);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Minutes(), newMinutes);
     }
 
     /**
@@ -8264,7 +8264,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setModifiedCoordinate(BigInteger newModifiedCoordinate) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ModifiedCoordinate(), newModifiedCoordinate);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ModifiedCoordinate(), newModifiedCoordinate);
     }
 
     /**
@@ -8293,7 +8293,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMovingObjectStatus(MovingObjectStatusType newMovingObjectStatus) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MovingObjectStatus(), newMovingObjectStatus);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MovingObjectStatus(), newMovingObjectStatus);
     }
 
     /**
@@ -8322,7 +8322,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCenterLineOf(MultiCurvePropertyType newMultiCenterLineOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterLineOf(), newMultiCenterLineOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterLineOf(), newMultiCenterLineOf);
     }
 
     /**
@@ -8351,7 +8351,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCenterOf(MultiPointPropertyType newMultiCenterOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterOf(), newMultiCenterOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCenterOf(), newMultiCenterOf);
     }
 
     /**
@@ -8380,7 +8380,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCoverage(MultiSurfacePropertyType newMultiCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCoverage(), newMultiCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCoverage(), newMultiCoverage);
     }
 
     /**
@@ -8409,7 +8409,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCurve(MultiCurveType newMultiCurve) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurve(), newMultiCurve);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurve(), newMultiCurve);
     }
 
     /**
@@ -8438,7 +8438,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCurveCoverage(MultiCurveCoverageType newMultiCurveCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveCoverage(), newMultiCurveCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveCoverage(), newMultiCurveCoverage);
     }
 
     /**
@@ -8467,7 +8467,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCurveDomain(MultiCurveDomainType newMultiCurveDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveDomain(), newMultiCurveDomain);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveDomain(), newMultiCurveDomain);
     }
 
     /**
@@ -8496,7 +8496,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiCurveProperty(MultiCurvePropertyType newMultiCurveProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveProperty(), newMultiCurveProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiCurveProperty(), newMultiCurveProperty);
     }
 
     /**
@@ -8525,7 +8525,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiEdgeOf(MultiCurvePropertyType newMultiEdgeOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiEdgeOf(), newMultiEdgeOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiEdgeOf(), newMultiEdgeOf);
     }
 
     /**
@@ -8554,7 +8554,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiExtentOf(MultiSurfacePropertyType newMultiExtentOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiExtentOf(), newMultiExtentOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiExtentOf(), newMultiExtentOf);
     }
 
     /**
@@ -8583,7 +8583,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiGeometry(MultiGeometryType newMultiGeometry) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometry(), newMultiGeometry);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometry(), newMultiGeometry);
     }
 
     /**
@@ -8612,7 +8612,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiGeometryProperty(MultiGeometryPropertyType newMultiGeometryProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometryProperty(), newMultiGeometryProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiGeometryProperty(), newMultiGeometryProperty);
     }
 
     /**
@@ -8641,7 +8641,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiLineString(MultiLineStringType newMultiLineString) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiLineString(), newMultiLineString);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiLineString(), newMultiLineString);
     }
 
     /**
@@ -8670,7 +8670,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiLocation(MultiPointPropertyType newMultiLocation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiLocation(), newMultiLocation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiLocation(), newMultiLocation);
     }
 
     /**
@@ -8699,7 +8699,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiPoint(MultiPointType newMultiPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPoint(), newMultiPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPoint(), newMultiPoint);
     }
 
     /**
@@ -8728,7 +8728,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiPointCoverage(MultiPointCoverageType newMultiPointCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointCoverage(), newMultiPointCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointCoverage(), newMultiPointCoverage);
     }
 
     /**
@@ -8757,7 +8757,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiPointDomain(MultiPointDomainType newMultiPointDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointDomain(), newMultiPointDomain);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointDomain(), newMultiPointDomain);
     }
 
     /**
@@ -8786,7 +8786,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiPointProperty(MultiPointPropertyType newMultiPointProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointProperty(), newMultiPointProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPointProperty(), newMultiPointProperty);
     }
 
     /**
@@ -8815,7 +8815,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiPolygon(MultiPolygonType newMultiPolygon) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPolygon(), newMultiPolygon);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPolygon(), newMultiPolygon);
     }
 
     /**
@@ -8844,7 +8844,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiPosition(MultiPointPropertyType newMultiPosition) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPosition(), newMultiPosition);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiPosition(), newMultiPosition);
     }
 
     /**
@@ -8873,7 +8873,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSolid(MultiSolidType newMultiSolid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolid(), newMultiSolid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolid(), newMultiSolid);
     }
 
     /**
@@ -8902,7 +8902,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSolidCoverage(MultiSolidCoverageType newMultiSolidCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidCoverage(), newMultiSolidCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidCoverage(), newMultiSolidCoverage);
     }
 
     /**
@@ -8931,7 +8931,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSolidDomain(MultiSolidDomainType newMultiSolidDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidDomain(), newMultiSolidDomain);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidDomain(), newMultiSolidDomain);
     }
 
     /**
@@ -8960,7 +8960,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSolidProperty(MultiSolidPropertyType newMultiSolidProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidProperty(), newMultiSolidProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSolidProperty(), newMultiSolidProperty);
     }
 
     /**
@@ -8989,7 +8989,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSurface(MultiSurfaceType newMultiSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurface(), newMultiSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurface(), newMultiSurface);
     }
 
     /**
@@ -9018,7 +9018,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSurfaceCoverage(MultiSurfaceCoverageType newMultiSurfaceCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceCoverage(), newMultiSurfaceCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceCoverage(), newMultiSurfaceCoverage);
     }
 
     /**
@@ -9047,7 +9047,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSurfaceDomain(MultiSurfaceDomainType newMultiSurfaceDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceDomain(), newMultiSurfaceDomain);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceDomain(), newMultiSurfaceDomain);
     }
 
     /**
@@ -9076,7 +9076,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setMultiSurfaceProperty(MultiSurfacePropertyType newMultiSurfaceProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceProperty(), newMultiSurfaceProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_MultiSurfaceProperty(), newMultiSurfaceProperty);
     }
 
     /**
@@ -9105,7 +9105,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setNode(NodeType newNode) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Node(), newNode);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Node(), newNode);
     }
 
     /**
@@ -9125,7 +9125,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setNull(Object newNull) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Null(), newNull);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Null(), newNull);
     }
 
     /**
@@ -9154,7 +9154,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setObliqueCartesianCS(ObliqueCartesianCSType newObliqueCartesianCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCS(), newObliqueCartesianCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCS(), newObliqueCartesianCS);
     }
 
     /**
@@ -9183,7 +9183,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setObliqueCartesianCSRef(ObliqueCartesianCSRefType newObliqueCartesianCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCSRef(), newObliqueCartesianCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ObliqueCartesianCSRef(), newObliqueCartesianCSRef);
     }
 
     /**
@@ -9212,7 +9212,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOffsetCurve(OffsetCurveType newOffsetCurve) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OffsetCurve(), newOffsetCurve);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OffsetCurve(), newOffsetCurve);
     }
 
     /**
@@ -9241,7 +9241,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationMethod(OperationMethodType newOperationMethod) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethod(), newOperationMethod);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethod(), newOperationMethod);
     }
 
     /**
@@ -9270,7 +9270,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationMethodRef(OperationMethodRefType newOperationMethodRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethodRef(), newOperationMethodRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationMethodRef(), newOperationMethodRef);
     }
 
     /**
@@ -9299,7 +9299,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationParameter(OperationParameterType newOperationParameter) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameter(), newOperationParameter);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameter(), newOperationParameter);
     }
 
     /**
@@ -9328,7 +9328,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationParameterGroup(OperationParameterGroupType newOperationParameterGroup) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroup(), newOperationParameterGroup);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroup(), newOperationParameterGroup);
     }
 
     /**
@@ -9357,7 +9357,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationParameterGroupRef(OperationParameterRefType newOperationParameterGroupRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroupRef(), newOperationParameterGroupRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterGroupRef(), newOperationParameterGroupRef);
     }
 
     /**
@@ -9386,7 +9386,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationParameterRef(OperationParameterRefType newOperationParameterRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterRef(), newOperationParameterRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationParameterRef(), newOperationParameterRef);
     }
 
     /**
@@ -9415,7 +9415,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationRef(OperationRefType newOperationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationRef(), newOperationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationRef(), newOperationRef);
     }
 
     /**
@@ -9435,7 +9435,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOperationVersion(String newOperationVersion) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OperationVersion(), newOperationVersion);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OperationVersion(), newOperationVersion);
     }
 
     /**
@@ -9464,7 +9464,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOrientableCurve(OrientableCurveType newOrientableCurve) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OrientableCurve(), newOrientableCurve);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OrientableCurve(), newOrientableCurve);
     }
 
     /**
@@ -9493,7 +9493,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOrientableSurface(OrientableSurfaceType newOrientableSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OrientableSurface(), newOrientableSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OrientableSurface(), newOrientableSurface);
     }
 
     /**
@@ -9513,7 +9513,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOrigin(XMLGregorianCalendar newOrigin) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Origin(), newOrigin);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Origin(), newOrigin);
     }
 
     /**
@@ -9542,7 +9542,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setOuterBoundaryIs(AbstractRingPropertyType newOuterBoundaryIs) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_OuterBoundaryIs(), newOuterBoundaryIs);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_OuterBoundaryIs(), newOuterBoundaryIs);
     }
 
     /**
@@ -9571,7 +9571,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setParameterID(IdentifierType newParameterID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterID(), newParameterID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterID(), newParameterID);
     }
 
     /**
@@ -9600,7 +9600,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setParameterName(CodeType newParameterName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterName(), newParameterName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterName(), newParameterName);
     }
 
     /**
@@ -9629,7 +9629,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setParameterValue(ParameterValueType newParameterValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValue(), newParameterValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValue(), newParameterValue);
     }
 
     /**
@@ -9658,7 +9658,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setParameterValueGroup(ParameterValueGroupType newParameterValueGroup) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValueGroup(), newParameterValueGroup);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ParameterValueGroup(), newParameterValueGroup);
     }
 
     /**
@@ -9687,7 +9687,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPassThroughOperation(PassThroughOperationType newPassThroughOperation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperation(), newPassThroughOperation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperation(), newPassThroughOperation);
     }
 
     /**
@@ -9716,7 +9716,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPassThroughOperationRef(PassThroughOperationRefType newPassThroughOperationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperationRef(), newPassThroughOperationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PassThroughOperationRef(), newPassThroughOperationRef);
     }
 
     /**
@@ -9745,7 +9745,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPatches(SurfacePatchArrayPropertyType newPatches) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Patches(), newPatches);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Patches(), newPatches);
     }
 
     /**
@@ -9774,7 +9774,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPixelInCell(PixelInCellType newPixelInCell) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PixelInCell(), newPixelInCell);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PixelInCell(), newPixelInCell);
     }
 
     /**
@@ -9803,7 +9803,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPoint(PointType newPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Point(), newPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Point(), newPoint);
     }
 
     /**
@@ -9832,7 +9832,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPointArrayProperty(PointArrayPropertyType newPointArrayProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointArrayProperty(), newPointArrayProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PointArrayProperty(), newPointArrayProperty);
     }
 
     /**
@@ -9861,7 +9861,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPointMember(PointPropertyType newPointMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointMember(), newPointMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PointMember(), newPointMember);
     }
 
     /**
@@ -9890,7 +9890,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPointMembers(PointArrayPropertyType newPointMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointMembers(), newPointMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PointMembers(), newPointMembers);
     }
 
     /**
@@ -9919,7 +9919,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPointProperty(PointPropertyType newPointProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointProperty(), newPointProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PointProperty(), newPointProperty);
     }
 
     /**
@@ -9948,7 +9948,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPointRep(PointPropertyType newPointRep) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PointRep(), newPointRep);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PointRep(), newPointRep);
     }
 
     /**
@@ -9977,7 +9977,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolarCS(PolarCSType newPolarCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolarCS(), newPolarCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolarCS(), newPolarCS);
     }
 
     /**
@@ -10006,7 +10006,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolarCSRef(PolarCSRefType newPolarCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolarCSRef(), newPolarCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolarCSRef(), newPolarCSRef);
     }
 
     /**
@@ -10035,7 +10035,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolygon(PolygonType newPolygon) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Polygon(), newPolygon);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Polygon(), newPolygon);
     }
 
     /**
@@ -10064,7 +10064,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolygonMember(PolygonPropertyType newPolygonMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonMember(), newPolygonMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonMember(), newPolygonMember);
     }
 
     /**
@@ -10093,7 +10093,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolygonPatch(PolygonPatchType newPolygonPatch) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatch(), newPolygonPatch);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatch(), newPolygonPatch);
     }
 
     /**
@@ -10122,7 +10122,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolygonPatches(PolygonPatchArrayPropertyType newPolygonPatches) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatches(), newPolygonPatches);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonPatches(), newPolygonPatches);
     }
 
     /**
@@ -10151,7 +10151,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolygonProperty(PolygonPropertyType newPolygonProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonProperty(), newPolygonProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolygonProperty(), newPolygonProperty);
     }
 
     /**
@@ -10180,7 +10180,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPolyhedralSurface(PolyhedralSurfaceType newPolyhedralSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PolyhedralSurface(), newPolyhedralSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PolyhedralSurface(), newPolyhedralSurface);
     }
 
     /**
@@ -10209,7 +10209,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSurface1(SurfaceType newSurface1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Surface1(), newSurface1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Surface1(), newSurface1);
     }
 
     /**
@@ -10238,7 +10238,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPos(DirectPositionType newPos) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Pos(), newPos);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Pos(), newPos);
     }
 
     /**
@@ -10267,7 +10267,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPosition(PointPropertyType newPosition) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Position(), newPosition);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Position(), newPosition);
     }
 
     /**
@@ -10296,7 +10296,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPosList(DirectPositionListType newPosList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PosList(), newPosList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PosList(), newPosList);
     }
 
     /**
@@ -10325,7 +10325,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPrimeMeridian(PrimeMeridianType newPrimeMeridian) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridian(), newPrimeMeridian);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridian(), newPrimeMeridian);
     }
 
     /**
@@ -10354,7 +10354,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPrimeMeridianRef(PrimeMeridianRefType newPrimeMeridianRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridianRef(), newPrimeMeridianRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PrimeMeridianRef(), newPrimeMeridianRef);
     }
 
     /**
@@ -10383,7 +10383,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setPriorityLocation(PriorityLocationPropertyType newPriorityLocation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_PriorityLocation(), newPriorityLocation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_PriorityLocation(), newPriorityLocation);
     }
 
     /**
@@ -10412,7 +10412,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setProjectedCRS(ProjectedCRSType newProjectedCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRS(), newProjectedCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRS(), newProjectedCRS);
     }
 
     /**
@@ -10441,7 +10441,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setProjectedCRSRef(ProjectedCRSRefType newProjectedCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRSRef(), newProjectedCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ProjectedCRSRef(), newProjectedCRSRef);
     }
 
     /**
@@ -10470,7 +10470,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setQuantity(MeasureType newQuantity) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Quantity(), newQuantity);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Quantity(), newQuantity);
     }
 
     /**
@@ -10499,7 +10499,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setQuantityExtent(QuantityExtentType newQuantityExtent) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityExtent(), newQuantityExtent);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityExtent(), newQuantityExtent);
     }
 
     /**
@@ -10528,7 +10528,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setQuantityList(MeasureOrNullListType newQuantityList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityList(), newQuantityList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityList(), newQuantityList);
     }
 
     /**
@@ -10557,7 +10557,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setQuantityType(StringOrRefType newQuantityType) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityType(), newQuantityType);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_QuantityType(), newQuantityType);
     }
 
     /**
@@ -10586,7 +10586,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRangeParameters(RangeParametersType newRangeParameters) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RangeParameters(), newRangeParameters);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RangeParameters(), newRangeParameters);
     }
 
     /**
@@ -10615,7 +10615,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRangeSet(RangeSetType newRangeSet) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RangeSet(), newRangeSet);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RangeSet(), newRangeSet);
     }
 
     /**
@@ -10635,7 +10635,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRealizationEpoch(XMLGregorianCalendar newRealizationEpoch) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RealizationEpoch(), newRealizationEpoch);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RealizationEpoch(), newRealizationEpoch);
     }
 
     /**
@@ -10664,7 +10664,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRectangle(RectangleType newRectangle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Rectangle(), newRectangle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Rectangle(), newRectangle);
     }
 
     /**
@@ -10693,7 +10693,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRectifiedGrid(RectifiedGridType newRectifiedGrid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGrid(), newRectifiedGrid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGrid(), newRectifiedGrid);
     }
 
     /**
@@ -10722,7 +10722,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRectifiedGridCoverage(RectifiedGridCoverageType newRectifiedGridCoverage) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridCoverage(), newRectifiedGridCoverage);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridCoverage(), newRectifiedGridCoverage);
     }
 
     /**
@@ -10751,7 +10751,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRectifiedGridDomain(RectifiedGridDomainType newRectifiedGridDomain) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridDomain(), newRectifiedGridDomain);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RectifiedGridDomain(), newRectifiedGridDomain);
     }
 
     /**
@@ -10780,7 +10780,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setReferenceSystemRef(ReferenceSystemRefType newReferenceSystemRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ReferenceSystemRef(), newReferenceSystemRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ReferenceSystemRef(), newReferenceSystemRef);
     }
 
     /**
@@ -10809,7 +10809,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRelativeInternalPositionalAccuracy(RelativeInternalPositionalAccuracyType newRelativeInternalPositionalAccuracy) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RelativeInternalPositionalAccuracy(), newRelativeInternalPositionalAccuracy);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RelativeInternalPositionalAccuracy(), newRelativeInternalPositionalAccuracy);
     }
 
     /**
@@ -10838,7 +10838,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRemarks(StringOrRefType newRemarks) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Remarks(), newRemarks);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Remarks(), newRemarks);
     }
 
     /**
@@ -10867,7 +10867,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setResult(MeasureType newResult) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Result(), newResult);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Result(), newResult);
     }
 
     /**
@@ -10896,7 +10896,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setResultOf(AssociationType newResultOf) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ResultOf(), newResultOf);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ResultOf(), newResultOf);
     }
 
     /**
@@ -10925,7 +10925,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRing1(RingType newRing1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Ring1(), newRing1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Ring1(), newRing1);
     }
 
     /**
@@ -10954,7 +10954,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRoughConversionToPreferredUnit(ConversionToPreferredUnitType newRoughConversionToPreferredUnit) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RoughConversionToPreferredUnit(), newRoughConversionToPreferredUnit);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RoughConversionToPreferredUnit(), newRoughConversionToPreferredUnit);
     }
 
     /**
@@ -10974,7 +10974,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setRowIndex(BigInteger newRowIndex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_RowIndex(), newRowIndex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_RowIndex(), newRowIndex);
     }
 
     /**
@@ -10994,7 +10994,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setScope(String newScope) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Scope(), newScope);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Scope(), newScope);
     }
 
     /**
@@ -11023,7 +11023,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSecondDefiningParameter(SecondDefiningParameterType newSecondDefiningParameter) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SecondDefiningParameter(), newSecondDefiningParameter);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SecondDefiningParameter(), newSecondDefiningParameter);
     }
 
     /**
@@ -11043,7 +11043,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSeconds(BigDecimal newSeconds) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Seconds(), newSeconds);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Seconds(), newSeconds);
     }
 
     /**
@@ -11072,7 +11072,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSegments(CurveSegmentArrayPropertyType newSegments) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Segments(), newSegments);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Segments(), newSegments);
     }
 
     /**
@@ -11101,7 +11101,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSemiMajorAxis(MeasureType newSemiMajorAxis) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SemiMajorAxis(), newSemiMajorAxis);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SemiMajorAxis(), newSemiMajorAxis);
     }
 
     /**
@@ -11130,7 +11130,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSemiMinorAxis(MeasureType newSemiMinorAxis) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SemiMinorAxis(), newSemiMinorAxis);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SemiMinorAxis(), newSemiMinorAxis);
     }
 
     /**
@@ -11159,7 +11159,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSingleOperationRef(SingleOperationRefType newSingleOperationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SingleOperationRef(), newSingleOperationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SingleOperationRef(), newSingleOperationRef);
     }
 
     /**
@@ -11188,7 +11188,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSolid1(SolidType newSolid1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Solid1(), newSolid1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Solid1(), newSolid1);
     }
 
     /**
@@ -11217,7 +11217,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSolidArrayProperty(SolidArrayPropertyType newSolidArrayProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidArrayProperty(), newSolidArrayProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SolidArrayProperty(), newSolidArrayProperty);
     }
 
     /**
@@ -11246,7 +11246,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSolidMember(SolidPropertyType newSolidMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidMember(), newSolidMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SolidMember(), newSolidMember);
     }
 
     /**
@@ -11275,7 +11275,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSolidMembers(SolidArrayPropertyType newSolidMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidMembers(), newSolidMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SolidMembers(), newSolidMembers);
     }
 
     /**
@@ -11304,7 +11304,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSolidProperty(SolidPropertyType newSolidProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SolidProperty(), newSolidProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SolidProperty(), newSolidProperty);
     }
 
     /**
@@ -11333,7 +11333,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSourceCRS(CRSRefType newSourceCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SourceCRS(), newSourceCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SourceCRS(), newSourceCRS);
     }
 
     /**
@@ -11353,7 +11353,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSourceDimensions(BigInteger newSourceDimensions) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SourceDimensions(), newSourceDimensions);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SourceDimensions(), newSourceDimensions);
     }
 
     /**
@@ -11382,7 +11382,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSphere(SphereType newSphere) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Sphere(), newSphere);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Sphere(), newSphere);
     }
 
     /**
@@ -11411,7 +11411,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSphericalCS(SphericalCSType newSphericalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCS(), newSphericalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCS(), newSphericalCS);
     }
 
     /**
@@ -11440,7 +11440,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSphericalCSRef(SphericalCSRefType newSphericalCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCSRef(), newSphericalCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SphericalCSRef(), newSphericalCSRef);
     }
 
     /**
@@ -11469,7 +11469,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSrsID(IdentifierType newSrsID) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SrsID(), newSrsID);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SrsID(), newSrsID);
     }
 
     /**
@@ -11498,7 +11498,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSrsName(CodeType newSrsName) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SrsName(), newSrsName);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SrsName(), newSrsName);
     }
 
     /**
@@ -11527,7 +11527,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setStatus(StringOrRefType newStatus) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Status(), newStatus);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Status(), newStatus);
     }
 
     /**
@@ -11547,7 +11547,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setStringValue(String newStringValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_StringValue(), newStringValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_StringValue(), newStringValue);
     }
 
     /**
@@ -11576,7 +11576,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setStyle1(StyleType newStyle1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Style1(), newStyle1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Style1(), newStyle1);
     }
 
     /**
@@ -11605,7 +11605,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSubComplex(TopoComplexMemberType newSubComplex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SubComplex(), newSubComplex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SubComplex(), newSubComplex);
     }
 
     /**
@@ -11634,7 +11634,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSubject(TargetPropertyType newSubject) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Subject(), newSubject);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Subject(), newSubject);
     }
 
     /**
@@ -11663,7 +11663,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTarget(TargetPropertyType newTarget) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Target(), newTarget);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Target(), newTarget);
     }
 
     /**
@@ -11692,7 +11692,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSuperComplex(TopoComplexMemberType newSuperComplex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SuperComplex(), newSuperComplex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SuperComplex(), newSuperComplex);
     }
 
     /**
@@ -11721,7 +11721,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSurfaceArrayProperty(SurfaceArrayPropertyType newSurfaceArrayProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceArrayProperty(), newSurfaceArrayProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceArrayProperty(), newSurfaceArrayProperty);
     }
 
     /**
@@ -11750,7 +11750,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSurfaceMember(SurfacePropertyType newSurfaceMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMember(), newSurfaceMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMember(), newSurfaceMember);
     }
 
     /**
@@ -11779,7 +11779,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSurfaceMembers(SurfaceArrayPropertyType newSurfaceMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMembers(), newSurfaceMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceMembers(), newSurfaceMembers);
     }
 
     /**
@@ -11808,7 +11808,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSurfaceProperty(SurfacePropertyType newSurfaceProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceProperty(), newSurfaceProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_SurfaceProperty(), newSurfaceProperty);
     }
 
     /**
@@ -11837,7 +11837,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setSymbol(SymbolType newSymbol) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Symbol(), newSymbol);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Symbol(), newSymbol);
     }
 
     /**
@@ -11866,7 +11866,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTargetCRS(CRSRefType newTargetCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TargetCRS(), newTargetCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TargetCRS(), newTargetCRS);
     }
 
     /**
@@ -11886,7 +11886,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTargetDimensions(BigInteger newTargetDimensions) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TargetDimensions(), newTargetDimensions);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TargetDimensions(), newTargetDimensions);
     }
 
     /**
@@ -11915,7 +11915,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalCRS(TemporalCRSType newTemporalCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRS(), newTemporalCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRS(), newTemporalCRS);
     }
 
     /**
@@ -11944,7 +11944,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalCRSRef(TemporalCRSRefType newTemporalCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRSRef(), newTemporalCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCRSRef(), newTemporalCRSRef);
     }
 
     /**
@@ -11973,7 +11973,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalCS(TemporalCSType newTemporalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCS(), newTemporalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCS(), newTemporalCS);
     }
 
     /**
@@ -12002,7 +12002,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalCSRef(TemporalCSRefType newTemporalCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCSRef(), newTemporalCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalCSRef(), newTemporalCSRef);
     }
 
     /**
@@ -12031,7 +12031,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalDatum(TemporalDatumType newTemporalDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatum(), newTemporalDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatum(), newTemporalDatum);
     }
 
     /**
@@ -12060,7 +12060,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalDatumRef(TemporalDatumRefType newTemporalDatumRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatumRef(), newTemporalDatumRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalDatumRef(), newTemporalDatumRef);
     }
 
     /**
@@ -12089,7 +12089,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTemporalExtent(TimePeriodType newTemporalExtent) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalExtent(), newTemporalExtent);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TemporalExtent(), newTemporalExtent);
     }
 
     /**
@@ -12118,7 +12118,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeCalendar(TimeCalendarType newTimeCalendar) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendar(), newTimeCalendar);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendar(), newTimeCalendar);
     }
 
     /**
@@ -12147,7 +12147,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeCalendarEra(TimeCalendarEraType newTimeCalendarEra) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendarEra(), newTimeCalendarEra);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCalendarEra(), newTimeCalendarEra);
     }
 
     /**
@@ -12176,7 +12176,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeClock(TimeClockType newTimeClock) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeClock(), newTimeClock);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeClock(), newTimeClock);
     }
 
     /**
@@ -12205,7 +12205,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeCoordinateSystem(TimeCoordinateSystemType newTimeCoordinateSystem) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCoordinateSystem(), newTimeCoordinateSystem);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeCoordinateSystem(), newTimeCoordinateSystem);
     }
 
     /**
@@ -12234,7 +12234,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeEdge(TimeEdgeType newTimeEdge) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeEdge(), newTimeEdge);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeEdge(), newTimeEdge);
     }
 
     /**
@@ -12263,7 +12263,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeInstant(TimeInstantType newTimeInstant) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeInstant(), newTimeInstant);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeInstant(), newTimeInstant);
     }
 
     /**
@@ -12292,7 +12292,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeInterval(TimeIntervalLengthType newTimeInterval) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeInterval(), newTimeInterval);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeInterval(), newTimeInterval);
     }
 
     /**
@@ -12321,7 +12321,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeNode(TimeNodeType newTimeNode) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeNode(), newTimeNode);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeNode(), newTimeNode);
     }
 
     /**
@@ -12350,7 +12350,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeOrdinalEra(TimeOrdinalEraType newTimeOrdinalEra) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalEra(), newTimeOrdinalEra);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalEra(), newTimeOrdinalEra);
     }
 
     /**
@@ -12379,7 +12379,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeOrdinalReferenceSystem(TimeOrdinalReferenceSystemType newTimeOrdinalReferenceSystem) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalReferenceSystem(), newTimeOrdinalReferenceSystem);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeOrdinalReferenceSystem(), newTimeOrdinalReferenceSystem);
     }
 
     /**
@@ -12408,7 +12408,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimePeriod(TimePeriodType newTimePeriod) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimePeriod(), newTimePeriod);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimePeriod(), newTimePeriod);
     }
 
     /**
@@ -12437,7 +12437,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimePosition(TimePositionType newTimePosition) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimePosition(), newTimePosition);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimePosition(), newTimePosition);
     }
 
     /**
@@ -12466,7 +12466,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTimeTopologyComplex(TimeTopologyComplexType newTimeTopologyComplex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TimeTopologyComplex(), newTimeTopologyComplex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TimeTopologyComplex(), newTimeTopologyComplex);
     }
 
     /**
@@ -12495,7 +12495,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTin(TinType newTin) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Tin(), newTin);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Tin(), newTin);
     }
 
     /**
@@ -12524,7 +12524,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTriangulatedSurface(TriangulatedSurfaceType newTriangulatedSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TriangulatedSurface(), newTriangulatedSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TriangulatedSurface(), newTriangulatedSurface);
     }
 
     /**
@@ -12553,7 +12553,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoComplex(TopoComplexType newTopoComplex) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplex(), newTopoComplex);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplex(), newTopoComplex);
     }
 
     /**
@@ -12582,7 +12582,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoComplexProperty(TopoComplexMemberType newTopoComplexProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplexProperty(), newTopoComplexProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoComplexProperty(), newTopoComplexProperty);
     }
 
     /**
@@ -12611,7 +12611,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoCurve(TopoCurveType newTopoCurve) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurve(), newTopoCurve);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurve(), newTopoCurve);
     }
 
     /**
@@ -12640,7 +12640,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoCurveProperty(TopoCurvePropertyType newTopoCurveProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurveProperty(), newTopoCurveProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoCurveProperty(), newTopoCurveProperty);
     }
 
     /**
@@ -12669,7 +12669,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopologyStyle(TopologyStylePropertyType newTopologyStyle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle(), newTopologyStyle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle(), newTopologyStyle);
     }
 
     /**
@@ -12698,7 +12698,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopologyStyle1(TopologyStyleType newTopologyStyle1) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle1(), newTopologyStyle1);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopologyStyle1(), newTopologyStyle1);
     }
 
     /**
@@ -12727,7 +12727,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoPoint(TopoPointType newTopoPoint) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPoint(), newTopoPoint);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPoint(), newTopoPoint);
     }
 
     /**
@@ -12756,7 +12756,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoPointProperty(TopoPointPropertyType newTopoPointProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPointProperty(), newTopoPointProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPointProperty(), newTopoPointProperty);
     }
 
     /**
@@ -12785,7 +12785,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoPrimitiveMember(TopoPrimitiveMemberType newTopoPrimitiveMember) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMember(), newTopoPrimitiveMember);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMember(), newTopoPrimitiveMember);
     }
 
     /**
@@ -12814,7 +12814,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoPrimitiveMembers(TopoPrimitiveArrayAssociationType newTopoPrimitiveMembers) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMembers(), newTopoPrimitiveMembers);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoPrimitiveMembers(), newTopoPrimitiveMembers);
     }
 
     /**
@@ -12843,7 +12843,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoSolid(TopoSolidType newTopoSolid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSolid(), newTopoSolid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSolid(), newTopoSolid);
     }
 
     /**
@@ -12872,7 +12872,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoSurface(TopoSurfaceType newTopoSurface) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurface(), newTopoSurface);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurface(), newTopoSurface);
     }
 
     /**
@@ -12901,7 +12901,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoSurfaceProperty(TopoSurfacePropertyType newTopoSurfaceProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurfaceProperty(), newTopoSurfaceProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoSurfaceProperty(), newTopoSurfaceProperty);
     }
 
     /**
@@ -12930,7 +12930,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoVolume(TopoVolumeType newTopoVolume) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolume(), newTopoVolume);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolume(), newTopoVolume);
     }
 
     /**
@@ -12959,7 +12959,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTopoVolumeProperty(TopoVolumePropertyType newTopoVolumeProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolumeProperty(), newTopoVolumeProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TopoVolumeProperty(), newTopoVolumeProperty);
     }
 
     /**
@@ -12988,7 +12988,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTrack(TrackType newTrack) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Track(), newTrack);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Track(), newTrack);
     }
 
     /**
@@ -13017,7 +13017,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTransformation(TransformationType newTransformation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Transformation(), newTransformation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Transformation(), newTransformation);
     }
 
     /**
@@ -13046,7 +13046,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTransformationRef(TransformationRefType newTransformationRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TransformationRef(), newTransformationRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TransformationRef(), newTransformationRef);
     }
 
     /**
@@ -13075,7 +13075,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTriangle(TriangleType newTriangle) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Triangle(), newTriangle);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Triangle(), newTriangle);
     }
 
     /**
@@ -13104,7 +13104,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTrianglePatches(TrianglePatchArrayPropertyType newTrianglePatches) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TrianglePatches(), newTrianglePatches);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TrianglePatches(), newTrianglePatches);
     }
 
     /**
@@ -13133,7 +13133,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTupleList(CoordinatesType newTupleList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_TupleList(), newTupleList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_TupleList(), newTupleList);
     }
 
     /**
@@ -13162,7 +13162,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUnitOfMeasure(UnitOfMeasureType newUnitOfMeasure) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UnitOfMeasure(), newUnitOfMeasure);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UnitOfMeasure(), newUnitOfMeasure);
     }
 
     /**
@@ -13191,7 +13191,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUserDefinedCS(UserDefinedCSType newUserDefinedCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCS(), newUserDefinedCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCS(), newUserDefinedCS);
     }
 
     /**
@@ -13220,7 +13220,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUserDefinedCSRef(UserDefinedCSRefType newUserDefinedCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCSRef(), newUserDefinedCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UserDefinedCSRef(), newUserDefinedCSRef);
     }
 
     /**
@@ -13249,7 +13249,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesAxis(CoordinateSystemAxisRefType newUsesAxis) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesAxis(), newUsesAxis);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesAxis(), newUsesAxis);
     }
 
     /**
@@ -13278,7 +13278,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesCartesianCS(CartesianCSRefType newUsesCartesianCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesCartesianCS(), newUsesCartesianCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesCartesianCS(), newUsesCartesianCS);
     }
 
     /**
@@ -13307,7 +13307,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesCS(CoordinateSystemRefType newUsesCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesCS(), newUsesCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesCS(), newUsesCS);
     }
 
     /**
@@ -13336,7 +13336,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesEllipsoid(EllipsoidRefType newUsesEllipsoid) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoid(), newUsesEllipsoid);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoid(), newUsesEllipsoid);
     }
 
     /**
@@ -13365,7 +13365,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesEllipsoidalCS(EllipsoidalCSRefType newUsesEllipsoidalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoidalCS(), newUsesEllipsoidalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEllipsoidalCS(), newUsesEllipsoidalCS);
     }
 
     /**
@@ -13394,7 +13394,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesEngineeringDatum(EngineeringDatumRefType newUsesEngineeringDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEngineeringDatum(), newUsesEngineeringDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesEngineeringDatum(), newUsesEngineeringDatum);
     }
 
     /**
@@ -13423,7 +13423,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesGeodeticDatum(GeodeticDatumRefType newUsesGeodeticDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesGeodeticDatum(), newUsesGeodeticDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesGeodeticDatum(), newUsesGeodeticDatum);
     }
 
     /**
@@ -13452,7 +13452,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesImageDatum(ImageDatumRefType newUsesImageDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesImageDatum(), newUsesImageDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesImageDatum(), newUsesImageDatum);
     }
 
     /**
@@ -13481,7 +13481,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesMethod(OperationMethodRefType newUsesMethod) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesMethod(), newUsesMethod);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesMethod(), newUsesMethod);
     }
 
     /**
@@ -13510,7 +13510,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesObliqueCartesianCS(ObliqueCartesianCSRefType newUsesObliqueCartesianCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesObliqueCartesianCS(), newUsesObliqueCartesianCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesObliqueCartesianCS(), newUsesObliqueCartesianCS);
     }
 
     /**
@@ -13539,7 +13539,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesOperation(OperationRefType newUsesOperation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesOperation(), newUsesOperation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesOperation(), newUsesOperation);
     }
 
     /**
@@ -13568,7 +13568,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesParameter(AbstractGeneralOperationParameterRefType newUsesParameter) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesParameter(), newUsesParameter);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesParameter(), newUsesParameter);
     }
 
     /**
@@ -13597,7 +13597,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesPrimeMeridian(PrimeMeridianRefType newUsesPrimeMeridian) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesPrimeMeridian(), newUsesPrimeMeridian);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesPrimeMeridian(), newUsesPrimeMeridian);
     }
 
     /**
@@ -13626,7 +13626,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesSingleOperation(SingleOperationRefType newUsesSingleOperation) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesSingleOperation(), newUsesSingleOperation);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesSingleOperation(), newUsesSingleOperation);
     }
 
     /**
@@ -13655,7 +13655,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesSphericalCS(SphericalCSRefType newUsesSphericalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesSphericalCS(), newUsesSphericalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesSphericalCS(), newUsesSphericalCS);
     }
 
     /**
@@ -13684,7 +13684,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesTemporalCS(TemporalCSRefType newUsesTemporalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalCS(), newUsesTemporalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalCS(), newUsesTemporalCS);
     }
 
     /**
@@ -13713,7 +13713,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesTemporalDatum(TemporalDatumRefType newUsesTemporalDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalDatum(), newUsesTemporalDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesTemporalDatum(), newUsesTemporalDatum);
     }
 
     /**
@@ -13742,7 +13742,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesValue(ParameterValueType newUsesValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesValue(), newUsesValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesValue(), newUsesValue);
     }
 
     /**
@@ -13771,7 +13771,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesVerticalCS(VerticalCSRefType newUsesVerticalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalCS(), newUsesVerticalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalCS(), newUsesVerticalCS);
     }
 
     /**
@@ -13800,7 +13800,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsesVerticalDatum(VerticalDatumRefType newUsesVerticalDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalDatum(), newUsesVerticalDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_UsesVerticalDatum(), newUsesVerticalDatum);
     }
 
     /**
@@ -13829,7 +13829,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setUsing(FeaturePropertyType newUsing) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Using(), newUsing);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Using(), newUsing);
     }
 
     /**
@@ -13858,7 +13858,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValidArea(ExtentType newValidArea) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValidArea(), newValidArea);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValidArea(), newValidArea);
     }
 
     /**
@@ -13887,7 +13887,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValidTime(TimePrimitivePropertyType newValidTime) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValidTime(), newValidTime);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValidTime(), newValidTime);
     }
 
     /**
@@ -13916,7 +13916,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValue(MeasureType newValue) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Value(), newValue);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Value(), newValue);
     }
 
     /**
@@ -13945,7 +13945,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueArray(ValueArrayType newValueArray) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueArray(), newValueArray);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueArray(), newValueArray);
     }
 
     /**
@@ -13974,7 +13974,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueComponent(ValuePropertyType newValueComponent) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponent(), newValueComponent);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponent(), newValueComponent);
     }
 
     /**
@@ -14003,7 +14003,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueComponents(ValueArrayPropertyType newValueComponents) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponents(), newValueComponents);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueComponents(), newValueComponents);
     }
 
     /**
@@ -14023,7 +14023,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueFile(String newValueFile) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueFile(), newValueFile);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueFile(), newValueFile);
     }
 
     /**
@@ -14052,7 +14052,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueList(MeasureListType newValueList) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueList(), newValueList);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueList(), newValueList);
     }
 
     /**
@@ -14081,7 +14081,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueOfParameter(OperationParameterRefType newValueOfParameter) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueOfParameter(), newValueOfParameter);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueOfParameter(), newValueOfParameter);
     }
 
     /**
@@ -14110,7 +14110,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValueProperty(ValuePropertyType newValueProperty) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValueProperty(), newValueProperty);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValueProperty(), newValueProperty);
     }
 
     /**
@@ -14139,7 +14139,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setValuesOfGroup(OperationParameterGroupRefType newValuesOfGroup) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_ValuesOfGroup(), newValuesOfGroup);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_ValuesOfGroup(), newValuesOfGroup);
     }
 
     /**
@@ -14168,7 +14168,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVector(VectorType newVector) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Vector(), newVector);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Vector(), newVector);
     }
 
     /**
@@ -14188,7 +14188,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVersion(String newVersion) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_Version(), newVersion);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_Version(), newVersion);
     }
 
     /**
@@ -14217,7 +14217,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalCRS(VerticalCRSType newVerticalCRS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRS(), newVerticalCRS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRS(), newVerticalCRS);
     }
 
     /**
@@ -14246,7 +14246,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalCRSRef(VerticalCRSRefType newVerticalCRSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRSRef(), newVerticalCRSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCRSRef(), newVerticalCRSRef);
     }
 
     /**
@@ -14275,7 +14275,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalCS(VerticalCSType newVerticalCS) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCS(), newVerticalCS);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCS(), newVerticalCS);
     }
 
     /**
@@ -14304,7 +14304,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalCSRef(VerticalCSRefType newVerticalCSRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCSRef(), newVerticalCSRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalCSRef(), newVerticalCSRef);
     }
 
     /**
@@ -14333,7 +14333,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalDatum(VerticalDatumType newVerticalDatum) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatum(), newVerticalDatum);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatum(), newVerticalDatum);
     }
 
     /**
@@ -14362,7 +14362,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalDatumRef(VerticalDatumRefType newVerticalDatumRef) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumRef(), newVerticalDatumRef);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumRef(), newVerticalDatumRef);
     }
 
     /**
@@ -14391,7 +14391,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalDatumType(VerticalDatumTypeType newVerticalDatumType) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumType(), newVerticalDatumType);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalDatumType(), newVerticalDatumType);
     }
 
     /**
@@ -14420,7 +14420,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setVerticalExtent(EnvelopeType newVerticalExtent) {
-        ((FeatureMap.Internal)getMixed()).set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalExtent(), newVerticalExtent);
+        getMixed().set(Gml311Package.eINSTANCE.getDocumentRoot_VerticalExtent(), newVerticalExtent);
     }
 
     /**
@@ -17750,73 +17750,73 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 getXSISchemaLocation().clear();
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFINITION:
-                setDefinition((DefinitionType)null);
+                setDefinition(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ABSOLUTE_EXTERNAL_POSITIONAL_ACCURACY:
-                setAbsoluteExternalPositionalAccuracy((AbsoluteExternalPositionalAccuracyType)null);
+                setAbsoluteExternalPositionalAccuracy(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ABSTRACT_GENERAL_OPERATION_PARAMETER_REF:
-                setAbstractGeneralOperationParameterRef((AbstractGeneralOperationParameterRefType)null);
+                setAbstractGeneralOperationParameterRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__AFFINE_PLACEMENT:
-                setAffinePlacement((AffinePlacementType)null);
+                setAffinePlacement(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ANCHOR_POINT:
-                setAnchorPoint((CodeType)null);
+                setAnchorPoint(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ANGLE:
-                setAngle((MeasureType)null);
+                setAngle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ARC:
-                setArc((ArcType)null);
+                setArc(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ARC_STRING:
-                setArcString((ArcStringType)null);
+                setArcString(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ARC_BY_BULGE:
-                setArcByBulge((ArcByBulgeType)null);
+                setArcByBulge(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ARC_STRING_BY_BULGE:
-                setArcStringByBulge((ArcStringByBulgeType)null);
+                setArcStringByBulge(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ARC_BY_CENTER_POINT:
-                setArcByCenterPoint((ArcByCenterPointType)null);
+                setArcByCenterPoint(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ARRAY:
-                setArray((ArrayType)null);
+                setArray(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__AXIS_ABBREV:
-                setAxisAbbrev((CodeType)null);
+                setAxisAbbrev(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__AXIS_DIRECTION:
-                setAxisDirection((CodeType)null);
+                setAxisDirection(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__AXIS_ID:
-                setAxisID((IdentifierType)null);
+                setAxisID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BAG:
-                setBag((BagType)null);
+                setBag(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BASE_CRS:
-                setBaseCRS((CoordinateReferenceSystemRefType)null);
+                setBaseCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BASE_CURVE:
-                setBaseCurve((CurvePropertyType)null);
+                setBaseCurve(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BASE_SURFACE:
-                setBaseSurface((SurfacePropertyType)null);
+                setBaseSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BASE_UNIT:
-                setBaseUnit((BaseUnitType)null);
+                setBaseUnit(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__UNIT_DEFINITION:
-                setUnitDefinition((UnitDefinitionType)null);
+                setUnitDefinition(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BEZIER:
-                setBezier((BezierType)null);
+                setBezier(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BSPLINE:
-                setBSpline((BSplineType)null);
+                setBSpline(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BOOLEAN:
                 setBoolean(BOOLEAN_EDEFAULT);
@@ -17828,46 +17828,46 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setBooleanValue(BOOLEAN_VALUE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BOUNDED_BY:
-                setBoundedBy((BoundingShapeType)null);
+                setBoundedBy(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BOUNDING_BOX:
-                setBoundingBox((EnvelopeType)null);
+                setBoundingBox(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__BOUNDING_POLYGON:
-                setBoundingPolygon((PolygonType)null);
+                setBoundingPolygon(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CARTESIAN_CS:
-                setCartesianCS((CartesianCSType)null);
+                setCartesianCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CARTESIAN_CS_REF:
-                setCartesianCSRef((CartesianCSRefType)null);
+                setCartesianCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CATALOG_SYMBOL:
-                setCatalogSymbol((CodeType)null);
+                setCatalogSymbol(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CATEGORY:
-                setCategory((CodeType)null);
+                setCategory(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CATEGORY_EXTENT:
-                setCategoryExtent((CategoryExtentType)null);
+                setCategoryExtent(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CATEGORY_LIST:
-                setCategoryList((CodeOrNullListType)null);
+                setCategoryList(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CENTER_LINE_OF:
-                setCenterLineOf((CurvePropertyType)null);
+                setCenterLineOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CENTER_OF:
-                setCenterOf((PointPropertyType)null);
+                setCenterOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CIRCLE:
-                setCircle((CircleType)null);
+                setCircle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CIRCLE_BY_CENTER_POINT:
-                setCircleByCenterPoint((CircleByCenterPointType)null);
+                setCircleByCenterPoint(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CLOTHOID:
-                setClothoid((ClothoidType)null);
+                setClothoid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COLUMN_INDEX:
                 setColumnIndex(COLUMN_INDEX_EDEFAULT);
@@ -17876,76 +17876,76 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setCompassPoint(COMPASS_POINT_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COMPOSITE_CURVE:
-                setCompositeCurve((CompositeCurveType)null);
+                setCompositeCurve(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COMPOSITE_SOLID:
-                setCompositeSolid((CompositeSolidType)null);
+                setCompositeSolid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COMPOSITE_SURFACE:
-                setCompositeSurface((CompositeSurfaceType)null);
+                setCompositeSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COMPOSITE_VALUE:
-                setCompositeValue((CompositeValueType)null);
+                setCompositeValue(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COMPOUND_CRS:
-                setCompoundCRS((CompoundCRSType)null);
+                setCompoundCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COMPOUND_CRS_REF:
-                setCompoundCRSRef((CompoundCRSRefType)null);
+                setCompoundCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONCATENATED_OPERATION:
-                setConcatenatedOperation((ConcatenatedOperationType)null);
+                setConcatenatedOperation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONCATENATED_OPERATION_REF:
-                setConcatenatedOperationRef((ConcatenatedOperationRefType)null);
+                setConcatenatedOperationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONE:
-                setCone((ConeType)null);
+                setCone(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONTAINER:
-                setContainer((ContainerPropertyType)null);
+                setContainer(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONVENTIONAL_UNIT:
-                setConventionalUnit((ConventionalUnitType)null);
+                setConventionalUnit(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONVERSION:
-                setConversion((ConversionType)null);
+                setConversion(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONVERSION_REF:
-                setConversionRef((ConversionRefType)null);
+                setConversionRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CONVERSION_TO_PREFERRED_UNIT:
-                setConversionToPreferredUnit((ConversionToPreferredUnitType)null);
+                setConversionToPreferredUnit(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORD:
-                setCoord((CoordType)null);
+                setCoord(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_OPERATION_ID:
-                setCoordinateOperationID((IdentifierType)null);
+                setCoordinateOperationID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_OPERATION_NAME:
-                setCoordinateOperationName((CodeType)null);
+                setCoordinateOperationName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__NAME:
-                setName((CodeType)null);
+                setName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_OPERATION_REF:
-                setCoordinateOperationRef((CoordinateOperationRefType)null);
+                setCoordinateOperationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_REFERENCE_SYSTEM_REF:
-                setCoordinateReferenceSystemRef((CoordinateReferenceSystemRefType)null);
+                setCoordinateReferenceSystemRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_SYSTEM_AXIS:
-                setCoordinateSystemAxis((CoordinateSystemAxisType)null);
+                setCoordinateSystemAxis(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_SYSTEM_AXIS_REF:
-                setCoordinateSystemAxisRef((CoordinateSystemAxisRefType)null);
+                setCoordinateSystemAxisRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COORDINATE_SYSTEM_REF:
-                setCoordinateSystemRef((CoordinateSystemRefType)null);
+                setCoordinateSystemRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COUNT:
                 setCount(COUNT_EDEFAULT);
@@ -17960,145 +17960,145 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setCovariance(COVARIANCE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COVARIANCE_MATRIX:
-                setCovarianceMatrix((CovarianceMatrixType)null);
+                setCovarianceMatrix(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__COVERAGE_FUNCTION:
-                setCoverageFunction((CoverageFunctionType)null);
+                setCoverageFunction(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CRS_REF:
-                setCrsRef((CRSRefType)null);
+                setCrsRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CS_ID:
-                setCsID((IdentifierType)null);
+                setCsID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CS_NAME:
-                setCsName((CodeType)null);
+                setCsName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CUBIC_SPLINE:
-                setCubicSpline((CubicSplineType)null);
+                setCubicSpline(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CURVE1:
-                setCurve1((CurveType)null);
+                setCurve1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CURVE_ARRAY_PROPERTY:
-                setCurveArrayProperty((CurveArrayPropertyType)null);
+                setCurveArrayProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CURVE_MEMBER:
-                setCurveMember((CurvePropertyType)null);
+                setCurveMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CURVE_MEMBERS:
-                setCurveMembers((CurveArrayPropertyType)null);
+                setCurveMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CURVE_PROPERTY:
-                setCurveProperty((CurvePropertyType)null);
+                setCurveProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CYLINDER:
-                setCylinder((CylinderType)null);
+                setCylinder(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CYLINDRICAL_CS:
-                setCylindricalCS((CylindricalCSType)null);
+                setCylindricalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__CYLINDRICAL_CS_REF:
-                setCylindricalCSRef((CylindricalCSRefType)null);
+                setCylindricalCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DATA_BLOCK:
-                setDataBlock((DataBlockType)null);
+                setDataBlock(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DATA_SOURCE:
-                setDataSource((StringOrRefType)null);
+                setDataSource(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DATUM_ID:
-                setDatumID((IdentifierType)null);
+                setDatumID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DATUM_NAME:
-                setDatumName((CodeType)null);
+                setDatumName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DATUM_REF:
-                setDatumRef((DatumRefType)null);
+                setDatumRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DECIMAL_MINUTES:
                 setDecimalMinutes(DECIMAL_MINUTES_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFAULT_STYLE:
-                setDefaultStyle((DefaultStylePropertyType)null);
+                setDefaultStyle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFINED_BY_CONVERSION:
-                setDefinedByConversion((GeneralConversionRefType)null);
+                setDefinedByConversion(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFINITION_COLLECTION:
-                setDefinitionCollection((DictionaryType)null);
+                setDefinitionCollection(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFINITION_MEMBER:
-                setDefinitionMember((DictionaryEntryType)null);
+                setDefinitionMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DICTIONARY_ENTRY:
-                setDictionaryEntry((DictionaryEntryType)null);
+                setDictionaryEntry(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFINITION_PROXY:
-                setDefinitionProxy((DefinitionProxyType)null);
+                setDefinitionProxy(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEFINITION_REF:
-                setDefinitionRef((ReferenceType)null);
+                setDefinitionRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DEGREES:
-                setDegrees((DegreesType)null);
+                setDegrees(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DERIVATION_UNIT_TERM:
-                setDerivationUnitTerm((DerivationUnitTermType)null);
+                setDerivationUnitTerm(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DERIVED_CRS:
-                setDerivedCRS((DerivedCRSType)null);
+                setDerivedCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DERIVED_CRS_REF:
-                setDerivedCRSRef((DerivedCRSRefType)null);
+                setDerivedCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DERIVED_CRS_TYPE:
-                setDerivedCRSType((DerivedCRSTypeType)null);
+                setDerivedCRSType(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DERIVED_UNIT:
-                setDerivedUnit((DerivedUnitType)null);
+                setDerivedUnit(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DESCRIPTION:
-                setDescription((StringOrRefType)null);
+                setDescription(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DICTIONARY:
-                setDictionary((DictionaryType)null);
+                setDictionary(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTED_EDGE:
-                setDirectedEdge((DirectedEdgePropertyType)null);
+                setDirectedEdge(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTED_FACE:
-                setDirectedFace((DirectedFacePropertyType)null);
+                setDirectedFace(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTED_NODE:
-                setDirectedNode((DirectedNodePropertyType)null);
+                setDirectedNode(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTED_OBSERVATION:
-                setDirectedObservation((DirectedObservationType)null);
+                setDirectedObservation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OBSERVATION:
-                setObservation((ObservationType)null);
+                setObservation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTED_OBSERVATION_AT_DISTANCE:
-                setDirectedObservationAtDistance((DirectedObservationAtDistanceType)null);
+                setDirectedObservationAtDistance(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTED_TOPO_SOLID:
-                setDirectedTopoSolid((DirectedTopoSolidPropertyType)null);
+                setDirectedTopoSolid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTION:
-                setDirection((DirectionPropertyType)null);
+                setDirection(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DIRECTION_VECTOR:
-                setDirectionVector((DirectionVectorType)null);
+                setDirectionVector(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DMS_ANGLE:
-                setDmsAngle((DMSAngleType)null);
+                setDmsAngle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DMS_ANGLE_VALUE:
-                setDmsAngleValue((DMSAngleType)null);
+                setDmsAngleValue(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DOMAIN_SET:
-                setDomainSet((DomainSetType)null);
+                setDomainSet(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__DOUBLE_OR_NULL_TUPLE_LIST:
                 setDoubleOrNullTupleList(DOUBLE_OR_NULL_TUPLE_LIST_EDEFAULT);
@@ -18107,190 +18107,190 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setDuration(DURATION_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__EDGE:
-                setEdge((EdgeType)null);
+                setEdge(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__EDGE_OF:
-                setEdgeOf((CurvePropertyType)null);
+                setEdgeOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ELLIPSOID:
-                setEllipsoid((EllipsoidType)null);
+                setEllipsoid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ELLIPSOIDAL_CS:
-                setEllipsoidalCS((EllipsoidalCSType)null);
+                setEllipsoidalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ELLIPSOIDAL_CS_REF:
-                setEllipsoidalCSRef((EllipsoidalCSRefType)null);
+                setEllipsoidalCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ELLIPSOID_ID:
-                setEllipsoidID((IdentifierType)null);
+                setEllipsoidID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ELLIPSOID_NAME:
-                setEllipsoidName((CodeType)null);
+                setEllipsoidName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ELLIPSOID_REF:
-                setEllipsoidRef((EllipsoidRefType)null);
+                setEllipsoidRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ENGINEERING_CRS:
-                setEngineeringCRS((EngineeringCRSType)null);
+                setEngineeringCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ENGINEERING_CRS_REF:
-                setEngineeringCRSRef((EngineeringCRSRefType)null);
+                setEngineeringCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ENGINEERING_DATUM:
-                setEngineeringDatum((EngineeringDatumType)null);
+                setEngineeringDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ENGINEERING_DATUM_REF:
-                setEngineeringDatumRef((EngineeringDatumRefType)null);
+                setEngineeringDatumRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ENVELOPE:
-                setEnvelope((EnvelopeType)null);
+                setEnvelope(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ENVELOPE_WITH_TIME_PERIOD:
-                setEnvelopeWithTimePeriod((EnvelopeWithTimePeriodType)null);
+                setEnvelopeWithTimePeriod(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__EXTENT_OF:
-                setExtentOf((SurfacePropertyType)null);
+                setExtentOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__EXTERIOR:
-                setExterior((AbstractRingPropertyType)null);
+                setExterior(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FACE:
-                setFace((FaceType)null);
+                setFace(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FEATURE_COLLECTION1:
-                setFeatureCollection1((FeatureCollectionType)null);
+                setFeatureCollection1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FEATURE_MEMBER:
-                setFeatureMember((FeaturePropertyType)null);
+                setFeatureMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FEATURE_MEMBERS:
-                setFeatureMembers((FeatureArrayPropertyType)null);
+                setFeatureMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FEATURE_PROPERTY:
-                setFeatureProperty((FeaturePropertyType)null);
+                setFeatureProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FEATURE_STYLE:
-                setFeatureStyle((FeatureStylePropertyType)null);
+                setFeatureStyle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FEATURE_STYLE1:
-                setFeatureStyle1((FeatureStyleType)null);
+                setFeatureStyle1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__FILE:
-                setFile((FileType)null);
+                setFile(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GENERAL_CONVERSION_REF:
-                setGeneralConversionRef((GeneralConversionRefType)null);
+                setGeneralConversionRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GENERAL_TRANSFORMATION_REF:
-                setGeneralTransformationRef((GeneralTransformationRefType)null);
+                setGeneralTransformationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GENERIC_META_DATA:
-                setGenericMetaData((GenericMetaDataType)null);
+                setGenericMetaData(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOCENTRIC_CRS:
-                setGeocentricCRS((GeocentricCRSType)null);
+                setGeocentricCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOCENTRIC_CRS_REF:
-                setGeocentricCRSRef((GeocentricCRSRefType)null);
+                setGeocentricCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEODESIC:
-                setGeodesic((GeodesicType)null);
+                setGeodesic(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEODESIC_STRING:
-                setGeodesicString((GeodesicStringType)null);
+                setGeodesicString(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEODETIC_DATUM:
-                setGeodeticDatum((GeodeticDatumType)null);
+                setGeodeticDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEODETIC_DATUM_REF:
-                setGeodeticDatumRef((GeodeticDatumRefType)null);
+                setGeodeticDatumRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOGRAPHIC_CRS:
-                setGeographicCRS((GeographicCRSType)null);
+                setGeographicCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOGRAPHIC_CRS_REF:
-                setGeographicCRSRef((GeographicCRSRefType)null);
+                setGeographicCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOMETRIC_COMPLEX:
-                setGeometricComplex((GeometricComplexType)null);
+                setGeometricComplex(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOMETRY_MEMBER:
-                setGeometryMember((GeometryPropertyType)null);
+                setGeometryMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOMETRY_MEMBERS:
-                setGeometryMembers((GeometryArrayPropertyType)null);
+                setGeometryMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOMETRY_STYLE:
-                setGeometryStyle((GeometryStylePropertyType)null);
+                setGeometryStyle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GEOMETRY_STYLE1:
-                setGeometryStyle1((GeometryStyleType)null);
+                setGeometryStyle1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GRAPH_STYLE:
-                setGraphStyle((GraphStylePropertyType)null);
+                setGraphStyle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GRAPH_STYLE1:
-                setGraphStyle1((GraphStyleType)null);
+                setGraphStyle1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GREENWICH_LONGITUDE:
-                setGreenwichLongitude((AngleChoiceType)null);
+                setGreenwichLongitude(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GRID:
-                setGrid((GridType)null);
+                setGrid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GRID_COVERAGE:
-                setGridCoverage((GridCoverageType)null);
+                setGridCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GRID_DOMAIN:
-                setGridDomain((GridDomainType)null);
+                setGridDomain(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GRID_FUNCTION:
-                setGridFunction((GridFunctionType)null);
+                setGridFunction(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GROUP_ID:
-                setGroupID((IdentifierType)null);
+                setGroupID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__GROUP_NAME:
-                setGroupName((CodeType)null);
+                setGroupName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__HISTORY:
-                setHistory((HistoryPropertyType)null);
+                setHistory(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__IMAGE_CRS:
-                setImageCRS((ImageCRSType)null);
+                setImageCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__IMAGE_CRS_REF:
-                setImageCRSRef((ImageCRSRefType)null);
+                setImageCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__IMAGE_DATUM:
-                setImageDatum((ImageDatumType)null);
+                setImageDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__IMAGE_DATUM_REF:
-                setImageDatumRef((ImageDatumRefType)null);
+                setImageDatumRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INCLUDES_CRS:
-                setIncludesCRS((CoordinateReferenceSystemRefType)null);
+                setIncludesCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INCLUDES_ELEMENT:
-                setIncludesElement((CovarianceElementType)null);
+                setIncludesElement(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INCLUDES_PARAMETER:
-                setIncludesParameter((AbstractGeneralOperationParameterRefType)null);
+                setIncludesParameter(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INCLUDES_VALUE:
-                setIncludesValue((AbstractGeneralParameterValueType)null);
+                setIncludesValue(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INDEX_MAP:
-                setIndexMap((IndexMapType)null);
+                setIndexMap(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INDIRECT_ENTRY:
-                setIndirectEntry((IndirectEntryType)null);
+                setIndirectEntry(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INNER_BOUNDARY_IS:
-                setInnerBoundaryIs((AbstractRingPropertyType)null);
+                setInnerBoundaryIs(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INTERIOR:
-                setInterior((AbstractRingPropertyType)null);
+                setInterior(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INTEGER_VALUE:
                 setIntegerValue(INTEGER_VALUE_EDEFAULT);
@@ -18299,88 +18299,88 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setIntegerValueList(INTEGER_VALUE_LIST_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__INVERSE_FLATTENING:
-                setInverseFlattening((MeasureType)null);
+                setInverseFlattening(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ISOLATED:
-                setIsolated((IsolatedPropertyType)null);
+                setIsolated(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__IS_SPHERE:
                 setIsSphere(IS_SPHERE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LABEL_STYLE:
-                setLabelStyle((LabelStylePropertyType)null);
+                setLabelStyle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LABEL_STYLE1:
-                setLabelStyle1((LabelStyleType)null);
+                setLabelStyle1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINEAR_CS:
-                setLinearCS((LinearCSType)null);
+                setLinearCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINEAR_CS_REF:
-                setLinearCSRef((LinearCSRefType)null);
+                setLinearCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINEAR_RING:
-                setLinearRing((LinearRingType)null);
+                setLinearRing(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINE_STRING:
-                setLineString((LineStringType)null);
+                setLineString(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINE_STRING_MEMBER:
-                setLineStringMember((LineStringPropertyType)null);
+                setLineStringMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINE_STRING_PROPERTY:
-                setLineStringProperty((LineStringPropertyType)null);
+                setLineStringProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LINE_STRING_SEGMENT:
-                setLineStringSegment((LineStringSegmentType)null);
+                setLineStringSegment(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LOCATION:
-                setLocation((LocationPropertyType)null);
+                setLocation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LOCATION_KEY_WORD:
-                setLocationKeyWord((CodeType)null);
+                setLocationKeyWord(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__LOCATION_STRING:
-                setLocationString((StringOrRefType)null);
+                setLocationString(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MAPPING_RULE:
-                setMappingRule((StringOrRefType)null);
+                setMappingRule(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MAXIMAL_COMPLEX:
-                setMaximalComplex((TopoComplexMemberType)null);
+                setMaximalComplex(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MAXIMUM_OCCURS:
                 setMaximumOccurs(MAXIMUM_OCCURS_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MEASURE:
-                setMeasure((MeasureType)null);
+                setMeasure(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MEASURE_DESCRIPTION:
-                setMeasureDescription((CodeType)null);
+                setMeasureDescription(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MEMBER:
-                setMember((AssociationType)null);
+                setMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MEMBERS:
-                setMembers((ArrayAssociationType)null);
+                setMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MERIDIAN_ID:
-                setMeridianID((IdentifierType)null);
+                setMeridianID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MERIDIAN_NAME:
-                setMeridianName((CodeType)null);
+                setMeridianName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__META_DATA_PROPERTY:
-                setMetaDataProperty((MetaDataPropertyType)null);
+                setMetaDataProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__METHOD_FORMULA:
-                setMethodFormula((CodeType)null);
+                setMethodFormula(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__METHOD_ID:
-                setMethodID((IdentifierType)null);
+                setMethodID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__METHOD_NAME:
-                setMethodName((CodeType)null);
+                setMethodName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MINIMUM_OCCURS:
                 setMinimumOccurs(MINIMUM_OCCURS_EDEFAULT);
@@ -18392,286 +18392,286 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setModifiedCoordinate(MODIFIED_COORDINATE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MOVING_OBJECT_STATUS:
-                setMovingObjectStatus((MovingObjectStatusType)null);
+                setMovingObjectStatus(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_CENTER_LINE_OF:
-                setMultiCenterLineOf((MultiCurvePropertyType)null);
+                setMultiCenterLineOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_CENTER_OF:
-                setMultiCenterOf((MultiPointPropertyType)null);
+                setMultiCenterOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_COVERAGE:
-                setMultiCoverage((MultiSurfacePropertyType)null);
+                setMultiCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_CURVE:
-                setMultiCurve((MultiCurveType)null);
+                setMultiCurve(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_CURVE_COVERAGE:
-                setMultiCurveCoverage((MultiCurveCoverageType)null);
+                setMultiCurveCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_CURVE_DOMAIN:
-                setMultiCurveDomain((MultiCurveDomainType)null);
+                setMultiCurveDomain(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_CURVE_PROPERTY:
-                setMultiCurveProperty((MultiCurvePropertyType)null);
+                setMultiCurveProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_EDGE_OF:
-                setMultiEdgeOf((MultiCurvePropertyType)null);
+                setMultiEdgeOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_EXTENT_OF:
-                setMultiExtentOf((MultiSurfacePropertyType)null);
+                setMultiExtentOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_GEOMETRY:
-                setMultiGeometry((MultiGeometryType)null);
+                setMultiGeometry(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_GEOMETRY_PROPERTY:
-                setMultiGeometryProperty((MultiGeometryPropertyType)null);
+                setMultiGeometryProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_LINE_STRING:
-                setMultiLineString((MultiLineStringType)null);
+                setMultiLineString(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_LOCATION:
-                setMultiLocation((MultiPointPropertyType)null);
+                setMultiLocation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_POINT:
-                setMultiPoint((MultiPointType)null);
+                setMultiPoint(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_POINT_COVERAGE:
-                setMultiPointCoverage((MultiPointCoverageType)null);
+                setMultiPointCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_POINT_DOMAIN:
-                setMultiPointDomain((MultiPointDomainType)null);
+                setMultiPointDomain(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_POINT_PROPERTY:
-                setMultiPointProperty((MultiPointPropertyType)null);
+                setMultiPointProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_POLYGON:
-                setMultiPolygon((MultiPolygonType)null);
+                setMultiPolygon(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_POSITION:
-                setMultiPosition((MultiPointPropertyType)null);
+                setMultiPosition(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SOLID:
-                setMultiSolid((MultiSolidType)null);
+                setMultiSolid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SOLID_COVERAGE:
-                setMultiSolidCoverage((MultiSolidCoverageType)null);
+                setMultiSolidCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SOLID_DOMAIN:
-                setMultiSolidDomain((MultiSolidDomainType)null);
+                setMultiSolidDomain(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SOLID_PROPERTY:
-                setMultiSolidProperty((MultiSolidPropertyType)null);
+                setMultiSolidProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SURFACE:
-                setMultiSurface((MultiSurfaceType)null);
+                setMultiSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SURFACE_COVERAGE:
-                setMultiSurfaceCoverage((MultiSurfaceCoverageType)null);
+                setMultiSurfaceCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SURFACE_DOMAIN:
-                setMultiSurfaceDomain((MultiSurfaceDomainType)null);
+                setMultiSurfaceDomain(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__MULTI_SURFACE_PROPERTY:
-                setMultiSurfaceProperty((MultiSurfacePropertyType)null);
+                setMultiSurfaceProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__NODE:
-                setNode((NodeType)null);
+                setNode(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__NULL:
                 setNull(NULL_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OBLIQUE_CARTESIAN_CS:
-                setObliqueCartesianCS((ObliqueCartesianCSType)null);
+                setObliqueCartesianCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OBLIQUE_CARTESIAN_CS_REF:
-                setObliqueCartesianCSRef((ObliqueCartesianCSRefType)null);
+                setObliqueCartesianCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OFFSET_CURVE:
-                setOffsetCurve((OffsetCurveType)null);
+                setOffsetCurve(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_METHOD:
-                setOperationMethod((OperationMethodType)null);
+                setOperationMethod(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_METHOD_REF:
-                setOperationMethodRef((OperationMethodRefType)null);
+                setOperationMethodRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_PARAMETER:
-                setOperationParameter((OperationParameterType)null);
+                setOperationParameter(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_PARAMETER_GROUP:
-                setOperationParameterGroup((OperationParameterGroupType)null);
+                setOperationParameterGroup(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_PARAMETER_GROUP_REF:
-                setOperationParameterGroupRef((OperationParameterRefType)null);
+                setOperationParameterGroupRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_PARAMETER_REF:
-                setOperationParameterRef((OperationParameterRefType)null);
+                setOperationParameterRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_REF:
-                setOperationRef((OperationRefType)null);
+                setOperationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OPERATION_VERSION:
                 setOperationVersion(OPERATION_VERSION_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ORIENTABLE_CURVE:
-                setOrientableCurve((OrientableCurveType)null);
+                setOrientableCurve(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ORIENTABLE_SURFACE:
-                setOrientableSurface((OrientableSurfaceType)null);
+                setOrientableSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ORIGIN:
                 setOrigin(ORIGIN_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__OUTER_BOUNDARY_IS:
-                setOuterBoundaryIs((AbstractRingPropertyType)null);
+                setOuterBoundaryIs(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PARAMETER_ID:
-                setParameterID((IdentifierType)null);
+                setParameterID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PARAMETER_NAME:
-                setParameterName((CodeType)null);
+                setParameterName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PARAMETER_VALUE:
-                setParameterValue((ParameterValueType)null);
+                setParameterValue(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PARAMETER_VALUE_GROUP:
-                setParameterValueGroup((ParameterValueGroupType)null);
+                setParameterValueGroup(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PASS_THROUGH_OPERATION:
-                setPassThroughOperation((PassThroughOperationType)null);
+                setPassThroughOperation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PASS_THROUGH_OPERATION_REF:
-                setPassThroughOperationRef((PassThroughOperationRefType)null);
+                setPassThroughOperationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PATCHES:
-                setPatches((SurfacePatchArrayPropertyType)null);
+                setPatches(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PIXEL_IN_CELL:
-                setPixelInCell((PixelInCellType)null);
+                setPixelInCell(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POINT:
-                setPoint((PointType)null);
+                setPoint(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POINT_ARRAY_PROPERTY:
-                setPointArrayProperty((PointArrayPropertyType)null);
+                setPointArrayProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POINT_MEMBER:
-                setPointMember((PointPropertyType)null);
+                setPointMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POINT_MEMBERS:
-                setPointMembers((PointArrayPropertyType)null);
+                setPointMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POINT_PROPERTY:
-                setPointProperty((PointPropertyType)null);
+                setPointProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POINT_REP:
-                setPointRep((PointPropertyType)null);
+                setPointRep(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLAR_CS:
-                setPolarCS((PolarCSType)null);
+                setPolarCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLAR_CS_REF:
-                setPolarCSRef((PolarCSRefType)null);
+                setPolarCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLYGON:
-                setPolygon((PolygonType)null);
+                setPolygon(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLYGON_MEMBER:
-                setPolygonMember((PolygonPropertyType)null);
+                setPolygonMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLYGON_PATCH:
-                setPolygonPatch((PolygonPatchType)null);
+                setPolygonPatch(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLYGON_PATCHES:
-                setPolygonPatches((PolygonPatchArrayPropertyType)null);
+                setPolygonPatches(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLYGON_PROPERTY:
-                setPolygonProperty((PolygonPropertyType)null);
+                setPolygonProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POLYHEDRAL_SURFACE:
-                setPolyhedralSurface((PolyhedralSurfaceType)null);
+                setPolyhedralSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SURFACE1:
-                setSurface1((SurfaceType)null);
+                setSurface1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POS:
-                setPos((DirectPositionType)null);
+                setPos(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POSITION:
-                setPosition((PointPropertyType)null);
+                setPosition(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PRIME_MERIDIAN:
-                setPrimeMeridian((PrimeMeridianType)null);
+                setPrimeMeridian(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PRIME_MERIDIAN_REF:
-                setPrimeMeridianRef((PrimeMeridianRefType)null);
+                setPrimeMeridianRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PRIORITY_LOCATION:
-                setPriorityLocation((PriorityLocationPropertyType)null);
+                setPriorityLocation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PROJECTED_CRS:
-                setProjectedCRS((ProjectedCRSType)null);
+                setProjectedCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__PROJECTED_CRS_REF:
-                setProjectedCRSRef((ProjectedCRSRefType)null);
+                setProjectedCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__QUANTITY:
-                setQuantity((MeasureType)null);
+                setQuantity(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__QUANTITY_EXTENT:
-                setQuantityExtent((QuantityExtentType)null);
+                setQuantityExtent(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__QUANTITY_LIST:
-                setQuantityList((MeasureOrNullListType)null);
+                setQuantityList(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__QUANTITY_TYPE:
-                setQuantityType((StringOrRefType)null);
+                setQuantityType(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RANGE_PARAMETERS:
-                setRangeParameters((RangeParametersType)null);
+                setRangeParameters(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RANGE_SET:
-                setRangeSet((RangeSetType)null);
+                setRangeSet(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__REALIZATION_EPOCH:
                 setRealizationEpoch(REALIZATION_EPOCH_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RECTANGLE:
-                setRectangle((RectangleType)null);
+                setRectangle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RECTIFIED_GRID:
-                setRectifiedGrid((RectifiedGridType)null);
+                setRectifiedGrid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RECTIFIED_GRID_COVERAGE:
-                setRectifiedGridCoverage((RectifiedGridCoverageType)null);
+                setRectifiedGridCoverage(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RECTIFIED_GRID_DOMAIN:
-                setRectifiedGridDomain((RectifiedGridDomainType)null);
+                setRectifiedGridDomain(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__REFERENCE_SYSTEM_REF:
-                setReferenceSystemRef((ReferenceSystemRefType)null);
+                setReferenceSystemRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RELATIVE_INTERNAL_POSITIONAL_ACCURACY:
-                setRelativeInternalPositionalAccuracy((RelativeInternalPositionalAccuracyType)null);
+                setRelativeInternalPositionalAccuracy(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RESULT:
-                setResult((MeasureType)null);
+                setResult(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RESULT_OF:
-                setResultOf((AssociationType)null);
+                setResultOf(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__RING1:
-                setRing1((RingType)null);
+                setRing1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ROUGH_CONVERSION_TO_PREFERRED_UNIT:
-                setRoughConversionToPreferredUnit((ConversionToPreferredUnitType)null);
+                setRoughConversionToPreferredUnit(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ROW_INDEX:
                 setRowIndex(ROW_INDEX_EDEFAULT);
@@ -18680,364 +18680,364 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 setScope(SCOPE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SECOND_DEFINING_PARAMETER:
-                setSecondDefiningParameter((SecondDefiningParameterType)null);
+                setSecondDefiningParameter(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SECONDS:
                 setSeconds(SECONDS_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SEGMENTS:
-                setSegments((CurveSegmentArrayPropertyType)null);
+                setSegments(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SEMI_MAJOR_AXIS:
-                setSemiMajorAxis((MeasureType)null);
+                setSemiMajorAxis(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SEMI_MINOR_AXIS:
-                setSemiMinorAxis((MeasureType)null);
+                setSemiMinorAxis(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SINGLE_OPERATION_REF:
-                setSingleOperationRef((SingleOperationRefType)null);
+                setSingleOperationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOLID1:
-                setSolid1((SolidType)null);
+                setSolid1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOLID_ARRAY_PROPERTY:
-                setSolidArrayProperty((SolidArrayPropertyType)null);
+                setSolidArrayProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOLID_MEMBER:
-                setSolidMember((SolidPropertyType)null);
+                setSolidMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOLID_MEMBERS:
-                setSolidMembers((SolidArrayPropertyType)null);
+                setSolidMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOLID_PROPERTY:
-                setSolidProperty((SolidPropertyType)null);
+                setSolidProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOURCE_CRS:
-                setSourceCRS((CRSRefType)null);
+                setSourceCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SOURCE_DIMENSIONS:
                 setSourceDimensions(SOURCE_DIMENSIONS_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SPHERE:
-                setSphere((SphereType)null);
+                setSphere(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SPHERICAL_CS:
-                setSphericalCS((SphericalCSType)null);
+                setSphericalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SPHERICAL_CS_REF:
-                setSphericalCSRef((SphericalCSRefType)null);
+                setSphericalCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SRS_ID:
-                setSrsID((IdentifierType)null);
+                setSrsID(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SRS_NAME:
-                setSrsName((CodeType)null);
+                setSrsName(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__STATUS:
-                setStatus((StringOrRefType)null);
+                setStatus(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__STRING_VALUE:
                 setStringValue(STRING_VALUE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__STYLE1:
-                setStyle1((StyleType)null);
+                setStyle1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SUB_COMPLEX:
-                setSubComplex((TopoComplexMemberType)null);
+                setSubComplex(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SUBJECT:
-                setSubject((TargetPropertyType)null);
+                setSubject(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TARGET:
-                setTarget((TargetPropertyType)null);
+                setTarget(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SUPER_COMPLEX:
-                setSuperComplex((TopoComplexMemberType)null);
+                setSuperComplex(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SURFACE_ARRAY_PROPERTY:
-                setSurfaceArrayProperty((SurfaceArrayPropertyType)null);
+                setSurfaceArrayProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SURFACE_MEMBER:
-                setSurfaceMember((SurfacePropertyType)null);
+                setSurfaceMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SURFACE_MEMBERS:
-                setSurfaceMembers((SurfaceArrayPropertyType)null);
+                setSurfaceMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SURFACE_PROPERTY:
-                setSurfaceProperty((SurfacePropertyType)null);
+                setSurfaceProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__SYMBOL:
-                setSymbol((SymbolType)null);
+                setSymbol(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TARGET_CRS:
-                setTargetCRS((CRSRefType)null);
+                setTargetCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TARGET_DIMENSIONS:
                 setTargetDimensions(TARGET_DIMENSIONS_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_CRS:
-                setTemporalCRS((TemporalCRSType)null);
+                setTemporalCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_CRS_REF:
-                setTemporalCRSRef((TemporalCRSRefType)null);
+                setTemporalCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_CS:
-                setTemporalCS((TemporalCSType)null);
+                setTemporalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_CS_REF:
-                setTemporalCSRef((TemporalCSRefType)null);
+                setTemporalCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_DATUM:
-                setTemporalDatum((TemporalDatumType)null);
+                setTemporalDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_DATUM_REF:
-                setTemporalDatumRef((TemporalDatumRefType)null);
+                setTemporalDatumRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TEMPORAL_EXTENT:
-                setTemporalExtent((TimePeriodType)null);
+                setTemporalExtent(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_CALENDAR:
-                setTimeCalendar((TimeCalendarType)null);
+                setTimeCalendar(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_CALENDAR_ERA:
-                setTimeCalendarEra((TimeCalendarEraType)null);
+                setTimeCalendarEra(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_CLOCK:
-                setTimeClock((TimeClockType)null);
+                setTimeClock(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_COORDINATE_SYSTEM:
-                setTimeCoordinateSystem((TimeCoordinateSystemType)null);
+                setTimeCoordinateSystem(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_EDGE:
-                setTimeEdge((TimeEdgeType)null);
+                setTimeEdge(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_INSTANT:
-                setTimeInstant((TimeInstantType)null);
+                setTimeInstant(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_INTERVAL:
-                setTimeInterval((TimeIntervalLengthType)null);
+                setTimeInterval(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_NODE:
-                setTimeNode((TimeNodeType)null);
+                setTimeNode(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_ORDINAL_ERA:
-                setTimeOrdinalEra((TimeOrdinalEraType)null);
+                setTimeOrdinalEra(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_ORDINAL_REFERENCE_SYSTEM:
-                setTimeOrdinalReferenceSystem((TimeOrdinalReferenceSystemType)null);
+                setTimeOrdinalReferenceSystem(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_PERIOD:
-                setTimePeriod((TimePeriodType)null);
+                setTimePeriod(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_POSITION:
-                setTimePosition((TimePositionType)null);
+                setTimePosition(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIME_TOPOLOGY_COMPLEX:
-                setTimeTopologyComplex((TimeTopologyComplexType)null);
+                setTimeTopologyComplex(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TIN:
-                setTin((TinType)null);
+                setTin(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TRIANGULATED_SURFACE:
-                setTriangulatedSurface((TriangulatedSurfaceType)null);
+                setTriangulatedSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_COMPLEX:
-                setTopoComplex((TopoComplexType)null);
+                setTopoComplex(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_COMPLEX_PROPERTY:
-                setTopoComplexProperty((TopoComplexMemberType)null);
+                setTopoComplexProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_CURVE:
-                setTopoCurve((TopoCurveType)null);
+                setTopoCurve(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_CURVE_PROPERTY:
-                setTopoCurveProperty((TopoCurvePropertyType)null);
+                setTopoCurveProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPOLOGY_STYLE:
-                setTopologyStyle((TopologyStylePropertyType)null);
+                setTopologyStyle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPOLOGY_STYLE1:
-                setTopologyStyle1((TopologyStyleType)null);
+                setTopologyStyle1(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_POINT:
-                setTopoPoint((TopoPointType)null);
+                setTopoPoint(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_POINT_PROPERTY:
-                setTopoPointProperty((TopoPointPropertyType)null);
+                setTopoPointProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_PRIMITIVE_MEMBER:
-                setTopoPrimitiveMember((TopoPrimitiveMemberType)null);
+                setTopoPrimitiveMember(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_PRIMITIVE_MEMBERS:
-                setTopoPrimitiveMembers((TopoPrimitiveArrayAssociationType)null);
+                setTopoPrimitiveMembers(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_SOLID:
-                setTopoSolid((TopoSolidType)null);
+                setTopoSolid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_SURFACE:
-                setTopoSurface((TopoSurfaceType)null);
+                setTopoSurface(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_SURFACE_PROPERTY:
-                setTopoSurfaceProperty((TopoSurfacePropertyType)null);
+                setTopoSurfaceProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_VOLUME:
-                setTopoVolume((TopoVolumeType)null);
+                setTopoVolume(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TOPO_VOLUME_PROPERTY:
-                setTopoVolumeProperty((TopoVolumePropertyType)null);
+                setTopoVolumeProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TRACK:
-                setTrack((TrackType)null);
+                setTrack(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TRANSFORMATION:
-                setTransformation((TransformationType)null);
+                setTransformation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TRANSFORMATION_REF:
-                setTransformationRef((TransformationRefType)null);
+                setTransformationRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TRIANGLE:
-                setTriangle((TriangleType)null);
+                setTriangle(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TRIANGLE_PATCHES:
-                setTrianglePatches((TrianglePatchArrayPropertyType)null);
+                setTrianglePatches(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__TUPLE_LIST:
-                setTupleList((CoordinatesType)null);
+                setTupleList(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__UNIT_OF_MEASURE:
-                setUnitOfMeasure((UnitOfMeasureType)null);
+                setUnitOfMeasure(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USER_DEFINED_CS:
-                setUserDefinedCS((UserDefinedCSType)null);
+                setUserDefinedCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USER_DEFINED_CS_REF:
-                setUserDefinedCSRef((UserDefinedCSRefType)null);
+                setUserDefinedCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_AXIS:
-                setUsesAxis((CoordinateSystemAxisRefType)null);
+                setUsesAxis(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_CARTESIAN_CS:
-                setUsesCartesianCS((CartesianCSRefType)null);
+                setUsesCartesianCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_CS:
-                setUsesCS((CoordinateSystemRefType)null);
+                setUsesCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_ELLIPSOID:
-                setUsesEllipsoid((EllipsoidRefType)null);
+                setUsesEllipsoid(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_ELLIPSOIDAL_CS:
-                setUsesEllipsoidalCS((EllipsoidalCSRefType)null);
+                setUsesEllipsoidalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_ENGINEERING_DATUM:
-                setUsesEngineeringDatum((EngineeringDatumRefType)null);
+                setUsesEngineeringDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_GEODETIC_DATUM:
-                setUsesGeodeticDatum((GeodeticDatumRefType)null);
+                setUsesGeodeticDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_IMAGE_DATUM:
-                setUsesImageDatum((ImageDatumRefType)null);
+                setUsesImageDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_METHOD:
-                setUsesMethod((OperationMethodRefType)null);
+                setUsesMethod(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_OBLIQUE_CARTESIAN_CS:
-                setUsesObliqueCartesianCS((ObliqueCartesianCSRefType)null);
+                setUsesObliqueCartesianCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_OPERATION:
-                setUsesOperation((OperationRefType)null);
+                setUsesOperation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_PARAMETER:
-                setUsesParameter((AbstractGeneralOperationParameterRefType)null);
+                setUsesParameter(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_PRIME_MERIDIAN:
-                setUsesPrimeMeridian((PrimeMeridianRefType)null);
+                setUsesPrimeMeridian(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_SINGLE_OPERATION:
-                setUsesSingleOperation((SingleOperationRefType)null);
+                setUsesSingleOperation(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_SPHERICAL_CS:
-                setUsesSphericalCS((SphericalCSRefType)null);
+                setUsesSphericalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_TEMPORAL_CS:
-                setUsesTemporalCS((TemporalCSRefType)null);
+                setUsesTemporalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_TEMPORAL_DATUM:
-                setUsesTemporalDatum((TemporalDatumRefType)null);
+                setUsesTemporalDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_VALUE:
-                setUsesValue((ParameterValueType)null);
+                setUsesValue(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_VERTICAL_CS:
-                setUsesVerticalCS((VerticalCSRefType)null);
+                setUsesVerticalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USES_VERTICAL_DATUM:
-                setUsesVerticalDatum((VerticalDatumRefType)null);
+                setUsesVerticalDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__USING:
-                setUsing((FeaturePropertyType)null);
+                setUsing(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALID_AREA:
-                setValidArea((ExtentType)null);
+                setValidArea(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALID_TIME:
-                setValidTime((TimePrimitivePropertyType)null);
+                setValidTime(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE:
-                setValue((MeasureType)null);
+                setValue(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_ARRAY:
-                setValueArray((ValueArrayType)null);
+                setValueArray(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_COMPONENT:
-                setValueComponent((ValuePropertyType)null);
+                setValueComponent(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_COMPONENTS:
-                setValueComponents((ValueArrayPropertyType)null);
+                setValueComponents(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_FILE:
                 setValueFile(VALUE_FILE_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_LIST:
-                setValueList((MeasureListType)null);
+                setValueList(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_OF_PARAMETER:
-                setValueOfParameter((OperationParameterRefType)null);
+                setValueOfParameter(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUE_PROPERTY:
-                setValueProperty((ValuePropertyType)null);
+                setValueProperty(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VALUES_OF_GROUP:
-                setValuesOfGroup((OperationParameterGroupRefType)null);
+                setValuesOfGroup(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VECTOR:
-                setVector((VectorType)null);
+                setVector(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERSION:
                 setVersion(VERSION_EDEFAULT);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_CRS:
-                setVerticalCRS((VerticalCRSType)null);
+                setVerticalCRS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_CRS_REF:
-                setVerticalCRSRef((VerticalCRSRefType)null);
+                setVerticalCRSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_CS:
-                setVerticalCS((VerticalCSType)null);
+                setVerticalCS(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_CS_REF:
-                setVerticalCSRef((VerticalCSRefType)null);
+                setVerticalCSRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_DATUM:
-                setVerticalDatum((VerticalDatumType)null);
+                setVerticalDatum(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_DATUM_REF:
-                setVerticalDatumRef((VerticalDatumRefType)null);
+                setVerticalDatumRef(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_DATUM_TYPE:
-                setVerticalDatumType((VerticalDatumTypeType)null);
+                setVerticalDatumType(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__VERTICAL_EXTENT:
-                setVerticalExtent((EnvelopeType)null);
+                setVerticalExtent(null);
                 return;
             case Gml311Package.DOCUMENT_ROOT__ID:
                 setId(ID_EDEFAULT);

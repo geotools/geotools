@@ -198,7 +198,7 @@ public class CoverageOfferingBriefTypeImpl extends AbstractDescriptionTypeImpl i
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__LON_LAT_ENVELOPE:
-				setLonLatEnvelope((LonLatEnvelopeType)null);
+				setLonLatEnvelope(null);
 				return;
 			case Wcs10Package.COVERAGE_OFFERING_BRIEF_TYPE__KEYWORDS:
 				getKeywords().clear();

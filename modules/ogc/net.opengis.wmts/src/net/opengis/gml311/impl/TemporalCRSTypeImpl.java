@@ -218,10 +218,10 @@ public class TemporalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TEMPORAL_CRS_TYPE__USES_TEMPORAL_CS:
-                setUsesTemporalCS((TemporalCSRefType)null);
+                setUsesTemporalCS(null);
                 return;
             case Gml311Package.TEMPORAL_CRS_TYPE__USES_TEMPORAL_DATUM:
-                setUsesTemporalDatum((TemporalDatumRefType)null);
+                setUsesTemporalDatum(null);
                 return;
         }
         super.eUnset(featureID);

@@ -198,7 +198,7 @@ public class MultiSurfaceTypeImpl extends AbstractGeometricAggregateTypeImpl imp
                 getSurfaceMember().clear();
                 return;
             case Gml311Package.MULTI_SURFACE_TYPE__SURFACE_MEMBERS:
-                setSurfaceMembers((SurfaceArrayPropertyType)null);
+                setSurfaceMembers(null);
                 return;
         }
         super.eUnset(featureID);

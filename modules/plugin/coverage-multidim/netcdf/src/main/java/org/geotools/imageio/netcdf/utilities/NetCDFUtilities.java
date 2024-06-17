@@ -342,7 +342,7 @@ public class NetCDFUtilities {
         X,
         Y,
         Z,
-        T;
+        T
     }
 
     public enum CheckType {

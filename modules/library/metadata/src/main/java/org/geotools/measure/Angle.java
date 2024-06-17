@@ -46,7 +46,7 @@ public class Angle implements Comparable<Angle>, Serializable {
     /** Define how angle can be converted to {@link Number} objects. */
     static {
         ClassChanger.register(
-                new ClassChanger<Angle, Double>(Angle.class, Double.class) {
+                new ClassChanger<>(Angle.class, Double.class) {
                     @Override
                     protected Double convert(final Angle o) {
                         return o.theta;

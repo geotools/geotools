@@ -154,7 +154,7 @@ public abstract class OperationParameterBaseTypeImpl extends AbstractGeneralOper
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OPERATION_PARAMETER_BASE_TYPE__PARAMETER_NAME:
-                setParameterName((CodeType)null);
+                setParameterName(null);
                 return;
         }
         super.eUnset(featureID);

@@ -223,10 +223,10 @@ public class TemporalCapabilitiesTypeImpl extends EObjectImpl implements Tempora
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.TEMPORAL_CAPABILITIES_TYPE__TEMPORAL_OPERANDS:
-                setTemporalOperands((TemporalOperandsType)null);
+                setTemporalOperands(null);
                 return;
             case Fes20Package.TEMPORAL_CAPABILITIES_TYPE__TEMPORAL_OPERATORS:
-                setTemporalOperators((TemporalOperatorsType)null);
+                setTemporalOperators(null);
                 return;
         }
         super.eUnset(featureID);

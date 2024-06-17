@@ -56,7 +56,8 @@ public class WMSLayerTest {
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;
-    };
+    }
+
     /** @throws java.lang.Exception */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {}

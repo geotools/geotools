@@ -48,7 +48,7 @@ class RangeVisitor implements FeatureCalc {
 
     enum RangeType {
         NUMBER,
-        DATE;
+        DATE
     }
 
     /** A DateRange comparator */

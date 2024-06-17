@@ -365,13 +365,13 @@ public class TopologyStyleTypeImpl extends BaseStyleDescriptorTypeImpl implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPOLOGY_STYLE_TYPE__SYMBOL:
-                setSymbol((SymbolType)null);
+                setSymbol(null);
                 return;
             case Gml311Package.TOPOLOGY_STYLE_TYPE__STYLE:
                 setStyle(STYLE_EDEFAULT);
                 return;
             case Gml311Package.TOPOLOGY_STYLE_TYPE__LABEL_STYLE:
-                setLabelStyle((LabelStylePropertyType)null);
+                setLabelStyle(null);
                 return;
             case Gml311Package.TOPOLOGY_STYLE_TYPE__TOPOLOGY_PROPERTY:
                 setTopologyProperty(TOPOLOGY_PROPERTY_EDEFAULT);

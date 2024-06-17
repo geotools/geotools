@@ -745,7 +745,7 @@ public class DirectedTopoSolidPropertyTypeImpl extends MinimalEObjectImpl.Contai
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTED_TOPO_SOLID_PROPERTY_TYPE__TOPO_SOLID:
-                setTopoSolid((TopoSolidType)null);
+                setTopoSolid(null);
                 return;
             case Gml311Package.DIRECTED_TOPO_SOLID_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

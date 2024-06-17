@@ -659,7 +659,7 @@ public class MultiCurvePropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_CURVE_PROPERTY_TYPE__MULTI_CURVE:
-                setMultiCurve((MultiCurveType)null);
+                setMultiCurve(null);
                 return;
             case Gml311Package.MULTI_CURVE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

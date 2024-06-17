@@ -154,7 +154,7 @@ public abstract class OperationParameterGroupBaseTypeImpl extends AbstractGenera
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OPERATION_PARAMETER_GROUP_BASE_TYPE__GROUP_NAME:
-                setGroupName((CodeType)null);
+                setGroupName(null);
                 return;
         }
         super.eUnset(featureID);

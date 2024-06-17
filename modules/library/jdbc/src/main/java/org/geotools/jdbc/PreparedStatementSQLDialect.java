@@ -174,7 +174,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
                 break;
             case Types.DECIMAL:
             case Types.NUMERIC:
-                ps.setBigDecimal(column, (BigDecimal) convert(value, BigDecimal.class));
+                ps.setBigDecimal(column, convert(value, BigDecimal.class));
                 break;
             case Types.DATE:
                 ps.setDate(column, convert(value, Date.class));

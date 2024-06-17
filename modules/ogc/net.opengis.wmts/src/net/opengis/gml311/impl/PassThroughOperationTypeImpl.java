@@ -196,7 +196,7 @@ public class PassThroughOperationTypeImpl extends AbstractCoordinateOperationTyp
                 getModifiedCoordinate().clear();
                 return;
             case Gml311Package.PASS_THROUGH_OPERATION_TYPE__USES_OPERATION:
-                setUsesOperation((OperationRefType)null);
+                setUsesOperation(null);
                 return;
         }
         super.eUnset(featureID);

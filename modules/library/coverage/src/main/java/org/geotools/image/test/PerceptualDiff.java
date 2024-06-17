@@ -45,7 +45,7 @@ class PerceptualDiff {
             this.imagesDifferent = different;
             this.output = output;
         }
-    };
+    }
 
     static {
         if (Boolean.getBoolean("org.geotools.image.test.enabled")) {

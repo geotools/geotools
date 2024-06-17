@@ -659,7 +659,7 @@ public class SphericalCSRefTypeImpl extends MinimalEObjectImpl.Container impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.SPHERICAL_CS_REF_TYPE__SPHERICAL_CS:
-                setSphericalCS((SphericalCSType)null);
+                setSphericalCS(null);
                 return;
             case Gml311Package.SPHERICAL_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

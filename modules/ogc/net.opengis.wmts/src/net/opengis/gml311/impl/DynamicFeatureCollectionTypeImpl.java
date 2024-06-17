@@ -170,7 +170,7 @@ public class DynamicFeatureCollectionTypeImpl extends FeatureCollectionTypeImpl 
      */
     @Override
     public void setHistory(HistoryPropertyType newHistory) {
-        ((FeatureMap.Internal)getHistoryGroup()).set(Gml311Package.eINSTANCE.getDynamicFeatureCollectionType_History(), newHistory);
+        getHistoryGroup().set(Gml311Package.eINSTANCE.getDynamicFeatureCollectionType_History(), newHistory);
     }
 
     /**
@@ -292,16 +292,16 @@ public class DynamicFeatureCollectionTypeImpl extends FeatureCollectionTypeImpl 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DYNAMIC_FEATURE_COLLECTION_TYPE__VALID_TIME:
-                setValidTime((TimePrimitivePropertyType)null);
+                setValidTime(null);
                 return;
             case Gml311Package.DYNAMIC_FEATURE_COLLECTION_TYPE__HISTORY_GROUP:
                 getHistoryGroup().clear();
                 return;
             case Gml311Package.DYNAMIC_FEATURE_COLLECTION_TYPE__HISTORY:
-                setHistory((HistoryPropertyType)null);
+                setHistory(null);
                 return;
             case Gml311Package.DYNAMIC_FEATURE_COLLECTION_TYPE__DATA_SOURCE:
-                setDataSource((StringOrRefType)null);
+                setDataSource(null);
                 return;
         }
         super.eUnset(featureID);

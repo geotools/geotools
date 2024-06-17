@@ -129,7 +129,7 @@ public class StandardDeviationFunction extends ClassificationFunction {
         // we don't know the min value in the collection because the
         // the first interval is open to infinity to the left.
         // needs a query to get the classMembers
-        percentages[0] = ((double) sizeFirstClass / (double) totalSize) * 100;
+        percentages[0] = 100d * sizeFirstClass / totalSize;
 
         double min = ((Number) classifier.getMin(1)).doubleValue();
         percentages =

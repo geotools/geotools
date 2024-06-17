@@ -110,7 +110,7 @@ public class HanaFilterToSQL extends PreparedFilterToSQL {
         UNITS_MAP.put("feet", 0.3048);
         UNITS_MAP.put("ft", 0.3048);
         UNITS_MAP.put("in", 0.0254);
-    };
+    }
 
     public HanaFilterToSQL(
             PreparedStatementSQLDialect dialect,

@@ -159,7 +159,7 @@ public class DCPTypeTypeImpl extends EObjectImpl implements DCPTypeType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DCP_TYPE_TYPE__HTTP:
-				setHTTP((HTTPType)null);
+				setHTTP(null);
 				return;
 		}
 		super.eUnset(featureID);

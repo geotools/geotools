@@ -56,6 +56,7 @@ public final class ScriptRunner extends Console {
     }
 
     /** Prints the number of tests executed, the number of errors and the success rate. */
+    @SuppressWarnings("PMD.UnnecessaryCast")
     private void printStatistics() throws IOException {
         NumberFormat f = NumberFormat.getNumberInstance();
         try (TableWriter table = new TableWriter(out, 1)) {

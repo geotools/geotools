@@ -227,7 +227,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
         getConstraint().addAll((Collection<? extends DomainType>)newValue);
         return;
       case Ows10Package.OPERATIONS_METADATA_TYPE__EXTENDED_CAPABILITIES:
-        setExtendedCapabilities((Object)newValue);
+        setExtendedCapabilities(newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -251,7 +251,7 @@ public class OperationsMetadataTypeImpl extends EObjectImpl implements Operation
         getConstraint().clear();
         return;
       case Ows10Package.OPERATIONS_METADATA_TYPE__EXTENDED_CAPABILITIES:
-        setExtendedCapabilities((Object)null);
+        setExtendedCapabilities(null);
         return;
     }
     super.eUnset(featureID);

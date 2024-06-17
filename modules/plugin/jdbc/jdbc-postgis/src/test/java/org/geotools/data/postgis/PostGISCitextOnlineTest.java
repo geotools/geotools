@@ -42,7 +42,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
 
         DataSource dataSource = setup.getDataSource();
         try (Connection cx = dataSource.getConnection();
-                Statement st = cx.createStatement(); ) {
+                Statement st = cx.createStatement()) {
             // check if the extension exists, and creates it in the database if needed
             st.execute("create extension if not exists citext");
             return true;

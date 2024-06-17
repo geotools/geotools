@@ -218,7 +218,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
 				setKeyword(KEYWORD_EDEFAULT);
 				return;
 			case Wcs10Package.KEYWORDS_TYPE__TYPE:
-				setType((CodeType)null);
+				setType(null);
 				return;
 		}
 		super.eUnset(featureID);

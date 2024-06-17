@@ -271,10 +271,10 @@ public class ServiceProviderTypeImpl extends EObjectImpl implements ServiceProvi
         setProviderName(PROVIDER_NAME_EDEFAULT);
         return;
       case Ows20Package.SERVICE_PROVIDER_TYPE__PROVIDER_SITE:
-        setProviderSite((OnlineResourceType)null);
+        setProviderSite(null);
         return;
       case Ows20Package.SERVICE_PROVIDER_TYPE__SERVICE_CONTACT:
-        setServiceContact((ResponsiblePartySubsetType)null);
+        setServiceContact(null);
         return;
     }
     super.eUnset(featureID);

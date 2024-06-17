@@ -160,7 +160,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.CAPABILITIES_TYPE__CONTENTS:
-                setContents((ContentsType)null);
+                setContents(null);
                 return;
         }
         super.eUnset(featureID);

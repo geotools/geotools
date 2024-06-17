@@ -155,7 +155,7 @@ public class TopoCurvePropertyTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPO_CURVE_PROPERTY_TYPE__TOPO_CURVE:
-                setTopoCurve((TopoCurveType)null);
+                setTopoCurve(null);
                 return;
         }
         super.eUnset(featureID);

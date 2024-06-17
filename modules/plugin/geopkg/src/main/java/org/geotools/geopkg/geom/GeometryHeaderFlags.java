@@ -50,7 +50,7 @@ public class GeometryHeaderFlags {
             }
             return null;
         }
-    };
+    }
 
     private byte b;
 

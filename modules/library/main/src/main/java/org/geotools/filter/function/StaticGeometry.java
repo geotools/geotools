@@ -563,7 +563,7 @@ public class StaticGeometry {
 
     public static double int2ddouble(Integer i) {
         if (i == null) return Double.NaN;
-        return (double) i;
+        return i;
     }
 
     public static boolean int2bbool(Integer i) {

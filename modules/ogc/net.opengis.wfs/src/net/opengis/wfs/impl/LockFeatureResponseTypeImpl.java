@@ -275,10 +275,10 @@ public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeat
         setLockId(LOCK_ID_EDEFAULT);
         return;
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-        setFeaturesLocked((FeaturesLockedType)null);
+        setFeaturesLocked(null);
         return;
       case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-        setFeaturesNotLocked((FeaturesNotLockedType)null);
+        setFeaturesNotLocked(null);
         return;
     }
     super.eUnset(featureID);

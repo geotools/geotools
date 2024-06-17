@@ -437,8 +437,6 @@ public class NADCONTransform extends AbstractMathTransform
             } else {
                 prefs.put(GRID_LOCATION, args[0]);
             }
-
-            return;
         } else {
             final String location = prefs.get(GRID_LOCATION, DEFAULT_GRID_LOCATION);
             out.println(
@@ -447,8 +445,6 @@ public class NADCONTransform extends AbstractMathTransform
             out.print("Grid location: \"");
             out.print(location);
             out.println('"');
-
-            return;
         }
     }
 

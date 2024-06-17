@@ -159,7 +159,7 @@ public class PostTypeImpl extends EObjectImpl implements PostType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.POST_TYPE__ONLINE_RESOURCE:
-				setOnlineResource((OnlineResourceType)null);
+				setOnlineResource(null);
 				return;
 		}
 		super.eUnset(featureID);

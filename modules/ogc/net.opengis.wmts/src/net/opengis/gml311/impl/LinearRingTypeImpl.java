@@ -364,10 +364,10 @@ public class LinearRingTypeImpl extends AbstractRingTypeImpl implements LinearRi
                 getPointRep().clear();
                 return;
             case Gml311Package.LINEAR_RING_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.LINEAR_RING_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.LINEAR_RING_TYPE__COORD:
                 getCoord().clear();

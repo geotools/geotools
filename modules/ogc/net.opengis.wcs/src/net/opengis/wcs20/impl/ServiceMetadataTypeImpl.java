@@ -207,7 +207,7 @@ public class ServiceMetadataTypeImpl extends EObjectImpl implements ServiceMetad
 				setFormatSupported(FORMAT_SUPPORTED_EDEFAULT);
 				return;
 			case Wcs20Package.SERVICE_METADATA_TYPE__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 		}
 		super.eUnset(featureID);

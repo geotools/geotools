@@ -137,5 +137,5 @@ public class WMSGetFeatureInfoTest {
             result.put(pair.getName().toUpperCase(), pair.getValue());
         }
         return result;
-    };
+    }
 }

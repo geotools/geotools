@@ -326,7 +326,7 @@ public class DefaultConcatenatedOperation extends AbstractCoordinateOperation
     protected String formatWKT(final Formatter formatter) {
         final String label = super.formatWKT(formatter);
         for (SingleOperation operation : operations) {
-            formatter.append((CoordinateOperation) operation);
+            formatter.append(operation);
         }
         return label;
     }

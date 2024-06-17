@@ -112,12 +112,12 @@ public class InterpolateFunction implements Function {
         LINEAR,
         COSINE,
         CUBIC
-    };
+    }
 
     private static enum Method {
         NUMERIC,
         COLOR
-    };
+    }
 
     private Mode mode;
     private boolean modeSpecified;

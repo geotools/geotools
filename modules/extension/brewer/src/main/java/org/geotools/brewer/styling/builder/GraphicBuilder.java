@@ -191,8 +191,7 @@ public class GraphicBuilder extends AbstractStyleBuilder<org.geotools.api.style.
                 Symbol symbol = (Symbol) graphicalSymbol;
                 Builder<? extends Symbol> builder;
                 if (symbol instanceof Mark) {
-                    builder =
-                            (Builder<? extends Symbol>) new MarkBuilder(this).reset((Mark) symbol);
+                    builder = new MarkBuilder(this).reset((Mark) symbol);
                 } else if (symbol instanceof ExternalGraphic) {
                     builder = new ExternalGraphicBuilder(this).reset((ExternalGraphic) symbol);
                 } else {

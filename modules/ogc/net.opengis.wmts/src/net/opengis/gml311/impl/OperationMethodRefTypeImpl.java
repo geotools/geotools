@@ -659,7 +659,7 @@ public class OperationMethodRefTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OPERATION_METHOD_REF_TYPE__OPERATION_METHOD:
-                setOperationMethod((OperationMethodType)null);
+                setOperationMethod(null);
                 return;
             case Gml311Package.OPERATION_METHOD_REF_TYPE__ACTUATE:
                 unsetActuate();

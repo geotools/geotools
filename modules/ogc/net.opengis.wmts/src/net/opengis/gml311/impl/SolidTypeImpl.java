@@ -194,7 +194,7 @@ public class SolidTypeImpl extends AbstractSolidTypeImpl implements SolidType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.SOLID_TYPE__EXTERIOR:
-                setExterior((SurfacePropertyType)null);
+                setExterior(null);
                 return;
             case Gml311Package.SOLID_TYPE__INTERIOR:
                 getInterior().clear();

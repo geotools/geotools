@@ -263,7 +263,7 @@ public class BriefRecordTypeImpl extends AbstractRecordTypeImpl implements Brief
                 getTitle().clear();
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__TYPE:
-                setType((SimpleLiteral)null);
+                setType(null);
                 return;
             case Csw20Package.BRIEF_RECORD_TYPE__BOUNDING_BOX:
                 getBoundingBox().clear();

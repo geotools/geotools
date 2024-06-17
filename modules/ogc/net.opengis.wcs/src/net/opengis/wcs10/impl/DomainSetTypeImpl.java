@@ -286,13 +286,13 @@ public class DomainSetTypeImpl extends EObjectImpl implements DomainSetType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SET_TYPE__SPATIAL_DOMAIN:
-				setSpatialDomain((SpatialDomainType)null);
+				setSpatialDomain(null);
 				return;
 			case Wcs10Package.DOMAIN_SET_TYPE__TEMPORAL_DOMAIN:
-				setTemporalDomain((TimeSequenceType)null);
+				setTemporalDomain(null);
 				return;
 			case Wcs10Package.DOMAIN_SET_TYPE__TEMPORAL_DOMAIN1:
-				setTemporalDomain1((TimeSequenceType)null);
+				setTemporalDomain1(null);
 				return;
 		}
 		super.eUnset(featureID);

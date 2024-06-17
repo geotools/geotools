@@ -296,7 +296,7 @@ public class AffinePlacementTypeImpl extends MinimalEObjectImpl.Container implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.AFFINE_PLACEMENT_TYPE__LOCATION:
-                setLocation((DirectPositionType)null);
+                setLocation(null);
                 return;
             case Gml311Package.AFFINE_PLACEMENT_TYPE__REF_DIRECTION:
                 getRefDirection().clear();

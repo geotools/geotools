@@ -234,7 +234,7 @@ public class FaceTypeImpl extends AbstractTopoPrimitiveTypeImpl implements FaceT
                 getDirectedTopoSolid().clear();
                 return;
             case Gml311Package.FACE_TYPE__SURFACE_PROPERTY:
-                setSurfaceProperty((SurfacePropertyType)null);
+                setSurfaceProperty(null);
                 return;
         }
         super.eUnset(featureID);

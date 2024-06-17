@@ -30,7 +30,7 @@ public class FeatureExamples {
             public String name;
             public int classification;
             public double height;
-        };
+        }
 
         GeometryFactory geomFactory = JTSFactoryFinder.getGeometryFactory();
 

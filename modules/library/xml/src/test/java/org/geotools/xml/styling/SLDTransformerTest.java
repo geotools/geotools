@@ -114,7 +114,7 @@ public class SLDTransformerTest extends XmlTestSupport {
                 Namespace("xlink", "http://www.w3.org/1999/xlink"));
     }
 
-    static StyleFactory sf = (StyleFactory) CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

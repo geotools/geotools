@@ -408,7 +408,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPO_COMPLEX_TYPE__MAXIMAL_COMPLEX:
-                setMaximalComplex((TopoComplexMemberType)null);
+                setMaximalComplex(null);
                 return;
             case Gml311Package.TOPO_COMPLEX_TYPE__SUPER_COMPLEX:
                 getSuperComplex().clear();
@@ -420,7 +420,7 @@ public class TopoComplexTypeImpl extends AbstractTopologyTypeImpl implements Top
                 getTopoPrimitiveMember().clear();
                 return;
             case Gml311Package.TOPO_COMPLEX_TYPE__TOPO_PRIMITIVE_MEMBERS:
-                setTopoPrimitiveMembers((TopoPrimitiveArrayAssociationType)null);
+                setTopoPrimitiveMembers(null);
                 return;
             case Gml311Package.TOPO_COMPLEX_TYPE__IS_MAXIMAL:
                 unsetIsMaximal();

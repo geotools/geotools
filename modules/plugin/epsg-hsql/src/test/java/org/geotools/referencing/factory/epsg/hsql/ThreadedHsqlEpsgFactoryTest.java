@@ -233,7 +233,6 @@ public class ThreadedHsqlEpsgFactoryTest {
             {85, 180},
             {-85, -180}
         };
-        double[][] points2 = new double[points.length][2];
         double[] tp1 = new double[2];
         double[] tp2 = new double[2];
         for (double[] point : points) {

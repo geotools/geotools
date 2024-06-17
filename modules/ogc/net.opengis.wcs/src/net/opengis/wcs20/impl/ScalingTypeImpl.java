@@ -310,16 +310,16 @@ public class ScalingTypeImpl extends EObjectImpl implements ScalingType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs20Package.SCALING_TYPE__SCALE_BY_FACTOR:
-				setScaleByFactor((ScaleByFactorType)null);
+				setScaleByFactor(null);
 				return;
 			case Wcs20Package.SCALING_TYPE__SCALE_AXES_BY_FACTOR:
-				setScaleAxesByFactor((ScaleAxisByFactorType)null);
+				setScaleAxesByFactor(null);
 				return;
 			case Wcs20Package.SCALING_TYPE__SCALE_TO_SIZE:
-				setScaleToSize((ScaleToSizeType)null);
+				setScaleToSize(null);
 				return;
 			case Wcs20Package.SCALING_TYPE__SCALE_TO_EXTENT:
-				setScaleToExtent((ScaleToExtentType)null);
+				setScaleToExtent(null);
 				return;
 		}
 		super.eUnset(featureID);

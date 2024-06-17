@@ -54,7 +54,7 @@ public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
      */
     @Override
     public void testLikeFilter() throws Exception {
-        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
+        FilterFactory ff = dataStore.getFilterFactory();
         //        PropertyIsLike caseSensitiveLike =
         //                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
         PropertyIsLike caseInsensitiveLike =

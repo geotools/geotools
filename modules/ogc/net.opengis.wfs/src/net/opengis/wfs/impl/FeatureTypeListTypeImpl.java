@@ -199,7 +199,7 @@ public class FeatureTypeListTypeImpl extends EObjectImpl implements FeatureTypeL
     public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__OPERATIONS:
-        setOperations((OperationsType)null);
+        setOperations(null);
         return;
       case WfsPackage.FEATURE_TYPE_LIST_TYPE__FEATURE_TYPE:
         getFeatureType().clear();

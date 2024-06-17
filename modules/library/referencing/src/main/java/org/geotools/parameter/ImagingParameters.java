@@ -209,7 +209,7 @@ public class ImagingParameters extends AbstractParameter implements ParameterVal
                  * Found a parameter which is a member of the JAI ParameterList, and the
                  * type matches the expected one. Uses 'parameters' as the backing store.
                  */
-                value = new ImagingParameter(d, parameters);
+                value = new ImagingParameter<>(d, parameters);
             } else {
                 /*
                  * In theory, we should use ParameterBlock sources. However, we can't because

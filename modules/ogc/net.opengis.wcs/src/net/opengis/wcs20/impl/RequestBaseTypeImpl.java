@@ -338,7 +338,7 @@ public abstract class RequestBaseTypeImpl extends EObjectImpl implements Request
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 			case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
 				unsetService();

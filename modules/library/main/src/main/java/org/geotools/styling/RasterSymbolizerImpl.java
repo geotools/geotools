@@ -48,7 +48,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
 
     // TODO: make container ready
     private FilterFactory filterFactory;
-    private ChannelSelection channelSelection = (ChannelSelection) new ChannelSelectionImpl();
+    private ChannelSelection channelSelection = new ChannelSelectionImpl();
     private ColorMapImpl colorMap = new ColorMapImpl();
     private ContrastEnhancementImpl contrastEnhancement = new ContrastEnhancementImpl();
     private ShadedReliefImpl shadedRelief;
@@ -261,7 +261,7 @@ public class RasterSymbolizerImpl extends AbstractSymbolizer
      */
     @Override
     public ShadedRelief getShadedRelief() {
-        return (ShadedRelief) shadedRelief;
+        return shadedRelief;
     }
 
     /**

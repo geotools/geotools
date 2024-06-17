@@ -198,7 +198,7 @@ public class MultiSolidTypeImpl extends AbstractGeometricAggregateTypeImpl imple
                 getSolidMember().clear();
                 return;
             case Gml311Package.MULTI_SOLID_TYPE__SOLID_MEMBERS:
-                setSolidMembers((SolidArrayPropertyType)null);
+                setSolidMembers(null);
                 return;
         }
         super.eUnset(featureID);

@@ -659,7 +659,7 @@ public class TimeNodePropertyTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_NODE_PROPERTY_TYPE__TIME_NODE:
-                setTimeNode((TimeNodeType)null);
+                setTimeNode(null);
                 return;
             case Gml311Package.TIME_NODE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

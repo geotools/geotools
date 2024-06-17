@@ -64,15 +64,14 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
     public Object visit(org.geotools.api.filter.expression.Function expression, Object data) {
         usingVolatileFunctions |= (expression instanceof VolatileFunction);
         return super.visit(expression, data);
-    };
+    }
 
     /** @see StyleVisitor#visit(org.geotools.api.style.TextSymbolizer) */
     @Override
     public void visit(TextSymbolizer text) {
 
         if (text instanceof TextSymbolizer) {
-            if (((TextSymbolizer) text).getGraphic() != null)
-                ((TextSymbolizer) text).getGraphic().accept(this);
+            if (text.getGraphic() != null) text.getGraphic().accept(this);
         }
 
         if (text.getFill() != null) {

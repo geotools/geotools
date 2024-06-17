@@ -236,8 +236,7 @@ public class H2GISFilterToSQLHelper {
             }
             out.write(" AND ");
         }
-        visitBinarySpatialOperator(
-                filter, (Expression) property, (Expression) geometry, swapped, extraData);
+        visitBinarySpatialOperator(filter, property, (Expression) geometry, swapped, extraData);
     }
 
     /**

@@ -708,7 +708,7 @@ public class FeatureStylePropertyTypeImpl extends MinimalEObjectImpl.Container i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.FEATURE_STYLE_PROPERTY_TYPE__FEATURE_STYLE:
-                setFeatureStyle((FeatureStyleType)null);
+                setFeatureStyle(null);
                 return;
             case Gml311Package.FEATURE_STYLE_PROPERTY_TYPE__ABOUT:
                 setAbout(ABOUT_EDEFAULT);

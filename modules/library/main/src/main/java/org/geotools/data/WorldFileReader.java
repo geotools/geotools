@@ -145,6 +145,7 @@ public class WorldFileReader {
         this(worldfile, WorldFileReader.DEFAULT_BUFFER_SIZE);
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources")
     private void parseWorldFile(final BufferedReader bufferedreader)
             throws IOException, DataSourceException {
         int index = 0;

@@ -26,7 +26,7 @@ public class WaitingMapMouseListener
         MOVED,
         PRESSED,
         RELEASED,
-        WHEEL_MOVED;
+        WHEEL_MOVED
     }
 
     public WaitingMapMouseListener() {

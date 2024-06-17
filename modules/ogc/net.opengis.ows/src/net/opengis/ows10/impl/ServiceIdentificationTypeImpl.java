@@ -311,7 +311,7 @@ public void setServiceTypeVersion(String newServiceTypeVersion) {
   public void eUnset(int featureID) {
     switch (featureID) {
       case Ows10Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE:
-        setServiceType((CodeType)null);
+        setServiceType(null);
         return;
       case Ows10Package.SERVICE_IDENTIFICATION_TYPE__SERVICE_TYPE_VERSION:
         setServiceTypeVersion(SERVICE_TYPE_VERSION_EDEFAULT);

@@ -1259,7 +1259,7 @@ public class GeoPackage implements Closeable {
             String sqlMax = "select max(srs_id) from gpkg_spatial_ref_sys";
             int srid = -1;
             try (Statement st = cx.createStatement();
-                    ResultSet rs = st.executeQuery(sqlMax); ) {
+                    ResultSet rs = st.executeQuery(sqlMax)) {
                 if (rs.next()) {
                     srid = rs.getInt(1) + 1;
                 }
@@ -1424,7 +1424,7 @@ public class GeoPackage implements Closeable {
                             .set(bounds.getMinY())
                             .set(bounds.getMaxX())
                             .set(bounds.getMaxY())
-                            .statement(); ) {
+                            .statement()) {
                 st.execute();
             }
 

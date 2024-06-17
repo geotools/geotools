@@ -361,7 +361,7 @@ public class GMLObjectTypeTypeImpl extends EObjectImpl implements GMLObjectTypeT
         getKeywords().clear();
         return;
       case WfsPackage.GML_OBJECT_TYPE_TYPE__OUTPUT_FORMATS:
-        setOutputFormats((OutputFormatListType)null);
+        setOutputFormats(null);
         return;
     }
     super.eUnset(featureID);

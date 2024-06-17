@@ -154,7 +154,7 @@ public abstract class AbstractReferenceSystemBaseTypeImpl extends DefinitionType
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_REFERENCE_SYSTEM_BASE_TYPE__SRS_NAME:
-                setSrsName((CodeType)null);
+                setSrsName(null);
                 return;
         }
         super.eUnset(featureID);

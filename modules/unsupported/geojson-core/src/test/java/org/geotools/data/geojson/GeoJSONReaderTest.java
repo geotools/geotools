@@ -466,8 +466,8 @@ public class GeoJSONReaderTest {
         geojson = geojson.replace('\'', '"');
         SimpleFeature feature = GeoJSONReader.parseFeature(geojson);
         ObjectNode parent = (ObjectNode) feature.getAttribute("parent");
-        assertEquals(10, ((ObjectNode) parent.get("child")).get("a").asDouble(), 0d);
-        assertEquals("foo", ((ObjectNode) parent.get("child")).get("b").asText());
+        assertEquals(10, parent.get("child").get("a").asDouble(), 0d);
+        assertEquals("foo", parent.get("child").get("b").asText());
     }
 
     @Test
@@ -484,13 +484,13 @@ public class GeoJSONReaderTest {
             ArrayNode stacExtensions = (ArrayNode) topLevelAttributes.get("stac_extensions");
             assertEquals(
                     "https://stac-extensions.github.io/eo/v1.0.0/schema.json",
-                    ((TextNode) stacExtensions.get(0)).asText());
+                    stacExtensions.get(0).asText());
             ArrayNode links = (ArrayNode) topLevelAttributes.get("links");
-            assertEquals("./collection.json", ((TextNode) links.get(0).get("href")).asText());
+            assertEquals("./collection.json", links.get(0).get("href").asText());
             ObjectNode assets = (ObjectNode) topLevelAttributes.get("assets");
             assertEquals(
                     "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
-                    ((TextNode) assets.get("thumbnail").get("href")).asText());
+                    assets.get("thumbnail").get("href").asText());
         }
     }
 

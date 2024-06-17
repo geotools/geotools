@@ -305,7 +305,7 @@ public class AxisDescriptionTypeImpl extends AbstractDescriptionTypeImpl impleme
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__VALUES:
-				setValues((ValuesType)null);
+				setValues(null);
 				return;
 			case Wcs10Package.AXIS_DESCRIPTION_TYPE__REF_SYS:
 				setRefSys(REF_SYS_EDEFAULT);

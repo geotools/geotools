@@ -463,7 +463,7 @@ public class RestrictionType1Impl extends AnnotatedImpl implements RestrictionTy
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.RESTRICTION_TYPE1__SIMPLE_TYPE:
-				setSimpleType((LocalSimpleType)null);
+				setSimpleType(null);
 				return;
 			case SchemaPackage.RESTRICTION_TYPE1__FACETS:
 				getFacets().clear();

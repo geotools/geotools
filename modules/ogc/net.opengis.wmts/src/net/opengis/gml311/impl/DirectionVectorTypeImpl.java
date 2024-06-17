@@ -282,13 +282,13 @@ public class DirectionVectorTypeImpl extends MinimalEObjectImpl.Container implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTION_VECTOR_TYPE__VECTOR:
-                setVector((VectorType)null);
+                setVector(null);
                 return;
             case Gml311Package.DIRECTION_VECTOR_TYPE__HORIZONTAL_ANGLE:
-                setHorizontalAngle((AngleType)null);
+                setHorizontalAngle(null);
                 return;
             case Gml311Package.DIRECTION_VECTOR_TYPE__VERTICAL_ANGLE:
-                setVerticalAngle((AngleType)null);
+                setVerticalAngle(null);
                 return;
         }
         super.eUnset(featureID);

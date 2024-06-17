@@ -39,7 +39,7 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
         inline(new FontEncoder(text.getFont()));
         inline(new PlacementEncoder(text.getLabelPlacement()));
         if (text instanceof TextSymbolizer) {
-            inline(new GraphicEncoder(((TextSymbolizer) text).getGraphic(), false));
+            inline(new GraphicEncoder(text.getGraphic(), false));
         }
         super.encode(text);
     }

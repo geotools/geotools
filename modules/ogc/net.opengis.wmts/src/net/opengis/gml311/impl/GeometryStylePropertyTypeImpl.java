@@ -708,7 +708,7 @@ public class GeometryStylePropertyTypeImpl extends MinimalEObjectImpl.Container 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEOMETRY_STYLE_PROPERTY_TYPE__GEOMETRY_STYLE:
-                setGeometryStyle((GeometryStyleType)null);
+                setGeometryStyle(null);
                 return;
             case Gml311Package.GEOMETRY_STYLE_PROPERTY_TYPE__ABOUT:
                 setAbout(ABOUT_EDEFAULT);

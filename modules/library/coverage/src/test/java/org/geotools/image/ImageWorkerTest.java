@@ -613,7 +613,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                         ImageWorkerTest.class
                                 .getResource("test-data/sf-sfdem.tif.gz")
                                 .openStream();
-                GZIPInputStream is = new GZIPInputStream(gzippedStream); ) {
+                GZIPInputStream is = new GZIPInputStream(gzippedStream)) {
             @SuppressWarnings("PMD.CloseResource") // closed along the reader
             ImageInputStream iis = ImageIO.createImageInputStream(is);
 

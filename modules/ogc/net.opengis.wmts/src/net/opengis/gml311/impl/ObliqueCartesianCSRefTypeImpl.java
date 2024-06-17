@@ -659,7 +659,7 @@ public class ObliqueCartesianCSRefTypeImpl extends MinimalEObjectImpl.Container 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OBLIQUE_CARTESIAN_CS_REF_TYPE__OBLIQUE_CARTESIAN_CS:
-                setObliqueCartesianCS((ObliqueCartesianCSType)null);
+                setObliqueCartesianCS(null);
                 return;
             case Gml311Package.OBLIQUE_CARTESIAN_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

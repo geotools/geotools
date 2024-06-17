@@ -307,10 +307,10 @@ public class DocumentOutputDefinitionTypeImpl extends OutputDefinitionTypeImpl i
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__TITLE:
-        setTitle((LanguageStringType)null);
+        setTitle(null);
         return;
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__ABSTRACT:
-        setAbstract((LanguageStringType)null);
+        setAbstract(null);
         return;
       case Wps10Package.DOCUMENT_OUTPUT_DEFINITION_TYPE__AS_REFERENCE:
         unsetAsReference();

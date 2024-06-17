@@ -223,10 +223,10 @@ public class SupportedCRSsTypeImpl extends EObjectImpl implements SupportedCRSsT
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_CR_SS_TYPE__DEFAULT:
-        setDefault((DefaultType)null);
+        setDefault(null);
         return;
       case Wps10Package.SUPPORTED_CR_SS_TYPE__SUPPORTED:
-        setSupported((CRSsType)null);
+        setSupported(null);
         return;
     }
     super.eUnset(featureID);

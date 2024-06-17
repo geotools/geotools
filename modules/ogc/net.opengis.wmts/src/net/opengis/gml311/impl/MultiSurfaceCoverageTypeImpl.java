@@ -154,7 +154,7 @@ public class MultiSurfaceCoverageTypeImpl extends AbstractDiscreteCoverageTypeIm
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_SURFACE_COVERAGE_TYPE__MULTI_SURFACE_DOMAIN:
-                setMultiSurfaceDomain((MultiSurfaceDomainType)null);
+                setMultiSurfaceDomain(null);
                 return;
         }
         super.eUnset(featureID);

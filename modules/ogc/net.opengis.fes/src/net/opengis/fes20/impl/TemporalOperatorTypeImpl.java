@@ -208,7 +208,7 @@ public class TemporalOperatorTypeImpl extends EObjectImpl implements TemporalOpe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.TEMPORAL_OPERATOR_TYPE__TEMPORAL_OPERANDS:
-                setTemporalOperands((TemporalOperandsType)null);
+                setTemporalOperands(null);
                 return;
             case Fes20Package.TEMPORAL_OPERATOR_TYPE__NAME:
                 setName(NAME_EDEFAULT);

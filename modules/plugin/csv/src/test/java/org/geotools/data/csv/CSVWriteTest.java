@@ -137,7 +137,7 @@ public class CSVWriteTest {
         DataStore store = DataStoreFinder.getDataStore(params);
 
         try (Transaction t1 = new DefaultTransaction("transaction 1");
-                Transaction t2 = new DefaultTransaction("transactoin 2"); ) {
+                Transaction t2 = new DefaultTransaction("transactoin 2")) {
 
             SimpleFeatureType type = store.getSchema("locations");
             SimpleFeatureStore auto = (SimpleFeatureStore) store.getFeatureSource("locations");
@@ -287,7 +287,7 @@ public class CSVWriteTest {
         collection.add(f);
 
         try (FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
-                store.getFeatureWriter("locations", Transaction.AUTO_COMMIT); ) {
+                store.getFeatureWriter("locations", Transaction.AUTO_COMMIT)) {
 
             // remove all features
             while (writer.hasNext()) {

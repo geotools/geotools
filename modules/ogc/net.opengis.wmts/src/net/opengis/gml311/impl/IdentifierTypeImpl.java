@@ -135,7 +135,7 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
      */
     @Override
     public void setName(CodeType newName) {
-        ((FeatureMap.Internal)getNameGroup()).set(Gml311Package.eINSTANCE.getIdentifierType_Name(), newName);
+        getNameGroup().set(Gml311Package.eINSTANCE.getIdentifierType_Name(), newName);
     }
 
     /**
@@ -281,13 +281,13 @@ public class IdentifierTypeImpl extends MinimalEObjectImpl.Container implements 
                 getNameGroup().clear();
                 return;
             case Gml311Package.IDENTIFIER_TYPE__NAME:
-                setName((CodeType)null);
+                setName(null);
                 return;
             case Gml311Package.IDENTIFIER_TYPE__VERSION:
                 setVersion(VERSION_EDEFAULT);
                 return;
             case Gml311Package.IDENTIFIER_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
         }
         super.eUnset(featureID);

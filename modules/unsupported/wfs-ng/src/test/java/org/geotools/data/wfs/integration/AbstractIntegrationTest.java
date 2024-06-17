@@ -1352,7 +1352,7 @@ public abstract class AbstractIntegrationTest {
         } catch (IOException expected) {
         }
 
-        try (Transaction t = new DefaultTransaction(); ) {
+        try (Transaction t = new DefaultTransaction()) {
             road.setTransaction(t);
 
             try {

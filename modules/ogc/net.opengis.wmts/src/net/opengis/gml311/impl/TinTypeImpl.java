@@ -297,10 +297,10 @@ public class TinTypeImpl extends TriangulatedSurfaceTypeImpl implements TinType 
                 getBreakLines().clear();
                 return;
             case Gml311Package.TIN_TYPE__MAX_LENGTH:
-                setMaxLength((LengthType)null);
+                setMaxLength(null);
                 return;
             case Gml311Package.TIN_TYPE__CONTROL_POINT:
-                setControlPoint((ControlPointType)null);
+                setControlPoint(null);
                 return;
         }
         super.eUnset(featureID);

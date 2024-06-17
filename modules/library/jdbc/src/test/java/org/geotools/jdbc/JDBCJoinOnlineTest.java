@@ -511,7 +511,7 @@ public abstract class JDBCJoinOnlineTest extends JDBCTestSupport {
 
     void doTestSpatialJoin(boolean exposePrimaryKeys) throws Exception {
         dataStore.setExposePrimaryKeyColumns(exposePrimaryKeys);
-        FilterFactory ff = (FilterFactory) dataStore.getFilterFactory();
+        FilterFactory ff = dataStore.getFilterFactory();
         Query q = new Query(tname("ft1"));
         q.setPropertyNames(Arrays.asList(aname("geometry"), aname("intProperty")));
         q.setSortBy(ff.sort(aname("intProperty"), SortOrder.ASCENDING));

@@ -403,10 +403,10 @@ public class ReferenceTypeImpl extends MinimalEObjectImpl.Container implements R
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.REFERENCE_TYPE__BODY:
-				setBody((EObject)null);
+				setBody(null);
 				return;
 			case Wps20Package.REFERENCE_TYPE__BODY_REFERENCE:
-				setBodyReference((BodyReferenceType)null);
+				setBodyReference(null);
 				return;
 			case Wps20Package.REFERENCE_TYPE__ENCODING:
 				setEncoding(ENCODING_EDEFAULT);

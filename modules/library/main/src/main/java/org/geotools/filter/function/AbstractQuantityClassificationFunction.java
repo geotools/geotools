@@ -154,7 +154,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
         // it's a string.. leave it be (just copy the values)
         Set[] values = new Set[classNum];
         for (int i = 0; i < classNum; i++) {
-            values[i] = new HashSet();
+            values[i] = new HashSet<>();
             Iterator iterator = bin[i].iterator();
             while (iterator.hasNext()) {
                 values[i].add(iterator.next());
@@ -177,7 +177,7 @@ public abstract class AbstractQuantityClassificationFunction extends Classificat
     private double[] calculatePercentages(List[] bin, int totalSize) {
         double[] percentages = new double[bin.length];
         for (int i = 0; i < bin.length; i++) {
-            percentages[i] = ((double) bin[i].size() / (double) totalSize) * 100;
+            percentages[i] = 100d * bin[i].size() / totalSize;
         }
         return percentages;
     }

@@ -185,7 +185,7 @@ public class IdentificationTypeImpl extends BasicIdentificationTypeImpl implemen
    */
     @Override
     public void setAvailableCRS(String newAvailableCRS) {
-    ((FeatureMap.Internal)getAvailableCRSGroup()).set(Ows20Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, newAvailableCRS);
+    getAvailableCRSGroup().set(Ows20Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, newAvailableCRS);
   }
 
     /**

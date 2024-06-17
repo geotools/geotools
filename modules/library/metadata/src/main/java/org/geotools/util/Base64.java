@@ -847,6 +847,7 @@ public class Base64 {
      * @return the decoded data
      * @since 1.4
      */
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public static byte[] decode(String s) {
         byte[] bytes;
         try {

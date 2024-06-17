@@ -422,7 +422,7 @@ public class OutputDefinitionTypeImpl extends MinimalEObjectImpl.Container imple
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.OUTPUT_DEFINITION_TYPE__OUTPUT:
-				setOutput((OutputDefinitionType)null);
+				setOutput(null);
 				return;
 			case Wps20Package.OUTPUT_DEFINITION_TYPE__ENCODING:
 				setEncoding(ENCODING_EDEFAULT);

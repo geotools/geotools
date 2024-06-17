@@ -394,7 +394,7 @@ public class GetCapabilitiesTypeImpl extends EObjectImpl implements GetCapabilit
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.GET_CAPABILITIES_TYPE__ACCEPT_VERSIONS:
-        setAcceptVersions((AcceptVersionsType)null);
+        setAcceptVersions(null);
         return;
       case Wps10Package.GET_CAPABILITIES_TYPE__LANGUAGE:
         setLanguage(LANGUAGE_EDEFAULT);

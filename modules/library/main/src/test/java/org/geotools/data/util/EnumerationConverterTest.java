@@ -11,7 +11,7 @@ public class EnumerationConverterTest {
     public enum TestEnum {
         TestA,
         TestB
-    };
+    }
 
     @Test
     public void testConversion() {

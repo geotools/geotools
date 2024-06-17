@@ -305,7 +305,7 @@ public class DMSAngleTypeImpl extends MinimalEObjectImpl.Container implements DM
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DMS_ANGLE_TYPE__DEGREES:
-                setDegrees((DegreesType)null);
+                setDegrees(null);
                 return;
             case Gml311Package.DMS_ANGLE_TYPE__DECIMAL_MINUTES:
                 setDecimalMinutes(DECIMAL_MINUTES_EDEFAULT);

@@ -154,7 +154,7 @@ public class RectifiedGridDomainTypeImpl extends DomainSetTypeImpl implements Re
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.RECTIFIED_GRID_DOMAIN_TYPE__RECTIFIED_GRID:
-                setRectifiedGrid((RectifiedGridType)null);
+                setRectifiedGrid(null);
                 return;
         }
         super.eUnset(featureID);

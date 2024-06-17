@@ -368,13 +368,13 @@ public class SpatialDomainTypeImpl extends EObjectImpl implements SpatialDomainT
                 getBoundingBox().clear();
                 return;
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__GRID_CRS:
-                setGridCRS((GridCrsType)null);
+                setGridCRS(null);
                 return;
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__TRANSFORMATION:
                 setTransformation(TRANSFORMATION_EDEFAULT);
                 return;
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__IMAGE_CRS:
-                setImageCRS((ImageCRSRefType)null);
+                setImageCRS(null);
                 return;
             case Wcs111Package.SPATIAL_DOMAIN_TYPE__POLYGON:
                 getPolygon().clear();

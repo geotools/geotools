@@ -414,7 +414,7 @@ public class ProcessOfferingTypeImpl extends MinimalEObjectImpl.Container implem
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wps20Package.PROCESS_OFFERING_TYPE__PROCESS:
-				setProcess((ProcessDescriptionType)null);
+				setProcess(null);
 				return;
 			case Wps20Package.PROCESS_OFFERING_TYPE__ANY:
 				getAny().clear();

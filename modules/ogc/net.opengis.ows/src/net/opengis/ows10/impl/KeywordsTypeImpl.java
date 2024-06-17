@@ -194,7 +194,7 @@ public void setType(CodeType newType) {
         getKeyword().clear();
         return;
       case Ows10Package.KEYWORDS_TYPE__TYPE:
-        setType((CodeType)null);
+        setType(null);
         return;
     }
     super.eUnset(featureID);

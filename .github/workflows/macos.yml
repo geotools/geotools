@@ -7,10 +7,11 @@ concurrency:
   cancel-in-progress: true
 
 env: 
-  OSX_GDAL_VERSION: 3.7.0
+  OSX_GDAL_VERSION: 3.9.0
   GDAL_INSTALL_PATH: /Users/runner/work/gdal
   DYLD_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/share/java:/opt/homebrew/lib
   DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/share/java:/opt/homebrew/lib
+  CMAKE_OPTIONS: -DCFITSIO_ROOT=/opt/homebrew/Cellar/cfitsio  -DPoppler_ROOT=/opt/homebrew/Cellar/poppler -DPROJ_ROOT=/opt/homebrew/Cellar/proj -DSPATIALITE_ROOT=/opt/homebrew/Cellar/libspatialite -DPostgreSQL_ROOT=/opt/homebrew/Cellar/libpq -DEXPAT_ROOT=/opt/homebrew/Cellar/expat -DXercesC_ROOT=/opt/homebrew/Cellar/xerces-c -DSQLite3_ROOT=/opt/homebrew/Cellar/sqlite -DOpenSSL_ROOT=/opt/homebrew/Cellar/openssl -DPNG_ROOT=/opt/homebrew/Cellar/libpng -DJPEG_ROOT=/opt/homebrew/Cellar/jpeg-turbo -DEXPECTED_JPEG_LIB_VERSION=80 -DOpenJPEG_ROOT=/opt/homebrew/Cellar/openjpeg -DCURL_ROOT=/opt/homebrew/Cellar/curl -DGDAL_USE_LIBKML=OFF -DGDAL_USE_ODBC=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON
 
 jobs:
   build:
@@ -32,17 +33,16 @@ jobs:
         brew install freexl libxml2 libspatialite geos proj libgeotiff openjpeg libaec postgis poppler doxygen unixodbc aom jpeg-xl libheif libarchive libkml boost ccache swig python-setuptools
         : # gdal is automatically installed as a dependency for postgis
         brew uninstall --ignore-dependencies gdal
-        : # TODO: Replace version with variable
         wget https://github.com/OSGeo/gdal/releases/download/v$OSX_GDAL_VERSION/gdal-$OSX_GDAL_VERSION.tar.gz
         tar -xvf gdal-$OSX_GDAL_VERSION.tar.gz
         cd gdal-$OSX_GDAL_VERSION
         mkdir build
         cd build
         : # See https://github.com/OSGeo/gdal/issues/6949 (Java bindings) and https://github.com/OSGeo/gdal/pull/8226 (Arrow and Parquet)
-        cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_JXL=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
+        cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF ${CMAKE_OPTIONS} ..  
         cmake --build .
         cmake --build . --target install
-        ln -s $GDAL_INSTALL_PATH/share/java/libgdalalljni.dylib $GDAL_INSTALL_PATH/share/java/gdalalljni.dylib
+        otool -L ./libgdal.dylib
         java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $PWD/swig/java/gdal.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Maven repository caching
       uses: actions/cache@v1

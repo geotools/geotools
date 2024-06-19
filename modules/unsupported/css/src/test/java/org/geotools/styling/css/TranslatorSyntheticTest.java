@@ -128,6 +128,20 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void testTranslateWithAutoNames(){
+        stylesheet.addDirective(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true");
+
+        Style translatedStyle = translator.translate(stylesheet);
+        int ruleNbr = 0;
+        for(FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyle()){
+            for( Rule rule : ftStyle.rules()){
+                assertEquals("Rule name does not match the expected unique name",
+                                String.format("%d", ruleNbr++), rule.getName());
+            }
+        }
+    }
+
+    @Test
     public void fillOpacity() throws Exception {
         String css = "* { fill: orange; fill-opacity: 0.5; }";
         Style style = translate(css);

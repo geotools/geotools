@@ -9,8 +9,8 @@ concurrency:
 env: 
   OSX_GDAL_VERSION: 3.7.0
   GDAL_INSTALL_PATH: /Users/runner/work/gdal
-  DYLD_LIBRARY_PATH: /Users/runner/work/gdal/lib
-  DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/work/gdal/lib
+  DYLD_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:$DYLD_LIBRARY_PATH
+  DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:$DYLD_FALLBACK_LIBRARY_PATH
 
 jobs:
   build:
@@ -42,7 +42,7 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF -DGDAL_USE_JXL=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON -DGDAL_USE_LIBKML=OFF ..  
         cmake --build .
         cmake --build . --target install
-        java -Djava.library.path=$GDAL_INSTALL_PATH/lib -classpath $PWD/swig/java/gdal.jar:$PWD/swig/java/build/apps gdalinfo
+        java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $PWD/swig/java/gdal.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Maven repository caching
       uses: actions/cache@v1
       with:

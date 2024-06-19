@@ -51,6 +51,7 @@ jobs:
         otool -l $GDAL_INSTALL_PATH/lib/libgdal.35.$OSX_GDAL_VERSION.dylib
         otool -L $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
         otool -l $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
+        java --version
         java -Djava.library.path=$DYLD_LIBRARY_PATH:$GDAL_INSTALL_PATH:/lib/jni/libgdalalljni.dylib -classpath $GDAL_INSTALL_PATH/share/java/gdal-$OSX_GDAL_VERSION.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Maven repository caching
       uses: actions/cache@v1

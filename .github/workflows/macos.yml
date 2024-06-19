@@ -42,8 +42,11 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF ${CMAKE_OPTIONS} ..  
         cmake --build .
         cmake --build . --target install
+        ls /Users/runner/work/gdal/lib/jni/
+        ls /usr/lib/
         otool -L $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
-        java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $PWD/swig/java/gdal.jar:$PWD/swig/java/build/apps gdalinfo
+        otool -l $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
+        java -Djava.library.path=$DYLD_LIBRARY_PATH:$GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib -classpath $PWD/swig/java/gdal.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Maven repository caching
       uses: actions/cache@v1
       with:

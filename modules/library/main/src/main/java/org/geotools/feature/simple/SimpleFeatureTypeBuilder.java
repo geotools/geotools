@@ -1080,21 +1080,21 @@ public class SimpleFeatureTypeBuilder {
         // initialize the builder
         b.init(original);
 
-        List<String> properties;
+        List<String> attributeNames;
         if (attributes == Query.ALL_NAMES) {
-            properties =
+            attributeNames =
                     original.getAttributeDescriptors().stream()
                             .map(AttributeDescriptor::getLocalName)
                             .collect(Collectors.toList());
         } else {
-            properties = Arrays.asList(attributes);
+            attributeNames = Arrays.asList(attributes);
         }
 
         // clear the attributes
         b.attributes().clear();
 
         // add attributes in order requested
-        for (String localName : properties) {
+        for (String localName : attributeNames) {
             AttributeDescriptor descriptor = original.getDescriptor(localName);
             if (descriptor instanceof GeometryDescriptor) {
                 GeometryDescriptor geometryDescriptor =
@@ -1109,7 +1109,7 @@ public class SimpleFeatureTypeBuilder {
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();
         String defaultGeometryName =
                 defaultGeometry != null ? defaultGeometry.getLocalName() : null;
-        if (defaultGeometryName != null && properties.contains(defaultGeometryName)) {
+        if (defaultGeometryName != null && attributeNames.contains(defaultGeometryName)) {
             b.setDefaultGeometry(defaultGeometryName);
         } else {
             b.setDefaultGeometry(null);

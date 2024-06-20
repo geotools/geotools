@@ -30,7 +30,7 @@ import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.filter.expression.Subtract;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.referencing.CRS;
+import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Geometry;
 
 /**
@@ -51,17 +51,9 @@ class CRSEvaluator implements ExpressionVisitor {
         Object value = expression.getValue();
         if (value instanceof Geometry) {
             Geometry g = (Geometry) value;
-            if (g.getUserData() instanceof CoordinateReferenceSystem) {
-                return g.getUserData();
-            } else if (g.getSRID() > 0) {
-                try {
-                    return CRS.decode("EPSG:" + g.getSRID());
-                } catch (Exception e) {
-                    return null;
-                }
-            }
+            CoordinateReferenceSystem crs = JTS.getCRS(g);
+            return crs;
         }
-
         return null;
     }
 

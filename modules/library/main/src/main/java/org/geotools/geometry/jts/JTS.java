@@ -885,7 +885,7 @@ public final class JTS {
                         null);
         if (envelope instanceof ReferencedEnvelope) {
             ReferencedEnvelope refEnv = (ReferencedEnvelope) envelope;
-            polygon.setUserData(refEnv.getCoordinateReferenceSystem());
+            setCRS(polygon, refEnv.getCoordinateReferenceSystem());
         }
         return polygon;
     }
@@ -975,8 +975,7 @@ public final class JTS {
             coordinates[right + t] = new Coordinate(xmax, ymax - dy);
         }
         Polygon polygon = factory.createPolygon(factory.createLinearRing(coordinates), null);
-
-        polygon.setUserData(bbox.getCoordinateReferenceSystem());
+        setCRS(polygon, bbox.getCoordinateReferenceSystem());
 
         return polygon;
     }
@@ -1003,7 +1002,7 @@ public final class JTS {
             try {
                 MathTransform transform = CRS.findMathTransform(crs, DefaultGeographicCRS.WGS84_3D);
                 Geometry geometry = transform(geom, transform);
-
+                setCRS(geometry, crs);
                 return geometry; // The extra Z values will be ignored
             } catch (FactoryException exception) {
                 throw new TransformException(
@@ -1014,7 +1013,9 @@ public final class JTS {
         } else {
             try {
                 MathTransform transform = CRS.findMathTransform(crs, DefaultGeographicCRS.WGS84);
-                return transform(geom, transform);
+                Geometry geometry = transform(geom, transform);
+                setCRS(geometry, crs);
+                return geometry;
             } catch (FactoryException exception) {
                 throw new TransformException(
                         MessageFormat.format(ErrorKeys.CANT_REPROJECT_$1, crs));
@@ -1062,7 +1063,7 @@ public final class JTS {
                                     new Coordinate(bbox.getMinX(), bbox.getMinY())
                                 }),
                         null);
-        polygon.setUserData(bbox.getCoordinateReferenceSystem());
+        setCRS(polygon, bbox.getCoordinateReferenceSystem());
         return polygon;
     }
 
@@ -1669,10 +1670,12 @@ public final class JTS {
     }
 
     /**
-     * Get the CRS of a geometry.
+     * Get the CRS of a geometry, stored in {@link Geometry#getUserData()} (as a {@code
+     * CoordinateReferenceSystem} directly, or as a {@code Map<Class,Value>}) or as a non-zero
+     * {@link Geometry#getSRID()}.
      *
      * @param geometry the geometry
-     * @return the CRS
+     * @return the CRS, or {@code null} if not available
      */
     public static CoordinateReferenceSystem getCRS(Geometry geometry) {
         Object userData = geometry.getUserData();
@@ -1685,23 +1688,51 @@ public final class JTS {
             if (crs != null) {
                 return crs;
             }
+        } else if (geometry.getSRID() > 0) {
+            try {
+                return CRS.decode("EPSG:" + geometry.getSRID());
+            } catch (Exception e) {
+                return null;
+            }
         }
         return null;
     }
 
     /**
-     * Set the CRS of a geometry.
+     * Set the CRS of a geometry is {@link Geometry#getUserData()}.
+     *
+     * <p>Stored in {@link Geometry#getUserData()} as a {@code CoordinateReferenceSystem} directly,
+     * or as a {@code Map<Class,Value>}.
+     *
+     * <p>Stored in {@link Geometry#getSRID()} as EPSG code.
      *
      * @param geometry the geometry
      * @param crs the CRS
      */
     public static void setCRS(Geometry geometry, CoordinateReferenceSystem crs) {
-        Object obj = geometry.getUserData();
-        Map<Object, Object> userData = new HashMap<>();
-        if (obj != null && obj instanceof Map) {
-            userData.putAll((Map<?, ?>) obj);
+        if (crs != null) {
+            Object obj = geometry.getUserData();
+            if (obj != null && obj instanceof CoordinateReferenceSystem) {
+                geometry.setUserData(crs);
+            }
+            Map<Object, Object> userData = new HashMap<>();
+            if (obj != null && obj instanceof Map) {
+                // preserve existing user data map contents
+                userData.putAll((Map<?, ?>) obj);
+            }
+            userData.put(CoordinateReferenceSystem.class, crs);
+            geometry.setUserData(userData);
+        } else {
+            // Clear CRS value from geometry
+            if (geometry.getUserData() != null) {
+                if (geometry.getUserData() instanceof CoordinateReferenceSystem) {
+                    geometry.setUserData(null);
+                } else if (geometry.getUserData() instanceof Map) {
+                    @SuppressWarnings("rawtypes")
+                    Map userData = (Map) geometry.getUserData();
+                    userData.remove(CoordinateReferenceSystem.class);
+                }
+            }
         }
-        userData.put(CoordinateReferenceSystem.class, crs);
-        geometry.setUserData(userData);
     }
 }

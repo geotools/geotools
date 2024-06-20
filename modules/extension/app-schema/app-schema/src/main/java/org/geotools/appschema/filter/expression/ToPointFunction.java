@@ -32,6 +32,7 @@ import org.geotools.api.referencing.NoSuchAuthorityCodeException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -184,13 +185,13 @@ public class ToPointFunction implements Function {
      * @param gmlId gml:id value
      */
     private void setUserData(Point point, CoordinateReferenceSystem crs, String gmlId) {
-        Map<Object, Object> userData = new HashMap<>();
         if (gmlId != null) {
+            Map<Object, Object> userData = new HashMap<>();
             userData.put("gml:id", gmlId);
+            point.setUserData(userData);
         }
         if (crs != null) {
-            userData.put(CoordinateReferenceSystem.class, crs);
+            JTS.setCRS(point, crs);
         }
-        point.setUserData(userData);
     }
 }

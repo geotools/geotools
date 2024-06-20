@@ -27,6 +27,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultVerticalCRS;
 import org.geotools.referencing.cs.DefaultVerticalCS;
@@ -151,7 +152,7 @@ public class ToLineStringFunction implements Function {
             points[1] = new Coordinate(dblTwo, Coordinate.NULL_ORDINATE, Coordinate.NULL_ORDINATE);
 
             linestring = geomFactory.createLineString(points);
-            linestring.setUserData(crs);
+            JTS.setCRS(linestring, crs);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
                     "Error converting the parameters for toLineString function: "

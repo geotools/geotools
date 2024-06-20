@@ -324,7 +324,7 @@ public class CssTranslator {
                             + "stroke, mark, label, raster-channels, have any been used in a rule matching any feature?");
         }
         Style translated = styleBuilder.build();
-        return styleBuilder.build();
+
         if (Boolean.parseBoolean(stylesheet.getDirectiveValue(DIRECTIVE_AUTO_RULE_NAMES))) {
             int ruleNbr = 0;
             for (FeatureTypeStyle ftStyle : translated.featureTypeStyles()) {

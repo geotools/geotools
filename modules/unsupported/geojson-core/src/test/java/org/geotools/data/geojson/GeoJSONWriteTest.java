@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.geotools.TestData;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
@@ -279,6 +280,7 @@ public class GeoJSONWriteTest {
     @Test
     public void testDateFormat() throws Exception {
         Date testDate = new Date();
+
         // test feature
         SimpleFeatureType type =
                 DataUtilities.createType("test", "the_geom:Point:srid=4326,date:java.util.Date");
@@ -297,7 +299,12 @@ public class GeoJSONWriteTest {
         String json = out.toString(StandardCharsets.UTF_8);
         JsonNode root = new ObjectMapper().readTree(json);
         String date = root.get("properties").get("date").textValue();
-        assertEquals(DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.format(testDate), date);
+
+        FastDateFormat utm =
+                FastDateFormat.getInstance(
+                        DateFormatUtils.ISO_8601_EXTENDED_DATE_FORMAT.getPattern(),
+                        GeoJSONWriter.DEFAULT_TIME_ZONE);
+        assertEquals(utm.format(testDate), date);
     }
 
     @Test

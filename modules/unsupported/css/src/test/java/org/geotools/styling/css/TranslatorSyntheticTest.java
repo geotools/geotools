@@ -69,9 +69,18 @@ import org.geotools.util.Converters;
 import org.geotools.xml.styling.SLDTransformer;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
+import org.junit.Before;
 import org.parboiled.errors.ParserRuntimeException;
 
 public class TranslatorSyntheticTest extends CssBaseTest {
+    private CssTranslator translator;
+    private StyleSheet stylesheet;
+    
+    @Before
+    public void setUp() {
+        translator = new CssTranslator();
+        stylesheet = new StyleSheet();
+    }
 
     private void assertLiteral(String value, Expression ex) {
         assertTrue(ex instanceof Literal);

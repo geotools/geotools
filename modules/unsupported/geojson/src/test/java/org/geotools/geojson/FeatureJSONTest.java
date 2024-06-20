@@ -18,6 +18,7 @@ package org.geotools.geojson;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -1378,5 +1379,158 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         SimpleFeature sf = fjson.readFeature(json);
         assertNotNull(sf);
         assertEquals("EPSG:32632", sf.getAttribute("crs"));
+    }
+
+    @Test
+    public void testFeatureCollectionConflictingGeometryTypesSchemaRead() throws Exception {
+        String json =
+                strip(
+                        "{"
+                                + "  'type': 'FeatureCollection',"
+                                + "  'features': ["
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'geometry': {"
+                                + "         'type': 'Point',"
+                                + "         'coordinates': [102.0, 0.5]"
+                                + "      }"
+                                + "    },"
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'geometry': {"
+                                + "        'type': 'LineString',"
+                                + "                'coordinates': ["
+                                + "                  [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]"
+                                + "                ]"
+                                + "      }"
+                                + "    },"
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'geometry': {"
+                                + "         'type': 'Polygon',"
+                                + "                 'coordinates': ["
+                                + "                   ["
+                                + "                     [100.0, 0.0],"
+                                + "                     [101.0, 0.0],"
+                                + "                     [101.0, 1.0],"
+                                + "                     [100.0, 1.0],"
+                                + "                     [100.0, 0.0]"
+                                + "                   ]"
+                                + "                 ]"
+                                + "      }"
+                                + "    }"
+                                + "  ]"
+                                + "}");
+
+        SimpleFeatureType type = fjson.readFeatureCollectionSchema(json, false, false);
+        assertEquals(Point.class, type.getDescriptor("geometry").getType().getBinding());
+
+        type = fjson.readFeatureCollectionSchema(json, false, true);
+        assertEquals(Geometry.class, type.getDescriptor("geometry").getType().getBinding());
+    }
+
+    @Test
+    public void testFeatureCollectionConflictingGeometryTypes() throws Exception {
+        String json =
+                strip(
+                        "{"
+                                + "  'type': 'FeatureCollection',"
+                                + "  'features': ["
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'geometry': {"
+                                + "         'type': 'Point',"
+                                + "         'coordinates': [102, 0.5]"
+                                + "      },"
+                                + "      'properties': {},"
+                                + "      'id': '0'"
+                                + "    },"
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'geometry': {"
+                                + "        'type': 'LineString',"
+                                + "                'coordinates': ["
+                                + "                  [102, 0.0],"
+                                + "                  [103, 1],"
+                                + "                  [104, 0.0],"
+                                + "                  [105, 1]"
+                                + "                ]"
+                                + "      },"
+                                + "      'properties': {},"
+                                + "      'id': '1'"
+                                + "    },"
+                                + "    {"
+                                + "      'type': 'Feature',"
+                                + "      'geometry': {"
+                                + "         'type': 'Polygon',"
+                                + "                 'coordinates': ["
+                                + "                   ["
+                                + "                     [100, 0.0],"
+                                + "                     [101, 0.0],"
+                                + "                     [101, 1],"
+                                + "                     [100, 1],"
+                                + "                     [100, 0.0]"
+                                + "                   ]"
+                                + "                 ]"
+                                + "      },"
+                                + "      'properties': {},"
+                                + "      'id': '2'"
+                                + "    }"
+                                + "  ]"
+                                + "}");
+
+        FeatureJSON fj = new FeatureJSON();
+
+        SimpleFeatureType type = fj.readFeatureCollectionSchema(json, false, false);
+        fj.setFeatureType(type);
+
+        FeatureCollection brokenFeatureCollection = fj.readFeatureCollection(json);
+        try (FeatureIterator<?> featureIter = fj.readFeatureCollection(json).features()) {
+            Feature feature = featureIter.next();
+            String geomText = ((Geometry) feature.getDefaultGeometryProperty().getValue()).toText();
+            assertEquals("POINT (102 0.5)", geomText);
+
+            feature = featureIter.next();
+            geomText = ((Geometry) feature.getDefaultGeometryProperty().getValue()).toText();
+            assertEquals("POINT (103.49999999999999 0.5)", geomText);
+
+            feature = featureIter.next();
+            geomText = ((Geometry) feature.getDefaultGeometryProperty().getValue()).toText();
+            assertEquals("POINT (100.5 0.5)", geomText);
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        fj.writeFeatureCollection(brokenFeatureCollection, baos);
+        String brokenWrittenFeatureCollection = strip(baos.toString());
+
+        // shows that without checking all geometry types, the code does not read the geometries of
+        // each feature correctly.
+        assertNotEquals(json, brokenWrittenFeatureCollection);
+
+        type = fj.readFeatureCollectionSchema(json, false, true);
+        fj.setFeatureType(type);
+
+        FeatureCollection fixedFeatureCollection = fj.readFeatureCollection(json);
+        try (FeatureIterator<?> featureIter = fixedFeatureCollection.features()) {
+            Feature feature = featureIter.next();
+            String geomText = ((Geometry) feature.getDefaultGeometryProperty().getValue()).toText();
+            assertEquals("POINT (102 0.5)", geomText);
+
+            feature = featureIter.next();
+            geomText = ((Geometry) feature.getDefaultGeometryProperty().getValue()).toText();
+            assertEquals("LINESTRING (102 0, 103 1, 104 0, 105 1)", geomText);
+
+            feature = featureIter.next();
+            geomText = ((Geometry) feature.getDefaultGeometryProperty().getValue()).toText();
+            assertEquals("POLYGON ((100 0, 101 0, 101 1, 100 1, 100 0))", geomText);
+        }
+
+        baos.reset();
+        fj.writeFeatureCollection(fixedFeatureCollection, baos);
+        String fixedWrittenFeatureCollection = strip(baos.toString());
+
+        // shows that when we do check all geometry types, the code does read the geometries of each
+        // feature correctly.
+        assertEquals(json, fixedWrittenFeatureCollection);
     }
 }

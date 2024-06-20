@@ -1702,26 +1702,32 @@ public final class JTS {
      * Set the CRS of a geometry is {@link Geometry#getUserData()}.
      *
      * <p>Stored in {@link Geometry#getUserData()} as a {@code CoordinateReferenceSystem} directly,
-     * or as a {@code Map<Class,Value>}.
+     * or as a {@code Map<Object,Object>} using {@code CoordinateReferenceSystem.class} as a key.
+     *
+     * <p>If user data is being used to store another kind of value geometry will not be changed.
      *
      * <p>Stored in {@link Geometry#getSRID()} as EPSG code.
      *
      * @param geometry the geometry
-     * @param crs the CRS
+     * @param crs the CRS, or {@code null} to clear CRS from geometry
      */
     public static void setCRS(Geometry geometry, CoordinateReferenceSystem crs) {
         if (crs != null) {
             Object obj = geometry.getUserData();
-            if (obj != null && obj instanceof CoordinateReferenceSystem) {
-                geometry.setUserData(crs);
+            if (obj != null) {
+                if (obj instanceof CoordinateReferenceSystem) {
+                    geometry.setUserData(crs);
+                } else if (obj instanceof Map) {
+                    // preserve existing user data map contents
+                    @SuppressWarnings(value = "unchecked")
+                    Map<Object, Object> userData = (Map<Object, Object>) obj;
+                    userData.put(CoordinateReferenceSystem.class, crs);
+                }
+            } else {
+                Map<Object, Object> userData = new HashMap<>();
+                userData.put(CoordinateReferenceSystem.class, crs);
+                geometry.setUserData(userData);
             }
-            Map<Object, Object> userData = new HashMap<>();
-            if (obj != null && obj instanceof Map) {
-                // preserve existing user data map contents
-                userData.putAll((Map<?, ?>) obj);
-            }
-            userData.put(CoordinateReferenceSystem.class, crs);
-            geometry.setUserData(userData);
         } else {
             // Clear CRS value from geometry
             if (geometry.getUserData() != null) {
@@ -1732,6 +1738,7 @@ public final class JTS {
                     Map userData = (Map) geometry.getUserData();
                     userData.remove(CoordinateReferenceSystem.class);
                 }
+                // user data is not being used to store crs
             }
         }
     }

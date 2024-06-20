@@ -16,7 +16,9 @@
  */
 package org.geotools.feature.simple;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.filter.FilterFactory;
@@ -35,6 +37,8 @@ public class SimpleFeatureBuilderTest {
 
     SimpleFeatureBuilder builder;
 
+    SimpleFeatureType featureType;
+
     @Before
     public void setUp() throws Exception {
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
@@ -43,7 +47,7 @@ public class SimpleFeatureBuilderTest {
         typeBuilder.add("integer", Integer.class);
         typeBuilder.add("float", Float.class);
 
-        SimpleFeatureType featureType = typeBuilder.buildFeatureType();
+        featureType = typeBuilder.buildFeatureType();
 
         builder = new SimpleFeatureBuilder(featureType);
         builder.setValidating(true);
@@ -69,9 +73,11 @@ public class SimpleFeatureBuilderTest {
     @Test
     public void testTooFewAttributes() throws Exception {
         GeometryFactory gf = new GeometryFactory();
-        builder.add(gf.createPoint(new Coordinate(0, 0)));
+        Point point = gf.createPoint(new Coordinate(0, 0));
+        builder.add(point);
         builder.add(Integer.valueOf(1));
 
+        // build feature uses default values for anything missing
         SimpleFeature feature = builder.buildFeature("fid");
         Assert.assertNotNull(feature);
 
@@ -80,6 +86,17 @@ public class SimpleFeatureBuilderTest {
         Assert.assertEquals(gf.createPoint(new Coordinate(0, 0)), feature.getAttribute("point"));
         Assert.assertEquals(Integer.valueOf(1), feature.getAttribute("integer"));
         Assert.assertNull(feature.getAttribute("float"));
+
+        List<Object> tooFew = new ArrayList<>();
+        tooFew.add(point);
+
+        // static build method requires values in the order specified
+        try {
+            SimpleFeature feature2 = SimpleFeatureBuilder.build(featureType, tooFew, "fid");
+            Assert.assertNotNull(feature2);
+        } catch (IllegalArgumentException expected) {
+            Assert.assertTrue(expected.getMessage().contains("count does not match"));
+        }
     }
 
     @Test

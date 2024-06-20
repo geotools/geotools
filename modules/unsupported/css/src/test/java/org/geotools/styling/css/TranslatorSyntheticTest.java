@@ -42,6 +42,7 @@ import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.Displacement;
 import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.FeatureTypeStyle;
+import org.geotools.styling.StyleSheet;
 import org.geotools.api.style.Fill;
 import org.geotools.api.style.Font;
 import org.geotools.api.style.Graphic;
@@ -137,13 +138,13 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
-    public void testTranslateWithAutoNames(){
+    public void testTranslateWithAutoNames() {
         stylesheet.addDirective(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true");
-
+    
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;
-        for(FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyle()){
-            for( Rule rule : ftStyle.rules()){
+        for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) { // Corrected method name
+            for (Rule rule : ftStyle.rules()) {
                 assertEquals("Rule name does not match the expected unique name",
                                 String.format("%d", ruleNbr++), rule.getName());
             }

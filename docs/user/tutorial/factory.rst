@@ -44,7 +44,7 @@ Step 1 Interface
 The first step is to define your interface; in this case we are going to use the Function
 interface already provided by GeoTools.
 
-.. image:: /images/filter_function.PNG
+.. image:: images/Function.png
 
 GeoTools loves to work with interfaces, and this is the reason why (it is the first step
 of making a plug-in based library).

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.feature.Feature</OriginalElement>
+  <nodes>
+    <node x="-829.0" y="-239.0">org.geotools.api.feature.Property</node>
+    <node x="-819.0" y="295.5">org.geotools.api.feature.GeometryAttribute</node>
+    <node x="-685.5" y="34.0">org.geotools.api.feature.Association</node>
+    <node x="-1192.0" y="534.0">org.geotools.api.feature.Feature</node>
+    <node x="-974.5" y="45.5">org.geotools.api.feature.Attribute</node>
+    <node x="-1158.0" y="238.0">org.geotools.api.feature.ComplexAttribute</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.feature.GeometryAttribute" target="org.geotools.api.feature.Attribute" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-65.5" />
+      <point x="-681.5" y="213.0" />
+      <point x="-840.0" y="213.0" />
+      <point x="0.0" y="65.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.ComplexAttribute" target="org.geotools.api.feature.Attribute" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-123.0" />
+      <point x="-998.5" y="213.0" />
+      <point x="-840.0" y="213.0" />
+      <point x="0.0" y="65.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.Attribute" target="org.geotools.api.feature.Property" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-65.5" />
+      <point x="-840.0" y="9.0" />
+      <point x="-691.5" y="9.0" />
+      <point x="0.0" y="111.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.Association" target="org.geotools.api.feature.Property" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-77.0" />
+      <point x="-543.0" y="9.0" />
+      <point x="-691.5" y="9.0" />
+      <point x="0.0" y="111.5" />
+    </edge>
+    <edge source="org.geotools.api.feature.Feature" target="org.geotools.api.feature.ComplexAttribute" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-77.0" />
+      <point x="0.0" y="123.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.3558606124604013" showDependencies="false" x="-786.0000000000001" y="318.66277258566976" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

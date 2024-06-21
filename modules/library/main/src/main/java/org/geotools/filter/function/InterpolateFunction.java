@@ -301,28 +301,22 @@ public class InterpolateFunction implements Function {
         return evaluate(object, Object.class);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>When {@code context} is unspecified (i.e. {@code null} or {@code Object.class}), it'll be
+     * derived from the {@code method} parameter, as {@code java.awt.Color.class} when {@code method
+     * == COLOR}, and as {@code java.lang.Double} when {@code method == NUMERIC}.
+     *
+     * @throws IllegalArgumentException if the {@code method} parameter is {@code NUMERIC} and
+     *     {@code context == java.awt.Color.class}, or {@code method} is {@code COLOR} and {@code
+     *     context} is specified and is not {@code context == java.awt.Color.class}
+     */
     @Override
     public <T> T evaluate(Object object, Class<T> context) {
-        // initialize the lookup data structures only once and in a thread safe way please
-        if (interpPoints == null) {
-            synchronized (this) {
-                if (interpPoints == null) {
-                    initialize();
-                }
-            }
-        }
-
-        if (method == Method.NUMERIC && Color.class.isAssignableFrom(context)) {
-            throw new IllegalArgumentException(
-                    "Trying to evaluate the function as Color but the method parameter is set as NUMERIC");
-        }
-
-        if (method == Method.COLOR && !Color.class.isAssignableFrom(context)) {
-            throw new IllegalArgumentException(
-                    "Trying to evaluate the function as "
-                            + context.getSimpleName()
-                            + " but the method parameter is set as COLOR");
-        }
+        threadSafeInitialize();
+        context = sanitizeContext(context);
+        validateArguments(context);
 
         /**
          * Lookup value should be either the name of a feature property which can be evaluated to a
@@ -375,6 +369,32 @@ public class InterpolateFunction implements Function {
             case LINEAR:
             default:
                 return linearInterpolate(lookupValue, object, segment, context);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Class<T> sanitizeContext(Class<T> context) {
+        if (null == context || Object.class.equals(context)) {
+            if (method == Method.NUMERIC) {
+                context = (Class<T>) Double.class;
+            } else if (method == Method.COLOR) {
+                context = (Class<T>) Color.class;
+            } else {
+                throw new IllegalStateException("Unknown method, expected NUMERIC or COLOR");
+            }
+        }
+        return context;
+    }
+
+    private void validateArguments(Class<?> context) {
+        if (method == Method.NUMERIC && Color.class.isAssignableFrom(context)) {
+            throw new IllegalArgumentException(
+                    "Trying to evaluate the function as Color but the method parameter is set as NUMERIC");
+        } else if (method == Method.COLOR && !Color.class.isAssignableFrom(context)) {
+            throw new IllegalArgumentException(
+                    "Trying to evaluate the function as "
+                            + context.getSimpleName()
+                            + " but the method parameter is set as COLOR");
         }
     }
 
@@ -564,6 +584,17 @@ public class InterpolateFunction implements Function {
     @Override
     public Literal getFallbackValue() {
         return fallback;
+    }
+
+    private void threadSafeInitialize() {
+        // initialize the lookup data structures only once and in a thread safe way please
+        if (interpPoints == null) {
+            synchronized (this) {
+                if (interpPoints == null) {
+                    initialize();
+                }
+            }
+        }
     }
 
     /**

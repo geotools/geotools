@@ -42,7 +42,8 @@ import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.Displacement;
 import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.FeatureTypeStyle;
-import org.geotools.styling.StyleSheet;
+import org.geotools.styling.css.Stylesheet;
+import org.geotools.styling.css.CssTranslator;
 import org.geotools.api.style.Fill;
 import org.geotools.api.style.Font;
 import org.geotools.api.style.Graphic;
@@ -74,14 +75,6 @@ import org.junit.Before;
 import org.parboiled.errors.ParserRuntimeException;
 
 public class TranslatorSyntheticTest extends CssBaseTest {
-    private CssTranslator translator;
-    private StyleSheet stylesheet;
-    
-    @Before
-    public void setUp() {
-        translator = new CssTranslator();
-        stylesheet = new StyleSheet();
-    }
 
     private void assertLiteral(String value, Expression ex) {
         assertTrue(ex instanceof Literal);
@@ -137,20 +130,27 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertNull(fill.getGraphicFill());
     }
 
-    @Test
+ @Test
     public void testTranslateWithAutoNames() {
-        stylesheet.addDirective(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true");
-    
+        CssTranslator translator = new CssTranslator();
+        Stylesheet stylesheet = new Stylesheet(new ArrayList<>(), new ArrayList<>());
+ 
+        List<Directive> newDirectiveList = new ArrayList<>();
+        newDirectiveList.add(new Directive(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true"));
+        stylesheet.setDirectives(newDirectiveList);
+ 
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;
-        for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) {
+        for (FeatureTypeStyle ftStyle :
+                translatedStyle.featureTypeStyles()) {
             for (Rule rule : ftStyle.rules()) {
-                assertEquals("Rule name does not match the expected unique name",
-                                String.format("%d", ruleNbr++), rule.getName());
+                assertEquals(
+                        "Rule name does not match the expected unique name",
+                        String.format("%d", ruleNbr++),
+                        rule.getName());
             }
         }
     }
-
     @Test
     public void fillOpacity() throws Exception {
         String css = "* { fill: orange; fill-opacity: 0.5; }";

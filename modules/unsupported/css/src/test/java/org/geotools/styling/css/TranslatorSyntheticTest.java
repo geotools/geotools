@@ -136,7 +136,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         List<Directive> directives = new ArrayList<>();
         Stylesheet stylesheet = new Stylesheet(rules, directives);
         directives.add(new Directive("autoRuleNames", "true"));
-
+        
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;
         for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) {

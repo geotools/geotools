@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.filter.Filter;
@@ -42,8 +43,6 @@ import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.Displacement;
 import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.FeatureTypeStyle;
-import org.geotools.styling.css.Stylesheet;
-import org.geotools.styling.css.CssTranslator;
 import org.geotools.api.style.Fill;
 import org.geotools.api.style.Font;
 import org.geotools.api.style.Graphic;
@@ -71,8 +70,6 @@ import org.geotools.util.Converters;
 import org.geotools.xml.styling.SLDTransformer;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.junit.Before;
-import java.util.ArrayList;
 import org.parboiled.errors.ParserRuntimeException;
 
 public class TranslatorSyntheticTest extends CssBaseTest {
@@ -135,17 +132,19 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     public void testTranslateWithAutoNames() {
         CssTranslator translator = new CssTranslator();
 
-        List<CssRule> rules = new ArrayList();
-        List<Directive> directives = new ArrayList();
-        Stylesheet stylesheet = new Stylesheet(rules,directives)
+        List<CssRule> rules = new ArrayList<>();
+        List<Directive> directives = new ArrayList<>();
+        Stylesheet stylesheet = new Stylesheet(rules, directives);
         directives.add(new Directive("autoRuleNames", "true"));
-        
+
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;
         for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) {
             for (Rule rule : ftStyle.rules()) {
-                assertEquals("Rule name does not match the expected unique name",
-                                String.format("%d", ruleNbr++), rule.getName());
+                assertEquals(
+                        "Rule name does not match the expected unique name",
+                        String.format("%d", ruleNbr++),
+                        rule.getName());
             }
         }
     }

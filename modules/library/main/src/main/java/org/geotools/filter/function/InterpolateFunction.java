@@ -308,9 +308,8 @@ public class InterpolateFunction implements Function {
      * derived from the {@code method} parameter, as {@code java.awt.Color.class} when {@code method
      * == COLOR}, and as {@code java.lang.Double} when {@code method == NUMERIC}.
      *
-     * @throws IllegalArgumentException if the {@code method} parameter is {@code NUMERIC} and
-     *     {@code context == java.awt.Color.class}, or {@code method} is {@code COLOR} and {@code
-     *     context} is specified and is not {@code context == java.awt.Color.class}
+     * @throws IllegalArgumentException if {@code context == java.awt.Color.class} and {@code method
+     *     != COLOR}
      */
     @Override
     public <T> T evaluate(Object object, Class<T> context) {
@@ -372,14 +371,21 @@ public class InterpolateFunction implements Function {
         }
     }
 
+    /**
+     * Returns the default context based on method when it's not specified (e.g. null or
+     * Object.class), for the Converters to return the default object type: Color if method ==
+     * COLOR, Double of method == NUMERIC. If a specific "context" is asked, returns it as-is.
+     */
     @SuppressWarnings("unchecked")
     private <T> Class<T> sanitizeContext(Class<T> context) {
-        if (null == context || Object.class.equals(context)) {
+        final boolean specified = context != null && !Object.class.equals(context);
+        if (!specified) {
             if (method == Method.NUMERIC) {
                 context = (Class<T>) Double.class;
             } else if (method == Method.COLOR) {
                 context = (Class<T>) Color.class;
             } else {
+                // should never reach here for as long as initialize() is called first
                 throw new IllegalStateException("Unknown method, expected NUMERIC or COLOR");
             }
         }
@@ -387,14 +393,10 @@ public class InterpolateFunction implements Function {
     }
 
     private void validateArguments(Class<?> context) {
-        if (method == Method.NUMERIC && Color.class.isAssignableFrom(context)) {
+        if (Color.class.isAssignableFrom(context) && method != Method.COLOR) {
             throw new IllegalArgumentException(
-                    "Trying to evaluate the function as Color but the method parameter is set as NUMERIC");
-        } else if (method == Method.COLOR && !Color.class.isAssignableFrom(context)) {
-            throw new IllegalArgumentException(
-                    "Trying to evaluate the function as "
-                            + context.getSimpleName()
-                            + " but the method parameter is set as COLOR");
+                    "Trying to evaluate the function as Color but the method parameter is set as "
+                            + method);
         }
     }
 
@@ -445,8 +447,7 @@ public class InterpolateFunction implements Function {
                                                     color1.getBlue())),
                                     0,
                                     255);
-            return context.cast(new Color(r, g, b));
-
+            return Converters.convert(new Color(r, g, b), context);
         } else { // assume numeric
             Double value1 = interpPoints.get(segment).getValue(object);
             Double value0 = interpPoints.get(segment - 1).getValue(object);
@@ -503,7 +504,7 @@ public class InterpolateFunction implements Function {
                                                     color1.getBlue())),
                                     0,
                                     255);
-            return context.cast(new Color(r, g, b));
+            return Converters.convert(new Color(r, g, b), context);
 
         } else { // assume numeric
             Double value1 = interpPoints.get(segment).getValue(object);
@@ -570,7 +571,7 @@ public class InterpolateFunction implements Function {
             }
             int b = (int) clamp(Math.round(doCubic(lookupValue, xi, yi)), 0, 255);
 
-            return context.cast(new Color(r, g, b));
+            return Converters.convert(new Color(r, g, b), context);
 
         } else { // numeric
             for (int i = segment - 2, k = 0; k < 4; i++, k++) {

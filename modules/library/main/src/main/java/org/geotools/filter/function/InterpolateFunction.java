@@ -395,8 +395,7 @@ public class InterpolateFunction implements Function {
     private void validateArguments(Class<?> context) {
         if (Color.class.isAssignableFrom(context) && method != Method.COLOR) {
             throw new IllegalArgumentException(
-                    "Trying to evaluate the function as Color but the method parameter is set as "
-                            + method);
+                    "Unable to evaluate Color as the interpolation method is set as " + method);
         }
     }
 

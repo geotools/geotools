@@ -42,7 +42,8 @@ import org.geotools.api.style.ContrastMethod;
 import org.geotools.api.style.Displacement;
 import org.geotools.api.style.ExternalGraphic;
 import org.geotools.api.style.FeatureTypeStyle;
-import org.geotools.styling.StyleSheet;
+import org.geotools.styling.css.Stylesheet;
+import org.geotools.styling.css.CssTranslator;
 import org.geotools.api.style.Fill;
 import org.geotools.api.style.Font;
 import org.geotools.api.style.Graphic;
@@ -71,17 +72,10 @@ import org.geotools.xml.styling.SLDTransformer;
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.Before;
+import java.util.ArrayList;
 import org.parboiled.errors.ParserRuntimeException;
 
 public class TranslatorSyntheticTest extends CssBaseTest {
-    private CssTranslator translator;
-    private StyleSheet stylesheet;
-    
-    @Before
-    public void setUp() {
-        translator = new CssTranslator();
-        stylesheet = new StyleSheet();
-    }
 
     private void assertLiteral(String value, Expression ex) {
         assertTrue(ex instanceof Literal);
@@ -139,8 +133,13 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void testTranslateWithAutoNames() {
-        stylesheet.addDirective(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true");
-    
+        CssTranslator translator = new CssTranslator();
+
+        List<CssRule> rules = new ArrayList();
+        List<Directive> directives = new ArrayList();
+        Stylesheet stylesheet = new Stylesheet(rules,directives)
+        directives.add(new Directive("autoRuleNames", "true"));
+        
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;
         for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) {

@@ -131,7 +131,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertNull(fill.getGraphicFill());
     }
 
-    @Test
+ @Test
     public void testTranslateWithAutoNames() {
         CssTranslator translator = new CssTranslator();
 
@@ -142,14 +142,16 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         
         Style translatedStyle = translator.translate(stylesheet);
         int ruleNbr = 0;
-        for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) {
+        for (FeatureTypeStyle ftStyle :
+                translatedStyle.featureTypeStyles()) {
             for (Rule rule : ftStyle.rules()) {
-                assertEquals("Rule name does not match the expected unique name",
-                                String.format("%d", ruleNbr++), rule.getName());
+                assertEquals(
+                        "Rule name does not match the expected unique name",
+                        String.format("%d", ruleNbr++),
+                        rule.getName());
             }
         }
     }
-
     @Test
     public void fillOpacity() throws Exception {
         String css = "* { fill: orange; fill-opacity: 0.5; }";

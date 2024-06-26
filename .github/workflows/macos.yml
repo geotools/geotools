@@ -9,8 +9,8 @@ concurrency:
 env: 
   OSX_GDAL_VERSION: 3.9.0
   GDAL_INSTALL_PATH: /Users/runner/work/gdal
-  DYLD_LIBRARY_PATH: /Users/runner/work/gdal-$OSX_GDAL_VERSION/build:/Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
-  DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/work/gdal-$OSX_GDAL_VERSION/build:/Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
+  DYLD_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
+  DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
   CMAKE_OPTIONS: -DCFITSIO_ROOT=/opt/homebrew/Cellar/cfitsio  -DPoppler_ROOT=/opt/homebrew/Cellar/poppler -DPROJ_ROOT=/opt/homebrew/Cellar/proj -DSPATIALITE_ROOT=/opt/homebrew/Cellar/libspatialite -DPostgreSQL_ROOT=/opt/homebrew/Cellar/libpq -DEXPAT_ROOT=/opt/homebrew/Cellar/expat -DXercesC_ROOT=/opt/homebrew/Cellar/xerces-c -DSQLite3_ROOT=/opt/homebrew/Cellar/sqlite -DOpenSSL_ROOT=/opt/homebrew/Cellar/openssl -DPNG_ROOT=/opt/homebrew/Cellar/libpng -DJPEG_ROOT=/opt/homebrew/Cellar/jpeg-turbo -DEXPECTED_JPEG_LIB_VERSION=80 -DOpenJPEG_ROOT=/opt/homebrew/Cellar/openjpeg -DCURL_ROOT=/opt/homebrew/Cellar/curl -DGDAL_USE_LIBKML=OFF -DGDAL_USE_ODBC=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON
 
 jobs:
@@ -51,8 +51,9 @@ jobs:
         otool -l $GDAL_INSTALL_PATH/lib/libgdal.35.$OSX_GDAL_VERSION.dylib
         otool -L $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
         otool -l $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
+        export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
         java --version
-        java -Djava.library.path=$PWD/swig/java -classpath $PWD/swig/java/gdal.jar:$PWD/swig/java/build/apps gdalinfo
+        java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $GDAL_INSTALL_PATH/share/java/gdal-$OSX_GDAL_VERSION.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Maven repository caching
       uses: actions/cache@v1
       with:
@@ -66,7 +67,9 @@ jobs:
           sudo sysctl -w net.link.generic.system.hwcksum_tx=0
           sudo sysctl -w net.link.generic.system.hwcksum_rx=0
     - name: Build with Maven
-      run: mvn -B clean install -T2 -Dall --file pom.xml -Dspotless.apply.skip=true
+      run: |
+        export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
+        mvn -B clean install -T2 -Dall --file pom.xml -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

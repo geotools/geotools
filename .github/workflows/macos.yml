@@ -20,10 +20,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK 21
       uses: actions/setup-java@v2
       with:
-        java-version: 11
+        java-version: 21
         distribution: 'temurin'
     - name: Build GDAL
       run: |
@@ -42,27 +42,9 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF ${CMAKE_OPTIONS} ..  
         cmake --build .
         cmake --build . --target install
-        ls $GDAL_INSTALL_PATH/lib/
-        ls $GDAL_INSTALL_PATH/lib/jni/
-        ls /usr/lib/
-        otool -L $GDAL_INSTALL_PATH/lib/libgdal.35.dylib
-        otool -l $GDAL_INSTALL_PATH/lib/libgdal.35.dylib
-        otool -L $GDAL_INSTALL_PATH/lib/libgdal.35.$OSX_GDAL_VERSION.dylib
-        otool -l $GDAL_INSTALL_PATH/lib/libgdal.35.$OSX_GDAL_VERSION.dylib
-        otool -L $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
-        otool -l $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
-        ctest --output-on-failure -R java 
-        export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
         java --version
         ctest --output-on-failure -R java 
-        /Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin/java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $GDAL_INSTALL_PATH/share/java/gdal-$OSX_GDAL_VERSION.jar:$PWD/swig/java/build/apps gdalinfo
-    - name: Maven repository caching
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2/repository
-        key: gt-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          gt-maven-
+        java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $GDAL_INSTALL_PATH/share/java/gdal-$OSX_GDAL_VERSION.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Disable network offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: |
@@ -70,7 +52,6 @@ jobs:
           sudo sysctl -w net.link.generic.system.hwcksum_rx=0
     - name: Build with Maven
       run: |
-        export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
         mvn -B clean install -T2 -Dall --file pom.xml -Dspotless.apply.skip=true
     - name: Remove SNAPSHOT jars from repository
       run: |

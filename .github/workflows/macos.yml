@@ -53,6 +53,7 @@ jobs:
         otool -l $GDAL_INSTALL_PATH/lib/jni/libgdalalljni.dylib
         export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
         java --version
+        ctest -R java
         /Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin/java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $GDAL_INSTALL_PATH/share/java/gdal-$OSX_GDAL_VERSION.jar:$PWD/swig/java/build/apps gdalinfo
     - name: Maven repository caching
       uses: actions/cache@v1

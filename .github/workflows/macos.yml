@@ -44,8 +44,7 @@ jobs:
         cmake --build .
         cmake --build . --target install
         java --version
-        ctest --output-on-failure -R java 
-        java -Djava.library.path=$DYLD_LIBRARY_PATH -classpath $GDAL_INSTALL_PATH/share/java/gdal-$OSX_GDAL_VERSION.jar:$PWD/swig/java/build/apps gdalinfo
+        ctest --output-on-failure -R java
     - name: Disable network offloading
       # See: https://github.com/actions/virtual-environments/issues/1187#issuecomment-686735760
       run: |

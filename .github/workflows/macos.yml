@@ -59,7 +59,7 @@ jobs:
     - name: Build with Maven
       run: |
         export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
-        mvn -B clean install -Dall --file pom.xml -Dspotless.apply.skip=true -Djava.library.path=$DYLD_LIBRARY_PATH
+        mvn -B clean install -Dall --file pom.xml -Dspotless.apply.skip=true -Djava.library.path=$DYLD_LIBRARY_PATH -Dgdal.version=$OSX_GDAL_VERSION
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

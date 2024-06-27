@@ -25,6 +25,7 @@ jobs:
       with:
         java-version: 21
         distribution: 'temurin'
+        architecture: 'arm64'
     - name: Build GDAL
       run: |
         mkdir $GDAL_INSTALL_PATH

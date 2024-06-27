@@ -10,7 +10,6 @@ env:
   OSX_GDAL_VERSION: 3.9.0
   GDAL_INSTALL_PATH: /Users/runner/work/gdal
   DYLD_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
-  DYLD_FALLBACK_LIBRARY_PATH: /Users/runner/work/gdal/lib:/Users/runner/work/gdal/lib/jni:/Users/runner/work/gdal/share/java:/opt/homebrew/lib:/usr/lib
   CMAKE_OPTIONS: -DCFITSIO_ROOT=/opt/homebrew/Cellar/cfitsio  -DPoppler_ROOT=/opt/homebrew/Cellar/poppler -DPROJ_ROOT=/opt/homebrew/Cellar/proj -DSPATIALITE_ROOT=/opt/homebrew/Cellar/libspatialite -DPostgreSQL_ROOT=/opt/homebrew/Cellar/libpq -DEXPAT_ROOT=/opt/homebrew/Cellar/expat -DXercesC_ROOT=/opt/homebrew/Cellar/xerces-c -DSQLite3_ROOT=/opt/homebrew/Cellar/sqlite -DOpenSSL_ROOT=/opt/homebrew/Cellar/openssl -DPNG_ROOT=/opt/homebrew/Cellar/libpng -DJPEG_ROOT=/opt/homebrew/Cellar/jpeg-turbo -DEXPECTED_JPEG_LIB_VERSION=80 -DOpenJPEG_ROOT=/opt/homebrew/Cellar/openjpeg -DCURL_ROOT=/opt/homebrew/Cellar/curl -DGDAL_USE_LIBKML=OFF -DGDAL_USE_ODBC=OFF -DGDAL_USE_ZSTD=OFF -DCMAKE_DISABLE_FIND_PACKAGE_Arrow=ON
 
 jobs:
@@ -43,6 +42,7 @@ jobs:
         cmake -DCMAKE_INSTALL_PREFIX=$GDAL_INSTALL_PATH -DCMAKE_BUILD_TYPE=Release -DBUILD_JAVA_BINDINGS=ON -DBUILD_PYTHON_BINDINGS=OFF ${CMAKE_OPTIONS} ..  
         cmake --build .
         cmake --build . --target install
+        : # Sanity test that the gdal bindings actually work
         ctest --output-on-failure -R java 
     - name: Maven repository caching
       uses: actions/cache@v1
@@ -58,8 +58,7 @@ jobs:
           sudo sysctl -w net.link.generic.system.hwcksum_rx=0
     - name: Build with Maven
       run: |
-        export PATH=/Users/runner/hostedtoolcache/Java_Temurin-Hotspot_jdk/11.0.23-9/x64/Contents/Home/bin:$PATH
-        mvn -B clean install -Dall --file pom.xml -Dspotless.apply.skip=true -Djava.library.path=$DYLD_LIBRARY_PATH -Dgdal.version=3.2.0
+        mvn -B clean install -Dall --file pom.xml -Dspotless.apply.skip=true -Dgdal.version=3.2.0
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}

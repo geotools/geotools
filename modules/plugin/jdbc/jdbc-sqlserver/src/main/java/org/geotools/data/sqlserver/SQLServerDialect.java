@@ -32,6 +32,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -1037,5 +1038,53 @@ public class SQLServerDialect extends BasicSQLDialect {
             }
             return null;
         }
+    }
+
+    @Override
+    public List<ReferencedEnvelope> getOptimizedBounds(
+            String schema, SimpleFeatureType featureType, Connection cx) throws SQLException {
+
+        if (null != dataStore.getVirtualTables().get(featureType.getTypeName())) {
+            return null;
+        }
+
+        // select the x/y of opposing corners of the aggregate envelope
+        final StringBuffer sql = new StringBuffer("SELECT geometry::EnvelopeAggregate(");
+        encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sql);
+        sql.append(").STPointN(1).STX, geometry::EnvelopeAggregate(");
+        encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sql);
+        sql.append(").STPointN(1).STY, geometry::EnvelopeAggregate(");
+        encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sql);
+        sql.append(").STPointN(3).STX, geometry::EnvelopeAggregate(");
+        encodeColumnName(null, featureType.getGeometryDescriptor().getLocalName(), sql);
+        sql.append(").STPointN(3).STY FROM ");
+        encodeTableName(featureType.getTypeName(), sql);
+
+        LOGGER.log(Level.FINE, "Optimized bounds SQL: " + sql);
+        try (Statement st =
+                        cx.createStatement(
+                                ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                ResultSet rs = st.executeQuery(sql.toString())) {
+            if (rs.next()) {
+                // getDouble returns 0 if the value is null, so we need to check for nulls
+                // explicitly
+                if (null == rs.getObject(1)
+                        || null == rs.getObject(2)
+                        || null == rs.getObject(3)
+                        || null == rs.getObject(4)) {
+                    return null;
+                }
+                return Collections.singletonList(
+                        new ReferencedEnvelope(
+                                rs.getDouble(1),
+                                rs.getDouble(3),
+                                rs.getDouble(2),
+                                rs.getDouble(4),
+                                featureType
+                                        .getGeometryDescriptor()
+                                        .getCoordinateReferenceSystem()));
+            }
+        }
+        return null;
     }
 }

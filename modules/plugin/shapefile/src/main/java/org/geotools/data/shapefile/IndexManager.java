@@ -237,6 +237,9 @@ class IndexManager {
 
             File indexFile = URLs.urlToFile(indexURL);
             File shpFile = URLs.urlToFile(shpURL);
+
+            if (store.ignoreIndexStaleness) return !indexFile.exists();
+
             long indexLastModified = indexFile.lastModified();
             long shpLastModified = shpFile.lastModified();
             boolean shpChangedMoreRecently = indexLastModified < shpLastModified;

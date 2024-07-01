@@ -145,6 +145,8 @@ public class CssTranslator {
 
     static final String DIRECTIVE_STYLE_ABSTRACT = "styleAbstract";
 
+    static final String DIRECTIVE_AUTO_RULE_NAMES = "autoRuleNames";
+
     static final int MAX_OUTPUT_RULES_DEFAULT =
             Integer.valueOf(
                     System.getProperty("org.geotools.css." + DIRECTIVE_MAX_OUTPUT_RULES, "10000"));
@@ -321,8 +323,17 @@ public class CssTranslator {
                             + "any symbolization. The properties activating the symbolizers are fill, "
                             + "stroke, mark, label, raster-channels, have any been used in a rule matching any feature?");
         }
+        Style translated = styleBuilder.build();
 
-        return styleBuilder.build();
+        if (Boolean.parseBoolean(stylesheet.getDirectiveValue(DIRECTIVE_AUTO_RULE_NAMES))) {
+            int ruleNbr = 0;
+            for (FeatureTypeStyle ftStyle : translated.featureTypeStyles()) {
+                for (Rule rule : ftStyle.rules()) {
+                    rule.setName(String.format("%d", ruleNbr++));
+                }
+            }
+        }
+        return translated;
     }
 
     private List<CssRule> expandNested(List<CssRule> topRules) {

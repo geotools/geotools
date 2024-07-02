@@ -33,6 +33,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.JsonArrayContainsFunction;
 import org.geotools.filter.function.JsonPointerFunction;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.Version;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
 
@@ -44,6 +45,11 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     public PostgisFilterToSQL(PostGISDialect dialect) {
         helper = new FilterToSqlHelper(this);
+        pgDialect = dialect;
+    }
+
+    public PostgisFilterToSQL(PostGISDialect dialect, Version pgVersion) {
+        helper = new FilterToSqlHelper(this, pgVersion);
         pgDialect = dialect;
     }
 

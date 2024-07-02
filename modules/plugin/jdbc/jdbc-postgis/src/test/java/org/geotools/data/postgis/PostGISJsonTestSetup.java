@@ -30,6 +30,8 @@ public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
 
     protected boolean supportJsonB = false;
 
+    protected boolean supportJsonPathExists = false;
+
     @Override
     protected void setUpData() throws Exception {
         dropTestJsonTable();
@@ -39,11 +41,15 @@ public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
                 ResultSet rs = st.executeQuery("SELECT current_setting('server_version_num')")) {
             if (rs.next()) {
                 try {
+                    int version = Integer.parseInt(rs.getString(1));
                     // JSONB has been introduced with version 9.4
-                    supportJsonB = Integer.parseInt(rs.getString(1)) >= 90004;
+                    supportJsonB = version >= 90004;
+                    // JsonPathExists has been introduced with version 12.0
+                    supportJsonPathExists = version >= 120000;
                 } catch (NumberFormatException nfe) {
                     // unable to determine PostgreSQL version because non-integer returned
                     supportJsonB = false;
+                    supportJsonPathExists = false;
                 }
             }
         } catch (PSQLException pse) {
@@ -121,6 +127,16 @@ public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
                         + ");"
                         + "INSERT INTO \"jsontest\" VALUES (9, 'arrayEntryStr', '{\"arrayStrValues\":[\"EL1\",\"EL2\",\"EL3\"]}'"
                         + (supportJsonB ? ", '{\"arrayStrValues\":[\"EL1\",\"EL2\",\"EL3\"]}'" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (10, 'arrayEntryStr', '[{\"type\": \"MAIN\", \"version\": 1 }, {\"type\": \"OTHERS\", \"version\": 2 }]'"
+                        + (supportJsonB
+                                ? ", '[{\"type\": \"MAIN\", \"version\": 1 }, {\"type\": \"OTHERS\", \"version\": 2 }]'"
+                                : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (11, 'arrayEntryStr', '[{\"type\": \"DEFAULT\", \"version\": 3 }, {\"type\": \"UNKNOWN\", \"version\": 4 }]'"
+                        + (supportJsonB
+                                ? ", '[{\"type\": \"DEFAULT\", \"version\": 3 }, {\"type\": \"UNKNOWN\", \"version\": 4 }]'"
+                                : "")
                         + ");";
 
         run(sql);

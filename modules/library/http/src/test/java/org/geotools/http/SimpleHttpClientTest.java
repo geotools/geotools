@@ -30,22 +30,31 @@ import static java.util.Collections.singletonMap;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.http.ssl.SSLContextBuilder;
+import com.github.tomakehurst.wiremock.http.ssl.TrustSelfSignedStrategy;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Map;
+import javax.net.ssl.SSLContext;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import wiremock.org.apache.commons.io.IOUtils;
 
 public class SimpleHttpClientTest {
 
     // use a dynamic http port to avoid conflicts
     @Rule
     public WireMockRule wireMockRule =
-            new WireMockRule(WireMockConfiguration.options().dynamicPort());
+            new WireMockRule(WireMockConfiguration.options().dynamicPort().dynamicHttpsPort());
 
     @Test
     public void testBasicHeader() throws IOException {
@@ -154,5 +163,92 @@ public class SimpleHttpClientTest {
                         .withQueryParam("key2", equalTo("value2"))
                         .withQueryParam("key2", equalTo("duplicate"))
                         .withQueryParam("key%3", equalTo("value/3")));
+    }
+
+    /**
+     * Tests if redirection (HTTP -> HTTPS) is followed
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testRedirect() throws IOException {
+        trustSelfSignedCertificate();
+        String expectedContent = "<response>Redirected content</response>";
+
+        String redirectURL =
+                String.format("https://localhost:" + wireMockRule.httpsPort() + "/test-redirected");
+        stubFor(
+                get(urlEqualTo("/test-redirect"))
+                        .willReturn(
+                                aResponse().withStatus(301).withHeader("Location", redirectURL)));
+        stubFor(
+                get(urlEqualTo("/test-redirected"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(200)
+                                        .withHeader("Content-Type", "text/xml")
+                                        .withBody(expectedContent)));
+
+        SimpleHttpClient client = new SimpleHttpClient();
+
+        HTTPResponse response =
+                client.get(new URL("http://localhost:" + wireMockRule.port() + "/test-redirect"));
+        String actualContent =
+                IOUtils.toString(response.getResponseStream(), StandardCharsets.UTF_8);
+
+        Assert.assertEquals(actualContent, expectedContent);
+        verify(getRequestedFor(urlEqualTo("/test-redirected")));
+    }
+
+    /**
+     * Tests that the maximum number of redirections is respected in case of a redirection loop
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testMaxRedirectionLimit() throws IOException {
+        trustSelfSignedCertificate();
+        String httpRedirectURL =
+                String.format(
+                        "http://localhost:" + wireMockRule.port() + "/test-redirect-loop-http");
+        String httpsRedirectURL =
+                String.format(
+                        "https://localhost:"
+                                + wireMockRule.httpsPort()
+                                + "/test-redirect-loop-https");
+        stubFor(
+                get(urlEqualTo("/test-redirect-loop-http"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(301)
+                                        .withHeader("Location", httpsRedirectURL)));
+        stubFor(
+                get(urlEqualTo("/test-redirect-loop-https"))
+                        .willReturn(
+                                aResponse()
+                                        .withStatus(301)
+                                        .withHeader("Location", httpRedirectURL)));
+
+        SimpleHttpClient client = new SimpleHttpClient();
+        client.get(new URL(httpRedirectURL));
+
+        verify(9, getRequestedFor(urlEqualTo("/test-redirect-loop-http")));
+        verify(8, getRequestedFor(urlEqualTo("/test-redirect-loop-https")));
+    }
+
+    /** Trust wiremock self-signed certificate in order to perform test HTTPS requests */
+    private void trustSelfSignedCertificate() {
+        SSLContext ctx;
+        try {
+            SSLContextBuilder sslContextBuilder =
+                    SSLContextBuilder.create()
+                            .loadTrustMaterial(null, new TrustSelfSignedStrategy());
+            ctx = sslContextBuilder.build();
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
+        if (ctx != null) {
+            SSLContext.setDefault(ctx);
+        }
     }
 }

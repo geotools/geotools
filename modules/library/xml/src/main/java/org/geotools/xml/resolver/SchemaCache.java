@@ -23,13 +23,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.http.HTTPClient;
+import org.geotools.http.HTTPClientFinder;
+import org.geotools.http.HTTPResponse;
 import org.geotools.util.URLs;
 
 /**
@@ -108,10 +110,6 @@ public class SchemaCache {
             }
         }
     }
-
-    /** Max number of attempts to follow a redirect to avoid redirect loop * */
-    private static final int MAX_FOLLOW_REDIRECT =
-            Integer.getInteger("org.geotools.xml.schema.maxFollowRedirect", 16);
 
     /**
      * A cache of XML schemas (or other file types) rooted in the given directory, with optional
@@ -219,20 +217,14 @@ public class SchemaCache {
         return download(location, DEFAULT_DOWNLOAD_BLOCK_SIZE);
     }
 
-    static byte[] download(URI location, int blockSize) {
-        return download(location, blockSize, 0);
-    }
-
     /**
      * Retrieve the contents of a remote URL.
      *
      * @param location and absolute http/https URL.
      * @param blockSize download block size
-     * @param redirectionCount the number of redirection attempts already performed while
-     *     downloading
      * @return the bytes contained by the resource, or null if it could not be downloaded
      */
-    static byte[] download(URI location, int blockSize, int redirectionCount) {
+    static byte[] download(URI location, int blockSize) {
         try {
             URL url = location.toURL();
             String protocol = url.getProtocol();
@@ -240,27 +232,27 @@ public class SchemaCache {
                 LOGGER.warning("Unexpected download URL protocol: " + protocol);
                 return null;
             }
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(downloadTimeout);
-            connection.setReadTimeout(downloadTimeout);
-            connection.setUseCaches(false);
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                if (hasRedirect(responseCode))
-                    return followRedirect(connection, blockSize, redirectionCount);
+            HTTPClient httpClient = HTTPClientFinder.createClient();
+            httpClient.setConnectTimeout(downloadTimeout);
+            httpClient.setReadTimeout(downloadTimeout);
+            HTTPResponse httpResponse;
+            try {
+                httpResponse = httpClient.get(url);
+            } catch (IOException e) {
+                // don't throw an exception if status code >= 400
                 LOGGER.warning(
                         String.format(
-                                "Unexpected response \"%d %s\" while downloading %s",
-                                connection.getResponseCode(),
-                                connection.getResponseMessage(),
-                                location.toString()));
+                                "Unexpected response \"%s\" while downloading %s",
+                                e.getCause(), url));
+                return null;
+            }
+            if (httpResponse == null) {
                 return null;
             }
 
             // read all the blocks into a list
             List<byte[]> blocks = new LinkedList<>();
-            try (InputStream input = connection.getInputStream()) {
+            try (InputStream input = httpResponse.getResponseStream()) {
                 while (true) {
                     byte[] block = new byte[blockSize];
                     int count = input.read(block);
@@ -455,37 +447,5 @@ public class SchemaCache {
         File defaultXmlFile = new File(workspacesDir, "default.xml");
         if (!defaultXmlFile.exists()) return false;
         return true;
-    }
-
-    private static boolean hasRedirect(int responseCode) {
-        return responseCode == HttpURLConnection.HTTP_SEE_OTHER
-                || responseCode == HttpURLConnection.HTTP_MOVED_PERM
-                || responseCode == HttpURLConnection.HTTP_MOVED_TEMP;
-    }
-
-    private static byte[] followRedirect(
-            HttpURLConnection connection, int blockSize, int redirectionCount) {
-        String redirect = connection.getHeaderField("Location");
-        byte[] result = null;
-        if (redirect == null) {
-            LOGGER.warning("Tried to follow redirect but no url was provided in Location header");
-        } else if (redirectionCount <= MAX_FOLLOW_REDIRECT) {
-            redirectionCount++;
-            try {
-                URI redirectURL = new URI(redirect);
-                LOGGER.info("Following redirect to " + redirect);
-                result = download(redirectURL, blockSize, redirectionCount);
-            } catch (URISyntaxException uri) {
-                LOGGER.warning(
-                        "Tried to follow redirect but invalid url was provided in Location header: "
-                                + redirect);
-            }
-        } else {
-            LOGGER.warning(
-                    "Max number of follow redirect attempts ("
-                            + MAX_FOLLOW_REDIRECT
-                            + ") reached. Returning null");
-        }
-        return result;
     }
 }

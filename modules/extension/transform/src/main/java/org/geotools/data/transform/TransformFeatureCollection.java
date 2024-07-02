@@ -44,6 +44,7 @@ import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -69,12 +70,19 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
         this.query = query;
     }
 
-    /** Creates a sub-schema with only the selected attributes */
+    /**
+     * Creates a sub-schema with only the selected attributes.
+     *
+     * <p>Transformer is going to trust that the source can handle any reprojection.
+     */
     static SimpleFeatureType retypeSchema(SimpleFeatureType schema, Query query) {
-        if (query.getPropertyNames() == Query.ALL_NAMES) {
+        if (query.getPropertyNames() == Query.ALL_NAMES
+                && CRS.equalsIgnoreMetadata(
+                        schema.getCoordinateReferenceSystem(),
+                        query.getCoordinateSystemReproject())) {
             return schema;
         } else {
-            return SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
+            return SimpleFeatureTypeBuilder.retype(schema, query);
         }
     }
 
@@ -103,6 +111,8 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             SimpleFeatureIterator transformed =
                     new TransformFeatureIteratorWrapper(fi, transformer);
 
+            // See if we need to reproject
+
             // see if we have to apply sort
             if (query.getSortBy() != null && txQuery.getSortBy() == null) {
                 transformed =
@@ -123,7 +133,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
 
             result = new SimpleFeatureIteratorIterator(transformed);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Transform failure: " + e.getLocalizedMessage(), e);
         } finally {
             // if result is null, an exception has occurred, close the wrapped iterator
             if (result == null) {

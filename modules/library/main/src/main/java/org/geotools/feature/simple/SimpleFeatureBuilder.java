@@ -361,6 +361,12 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
      * @param id FeatureID for the generated feature, use null to allow one to be supplied for you
      */
     public static SimpleFeature build(SimpleFeatureType type, List<Object> values, String id) {
+        if (type.getAttributeCount() != values.size()) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "%s attributes %d count does not match %d values provided",
+                            type.getTypeName(), type.getAttributeCount(), values.size()));
+        }
         return build(type, values.toArray(), id);
     }
 

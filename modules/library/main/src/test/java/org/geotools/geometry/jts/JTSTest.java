@@ -444,6 +444,8 @@ public class JTSTest extends JTSTestBase {
         Point world = (Point) JTS.toGeographic(point, gda94);
         assertEquals(point.getX(), world.getY(), 0.00000005);
         assertEquals(point.getY(), world.getX(), 0.00000005);
+
+        assertEquals(gda94, JTS.getCRS(world));
     }
 
     @Test

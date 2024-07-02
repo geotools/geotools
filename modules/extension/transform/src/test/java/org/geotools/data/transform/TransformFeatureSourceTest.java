@@ -42,12 +42,15 @@ import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.filter.sort.SortOrder;
 import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.filter.text.cql2.CQL;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -147,6 +150,33 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         ReferencedEnvelope re = transformed.getBounds();
         ReferencedEnvelope ae = STATES.getBounds();
         assertEquals(re, ae);
+    }
+
+    /** Check transform reprojection works (for GEOS-11435) */
+    @Test
+    public void testReprojectWithSelect() throws Exception {
+        SimpleFeatureSource transformed = transformWithSelection();
+        Query query =
+                new Query("states_mini", Filter.INCLUDE, new String[] {"the_geom", "persons"});
+        query.setHandle("web mercator");
+        query.setCoordinateSystem(DefaultGeographicCRS.WGS84);
+        CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3857");
+        query.setCoordinateSystemReproject(sphericalMercator);
+
+        SimpleFeatureCollection collection = transformed.getFeatures(query);
+        assertEquals(
+                "Reproject to EPSG:3857",
+                sphericalMercator,
+                collection.getSchema().getCoordinateReferenceSystem());
+
+        try (SimpleFeatureIterator iterator = collection.features()) {
+            while (iterator.hasNext()) {
+                SimpleFeature feature = iterator.next();
+                Geometry geom = (Geometry) feature.getDefaultGeometry();
+                assertEquals(JTS.getCRS(geom), sphericalMercator);
+            }
+        }
+        assertEquals("everything", transformed.getCount(Query.ALL), collection.size());
     }
 
     @Test

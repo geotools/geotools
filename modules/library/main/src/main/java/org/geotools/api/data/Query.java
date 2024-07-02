@@ -31,6 +31,7 @@ import org.geotools.api.filter.identity.Version;
 import org.geotools.api.filter.sort.SortBy;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -955,6 +956,18 @@ public class Query {
                 if (i < (properties.size() - 1)) {
                     returnString.append(", ");
                 }
+            }
+
+            returnString.append("]");
+        }
+        if (coordinateSystem != null || coordinateSystemReproject != null) {
+            returnString.append("\n   [");
+            if (coordinateSystem != null) {
+                returnString.append(CRS.toSRS(coordinateSystem));
+            }
+            if (coordinateSystemReproject != null) {
+                returnString.append(" --> ");
+                returnString.append(CRS.toSRS(coordinateSystemReproject));
             }
 
             returnString.append("]");

@@ -43,6 +43,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.referencing.CRS;
@@ -297,7 +298,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         LineString linestring = (LineString) value;
         assertEquals(linestring.getDimension(), 1);
         // 1D SRS should be created
-        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) linestring.getUserData();
+        CoordinateReferenceSystem crs = JTS.getCRS(linestring);
         assertEquals(1, crs.getCoordinateSystem().getDimension());
         assertEquals("EPSG:9902", crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);
@@ -318,7 +319,7 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         LineString linestring = (LineString) value;
         assertEquals(linestring.getDimension(), 1);
         // 1D SRS should be created
-        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) linestring.getUserData();
+        CoordinateReferenceSystem crs = JTS.getCRS(linestring);
         assertEquals(1, crs.getCoordinateSystem().getDimension());
         assertEquals(customSRS, crs.getName().getCode());
         assertEquals(linestring.getCoordinateN(0).x, 5.0, 0);

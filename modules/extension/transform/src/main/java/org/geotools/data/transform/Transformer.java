@@ -255,6 +255,11 @@ class Transformer {
         txQuery.setSortBy(getTransformedSortBy(query));
         txQuery.setFilter(txFilter);
 
+        // Right now source is responsible for handling reprojection
+        // (we may change this in the future, to provide geometry for functions such as buffer)
+        txQuery.setCoordinateSystem(query.getCoordinateSystem());
+        txQuery.setCoordinateSystemReproject(query.getCoordinateSystemReproject());
+
         // can we support the required sorting?
         QueryCapabilities caps = source.getQueryCapabilities();
         if (query.getSortBy() != null && !caps.supportsSorting(txQuery.getSortBy())) {

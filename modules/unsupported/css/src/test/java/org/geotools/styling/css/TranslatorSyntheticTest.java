@@ -30,6 +30,7 @@ import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.transform.TransformerException;
 import org.geotools.api.filter.Filter;
@@ -129,12 +130,20 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     @Test
     public void testTranslateWithAutoNames() {
+        // Define the CSS string
         String css = "* { fill: #FF0000; }";
-        Style translatedStyle = translate(css);
+        Stylesheet stylesheet = parse(css);
+
+        List<Directive> directives = new ArrayList<>();
+        directives.add(new Directive(CssTranslator.DIRECTIVE_AUTO_RULE_NAMES, "true"));
+        stylesheet.setDirectives(directives);
+
+        Style translatedStyle = new CssTranslator().translate(stylesheet);
 
         int ruleNbr = 0;
         for (FeatureTypeStyle ftStyle : translatedStyle.featureTypeStyles()) {
             for (Rule rule : ftStyle.rules()) {
+                assertNotNull("Rule name is null", rule.getName());
                 assertEquals(
                         "Rule name does not match the expected unique name",
                         String.format("%d", ruleNbr++),

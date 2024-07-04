@@ -104,6 +104,20 @@ public class FeatureConversions {
         while (dataBuffer.hasRemaining()) channel.write(dataBuffer);
     }
 
+    public static int calcSerializeSize(SimpleFeature feature, HeaderMeta headerMeta)
+            throws IOException {
+
+        FlatBufferBuilder builder = FlatBuffers.newBuilder(16 * 1024);
+        final int propertiesOffset = createProperiesVector(feature, builder, headerMeta);
+        org.locationtech.jts.geom.Geometry geometry =
+                (org.locationtech.jts.geom.Geometry) feature.getDefaultGeometry();
+        final int geometryOffset =
+                geometry == null
+                        ? 0
+                        : GeometryConversions.serialize(builder, geometry, headerMeta.geometryType);
+        return Feature.createFeature(builder, geometryOffset, propertiesOffset, 0);
+    }
+
     protected static int buildGeometry(
             SimpleFeature feature, FlatBufferBuilder builder, byte geometryType)
             throws IOException {

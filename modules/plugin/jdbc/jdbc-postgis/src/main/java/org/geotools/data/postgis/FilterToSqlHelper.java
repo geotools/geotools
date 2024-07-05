@@ -16,6 +16,8 @@
  */
 package org.geotools.data.postgis;
 
+import static org.geotools.data.postgis.PostGISDialect.PGSQL_V_12_0;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -26,6 +28,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -108,6 +111,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
+import org.geotools.util.Version;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -126,9 +130,17 @@ class FilterToSqlHelper {
     Writer out;
     boolean looseBBOXEnabled;
     boolean encodeBBOXFilterAsEnvelope;
+    boolean jsonPathExistsSupported;
 
     public FilterToSqlHelper(FilterToSQL delegate) {
         this.delegate = delegate;
+        this.jsonPathExistsSupported = false;
+    }
+
+    public FilterToSqlHelper(FilterToSQL delegate, Version pgVersion) {
+        this.delegate = delegate;
+        this.jsonPathExistsSupported =
+                postgresMajorVersionIsEqualOrGreaterThan(pgVersion, PGSQL_V_12_0);
     }
 
     public static FilterCapabilities createFilterCapabilities(boolean encodeFunctions) {
@@ -710,14 +722,49 @@ class FilterToSqlHelper {
 
         String[] strJsonPath = escapeJsonLiteral(jsonPath.getValue().toString()).split("/");
         if (strJsonPath.length > 0) {
-            column.accept(delegate, null);
-            out.write("::jsonb @> '{ ");
-            out.write(buildJsonFromStrPointer(strJsonPath, 0, expected));
-            out.write(" }'::jsonb");
+            // jsonb_path_exists was added in postgres 12, thus we are enabling only for 12 or later
+            // versions
+            if (jsonPathExistsSupported) {
+                out.write("jsonb_path_exists(");
+                column.accept(delegate, null);
+                out.write("::jsonb, '$");
+                out.write(constructPath(strJsonPath));
+                out.write(" ? ");
+                out.write(constructEquality(strJsonPath, expected));
+                out.write("')");
+            } else {
+                column.accept(delegate, null);
+                out.write("::jsonb @> '{ ");
+                out.write(buildJsonFromStrPointer(strJsonPath, 0, expected));
+                out.write(" }'::jsonb");
+            }
         } else {
             throw new IllegalArgumentException(
                     "Cannot encode filter Invalid pointer " + jsonPath.getValue());
         }
+    }
+
+    private String constructEquality(String[] jsonPath, Expression expected) {
+        int lastIndex = jsonPath.length - 1;
+        Object value = ((LiteralExpressionImpl) expected).getValue();
+        // Doing the explicit cast for each type because without it compiler will complain that
+        // Object can not be used for %d or %f in formatter
+        if (value instanceof Integer) {
+            return String.format("(@.%s == %d)", jsonPath[lastIndex], (Integer) value);
+        } else if (value instanceof Float) {
+            return String.format("(@.%s == %f)", jsonPath[lastIndex], (Float) value);
+        } else if (value instanceof Double) {
+            return String.format("(@.%s == %f)", jsonPath[lastIndex], (Double) value);
+        }
+        return String.format("(@.%s == \"%s\")", jsonPath[lastIndex], value);
+    }
+
+    private String constructPath(String[] jsonPath) {
+        StringJoiner joiner = new StringJoiner(".");
+        for (int i = 0; i < jsonPath.length - 1; i++) {
+            joiner.add(jsonPath[i]);
+        }
+        return joiner.toString();
     }
 
     private static String escapeJsonLiteral(String literal) {
@@ -1253,5 +1300,17 @@ class FilterToSqlHelper {
             return visit(equalTo, extraData);
         }
         return null;
+    }
+
+    private boolean postgresMajorVersionIsEqualOrGreaterThan(
+            Version currentVersion, Version expectedVersion) {
+        if (currentVersion != null && expectedVersion != null) {
+            Comparable<?> current = currentVersion.getMajor();
+            Comparable<?> expected = expectedVersion.getMajor();
+            if (current instanceof Integer && expected instanceof Integer) {
+                return (Integer) current >= (Integer) expected;
+            }
+        }
+        return false;
     }
 }

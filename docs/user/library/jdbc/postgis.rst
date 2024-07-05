@@ -64,6 +64,9 @@ Advanced
 |                        | be encoded into their SQL equivalent           |
 +------------------------+------------------------------------------------+
 
+By default JsonArrayContains function will be delegated to @> operator. However for postgres versions >= 12 it will be delegated to jsonPathExists function.
+jsonPathExists is able to search values in the root level array.
+
 Example use::
   
   params.put(PostgisNGDataStoreFactory.LOOSEBBOX, true );

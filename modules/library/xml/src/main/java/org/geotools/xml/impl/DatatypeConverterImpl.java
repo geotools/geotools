@@ -147,7 +147,7 @@ public class DatatypeConverterImpl implements DatatypeConverterInterface {
      * @param arg0 The input string being parsed.
      * @param lenient parameter used for allowing lenient parsing
      * @return The input string converted into an instance of {@link java.util.Calendar}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public Calendar parseDateTime(String arg0, boolean lenient) {
         XsDateTimeFormat format = new XsDateTimeFormat();

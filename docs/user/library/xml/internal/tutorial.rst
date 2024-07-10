@@ -65,6 +65,7 @@ First we must configure the ``pom.xml`` file of our project to use the `maven-ja
 
 3. At this point, your pom should look like this :download:`pom.xml </artifacts/xml/pom2.xml>` .
 
+// TODO
 4. Now we are ready to generate the model.
 
    Run the JAXB2 code generation::

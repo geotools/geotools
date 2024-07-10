@@ -19,7 +19,7 @@
            <groupId>org.geotools.xsd</groupId>
            <artifactId>gt-xsd-core</artifactId>
            <version>32-SNAPSHOT</version>
-        </dependency>    
+        </dependency>
     </dependencies>
 
     <build>
@@ -28,7 +28,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>jaxb2-maven-plugin</artifactId>
-          <version>2.3</version>
+          <version>3.2.0</version>
           <executions>
             <execution>
               <goals>
@@ -44,7 +44,7 @@
           </sources>
         </configuration>
       </plugin>
-            
+
       <!--  geotools generator -->
       <plugin>
         <groupId>org.geotools.maven</groupId>
@@ -53,8 +53,8 @@
           <configuration>
             <schemaLocation>po.xsd</schemaLocation>
             <schemaSourceDirectory>${project.basedir}/src/main/resources</schemaSourceDirectory>
-            <destinationPackage>org.geotools.po.bindings</destinationPackage>         
-            <generateConfiguration>true</generateConfiguration>          
+            <destinationPackage>org.geotools.po.bindings</destinationPackage>
+            <generateConfiguration>true</generateConfiguration>
             <generateBindingInterface>true</generateBindingInterface>
             <generateElementBindings>true</generateElementBindings>
             <generateAttributeBindings>true</generateAttributeBindings>

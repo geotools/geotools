@@ -179,14 +179,14 @@
       <artifactId>jt-vectorbinarize</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
       <!-- version managed in parent pom -->
     </dependency>
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>${jaxb.runtime.version}</version>
+      <version>${jakarta.runtime.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

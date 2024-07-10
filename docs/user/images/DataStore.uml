@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.geotools.api.data.DataStore</OriginalElement>
+  <nodes>
+    <node x="-2861.5" y="42.31999999999999">org.geotools.api.data.FeatureSource</node>
+    <node x="-3395.4159999999997" y="42.31999999999999">org.geotools.api.data.DataAccess</node>
+    <node x="-3573.4386666666664" y="500.9960000000001">org.geotools.api.data.DataStore</node>
+    <node x="-2839.5" y="493.0906666666667">org.geotools.api.data.SimpleFeatureSource</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.geotools.api.data.DataStore" target="org.geotools.api.data.DataAccess" relationship="INTERFACE_GENERALIZATION">
+      <point x="329.5" y="15.0" />
+      <point x="-3222.4159999999997" y="661.9960000000001" />
+      <point x="-0.0" y="111.5" />
+    </edge>
+    <edge source="org.geotools.api.data.SimpleFeatureSource" target="org.geotools.api.data.FeatureSource" relationship="INTERFACE_GENERALIZATION">
+      <point x="-34.0" y="-54.0" />
+      <point x="-15.0" y="180.5" />
+    </edge>
+    <edge source="org.geotools.api.data.DataStore" target="org.geotools.api.data.SimpleFeatureSource" relationship="DEPENDENCY">
+      <point x="329.5" y="-99.90533333333337" />
+      <point x="-164.5" y="0.0" />
+    </edge>
+    <edge source="org.geotools.api.data.DataAccess" target="org.geotools.api.data.FeatureSource" relationship="DEPENDENCY">
+      <point x="173.0" y="-0.0" />
+      <point x="-2694.0" y="153.82" />
+      <point x="-0.0" y="180.5" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="true" x="-3050.0" y="417.5" />
+  <SelectedNodes>
+    <node>org.geotools.api.data.SimpleFeatureSource</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

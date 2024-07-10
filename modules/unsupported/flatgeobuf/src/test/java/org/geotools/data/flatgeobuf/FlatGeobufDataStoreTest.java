@@ -443,6 +443,101 @@ public class FlatGeobufDataStoreTest {
     }
 
     @Test
+    public void writePolygonsIndexed() throws Exception {
+        File file = temporaryFolder.newFile("polygons_indexed.fgb");
+        file.delete();
+        Map<String, Serializable> params = new HashMap<>();
+        URL url = file.toURI().toURL();
+        params.put("url", url);
+        params.put(FlatGeobufDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
+        DataStore store = DataStoreFinder.getDataStore(params);
+
+        // Write
+        SimpleFeatureType featureType =
+                DataUtilities.createType("lines", "geom:Polygon,name:String,id:int");
+        store.createSchema(featureType);
+        SimpleFeatureStore featureStore =
+                (SimpleFeatureStore) store.getFeatureSource("polygons_indexed");
+        WKTReader reader = new WKTReader();
+        SimpleFeature feature1 =
+                SimpleFeatureBuilder.build(
+                        featureType,
+                        new Object[] {
+                            reader.read(
+                                    "POLYGON ((59.0625 57.704147, 37.617187 24.527135, 98.789062 36.031332, "
+                                            + "59.062499 57.704147, 59.0625 57.704147))"),
+                            "ABC",
+                            1
+                        },
+                        "location.1");
+        SimpleFeature feature2 =
+                SimpleFeatureBuilder.build(
+                        featureType,
+                        new Object[] {
+                            reader.read(
+                                    "POLYGON ((-72.773438 58.077876, -89.296876 17.644022, -37.265626 -2.460181, "
+                                            + "-2.109376 42.811522, -15.117189 60.413853, -50.976564 29.840645, -64.687502 39.909737, "
+                                            + "-58.71094 56.365251, -72.77344 58.077877, -72.773438 58.077876))"),
+                            "DEF",
+                            2
+                        },
+                        "location.2");
+        SimpleFeature feature3 =
+                SimpleFeatureBuilder.build(
+                        featureType,
+                        new Object[] {
+                            reader.read(
+                                    "POLYGON ((12.65625 63.548552, 12.65625 69.534517, 29.179687 69.534517, "
+                                            + "29.179687 63.548552, 12.65625 63.548552))"),
+                            "GHI",
+                            3
+                        },
+                        "location.3");
+        SimpleFeature feature4 =
+                SimpleFeatureBuilder.build(
+                        featureType,
+                        new Object[] {
+                            reader.read(
+                                    "POLYGON ((-22.5 67.875541, -22.5 73.124945, -8.789062 73.124945, "
+                                            + "-8.789062 67.875541, -22.5 67.875541))"),
+                            "JKL",
+                            4
+                        },
+                        "location.4");
+        SimpleFeatureCollection collection =
+                DataUtilities.collection(feature1, feature2, feature3, feature4);
+        featureStore.addFeatures(collection);
+
+        // Read
+        SimpleFeatureType schema = featureStore.getSchema();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        String geometryPropertyName = schema.getGeometryDescriptor().getLocalName();
+        CoordinateReferenceSystem targetCRS =
+                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
+        Envelope env = new Envelope(30, 100, 20, 60);
+        ReferencedEnvelope bbox = new ReferencedEnvelope(env, targetCRS);
+        Filter filter = ff.bbox(ff.property(geometryPropertyName), bbox);
+        Query query = new Query(schema.getTypeName(), filter);
+        SimpleFeatureCollection featureCollection = featureStore.getFeatures(query);
+        assertEquals(1, featureCollection.size());
+        try (SimpleFeatureIterator it = featureCollection.features()) {
+            int c = 0;
+            while (it.hasNext()) {
+                SimpleFeature feature = it.next();
+                assertEquals(
+                        "POLYGON ((59.0625 57.704147, 37.617187 24.527135, 98.789062 36"
+                                + ".031332, "
+                                + "59.062499 57.704147, 59.0625 57.704147))",
+                        feature.getDefaultGeometry().toString());
+                assertEquals(1, feature.getAttribute("id"));
+                assertEquals("ABC", feature.getAttribute("name"));
+                c++;
+            }
+        }
+        store.dispose();
+    }
+
+    @Test
     public void readMultiPoints() throws Exception {
         URL url = TestData.url(FlatGeobufDataStore.class, "multipoints.fgb");
         Map<String, Serializable> params = new HashMap<>();

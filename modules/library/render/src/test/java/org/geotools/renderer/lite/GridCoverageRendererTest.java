@@ -1867,6 +1867,37 @@ public class GridCoverageRendererTest {
     }
 
     @Test
+    public void testOversampleBilinear() throws Exception {
+        // smal bbox request
+        MapContent content = new MapContent();
+        content.getViewport()
+                .setBounds(new ReferencedEnvelope(-10, -7, 3, 6, DefaultGeographicCRS.WGS84));
+        RasterSymbolizer rs = buildRainColorMap();
+        final Style style = new StyleBuilder().createStyle(rs);
+        content.addLayer(new GridReaderLayer(rainReader, style));
+
+        final StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(content);
+        Map<Object, Object> rendererParams = new HashMap<>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+        renderer.setJava2DHints(
+                new Hints(
+                        RenderingHints.KEY_INTERPOLATION,
+                        RenderingHints.VALUE_INTERPOLATION_BILINEAR));
+
+        BufferedImage image =
+                RendererBaseTest.showRender(
+                        "oversampleBilinear", renderer, 1000, content.getViewport().getBounds());
+        ImageAssert.assertEquals(
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/rainOversampleBilinear.png"),
+                image,
+                1000);
+    }
+
+    @Test
     public void testHarvestSpatialTwoReaders() throws Exception {
         File source = TestData.file(GridCoverageReaderHelperTest.class, "red_footprint_test");
         File testDataDir = org.geotools.test.TestData.file(this, ".");

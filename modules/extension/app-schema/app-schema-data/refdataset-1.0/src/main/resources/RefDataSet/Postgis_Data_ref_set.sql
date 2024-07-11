@@ -473,8 +473,8 @@ CREATE TABLE mappedfeature_geolstructure (
     capturescale_id numeric(25,0),
     shape public.geometry NOT NULL,
     geologicalfeature_id numeric(25,0),
-    CONSTRAINT enforce_dims_shape CHECK ((public.ndims(shape) = 2)),
-    CONSTRAINT enforce_srid_shape CHECK ((public.srid(shape) = 4283))
+    CONSTRAINT enforce_dims_shape CHECK ((public.st_ndims(shape) = 2)),
+    CONSTRAINT enforce_srid_shape CHECK ((public.st_srid(shape) = 4283))
 );
 
 
@@ -493,8 +493,8 @@ CREATE TABLE mappedfeature_geolunit (
     capturescale_id numeric(25,0),
     shape public.geometry NOT NULL,
     geologicalfeature_id numeric(25,0),
-    CONSTRAINT enforce_dims_shape CHECK ((public.ndims(shape) = 2)),
-    CONSTRAINT enforce_srid_shape CHECK ((public.srid(shape) = 4283))
+    CONSTRAINT enforce_dims_shape CHECK ((public.st_ndims(shape) = 2)),
+    CONSTRAINT enforce_srid_shape CHECK ((public.st_srid(shape) = 4283))
 );
 
 

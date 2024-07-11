@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.geotools.data</groupId>
-  <artifactId>refdata-1.0</artifactId>
+  <artifactId>refdataset-1.0</artifactId>
   <version>1.0.8</version>
 
   <name>Reference Data 1.0</name>

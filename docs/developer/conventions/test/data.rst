@@ -6,7 +6,7 @@ If your tests require test data, there are a couple of things to keep in mind.
 There are two guidelines for handling of data required for testing:
 
 * Java: test data (xml files, png files, whatever) should be stored in a test-data directory next to your test case (the use of test-data makes it obvious that the directory is not a package, similar to the use of doc-files for javadoc).
-* Maven: The maven build system recommends that all test resources be placed into src/test/resources.
+* Maven: The maven build system recommends that all test resources be placed into :file:`src/test/resources`.
 
 Combining these two guidelines we end up with the following::
    
@@ -100,4 +100,21 @@ Temporary filename::
    File temp = TestData.temp( this, "my.shp" );
    System.out.println( temp.getAbsolutePath() );
    // Something like: C:\....\test-data\my12345.shp"
+
+Maven Repo for stable schemas and datasets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are number of modules which have the responsibility of packaging data to be managed in maven repository.
+
+* :file:`modules/ogc`: modules combining schema definitions with data model.
+
+  Released as part of the GeoTools release cycle.
+
+* :file:`extension/app-schema/app-schema-packages`: modules packaging schema definitions only.
+   
+  Independent modules each with their own release cycle and version information.
+
+* :file:`extension/app-schema/app-schema-data`: sample data for integration testing.
+  
+  Independent modules each with their own release cycle and version information.
 

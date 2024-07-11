@@ -395,7 +395,7 @@ public final class GridCoverageRenderer {
         //
         // /////////////////////////////////////////////////////////////////////
         final GridCoverage2D preReprojection =
-                crop(gridCoverage, destinationEnvelope, doReprojection, bkgValues);
+                crop(gridCoverage, destinationEnvelope, doReprojection, bkgValues, interpolation);
         if (preReprojection == null) {
             // nothing to render, the AOI does not overlap
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -461,7 +461,7 @@ public final class GridCoverageRenderer {
         RenderedImage preAffineImage = coverage.getRenderedImage();
         if (preSymbolizerImage.getWidth() > (preAffineImage.getWidth() * 2)
                 || preSymbolizerImage.getHeight() > (preAffineImage.getHeight() * 2)) {
-            sanitized = crop(preSymbolizer, destinationEnvelope, false, bkgValues);
+            sanitized = crop(preSymbolizer, destinationEnvelope, false, bkgValues, interpolation);
         }
 
         // ///////////////////////////////////////////////////////////////////
@@ -487,12 +487,12 @@ public final class GridCoverageRenderer {
         return symbolizerGC;
     }
 
-    /** */
     private GridCoverage2D crop(
             GridCoverage2D inputCoverage,
-            final GeneralBounds destinationEnvelope,
+            GeneralBounds destinationEnvelope,
             final boolean doReprojection,
-            double[] backgroundValues)
+            double[] backgroundValues,
+            Interpolation interpolation)
             throws FactoryException {
 
         if (advancedProjectionHandlingEnabled) {
@@ -513,6 +513,11 @@ public final class GridCoverageRenderer {
             }
         }
 
+        // if there is an interpolation, preserve padding needed by it
+        if (interpolation != null && !(interpolation instanceof InterpolationNearest)) {
+            destinationEnvelope = padEnvelope(inputCoverage, destinationEnvelope, interpolation);
+        }
+
         GridCoverage2D outputCoverage =
                 GridCoverageRendererUtilities.crop(
                         inputCoverage,
@@ -524,6 +529,37 @@ public final class GridCoverageRenderer {
             writeRenderedImage(outputCoverage.getRenderedImage(), "crop");
         }
         return outputCoverage;
+    }
+
+    private static GeneralBounds padEnvelope(
+            GridCoverage2D inputCoverage,
+            GeneralBounds destinationEnvelope,
+            Interpolation interpolation) {
+        try {
+            GridGeometry2D gg = inputCoverage.getGridGeometry();
+            MathTransform crs2Grid = gg.getCRSToGrid2D();
+            Rectangle rasterSpaceEnvelope =
+                    CRS.transform(crs2Grid, destinationEnvelope).toRectangle2D().getBounds();
+            GridEnvelope2D gridRange = new GridEnvelope2D(rasterSpaceEnvelope);
+            int padding = Math.max(interpolation.getHeight(), interpolation.getWidth()) + 1;
+            gridRange.setBounds(
+                    gridRange.x - padding,
+                    gridRange.y - padding,
+                    gridRange.width + padding * 2,
+                    gridRange.height + padding * 2);
+            GridGeometry2D gridGeometry =
+                    new GridGeometry2D(
+                            gridRange,
+                            gg.getGridToCRS(),
+                            inputCoverage.getCoordinateReferenceSystem2D());
+            destinationEnvelope = new GeneralBounds(gridGeometry.getEnvelope());
+        } catch (TransformException ex) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Unable to pad the destination envelope with interpolation padding",
+                    ex);
+        }
+        return destinationEnvelope;
     }
 
     /** */
@@ -829,7 +865,8 @@ public final class GridCoverageRenderer {
 
         // at this point, we might have a coverage that's still slightly larger
         // than the one requested, crop as needed
-        GridCoverage2D cropped = crop(mosaicked, destinationEnvelope, false, bgValues);
+        GridCoverage2D cropped =
+                crop(mosaicked, destinationEnvelope, false, bgValues, interpolation);
         return getImageFromParentCoverage(cropped);
     }
 

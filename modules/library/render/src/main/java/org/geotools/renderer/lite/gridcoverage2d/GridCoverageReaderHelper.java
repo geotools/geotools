@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
@@ -134,9 +136,14 @@ public class GridCoverageReaderHelper {
                                 || isMultiCRSReader(reader))
                         && !isReprojectingReader(reader);
         if (paddingRequired) {
+            MathTransform originalGridToWorld =
+                    reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+            int[] paddings =
+                    computeRenderingPaddings(reader, mapExtent, interpolation, originalGridToWorld);
+
             // expand the map raster area
             GridEnvelope2D requestedGridEnvelope = new GridEnvelope2D(mapRasterArea);
-            applyReadGutter(requestedGridEnvelope);
+            applyReadGutter(requestedGridEnvelope, paddings[0], paddings[1]);
 
             // now create the final envelope accordingly
             try {
@@ -149,7 +156,8 @@ public class GridCoverageReaderHelper {
                                 null);
                 this.mapExtent =
                         ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope2D());
-                this.mapRasterArea = requestedGridGeometry.getGridRange2D().getBounds();
+                Dimension size = requestedGridGeometry.getGridRange2D().getBounds().getSize();
+                this.mapRasterArea = new Rectangle(0, 0, size.width, size.height);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -157,6 +165,49 @@ public class GridCoverageReaderHelper {
             this.mapExtent = mapExtent;
             this.mapRasterArea = mapRasterArea;
         }
+    }
+
+    /**
+     * Computes padding factors at the rendering resolution. In case we are oversampling the reader
+     * native resolution, the interpolation might need a few pixels, which might be thousands of
+     * pixels at the rendering resolution
+     */
+    private int[] computeRenderingPaddings(
+            GridCoverage2DReader reader,
+            ReferencedEnvelope mapExtent,
+            Interpolation interpolation,
+            MathTransform originalGridToWorld)
+            throws IOException {
+        int[] paddings = {this.padding, this.padding};
+        double[][] levels = reader.getResolutionLevels();
+
+        // cases where the calculation cannot be performed
+        if (!(originalGridToWorld instanceof AffineTransform2D)
+                || levels == null
+                || (interpolation instanceof InterpolationNearest)) return paddings;
+
+        // scale up padding factors if needed
+        try {
+            CoordinateReferenceSystem readerCRS = reader.getCoordinateReferenceSystem();
+            ReadResolutionCalculator cc =
+                    new ReadResolutionCalculator(requestedGridGeometry, readerCRS, levels[0]);
+            double[] requestedRes =
+                    cc.computeRequestedResolution(mapExtent.transform(readerCRS, true));
+            double[] nativeRes = levels[0];
+
+            // if upscaling, we need to pad the requested area
+            if (nativeRes[0] > requestedRes[0])
+                paddings[0] = (int) Math.round(nativeRes[0] / requestedRes[0] * padding);
+            if (nativeRes[1] > requestedRes[1])
+                paddings[1] = (int) Math.round(nativeRes[1] / requestedRes[1] * padding);
+        } catch (Exception e) {
+            LOGGER.log(
+                    Level.FINE,
+                    "Failed to account for oversampling in padding calculation, will use standard padding",
+                    e);
+        }
+
+        return paddings;
     }
 
     /**
@@ -180,18 +231,18 @@ public class GridCoverageReaderHelper {
         return mapExtent;
     }
 
-    private void applyReadGutter(GridEnvelope2D gridRange) {
+    private void applyReadGutter(GridEnvelope2D gridRange, int padX, int padY) {
         gridRange.setBounds(
-                gridRange.x - padding,
-                gridRange.y - padding,
-                gridRange.width + padding * 2,
-                gridRange.height + padding * 2);
+                gridRange.x - padX,
+                gridRange.y - padY,
+                gridRange.width + padX * 2,
+                gridRange.height + padY * 2);
     }
 
     private GridGeometry2D applyReadGutter(GridGeometry2D gg) {
         MathTransform gridToCRS = gg.getGridToCRS();
         GridEnvelope2D range = new GridEnvelope2D(gg.getGridRange2D());
-        applyReadGutter(range);
+        applyReadGutter(range, this.padding, this.padding);
         CoordinateReferenceSystem crs = gg.getEnvelope2D().getCoordinateReferenceSystem();
         GridGeometry2D result =
                 new GridGeometry2D(range, PixelInCell.CELL_CORNER, gridToCRS, crs, null);

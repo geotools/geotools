@@ -167,6 +167,8 @@ public abstract class RenderingTransformationHelper {
         SimpleFeatureCollection sample = featureSource.getFeatures();
         Feature gridWrapper = DataUtilities.first(sample);
 
+        final Interpolation interpolation =
+                hints != null ? (Interpolation) hints.get(JAI.KEY_INTERPOLATION) : null;
         GridCoverage2D coverage = null;
         if (FeatureUtilities.isWrappedCoverageReader(featureSource.getSchema())) {
             GeneralParameterValue[] params =
@@ -194,8 +196,7 @@ public abstract class RenderingTransformationHelper {
                     AffineTransform2D atMap = (AffineTransform2D) readGG.getGridToCRS2D();
                     if (XAffineTransform.getScale(atMap) < XAffineTransform.getScale(atOriginal)) {
                         // we need to go trough some convoluted code to make sure the new
-                        // grid geometry
-                        // has at least one pixel
+                        // grid geometry has at least one pixel
 
                         Bounds worldEnvelope = gridGeometry.getEnvelope();
                         GeneralBounds transformed =
@@ -290,8 +291,6 @@ public abstract class RenderingTransformationHelper {
                             param.parameter("Source").setValue(coverage);
                             param.parameter("xScale").setValue(ratioX);
                             param.parameter("yScale").setValue(ratioY);
-                            final Interpolation interpolation =
-                                    (Interpolation) hints.get(JAI.KEY_INTERPOLATION);
                             if (interpolation != null) {
                                 param.parameter("Interpolation").setValue(interpolation);
                             }

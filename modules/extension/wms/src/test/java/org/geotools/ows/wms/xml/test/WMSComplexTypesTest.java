@@ -111,8 +111,9 @@ public class WMSComplexTypesTest {
         // invalid xlink URL will cause most online resources to be null
         Assert.assertNull(legendURL);
     }
+
     @Test
-    public void testMissingLgoUrlFormat() throws Exception {
+    public void testMissingLogoUrlFormat() throws Exception {
 
         File getCaps = TestData.file(this, "1.1.0CapabilitiesMissingLogoUrlFormat.xml");
         URL getCapsURL = getCaps.toURI().toURL();
@@ -122,7 +123,7 @@ public class WMSComplexTypesTest {
             // Removing validation to match WMSGetCapabilitiesResponse behavior
             hints.put(DocumentFactory.VALIDATION_HINT, Boolean.FALSE);
         }
-        Object object = = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
+        Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
         Assert.assertTrue("Capabilities failed to parse", object instanceof WMSCapabilities);
 

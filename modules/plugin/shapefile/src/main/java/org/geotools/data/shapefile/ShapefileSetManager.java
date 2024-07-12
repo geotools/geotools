@@ -103,8 +103,9 @@ class ShapefileSetManager implements FileReader {
             File file = URLs.urlToFile(new URL(shpFiles.get(DBF)));
             byte[] bytes;
             if (shpFiles.isGz()) {
-                GZIPInputStream in = new GZIPInputStream(new FileInputStream(file));
-                bytes = in.readNBytes(4096);
+                try (GZIPInputStream in = new GZIPInputStream(new FileInputStream(file))) {
+                    bytes = in.readNBytes(4096);
+                }
             } else {
                 bytes = FileUtils.readFileToByteArray(file);
                 int limit = 0x1c; // DBF Header must be at least this long

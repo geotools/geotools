@@ -322,6 +322,7 @@ public class ShapefileTest extends TestCaseSupport {
         assert ds2.getFeatureSource().getSchema() != null;
     }
 
+
     @Test
     public void testScreenMapIndexedReader() throws Exception {
         URL shpUrl =

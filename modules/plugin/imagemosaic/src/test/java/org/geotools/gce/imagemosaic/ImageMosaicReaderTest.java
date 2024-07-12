@@ -1733,7 +1733,7 @@ public class ImageMosaicReaderTest {
         GeneralParameterValue[] values100 = {
             useJai, tileSize, time, dynamicParameter(reader, "depth", 100)
         };
-        final GridCoverage2D coverage100 = TestUtils.getCoverage(reader, values20, false);
+        final GridCoverage2D coverage100 = TestUtils.getCoverage(reader, values100, false);
         assertBandEqual(image, 1, coverage100.getRenderedImage());
 
         reader.dispose();

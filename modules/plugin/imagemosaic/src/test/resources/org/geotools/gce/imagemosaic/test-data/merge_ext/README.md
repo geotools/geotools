@@ -1,0 +1,1 @@
+The images look similar, and they indeed share the same CRS, the same pixel content, but are geo-referenced some tens of meters meters apart, in order to test merge behaviors such as MAX can deal with non overlapping images, and can expand the images in all possible directions.

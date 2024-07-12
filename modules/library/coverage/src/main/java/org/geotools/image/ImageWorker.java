@@ -3181,6 +3181,34 @@ public class ImageWorker {
         }
     }
 
+    /**
+     * Copmputes a pixel-by-pixel maximum value from all the provided sources. The images must share
+     * the same raster space.
+     */
+    public ImageWorker max(RenderedImage[] sources) {
+        ParameterBlock pb = new ParameterBlock();
+        for (int i = 0; i < sources.length; i++) {
+            pb.setSource(sources[i], i);
+        }
+        prepareAlgebricOperation(Operator.MAX, pb, roi, nodata, true);
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        return this;
+    }
+
+    /**
+     * Copmputes a pixel-by-pixel minimum value from all the provided sources. The images must share
+     * the same raster space.
+     */
+    public ImageWorker min(RenderedImage[] sources) {
+        ParameterBlock pb = new ParameterBlock();
+        for (int i = 0; i < sources.length; i++) {
+            pb.setSource(sources[i], i);
+        }
+        prepareAlgebricOperation(Operator.MIN, pb, roi, nodata, true);
+        image = JAI.create(ALGEBRIC_OP_NAME, pb, getRenderingHints());
+        return this;
+    }
+
     private void prepareAlgebricOperation(
             Operator op, ParameterBlock pb, ROI roi, Range nodata, boolean setDestNoData) {
         pb.set(op, 0);

@@ -2514,4 +2514,32 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         hints.put(JAI.KEY_IMAGE_LAYOUT, new ImageLayout(0, 0, 1, 1));
         iw.prepareForScaledAlphaChannel(bi, hints, bi.getColorModel(), bi.getSampleModel());
     }
+
+    @Test
+    public void testMax() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED); // 255 0 0
+        BufferedImage blue = getSyntheticRGB(Color.BLUE); // 0 0 255
+
+        RenderedImage max =
+                new ImageWorker().max(new RenderedImage[] {red, blue}).getRenderedImage();
+        int[] pixel = new int[3];
+        max.getData().getPixel(0, 0, pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(0, pixel[1]);
+        assertEquals(255, pixel[2]);
+    }
+
+    @Test
+    public void testMin() throws Exception {
+        BufferedImage red = getSyntheticRGB(Color.RED); // 255 0 0
+        BufferedImage yellow = getSyntheticRGB(Color.YELLOW); // 255 255 0
+
+        RenderedImage min =
+                new ImageWorker().min(new RenderedImage[] {red, yellow}).getRenderedImage();
+        int[] pixel = new int[3];
+        min.getData().getPixel(0, 0, pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(0, pixel[1]);
+        assertEquals(0, pixel[2]);
+    }
 }

@@ -61,7 +61,7 @@ SET search_path = classificationmanager, pg_catalog;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+-- SET default_with_oids = false;
 
 --
 -- TOC entry 2419 (class 1259 OID 18031)
@@ -1001,11 +1001,11 @@ CREATE VIEW view_rockmaterial AS
 
 SET search_path = public, pg_catalog;
 
-SET default_with_oids = true;
+-- SET default_with_oids = true;
 
 
 
-SET default_with_oids = false;
+-- SET default_with_oids = false;
 
 --
 -- TOC entry 2418 (class 1259 OID 18019)

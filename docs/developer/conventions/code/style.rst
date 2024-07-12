@@ -6,6 +6,15 @@ Coding conventions describe the coding styles developers should use when writing
 We follow the `Google formatting conventions <https://google.github.io/styleguide/javaguide.html>`__, 
 with the AOSP variant (4 spaces indent instead of 2).
 
+Use of Formatting Tools
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The Google formatter plugin is embedded in the build and will reformat the code at each build, matching the coding conventions. Please always build before committing!.
+
+The `google-java-format <https://github.com/google/google-java-format>`__ project also offers plugins for various IDEs, if your IDE is not supported, please just build once on the command line before committing.
+
+Also you could use a `modified version <https://github.com/fernandor777/google-java-format/releases/download/1.7-gsgt/google-java-format-eclipse-plugin-1.6.0.jar>`__ 
+with 4 spaces indent by default, putting the jar file on Eclipse dropins folder.
 
 But what about the header?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -112,13 +121,3 @@ dates on the copyright statement, the boilerplate itself covers project name and
       */
   
   In this case we are carefully crediting the GeoServer project and distributing the code under the LGPL license because we have obtained permission to do so.
-  
-Use of Formatting Tools
-^^^^^^^^^^^^^^^^^^^^^^^
-
-The Google formatter plugin is embedded in the build and will reformat the code at each build, matching the coding conventions. Please always build before committing!.
-
-The `google-java-format <https://github.com/google/google-java-format>`__ project also offers plugins for various IDEs, if your IDE is not supported, please just build once on the command line before committing.
-
-Also you could use a `modified version <https://github.com/fernandor777/google-java-format/releases/download/1.7-gsgt/google-java-format-eclipse-plugin-1.6.0.jar>`__ 
-with 4 spaces indent by default, putting the jar file on Eclipse dropins folder.

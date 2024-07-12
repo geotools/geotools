@@ -101,20 +101,3 @@ Temporary filename::
    System.out.println( temp.getAbsolutePath() );
    // Something like: C:\....\test-data\my12345.shp"
 
-Maven Repo for stable schemas and datasets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-There are number of modules which have the responsibility of packaging data to be managed in maven repository.
-
-* :file:`modules/ogc`: modules combining schema definitions with data model.
-
-  Released as part of the GeoTools release cycle.
-
-* :file:`extension/app-schema/app-schema-packages`: modules packaging schema definitions only.
-   
-  Independent modules each with their own release cycle and version information.
-
-* :file:`extension/app-schema/app-schema-data`: sample data for integration testing.
-  
-  Independent modules each with their own release cycle and version information.
-

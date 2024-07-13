@@ -71,7 +71,7 @@ public class AggregateProcess implements VectorProcess {
         Min,
         StdDev,
         Sum,
-        SumArea;
+        SumArea
     }
     /**
      * Computes various attribute statistics over vector data sets

@@ -554,10 +554,10 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ENVELOPE_TYPE__LOWER_CORNER:
-                setLowerCorner((DirectPositionType)null);
+                setLowerCorner(null);
                 return;
             case Gml311Package.ENVELOPE_TYPE__UPPER_CORNER:
-                setUpperCorner((DirectPositionType)null);
+                setUpperCorner(null);
                 return;
             case Gml311Package.ENVELOPE_TYPE__COORD:
                 getCoord().clear();
@@ -566,7 +566,7 @@ public class EnvelopeTypeImpl extends MinimalEObjectImpl.Container implements En
                 getPos().clear();
                 return;
             case Gml311Package.ENVELOPE_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.ENVELOPE_TYPE__AXIS_LABELS:
                 setAxisLabels(AXIS_LABELS_EDEFAULT);

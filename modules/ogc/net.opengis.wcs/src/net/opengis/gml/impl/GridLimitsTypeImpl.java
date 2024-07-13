@@ -160,7 +160,7 @@ public class GridLimitsTypeImpl extends EObjectImpl implements GridLimitsType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.GRID_LIMITS_TYPE__GRID_ENVELOPE:
-				setGridEnvelope((GridEnvelopeType)null);
+				setGridEnvelope(null);
 				return;
 		}
 		super.eUnset(featureID);

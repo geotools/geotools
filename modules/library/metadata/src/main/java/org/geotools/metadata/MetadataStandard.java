@@ -87,7 +87,7 @@ public final class MetadataStandard {
      * need for thread synchronization).
      */
     private final ThreadLocal<PropertyTree> treeBuilders =
-            new ThreadLocal<PropertyTree>() {
+            new ThreadLocal<>() {
                 @Override
                 protected PropertyTree initialValue() {
                     return new PropertyTree(MetadataStandard.this);

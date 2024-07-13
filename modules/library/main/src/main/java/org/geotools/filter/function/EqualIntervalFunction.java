@@ -162,6 +162,7 @@ public class EqualIntervalFunction extends ClassificationFunction {
         // sort the results and put them in an array
         Collections.sort(result);
 
+        @SuppressWarnings("PMD.UnnecessaryCast")
         Comparable[] values = (Comparable[]) result.toArray(new Comparable[result.size()]);
 
         // size arrays

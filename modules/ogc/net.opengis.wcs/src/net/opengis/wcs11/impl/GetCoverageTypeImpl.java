@@ -352,16 +352,16 @@ public class GetCoverageTypeImpl extends RequestBaseTypeImpl implements GetCover
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs11Package.GET_COVERAGE_TYPE__IDENTIFIER:
-				setIdentifier((CodeType)null);
+				setIdentifier(null);
 				return;
 			case Wcs11Package.GET_COVERAGE_TYPE__DOMAIN_SUBSET:
-				setDomainSubset((DomainSubsetType)null);
+				setDomainSubset(null);
 				return;
 			case Wcs11Package.GET_COVERAGE_TYPE__RANGE_SUBSET:
-				setRangeSubset((RangeSubsetType)null);
+				setRangeSubset(null);
 				return;
 			case Wcs11Package.GET_COVERAGE_TYPE__OUTPUT:
-				setOutput((OutputType)null);
+				setOutput(null);
 				return;
 		}
 		super.eUnset(featureID);

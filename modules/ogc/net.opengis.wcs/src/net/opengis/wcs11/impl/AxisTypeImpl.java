@@ -503,19 +503,19 @@ public class AxisTypeImpl extends DescriptionTypeImpl implements AxisType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Wcs111Package.AXIS_TYPE__AVAILABLE_KEYS:
-                setAvailableKeys((AvailableKeysType)null);
+                setAvailableKeys(null);
                 return;
             case Wcs111Package.AXIS_TYPE__MEANING:
-                setMeaning((DomainMetadataType)null);
+                setMeaning(null);
                 return;
             case Wcs111Package.AXIS_TYPE__DATA_TYPE:
-                setDataType((DomainMetadataType)null);
+                setDataType(null);
                 return;
             case Wcs111Package.AXIS_TYPE__UOM:
-                setUOM((DomainMetadataType)null);
+                setUOM(null);
                 return;
             case Wcs111Package.AXIS_TYPE__REFERENCE_SYSTEM:
-                setReferenceSystem((DomainMetadataType)null);
+                setReferenceSystem(null);
                 return;
             case Wcs111Package.AXIS_TYPE__METADATA:
                 getMetadata().clear();

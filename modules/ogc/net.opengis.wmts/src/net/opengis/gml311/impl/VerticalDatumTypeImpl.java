@@ -154,7 +154,7 @@ public class VerticalDatumTypeImpl extends AbstractDatumTypeImpl implements Vert
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.VERTICAL_DATUM_TYPE__VERTICAL_DATUM_TYPE:
-                setVerticalDatumType((VerticalDatumTypeType)null);
+                setVerticalDatumType(null);
                 return;
         }
         super.eUnset(featureID);

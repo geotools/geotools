@@ -659,7 +659,7 @@ public class TimeEdgePropertyTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_EDGE_PROPERTY_TYPE__TIME_EDGE:
-                setTimeEdge((TimeEdgeType)null);
+                setTimeEdge(null);
                 return;
             case Gml311Package.TIME_EDGE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

@@ -282,13 +282,13 @@ public class OffsetCurveTypeImpl extends AbstractCurveSegmentTypeImpl implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OFFSET_CURVE_TYPE__OFFSET_BASE:
-                setOffsetBase((CurvePropertyType)null);
+                setOffsetBase(null);
                 return;
             case Gml311Package.OFFSET_CURVE_TYPE__DISTANCE:
-                setDistance((LengthType)null);
+                setDistance(null);
                 return;
             case Gml311Package.OFFSET_CURVE_TYPE__REF_DIRECTION:
-                setRefDirection((VectorType)null);
+                setRefDirection(null);
                 return;
         }
         super.eUnset(featureID);

@@ -219,10 +219,10 @@ public class AngleChoiceTypeImpl extends MinimalEObjectImpl.Container implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ANGLE_CHOICE_TYPE__ANGLE:
-                setAngle((MeasureType)null);
+                setAngle(null);
                 return;
             case Gml311Package.ANGLE_CHOICE_TYPE__DMS_ANGLE:
-                setDmsAngle((DMSAngleType)null);
+                setDmsAngle(null);
                 return;
         }
         super.eUnset(featureID);

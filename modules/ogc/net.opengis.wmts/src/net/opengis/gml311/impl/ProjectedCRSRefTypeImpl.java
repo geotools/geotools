@@ -659,7 +659,7 @@ public class ProjectedCRSRefTypeImpl extends MinimalEObjectImpl.Container implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.PROJECTED_CRS_REF_TYPE__PROJECTED_CRS:
-                setProjectedCRS((ProjectedCRSType)null);
+                setProjectedCRS(null);
                 return;
             case Gml311Package.PROJECTED_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

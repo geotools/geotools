@@ -223,10 +223,10 @@ public class SupportedUOMsTypeImpl extends EObjectImpl implements SupportedUOMsT
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.SUPPORTED_UO_MS_TYPE__DEFAULT:
-        setDefault((DefaultType1)null);
+        setDefault(null);
         return;
       case Wps10Package.SUPPORTED_UO_MS_TYPE__SUPPORTED:
-        setSupported((UOMsType)null);
+        setSupported(null);
         return;
     }
     super.eUnset(featureID);

@@ -422,19 +422,19 @@ public class TimeOrdinalEraTypeImpl extends DefinitionTypeImpl implements TimeOr
                 getRelatedTime().clear();
                 return;
             case Gml311Package.TIME_ORDINAL_ERA_TYPE__START:
-                setStart((TimeNodePropertyType)null);
+                setStart(null);
                 return;
             case Gml311Package.TIME_ORDINAL_ERA_TYPE__END:
-                setEnd((TimeNodePropertyType)null);
+                setEnd(null);
                 return;
             case Gml311Package.TIME_ORDINAL_ERA_TYPE__EXTENT:
-                setExtent((TimePeriodPropertyType)null);
+                setExtent(null);
                 return;
             case Gml311Package.TIME_ORDINAL_ERA_TYPE__MEMBER:
                 getMember().clear();
                 return;
             case Gml311Package.TIME_ORDINAL_ERA_TYPE__GROUP:
-                setGroup((ReferenceType)null);
+                setGroup(null);
                 return;
         }
         super.eUnset(featureID);

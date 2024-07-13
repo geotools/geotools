@@ -218,10 +218,10 @@ public abstract class AbstractTimeSliceTypeImpl extends AbstractGMLTypeImpl impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ABSTRACT_TIME_SLICE_TYPE__VALID_TIME:
-                setValidTime((TimePrimitivePropertyType)null);
+                setValidTime(null);
                 return;
             case Gml311Package.ABSTRACT_TIME_SLICE_TYPE__DATA_SOURCE:
-                setDataSource((StringOrRefType)null);
+                setDataSource(null);
                 return;
         }
         super.eUnset(featureID);

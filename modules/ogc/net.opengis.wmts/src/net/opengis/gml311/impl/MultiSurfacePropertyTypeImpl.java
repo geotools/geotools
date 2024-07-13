@@ -659,7 +659,7 @@ public class MultiSurfacePropertyTypeImpl extends MinimalEObjectImpl.Container i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_SURFACE_PROPERTY_TYPE__MULTI_SURFACE:
-                setMultiSurface((MultiSurfaceType)null);
+                setMultiSurface(null);
                 return;
             case Gml311Package.MULTI_SURFACE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

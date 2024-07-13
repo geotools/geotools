@@ -102,13 +102,13 @@ public class Log4J2LoggerFactory extends LoggerFactory<org.apache.logging.log4j.
         try (LoggerContext context = (LoggerContext) LogManager.getContext()) {
             Configuration configuration = context.getConfiguration();
             if (configuration instanceof XmlConfiguration) {
-                return ((XmlConfiguration) configuration).getName();
+                return configuration.getName();
             } else if (configuration instanceof YamlConfiguration) {
-                return ((YamlConfiguration) configuration).getName();
+                return configuration.getName();
             } else if (configuration instanceof JsonConfiguration) {
-                return ((JsonConfiguration) configuration).getName();
+                return configuration.getName();
             } else if (configuration instanceof PropertiesConfiguration) {
-                return ((PropertiesConfiguration) configuration).getName();
+                return configuration.getName();
             } else if (configuration instanceof DefaultConfiguration) {
                 return "org.apache.logging.log4j.level="
                         + System.getProperty("org.apache.logging.log4j.level", "ERROR");

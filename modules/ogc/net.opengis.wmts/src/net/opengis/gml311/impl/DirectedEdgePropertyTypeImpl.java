@@ -745,7 +745,7 @@ public class DirectedEdgePropertyTypeImpl extends MinimalEObjectImpl.Container i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTED_EDGE_PROPERTY_TYPE__EDGE:
-                setEdge((EdgeType)null);
+                setEdge(null);
                 return;
             case Gml311Package.DIRECTED_EDGE_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

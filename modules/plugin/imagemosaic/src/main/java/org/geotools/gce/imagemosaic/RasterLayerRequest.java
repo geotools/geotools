@@ -85,7 +85,7 @@ public class RasterLayerRequest {
 
     private FootprintBehavior footprintBehavior = FootprintBehavior.None;
 
-    private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;;
+    private int defaultArtifactsFilterThreshold = Integer.MIN_VALUE;
 
     private double artifactsFilterPTileThreshold;
 

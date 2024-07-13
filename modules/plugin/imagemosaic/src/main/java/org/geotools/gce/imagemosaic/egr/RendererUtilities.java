@@ -52,7 +52,7 @@ public final class RendererUtilities {
             };
 
     /** Utilities classes should not be instantiated. */
-    private RendererUtilities() {};
+    private RendererUtilities() {}
 
     /**
      * Sets up the affine transform

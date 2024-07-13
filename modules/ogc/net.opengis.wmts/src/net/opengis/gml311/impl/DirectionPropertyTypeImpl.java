@@ -873,16 +873,16 @@ public class DirectionPropertyTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTION_PROPERTY_TYPE__DIRECTION_VECTOR:
-                setDirectionVector((DirectionVectorType)null);
+                setDirectionVector(null);
                 return;
             case Gml311Package.DIRECTION_PROPERTY_TYPE__COMPASS_POINT:
                 unsetCompassPoint();
                 return;
             case Gml311Package.DIRECTION_PROPERTY_TYPE__DIRECTION_KEYWORD:
-                setDirectionKeyword((CodeType)null);
+                setDirectionKeyword(null);
                 return;
             case Gml311Package.DIRECTION_PROPERTY_TYPE__DIRECTION_STRING:
-                setDirectionString((StringOrRefType)null);
+                setDirectionString(null);
                 return;
             case Gml311Package.DIRECTION_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

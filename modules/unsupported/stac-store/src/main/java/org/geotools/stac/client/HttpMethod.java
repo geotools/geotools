@@ -25,5 +25,5 @@ public enum HttpMethod {
     PATCH,
     DELETE,
     OPTIONS,
-    TRACE;
+    TRACE
 }

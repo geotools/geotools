@@ -51,7 +51,6 @@ import org.geotools.api.coverage.ColorInterpretation;
 import org.geotools.api.coverage.grid.Format;
 import org.geotools.api.coverage.grid.GridCoverage;
 import org.geotools.api.data.DataSourceException;
-import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -344,7 +343,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    readEnvelope = new GeneralBounds((Bounds) gg.getEnvelope2D());
+                    readEnvelope = new GeneralBounds(gg.getEnvelope2D());
                     requestedDim = gg.getGridRange2D().getBounds();
                     continue;
                 }

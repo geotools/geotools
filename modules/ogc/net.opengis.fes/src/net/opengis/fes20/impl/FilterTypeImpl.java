@@ -512,7 +512,7 @@ public class FilterTypeImpl extends AbstractSelectionClauseTypeImpl implements F
                 getExtensionOpsGroup().clear();
                 return;
             case Fes20Package.FILTER_TYPE__FUNCTION:
-                setFunction((FunctionType)null);
+                setFunction(null);
                 return;
             case Fes20Package.FILTER_TYPE__ID_GROUP:
                 getIdGroup().clear();

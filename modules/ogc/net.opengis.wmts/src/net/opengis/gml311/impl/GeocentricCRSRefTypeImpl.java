@@ -659,7 +659,7 @@ public class GeocentricCRSRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEOCENTRIC_CRS_REF_TYPE__GEOCENTRIC_CRS:
-                setGeocentricCRS((GeocentricCRSType)null);
+                setGeocentricCRS(null);
                 return;
             case Gml311Package.GEOCENTRIC_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

@@ -146,7 +146,7 @@ public class ExpressionToCQL2Json implements ExpressionVisitor {
     }
 
     private void toColor(ArrayNode output, Color value) {
-        Color color = (Color) value;
+        Color color = value;
         StringBuilder stringBuilder = new StringBuilder();
         String redCode = Integer.toHexString(color.getRed());
         String greenCode = Integer.toHexString(color.getGreen());

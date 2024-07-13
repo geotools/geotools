@@ -471,7 +471,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 // ignore, no resolve
             }
         }
-    };
+    }
 
     protected static String referenceToIdentifier(String reference) {
 

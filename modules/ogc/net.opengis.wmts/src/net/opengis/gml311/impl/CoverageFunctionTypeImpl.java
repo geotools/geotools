@@ -159,7 +159,7 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
      */
     @Override
     public void setGridFunction(GridFunctionType newGridFunction) {
-        ((FeatureMap.Internal)getGridFunctionGroup()).set(Gml311Package.eINSTANCE.getCoverageFunctionType_GridFunction(), newGridFunction);
+        getGridFunctionGroup().set(Gml311Package.eINSTANCE.getCoverageFunctionType_GridFunction(), newGridFunction);
     }
 
     /**
@@ -229,13 +229,13 @@ public class CoverageFunctionTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.COVERAGE_FUNCTION_TYPE__MAPPING_RULE:
-                setMappingRule((StringOrRefType)null);
+                setMappingRule(null);
                 return;
             case Gml311Package.COVERAGE_FUNCTION_TYPE__GRID_FUNCTION_GROUP:
                 getGridFunctionGroup().clear();
                 return;
             case Gml311Package.COVERAGE_FUNCTION_TYPE__GRID_FUNCTION:
-                setGridFunction((GridFunctionType)null);
+                setGridFunction(null);
                 return;
         }
         super.eUnset(featureID);

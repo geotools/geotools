@@ -198,7 +198,7 @@ public class PolygonTypeImpl extends AbstractSurfaceTypeImpl implements PolygonT
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case GmlPackage.POLYGON_TYPE__EXTERIOR:
-				setExterior((AbstractRingPropertyType)null);
+				setExterior(null);
 				return;
 			case GmlPackage.POLYGON_TYPE__INTERIOR:
 				getInterior().clear();

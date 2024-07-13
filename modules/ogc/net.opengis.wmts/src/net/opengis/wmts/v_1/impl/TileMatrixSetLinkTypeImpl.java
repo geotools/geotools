@@ -207,7 +207,7 @@ public class TileMatrixSetLinkTypeImpl extends MinimalEObjectImpl.Container impl
                 setTileMatrixSet(TILE_MATRIX_SET_EDEFAULT);
                 return;
             case wmtsv_1Package.TILE_MATRIX_SET_LINK_TYPE__TILE_MATRIX_SET_LIMITS:
-                setTileMatrixSetLimits((TileMatrixSetLimitsType)null);
+                setTileMatrixSetLimits(null);
                 return;
         }
         super.eUnset(featureID);

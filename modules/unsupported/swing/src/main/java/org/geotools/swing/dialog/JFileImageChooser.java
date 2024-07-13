@@ -76,7 +76,7 @@ public class JFileImageChooser extends JFileChooser {
             this.suffixes = new String[suffixes.length];
             System.arraycopy(suffixes, 0, this.suffixes, 0, suffixes.length);
         }
-    };
+    }
 
     private static final EnumSet<FormatSpecifier> supportedReaders =
             EnumSet.noneOf(FormatSpecifier.class);

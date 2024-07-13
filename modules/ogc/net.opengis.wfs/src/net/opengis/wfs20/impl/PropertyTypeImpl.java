@@ -192,7 +192,7 @@ public class PropertyTypeImpl extends EObjectImpl implements PropertyType {
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.PROPERTY_TYPE__VALUE_REFERENCE:
-        setValueReference((ValueReferenceType)null);
+        setValueReference(null);
         return;
       case Wfs20Package.PROPERTY_TYPE__VALUE:
         setValue(VALUE_EDEFAULT);

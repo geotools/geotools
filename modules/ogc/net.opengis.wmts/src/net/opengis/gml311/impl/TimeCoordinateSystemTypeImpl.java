@@ -282,13 +282,13 @@ public class TimeCoordinateSystemTypeImpl extends AbstractTimeReferenceSystemTyp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_COORDINATE_SYSTEM_TYPE__ORIGIN_POSITION:
-                setOriginPosition((TimePositionType)null);
+                setOriginPosition(null);
                 return;
             case Gml311Package.TIME_COORDINATE_SYSTEM_TYPE__ORIGIN:
-                setOrigin((TimeInstantPropertyType)null);
+                setOrigin(null);
                 return;
             case Gml311Package.TIME_COORDINATE_SYSTEM_TYPE__INTERVAL:
-                setInterval((TimeIntervalLengthType)null);
+                setInterval(null);
                 return;
         }
         super.eUnset(featureID);

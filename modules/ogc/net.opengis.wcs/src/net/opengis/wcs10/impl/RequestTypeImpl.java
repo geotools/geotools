@@ -287,13 +287,13 @@ public class RequestTypeImpl extends EObjectImpl implements RequestType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.REQUEST_TYPE__GET_CAPABILITIES:
-				setGetCapabilities((GetCapabilitiesType1)null);
+				setGetCapabilities(null);
 				return;
 			case Wcs10Package.REQUEST_TYPE__DESCRIBE_COVERAGE:
-				setDescribeCoverage((DescribeCoverageType1)null);
+				setDescribeCoverage(null);
 				return;
 			case Wcs10Package.REQUEST_TYPE__GET_COVERAGE:
-				setGetCoverage((GetCoverageType1)null);
+				setGetCoverage(null);
 				return;
 		}
 		super.eUnset(featureID);

@@ -659,9 +659,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.equal(property, geom);
@@ -672,9 +670,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.disjoint(property, geom);
@@ -686,9 +682,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.intersects(property, geom);
@@ -702,7 +696,7 @@ public abstract class AbstractFilterBuilder {
 
         PropertyName property = this.resultStack.popPropertyName();
 
-        FilterFactory ff = (FilterFactory) filterFactory;
+        FilterFactory ff = filterFactory;
         Expression[] args = {property, geometry, pattern};
 
         Function function = filterFactory.function("relatePattern", args);
@@ -726,9 +720,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.touches(property, geom);
@@ -739,9 +731,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.crosses(property, geom);
@@ -753,9 +743,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.within(property, geom);
@@ -767,9 +755,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.contains(property, geom);
@@ -781,9 +767,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.overlaps(property, geom);
@@ -827,9 +811,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.dwithin(property, geom, tolerance, unit);
@@ -845,9 +827,7 @@ public abstract class AbstractFilterBuilder {
 
         Expression property = this.resultStack.popExpression();
 
-        FilterFactory ff =
-                (FilterFactory)
-                        filterFactory; // TODO this cast must be removed. It depends of Geometry
+        FilterFactory ff = filterFactory; // TODO this cast must be removed. It depends of Geometry
         // implementation
 
         return ff.beyond(property, geom, tolerance, unit);

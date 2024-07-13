@@ -659,7 +659,7 @@ public class TimeClockPropertyTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_CLOCK_PROPERTY_TYPE__TIME_CLOCK:
-                setTimeClock((TimeClockType)null);
+                setTimeClock(null);
                 return;
             case Gml311Package.TIME_CLOCK_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

@@ -421,13 +421,13 @@ public class WCSCapabilityTypeImpl extends EObjectImpl implements WCSCapabilityT
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.WCS_CAPABILITY_TYPE__REQUEST:
-				setRequest((RequestType)null);
+				setRequest(null);
 				return;
 			case Wcs10Package.WCS_CAPABILITY_TYPE__EXCEPTION:
-				setException((ExceptionType)null);
+				setException(null);
 				return;
 			case Wcs10Package.WCS_CAPABILITY_TYPE__VENDOR_SPECIFIC_CAPABILITIES:
-				setVendorSpecificCapabilities((VendorSpecificCapabilitiesType)null);
+				setVendorSpecificCapabilities(null);
 				return;
 			case Wcs10Package.WCS_CAPABILITY_TYPE__UPDATE_SEQUENCE:
 				setUpdateSequence(UPDATE_SEQUENCE_EDEFAULT);

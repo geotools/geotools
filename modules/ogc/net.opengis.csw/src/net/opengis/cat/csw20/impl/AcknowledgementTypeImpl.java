@@ -261,7 +261,7 @@ public class AcknowledgementTypeImpl extends EObjectImpl implements Acknowledgem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.ACKNOWLEDGEMENT_TYPE__ECHOED_REQUEST:
-                setEchoedRequest((EchoedRequestType)null);
+                setEchoedRequest(null);
                 return;
             case Csw20Package.ACKNOWLEDGEMENT_TYPE__REQUEST_ID:
                 setRequestId(REQUEST_ID_EDEFAULT);

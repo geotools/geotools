@@ -39,7 +39,6 @@ import org.geotools.api.referencing.datum.PixelInCell;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -106,7 +105,7 @@ public final class RendererUtilities {
             };
 
     /** Utilities classes should not be instantiated. */
-    private RendererUtilities() {};
+    private RendererUtilities() {}
 
     /**
      * Sets up the affine transform
@@ -691,8 +690,7 @@ public final class RendererUtilities {
             if ((rCS == null) || !CRS.equalsIgnoreMetadata(rCS, sourceCrs)) {
                 // need to retag the features
                 try {
-                    return new ForceCoordinateSystemFeatureResults(
-                            (SimpleFeatureCollection) features, sourceCrs);
+                    return new ForceCoordinateSystemFeatureResults(features, sourceCrs);
                 } catch (Exception ee) {
                     LOGGER.log(Level.WARNING, ee.getLocalizedMessage(), ee);
                 }

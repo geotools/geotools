@@ -388,7 +388,7 @@ public class FileTypeImpl extends MinimalEObjectImpl.Container implements FileTy
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.FILE_TYPE__RANGE_PARAMETERS:
-                setRangeParameters((RangeParametersType)null);
+                setRangeParameters(null);
                 return;
             case Gml311Package.FILE_TYPE__FILE_NAME:
                 setFileName(FILE_NAME_EDEFAULT);

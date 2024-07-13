@@ -296,7 +296,7 @@ public class AppSchemaValidator {
             throw new UnsupportedOperationException(
                     "Misconfigured parser: EntityResolver2 interface must be used "
                             + "so that relative URLs are resolved correctly");
-        };
+        }
 
         /**
          * Always returns null to indicate that there is no external subset.

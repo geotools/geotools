@@ -154,7 +154,7 @@ public class RelativeInternalPositionalAccuracyTypeImpl extends AbstractPosition
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.RELATIVE_INTERNAL_POSITIONAL_ACCURACY_TYPE__RESULT:
-                setResult((MeasureType)null);
+                setResult(null);
                 return;
         }
         super.eUnset(featureID);

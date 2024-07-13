@@ -304,7 +304,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setAbstract(String newAbstract) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), newAbstract);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Abstract(), newAbstract);
   }
 
 	/**
@@ -333,7 +333,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setContactInfo(ContactType newContactInfo) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_ContactInfo(), newContactInfo);
   }
 
 	/**
@@ -353,7 +353,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setIndividualName(String newIndividualName) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), newIndividualName);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_IndividualName(), newIndividualName);
   }
 
 	/**
@@ -382,7 +382,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setKeywords(KeywordsType newKeywords) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Keywords(), newKeywords);
   }
 
 	/**
@@ -402,7 +402,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setOrganisationName(String newOrganisationName) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), newOrganisationName);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_OrganisationName(), newOrganisationName);
   }
 
 	/**
@@ -431,7 +431,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setPointOfContact(ResponsiblePartyType newPointOfContact) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_PointOfContact(), newPointOfContact);
   }
 
 	/**
@@ -451,7 +451,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setPositionName(String newPositionName) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), newPositionName);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_PositionName(), newPositionName);
   }
 
 	/**
@@ -480,7 +480,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setRole(CodeType newRole) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Role(), newRole);
   }
 
 	/**
@@ -500,7 +500,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setTitle(String newTitle) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Title(), newTitle);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Title(), newTitle);
   }
 
 	/**
@@ -539,7 +539,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setAccessConstraints(String newAccessConstraints) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), newAccessConstraints);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_AccessConstraints(), newAccessConstraints);
   }
 
 	/**
@@ -559,7 +559,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setAvailableCRS(String newAvailableCRS) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), newAvailableCRS);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_AvailableCRS(), newAvailableCRS);
   }
 
 	/**
@@ -588,7 +588,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setBoundingBox(BoundingBoxType newBoundingBox) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_BoundingBox(), newBoundingBox);
   }
 
 	/**
@@ -617,7 +617,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setDcp(DCPType newDcp) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Dcp(), newDcp);
   }
 
 	/**
@@ -646,7 +646,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setException(ExceptionType newException) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Exception(), newException);
   }
 
 	/**
@@ -675,7 +675,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setExceptionReport(ExceptionReportType newExceptionReport) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_ExceptionReport(), newExceptionReport);
   }
 
 	/**
@@ -704,7 +704,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setExtendedCapabilities(EObject newExtendedCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_ExtendedCapabilities(), newExtendedCapabilities);
   }
 
 	/**
@@ -724,7 +724,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setFees(String newFees) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), newFees);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Fees(), newFees);
   }
 
 	/**
@@ -753,7 +753,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_GetCapabilities(), newGetCapabilities);
   }
 
 	/**
@@ -782,7 +782,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setHttp(HTTPType newHttp) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Http(), newHttp);
   }
 
 	/**
@@ -811,7 +811,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setIdentifier(CodeType newIdentifier) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Identifier(), newIdentifier);
   }
 
 	/**
@@ -831,7 +831,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setLanguage(String newLanguage) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Language(), newLanguage);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Language(), newLanguage);
   }
 
 	/**
@@ -860,7 +860,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setMetadata(MetadataType newMetadata) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Metadata(), newMetadata);
   }
 
 	/**
@@ -889,7 +889,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setOperation(OperationType newOperation) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_Operation(), newOperation);
   }
 
 	/**
@@ -918,7 +918,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setOperationsMetadata(OperationsMetadataType newOperationsMetadata) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_OperationsMetadata(), newOperationsMetadata);
   }
 
 	/**
@@ -938,7 +938,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setOutputFormat(String newOutputFormat) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), newOutputFormat);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_OutputFormat(), newOutputFormat);
   }
 
 	/**
@@ -967,7 +967,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setServiceIdentification(ServiceIdentificationType newServiceIdentification) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceIdentification(), newServiceIdentification);
   }
 
 	/**
@@ -996,7 +996,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setServiceProvider(ServiceProviderType newServiceProvider) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_ServiceProvider(), newServiceProvider);
   }
 
 	/**
@@ -1016,7 +1016,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setSupportedCRS(String newSupportedCRS) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), newSupportedCRS);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_SupportedCRS(), newSupportedCRS);
   }
 
 	/**
@@ -1045,7 +1045,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
    */
 	@Override
     public void setWgS84BoundingBox(WGS84BoundingBoxType newWgS84BoundingBox) {
-    ((FeatureMap.Internal)getMixed()).set(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox);
+    getMixed().set(Ows10Package.eINSTANCE.getDocumentRoot_WgS84BoundingBox(), newWgS84BoundingBox);
   }
 
 	/**
@@ -1314,25 +1314,25 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         setAbstract(ABSTRACT_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__CONTACT_INFO:
-        setContactInfo((ContactType)null);
+        setContactInfo(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__INDIVIDUAL_NAME:
         setIndividualName(INDIVIDUAL_NAME_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__KEYWORDS:
-        setKeywords((KeywordsType)null);
+        setKeywords(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__ORGANISATION_NAME:
         setOrganisationName(ORGANISATION_NAME_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__POINT_OF_CONTACT:
-        setPointOfContact((ResponsiblePartyType)null);
+        setPointOfContact(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__POSITION_NAME:
         setPositionName(POSITION_NAME_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__ROLE:
-        setRole((CodeType)null);
+        setRole(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__TITLE:
         setTitle(TITLE_EDEFAULT);
@@ -1344,58 +1344,58 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
         setAvailableCRS(AVAILABLE_CRS_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__BOUNDING_BOX:
-        setBoundingBox((BoundingBoxType)null);
+        setBoundingBox(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__DCP:
-        setDcp((DCPType)null);
+        setDcp(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__EXCEPTION:
-        setException((ExceptionType)null);
+        setException(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__EXCEPTION_REPORT:
-        setExceptionReport((ExceptionReportType)null);
+        setExceptionReport(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__EXTENDED_CAPABILITIES:
-        setExtendedCapabilities((EObject)null);
+        setExtendedCapabilities(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__FEES:
         setFees(FEES_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-        setGetCapabilities((GetCapabilitiesType)null);
+        setGetCapabilities(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__HTTP:
-        setHttp((HTTPType)null);
+        setHttp(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__LANGUAGE:
         setLanguage(LANGUAGE_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__METADATA:
-        setMetadata((MetadataType)null);
+        setMetadata(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__OPERATION:
-        setOperation((OperationType)null);
+        setOperation(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__OPERATIONS_METADATA:
-        setOperationsMetadata((OperationsMetadataType)null);
+        setOperationsMetadata(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__OUTPUT_FORMAT:
         setOutputFormat(OUTPUT_FORMAT_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__SERVICE_IDENTIFICATION:
-        setServiceIdentification((ServiceIdentificationType)null);
+        setServiceIdentification(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__SERVICE_PROVIDER:
-        setServiceProvider((ServiceProviderType)null);
+        setServiceProvider(null);
         return;
       case Ows10Package.DOCUMENT_ROOT__SUPPORTED_CRS:
         setSupportedCRS(SUPPORTED_CRS_EDEFAULT);
         return;
       case Ows10Package.DOCUMENT_ROOT__WG_S84_BOUNDING_BOX:
-        setWgS84BoundingBox((WGS84BoundingBoxType)null);
+        setWgS84BoundingBox(null);
         return;
     }
     super.eUnset(featureID);

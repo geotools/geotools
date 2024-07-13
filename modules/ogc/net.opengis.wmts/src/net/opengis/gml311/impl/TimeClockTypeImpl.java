@@ -295,7 +295,7 @@ public class TimeClockTypeImpl extends AbstractTimeReferenceSystemTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_CLOCK_TYPE__REFERENCE_EVENT:
-                setReferenceEvent((StringOrRefType)null);
+                setReferenceEvent(null);
                 return;
             case Gml311Package.TIME_CLOCK_TYPE__REFERENCE_TIME:
                 setReferenceTime(REFERENCE_TIME_EDEFAULT);

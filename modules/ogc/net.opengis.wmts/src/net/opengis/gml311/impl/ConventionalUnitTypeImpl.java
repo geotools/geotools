@@ -258,10 +258,10 @@ public class ConventionalUnitTypeImpl extends UnitDefinitionTypeImpl implements 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CONVENTIONAL_UNIT_TYPE__CONVERSION_TO_PREFERRED_UNIT:
-                setConversionToPreferredUnit((ConversionToPreferredUnitType)null);
+                setConversionToPreferredUnit(null);
                 return;
             case Gml311Package.CONVENTIONAL_UNIT_TYPE__ROUGH_CONVERSION_TO_PREFERRED_UNIT:
-                setRoughConversionToPreferredUnit((ConversionToPreferredUnitType)null);
+                setRoughConversionToPreferredUnit(null);
                 return;
             case Gml311Package.CONVENTIONAL_UNIT_TYPE__DERIVATION_UNIT_TERM:
                 getDerivationUnitTerm().clear();

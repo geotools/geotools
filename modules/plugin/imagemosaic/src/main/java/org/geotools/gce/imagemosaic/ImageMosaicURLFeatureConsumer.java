@@ -131,9 +131,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                 }
 
                 final Hints configurationHints = configHandler.getRunConfiguration().getHints();
-                coverageReader =
-                        (GridCoverage2DReader)
-                                format.getReader(readerInputObject, configurationHints);
+                coverageReader = format.getReader(readerInputObject, configurationHints);
 
                 // Setting of the ReaderSPI to use
                 if (configHandler.getCachedReaderSPI() == null) {
@@ -142,8 +140,7 @@ public class ImageMosaicURLFeatureConsumer implements ImageMosaicElementConsumer
                     if (inStreamSpi == null) {
                         throw new IllegalArgumentException("no inputStreamSPI available!");
                     }
-                    try (ImageInputStream inStream =
-                            ((SourceSPIProvider) readerInputObject).getStream()) {
+                    try (ImageInputStream inStream = readerInputObject.getStream()) {
                         // Get the ImageInputStream from the SPI
 
                         // Throws an Exception if the ImageInputStream is not present

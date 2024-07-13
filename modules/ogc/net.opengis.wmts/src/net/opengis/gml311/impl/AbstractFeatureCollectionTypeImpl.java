@@ -198,7 +198,7 @@ public abstract class AbstractFeatureCollectionTypeImpl extends AbstractFeatureT
                 getFeatureMember().clear();
                 return;
             case Gml311Package.ABSTRACT_FEATURE_COLLECTION_TYPE__FEATURE_MEMBERS:
-                setFeatureMembers((FeatureArrayPropertyType)null);
+                setFeatureMembers(null);
                 return;
         }
         super.eUnset(featureID);

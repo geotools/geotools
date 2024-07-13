@@ -659,7 +659,7 @@ public class TimeTopologyComplexPropertyTypeImpl extends MinimalEObjectImpl.Cont
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_TOPOLOGY_COMPLEX_PROPERTY_TYPE__TIME_TOPOLOGY_COMPLEX:
-                setTimeTopologyComplex((TimeTopologyComplexType)null);
+                setTimeTopologyComplex(null);
                 return;
             case Gml311Package.TIME_TOPOLOGY_COMPLEX_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

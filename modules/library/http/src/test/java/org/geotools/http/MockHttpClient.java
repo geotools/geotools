@@ -71,14 +71,11 @@ public class MockHttpClient extends AbstractHttpClient {
     }
 
     private byte[] toByteArray(InputStream is) throws IOException {
-        byte[] result;
-        try {
-            result = new byte[is.available()];
+        try (InputStream isToClose = is) {
+            byte[] result = new byte[isToClose.available()];
             is.read(result);
-        } finally {
-            is.close();
+            return result;
         }
-        return result;
     }
 
     private HTTPResponse getResponse(Request request) {

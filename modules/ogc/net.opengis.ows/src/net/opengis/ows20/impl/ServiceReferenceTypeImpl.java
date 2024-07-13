@@ -203,7 +203,7 @@ public class ServiceReferenceTypeImpl extends ReferenceTypeImpl implements Servi
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE:
-        setRequestMessage((EObject)null);
+        setRequestMessage(null);
         return;
       case Ows20Package.SERVICE_REFERENCE_TYPE__REQUEST_MESSAGE_REFERENCE:
         setRequestMessageReference(REQUEST_MESSAGE_REFERENCE_EDEFAULT);

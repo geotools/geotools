@@ -147,8 +147,8 @@ public final class CRS {
         NORTH_EAST,
 
         /** Indicates axis ordering is not applicable to the coordinate reference system. */
-        INAPPLICABLE;
-    };
+        INAPPLICABLE
+    }
 
     /** A map with {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER} set to {@link Boolean#TRUE}. */
     private static final Hints FORCE_LONGITUDE_FIRST_AXIS_ORDER =
@@ -1540,7 +1540,7 @@ public final class CRS {
     public static Rectangle2D transform(
             final MathTransform2D transform, final Rectangle2D rectangle)
             throws TransformException {
-        return transform(transform, rectangle, (Rectangle2D) null);
+        return transform(transform, rectangle, null);
     }
     /**
      * Transforms a rectangular envelope using the given {@linkplain MathTransform math transform}.

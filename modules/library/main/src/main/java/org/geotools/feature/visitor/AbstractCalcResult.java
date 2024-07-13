@@ -100,7 +100,7 @@ public class AbstractCalcResult implements CalcResult {
             Number number = (Number) value;
             return number.floatValue();
         } else {
-            return (float) 0;
+            return 0f;
         }
     }
 
@@ -204,6 +204,7 @@ public class AbstractCalcResult implements CalcResult {
         return list.toArray();
     }
 
+    @SuppressWarnings("PMD.UnnecessaryCast")
     public String[] toStringArray() {
         List list = toList();
 

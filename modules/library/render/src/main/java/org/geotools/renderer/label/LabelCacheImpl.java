@@ -123,7 +123,7 @@ public class LabelCacheImpl implements LabelCache {
          * label/halo centering
          */
         ADAPTIVE
-    };
+    }
 
     static final Logger LOGGER = Logging.getLogger(LabelCacheImpl.class);
 

@@ -708,7 +708,7 @@ public class GraphStylePropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GRAPH_STYLE_PROPERTY_TYPE__GRAPH_STYLE:
-                setGraphStyle((GraphStyleType)null);
+                setGraphStyle(null);
                 return;
             case Gml311Package.GRAPH_STYLE_PROPERTY_TYPE__ABOUT:
                 setAbout(ABOUT_EDEFAULT);

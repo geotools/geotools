@@ -223,10 +223,10 @@ public class OutputTypeImpl extends EObjectImpl implements OutputType {
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.OUTPUT_TYPE__CRS:
-				setCrs((CodeType)null);
+				setCrs(null);
 				return;
 			case Wcs10Package.OUTPUT_TYPE__FORMAT:
-				setFormat((CodeType)null);
+				setFormat(null);
 				return;
 		}
 		super.eUnset(featureID);

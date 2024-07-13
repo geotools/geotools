@@ -48,7 +48,6 @@ import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.PropertyIsEqualTo;
-import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
@@ -316,7 +315,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
 
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         FilterFunction_ceil ceil = new FilterFunction_ceil();
-        ceil.setParameters(Collections.singletonList((Expression) ff.property(aname("flow"))));
+        ceil.setParameters(Collections.singletonList(ff.property(aname("flow"))));
 
         PropertyIsEqualTo f = ff.equals(ceil, ff.literal(5));
 
@@ -445,7 +444,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureType type = dataStore.getSchema(tname("road"));
         try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                 dataStore.getFeatureReader(
-                        new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT); ) {
+                        new Query(tname("road"), Filter.INCLUDE), Transaction.AUTO_COMMIT)) {
             assertFalse(reader instanceof FilteringFeatureReader);
             assertEquals(type, reader.getFeatureType());
             assertEquals(td.roadFeatures.length, count(reader));

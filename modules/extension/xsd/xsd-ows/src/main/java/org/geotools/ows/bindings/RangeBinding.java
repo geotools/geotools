@@ -41,7 +41,7 @@ public class RangeBinding extends ComplexEMFBinding {
             value = ((List) value).get(0);
         }
         super.setProperty(eObject, property, value, lax);
-    };
+    }
 
     @Override
     public Object getProperty(Object object, QName name) throws Exception {

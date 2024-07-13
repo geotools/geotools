@@ -659,7 +659,7 @@ public class TopoComplexMemberTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TOPO_COMPLEX_MEMBER_TYPE__TOPO_COMPLEX:
-                setTopoComplex((TopoComplexType)null);
+                setTopoComplex(null);
                 return;
             case Gml311Package.TOPO_COMPLEX_MEMBER_TYPE__ACTUATE:
                 unsetActuate();

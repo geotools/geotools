@@ -630,16 +630,16 @@ public class CubicSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements
                 getPointRep().clear();
                 return;
             case Gml311Package.CUBIC_SPLINE_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.CUBIC_SPLINE_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.CUBIC_SPLINE_TYPE__VECTOR_AT_START:
-                setVectorAtStart((VectorType)null);
+                setVectorAtStart(null);
                 return;
             case Gml311Package.CUBIC_SPLINE_TYPE__VECTOR_AT_END:
-                setVectorAtEnd((VectorType)null);
+                setVectorAtEnd(null);
                 return;
             case Gml311Package.CUBIC_SPLINE_TYPE__DEGREE:
                 unsetDegree();

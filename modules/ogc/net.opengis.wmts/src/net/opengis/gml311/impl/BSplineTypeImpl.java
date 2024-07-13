@@ -672,10 +672,10 @@ public class BSplineTypeImpl extends AbstractCurveSegmentTypeImpl implements BSp
                 getPointRep().clear();
                 return;
             case Gml311Package.BSPLINE_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.BSPLINE_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.BSPLINE_TYPE__DEGREE:
                 setDegree(DEGREE_EDEFAULT);

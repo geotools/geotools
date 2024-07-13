@@ -154,7 +154,7 @@ public class MultiPointDomainTypeImpl extends DomainSetTypeImpl implements Multi
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_POINT_DOMAIN_TYPE__MULTI_POINT:
-                setMultiPoint((MultiPointType)null);
+                setMultiPoint(null);
                 return;
         }
         super.eUnset(featureID);

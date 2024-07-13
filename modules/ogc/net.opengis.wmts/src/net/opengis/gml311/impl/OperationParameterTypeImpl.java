@@ -198,7 +198,7 @@ public class OperationParameterTypeImpl extends OperationParameterBaseTypeImpl i
                 getParameterID().clear();
                 return;
             case Gml311Package.OPERATION_PARAMETER_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
         }
         super.eUnset(featureID);

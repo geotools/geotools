@@ -87,7 +87,7 @@ public final class MetadataImport {
                         conn.prepareStatement(
                                 "SELECT COUNT(*) FROM PUBLIC.ST_UNITS_OF_MEASURE WHERE UNIT_NAME = ?");
                 Statement createUom = conn.createStatement();
-                InputStream is = MetadataImport.class.getResourceAsStream("uom.csv"); ) {
+                InputStream is = MetadataImport.class.getResourceAsStream("uom.csv")) {
             UomReader reader = new UomReader(is);
             while (true) {
                 Uom uom = reader.readNextUom();

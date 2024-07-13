@@ -214,7 +214,7 @@ public class SpatialOperatorTypeImpl extends EObjectImpl implements SpatialOpera
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.SPATIAL_OPERATOR_TYPE__GEOMETRY_OPERANDS:
-                setGeometryOperands((GeometryOperandsType)null);
+                setGeometryOperands(null);
                 return;
             case Fes20Package.SPATIAL_OPERATOR_TYPE__NAME:
                 setName(NAME_EDEFAULT);

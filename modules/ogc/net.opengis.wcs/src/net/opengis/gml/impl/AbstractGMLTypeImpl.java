@@ -236,7 +236,7 @@ public abstract class AbstractGMLTypeImpl extends EObjectImpl implements Abstrac
 				getMetaDataProperty().clear();
 				return;
 			case GmlPackage.ABSTRACT_GML_TYPE__DESCRIPTION:
-				setDescription((StringOrRefType)null);
+				setDescription(null);
 				return;
 			case GmlPackage.ABSTRACT_GML_TYPE__NAME:
 				getName().clear();

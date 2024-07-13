@@ -28,7 +28,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.metadata.spatial.PixelOrientation;
 import org.geotools.api.referencing.datum.PixelInCell;
@@ -292,8 +291,7 @@ public final class GridGeometryTest extends GridCoverageTestBase {
     @Test
     public void testCanonicalFromOrthogonal() throws Exception {
         ReferencedEnvelope bbox = ReferencedEnvelope.rect(150, 40, 10, 10);
-        GridGeometry2D gg =
-                new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100), (Bounds) bbox);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(1000, 1000, 100, 100), bbox);
 
         GridGeometry2D canonical = gg.toCanonical();
         assertEquivalentCanonical(gg, canonical);

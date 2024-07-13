@@ -659,7 +659,7 @@ public class LineStringPropertyTypeImpl extends MinimalEObjectImpl.Container imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.LINE_STRING_PROPERTY_TYPE__LINE_STRING:
-                setLineString((LineStringType)null);
+                setLineString(null);
                 return;
             case Gml311Package.LINE_STRING_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

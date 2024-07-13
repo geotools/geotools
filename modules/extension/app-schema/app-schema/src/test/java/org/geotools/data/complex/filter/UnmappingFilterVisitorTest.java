@@ -102,7 +102,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class UnmappingFilterVisitorTest extends AppSchemaTestSupport {
 
-    private static FilterFactory ff = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private UnmappingFilterVisitor visitor;
 

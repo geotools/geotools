@@ -24,7 +24,7 @@ import org.geotools.api.style.PointSymbolizer;
 public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     Expression geometry;
 
-    GraphicBuilder graphic = (GraphicBuilder) new GraphicBuilder(this).unset();
+    GraphicBuilder graphic = new GraphicBuilder(this).unset();
 
     Unit<Length> uom = null;
 

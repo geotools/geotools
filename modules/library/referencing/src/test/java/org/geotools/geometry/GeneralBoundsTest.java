@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
@@ -62,7 +61,7 @@ public final class GeneralBoundsTest {
         assertEquals(nil, copyNil);
 
         GeneralBounds nil2 = new GeneralBounds(nil);
-        GeneralBounds copyNil2 = new GeneralBounds((Bounds) nil2); // expected to work
+        GeneralBounds copyNil2 = new GeneralBounds(nil2); // expected to work
 
         assertTrue(copyNil2.isNull());
 

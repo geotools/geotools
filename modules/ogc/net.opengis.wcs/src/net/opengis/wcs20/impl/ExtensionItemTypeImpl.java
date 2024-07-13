@@ -200,7 +200,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
     public Object getObjectContent() {
 		if (objectContent != null && ((EObject)objectContent).eIsProxy()) {
 			InternalEObject oldObjectContent = (InternalEObject)objectContent;
-			objectContent = (Object)eResolveProxy(oldObjectContent);
+			objectContent = eResolveProxy(oldObjectContent);
 			if (objectContent != oldObjectContent) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Wcs20Package.EXTENSION_ITEM_TYPE__OBJECT_CONTENT, oldObjectContent, objectContent));
@@ -270,7 +270,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
 				setSimpleContent((String)newValue);
 				return;
 			case Wcs20Package.EXTENSION_ITEM_TYPE__OBJECT_CONTENT:
-				setObjectContent((Object)newValue);
+				setObjectContent(newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -294,7 +294,7 @@ public class ExtensionItemTypeImpl extends EObjectImpl implements ExtensionItemT
 				setSimpleContent(SIMPLE_CONTENT_EDEFAULT);
 				return;
 			case Wcs20Package.EXTENSION_ITEM_TYPE__OBJECT_CONTENT:
-				setObjectContent((Object)null);
+				setObjectContent(null);
 				return;
 		}
 		super.eUnset(featureID);

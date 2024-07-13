@@ -659,7 +659,7 @@ public class OperationParameterGroupRefTypeImpl extends MinimalEObjectImpl.Conta
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OPERATION_PARAMETER_GROUP_REF_TYPE__OPERATION_PARAMETER_GROUP:
-                setOperationParameterGroup((OperationParameterGroupType)null);
+                setOperationParameterGroup(null);
                 return;
             case Gml311Package.OPERATION_PARAMETER_GROUP_REF_TYPE__ACTUATE:
                 unsetActuate();

@@ -283,7 +283,7 @@ public class StyleTypeImpl extends DescriptionTypeImpl implements StyleType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.STYLE_TYPE__IDENTIFIER:
-                setIdentifier((CodeType)null);
+                setIdentifier(null);
                 return;
             case wmtsv_1Package.STYLE_TYPE__LEGEND_URL:
                 getLegendURL().clear();

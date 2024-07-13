@@ -1099,7 +1099,7 @@ public class Encoder {
         }
         for (Map.Entry<String, String> stringStringEntry :
                 schema.getQNamePrefixToNamespaceMap().entrySet()) {
-            Map.Entry entry = (Map.Entry) stringStringEntry;
+            Map.Entry entry = stringStringEntry;
             String pre = (String) entry.getKey();
             String ns = (String) entry.getValue();
 

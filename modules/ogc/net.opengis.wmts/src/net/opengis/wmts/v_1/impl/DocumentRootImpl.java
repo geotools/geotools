@@ -190,7 +190,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setBinaryPayload(BinaryPayloadType newBinaryPayload) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__BINARY_PAYLOAD, newBinaryPayload);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__BINARY_PAYLOAD, newBinaryPayload);
     }
 
     /**
@@ -219,7 +219,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setCapabilities(CapabilitiesType newCapabilities) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
     }
 
     /**
@@ -248,7 +248,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDimension(DimensionType newDimension) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION, newDimension);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION, newDimension);
     }
 
     /**
@@ -277,7 +277,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setDimensionNameValue(DimensionNameValueType newDimensionNameValue) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION_NAME_VALUE, newDimensionNameValue);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__DIMENSION_NAME_VALUE, newDimensionNameValue);
     }
 
     /**
@@ -306,7 +306,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setFeatureInfoResponse(FeatureInfoResponseType newFeatureInfoResponse) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__FEATURE_INFO_RESPONSE, newFeatureInfoResponse);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__FEATURE_INFO_RESPONSE, newFeatureInfoResponse);
     }
 
     /**
@@ -335,7 +335,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
     }
 
     /**
@@ -364,7 +364,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGetFeatureInfo(GetFeatureInfoType newGetFeatureInfo) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_FEATURE_INFO, newGetFeatureInfo);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_FEATURE_INFO, newGetFeatureInfo);
     }
 
     /**
@@ -393,7 +393,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setGetTile(GetTileType newGetTile) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_TILE, newGetTile);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__GET_TILE, newGetTile);
     }
 
     /**
@@ -422,7 +422,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLayer(LayerType newLayer) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__LAYER, newLayer);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__LAYER, newLayer);
     }
 
     /**
@@ -451,7 +451,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setLegendURL(LegendURLType newLegendURL) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__LEGEND_URL, newLegendURL);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__LEGEND_URL, newLegendURL);
     }
 
     /**
@@ -480,7 +480,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setStyle(StyleType newStyle) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__STYLE, newStyle);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__STYLE, newStyle);
     }
 
     /**
@@ -509,7 +509,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTextPayload(TextPayloadType newTextPayload) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TEXT_PAYLOAD, newTextPayload);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TEXT_PAYLOAD, newTextPayload);
     }
 
     /**
@@ -538,7 +538,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTheme(ThemeType newTheme) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEME, newTheme);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEME, newTheme);
     }
 
     /**
@@ -567,7 +567,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setThemes(ThemesType newThemes) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEMES, newThemes);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__THEMES, newThemes);
     }
 
     /**
@@ -596,7 +596,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTileMatrix(TileMatrixType newTileMatrix) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX, newTileMatrix);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX, newTileMatrix);
     }
 
     /**
@@ -625,7 +625,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTileMatrixLimits(TileMatrixLimitsType newTileMatrixLimits) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_LIMITS, newTileMatrixLimits);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_LIMITS, newTileMatrixLimits);
     }
 
     /**
@@ -654,7 +654,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTileMatrixSet(TileMatrixSetType newTileMatrixSet) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET, newTileMatrixSet);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET, newTileMatrixSet);
     }
 
     /**
@@ -683,7 +683,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTileMatrixSetLimits(TileMatrixSetLimitsType newTileMatrixSetLimits) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LIMITS, newTileMatrixSetLimits);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LIMITS, newTileMatrixSetLimits);
     }
 
     /**
@@ -712,7 +712,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
      */
     @Override
     public void setTileMatrixSetLink(TileMatrixSetLinkType newTileMatrixSetLink) {
-        ((FeatureMap.Internal)getMixed()).set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LINK, newTileMatrixSetLink);
+        getMixed().set(wmtsv_1Package.Literals.DOCUMENT_ROOT__TILE_MATRIX_SET_LINK, newTileMatrixSetLink);
     }
 
     /**
@@ -926,61 +926,61 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
                 getXSISchemaLocation().clear();
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__BINARY_PAYLOAD:
-                setBinaryPayload((BinaryPayloadType)null);
+                setBinaryPayload(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__CAPABILITIES:
-                setCapabilities((CapabilitiesType)null);
+                setCapabilities(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__DIMENSION:
-                setDimension((DimensionType)null);
+                setDimension(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__DIMENSION_NAME_VALUE:
-                setDimensionNameValue((DimensionNameValueType)null);
+                setDimensionNameValue(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__FEATURE_INFO_RESPONSE:
-                setFeatureInfoResponse((FeatureInfoResponseType)null);
+                setFeatureInfoResponse(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-                setGetCapabilities((GetCapabilitiesType)null);
+                setGetCapabilities(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__GET_FEATURE_INFO:
-                setGetFeatureInfo((GetFeatureInfoType)null);
+                setGetFeatureInfo(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__GET_TILE:
-                setGetTile((GetTileType)null);
+                setGetTile(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__LAYER:
-                setLayer((LayerType)null);
+                setLayer(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__LEGEND_URL:
-                setLegendURL((LegendURLType)null);
+                setLegendURL(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__STYLE:
-                setStyle((StyleType)null);
+                setStyle(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__TEXT_PAYLOAD:
-                setTextPayload((TextPayloadType)null);
+                setTextPayload(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__THEME:
-                setTheme((ThemeType)null);
+                setTheme(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__THEMES:
-                setThemes((ThemesType)null);
+                setThemes(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__TILE_MATRIX:
-                setTileMatrix((TileMatrixType)null);
+                setTileMatrix(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__TILE_MATRIX_LIMITS:
-                setTileMatrixLimits((TileMatrixLimitsType)null);
+                setTileMatrixLimits(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__TILE_MATRIX_SET:
-                setTileMatrixSet((TileMatrixSetType)null);
+                setTileMatrixSet(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__TILE_MATRIX_SET_LIMITS:
-                setTileMatrixSetLimits((TileMatrixSetLimitsType)null);
+                setTileMatrixSetLimits(null);
                 return;
             case wmtsv_1Package.DOCUMENT_ROOT__TILE_MATRIX_SET_LINK:
-                setTileMatrixSetLink((TileMatrixSetLinkType)null);
+                setTileMatrixSetLink(null);
                 return;
         }
         super.eUnset(featureID);

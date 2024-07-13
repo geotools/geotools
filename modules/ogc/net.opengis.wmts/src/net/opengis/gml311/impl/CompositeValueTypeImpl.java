@@ -198,7 +198,7 @@ public class CompositeValueTypeImpl extends AbstractGMLTypeImpl implements Compo
                 getValueComponent().clear();
                 return;
             case Gml311Package.COMPOSITE_VALUE_TYPE__VALUE_COMPONENTS:
-                setValueComponents((ValueArrayPropertyType)null);
+                setValueComponents(null);
                 return;
         }
         super.eUnset(featureID);

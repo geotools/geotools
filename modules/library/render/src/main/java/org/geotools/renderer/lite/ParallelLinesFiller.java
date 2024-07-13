@@ -49,7 +49,7 @@ public class ParallelLinesFiller {
         VERTICAL,
         SLASH,
         BACKSLASH
-    };
+    }
 
     static class Line {
         LineType type;

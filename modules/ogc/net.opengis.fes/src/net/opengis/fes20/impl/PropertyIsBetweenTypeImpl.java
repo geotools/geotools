@@ -286,10 +286,10 @@ public class PropertyIsBetweenTypeImpl extends ComparisonOpsTypeImpl implements 
                 getExpressionGroup().clear();
                 return;
             case Fes20Package.PROPERTY_IS_BETWEEN_TYPE__LOWER_BOUNDARY:
-                setLowerBoundary((LowerBoundaryType)null);
+                setLowerBoundary(null);
                 return;
             case Fes20Package.PROPERTY_IS_BETWEEN_TYPE__UPPER_BOUNDARY:
-                setUpperBoundary((UpperBoundaryType)null);
+                setUpperBoundary(null);
                 return;
         }
         super.eUnset(featureID);

@@ -324,7 +324,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setAxisDescription(AxisDescriptionType1 newAxisDescription) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION, newAxisDescription);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION, newAxisDescription);
 	}
 
     /**
@@ -353,7 +353,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setAxisDescription1(AxisDescriptionType newAxisDescription1) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION1, newAxisDescription1);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__AXIS_DESCRIPTION1, newAxisDescription1);
 	}
 
     /**
@@ -382,7 +382,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setCapability(WCSCapabilityType newCapability) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__CAPABILITY, newCapability);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__CAPABILITY, newCapability);
 	}
 
     /**
@@ -411,7 +411,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setContentMetadata(ContentMetadataType newContentMetadata) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__CONTENT_METADATA, newContentMetadata);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__CONTENT_METADATA, newContentMetadata);
 	}
 
     /**
@@ -440,7 +440,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setCoverageDescription(CoverageDescriptionType newCoverageDescription) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_DESCRIPTION, newCoverageDescription);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_DESCRIPTION, newCoverageDescription);
 	}
 
     /**
@@ -469,7 +469,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setCoverageOffering(CoverageOfferingType newCoverageOffering) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING, newCoverageOffering);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING, newCoverageOffering);
 	}
 
     /**
@@ -498,7 +498,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setCoverageOfferingBrief(CoverageOfferingBriefType newCoverageOfferingBrief) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING_BRIEF, newCoverageOfferingBrief);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__COVERAGE_OFFERING_BRIEF, newCoverageOfferingBrief);
 	}
 
     /**
@@ -527,7 +527,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setDescribeCoverage(DescribeCoverageType newDescribeCoverage) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIBE_COVERAGE, newDescribeCoverage);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIBE_COVERAGE, newDescribeCoverage);
 	}
 
     /**
@@ -547,7 +547,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setDescription(String newDescription) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIPTION, newDescription);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__DESCRIPTION, newDescription);
 	}
 
     /**
@@ -576,7 +576,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setDomainSet(DomainSetType newDomainSet) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__DOMAIN_SET, newDomainSet);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__DOMAIN_SET, newDomainSet);
 	}
 
     /**
@@ -605,7 +605,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setFormats(CodeListType newFormats) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__FORMATS, newFormats);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__FORMATS, newFormats);
 	}
 
     /**
@@ -634,7 +634,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
 	}
 
     /**
@@ -663,7 +663,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setGetCoverage(GetCoverageType newGetCoverage) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__GET_COVERAGE, newGetCoverage);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__GET_COVERAGE, newGetCoverage);
 	}
 
     /**
@@ -683,7 +683,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setInterpolationMethod(InterpolationMethodType newInterpolationMethod) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__INTERPOLATION_METHOD, newInterpolationMethod);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__INTERPOLATION_METHOD, newInterpolationMethod);
 	}
 
     /**
@@ -712,7 +712,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setInterval(IntervalType newInterval) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__INTERVAL, newInterval);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__INTERVAL, newInterval);
 	}
 
     /**
@@ -741,7 +741,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setKeywords(KeywordsType newKeywords) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__KEYWORDS, newKeywords);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__KEYWORDS, newKeywords);
 	}
 
     /**
@@ -770,7 +770,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setLonLatEnvelope(LonLatEnvelopeType newLonLatEnvelope) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__LON_LAT_ENVELOPE, newLonLatEnvelope);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__LON_LAT_ENVELOPE, newLonLatEnvelope);
 	}
 
     /**
@@ -799,7 +799,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setMetadataLink(MetadataLinkType newMetadataLink) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__METADATA_LINK, newMetadataLink);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__METADATA_LINK, newMetadataLink);
 	}
 
     /**
@@ -819,7 +819,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setName(String newName) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__NAME, newName);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__NAME, newName);
 	}
 
     /**
@@ -848,7 +848,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setRangeSet(RangeSetType1 newRangeSet) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET, newRangeSet);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET, newRangeSet);
 	}
 
     /**
@@ -877,7 +877,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setRangeSet1(RangeSetType newRangeSet1) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET1, newRangeSet1);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__RANGE_SET1, newRangeSet1);
 	}
 
     /**
@@ -906,7 +906,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setService(ServiceType newService) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SERVICE, newService);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SERVICE, newService);
 	}
 
     /**
@@ -935,7 +935,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setSingleValue(TypedLiteralType newSingleValue) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SINGLE_VALUE, newSingleValue);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SINGLE_VALUE, newSingleValue);
 	}
 
     /**
@@ -964,7 +964,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setSpatialDomain(SpatialDomainType newSpatialDomain) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_DOMAIN, newSpatialDomain);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_DOMAIN, newSpatialDomain);
 	}
 
     /**
@@ -993,7 +993,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setSpatialSubset(SpatialSubsetType newSpatialSubset) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_SUBSET, newSpatialSubset);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SPATIAL_SUBSET, newSpatialSubset);
 	}
 
     /**
@@ -1022,7 +1022,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setSupportedCRSs(SupportedCRSsType newSupportedCRSs) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_CR_SS, newSupportedCRSs);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_CR_SS, newSupportedCRSs);
 	}
 
     /**
@@ -1051,7 +1051,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setSupportedFormats(SupportedFormatsType newSupportedFormats) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_FORMATS, newSupportedFormats);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_FORMATS, newSupportedFormats);
 	}
 
     /**
@@ -1080,7 +1080,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setSupportedInterpolations(SupportedInterpolationsType newSupportedInterpolations) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_INTERPOLATIONS, newSupportedInterpolations);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__SUPPORTED_INTERPOLATIONS, newSupportedInterpolations);
 	}
 
     /**
@@ -1109,7 +1109,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setTemporalDomain(TimeSequenceType newTemporalDomain) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_DOMAIN, newTemporalDomain);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_DOMAIN, newTemporalDomain);
 	}
 
     /**
@@ -1138,7 +1138,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setTemporalSubset(TimeSequenceType newTemporalSubset) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_SUBSET, newTemporalSubset);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__TEMPORAL_SUBSET, newTemporalSubset);
 	}
 
     /**
@@ -1167,7 +1167,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setTimePeriod(TimePeriodType newTimePeriod) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_PERIOD, newTimePeriod);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_PERIOD, newTimePeriod);
 	}
 
     /**
@@ -1196,7 +1196,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setTimeSequence(TimeSequenceType newTimeSequence) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_SEQUENCE, newTimeSequence);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__TIME_SEQUENCE, newTimeSequence);
 	}
 
     /**
@@ -1225,7 +1225,7 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 	 */
     @Override
     public void setWCSCapabilities(WCSCapabilitiesType newWCSCapabilities) {
-		((FeatureMap.Internal)getMixed()).set(Wcs10Package.Literals.DOCUMENT_ROOT__WCS_CAPABILITIES, newWCSCapabilities);
+		getMixed().set(Wcs10Package.Literals.DOCUMENT_ROOT__WCS_CAPABILITIES, newWCSCapabilities);
 	}
 
     /**
@@ -1642,103 +1642,103 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 				getXSISchemaLocation().clear();
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__AXIS_DESCRIPTION:
-				setAxisDescription((AxisDescriptionType1)null);
+				setAxisDescription(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__AXIS_DESCRIPTION1:
-				setAxisDescription1((AxisDescriptionType)null);
+				setAxisDescription1(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__CAPABILITY:
-				setCapability((WCSCapabilityType)null);
+				setCapability(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__CONTENT_METADATA:
-				setContentMetadata((ContentMetadataType)null);
+				setContentMetadata(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__COVERAGE_DESCRIPTION:
-				setCoverageDescription((CoverageDescriptionType)null);
+				setCoverageDescription(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__COVERAGE_OFFERING:
-				setCoverageOffering((CoverageOfferingType)null);
+				setCoverageOffering(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__COVERAGE_OFFERING_BRIEF:
-				setCoverageOfferingBrief((CoverageOfferingBriefType)null);
+				setCoverageOfferingBrief(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__DESCRIBE_COVERAGE:
-				setDescribeCoverage((DescribeCoverageType)null);
+				setDescribeCoverage(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__DOMAIN_SET:
-				setDomainSet((DomainSetType)null);
+				setDomainSet(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__FORMATS:
-				setFormats((CodeListType)null);
+				setFormats(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				setGetCapabilities((GetCapabilitiesType)null);
+				setGetCapabilities(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__GET_COVERAGE:
-				setGetCoverage((GetCoverageType)null);
+				setGetCoverage(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__INTERPOLATION_METHOD:
 				setInterpolationMethod(INTERPOLATION_METHOD_EDEFAULT);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__INTERVAL:
-				setInterval((IntervalType)null);
+				setInterval(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__KEYWORDS:
-				setKeywords((KeywordsType)null);
+				setKeywords(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__LON_LAT_ENVELOPE:
-				setLonLatEnvelope((LonLatEnvelopeType)null);
+				setLonLatEnvelope(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__METADATA_LINK:
-				setMetadataLink((MetadataLinkType)null);
+				setMetadataLink(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__RANGE_SET:
-				setRangeSet((RangeSetType1)null);
+				setRangeSet(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__RANGE_SET1:
-				setRangeSet1((RangeSetType)null);
+				setRangeSet1(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SERVICE:
-				setService((ServiceType)null);
+				setService(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SINGLE_VALUE:
-				setSingleValue((TypedLiteralType)null);
+				setSingleValue(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SPATIAL_DOMAIN:
-				setSpatialDomain((SpatialDomainType)null);
+				setSpatialDomain(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SPATIAL_SUBSET:
-				setSpatialSubset((SpatialSubsetType)null);
+				setSpatialSubset(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SUPPORTED_CR_SS:
-				setSupportedCRSs((SupportedCRSsType)null);
+				setSupportedCRSs(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SUPPORTED_FORMATS:
-				setSupportedFormats((SupportedFormatsType)null);
+				setSupportedFormats(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__SUPPORTED_INTERPOLATIONS:
-				setSupportedInterpolations((SupportedInterpolationsType)null);
+				setSupportedInterpolations(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__TEMPORAL_DOMAIN:
-				setTemporalDomain((TimeSequenceType)null);
+				setTemporalDomain(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__TEMPORAL_SUBSET:
-				setTemporalSubset((TimeSequenceType)null);
+				setTemporalSubset(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__TIME_PERIOD:
-				setTimePeriod((TimePeriodType)null);
+				setTimePeriod(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__TIME_SEQUENCE:
-				setTimeSequence((TimeSequenceType)null);
+				setTimeSequence(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__WCS_CAPABILITIES:
-				setWCSCapabilities((WCSCapabilitiesType)null);
+				setWCSCapabilities(null);
 				return;
 			case Wcs10Package.DOCUMENT_ROOT__CLOSURE:
 				unsetClosure();

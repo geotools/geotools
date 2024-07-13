@@ -105,7 +105,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
 	 */
     @Override
     public void setEnvelope(EnvelopeType newEnvelope) {
-		((FeatureMap.Internal)getEnvelopeGroup()).set(GmlPackage.Literals.BOUNDING_SHAPE_TYPE__ENVELOPE, newEnvelope);
+		getEnvelopeGroup().set(GmlPackage.Literals.BOUNDING_SHAPE_TYPE__ENVELOPE, newEnvelope);
 	}
 
     /**
@@ -171,7 +171,7 @@ public class BoundingShapeTypeImpl extends EObjectImpl implements BoundingShapeT
 				getEnvelopeGroup().clear();
 				return;
 			case GmlPackage.BOUNDING_SHAPE_TYPE__ENVELOPE:
-				setEnvelope((EnvelopeType)null);
+				setEnvelope(null);
 				return;
 		}
 		super.eUnset(featureID);

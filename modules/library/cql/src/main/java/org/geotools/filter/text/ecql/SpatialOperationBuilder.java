@@ -48,7 +48,7 @@ class SpatialOperationBuilder {
         assert filterFactory != null;
 
         this.resultStack = resultStack;
-        this.filterFactory = (FilterFactory) filterFactory;
+        this.filterFactory = filterFactory;
     }
 
     protected final BuildResultStack getResultStack() {

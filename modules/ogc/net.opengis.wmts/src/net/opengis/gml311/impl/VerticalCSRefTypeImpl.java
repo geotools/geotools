@@ -659,7 +659,7 @@ public class VerticalCSRefTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.VERTICAL_CS_REF_TYPE__VERTICAL_CS:
-                setVerticalCS((VerticalCSType)null);
+                setVerticalCS(null);
                 return;
             case Gml311Package.VERTICAL_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

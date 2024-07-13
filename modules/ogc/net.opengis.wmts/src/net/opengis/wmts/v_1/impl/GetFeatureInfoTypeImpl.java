@@ -474,7 +474,7 @@ public class GetFeatureInfoTypeImpl extends MinimalEObjectImpl.Container impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case wmtsv_1Package.GET_FEATURE_INFO_TYPE__GET_TILE:
-                setGetTile((GetTileType)null);
+                setGetTile(null);
                 return;
             case wmtsv_1Package.GET_FEATURE_INFO_TYPE__J:
                 setJ(J_EDEFAULT);

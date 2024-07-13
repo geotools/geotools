@@ -43,7 +43,7 @@ public class QueryBand {
                 @Override
                 protected Map<String, String> initialValue() {
                     return new HashMap<>();
-                };
+                }
             };
 
     /** Returns local query band map. */

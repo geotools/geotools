@@ -159,7 +159,7 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
      */
     @Override
     public void setLocation(LocationPropertyType newLocation) {
-        ((FeatureMap.Internal)getLocationGroup()).set(Gml311Package.eINSTANCE.getMovingObjectStatusType_Location(), newLocation);
+        getLocationGroup().set(Gml311Package.eINSTANCE.getMovingObjectStatusType_Location(), newLocation);
     }
 
     /**
@@ -485,22 +485,22 @@ public class MovingObjectStatusTypeImpl extends AbstractTimeSliceTypeImpl implem
                 getLocationGroup().clear();
                 return;
             case Gml311Package.MOVING_OBJECT_STATUS_TYPE__LOCATION:
-                setLocation((LocationPropertyType)null);
+                setLocation(null);
                 return;
             case Gml311Package.MOVING_OBJECT_STATUS_TYPE__SPEED:
-                setSpeed((MeasureType)null);
+                setSpeed(null);
                 return;
             case Gml311Package.MOVING_OBJECT_STATUS_TYPE__BEARING:
-                setBearing((DirectionPropertyType)null);
+                setBearing(null);
                 return;
             case Gml311Package.MOVING_OBJECT_STATUS_TYPE__ACCELERATION:
-                setAcceleration((MeasureType)null);
+                setAcceleration(null);
                 return;
             case Gml311Package.MOVING_OBJECT_STATUS_TYPE__ELEVATION:
-                setElevation((MeasureType)null);
+                setElevation(null);
                 return;
             case Gml311Package.MOVING_OBJECT_STATUS_TYPE__STATUS:
-                setStatus((StringOrRefType)null);
+                setStatus(null);
                 return;
         }
         super.eUnset(featureID);

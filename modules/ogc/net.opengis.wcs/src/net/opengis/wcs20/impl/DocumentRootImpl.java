@@ -1035,58 +1035,58 @@ public class DocumentRootImpl extends EObjectImpl implements DocumentRoot {
 				getXSISchemaLocation().clear();
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__CAPABILITIES:
-				setCapabilities((CapabilitiesType)null);
+				setCapabilities(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__CONTENTS:
-				setContents((ContentsType)null);
+				setContents(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_DESCRIPTION:
-				setCoverageDescription((CoverageDescriptionType)null);
+				setCoverageDescription(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_DESCRIPTIONS:
-				setCoverageDescriptions((CoverageDescriptionsType)null);
+				setCoverageDescriptions(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_ID:
 				setCoverageId(COVERAGE_ID_EDEFAULT);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_OFFERINGS:
-				setCoverageOfferings((CoverageOfferingsType)null);
+				setCoverageOfferings(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_SUBTYPE:
 				setCoverageSubtype(COVERAGE_SUBTYPE_EDEFAULT);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_SUBTYPE_PARENT:
-				setCoverageSubtypeParent((CoverageSubtypeParentType)null);
+				setCoverageSubtypeParent(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__COVERAGE_SUMMARY:
-				setCoverageSummary((CoverageSummaryType)null);
+				setCoverageSummary(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__DESCRIBE_COVERAGE:
-				setDescribeCoverage((DescribeCoverageType)null);
+				setDescribeCoverage(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__DIMENSION_SLICE:
-				setDimensionSlice((DimensionSliceType)null);
+				setDimensionSlice(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__DIMENSION_TRIM:
-				setDimensionTrim((DimensionTrimType)null);
+				setDimensionTrim(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				setGetCapabilities((GetCapabilitiesType)null);
+				setGetCapabilities(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__GET_COVERAGE:
-				setGetCoverage((GetCoverageType)null);
+				setGetCoverage(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__OFFERED_COVERAGE:
-				setOfferedCoverage((OfferedCoverageType)null);
+				setOfferedCoverage(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__SERVICE_METADATA:
-				setServiceMetadata((ServiceMetadataType)null);
+				setServiceMetadata(null);
 				return;
 			case Wcs20Package.DOCUMENT_ROOT__SERVICE_PARAMETERS:
-				setServiceParameters((ServiceParametersType)null);
+				setServiceParameters(null);
 				return;
 		}
 		super.eUnset(featureID);

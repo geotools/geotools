@@ -154,7 +154,7 @@ public class AdditionalParametersBaseTypeImpl extends MetadataTypeImpl implement
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
-        setAdditionalParameter((AdditionalParameterType)null);
+        setAdditionalParameter(null);
         return;
     }
     super.eUnset(featureID);

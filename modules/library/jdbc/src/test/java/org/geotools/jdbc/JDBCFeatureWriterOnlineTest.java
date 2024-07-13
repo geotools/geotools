@@ -43,7 +43,7 @@ public abstract class JDBCFeatureWriterOnlineTest extends JDBCTestSupport {
             final SimpleFeature feature = (SimpleFeature) writer.next();
             assertEquals("POINT (0 0)", feature.getAttribute(0).toString());
             assertEquals(0, (int) (Integer) feature.getAttribute(1));
-            assertEquals(0.0, (double) (Double) feature.getAttribute(2), 0.0);
+            assertEquals(0.0, (Double) feature.getAttribute(2), 0.0);
             assertEquals("zero", feature.getAttribute(3));
         }
         try (FeatureWriter writer =

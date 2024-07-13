@@ -59,7 +59,7 @@ class RandomFillBuilder {
         FREE,
         /** Grid based random distribution */
         GRID
-    };
+    }
 
     public enum RotationRandomizer {
         /** No angle randomization */

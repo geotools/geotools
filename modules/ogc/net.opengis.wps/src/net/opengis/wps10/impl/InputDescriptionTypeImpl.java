@@ -386,13 +386,13 @@ public class InputDescriptionTypeImpl extends DescriptionTypeImpl implements Inp
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.INPUT_DESCRIPTION_TYPE__COMPLEX_DATA:
-        setComplexData((SupportedComplexDataInputType)null);
+        setComplexData(null);
         return;
       case Wps10Package.INPUT_DESCRIPTION_TYPE__LITERAL_DATA:
-        setLiteralData((LiteralInputType)null);
+        setLiteralData(null);
         return;
       case Wps10Package.INPUT_DESCRIPTION_TYPE__BOUNDING_BOX_DATA:
-        setBoundingBoxData((SupportedCRSsType)null);
+        setBoundingBoxData(null);
         return;
       case Wps10Package.INPUT_DESCRIPTION_TYPE__MAX_OCCURS:
         setMaxOccurs(MAX_OCCURS_EDEFAULT);

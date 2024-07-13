@@ -659,7 +659,7 @@ public class CompoundCRSRefTypeImpl extends MinimalEObjectImpl.Container impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.COMPOUND_CRS_REF_TYPE__COMPOUND_CRS:
-                setCompoundCRS((CompoundCRSType)null);
+                setCompoundCRS(null);
                 return;
             case Gml311Package.COMPOUND_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

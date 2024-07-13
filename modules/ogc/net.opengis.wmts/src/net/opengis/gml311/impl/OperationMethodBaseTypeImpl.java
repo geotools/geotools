@@ -154,7 +154,7 @@ public abstract class OperationMethodBaseTypeImpl extends DefinitionTypeImpl imp
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OPERATION_METHOD_BASE_TYPE__METHOD_NAME:
-                setMethodName((CodeType)null);
+                setMethodName(null);
                 return;
         }
         super.eUnset(featureID);

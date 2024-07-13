@@ -154,7 +154,7 @@ public class GridCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GRID_COVERAGE_TYPE__GRID_DOMAIN:
-                setGridDomain((GridDomainType)null);
+                setGridDomain(null);
                 return;
         }
         super.eUnset(featureID);

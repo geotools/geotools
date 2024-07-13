@@ -45,7 +45,6 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.TiledImage;
 import org.geotools.TestData;
 import org.geotools.api.coverage.grid.GridGeometry;
-import org.geotools.api.geometry.Bounds;
 import org.geotools.api.geometry.Position;
 import org.geotools.api.parameter.ParameterValueGroup;
 import org.geotools.api.referencing.FactoryException;
@@ -497,7 +496,7 @@ public final class ResampleTest extends GridProcessingTestBase {
         GridGeometry gg =
                 new GridGeometry2D(
                         new GridEnvelope2D(-10, -10, 5, 5),
-                        (Bounds) ReferencedEnvelope.rect(5, 3, 8, 6, wgs84LonLat));
+                        ReferencedEnvelope.rect(5, 3, 8, 6, wgs84LonLat));
         GridCoverage2D flipped =
                 (GridCoverage2D)
                         Operations.DEFAULT.resample(

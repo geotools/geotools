@@ -659,7 +659,7 @@ public class TemporalCRSRefTypeImpl extends MinimalEObjectImpl.Container impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TEMPORAL_CRS_REF_TYPE__TEMPORAL_CRS:
-                setTemporalCRS((TemporalCRSType)null);
+                setTemporalCRS(null);
                 return;
             case Gml311Package.TEMPORAL_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

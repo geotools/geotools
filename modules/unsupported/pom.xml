@@ -48,6 +48,7 @@
     <module>stac-store</module>
     <module>vector-mosaic</module>
     <module>jdbc-h2gis</module>
+    <module>graticules</module>
   </modules>
   <profiles>
     <!-- ================================================== -->
@@ -193,6 +194,12 @@
       </modules>
     </profile>
     <profile>
+      <id>graticules</id>
+      <modules>
+        <module>graticules</module>
+      </modules>
+    </profile>
+    <profile>
       <id>unsupported</id>
       <activation>
         <property>
@@ -209,6 +216,7 @@
         <module>vpf</module>
         <module>vsi</module>
         <module>jdbc-teradata</module>
+        <module>graticules</module>
       </modules>
     </profile>
     <profile>

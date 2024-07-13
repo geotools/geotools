@@ -37,6 +37,8 @@ import org.geotools.TestData;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.FeatureReader;
 import org.geotools.api.data.FeatureWriter;
+import org.geotools.api.data.FileDataStore;
+import org.geotools.api.data.FileDataStoreFinder;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.data.SimpleFeatureStore;
@@ -312,6 +314,12 @@ public class ShapefileTest extends TestCaseSupport {
             }
         }
         assertEquals("Did not read all Geometries from sparse file.", 1, cnt);
+
+        FileDataStore ds = FileDataStoreFinder.getDataStore(file);
+        assert ds.getFeatureSource().getSchema() != null;
+        File missingFile = TestData.file(TestCaseSupport.class, "missing/aaa2.shp");
+        FileDataStore ds2 = FileDataStoreFinder.getDataStore(missingFile);
+        assert ds2.getFeatureSource().getSchema() != null;
     }
 
     @Test

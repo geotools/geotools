@@ -23,14 +23,21 @@ import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
+import org.apache.commons.io.FileUtils;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.data.PrjFileReader;
+import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.IndexedDbaseFileReader;
 import org.geotools.data.shapefile.files.FileReader;
@@ -39,6 +46,7 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileException;
 import org.geotools.data.shapefile.shp.ShapefileReader;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.GeometryFactory;
 
@@ -91,7 +99,30 @@ class ShapefileSetManager implements FileReader {
         if (shpFiles.isLocal() && !shpFiles.exists(DBF)) {
             return null;
         }
+        if (shpFiles.isLocal() && shpFiles.exists(DBF)) {
+            File file = URLs.urlToFile(new URL(shpFiles.get(DBF)));
+            byte[] bytes;
+            if (shpFiles.isGz()) {
+                try (GZIPInputStream in = new GZIPInputStream(new FileInputStream(file))) {
+                    bytes = in.readNBytes(4096);
+                }
+            } else {
+                bytes = FileUtils.readFileToByteArray(file);
+                int limit = 0x1c; // DBF Header must be at least this long
+                long length = file.length();
+                if (length < limit) {
+                    return null;
+                }
+            }
+            // We need to handle an "empty" dbf file that is not actually empty (lots of nulls etc)
 
+            DbaseFileHeader header = new DbaseFileHeader();
+            ByteBuffer field = ByteBuffer.wrap(bytes);
+            header.readHeader(field);
+            if (header.getHeaderLength() <= 0 || header.getNumFields() == 0) {
+                return null;
+            }
+        }
         Charset charset = store.getCharset();
 
         if (store.isTryCPGFile()

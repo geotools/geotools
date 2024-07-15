@@ -130,7 +130,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     @Test
     public void testTranslateWithAutoNames() {
         // Define the CSS string
-        String css = "@autoRuleNames 'true';\n" + "* { fill: #FF0000; }";
+        String css = "@autoRuleNames 'true';\n* { fill: #FF0000; }";
         Stylesheet stylesheet = parse(css);
 
         Style translatedStyle = new CssTranslator().translate(stylesheet);

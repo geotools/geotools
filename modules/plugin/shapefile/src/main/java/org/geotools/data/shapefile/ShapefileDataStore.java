@@ -109,6 +109,8 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
 
     boolean fidIndexed = true;
 
+    boolean ignoreIndexStaleness = false;
+
     IndexManager indexManager;
 
     ShapefileSetManager shpManager;
@@ -203,6 +205,18 @@ public class ShapefileDataStore extends ContentDataStore implements FileDataStor
      */
     public void setIndexed(boolean indexed) {
         this.indexed = indexed;
+    }
+
+    public boolean isIgnoringIndexStaleness() {
+        return ignoreIndexStaleness;
+    }
+
+    /**
+     * When set to true, will force IndexManager to avoid the check on the index staleness (so it
+     * doesn't
+     */
+    public void setIgnoreIndexStaleness(boolean ignore) {
+        ignoreIndexStaleness = ignore;
     }
 
     /** The current max shapefile size */

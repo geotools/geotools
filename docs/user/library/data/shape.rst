@@ -51,7 +51,10 @@ The following connection parameters are available:
 |                          | used even if available (and won't be created if   |
 |                          | missing.                                          |
 +--------------------------+---------------------------------------------------+
-
+|``ignore index staleness``| Optional: if true, skips the check on index       |
+|                          | staleness (avoids recreation of indexes if .shp   |
+|                          | is newer than .qix/.fix)                          |
++--------------------------+---------------------------------------------------+
 
 
 This information is also in the `javadocs <http://docs.geotools.org/latest/javadocs/org/geotools/data/shapefile/ShapefileDataStoreFactory.html>`_ .

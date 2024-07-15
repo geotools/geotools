@@ -198,6 +198,19 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
                     true,
                     new KVP(Param.LEVEL, "advanced"));
 
+    /**
+     * Optional - if true, skips the check on index staleness (avoids recreation of indexes if .shp
+     * is newer than .qix/.fix)
+     */
+    public static final Param IGNORE_STALENESS =
+            new Param(
+                    "ignore index staleness",
+                    Boolean.class,
+                    "If true, skips the check on index staleness (avoids recreation of indexes if .shp is newer than .qix/.fix)",
+                    false,
+                    false,
+                    new KVP(Param.LEVEL, "advanced"));
+
     @Override
     public String getDisplayName() {
         return "Shapefile";
@@ -221,7 +234,8 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             CACHE_MEMORY_MAPS,
             FILE_TYPE,
             FSTYPE,
-            SKIP_SCAN
+            SKIP_SCAN,
+            IGNORE_STALENESS
         };
     }
 
@@ -245,6 +259,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
         TimeZone dbfTimeZone = lookup(DBFTIMEZONE, params, TimeZone.class);
         Boolean isCreateSpatialIndex = lookup(CREATE_SPATIAL_INDEX, params, Boolean.class);
         Boolean skipScan = lookup(SKIP_SCAN, params, Boolean.class);
+        Boolean ignoreStaleness = lookup(IGNORE_STALENESS, params, Boolean.class);
         Boolean isEnableSpatialIndex = (Boolean) ENABLE_SPATIAL_INDEX.lookUp(params);
         if (isEnableSpatialIndex == null) {
             // should not be needed as default is TRUE
@@ -280,6 +295,7 @@ public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
             store.setTimeZone(dbfTimeZone);
             store.setIndexed(enableIndex);
             store.setIndexCreationEnabled(createIndex);
+            store.setIgnoreIndexStaleness(ignoreStaleness);
             return store;
         }
     }

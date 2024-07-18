@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>31-SNAPSHOT</version>
+    <version>31.3</version>
   </parent>
 
   <!-- =========================================================== -->

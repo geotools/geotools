@@ -19,6 +19,7 @@ package org.geotools.geometry.jts;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Envelope;
@@ -94,6 +95,7 @@ public class GeometryClipper {
      * @param scale Scale used to snap geometry to precision model, 0 to disable
      * @return a clipped geometry, which may be empty, or null
      */
+    @Nullable
     public Geometry clipSafe(Geometry g, boolean ensureValid, double scale) {
         try {
             return clip(g, ensureValid);
@@ -142,6 +144,7 @@ public class GeometryClipper {
      * @param ensureValid If false there is no guarantee the polygons returned will be valid
      *     according to JTS rules (but should still be good enough to be used for pure rendering)
      */
+    @Nullable
     public Geometry clip(Geometry g, boolean ensureValid) {
         // basic pre-flight checks
         if (g == null) {

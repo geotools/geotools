@@ -76,3 +76,14 @@ The name is usually ignored, with only 2 exceptions:
   We have be unable to define an alias for "x" and "y" up to date, because "x" (for
   example) can means too many different things: "Easting" in a map projection,
   "Geocentric X" in a ``GeocentricCRS``, "Column" in an ``ImageCRS``, etc...
+
+
+Compare Equivalent
+^^^^^^^^^^^^^^^^^^
+You can check if two CRSs are equivalent, while ignoring the metadata as above, and eventually checking if a Transformation is required between the two.::
+  
+  if( CRS.isEquivalent(crs1, crs2)){
+      
+  }
+
+This method will first determine if the two objects are equal by ignoring metadata, using the previously mentioned equalsIgnoreMetadata method as the initial step. If the objects are not equal, it will then check for the existence of a transformation between them. If no transformation is required, meaning the transformation is the identity and does not alter any points, the objects can be considered equivalent.

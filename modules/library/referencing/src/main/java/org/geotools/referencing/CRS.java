@@ -961,6 +961,32 @@ public final class CRS {
     }
 
     /**
+     * This method is checking if the 2 CRSs are equivalent by first using the equalsIgnoreMetadata
+     * approach and then looking for an identity transformation between the 2 CRSs if the first
+     * check fails.
+     *
+     * @param source The source {@link CoordinateReferenceSystem}
+     * @param target the target {@link CoordinateReferenceSystem}
+     */
+    public static boolean isEquivalent(
+            CoordinateReferenceSystem source, CoordinateReferenceSystem target) {
+        boolean equivalentCRS = equalsIgnoreMetadata(source, target);
+        if (!equivalentCRS) {
+
+            try {
+                equivalentCRS = !isTransformationRequired(source, target);
+            } catch (FactoryException e) {
+                // That was an attempt looking for an identity transform.
+                // Let's ignore the exception and return the previous result
+                LOGGER.log(
+                        Level.FINE,
+                        "Unable to find MathTransform between source and target CRS",
+                        e);
+            }
+        }
+        return equivalentCRS;
+    }
+    /**
      * Returns the <cite>Spatial Reference System</cite> identifier, or {@code null} if none. OGC
      * Web Services have the concept of a Spatial Reference System identifier used to communicate
      * CRS information between systems.

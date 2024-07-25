@@ -341,7 +341,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         if (crs != null) {
             final CoordinateReferenceSystem other = bbox.getCoordinateReferenceSystem();
             if (other != null) {
-                if (!CRS.equalsIgnoreMetadata(crs, other)) {
+                if (!CRS.isEquivalent(crs, other)) {
                     throw new MismatchedReferenceSystemException(
                             ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }
@@ -358,7 +358,7 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
         if (crs != null) {
             final CoordinateReferenceSystem other = location.getCoordinateReferenceSystem();
             if (other != null) {
-                if (!CRS.equalsIgnoreMetadata(crs, other)) {
+                if (!CRS.isEquivalent(crs, other)) {
                     throw new MismatchedReferenceSystemException(
                             ErrorKeys.MISMATCHED_COORDINATE_REFERENCE_SYSTEM);
                 }

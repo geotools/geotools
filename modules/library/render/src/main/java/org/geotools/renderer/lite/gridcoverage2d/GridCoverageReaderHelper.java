@@ -127,7 +127,7 @@ public class GridCoverageReaderHelper {
         // we are going to read
 
         sameCRS =
-                GridCoverageRendererUtilities.isEquivalentCRS(
+                CRS.isEquivalent(
                         mapExtent.getCoordinateReferenceSystem(),
                         reader.getCoordinateReferenceSystem());
         paddingRequired =

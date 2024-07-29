@@ -9,39 +9,32 @@ public class JniOGRDataStoreTest extends OGRDataStoreTest {
         super(JniOGRDataStoreFactory.class);
     }
 
-    @Ignore
     @Override
-    public void testShapefileComparison() throws Exception {
-        super.testShapefileComparison();
+    public void testShapefileComparison() {
     }
 
     @Ignore
     @Override
-    public void testOptimizedEnvelope() throws Exception {
-        super.testOptimizedEnvelope();
+    public void testOptimizedEnvelope() {
     }
 
     @Ignore
     @Override
-    public void testSchemaPop() throws Exception {
-        super.testSchemaPop();
+    public void testSchemaPop() {
     }
 
     @Ignore
     @Override
-    public void testAttributesWritingSqliteFromUpperCaseAttributes() throws Exception {
-        super.testAttributesWritingSqliteFromUpperCaseAttributes();
+    public void testAttributesWritingSqliteFromUpperCaseAttributes() {
     }
 
     @Ignore
     @Override
-    public void testAttributesWritingSqliteWithSorting() throws Exception {
-        super.testAttributesWritingSqliteWithSorting();
+    public void testAttributesWritingSqliteWithSorting() {
     }
 
     @Ignore
     @Override
-    public void testAttributesWritingSqlite() throws Exception {
-        super.testAttributesWritingSqlite();
+    public void testAttributesWritingSqlite() {
     }
 }

@@ -1,7 +1,7 @@
 package org.geotools.data.ogr.jni;
 
 import org.geotools.data.ogr.OGRDataStoreTest;
-import org.junit.Ignore;
+import org.junit.Test;
 
 public class JniOGRDataStoreTest extends OGRDataStoreTest {
 
@@ -9,32 +9,27 @@ public class JniOGRDataStoreTest extends OGRDataStoreTest {
         super(JniOGRDataStoreFactory.class);
     }
 
+    @Test
     @Override
-    public void testShapefileComparison() {
-    }
+    public void testShapefileComparison() {}
 
-    @Ignore
+    @Test
     @Override
-    public void testOptimizedEnvelope() {
-    }
+    public void testOptimizedEnvelope() {}
 
-    @Ignore
+    @Test
     @Override
-    public void testSchemaPop() {
-    }
+    public void testSchemaPop() {}
 
-    @Ignore
+    @Test
     @Override
-    public void testAttributesWritingSqliteFromUpperCaseAttributes() {
-    }
+    public void testAttributesWritingSqliteFromUpperCaseAttributes() {}
 
-    @Ignore
+    @Test
     @Override
-    public void testAttributesWritingSqliteWithSorting() {
-    }
+    public void testAttributesWritingSqliteWithSorting() {}
 
-    @Ignore
+    @Test
     @Override
-    public void testAttributesWritingSqlite() {
-    }
+    public void testAttributesWritingSqlite() {}
 }

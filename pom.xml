@@ -478,9 +478,9 @@
     <elasticsearch.version>7.14.0</elasticsearch.version>
     <imageio.ext.version>1.4.12</imageio.ext.version>
     <informix.jdbc.version>4.50.7.1</informix.jdbc.version>
-    <jackson2.version>2.17.1</jackson2.version>
+    <jackson2.version>2.17.2</jackson2.version>
     <jackson2.databind.version>${jackson2.version}</jackson2.databind.version>
-    <jaiext.version>1.1.25</jaiext.version>
+    <jaiext.version>1.1.26</jaiext.version>
     <javax.activation-api.version>1.2.0</javax.activation-api.version>
     <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
     <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
@@ -909,7 +909,7 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.14.0</version>
+        <version>3.15.0</version>
       </dependency>
       <dependency>
         <groupId>commons-collections</groupId>
@@ -1144,7 +1144,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>33.2.0-jre</version>
+        <version>33.2.1-jre</version>
       </dependency>
       <dependency>
         <groupId>org.yaml</groupId>
@@ -1163,7 +1163,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13.1</version>
+        <version>4.13.2</version>
         <scope>test</scope>
       </dependency>
       <dependency>

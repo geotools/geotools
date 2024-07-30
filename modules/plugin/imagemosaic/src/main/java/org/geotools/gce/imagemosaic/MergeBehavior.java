@@ -20,8 +20,7 @@ import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
-import javax.media.jai.BorderExtender;
-import javax.media.jai.BorderExtenderConstant;
+import java.util.Arrays;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
@@ -61,87 +60,15 @@ public enum MergeBehavior {
                         hints);
             }
 
-            // Step 1 check if we need to create a background mosaic
-            Rectangle union = new Rectangle(PlanarImage.wrapRenderedImage(sources[0]).getBounds());
-            boolean performMosaic = false;
-            for (int i = 1; i < sources.length; i++) {
-                // current extent
-                Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[0]).getBounds();
-                if (!currentExtent.equals(union)) {
-                    performMosaic = true;
-
-                    // union
-                    union = union.union(currentExtent);
-                }
-            }
-
-            // Step 2 (Optional) use Border operator to bring the images to the same extent
-
-            // needs to use mosaic ? DO we have ROIs?
-            boolean border = true;
-            if (sourceROI != null) {
-                for (ROI roi : sourceROI) {
-                    if (roi != null) {
-                        border = false;
-                        break;
-                    }
-                }
-            }
-            if (performMosaic) {
-                // BORDER extender
-                final BorderExtender borderExtenderConstant =
-                        new BorderExtenderConstant(backgroundValues);
-                // loop on sources
-                for (int i = 0; i < sources.length; i++) {
-                    if (border) {
-                        // do we need to extend?
-                        if (!PlanarImage.wrapRenderedImage(sources[i]).getBounds().equals(union)) {
-                            // current extent
-                            Rectangle currentExtent =
-                                    PlanarImage.wrapRenderedImage(sources[0]).getBounds();
-
-                            // add BORDER to the current source
-                            ImageWorker worker =
-                                    new ImageWorker(sources[i]).setRenderingHints(hints);
-                            worker.border(
-                                    union.x - currentExtent.x,
-                                    union.x + union.width - currentExtent.x - currentExtent.width,
-                                    union.y - currentExtent.y,
-                                    union.y + union.height - currentExtent.y - currentExtent.height,
-                                    borderExtenderConstant);
-                            sources[i] = worker.getRenderedImage();
-                        }
-                    } else {
-                        // use msoaic in case we have source ROIs
-                        final ImageLayout layout =
-                                (ImageLayout)
-                                        (hints != null
-                                                ? hints.get(JAI.KEY_IMAGE_LAYOUT)
-                                                : new ImageLayout2());
-                        layout.setWidth(union.width)
-                                .setHeight(union.height)
-                                .setMinX(union.x)
-                                .setMinY(union.y);
-                        final RenderingHints localHints;
-                        if (hints != null) {
-                            localHints = (RenderingHints) hints.clone();
-                            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
-                        } else {
-                            localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
-                        }
-                        return new ImageWorker(localHints)
-                                .setBackground(backgroundValues)
-                                .mosaic(
-                                        sources,
-                                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
-                                        sourceAlpha,
-                                        sourceROI,
-                                        inputThreshold,
-                                        null)
-                                .getRenderedImage();
-                    }
-                }
-            }
+            // put in the same envelope
+            sources =
+                    harmonizeSources(
+                            sources,
+                            backgroundValues,
+                            inputThreshold,
+                            sourceAlpha,
+                            sourceROI,
+                            hints);
 
             // Step 3, band merge the images
             // loop on sources
@@ -170,7 +97,140 @@ public enum MergeBehavior {
                     .mosaic(sources, mosaicType, sourceAlpha, sourceROI, inputThreshold, null)
                     .getRenderedImage();
         }
+    },
+    MAX {
+        @Override
+        public RenderedImage process(
+                RenderedImage[] sources,
+                double[] backgroundValues,
+                double[][] inputThreshold,
+                PlanarImage[] sourceAlpha,
+                ROI[] sourceROI,
+                MosaicType mosaicType,
+                RenderingHints localHints) {
+
+            // checks
+            if (sources.length == 1) {
+                return FLAT.process(
+                        sources,
+                        backgroundValues,
+                        inputThreshold,
+                        sourceAlpha,
+                        sourceROI,
+                        mosaicType,
+                        localHints);
+            }
+
+            // put in the same envelope
+            sources =
+                    harmonizeSources(
+                            sources,
+                            backgroundValues,
+                            inputThreshold,
+                            sourceAlpha,
+                            sourceROI,
+                            localHints);
+
+            return new ImageWorker(localHints).setImage(sources[0]).max(sources).getRenderedImage();
+        }
+    },
+    MIN {
+        @Override
+        public RenderedImage process(
+                RenderedImage[] sources,
+                double[] backgroundValues,
+                double[][] inputThreshold,
+                PlanarImage[] sourceAlpha,
+                ROI[] sourceROI,
+                MosaicType mosaicType,
+                RenderingHints localHints) {
+
+            // checks
+            if (sources.length == 1) {
+                return FLAT.process(
+                        sources,
+                        backgroundValues,
+                        inputThreshold,
+                        sourceAlpha,
+                        sourceROI,
+                        mosaicType,
+                        localHints);
+            }
+
+            // put in the same envelope
+            sources =
+                    harmonizeSources(
+                            sources,
+                            backgroundValues,
+                            inputThreshold,
+                            sourceAlpha,
+                            sourceROI,
+                            localHints);
+
+            return new ImageWorker(localHints).setImage(sources[0]).min(sources).getRenderedImage();
+        }
     };
+
+    /**
+     * Prepares multiple sources, potentially not sharing the same extent, for an operation that
+     * requires an exact overlap.
+     */
+    private static RenderedImage[] harmonizeSources(
+            RenderedImage[] sources,
+            double[] backgroundValues,
+            double[][] inputThreshold,
+            PlanarImage[] sourceAlpha,
+            ROI[] sourceROI,
+            RenderingHints hints) {
+        RenderedImage[] result = Arrays.copyOf(sources, sources.length);
+
+        // Check if the images don't share the same bounds
+        Rectangle union = new Rectangle(PlanarImage.wrapRenderedImage(sources[0]).getBounds());
+        boolean performMosaic = false;
+        for (int i = 1; i < sources.length; i++) {
+            Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[i]).getBounds();
+            if (!currentExtent.equals(union)) {
+                performMosaic = true;
+                union = union.union(currentExtent);
+            }
+        }
+        if (!performMosaic) return result;
+
+        // different extents found, use mosaic to extend each one of them to the union of the bounds
+        // shared image layout for all images
+        final ImageLayout layout =
+                (ImageLayout)
+                        (hints != null ? hints.get(JAI.KEY_IMAGE_LAYOUT) : new ImageLayout2());
+        layout.setWidth(union.width).setHeight(union.height).setMinX(union.x).setMinY(union.y);
+
+        final RenderingHints localHints;
+        if (hints != null) {
+            localHints = (RenderingHints) hints.clone();
+            localHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+        } else {
+            localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+        }
+
+        // extend each one using mosaic
+        for (int i = 0; i < sources.length; i++) {
+
+            PlanarImage[] sourceAlphas =
+                    sourceAlpha == null ? null : new PlanarImage[] {sourceAlpha[i]};
+            ROI[] sourceROIs = sourceROI == null ? null : new ROI[] {sourceROI[i]};
+            ImageWorker worker = new ImageWorker(localHints);
+            worker.setBackground(backgroundValues);
+            result[i] =
+                    worker.mosaic(
+                                    new RenderedImage[] {sources[i]},
+                                    MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                    sourceAlphas,
+                                    sourceROIs,
+                                    inputThreshold,
+                                    null)
+                            .getRenderedImage();
+        }
+        return result;
+    }
 
     /**
      * Process input {@link RenderedImage} to produce the output of this mosaic.

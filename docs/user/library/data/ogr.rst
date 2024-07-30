@@ -15,7 +15,7 @@ In order to use the OGR datastore, add the following dependency:
 
 Your installation of GDAL/OGR needs to be compiled with Java support to use this module.
 
-The OGR DataStore does require the GDAL/OGR native library:
+The OGR DataStore requires the GDAL/OGR native library, version 3.2 or **older**. To configure GDAL/OGR for use with the plugin:
 
 * Add the location to your ``PATH`` on Windows, or ``LD_LIBRARY_PATH`` on Linux.
 * Include this GDAL install location in the ``java.library.path`` system property when running your program.

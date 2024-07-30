@@ -12,7 +12,7 @@ jobs:
     runs-on: [ubuntu-latest]
     strategy:
       matrix:
-        mssql: [2019-latest, 2022-latest]
+        mssql: [2019-latest, 2022-CU13-ubuntu-22.04]
         java: [11]
 
     steps:

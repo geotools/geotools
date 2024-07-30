@@ -10,5 +10,6 @@ Project Conventions
    module
    refactor
    profile
-   test/test
+   test/index
+   data
    version

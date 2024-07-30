@@ -1,13 +1,3 @@
-Testing
-=======
-
-.. toctree::
-   :maxdepth: 1
-   
-   junit
-   online
-   data
-
 Use of Maven Test Profiles
 --------------------------
 
@@ -35,7 +25,7 @@ You can combine profiles as needed::
    mvn -P online,stress install
 
 Build Time Targets
-------------------
+^^^^^^^^^^^^^^^^^^
 
 To keep build times down (so tests are run at all) we ask you to stay in the following time limits.
 
@@ -49,7 +39,7 @@ module you will need to make use of the provided profile::
    mvn -P unsupported install
 
 Code Coverage vs Regression Testing
-------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. Code Coverage reports are available via::
    

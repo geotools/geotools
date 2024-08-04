@@ -44,6 +44,7 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         // Google Spherical Mercator at 96 DPI
         ZoomContext googleMercatorExtended = new RatioZoomContext(559_082_263.9508929, 2);
         contexts.put("WebMercator".toUpperCase(), googleMercatorExtended);
+        contexts.put("WebMercatorQuad".toUpperCase(), googleMercatorExtended); // OGC TMS
         contexts.put("SphericalMercator".toUpperCase(), googleMercatorExtended);
         contexts.put("GoogleMercator".toUpperCase(), googleMercatorExtended);
         contexts.put("EPSG:3587".toUpperCase(), googleMercatorExtended);
@@ -63,6 +64,12 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
         contexts.put("CRS84".toUpperCase(), plateCarree);
         contexts.put("GoogleCRS84Quad".toUpperCase(), plateCarree); // The Name used by GWC
         canonicalNames.add("WGS84");
+
+        // EPSG:4326 / WorldCRS84Quad
+        ZoomContext worldCRS84Quad = new RatioZoomContext(279_541_132.0143589, 2);
+        contexts.put("WorldCRS84Quad".toUpperCase(), worldCRS84Quad);
+        contexts.put("EPSG:4326".toUpperCase(), worldCRS84Quad);
+        canonicalNames.add("WorldCRS84Quad");
 
         // Note the above two contexts have identical zoom levels but are conceptually distinct due
         // to the difference in CRS.

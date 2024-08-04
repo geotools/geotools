@@ -34,5 +34,7 @@ public interface SelectorVisitor {
 
     public Object visit(ScaleRange scaleRange);
 
+    public Object visit(ZoomRange scaleRange);
+
     public Object visit(PseudoClass pseudoClass);
 }

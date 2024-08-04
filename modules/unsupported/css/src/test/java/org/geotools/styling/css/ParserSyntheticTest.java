@@ -19,6 +19,7 @@ package org.geotools.styling.css;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -49,6 +50,7 @@ import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
+import org.geotools.styling.css.selector.ZoomRange;
 import org.junit.Test;
 import org.parboiled.errors.ParseError;
 import org.parboiled.parserunners.ReportingParseRunner;
@@ -335,6 +337,102 @@ public class ParserSyntheticTest extends CssBaseTest {
         ScaleRange sr = (ScaleRange) r.getSelector();
         assertEquals(0, sr.range.getMinValue(), 0d);
         assertEquals(1000, sr.range.getMaxValue(), 0d);
+    }
+
+    @Test
+    public void zoomGreaterSelector() throws IOException, CQLException {
+        String css = "[@z > 10] { stroke: #000000; }";
+        ParsingResult<Stylesheet> result =
+                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+
+        assertNoErrors(result);
+
+        Stylesheet ss = result.parseTreeRoot.getValue();
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertNull(r.getComment());
+        assertTrue(r.getSelector() instanceof ZoomRange);
+        ZoomRange zr = (ZoomRange) r.getSelector();
+        assertEquals(10, (int) zr.range.getMinValue());
+        assertFalse(zr.range.isMinIncluded());
+        assertEquals(Integer.MAX_VALUE, (int) zr.range.getMaxValue());
+    }
+
+    @Test
+    public void zoomGreaterEqualSelector() throws IOException, CQLException {
+        String css = "[@z >= 10] { stroke: #000000; }";
+        ParsingResult<Stylesheet> result =
+                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+
+        assertNoErrors(result);
+
+        Stylesheet ss = result.parseTreeRoot.getValue();
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertNull(r.getComment());
+        assertTrue(r.getSelector() instanceof ZoomRange);
+        ZoomRange zr = (ZoomRange) r.getSelector();
+        assertEquals(10, (int) zr.range.getMinValue());
+        assertTrue(zr.range.isMinIncluded());
+        assertEquals(Integer.MAX_VALUE, (int) zr.range.getMaxValue());
+    }
+
+    @Test
+    public void equalZoomSelector() throws IOException, CQLException {
+        String css = "[@z = 5] { stroke: #000000; }";
+        ParsingResult<Stylesheet> result =
+                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+
+        assertNoErrors(result);
+
+        Stylesheet ss = result.parseTreeRoot.getValue();
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertNull(r.getComment());
+        assertTrue(r.getSelector() instanceof ZoomRange);
+        ZoomRange zr = (ZoomRange) r.getSelector();
+        assertEquals(5, (int) zr.range.getMinValue());
+        assertTrue(zr.range.isMinIncluded());
+        assertEquals(5, (int) zr.range.getMaxValue(), 0d);
+        assertTrue(zr.range.isMaxIncluded());
+    }
+
+    @Test
+    public void zoomLessSelector() throws IOException, CQLException {
+        String css = "[@z < 5] { stroke: #000000; }";
+        ParsingResult<Stylesheet> result =
+                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+
+        assertNoErrors(result);
+
+        Stylesheet ss = result.parseTreeRoot.getValue();
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertNull(r.getComment());
+        assertTrue(r.getSelector() instanceof ZoomRange);
+        ZoomRange zr = (ZoomRange) r.getSelector();
+        assertEquals(0, (int) zr.range.getMinValue());
+        assertEquals(5, (int) zr.range.getMaxValue(), 0d);
+        assertFalse(zr.range.isMaxIncluded());
+    }
+
+    @Test
+    public void zoomLessEqualSelector() throws IOException, CQLException {
+        String css = "[@z <= 5] { stroke: #000000; }";
+        ParsingResult<Stylesheet> result =
+                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
+
+        assertNoErrors(result);
+
+        Stylesheet ss = result.parseTreeRoot.getValue();
+        assertEquals(1, ss.getRules().size());
+        CssRule r = ss.getRules().get(0);
+        assertNull(r.getComment());
+        assertTrue(r.getSelector() instanceof ZoomRange);
+        ZoomRange zr = (ZoomRange) r.getSelector();
+        assertEquals(0, (int) zr.range.getMinValue());
+        assertEquals(5, (int) zr.range.getMaxValue(), 0d);
+        assertTrue(zr.range.isMaxIncluded());
     }
 
     @Test

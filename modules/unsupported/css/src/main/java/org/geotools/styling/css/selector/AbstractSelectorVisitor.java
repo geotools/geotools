@@ -70,6 +70,11 @@ public class AbstractSelectorVisitor implements SelectorVisitor {
     }
 
     @Override
+    public Object visit(ZoomRange scaleRange) {
+        return null;
+    }
+
+    @Override
     public Object visit(PseudoClass pseudoClass) {
         return null;
     }

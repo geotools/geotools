@@ -46,6 +46,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
 import org.apache.commons.lang3.ArrayUtils;
 import org.geotools.api.data.DataStore;
@@ -1433,12 +1434,21 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // In the SQL standard distinct and order by can work only if all order by attributes also
         // show up in the select
-        // Given the Unique visitor makes no promise regarding sorting, it's easier to just remove
-        // the sort
         if (visitor instanceof UniqueVisitor
                 && query.getSortBy() != null
                 && query.getSortBy().length > 0) {
-            query.setSortBy();
+            UniqueVisitor unique = (UniqueVisitor) visitor;
+            if (!unique.isPreserveOrder()) {
+                // not order preserving, easy peasy, just remove the sort
+                query.setSortBy();
+            } else {
+                // need to preserve the sorting, can we abide to SQL rules though?
+                if (!isSortAttributesPartOfUnique((UniqueVisitor) visitor, query)) {
+                    // cannot execute this one on a database, but the visitor requires order
+                    // preservation, so, fall back on in-memory execution.
+                    return null;
+                }
+            }
         }
 
         // if the visitor is limiting the result to a given start - max, we will
@@ -1526,6 +1536,16 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         } catch (SQLException e) {
             throw (IOException) new IOException().initCause(e);
         }
+    }
+
+    private static boolean isSortAttributesPartOfUnique(UniqueVisitor visitor, Query query) {
+        Set<String> uniqueAttributes = new HashSet<>(visitor.getAttrNames());
+        Set<String> sortAttributes =
+                Arrays.stream(query.getSortBy())
+                        .map(sb -> sb.getPropertyName().getPropertyName())
+                        .collect(Collectors.toSet());
+        boolean sortAttributesPartOfUnique = uniqueAttributes.containsAll(sortAttributes);
+        return sortAttributesPartOfUnique;
     }
 
     /**

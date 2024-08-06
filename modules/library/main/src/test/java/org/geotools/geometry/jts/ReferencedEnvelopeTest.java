@@ -12,15 +12,30 @@ import static org.junit.Assert.fail;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import org.geotools.api.geometry.MismatchedReferenceSystemException;
+import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.geometry.GeneralBounds;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultProjectedCRS;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 
 public class ReferencedEnvelopeTest {
+
+    @Before
+    public void setUp() throws Exception {
+        // this is the only thing that actually forces CRS object to give up
+        // its configuration, necessary when tests are run by Maven, one JVM for all
+        // the tests in this module
+        Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE);
+        GeoTools.fireConfigurationChanged();
+    }
 
     @Test
     public void testEverything() {
@@ -244,6 +259,81 @@ public class ReferencedEnvelopeTest {
         assertEquals(40, re.getMaxY(), 0d);
     }
 
+    @Test
+    public void testCompatibleCRSEnvelopeIntersection() throws Exception {
+        ReferencedEnvelope env1 =
+                createEnvelope(
+                        -2.177465925706197E7,
+                        8646206.01995729,
+                        -1.8020943797479007E7,
+                        1.2385261999043737E7,
+                        "EPSG:3857",
+                        false);
+        ReferencedEnvelope env2 =
+                createEnvelope(
+                        -2.1788686706639238E7,
+                        8621919.786483308,
+                        -1.801691811921271E7,
+                        1.2394009693069756E7,
+                        "EPSG:3857",
+                        true);
+        CoordinateReferenceSystem crs1 = env1.getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs2 = env2.getCoordinateReferenceSystem();
+        assertNotSame(
+                ((DefaultProjectedCRS) crs1)
+                        .getBaseCRS()
+                        .getCoordinateSystem()
+                        .getAxis(0)
+                        .getDirection(),
+                ((DefaultProjectedCRS) crs2)
+                        .getBaseCRS()
+                        .getCoordinateSystem()
+                        .getAxis(0)
+                        .getDirection());
+        assertTrue(CRS.isEquivalent(crs1, crs2));
+        ReferencedEnvelope re = env1.intersection(env2);
+        assertNotNull(re);
+    }
+
+    @Test(expected = MismatchedReferenceSystemException.class)
+    public void testIncompatibleCRSEnvelopeOperation() throws Exception {
+        ReferencedEnvelope env1 =
+                createEnvelope(
+                        -2.177465925706197E7,
+                        8646206.01995729,
+                        -1.8020943797479007E7,
+                        1.2385261999043737E7,
+                        "EPSG:3857",
+                        false);
+        ReferencedEnvelope env2 =
+                createEnvelope(
+                        -2.1788686706639238E7,
+                        8621919.786483308,
+                        -1.801691811921271E7,
+                        1.2394009693069756E7,
+                        "EPSG:32632",
+                        true);
+        assertFalse(
+                CRS.isEquivalent(
+                        env1.getCoordinateReferenceSystem(), env2.getCoordinateReferenceSystem()));
+        // The intersection will throw a MismatchedReferenceSystemException
+        env1.expandToInclude(env2);
+    }
+
+    private ReferencedEnvelope createEnvelope(
+            double minX,
+            double minY,
+            double maxX,
+            double maxY,
+            String epsgCode,
+            boolean longitudeFirst)
+            throws FactoryException {
+        GeneralBounds ge = new GeneralBounds(new double[] {minX, minY}, new double[] {maxX, maxY});
+        CoordinateReferenceSystem crs = CRS.decode(epsgCode, longitudeFirst);
+        ge.setCoordinateReferenceSystem(crs);
+        return ReferencedEnvelope.reference(ge);
+    }
+
     /**
      * This method tests the different ways of initializing a ReferencedEnvelope in a manner
      * consistent with behavior of {@link Rectangle2D}
@@ -279,5 +369,11 @@ public class ReferencedEnvelopeTest {
                 "setFrameFromDiagonal",
                 ReferencedEnvelope.rect(rectangle, DefaultEngineeringCRS.CARTESIAN_2D),
                 envelope);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+        GeoTools.fireConfigurationChanged();
     }
 }

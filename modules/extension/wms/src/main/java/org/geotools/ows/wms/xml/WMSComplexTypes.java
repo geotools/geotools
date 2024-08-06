@@ -3985,13 +3985,13 @@ public class WMSComplexTypes {
                     continue;
                 }
                 if (sameName(elems[0], value[i])) {
-                    Object[] formObj = (Object[]) value[0].getValue();
+                    Object[] formObj = (Object[]) value[i].getValue();
                     format =
                             (formObj == null || formObj.length == 0) ? null : (String) (formObj[0]);
                 }
 
                 if (sameName(elems[1], value[i])) {
-                    url = (URL) value[1].getValue();
+                    url = (URL) value[i].getValue();
                 }
             }
 

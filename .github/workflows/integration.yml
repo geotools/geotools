@@ -1,11 +1,6 @@
 name: Downstream integration build (GeoWebCache and GeoServer)
 
-on:
-  # trigger on PR, but only on main branch, the checkouts of the downstream projects are also targeting main (default branch)
-  pull_request:
-    branches:
-      - main
-      - remove-opengis
+on: [pull_request]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -42,49 +37,10 @@ jobs:
         mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
         echo "Checking out GeoWebCache"
         mkdir geowebcache
-        git clone https://github.com/GeoWebCache/geowebcache.git geowebcache
+        git clone https://github.com/GeoWebCache/geowebcache.git geowebcache --branch 1.24.x
         echo "Checking out GeoServer"
         mkdir geoserver
-        git clone https://github.com/geoserver/geoserver.git geoserver
-        echo "Checking out GeoFence"
-        mkdir geofence
-        git clone https://github.com/geoserver/geofence.git geofence
-        echo "Checking out mapfish-print-v2"
-        mkdir mapfish-print-v2
-        git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2
-        echo "Checking out mapfish-print-v3"
-        mkdir mapfish-print-v3
-        git clone -b opengis-migration https://github.com/mapfish/mapfish-print.git mapfish-print-v3
-    - name: Apply org.opengis removal scripts
-      run: |
-        cd ~
-        find . -name "remove-opengis.xml"
-        cd ~/geowebcache/geowebcache
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-        cd ~/geoserver/src
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-        cd ~/geofence        
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-        cd ~/mapfish-print-v2
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-        cd ~/mapfish-print-v3/core/src
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-        cd ~/mapfish-print-v3/docs/src
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-        cd ~/mapfish-print-v3/examples/src
-        cp ~/work/geotools/geotools/docs/user/welcome/files/remove-opengis.xml .
-        ant -noinput -buildfile remove-opengis.xml
-    - name: Build Mapfish-print v2 with tests
-      run: |
-        cd ~
-        mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f mapfish-print-v2/pom.xml install -nsu -DskipTests -T2
-        mvn -B -f mapfish-print-v2/pom.xml test -fae -nsu -T2 
+        git clone https://github.com/geoserver/geoserver.git geoserver --branch 2.24.x
     - name: Build GeoWebCache with tests
       run: |
         export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
@@ -92,13 +48,6 @@ jobs:
         cd ~
         mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geowebcache/geowebcache/pom.xml install -nsu -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geowebcache/geowebcache/pom.xml test -fae -nsu -T2 -Dspotless.apply.skip=true
-    - name: Build GeoFence with tests
-      run: |
-        export TEST_OPTS="-XX:+UseStringDeduplication -XX:+UseG1GC -XX:MaxHeapFreeRatio=30 -XX:MinHeapFreeRatio=10"
-        export MAVEN_OPTS="-Xmx1024m $TEST_OPTS"
-        cd ~
-        sed -i "s/<gt-version>29.2<\/gt-version>/<gt-version>30-SNAPSHOT<\/gt-version>/g" geofence/src/services/pom.xml
-        mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geofence/src/pom.xml install -nsu -T2
     - name: Build GeoServer with tests
       run: |
         echo "Building GeoServer"
@@ -110,17 +59,6 @@ jobs:
         mvn -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f geoserver/src/pom.xml install -nsu -Prelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/community/pom.xml install -nsu -DcommunityRelease -Dspotless.apply.skip=true -DskipTests -T2
         mvn -B -f geoserver/src/pom.xml test -fae -T2 -nsu -Dtest.maxHeapSize=512m -Djvm.opts="$TEST_OPTS" -Prelease -Dspotless.apply.skip=true
-    - name: Build Mapfish-print v3 with tests
-      run: |
-        cd ~/mapfish-print-v3/
-        touch CI.asc
-        echo "staging ~/.m2/repository folder"
-        mkdir -p m2/repository/org
-        cp -r ~/.m2/repository/org/geotools m2/repository/org/geotools
-        make build
-        # make acceptance-tests-up
-        # make acceptance-tests-run
-        # make acceptance-tests-down
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 

@@ -492,12 +492,56 @@ public class FeatureJSON {
      * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true
      *     and the GeoJSON doesn't actually encode null values, only the first feature attributes
      *     will be discovered.
+     * @param checkAllGeometryTypes if we should check the geometry type of each feature, and not
+     *     just the first. If this flag is set to true and the GeoJSON contains a mix of geometry
+     *     types, the type will be set to {@link Geometry}. If this flag is set to false the
+     *     geometry type of the first feature will be used.
+     * @return The feature collection schema
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public SimpleFeatureType readFeatureCollectionSchema(
+            Object input, boolean nullValuesEncoded, boolean checkAllGeometryTypes)
+            throws IOException {
+        return GeoJSONUtil.parse(
+                new FeatureTypeHandler(nullValuesEncoded, checkAllGeometryTypes), input, false);
+    }
+
+    /**
+     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the worst case, it
+     * will parse all features searching for attributes not present in previous features.
+     *
+     * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
+     * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true
+     *     and the GeoJSON doesn't actually encode null values, only the first feature attributes
+     *     will be discovered.
      * @return The feature collection schema
      * @throws IOException In the event of a parsing error or if the input json is invalid.
      */
     public SimpleFeatureType readFeatureCollectionSchema(Object input, boolean nullValuesEncoded)
             throws IOException {
-        return GeoJSONUtil.parse(new FeatureTypeHandler(nullValuesEncoded), input, false);
+        return readFeatureCollectionSchema(input, nullValuesEncoded, false);
+    }
+
+    /**
+     * Reads the {@link SimpleFeatureType} of a GeoJSON feature collection. In the worst case, it
+     * will parse all features searching for attributes not present in previous features.
+     *
+     * @param input The input. See {@link GeoJSONUtil#toReader(Object)} for details.
+     * @param nullValuesEncoded if the input has null values encoded. If this flag is set to true
+     *     and the GeoJSON doesn't actually encode null values, only the first feature attributes
+     *     will be discovered.
+     * @param checkAllGeometryTypes if we should check the geometry type of each feature, and not
+     *     just the first. If this flag is set to true and the GeoJSON contains a mix of geometry
+     *     types, the type will be set to {@link Geometry}. If this flag is set to false the
+     *     geometry type of the first feature will be used.
+     * @return The feature collection schema
+     * @throws IOException In the event of a parsing error or if the input json is invalid.
+     */
+    public SimpleFeatureType readFeatureCollectionSchema(
+            InputStream input, boolean nullValuesEncoded, boolean checkAllGeometryTypes)
+            throws IOException {
+        return readFeatureCollectionSchema(
+                (Object) input, nullValuesEncoded, checkAllGeometryTypes);
     }
 
     /**
@@ -513,7 +557,7 @@ public class FeatureJSON {
      */
     public SimpleFeatureType readFeatureCollectionSchema(
             InputStream input, boolean nullValuesEncoded) throws IOException {
-        return readFeatureCollectionSchema((Object) input, false);
+        return readFeatureCollectionSchema((Object) input, nullValuesEncoded, false);
     }
 
     /**

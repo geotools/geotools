@@ -1,10 +1,6 @@
 name: Downstream integration build (GeoWebCache and GeoServer)
 
-on:
-  # trigger on PR, but only on main branch, the checkouts of the downstream projects are also targeting main (default branch)
-  pull_request:
-    branches:
-      - main
+on: [pull_request]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -43,10 +39,10 @@ jobs:
           mkdir ~/.ssh/ && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
           echo "Checking out GeoWebCache"
           mkdir geowebcache
-          git clone https://github.com/GeoWebCache/geowebcache.git geowebcache
+          git clone https://github.com/GeoWebCache/geowebcache.git geowebcache --branch 1.25.x
           echo "Checking out GeoServer"
           mkdir geoserver
-          git clone https://github.com/geoserver/geoserver.git geoserver
+          git clone https://github.com/geoserver/geoserver.git geoserver --branch 2.25.x
           echo "Checking out mapfish-print-v2"
           mkdir mapfish-print-v2
           git clone https://github.com/mapfish/mapfish-print-v2.git mapfish-print-v2

@@ -16,9 +16,15 @@
  */
 package org.geotools.graph.io.standard;
 
+import static org.junit.Assert.assertThrows;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InvalidClassException;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.StringTokenizer;
 import org.geotools.graph.GraphTestUtil;
@@ -251,6 +257,19 @@ public class BasicGraphSerializerTest {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail();
         }
+    }
+
+    @Test
+    public void testDeserializationValidation() throws Exception {
+        File victim = File.createTempFile("graph", null);
+        victim.deleteOnExit();
+        m_serializer.setProperty(SerializedReaderWriter.FILENAME, victim.getAbsolutePath());
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(victim))) {
+            out.writeInt(0);
+            out.writeInt(1);
+            out.writeObject(new PriorityQueue<>());
+        }
+        assertThrows(InvalidClassException.class, () -> m_serializer.read());
     }
 
     protected GraphBuilder createBuilder() {

@@ -21,8 +21,8 @@ import java.io.BufferedOutputStream;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.io.GraphReaderWriter;
 import org.geotools.graph.structure.Edge;
@@ -56,10 +56,12 @@ public class SerializedReaderWriter extends AbstractReaderWriter implements File
         GraphBuilder builder = (GraphBuilder) getProperty(BUILDER);
 
         // create file input stream
-        try (ObjectInputStream objin =
-                new ObjectInputStream(
+        try (ValidatingObjectInputStream objin =
+                new ValidatingObjectInputStream(
                         new BufferedInputStream(
                                 new FileInputStream((String) getProperty(FILENAME))))) {
+            // only allow graph objects and arrays of graph objects
+            objin.accept("org.geotools.graph.structure.*", "[Lorg.geotools.graph.structure.*");
 
             // read header
             objin.readInt(); // nnodes, not used

@@ -41,8 +41,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -82,6 +80,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.serialization.ValidatingObjectInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.data.DataAccessFactory.Param;
 import org.geotools.api.data.DataStoreFactorySpi;
@@ -235,6 +234,25 @@ public class Utils {
         CLEANUP_FILTER = initCleanUpFilter();
         MOSAIC_SUPPORT_FILES_FILTER = initMosaicSupportFilesFilter();
     }
+
+    /** Specific classes to allow when deserializing SampleImage objects */
+    private static final Class<?>[] SAMPLE_IMAGE_CLASSES = {
+        SampleImage.class,
+        Number.class,
+        String.class,
+        byte[].class,
+        float[].class,
+        int[].class,
+        short[].class,
+        java.math.BigInteger.class,
+        java.net.InetAddress.class,
+        java.util.Hashtable.class
+    };
+
+    /** Patterns for qualified class names to allow when deserializing SampleImage objects */
+    private static final String[] SAMPLE_IMAGE_PATTERNS = {
+        "com.sun.imageio.*", "com.sun.media.*", "java.awt.*", "javax.media.jai.*", "sun.awt.image.*"
+    };
 
     /** Check if the provided reader is a MultiCRS Reader and it can support the specified crs. */
     public static boolean isSupportedCRS(GridCoverage2DReader reader, CoordinateReferenceSystem crs)
@@ -1435,9 +1453,10 @@ public class Utils {
         // serialize it
         // do we have the sample image??
         if (Utils.checkFileReadable(sampleImageFile)) {
-            try (InputStream inStream =
-                            new BufferedInputStream(new FileInputStream(sampleImageFile));
-                    ObjectInputStream oiStream = new ObjectInputStream(inStream)) {
+            try (ValidatingObjectInputStream oiStream =
+                    new ValidatingObjectInputStream(
+                            new BufferedInputStream(new FileInputStream(sampleImageFile)))) {
+                oiStream.accept(SAMPLE_IMAGE_CLASSES).accept(SAMPLE_IMAGE_PATTERNS);
                 // load the image
                 Object object = oiStream.readObject();
                 if (object instanceof SampleImage) {
@@ -1472,8 +1491,9 @@ public class Utils {
                     return null;
                 }
             } catch (ClassNotFoundException | IOException e) {
-                if (LOGGER.isLoggable(Level.WARNING))
-                    LOGGER.log(Level.WARNING, e.getLocalizedMessage(), e);
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to parse sample image", e);
+                }
                 return null;
             }
         } else {
@@ -1892,12 +1912,15 @@ public class Utils {
 
         // No histogram in cache. Deserializing...
         if (histogram == null) {
-            try (ObjectInputStream objectStream =
-                    new ObjectInputStream(new FileInputStream(file))) {
+            try (ValidatingObjectInputStream objectStream =
+                    new ValidatingObjectInputStream(
+                            new BufferedInputStream(new FileInputStream(file)))) {
+                // only allow histogram objects and its fields
+                objectStream.accept(Histogram.class, double[].class, int[].class);
                 histogram = (Histogram) objectStream.readObject();
             } catch (ClassNotFoundException | IOException e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Unable to parse Histogram:" + e.getLocalizedMessage());
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, "Unable to parse histogram", e);
                 }
             }
         }

@@ -51,6 +51,8 @@ public class SimpleFeatureIO {
     public static final int MAX_BYTES_LENGTH = 65535;
     public static final String BIG_STRING = "bigString";
 
+    public static final String ENABLE_DESERIALIZATION = "geotools.simplefeatureio.deserialization";
+
     RandomAccessFile raf;
 
     SimpleFeatureType schema;
@@ -65,11 +67,16 @@ public class SimpleFeatureIO {
     ByteArrayOutStream bos;
     byte[] buffer = new byte[8192]; // reusable buffer for small geometries
 
+    private final boolean initialFileEmpty;
+    private final String enableDeserialization;
+
     public SimpleFeatureIO(File file, SimpleFeatureType schema) throws FileNotFoundException {
         this.file = file;
         this.raf = new RandomAccessFile(file, "rw");
         this.schema = schema;
         this.builder = new SimpleFeatureBuilder(schema);
+        this.initialFileEmpty = this.file.length() <= 0;
+        this.enableDeserialization = System.getProperty(ENABLE_DESERIALIZATION);
     }
 
     /** Writes the feature to the file */
@@ -269,6 +276,12 @@ public class SimpleFeatureIO {
 
     @SuppressWarnings("BanSerializableRead")
     private Object readObject() throws IOException {
+        if ("false".equalsIgnoreCase(this.enableDeserialization)) {
+            throw new IllegalStateException("Object deserialization is not allowed");
+        } else if (!this.initialFileEmpty && !"true".equalsIgnoreCase(this.enableDeserialization)) {
+            throw new IllegalStateException(
+                    "Object deserialization is only allowed when created with an empty file");
+        }
         int length = raf.readInt();
         byte[] buffer = new byte[length];
         raf.read(buffer);

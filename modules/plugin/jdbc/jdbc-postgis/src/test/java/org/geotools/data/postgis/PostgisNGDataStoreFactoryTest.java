@@ -43,6 +43,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.postgresql.jdbc.PgConnection;
+import org.postgresql.jdbc.SslMode;
 
 public class PostgisNGDataStoreFactoryTest {
 
@@ -159,5 +160,15 @@ public class PostgisNGDataStoreFactoryTest {
         verify(this.rs1).close();
         verify(this.st2, withQuery ? times(1) : never()).close();
         verify(this.rs2, withQuery ? times(1) : never()).close();
+    }
+
+    @Test
+    public void testGetJDBCUrl() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put(PostgisNGDataStoreFactory.HOST.key, "localhost");
+        params.put(PostgisNGDataStoreFactory.PORT.key, 5432);
+        params.put(PostgisNGDataStoreFactory.DATABASE.key, "template1");
+        params.put(PostgisNGDataStoreFactory.REWRITE_BATCHED_INSERTS.key, Boolean.TRUE);
+        assertEquals("jdbc:postgresql://localhost:5432/template1?reWriteBatchedInserts=true", new PostgisNGDataStoreFactory().getJDBCUrl(params));
     }
 }

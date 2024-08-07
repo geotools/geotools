@@ -898,7 +898,9 @@ public class Base64 {
      * @param encodedObject The Base64 data to decode
      * @return The decoded and deserialized object
      * @since 1.5
+     * @deprecated This method is not secure and will be removed in a future release.
      */
+    @Deprecated
     @SuppressWarnings("PMD.UseTryWithResources") // works fully in memory
     public static Object decodeToObject(String encodedObject) {
         // Decode and gunzip if necessary

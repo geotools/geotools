@@ -18,8 +18,8 @@ package org.geotools.data.solr.complex;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * Data model class that will be used to retrieve from a XML file the Apache Solr index schema

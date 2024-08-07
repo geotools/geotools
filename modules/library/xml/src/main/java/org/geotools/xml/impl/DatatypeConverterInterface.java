@@ -44,22 +44,23 @@ import javax.xml.namespace.QName;
  * <samp>jaxb:javaType/@printMethod</samp> and <samp>jaxb:javaType/@parseMethod</samp>. However, the
  * JAXB user won't be accessing this class directly. The JAXB provider is required to create an
  * instance of this class and pass it to the JAXB runtime by invoking {@link
- * javax.xml.bind.DatatypeConverter#setDatatypeConverter(DatatypeConverterInterface)}. The JAXB user
- * may access this instance via the static methods of {@link javax.xml.bind.DatatypeConverter}.
+ * jakarta.xml.bind.DatatypeConverter#setDatatypeConverter(DatatypeConverterInterface)}. The JAXB
+ * user may access this instance via the static methods of {@link
+ * jakarta.xml.bind.DatatypeConverter}.
  *
  * <p>The interface provides methods <code>parseFoo()</code> and <code>printFoo()</code> for any XML
  * Schema type <samp>foo</samp>. The <code>parseFoo()</code> method must accept any lexically valid
  * value and convert it into the corresponding canonical value. An error in the conversion routine
- * must be mapped to a {@link javax.xml.bind.ParseConversionEvent}.
+ * must be mapped to a {@link jakarta.xml.bind.ParseConversionEvent}.
  *
  * <p>The <code>printFoo(foo pValue)</code> method must convert the value <samp>pValue</samp> into
  * an arbitrary lexical representation. It is recommended to use the default representation.
  *
  * @author JSR-31
  * @since JAXB 1.0
- * @see javax.xml.bind.DatatypeConverter
- * @see javax.xml.bind.ParseConversionEvent
- * @see javax.xml.bind.PrintConversionEvent
+ * @see jakarta.xml.bind.DatatypeConverter
+ * @see jakarta.xml.bind.ParseConversionEvent
+ * @see jakarta.xml.bind.PrintConversionEvent
  */
 public interface DatatypeConverterInterface {
     /**
@@ -67,7 +68,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDString The input string being parsed.
      * @return The unmodified input string.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public String parseString(String pLexicalXSDString);
 
@@ -77,7 +78,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDInteger The input string being parsed.
      * @return The input string converted into an instance of {@link BigInteger}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public BigInteger parseInteger(String pLexicalXSDInteger);
 
@@ -87,7 +88,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDInt The input string being parsed.
      * @return The input string converted into a primitive <code>int</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public int parseInt(String pLexicalXSDInt);
 
@@ -97,7 +98,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDLong The input string being parsed.
      * @return The input string converted into a primitive <code>long</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public long parseLong(String pLexicalXSDLong);
 
@@ -107,7 +108,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDShort The input string being parsed.
      * @return The input string converted into a primitive <code>short</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public short parseShort(String pLexicalXSDShort);
 
@@ -117,7 +118,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDDecimal The input string being parsed.
      * @return The input string converted into an instance of {@link java.math.BigDecimal}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public BigDecimal parseDecimal(String pLexicalXSDDecimal);
 
@@ -127,7 +128,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDFloat The input string being parsed.
      * @return The input string converted into a primitive <code>float</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public float parseFloat(String pLexicalXSDFloat);
 
@@ -137,7 +138,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDDouble The input string being parsed.
      * @return The input string converted into a primitive <code>double</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public double parseDouble(String pLexicalXSDDouble);
 
@@ -147,7 +148,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDBoolean The input string being parsed.
      * @return The input string converted into a primitive <code>boolean</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public boolean parseBoolean(String pLexicalXSDBoolean);
 
@@ -157,7 +158,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDByte The input string being parsed.
      * @return The input string converted into a primitive <code>byte</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public byte parseByte(String pLexicalXSDByte);
 
@@ -171,7 +172,7 @@ public interface DatatypeConverterInterface {
      * @param pNamespaceContext The namespace context is used to query mappings between prefixes and
      *     namespace URI's.
      * @return The input string converted into an instance of {@link javax.xml.namespace.QName}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public QName parseQName(String pLexicalXSDQName, NamespaceContext pNamespaceContext);
 
@@ -192,7 +193,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDDateTime The input string being parsed.
      * @return The input string converted into an instance of {@link java.util.Calendar}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public Calendar parseDateTime(String pLexicalXSDDateTime);
 
@@ -202,7 +203,7 @@ public interface DatatypeConverterInterface {
      * @param pLexicalXSDBase64Binary The input string being parsed, a base 64 encoded array of
      *     bytes.
      * @return The decoded byte array.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public byte[] parseBase64Binary(String pLexicalXSDBase64Binary);
 
@@ -212,7 +213,7 @@ public interface DatatypeConverterInterface {
      * @param pLexicalXSDHexBinary The input string being parsed, an array of bytes encoded in hex
      *     digits.
      * @return The decoded byte array.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public byte[] parseHexBinary(String pLexicalXSDHexBinary);
 
@@ -222,7 +223,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDUnsignedInt The input string being parsed.
      * @return The input string converted into a primitive <code>long</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public long parseUnsignedInt(String pLexicalXSDUnsignedInt);
 
@@ -232,7 +233,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDUnsignedShort The input string being parsed.
      * @return The input string conve rted into a primitive <code>int</code>.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public int parseUnsignedShort(String pLexicalXSDUnsignedShort);
 
@@ -252,7 +253,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDTime The input string being parsed.
      * @return The input string converted into an instance of {@link java.util.Calendar}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public Calendar parseTime(String pLexicalXSDTime);
 
@@ -271,7 +272,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDDate The input string being parsed.
      * @return The input string converted into an instance of {@link java.util.Calendar}.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public Calendar parseDate(String pLexicalXSDDate);
 
@@ -280,7 +281,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pLexicalXSDAnySimpleType An input string in lexical representation.
      * @return The unmodified input string.
-     * @see javax.xml.bind.ParseConversionEvent
+     * @see jakarta.xml.bind.ParseConversionEvent
      */
     public String parseAnySimpleType(String pLexicalXSDAnySimpleType);
 
@@ -290,7 +291,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The input string.
      * @return The unmodified input string.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printString(String pValue);
 
@@ -300,7 +301,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The integer value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printInteger(BigInteger pValue);
 
@@ -309,7 +310,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>int</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printInt(int pValue);
 
@@ -318,7 +319,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>long</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printLong(long pValue);
 
@@ -327,7 +328,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>short</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printShort(short pValue);
 
@@ -337,7 +338,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The decimal value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printDecimal(BigDecimal pValue);
 
@@ -346,7 +347,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>float</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printFloat(float pValue);
 
@@ -355,7 +356,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>double</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printDouble(double pValue);
 
@@ -364,7 +365,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>boolean</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printBoolean(boolean pValue);
 
@@ -373,7 +374,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>byte</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printByte(byte pValue);
 
@@ -388,7 +389,7 @@ public interface DatatypeConverterInterface {
      * @param pNamespaceContext A mapping of prefixes to namespace URI's which may be used to
      *     determine a valid prefix.
      * @return A lexical representation of the qualified name.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printQName(QName pValue, NamespaceContext pNamespaceContext);
 
@@ -408,7 +409,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The dateTime value being converted
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printDateTime(Calendar pValue);
 
@@ -418,7 +419,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The byte array being converted.
      * @return The converted byte array.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printBase64Binary(byte[] pValue);
 
@@ -428,7 +429,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The byte array being converted.
      * @return The converted byte array.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printHexBinary(byte[] pValue);
 
@@ -437,7 +438,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>long</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public java.lang.String printUnsignedInt(long pValue);
 
@@ -446,7 +447,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The <code>short</code> value being converted.
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public java.lang.String printUnsignedShort(int pValue);
 
@@ -466,7 +467,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The time value being converted
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printTime(Calendar pValue);
 
@@ -485,7 +486,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The date value being converted
      * @return A lexical representation of the input value.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printDate(Calendar pValue);
 
@@ -495,7 +496,7 @@ public interface DatatypeConverterInterface {
      *
      * @param pValue The input string.
      * @return The unmodified input string.
-     * @see javax.xml.bind.PrintConversionEvent
+     * @see jakarta.xml.bind.PrintConversionEvent
      */
     public String printAnySimpleType(String pValue);
 }

@@ -28,8 +28,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
+import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.And;
 import org.geotools.api.filter.BinaryComparisonOperator;
 import org.geotools.api.filter.ExcludeFilter;
@@ -85,13 +87,23 @@ import org.geotools.api.filter.temporal.OverlappedBy;
 import org.geotools.api.filter.temporal.TContains;
 import org.geotools.api.filter.temporal.TEquals;
 import org.geotools.api.filter.temporal.TOverlaps;
+import org.geotools.api.referencing.FactoryException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.crs.GeographicCRS;
+import org.geotools.api.referencing.operation.MathTransform;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.util.DistanceBufferUtil;
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Abstract visitor responsible for generating a BasicDBObject to use as a MongoDB query.
@@ -103,7 +115,15 @@ import org.locationtech.jts.geom.Geometry;
  */
 public abstract class AbstractFilterToMongo implements FilterVisitor, ExpressionVisitor {
 
+    public static final int HUNDRED_KM_IN_METERS = 100000;
+    protected static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(AbstractFilterToMongo.class);
+
+    private static final int DEFAULT_SEGMENTS = 10;
     protected final MongoGeometryBuilder geometryBuilder;
+
+    /** The schmema the encoder will use as reference to drive filter encoding */
+    protected FeatureType featureType;
 
     /** The whole world in WGS84 */
     private static final Envelope WORLD = new Envelope(-179.99, 179.99, -89.99, 89.99);
@@ -123,6 +143,15 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
         return new BasicDBObject();
     }
 
+    /**
+     * Sets the feature type the encoder is encoding a filter for.
+     *
+     * <p>The type of the attributes may drive how the filter is translated to a mongodb query
+     * document.
+     */
+    public void setFeatureType(FeatureType featureType) {
+        this.featureType = featureType;
+    }
     //
     // primitives
     //
@@ -146,14 +175,14 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
     }
 
     /**
-     * Method responsible of retrieving the MongoDB geometry json path
+     * Method responsible for retrieving the MongoDB geometry json path
      *
      * @return the MongoDB json paath for the default geometry
      */
     protected abstract String getGeometryPath();
 
     /**
-     * Method responsible of mapping a PropertyName to the corresponding MongoDB json path
+     * Method responsible for mapping a PropertyName to the corresponding MongoDB json path
      *
      * @param property the string property name to map
      * @return the MongoDB json path
@@ -520,6 +549,15 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * DWITHIN filter is delegated to Mongo's $near operator for point geometry, otherwise it is
+     * delegated to $geoIntersects. To properly compute the buffer the azimuthal equidistant
+     * projection is being used.
+     *
+     * @param filter
+     * @param extraData
+     * @return
+     */
     @Override
     public Object visit(DWithin filter, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
@@ -527,18 +565,84 @@ public abstract class AbstractFilterToMongo implements FilterVisitor, Expression
         Object e1 = filter.getExpression1().accept(this, Geometry.class);
 
         Geometry geometry = filter.getExpression2().evaluate(null, Geometry.class);
-        double distanceInMeters = DistanceBufferUtil.getDistanceInMeters(filter);
 
-        DBObject geometryDBObject = geometryBuilder.toObject(geometry);
-        DBObject dbo =
-                BasicDBObjectBuilder.start()
-                        .push("$near")
-                        .add("$geometry", geometryDBObject)
-                        .add("$maxDistance", distanceInMeters)
-                        .get();
+        CoordinateReferenceSystem coordinateReferenceSystem =
+                featureType.getCoordinateReferenceSystem();
+        double distanceInMeters = DistanceBufferUtil.getDistanceInMeters(filter);
+        DBObject dbo;
+        // If point use $near
+        if (geometry instanceof Point) {
+            DBObject geometryDBObject = geometryBuilder.toObject(geometry);
+            dbo =
+                    BasicDBObjectBuilder.start()
+                            .push("$near")
+                            .add("$geometry", geometryDBObject)
+                            .add("$maxDistance", distanceInMeters)
+                            .get();
+            // Other type of geometry, use $geoIntersects
+        } else {
+            try {
+                Point centroid = geometry.getCentroid();
+                CoordinateReferenceSystem azimuthalEquidistantCRS =
+                        computeAzimutalEquidistantCRS(centroid, coordinateReferenceSystem);
+                // Transform geometry to CRS that supports meters
+                MathTransform transform =
+                        CRS.findMathTransform(coordinateReferenceSystem, azimuthalEquidistantCRS);
+                geometry = JTS.transform(geometry, transform);
+                // Apply buffer in meters to geometry
+                Geometry bufferedGeometry = geometry.buffer(distanceInMeters, DEFAULT_SEGMENTS);
+
+                logAdditionalInformation(bufferedGeometry);
+
+                // Transform back to original with buffer applied
+                transform =
+                        CRS.findMathTransform(azimuthalEquidistantCRS, coordinateReferenceSystem);
+                geometry = JTS.transform(bufferedGeometry, transform);
+            } catch (FactoryException | TransformException e) {
+                throw new RuntimeException(
+                        "Failed to compute polygon within distance from reference geometry", e);
+            }
+            DBObject geometryDBObject = geometryBuilder.toObject(geometry);
+            dbo =
+                    BasicDBObjectBuilder.start()
+                            .push("$geoIntersects")
+                            .add("$geometry", geometryDBObject)
+                            .get();
+        }
 
         output.put((String) e1, dbo);
         return output;
+    }
+
+    private void logAdditionalInformation(Geometry bufferedGeometry) {
+        Coordinate centroidCoordinate = bufferedGeometry.getCentroid().getCoordinate();
+        Coordinate[] coordinates = bufferedGeometry.getEnvelope().getCoordinates();
+
+        for (Coordinate coordinate : coordinates) {
+            if (coordinate.distance(centroidCoordinate) > HUNDRED_KM_IN_METERS) {
+                LOGGER.fine(
+                        "The size of input buffer to apply is bigger then 100 km. This may result in decreased precision of buffer operation.");
+                break;
+            }
+        }
+    }
+
+    private static CoordinateReferenceSystem computeAzimutalEquidistantCRS(
+            Point centroid, CoordinateReferenceSystem coordinateReferenceSystem)
+            throws FactoryException, TransformException {
+        if (!(coordinateReferenceSystem instanceof GeographicCRS)
+                || CRS.getAxisOrder(coordinateReferenceSystem).equals(CRS.AxisOrder.NORTH_EAST)) {
+            MathTransform mathTransform =
+                    CRS.findMathTransform(coordinateReferenceSystem, DefaultGeographicCRS.WGS84);
+            centroid = (Point) JTS.transform(centroid, mathTransform);
+        }
+
+        double lon = centroid.getX();
+        double lat = centroid.getY();
+
+        String autoCRS = "AUTO:97003,9001," + lon + "," + lat;
+
+        return CRS.decode(autoCRS);
     }
 
     @Override

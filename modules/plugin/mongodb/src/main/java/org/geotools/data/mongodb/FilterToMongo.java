@@ -17,7 +17,6 @@
  */
 package org.geotools.data.mongodb;
 
-import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
 import org.geotools.api.feature.type.PropertyDescriptor;
 import org.geotools.api.filter.expression.Expression;
@@ -37,22 +36,9 @@ public class FilterToMongo extends AbstractFilterToMongo {
 
     final CollectionMapper mapper;
 
-    /** The schmema the encoder will use as reference to drive filter encoding */
-    SimpleFeatureType featureType;
-
     public FilterToMongo(CollectionMapper mapper) {
         super();
         this.mapper = mapper;
-    }
-
-    /**
-     * Sets the feature type the encoder is encoding a filter for.
-     *
-     * <p>The type of the attributes may drive how the filter is translated to a mongodb query
-     * document.
-     */
-    public void setFeatureType(SimpleFeatureType featureType) {
-        this.featureType = featureType;
     }
 
     private Class getJsonSelectType(Expression expression) {

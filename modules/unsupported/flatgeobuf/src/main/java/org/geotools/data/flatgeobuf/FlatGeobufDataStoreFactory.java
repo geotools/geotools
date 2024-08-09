@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Map;
+
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.data.store.ContentDataStore;
@@ -45,6 +46,16 @@ public class FlatGeobufDataStoreFactory implements DataStoreFactorySpi {
                     "uri to a the namespace",
                     false,
                     null, // not required
+                    new KVP(Param.LEVEL, "advanced"));
+
+    /** Optional - Enable/disable the automatic creation of spatial index */
+    public static final Param CREATE_SPATIAL_INDEX =
+            new Param(
+                    "create spatial index",
+                    Boolean.class,
+                    "enable/disable the automatic creation of spatial index",
+                    false,
+                    false,
                     new KVP(Param.LEVEL, "advanced"));
 
     public FlatGeobufDataStoreFactory() {}

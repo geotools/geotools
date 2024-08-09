@@ -27,10 +27,17 @@ import org.junit.Test;
 
 public class MongoFilterSplitterTest {
 
-    private static final DWithinImpl D_WITHIN =
+    private static final DWithinImpl D_WITHIN_POINT =
             new DWithinImpl(
                     new AttributeExpressionImpl("geometry"),
                     new LiteralExpressionImpl("POINT (5.006253 60.701807)"));
+
+    private static final DWithinImpl D_WITHIN_LINE =
+            new DWithinImpl(
+                    new AttributeExpressionImpl("geometry"),
+                    new LiteralExpressionImpl(
+                            "LINESTRING (1.669922 42.617791, 9.667969 47.100045, 8.085938 52.160455)"));
+
     private static final FilterCapabilities FCS = new FilterCapabilities(DWithin.class);
 
     @Test
@@ -41,8 +48,8 @@ public class MongoFilterSplitterTest {
                         null,
                         null,
                         new MongoCollectionMeta(Collections.singletonMap("geometry", "2dsphere")));
-        splitter.visit(D_WITHIN, null);
-        Assert.assertEquals(D_WITHIN, splitter.getFilterPre());
+        splitter.visit(D_WITHIN_POINT, null);
+        Assert.assertEquals(D_WITHIN_POINT, splitter.getFilterPre());
     }
 
     @Test
@@ -53,14 +60,21 @@ public class MongoFilterSplitterTest {
                         null,
                         null,
                         new MongoCollectionMeta(Collections.singletonMap("_id", "1")));
-        splitter.visit(D_WITHIN, null);
-        Assert.assertEquals(D_WITHIN, splitter.getFilterPost());
+        splitter.visit(D_WITHIN_POINT, null);
+        Assert.assertEquals(D_WITHIN_POINT, splitter.getFilterPost());
     }
 
     @Test
     public void testDWithinSplitWithoutIndex() {
         MongoFilterSplitter splitter = new MongoFilterSplitter(FCS, null, null, null);
-        splitter.visit(D_WITHIN, null);
-        Assert.assertEquals(D_WITHIN, splitter.getFilterPost());
+        splitter.visit(D_WITHIN_POINT, null);
+        Assert.assertEquals(D_WITHIN_POINT, splitter.getFilterPost());
+    }
+
+    @Test
+    public void testDWithinSplitLinestring() {
+        MongoFilterSplitter splitter = new MongoFilterSplitter(FCS, null, null, null);
+        splitter.visit(D_WITHIN_LINE, null);
+        Assert.assertEquals(D_WITHIN_LINE, splitter.getFilterPre());
     }
 }

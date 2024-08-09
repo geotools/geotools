@@ -80,26 +80,34 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
 
     @Override
     protected void visitBinarySpatialOperator(BinarySpatialOperator filter) {
-        // DWithin is delegated to $near operator, which requires geospatial index and works only
-        // with points,
-        // if either condition is not met delegation will not happen
         Expression expression2 = filter.getExpression2();
-        if (filter instanceof DWithin
-                && expression2 != null
-                && expression2.evaluate(null, Geometry.class) instanceof Point) {
-            if (mongoCollectionMeta != null
-                    && StringUtils.equalsAny(
-                            mongoCollectionMeta
-                                    .getIndexes()
-                                    .get(filter.getExpression1().toString()),
-                            "2dsphere",
-                            "2d")) {
-                super.visitBinarySpatialOperator(filter);
-                return;
+        if (filter instanceof DWithin) {
+            if (expression2 != null) {
+                Geometry geometry = expression2.evaluate(null, Geometry.class);
+                if (geometry instanceof Point) {
+                    processPoint(filter);
+                } else {
+                    super.visitBinarySpatialOperator(filter);
+                }
             }
-            postStack.push(filter);
-        } else {
+        }
+    }
+
+    /**
+     * Checking for presence of spatial index, because DWithin with point will be delegated to $near
+     * operator, which requires geospatial index.
+     *
+     * @param filter
+     */
+    private void processPoint(BinarySpatialOperator filter) {
+        if (mongoCollectionMeta != null
+                && StringUtils.equalsAny(
+                        mongoCollectionMeta.getIndexes().get(filter.getExpression1().toString()),
+                        "2dsphere",
+                        "2d")) {
             super.visitBinarySpatialOperator(filter);
+        } else {
+            postStack.push(filter);
         }
     }
 

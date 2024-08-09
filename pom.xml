@@ -489,7 +489,7 @@
     <jts.version>1.19.0</jts.version>
     <log4j2.version>2.17.2</log4j2.version>
     <logback.version>1.3.12</logback.version>
-    <mockito.core.version>5.6.0</mockito.core.version>
+    <mockito.version>5.12.0</mockito.version>
     <mssql-jdbc.version>9.4.0.jre8</mssql-jdbc.version>
     <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
     <netcdf.version>5.5.3</netcdf.version>
@@ -1224,7 +1224,7 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>${mockito.core.version}</version>
+        <version>${mockito.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>

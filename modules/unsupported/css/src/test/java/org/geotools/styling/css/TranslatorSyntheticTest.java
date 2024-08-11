@@ -50,6 +50,7 @@ import org.geotools.api.style.Halo;
 import org.geotools.api.style.LinePlacement;
 import org.geotools.api.style.LineSymbolizer;
 import org.geotools.api.style.Mark;
+import org.geotools.api.style.NamedLayer;
 import org.geotools.api.style.PointPlacement;
 import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.PolygonSymbolizer;
@@ -58,6 +59,7 @@ import org.geotools.api.style.Rule;
 import org.geotools.api.style.SelectedChannelType;
 import org.geotools.api.style.Stroke;
 import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.filter.function.EnvFunction;
@@ -68,6 +70,7 @@ import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.Converters;
 import org.geotools.xml.styling.SLDTransformer;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.parboiled.errors.ParserRuntimeException;
 
@@ -96,6 +99,10 @@ public class TranslatorSyntheticTest extends CssBaseTest {
 
     private Rule assertSingleRule(Style style) {
         FeatureTypeStyle fts = assertSingleFeatureTypeStyle(style);
+        return assertSingleRule(fts);
+    }
+
+    private Rule assertSingleRule(FeatureTypeStyle fts) {
         assertEquals("Expected 1 rule, found " + fts.rules().size(), 1, fts.rules().size());
         return fts.rules().get(0);
     }
@@ -1249,8 +1256,9 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         // printStyle(style);
     }
 
-    void printStyle(Style style) throws TransformerException {
+    void printStyle(Object style) throws TransformerException {
         SLDTransformer transformer = new SLDTransformer();
+        transformer.setIndentation(2);
         String xml = transformer.transform(style);
         LOGGER.info(xml);
     }
@@ -1876,5 +1884,84 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         String css = "@styleName 'testStyle'; * { fill: orange; }";
         Style style = translate(css);
         assertEquals("testStyle", style.getName());
+    }
+
+    @Test
+    public void testMultiLayerNoNames() throws TransformerException {
+        String css = "* {fill:gray}";
+        StyledLayerDescriptor sld = translateMultiLayer(css);
+        assertEquals(1, sld.getStyledLayers().length);
+        NamedLayer layer = (NamedLayer) sld.getStyledLayers()[0];
+        assertEquals("Default layer", layer.getName());
+    }
+
+    @Test
+    public void testTypeNames() throws TransformerException {
+        String css = "topp:states {fill:gray} sf:roads {stroke:black}";
+        StyledLayerDescriptor sld = translateMultiLayer(css);
+        assertEquals(2, sld.getStyledLayers().length);
+
+        // states
+        NamedLayer l1 = (NamedLayer) sld.getStyledLayers()[0];
+        assertEquals("topp:states", l1.getName());
+        assertEquals(1, l1.getStyles().length);
+        FeatureTypeStyle fts1 = assertSingleFeatureTypeStyle(l1.getStyles()[0]);
+        // won't filter on type names, using a fully qualified name here would prevent any rendering
+        assertThat(fts1.featureTypeNames(), Matchers.empty());
+
+        // roads
+        NamedLayer l2 = (NamedLayer) sld.getStyledLayers()[1];
+        assertEquals("sf:roads", l2.getName());
+        assertEquals(1, l2.getStyles().length);
+        FeatureTypeStyle fts2 = assertSingleFeatureTypeStyle(l2.getStyles()[0]);
+        assertThat(fts2.featureTypeNames(), Matchers.empty());
+    }
+
+    @Test
+    public void testMixedTypes() throws TransformerException {
+        String css = "* {fill:gray} sf:roads {stroke:black}";
+        StyledLayerDescriptor sld = translateMultiLayer(css);
+        assertEquals(1, sld.getStyledLayers().length);
+
+        // roads
+        NamedLayer l1 = (NamedLayer) sld.getStyledLayers()[0];
+        assertEquals("sf:roads", l1.getName());
+        assertEquals(1, l1.getStyles().length);
+        FeatureTypeStyle fts1 = assertSingleFeatureTypeStyle(l1.getStyles()[0]);
+        assertThat(fts1.featureTypeNames(), Matchers.empty());
+    }
+
+    @Test
+    public void testMultiTypesMultiZ() throws TransformerException {
+        String css =
+                "topp:states {fill:gray, yellow; z-index: 1, 2} sf:roads {stroke:black, yellow; z-index: 3, 4}";
+        StyledLayerDescriptor sld = translateMultiLayer(css);
+        assertEquals(2, sld.getStyledLayers().length);
+
+        // states has been translated with two fts to handle z-ordering
+        NamedLayer l1 = (NamedLayer) sld.getStyledLayers()[0];
+        assertEquals("topp:states", l1.getName());
+        assertEquals(1, l1.getStyles().length);
+        Style s1 = l1.getStyles()[0];
+        assertEquals(2, s1.featureTypeStyles().size());
+        Rule r11 = assertSingleRule(s1.featureTypeStyles().get(0));
+        PolygonSymbolizer p11 = assertSingleSymbolizer(r11, PolygonSymbolizer.class);
+        assertEquals("#808080", p11.getFill().getColor().evaluate(null, String.class));
+        Rule r12 = assertSingleRule(s1.featureTypeStyles().get(1));
+        PolygonSymbolizer p12 = assertSingleSymbolizer(r12, PolygonSymbolizer.class);
+        assertEquals("#ffff00", p12.getFill().getColor().evaluate(null, String.class));
+
+        // roads has been translated with two fts to handle z-ordering
+        NamedLayer l2 = (NamedLayer) sld.getStyledLayers()[1];
+        assertEquals("sf:roads", l2.getName());
+        assertEquals(1, l2.getStyles().length);
+        Style s2 = l2.getStyles()[0];
+        assertEquals(2, s2.featureTypeStyles().size());
+        Rule r21 = assertSingleRule(s2.featureTypeStyles().get(0));
+        LineSymbolizer l21 = assertSingleSymbolizer(r21, LineSymbolizer.class);
+        assertEquals("#000000", l21.getStroke().getColor().evaluate(null, String.class));
+        Rule r22 = assertSingleRule(s2.featureTypeStyles().get(1));
+        LineSymbolizer l22 = assertSingleSymbolizer(r22, LineSymbolizer.class);
+        assertEquals("#ffff00", l22.getStroke().getColor().evaluate(null, String.class));
     }
 }

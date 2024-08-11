@@ -46,6 +46,11 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
         reset();
     }
 
+    public StyleBuilder defaultStyle() {
+        isDefault = true;
+        return this;
+    }
+
     public StyleBuilder name(String name) {
         this.name = name;
         return this;

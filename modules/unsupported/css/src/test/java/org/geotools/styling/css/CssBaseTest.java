@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.geotools.api.style.Style;
+import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.util.logging.Logging;
 import org.parboiled.errors.ErrorUtils;
@@ -86,6 +87,12 @@ public class CssBaseTest {
         Stylesheet ss = parse(css);
         CssTranslator translator = new CssTranslator();
         return translator.translate(ss);
+    }
+
+    protected StyledLayerDescriptor translateMultiLayer(String css) {
+        Stylesheet ss = parse(css);
+        CssTranslator translator = new CssTranslator();
+        return translator.translateMultilayer(ss);
     }
 
     protected Stylesheet parse(String css) {

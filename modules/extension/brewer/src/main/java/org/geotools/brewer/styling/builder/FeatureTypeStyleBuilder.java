@@ -117,6 +117,7 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     }
 
     public void setFeatureTypeNames(List<Name> featureTypeNames) {
+        this.featureTypeNames.clear();
         this.featureTypeNames.addAll(featureTypeNames);
     }
 

@@ -18,6 +18,7 @@ import org.geotools.api.style.PointPlacement;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.feature.NameImpl;
 import org.geotools.filter.function.RecodeFunction;
 import org.junit.Test;
 import si.uom.SI;
@@ -43,6 +44,7 @@ public class CookbookLineTest extends AbstractStyleTest {
     @Test
     public void testLineWithBorder() {
         StyleBuilder sb = new StyleBuilder();
+        sb.defaultStyle();
         sb.featureTypeStyle()
                 .rule()
                 .line()
@@ -61,6 +63,7 @@ public class CookbookLineTest extends AbstractStyleTest {
         // print(style);
 
         // round up the basic elements and check its simple
+        assertTrue(style.isDefault());
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
         assertEquals(2, collector.featureTypeStyles.size());
@@ -118,9 +121,10 @@ public class CookbookLineTest extends AbstractStyleTest {
 
     @Test
     public void testRailroad() {
-        FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
-        fts.rule().line().stroke().colorHex("#333333").width(3);
-        fts.rule()
+        FeatureTypeStyleBuilder ftsb = new FeatureTypeStyleBuilder();
+        ftsb.setFeatureTypeNames(List.of(new NameImpl("railways")));
+        ftsb.rule().line().stroke().colorHex("#333333").width(3);
+        ftsb.rule()
                 .line()
                 .stroke()
                 .graphicStroke()
@@ -130,7 +134,7 @@ public class CookbookLineTest extends AbstractStyleTest {
                 .stroke()
                 .colorHex("#333333")
                 .width(1);
-        Style style = fts.buildStyle();
+        Style style = ftsb.buildStyle();
         // print(style);
 
         // round up the elements and check the basics
@@ -139,6 +143,10 @@ public class CookbookLineTest extends AbstractStyleTest {
         assertEquals(1, collector.featureTypeStyles.size());
         assertEquals(2, collector.rules.size());
         assertEquals(2, collector.symbolizers.size());
+
+        // check type name
+        FeatureTypeStyle fts = collector.featureTypeStyles.get(0);
+        fts.featureTypeNames().forEach(n -> assertEquals("railways", n.getLocalPart()));
 
         // check the simple line
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);

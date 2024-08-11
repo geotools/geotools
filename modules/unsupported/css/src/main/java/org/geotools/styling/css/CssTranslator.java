@@ -40,7 +40,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.feature.type.FeatureType;
+import org.geotools.api.feature.type.Name;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
@@ -63,6 +65,7 @@ import org.geotools.brewer.styling.builder.GraphicBuilder;
 import org.geotools.brewer.styling.builder.HaloBuilder;
 import org.geotools.brewer.styling.builder.LineSymbolizerBuilder;
 import org.geotools.brewer.styling.builder.MarkBuilder;
+import org.geotools.brewer.styling.builder.NamedLayerBuilder;
 import org.geotools.brewer.styling.builder.PointPlacementBuilder;
 import org.geotools.brewer.styling.builder.PointSymbolizerBuilder;
 import org.geotools.brewer.styling.builder.PolygonSymbolizerBuilder;
@@ -70,6 +73,7 @@ import org.geotools.brewer.styling.builder.RasterSymbolizerBuilder;
 import org.geotools.brewer.styling.builder.RuleBuilder;
 import org.geotools.brewer.styling.builder.StrokeBuilder;
 import org.geotools.brewer.styling.builder.StyleBuilder;
+import org.geotools.brewer.styling.builder.StyledLayerDescriptorBuilder;
 import org.geotools.brewer.styling.builder.SymbolizerBuilder;
 import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
@@ -103,6 +107,8 @@ import org.geotools.xml.styling.SLDTransformer;
  * @author Andrea Aime - GeoSolutions
  */
 public class CssTranslator {
+
+    private static final String NO_TYPENAME = "";
 
     /**
      * The ways the CSS -> SLD transformation can be performed
@@ -269,6 +275,68 @@ public class CssTranslator {
     /** Maximum number of rule combinations before bailing out of the power set generation */
     public void setMaxCombinations(int maxCombinations) {
         this.maxCombinations = maxCombinations;
+    }
+
+    /**
+     * Translates a CSS stylesheet into an equivalent GeoTools {@link StyledLayerDescriptor} object,
+     * creating a new NamedLayer for each group of same named feature types. Isolated nameless rules
+     * do not produce a separate NamedLayer in this mode.
+     *
+     * @param stylesheet
+     * @return
+     */
+    public StyledLayerDescriptor translateMultilayer(Stylesheet stylesheet) {
+        Style style = translate(stylesheet);
+
+        StyledLayerDescriptorBuilder sldBuilder = new StyledLayerDescriptorBuilder();
+
+        // do we have to bother?
+        long typeNameCount =
+                style.featureTypeStyles().stream()
+                        .filter(fts -> fts != null && fts.featureTypeNames() != null)
+                        .flatMap(fts -> fts.featureTypeNames().stream())
+                        .distinct()
+                        .count();
+        if (typeNameCount < 1) {
+            // keep on using the default style name if set, for backaward compatibility
+            String styleName = stylesheet.getDirectiveValue(DIRECTIVE_STYLE_NAME);
+            String layerName = styleName == null ? "Default layer" : styleName;
+            sldBuilder.namedLayer().name(layerName).style().reset(style);
+            return sldBuilder.build();
+        }
+
+        // generated styles are organized by z level and by feature type name
+        String previousName = null;
+        StyleBuilder styleBuilder = null;
+        for (FeatureTypeStyle fts : style.featureTypeStyles()) {
+            String name = getFeatureTypeName(fts);
+            if (StringUtils.isEmpty(name) || fts.rules().isEmpty()) continue;
+            if (styleBuilder == null || !Objects.equals(name, previousName)) {
+                NamedLayerBuilder namedLayer = sldBuilder.namedLayer();
+                if (name != null && !NO_TYPENAME.equals(name)) namedLayer.name(name);
+                styleBuilder = namedLayer.style();
+                styleBuilder.name("Default style");
+                styleBuilder.defaultStyle();
+                previousName = name;
+            }
+            FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
+            ftsBuilder.reset(fts);
+            ftsBuilder.setFeatureTypeNames(Collections.emptyList());
+        }
+
+        return sldBuilder.build();
+    }
+
+    /**
+     * Returns the first type name found, or {@link #NO_TYPENAME} if none found.
+     *
+     * @param fts
+     * @return
+     */
+    private String getFeatureTypeName(FeatureTypeStyle fts) {
+        Set<Name> names = fts.featureTypeNames();
+        if (names.isEmpty()) return NO_TYPENAME;
+        return names.iterator().next().getLocalPart();
     }
 
     /** Translates a CSS stylesheet into an equivalent GeoTools {@link Style} object */
@@ -665,10 +733,7 @@ public class CssTranslator {
                         getTargetFeatureType(featureTypeName, localRules);
                 List<CssRule> flattenedRules = flattenScaleRanges(localRules);
 
-                FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
-                if (featureTypeName != null) {
-                    ftsBuilder.setFeatureTypeNames(Arrays.asList(new NameImpl(featureTypeName)));
-                }
+                FeatureTypeStyleBuilder ftsBuilder = null;
 
                 String composite = null;
                 Boolean compositeBase = null;
@@ -686,7 +751,9 @@ public class CssTranslator {
                     List<CssRule> derivedRules =
                             removeNested(cssRule, targetFeatureType, cachedSimplifier);
                     for (CssRule derived : derivedRules) {
-
+                        if (ftsBuilder == null) {
+                            ftsBuilder = getFeatureTypeStyleBuilder(styleBuilder, featureTypeName);
+                        }
                         buildSldRule(derived, ftsBuilder, targetFeatureType, cachedSimplifier);
                         translatedRuleCount++;
 
@@ -752,6 +819,15 @@ public class CssTranslator {
         }
 
         return translatedRuleCount;
+    }
+
+    private static FeatureTypeStyleBuilder getFeatureTypeStyleBuilder(
+            StyleBuilder styleBuilder, String featureTypeName) {
+        FeatureTypeStyleBuilder ftsBuilder = styleBuilder.featureTypeStyle();
+        if (featureTypeName != null) {
+            ftsBuilder.setFeatureTypeNames(Arrays.asList(new NameImpl(featureTypeName)));
+        }
+        return ftsBuilder;
     }
 
     private boolean buildBackground(StyleBuilder styleBuilder, CssRule rule) {

@@ -37,6 +37,7 @@ import java.sql.JDBCType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1408,6 +1409,26 @@ public class GeoPackageTest {
 
         assertEquals(coordinate.x, coordinateYX.y, 0);
         assertEquals(coordinate.y, coordinateYX.x, 0);
+    }
+
+    @Test
+    public void testTimestamp() throws Exception {
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+        SimpleFeatureType featureType =
+                createFeatureTypeWithAttribute("timestamp", "timestamp", Timestamp.class);
+        SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
+        SimpleFeature simpleFeature = createSimpleFeatureWithValue(featureBuilder, timestamp);
+        SimpleFeatureCollection collection = DataUtilities.collection(simpleFeature);
+        FeatureEntry entry = new FeatureEntry();
+        geopkg.add(entry, collection);
+
+        FeatureEntry readFeature = geopkg.features().get(0);
+        try (SimpleFeatureReader reader = geopkg.reader(readFeature, null, null)) {
+            Object attribute = reader.next().getAttribute("timestamp");
+            assertTrue(attribute instanceof Timestamp);
+            Timestamp readValue = (Timestamp) attribute;
+            assertEquals(timestamp, readValue);
+        }
     }
 
     /**

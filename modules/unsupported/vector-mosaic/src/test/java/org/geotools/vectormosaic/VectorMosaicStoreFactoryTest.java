@@ -23,7 +23,6 @@ import java.util.Map;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFinder;
 import org.hamcrest.Matchers;
-import org.hamcrest.collection.IsArrayContainingInAnyOrder;
 import org.junit.Test;
 
 public class VectorMosaicStoreFactoryTest extends VectorMosaicTest {
@@ -36,7 +35,7 @@ public class VectorMosaicStoreFactoryTest extends VectorMosaicTest {
     public void testFactoryGetParametersInfo() throws Exception {
         assertThat(
                 VECTOR_MOSAIC_STORE_FACTORY.getParametersInfo(),
-                IsArrayContainingInAnyOrder.arrayContainingInAnyOrder(
+                Matchers.arrayContainingInAnyOrder(
                         VectorMosaicStoreFactory.DELEGATE_STORE_NAME,
                         VectorMosaicStoreFactory.NAMESPACE,
                         VectorMosaicStoreFactory.REPOSITORY_PARAM,

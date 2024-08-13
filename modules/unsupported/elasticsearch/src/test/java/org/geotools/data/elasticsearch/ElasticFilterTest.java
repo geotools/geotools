@@ -17,7 +17,7 @@
 package org.geotools.data.elasticsearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIn.isOneOf;
+import static org.hamcrest.Matchers.oneOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -683,7 +683,7 @@ public class ElasticFilterTest {
         assertTrue(builder.createCapabilities().fullySupports(filter));
         assertThat(
                 builder.getQueryBuilder().toString(),
-                isOneOf(
+                oneOf(
                         expected.toString(),
                         expected.toString().replace(coords.toString(), reverseCoords.toString())));
     }
@@ -823,7 +823,7 @@ public class ElasticFilterTest {
         assertTrue(builder.createCapabilities().fullySupports(filter));
         assertThat(
                 builder.getQueryBuilder().toString(),
-                isOneOf(
+                oneOf(
                         expected.toString(),
                         expected.toString().replace(coords.toString(), reverseCoords.toString())));
     }

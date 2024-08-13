@@ -69,7 +69,8 @@
     </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
+      <artifactId>hamcrest</artifactId>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
 

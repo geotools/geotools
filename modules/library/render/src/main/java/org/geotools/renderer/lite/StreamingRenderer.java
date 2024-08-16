@@ -1317,7 +1317,7 @@ public class StreamingRenderer implements GTRenderer {
         return query;
     }
 
-    private void setupDensificationHints(
+    void setupDensificationHints(
             CoordinateReferenceSystem mapCRS,
             CoordinateReferenceSystem featCrs,
             Rectangle screenSize,
@@ -1344,7 +1344,9 @@ public class StreamingRenderer implements GTRenderer {
                         sourceEnvelope.getHeight());
         WarpBuilder wb = new WarpBuilder(tolerance);
         double densifyDistance = 0.0;
-        int[] actualSplit =
+        // the splits are communicated as the number of rows and columns the area need to be
+        // divided into, in order to have each cell contain a straight line without noticing issues
+        int[] rowCol =
                 wb.isValidDomain(sourceDomain)
                         ? wb.getRowColsSplit(fullTranform, sourceDomain)
                         : null;
@@ -1352,16 +1354,17 @@ public class StreamingRenderer implements GTRenderer {
                 Math.min(
                         MAX_PIXELS_DENSIFY * sourceEnvelope.getWidth() / screenSize.getWidth(),
                         MAX_PIXELS_DENSIFY * sourceEnvelope.getHeight() / screenSize.getHeight());
-        if (actualSplit == null) {
+        if (rowCol == null) {
             // alghoritm gave up, we decide to use a fixed distance value
             densifyDistance = minDistance;
-        } else if (actualSplit[0] != 1 || actualSplit[1] != 1) {
-
+        } else if (rowCol[0] != 1 || rowCol[1] != 1) {
+            int columns = rowCol[1];
+            int rows = rowCol[0];
             densifyDistance =
                     Math.max(
                             Math.min(
-                                    sourceEnvelope.getWidth() / actualSplit[0],
-                                    sourceEnvelope.getHeight() / actualSplit[1]),
+                                    sourceEnvelope.getWidth() / columns,
+                                    sourceEnvelope.getHeight() / rows),
                             minDistance);
         }
         if (densifyDistance > 0.0) {

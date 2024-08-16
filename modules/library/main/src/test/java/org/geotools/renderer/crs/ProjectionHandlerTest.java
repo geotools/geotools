@@ -171,6 +171,28 @@ public class ProjectionHandlerTest {
         assertEquals(44, densified.getCoordinates().length);
     }
 
+    /**
+     * Test that the densification can defend itself against OOMs
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testDensificationOOM() throws Exception {
+        ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, WGS84);
+
+        // this setup would result in 40 million densified points
+        Map<String, Object> params = new HashMap<>();
+        params.put(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY, 1e-9);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(wgs84Envelope, WGS84, true, params);
+        Geometry line =
+                gf.createLineString(
+                        new Coordinate[] {new Coordinate(40, 45), new Coordinate(40, 85)});
+        LineString densified = (LineString) handler.preProcess(line);
+        // the value has been reduced below the max threshold
+        assertEquals(152589, densified.getCoordinates().length);
+    }
+
     @Test
     public void testQueryWrappingWGS84() throws Exception {
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(-190, 60, -90, 45, WGS84);

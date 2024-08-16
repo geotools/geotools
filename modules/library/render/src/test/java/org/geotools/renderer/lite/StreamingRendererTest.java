@@ -21,6 +21,7 @@ import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -35,6 +37,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -63,6 +66,7 @@ import org.geotools.api.geometry.BoundingBox;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.api.referencing.operation.MathTransform;
 import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.Style;
@@ -95,6 +99,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.lite.StreamingRenderer.RenderingRequest;
 import org.geotools.styling.DescriptionImpl;
 import org.geotools.styling.StyleBuilder;
@@ -102,6 +107,7 @@ import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyleImpl;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -136,6 +142,7 @@ public class StreamingRendererTest {
         public MergeLayerRequestTester(Graphics2D graphics, List<LiteFeatureTypeStyle> styles) {
             super();
             this.graphics = graphics;
+            this.styles = styles;
             this.styles = styles;
         }
 
@@ -271,6 +278,69 @@ public class StreamingRendererTest {
         // no densification performed
         assertEquals(2, drawnShape.getGeometry().getCoordinates().length);
         graphics.dispose();
+    }
+
+    @Test
+    public void testDensificationSteps() throws Exception {
+        // create a line emanating from the origin
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(new double[] {0, 80, 0, 81});
+        SimpleFeature line =
+                SimpleFeatureBuilder.build(
+                        testLineFeatureType, new Object[] {gf.createLineString(cs)}, "line");
+        DefaultFeatureCollection fc = new DefaultFeatureCollection();
+        fc.add(line);
+        SimpleFeatureSource lineSource = new CollectionFeatureSource(fc);
+        MapContent mc = new MapContent();
+        StyleBuilder sb = new StyleBuilder();
+        mc.addLayer(new FeatureLayer(lineSource, sb.createStyle(sb.createLineSymbolizer())));
+
+        // setup the streaming renderer
+        AtomicDouble densification = new AtomicDouble();
+        StreamingRenderer sr =
+                new StreamingRenderer() {
+                    @Override
+                    void setupDensificationHints(
+                            CoordinateReferenceSystem mapCRS,
+                            CoordinateReferenceSystem featCrs,
+                            Rectangle screenSize,
+                            AffineTransform worldToScreenTransform,
+                            Map<String, Object> projectionHints,
+                            double tolerance,
+                            ReferencedEnvelope sourceEnvelope)
+                            throws NoninvertibleTransformException, FactoryException {
+                        super.setupDensificationHints(
+                                mapCRS,
+                                featCrs,
+                                screenSize,
+                                worldToScreenTransform,
+                                projectionHints,
+                                tolerance,
+                                sourceEnvelope);
+                        Object o =
+                                projectionHints.get(ProjectionHandler.ADVANCED_PROJECTION_DENSIFY);
+                        assertThat(o, Matchers.instanceOf(Double.class));
+                        densification.set((double) o);
+                    }
+                };
+        Map<Object, Object> hints = new HashMap<>();
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        hints.put(StreamingRenderer.ADVANCED_PROJECTION_DENSIFICATION_KEY, true);
+        sr.setRendererHints(hints);
+        sr.setMapContent(mc);
+
+        // call with just one meter width, thin but tall, envelope
+        CoordinateReferenceSystem webMercator = CRS.decode("EPSG:3857");
+        MathTransform mt = CRS.findMathTransform(WGS84, webMercator);
+        double[] point = {0, 80};
+        mt.transform(point, 0, point, 0, 1);
+        ReferencedEnvelope referencedEnvelope =
+                new ReferencedEnvelope(
+                        new Rectangle2D.Double(0, point[1], 1000, point[1] + 1000000), webMercator);
+        Graphics2D graphics = Mockito.mock(Graphics2D.class);
+        sr.paint(graphics, new Rectangle(0, 0, 1, 1000), referencedEnvelope);
+        // the minimum is taken from the width of the envelope, internally before it was
+        // computed with the rows and cols flipped, resulting in a different value
+        assertEquals(0.045, densification.get(), 1e-3);
     }
 
     @Test

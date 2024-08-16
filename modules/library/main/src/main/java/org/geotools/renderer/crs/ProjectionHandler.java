@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.crs;
 
+import static java.lang.String.format;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
 import java.util.ArrayList;
@@ -74,6 +75,40 @@ public class ProjectionHandler {
 
     protected static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(ProjectionHandler.class);
+
+    /**
+     * The default densification limit. A {@link org.locationtech.jts.geom.Coordinate} object is 40
+     * bytes, this number allows the allocation of at most 10MB worth of Coordinate objects
+     */
+    public static final int DEFAULT_DENSIFICATION_LIMIT = 262144;
+
+    /** System variable that can be used to override the default densification limit. */
+    public static final String DENSIFICATION_LIMIT_KEY = "org.geotools.render.densificationLimit";
+
+    /** The maximum number of coordinates to densify a geometry to. */
+    private static final int DENSIFICATION_LIMIT = initDensificationLimit();
+
+    /** Parsing and validating the densification limit. */
+    private static int initDensificationLimit() {
+        String property = System.getProperty(DENSIFICATION_LIMIT_KEY);
+        if (property != null) {
+            // parse and validate, prepare error message to re-use its setup
+            String errorMessage =
+                    format(
+                            "Invalid value for %s, it should be a positive integer greater than 2. Will use the default value.",
+                            DENSIFICATION_LIMIT_KEY);
+            try {
+                int limit = Integer.parseInt(property);
+                if (limit > 2) {
+                    return limit;
+                }
+                LOGGER.severe(errorMessage);
+            } catch (NumberFormatException e) {
+                LOGGER.log(Level.SEVERE, errorMessage, e);
+            }
+        }
+        return DEFAULT_DENSIFICATION_LIMIT;
+    }
 
     protected ReferencedEnvelope renderingEnvelope;
 
@@ -742,10 +777,34 @@ public class ProjectionHandler {
     protected Geometry densify(Geometry geometry, boolean validate) {
         if (geometry != null && densify > 0.0) {
             try {
-                // disable validation, it runs an expensive buffer operation that
-                // can bring the VM to an OOM when run on large geometries.
+                // does it make sense to densify to start with?
+                double length = geometry.getLength();
+                double expectedCount = length / densify;
+                if (expectedCount < 3) {
+                    return geometry;
+                }
+
+                double localDensify = densify;
+                if (expectedCount > DENSIFICATION_LIMIT) {
+                    LOGGER.log(
+                            Level.FINE,
+                            "Geometry densification would lead to at least {0} points, above limit, computing a smaller densification value",
+                            new Object[] {expectedCount});
+                    // limit is at least 3, so this loop cannot continue forever
+                    // even starting with 1 billion expected coordinates, they would be reduced
+                    // down to 2 in 30 iterations
+                    while (expectedCount > DENSIFICATION_LIMIT) {
+                        localDensify = localDensify * 2;
+                        expectedCount = length / localDensify;
+                    }
+                    LOGGER.log(
+                            Level.FINE,
+                            "Re-computed densification value to {0}, expect to generate {1} points",
+                            new Object[] {localDensify, expectedCount});
+                }
+
                 Densifier densifier = new Densifier(geometry);
-                densifier.setDistanceTolerance(densify);
+                densifier.setDistanceTolerance(localDensify);
                 densifier.setValidate(validate);
                 return densifier.getResultGeometry();
             } catch (Throwable t) {

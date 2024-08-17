@@ -95,6 +95,9 @@ import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.process.function.ProcessFunction;
 import org.geotools.styling.SLD;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.zoom.ScaleRange;
+import org.geotools.styling.zoom.ZoomContext;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
@@ -1095,35 +1098,6 @@ public class YsldParseTest {
                                     not(appliesToScale(scaleDenominators[i + -1]))),
                             i,
                             scaleDenominators[i]));
-        }
-    }
-
-    Matcher<Double> mCloseTo(final double value, final double epsilon) {
-        return new BaseMatcher<Double>() {
-
-            @Override
-            public boolean matches(Object arg0) {
-                return Math.abs(value / (Double) arg0 - 1) <= epsilon;
-            }
-
-            @Override
-            public void describeTo(Description arg0) {
-                arg0.appendText("divided by ")
-                        .appendValue(value)
-                        .appendText(" within ")
-                        .appendValue(epsilon)
-                        .appendText(" of 1.");
-            }
-        };
-    }
-
-    @Test
-    public void testWGS84Scales() throws Exception {
-        ZoomContext context = WellKnownZoomContextFinder.getInstance().get("DEFAULT");
-
-        for (int i = 0; i < WGS84_SCALE_DENOMS.length; i++) {
-            assertThat(
-                    context.getScaleDenominator(i), mCloseTo(WGS84_SCALE_DENOMS[i], 0.00000001d));
         }
     }
 

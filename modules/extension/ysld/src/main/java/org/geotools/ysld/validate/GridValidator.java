@@ -17,8 +17,8 @@
  */
 package org.geotools.ysld.validate;
 
+import org.geotools.styling.zoom.ZoomContext;
 import org.geotools.ysld.parse.Util;
-import org.geotools.ysld.parse.ZoomContext;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 

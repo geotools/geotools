@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
+import org.geotools.styling.zoom.ZoomContext;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.ysld.parse.Factory;
 import org.geotools.ysld.parse.Util;
-import org.geotools.ysld.parse.ZoomContext;
-import org.geotools.ysld.parse.ZoomContextFinder;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 

@@ -27,6 +27,10 @@ import org.geotools.api.style.Rule;
 import org.geotools.api.style.Style;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.api.style.UserLayer;
+import org.geotools.styling.zoom.ListZoomContext;
+import org.geotools.styling.zoom.RatioZoomContext;
+import org.geotools.styling.zoom.ZoomContext;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

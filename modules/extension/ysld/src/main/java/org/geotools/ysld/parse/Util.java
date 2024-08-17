@@ -33,6 +33,9 @@ import org.geotools.api.style.Displacement;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.renderer.style.ExpressionExtractor;
+import org.geotools.styling.zoom.WellKnownZoomContextFinder;
+import org.geotools.styling.zoom.ZoomContext;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.ysld.Colors;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
@@ -265,8 +268,8 @@ public class Util {
      *     names cause ambiguities).
      * @return {@link ZoomContext} matching the name.
      */
-    public static @Nullable ZoomContext getNamedZoomContext(
-            String name, List<ZoomContextFinder> zCtxtFinders) {
+    public static @Nullable org.geotools.styling.zoom.ZoomContext getNamedZoomContext(
+            String name, List<org.geotools.styling.zoom.ZoomContextFinder> zCtxtFinders) {
         if (name.equalsIgnoreCase("EPSG:4326")) {
             throw new IllegalArgumentException(
                     "Should not use EPSG code to refer to WGS84 zoom levels as it causes ambiguities");
@@ -276,7 +279,7 @@ public class Util {
                     "Should not use EPSG code to refer to WebMercator zoom levels");
         }
         for (ZoomContextFinder finder : zCtxtFinders) {
-            ZoomContext found = finder.get(name);
+            org.geotools.styling.zoom.ZoomContext found = finder.get(name);
             if (found != null) {
                 return found;
             }

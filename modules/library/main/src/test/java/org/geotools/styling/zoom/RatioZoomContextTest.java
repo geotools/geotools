@@ -15,12 +15,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.ysld.parse;
+package org.geotools.styling.zoom;
 
-import static org.geotools.ysld.TestUtils.rangeContains;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.not;
 
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -67,9 +66,9 @@ public class RatioZoomContextTest {
 
         ScaleRange result = ctxt.getRange(0, 0);
 
-        assertThat(result, rangeContains(5_000_000d));
-        assertThat(result, not(rangeContains(5_000_000d * 2)));
-        assertThat(result, not(rangeContains(5_000_000d / 2)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d));
+        MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d * 2)));
+        MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d / 2)));
     }
 
     @Test
@@ -79,9 +78,9 @@ public class RatioZoomContextTest {
 
         ScaleRange result = ctxt.getRange(2, 2);
 
-        assertThat(result, rangeContains(5_000_000d / 4));
-        assertThat(result, not(rangeContains(5_000_000d / 2)));
-        assertThat(result, not(rangeContains(5_000_000d / 8)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d / 4));
+        MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d / 2)));
+        MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d / 8)));
     }
 
     @Test
@@ -91,10 +90,10 @@ public class RatioZoomContextTest {
 
         ScaleRange result = ctxt.getRange(0, 2);
 
-        assertThat(result, rangeContains(5_000_000d / 1));
-        assertThat(result, rangeContains(5_000_000d / 2));
-        assertThat(result, rangeContains(5_000_000d / 4));
-        assertThat(result, not(rangeContains(5_000_000d * 2)));
-        assertThat(result, not(rangeContains(5_000_000d / 8)));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d / 1));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d / 2));
+        MatcherAssert.assertThat(result, TestUtils.rangeContains(5_000_000d / 4));
+        MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d * 2)));
+        MatcherAssert.assertThat(result, Matchers.not(TestUtils.rangeContains(5_000_000d / 8)));
     }
 }

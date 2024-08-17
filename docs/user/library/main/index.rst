@@ -60,3 +60,4 @@ Finally ``gt-main`` provides different kinds of helper classes to make using eve
    repository
    sld
    urlchecker
+   zoom

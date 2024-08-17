@@ -84,6 +84,12 @@ Additional steps needed in case of ImageMosaic of GRIBs
 
 #. Recreate the indexer.xml and _auxiliary.xml file as reported in the `NetCDF documentation <https://docs.geoserver.org/main/en/user/extensions/netcdf/netcdf.html#setting-up-a-basic-mosaic>`__ . (At the end, GRIB file are served through the NetCDF libraries)
 
+ZoomContext related classes moved from gt-ysld to gt-main
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+All classes related to ``ZoomContext`` and ``ZoomContextFinder`` have been moved into gt-main, in the ``org.geotools.styling.zoom`` package.
+The old classes in gt-ysld are still available, but are deprecated and will be removed. Please switch imports at your earliest convenience.
+
 .. _update31:
 
 GeoTools 31.x

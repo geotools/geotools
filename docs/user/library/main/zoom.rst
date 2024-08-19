@@ -7,7 +7,7 @@ The classes found in the ``org.geotools.styling.zoom`` package provide a way to 
  * ``ZoomContext`` is an interface that provides a way to convert zoom levels into scale denominators.
  * ``ScalerRange`` is an interface that describe a range of scale denominators.
 
-The ``WellKnownZoomContextFactory`` class provides way to create a ``ZoomContext`` object for well
+The ``WellKnownZoomContextFactory`` class provides way to create a ``ZoomContext`` object for well-known
 zoom Tile Matrix Sets such as ``WebMercatorQuad`` and ``WGS84``. Other projects, such as GeoServer,
 can provide their own implementations of ``ZoomContextFinder`` that matches configured Tile Matrix Sets,
 e.g. ``GWCZoomContextFactory`` provides access to all Tile Matrix Sets defined in the GeoServer configuration.

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.api.style.ResourceLocator;
 import org.geotools.api.style.StyledLayerDescriptor;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.ysld.UomMapper;
 
 /**
@@ -58,7 +59,8 @@ public class YsldParser extends YamlParser {
         super(reader);
     }
 
-    public void setZoomContextFinders(List<ZoomContextFinder> zCtxtFinders) {
+    public void setZoomContextFinders(
+            List<org.geotools.styling.zoom.ZoomContextFinder> zCtxtFinders) {
         this.zCtxtFinders = zCtxtFinders;
     }
 

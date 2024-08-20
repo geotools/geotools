@@ -39,10 +39,10 @@ import javax.xml.stream.XMLStreamReader;
 import org.geotools.api.style.ResourceLocator;
 import org.geotools.api.style.StyledLayerDescriptor;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.ysld.encode.YsldEncoder;
 import org.geotools.ysld.parse.YsldParser;
-import org.geotools.ysld.parse.ZoomContextFinder;
 import org.geotools.ysld.validate.YsldValidator;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 

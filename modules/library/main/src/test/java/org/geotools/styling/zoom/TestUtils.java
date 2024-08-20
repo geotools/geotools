@@ -15,22 +15,25 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.ysld.parse;
+package org.geotools.styling.zoom;
 
-import java.util.List;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.describedAs;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
-/**
- * A zoom context specified by an explicit list of scale denominators.
- *
- * @author Kevin Smith, Boundless
- * @deprecated Use {@link org.geotools.styling.zoom.ListZoomContext} instead.
- */
-public class ListZoomContext extends org.geotools.styling.zoom.ListZoomContext {
-    public ListZoomContext(List<Double> scales, int initial) {
-        super(scales, initial);
-    }
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 
-    public ListZoomContext(List<Double> scales) {
-        super(scales);
+public enum TestUtils {
+    ;
+
+    public static Matcher<ScaleRange> rangeContains(double scale) {
+        return describedAs(
+                "scale range that contains 1:%0",
+                allOf(
+                        Matchers.hasProperty("maxDenom", greaterThan(scale)),
+                        Matchers.hasProperty("minDenom", lessThanOrEqualTo(scale))),
+                scale);
     }
 }

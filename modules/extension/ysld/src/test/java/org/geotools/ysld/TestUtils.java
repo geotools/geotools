@@ -38,7 +38,7 @@ import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.filter.expression.NilExpression;
 import org.geotools.api.filter.expression.PropertyName;
 import org.geotools.api.style.Rule;
-import org.geotools.ysld.parse.ScaleRange;
+import org.geotools.styling.zoom.ScaleRange;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

@@ -105,6 +105,14 @@ web site (http://geogratis.cgdi.gc.ca/).</Abstract>
           <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.osgeo.org/sites/all/themes/osgeo/logo.png"/>
       </LogoURL>
     </Attribution>
+    <Style>
+      <Name>default</Name>
+      <Title>teststyle</Title>
+      <LegendURL height="21" width="119">
+        <!-- <Format>image/png</Format> --> <!-- Removed for GEOT-7611 test (ArrayIndexOutOfBoundsException when missing format) -->
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.example.com/legend.png" xlink:type="simple"/>
+      </LegendURL>
+    </Style>
   </Layer>
 </Capability>
 </WMT_MS_Capabilities>

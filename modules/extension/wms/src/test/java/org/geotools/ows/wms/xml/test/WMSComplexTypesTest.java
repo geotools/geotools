@@ -113,9 +113,9 @@ public class WMSComplexTypesTest {
     }
 
     @Test
-    public void testMissingLogoUrlFormat() throws Exception {
+    public void testMissingFormat() throws Exception {
 
-        File getCaps = TestData.file(this, "1.1.0CapabilitiesMissingLogoUrlFormat.xml");
+        File getCaps = TestData.file(this, "1.1.0CapabilitiesMissingFormat.xml");
         URL getCapsURL = getCaps.toURI().toURL();
         Map<String, Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
@@ -134,11 +134,16 @@ public class WMSComplexTypesTest {
         Attribution attribution = topLayer.getAttribution();
         Assert.assertNotNull(attribution);
         LogoURL logoURL = attribution.getLogoURL();
-        Assert.assertNotNull(logoURL);
+        Assert.assertEquals(logoURL.getOnlineResource().toString(), "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         Assert.assertNull(logoURL.getFormat());
         Assert.assertEquals(logoURL.getHeight(), 100);
         Assert.assertEquals(logoURL.getHeight(), 100);
         Assert.assertEquals(logoURL.getWidth(), 100);
+
+        StyleImpl style = topLayer.getStyles().get(0);
+        Assert.assertNotNull(style);
+        Object legendURL = style.getLegendURLs().get(0);
+        Assert.assertEquals(legendURL, "http://www.example.com/legend.png");
     }
 
     @Test

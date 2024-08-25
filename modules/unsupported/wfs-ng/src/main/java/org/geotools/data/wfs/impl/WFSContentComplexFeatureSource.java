@@ -23,6 +23,8 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.FeatureListener;
@@ -40,6 +42,9 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSContentComplexFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.gml2.SrsSyntax;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
+import org.geotools.util.logging.Logging;
 
 /**
  * Combines the WFSClient and DataAccess objects and exposes methods to access the features by using
@@ -54,6 +59,8 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
 
     /** The data access object. */
     private WFSContentDataAccess dataAccess;
+
+    private static Logger LOGGER = Logging.getLogger(WFSContentComplexFeatureSource.class);
 
     /**
      * Initialises a new instance of the class WFSContentComplexFeatureSource.
@@ -99,10 +106,41 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         request.setPropertyNames(query.getPropertyNames());
         request.setSortBy(query.getSortBy());
 
-        String srsName = null;
-        request.setSrsName(srsName);
+        if (query.getCoordinateSystem() != null) {
+            String srsName = findSupportedSrs(request, query.getCoordinateSystem());
+
+            if (srsName != null) {
+                request.setSrsName(srsName);
+            } else {
+                LOGGER.log(
+                        Level.WARNING,
+                        "WFS doesn't support the coordinate system: "
+                                + query.getCoordinateSystem());
+            }
+        }
 
         return new WFSContentComplexFeatureCollection(request, schema, name, client);
+    }
+
+    private String findSupportedSrs(GetFeatureRequest request, CoordinateReferenceSystem crs) {
+        String identifier = GML2EncodingUtils.toURI(crs, SrsSyntax.AUTH_CODE, false);
+        if (identifier != null) {
+            int idx = identifier.lastIndexOf(':');
+            String authority = identifier.substring(0, idx);
+            String code = identifier.substring(idx + 1);
+            Set<String> supported =
+                    request.getStrategy().getSupportedCRSIdentifiers(request.getTypeName());
+            for (String supportedSrs : supported) {
+                if (supportedSrs.contains(authority) && supportedSrs.endsWith(":" + code)) {
+                    LOGGER.log(Level.FINE, "Found supportedSRS: " + supportedSrs);
+                    return supportedSrs;
+                }
+            }
+        } else {
+            LOGGER.log(
+                    Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
+        }
+        return null;
     }
 
     @Override

@@ -34,17 +34,34 @@ The first step to upgrade: change the ``geotools.version`` of your dependencies 
 GeoTools 32.x
 -------------
 
-JDBC: Method signature change in PreparedStatementSQLDialect
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Custom implementations of ``org.geotools.jdbc.PreparedStatementSQLDialect`` must be adjusted. 
-With `GEOT-7571 <https://osgeo-org.atlassian.net/browse/GEOT-7571>`_ ``setValue(Object, Class<?>, PreparedStatement, int, Connection)`` 
-was refactored to receive an additional argument.
-The new signature is ``setValue(Object, Class<?>, AttributeDescriptor, PreparedStatement, int, Connection)``. The AttributeDescriptor passed
-corresponds to the feature's attribute and maybe be null in cases where no attribute is directly available.
 
-From now on, the sqlType for a specific feature attribute is taken into consideration for ``INSERT`` and ``UPDATE`` operations, rather than solely the attribute's class. 
-The type is now determined by the new method ``org.geotools.jdbc.JDBCDataStore.getMapping(Class<?>, AttributeDescriptor): Integer``.
+ImageMosaic Deserialization Validation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+GeoTools now validates class names when deserializing sample image files for ImageMosaic.
+
+If the default allowlist of classes that image mosaic will deserialize is preventing the usage of valid
+sample image files, the ``org.geotools.gce.imagemosaic.sampleimage.allowlist`` system property can be set to
+allow additional classes whose fully-qualified class names match the provided regular expression.
+
+For example:
+
+.. code-block:: properties
+
+   org.geotools.gce.imagemosaic.sampleimage.allowlist=^some\.package\.MyCustomColorModel$
+
+JDBC Method signature change in PreparedStatementSQLDialect
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The method ``PreparedStatementSQLDialect.setValue(Object, Class<?>, PreparedStatement, int, Connection)`` was refactored to receive an additional argument.
+
+The new signature is ``PreparedStatementSQLDialect.setValue(Object, Class<?>, AttributeDescriptor, PreparedStatement, int, Connection)``.
+
+The AttributeDescriptor passed corresponds to the feature's attribute and maybe be ``null`` in cases where no attribute is directly available.
+
+From now on, the sqlType for a specific feature attribute is taken into consideration for ``INSERT`` and ``UPDATE`` operations, rather than solely the attribute's class.  The type is now determined by the new method ``org.geotools.jdbc.JDBCDataStore.getMapping(Class<?>, AttributeDescriptor): Integer``.
+
+Users of JDBCDataStore are not affected. Custom implementations of ``org.geotools.jdbc.PreparedStatementSQLDialect`` must be adjusted to the new method signature in order to compile.
 
 NetCDF Version upgrade to 5.5.3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -256,10 +256,17 @@ public class Utils {
     };
 
     /**
-     * Regular expression provided through a system property for additional class names to allow
-     * when deserializing SampleImage objects if the default whitelist is insufficient
+     * System property {@code org.geotools.gce.imagemosaic.sampleimage.allowlist} used to validate
+     * sample image deserialization.
      */
-    private static final Pattern SAMPLE_IMAGE_WHITELIST = initSampleImageWhitelist();
+    public static final String SAMPLE_IMAGE_ALLOWLIST_PROPERTY_NAME =
+            "org.geotools.gce.imagemosaic.sampleimage.allowlist";
+
+    /**
+     * Regular expression provided through a system property for additional class names to allow
+     * when deserializing SampleImage objects if the default allowlist is insufficient.
+     */
+    private static final Pattern SAMPLE_IMAGE_ALLOWLIST = initSampleImageAllowlist();
 
     /** Check if the provided reader is a MultiCRS Reader and it can support the specified crs. */
     public static boolean isSupportedCRS(GridCoverage2DReader reader, CoordinateReferenceSystem crs)
@@ -704,15 +711,15 @@ public class Utils {
         return filesFilter;
     }
 
-    private static Pattern initSampleImageWhitelist() {
-        String prop = System.getProperty("org.geotools.gce.imagemosaic.sampleimage.whitelist");
+    private static Pattern initSampleImageAllowlist() {
+        String prop = System.getProperty(SAMPLE_IMAGE_ALLOWLIST_PROPERTY_NAME);
         if (prop != null) {
             try {
                 return Pattern.compile(prop);
             } catch (Exception e) {
                 LOGGER.log(
                         Level.WARNING,
-                        "Error parsing sample image deserialization whitelist regular expression",
+                        "Error parsing sample image deserialization allowlist regular expression",
                         e);
             }
         }
@@ -1466,6 +1473,10 @@ public class Utils {
      * Load a sample image from which we can take the sample model and color model to be used to
      * fill holes in responses.
      *
+     * <p>Format of sample image is limited and may be customized using {@link
+     * #SAMPLE_IMAGE_ALLOWLIST} system property {@code
+     * org.geotools.gce.imagemosaic.sampleimage.allowlist}.
+     *
      * @param sampleImageFile the path to sample image.
      * @return a sample image from which we can take the sample model and color model to be used to
      *     fill holes in responses.
@@ -1479,8 +1490,8 @@ public class Utils {
                     new ValidatingObjectInputStream(
                             new BufferedInputStream(new FileInputStream(sampleImageFile)))) {
                 oiStream.accept(SAMPLE_IMAGE_CLASSES).accept(SAMPLE_IMAGE_PATTERNS);
-                if (SAMPLE_IMAGE_WHITELIST != null) {
-                    oiStream.accept(SAMPLE_IMAGE_WHITELIST);
+                if (SAMPLE_IMAGE_ALLOWLIST != null) {
+                    oiStream.accept(SAMPLE_IMAGE_ALLOWLIST);
                 }
                 // load the image
                 Object object = oiStream.readObject();
@@ -1899,6 +1910,7 @@ public class Utils {
     static final String ASCENDING_ORDER_IDENTIFIER = " A"; // SortOrder.ASCENDING.identifier();
 
     public static final String SAMPLE_IMAGE_NAME_LEGACY = "sample_image";
+
     public static final String SAMPLE_IMAGE_NAME = "sample_image.dat";
 
     public static final String PAM_DATASET_NAME = ".aux.xml";

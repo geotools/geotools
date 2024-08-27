@@ -16,6 +16,12 @@
  */
 package org.geotools.styling.css;
 
+import static org.geotools.api.style.FeatureTypeStyle.KEY_EVALUATION_MODE;
+import static org.geotools.api.style.FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST;
+import static org.geotools.api.style.FeatureTypeStyle.VT_ATTRIBUTES;
+import static org.geotools.api.style.FeatureTypeStyle.VT_COALESCE;
+import static org.geotools.api.style.FeatureTypeStyle.VT_LABELS;
+import static org.geotools.api.style.FeatureTypeStyle.VT_LABEL_ATTRIBUTES;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -915,8 +921,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        org.geotools.api.style.FeatureTypeStyle fts =
-                (org.geotools.api.style.FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
         assertEquals(2, fts.getOptions().size());
         assertEquals("multiply", fts.getOptions().get("composite"));
         assertNull(fts.getOptions().get("composite-base"));
@@ -932,8 +937,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        org.geotools.api.style.FeatureTypeStyle fts =
-                (org.geotools.api.style.FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
         assertEquals("true", fts.getOptions().get("composite-base"));
         assertNull(fts.getOptions().get("composite"));
     }
@@ -948,8 +952,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        org.geotools.api.style.FeatureTypeStyle fts =
-                (org.geotools.api.style.FeatureTypeStyle) style.featureTypeStyles().get(0);
+        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
         assertEquals("true", fts.getOptions().get("composite-base"));
         assertEquals("multiply", fts.getOptions().get("composite"));
     }
@@ -964,11 +967,8 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        org.geotools.api.style.FeatureTypeStyle fts =
-                (org.geotools.api.style.FeatureTypeStyle) style.featureTypeStyles().get(0);
-        assertEquals(
-                "cat A, name D",
-                fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.SORT_BY));
+        FeatureTypeStyle fts = (FeatureTypeStyle) style.featureTypeStyles().get(0);
+        assertEquals("cat A, name D", fts.getOptions().get(FeatureTypeStyle.SORT_BY));
     }
 
     @Test
@@ -981,14 +981,9 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
         assertEquals(0, ls.getOptions().size());
         // but in the feature type style
-        org.geotools.api.style.FeatureTypeStyle fts =
-                (org.geotools.api.style.FeatureTypeStyle) style.featureTypeStyles().get(0);
-        assertEquals(
-                "cat A, name D",
-                fts.getOptions().get((org.geotools.api.style.FeatureTypeStyle.SORT_BY)));
-        assertEquals(
-                "theGroup",
-                fts.getOptions().get(org.geotools.api.style.FeatureTypeStyle.SORT_BY_GROUP));
+        FeatureTypeStyle fts = style.featureTypeStyles().get(0);
+        assertEquals("cat A, name D", fts.getOptions().get((FeatureTypeStyle.SORT_BY)));
+        assertEquals("theGroup", fts.getOptions().get(FeatureTypeStyle.SORT_BY_GROUP));
     }
 
     @Test
@@ -1995,5 +1990,44 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         Rule r22 = assertSingleRule(s2.featureTypeStyles().get(1));
         LineSymbolizer l22 = assertSingleSymbolizer(r22, LineSymbolizer.class);
         assertEquals("#ffff00", l22.getStroke().getColor().evaluate(null, String.class));
+    }
+
+    @Test
+    public void testVectorTilesOptionPlacement() {
+        String css =
+                "topp:states {\n"
+                        + "   fill: black;\n"
+                        + "   vt-attributes: 'PERSONS';\n"
+                        + "   vt-coalesce: true;\n"
+                        + "   [@z >= 4] {\n"
+                        + "     vt-labels: true;\n"
+                        + "     vt-label-attributes: 'STATE_ABBR,STATE_NAME';  \n"
+                        + "   }\n"
+                        + "}";
+
+        StyledLayerDescriptor sld = translateMultiLayer(css);
+        assertEquals(1, sld.getStyledLayers().length);
+        FeatureTypeStyle fts =
+                assertSingleFeatureTypeStyle(
+                        ((NamedLayer) sld.getStyledLayers()[0]).getStyles()[0]);
+        assertEquals(3, fts.getOptions().size());
+        assertThat(
+                fts.getOptions(),
+                Matchers.hasEntry(KEY_EVALUATION_MODE, VALUE_EVALUATION_MODE_FIRST));
+        assertThat(fts.getOptions(), Matchers.hasEntry(VT_ATTRIBUTES, "PERSONS"));
+        assertThat(fts.getOptions(), Matchers.hasEntry(VT_COALESCE, "true"));
+        List<Rule> rules = fts.rules();
+        assertEquals(2, rules.size());
+        // most specific first
+        Rule r1 = rules.get(0);
+        assertEquals(4.94E7, r1.getMaxScaleDenominator(), 1E5);
+        assertEquals(2, r1.getOptions().size());
+        assertThat(
+                r1.getOptions(), Matchers.hasEntry(VT_LABEL_ATTRIBUTES, "STATE_ABBR,STATE_NAME"));
+        assertThat(r1.getOptions(), Matchers.hasEntry(VT_LABELS, "true"));
+        // less specific rule, lower zoom levels, should not have options
+        Rule r2 = rules.get(1);
+        assertEquals(4.94E7, r2.getMinScaleDenominator(), 1E5);
+        assertTrue(r2.getOptions().isEmpty());
     }
 }

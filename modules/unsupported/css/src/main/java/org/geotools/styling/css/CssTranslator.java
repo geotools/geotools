@@ -17,6 +17,10 @@
 package org.geotools.styling.css;
 
 import static java.util.Map.entry;
+import static org.geotools.api.style.FeatureTypeStyle.VT_ATTRIBUTES;
+import static org.geotools.api.style.FeatureTypeStyle.VT_COALESCE;
+import static org.geotools.api.style.FeatureTypeStyle.VT_LABELS;
+import static org.geotools.api.style.FeatureTypeStyle.VT_LABEL_ATTRIBUTES;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -423,7 +428,52 @@ public class CssTranslator {
                 }
             }
         }
+
+        consolidateVectorTileOptions(translated);
         return translated;
+    }
+
+    /**
+     * Vector tiles options can be placed at the rule level, if scale dependent, or at the feature
+     * type style level, for conciseness, if not scale dependent. The generator put all the options
+     * at the rule level, move them up to the feature type style level if they are uniform.
+     */
+    private void consolidateVectorTileOptions(Style translated) {
+        translated.featureTypeStyles().forEach(this::consolidateVectorTileOptions);
+    }
+
+    private void consolidateVectorTileOptions(FeatureTypeStyle featureTypeStyle) {
+        List<Rule> rules = featureTypeStyle.rules();
+
+        // collect each option values in a set, if there is a single value they are
+        // uniform and can be moved to the feature type style,otherwise not
+        Set<String> vtKeys = Set.of(VT_ATTRIBUTES, VT_LABELS, VT_LABEL_ATTRIBUTES, VT_COALESCE);
+        Map<String, Set<String>> vtOptions = new HashMap<>();
+        Map<String, Integer> vtCounts = new HashMap<>();
+
+        rules.stream()
+                .flatMap(r -> r.getOptions().entrySet().stream())
+                .filter(e -> vtKeys.contains(e.getKey()))
+                .forEach(
+                        e -> {
+                            String key = e.getKey();
+                            String value = e.getValue();
+
+                            // Collect the options as set, count occurrences of keys
+                            vtOptions.computeIfAbsent(key, k -> new HashSet<>()).add(value);
+                            vtCounts.merge(key, 1, Integer::sum);
+                        });
+
+        // if there is only one value for the option, but originally
+        // we have found as many as the rules (all rules have explicit and equal values)
+        vtOptions.forEach(
+                (key, values) -> {
+                    if (values.size() == 1 && vtCounts.get(key) == rules.size()) {
+                        String optionValue = values.iterator().next();
+                        featureTypeStyle.getOptions().put(key, optionValue);
+                        rules.forEach(r -> r.getOptions().remove(key));
+                    }
+                });
     }
 
     private List<CssRule> expandNested(List<CssRule> topRules) {
@@ -581,13 +631,7 @@ public class CssTranslator {
                 // check if we have global composition going, and use the value of
                 // the first rule providing the information (the one with the highest
                 // priority)
-                if (composite == null) {
-                    List<Value> values =
-                            derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE).get(COMPOSITE);
-                    if (values != null && !values.isEmpty()) {
-                        composite = values.get(0).toLiteral();
-                    }
-                }
+                composite = getStringAttribute(composite, derived, COMPOSITE);
                 if (compositeBase == null) {
                     List<Value> values =
                             derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
@@ -598,56 +642,62 @@ public class CssTranslator {
                 }
 
                 // check if we have any sort-by
-                if (sortBy == null) {
-                    List<Value> values =
-                            derived.getPropertyValues(PseudoClass.ROOT, SORT_BY).get(SORT_BY);
-                    if (values != null && !values.isEmpty()) {
-                        sortBy = values.get(0).toLiteral();
-                    }
-                }
+                sortBy = getStringAttribute(sortBy, derived, SORT_BY);
 
                 // check if we have any sort-by-group
-                if (sortByGroup == null) {
-                    List<Value> values =
-                            derived.getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
-                                    .get(SORT_BY_GROUP);
-                    if (values != null && !values.isEmpty()) {
-                        sortByGroup = values.get(0).toLiteral();
-                    }
-                }
+                sortByGroup = getStringAttribute(sortByGroup, derived, SORT_BY_GROUP);
 
                 // check if we have a transform, apply it
-                if (transform == null) {
-                    List<Value> values =
-                            derived.getPropertyValues(PseudoClass.ROOT, TRANSFORM).get(TRANSFORM);
-                    if (values != null && !values.isEmpty()) {
-                        transform = values.get(0).toExpression();
-                    }
-                }
-
+                transform = getExpressionAttribute(transform, derived, TRANSFORM);
                 if (!backgroundFound.get()) {
                     backgroundFound.set(buildBackground(styleBuilder, derived));
                 }
             }
 
-            if (composite != null) {
-                ftsBuilder.option(COMPOSITE, composite);
-            }
-            if (Boolean.TRUE.equals(compositeBase)) {
-                ftsBuilder.option(COMPOSITE_BASE, "true");
-            }
-            if (sortBy != null) {
-                ftsBuilder.option(FeatureTypeStyle.SORT_BY, sortBy);
-            }
-            if (sortByGroup != null) {
-                ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
-            }
+            if (composite != null) ftsBuilder.option(COMPOSITE, composite);
+            if (Boolean.TRUE.equals(compositeBase))
+                ftsBuilder.option(FeatureTypeStyle.COMPOSITE_BASE, "true");
+            if (sortBy != null) ftsBuilder.option(FeatureTypeStyle.SORT_BY, sortBy);
+            if (sortByGroup != null) ftsBuilder.option(FeatureTypeStyle.SORT_BY_GROUP, sortByGroup);
             if (transform != null) {
                 ftsBuilder.transformation(transform);
             }
         }
 
         return translatedRuleCount;
+    }
+
+    private static String getStringAttribute(String value, CssRule rule, String attributeName) {
+        if (value == null) {
+            List<Value> values =
+                    rule.getPropertyValues(PseudoClass.ROOT, attributeName).get(attributeName);
+            if (values != null && !values.isEmpty()) {
+                value = values.get(0).toLiteral();
+            }
+        }
+        return value;
+    }
+
+    /**
+     * Same as {@link #getStringAttribute(String, CssRule, String)} but normalizes the values to
+     * "true" and "false"
+     */
+    private static String getBooleanAttribute(String value, CssRule rule, String attributeName) {
+        value = getStringAttribute(value, rule, attributeName);
+        if (value == null) return value;
+        return String.valueOf(Boolean.valueOf(value));
+    }
+
+    private static Expression getExpressionAttribute(
+            Expression value, CssRule rule, String attributeName) {
+        if (value == null) {
+            List<Value> values =
+                    rule.getPropertyValues(PseudoClass.ROOT, attributeName).get(attributeName);
+            if (values != null && !values.isEmpty()) {
+                value = values.get(0).toExpression();
+            }
+        }
+        return value;
     }
 
     private TranslationMode configureDomainCoverage(
@@ -792,14 +842,7 @@ public class CssTranslator {
                         // check if we have global composition going, and use the value of
                         // the first rule providing the information (the one with the highest
                         // priority)
-                        if (composite == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE)
-                                            .get(COMPOSITE);
-                            if (values != null && !values.isEmpty()) {
-                                composite = values.get(0).toLiteral();
-                            }
-                        }
+                        composite = getStringAttribute(composite, derived, COMPOSITE);
                         if (compositeBase == null) {
                             List<Value> values =
                                     derived.getPropertyValues(PseudoClass.ROOT, COMPOSITE_BASE)
@@ -810,24 +853,10 @@ public class CssTranslator {
                         }
 
                         // check if we have any sort-by
-                        if (sortBy == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, SORT_BY)
-                                            .get(SORT_BY);
-                            if (values != null && !values.isEmpty()) {
-                                sortBy = values.get(0).toLiteral();
-                            }
-                        }
+                        sortBy = getStringAttribute(sortBy, derived, SORT_BY);
 
                         // check if we have any sort-by-group
-                        if (sortByGroup == null) {
-                            List<Value> values =
-                                    derived.getPropertyValues(PseudoClass.ROOT, SORT_BY_GROUP)
-                                            .get(SORT_BY_GROUP);
-                            if (values != null && !values.isEmpty()) {
-                                sortByGroup = values.get(0).toLiteral();
-                            }
-                        }
+                        sortByGroup = getStringAttribute(sortByGroup, derived, SORT_BY_GROUP);
 
                         // check if we have a background, use the first found
                         if (!backgroundFound) {
@@ -1191,6 +1220,16 @@ public class CssTranslator {
         }
         if (cssRule.hasProperty(PseudoClass.ROOT, "raster-channels")) {
             addRasterSymbolizer(cssRule, ruleBuilder);
+        }
+
+        // for string and boolean vendor options
+        for (String key : new String[] {VT_ATTRIBUTES, VT_LABEL_ATTRIBUTES}) {
+            String value = getStringAttribute(null, cssRule, key);
+            if (value != null) ruleBuilder.option(key, value);
+        }
+        for (String key : new String[] {VT_LABELS, VT_COALESCE}) {
+            String value = getBooleanAttribute(null, cssRule, key);
+            if (value != null) ruleBuilder.option(key, value);
         }
     }
 

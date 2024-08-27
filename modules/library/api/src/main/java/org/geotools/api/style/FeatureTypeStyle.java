@@ -104,6 +104,26 @@ public interface FeatureTypeStyle {
      * Symbolizers. Possible values are normal, legendOnly, mapOnly.
      */
     String VENDOR_OPTION_INCLUSION = "inclusion";
+    /**
+     * Set of attributes to be included in vector tiles. Used by the GeoServer vector tiles module,
+     * declared here so that it can be referred to from style languages.
+     */
+    String VT_ATTRIBUTES = "vt-attributes";
+    /**
+     * Wheter or not a dedicated label layer should be generated for vector tiles. Useful for
+     * polygon layers, but also for point and line layers, as it will include only features whose
+     * label attributes are not null. Used by the GeoServer vector tiles module, declared here so
+     * that it can be referred to from style languages
+     */
+    String VT_LABELS = "vt-labels";
+    /**
+     * Set of attributes to be included in the vector tiles label layer. Used by the GeoServer
+     * vector tiles module, declared here so that it can be referred to from style languages
+     */
+    String VT_LABEL_ATTRIBUTES = "vt-label-attributes";
+
+    /** Coalesce the geometries of features sharing the same attribute values */
+    String VT_COALESCE = "vt-coalesce";
 
     /**
      * Returns a name for this style. This can be any string that uniquely identifies this style

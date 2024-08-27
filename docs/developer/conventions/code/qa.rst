@@ -1,7 +1,7 @@
 Automatic Quality Assurance checks
 ----------------------------------
 
-The GeoTools builds on Travis and `https://build.geoserver.org/ <https://build.geoserver.org/>`_ apply a handful of tools
+The GeoTools jenkins `build.geoserver.org <https://build.geoserver.org/>`_ and GitHub workflow apply a handful of tools
 to statically check code quality and fail the build in case of rule violation:
 
 * `Google Java style guidelines <https://google.github.io/styleguide/javaguide.html>`_

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>app-schema</artifactId>
+        <version>32-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.geotools.data</groupId>
+    <artifactId>app-schema-data</artifactId>
+    <packaging>pom</packaging>
+    <name>Application Schema Data</name>
+
+    <description>
+        Used to build sample data into maven artifacts so they can be uesd
+        for integration testing.
+        
+        This module should not be part of the standard build.
+        Modules below have no parent, by design.
+    </description>
+
+    <modules>
+        <module>refdata-1.0</module>
+    </modules>
+
+</project>

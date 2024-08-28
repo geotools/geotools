@@ -96,6 +96,9 @@ import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.TypeNameExtractor;
 import org.geotools.styling.css.util.TypeNameSimplifier;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
+import org.geotools.styling.zoom.WellKnownZoomContextFinder;
+import org.geotools.styling.zoom.ZoomContext;
+import org.geotools.styling.zoom.ZoomContextFinder;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
@@ -152,6 +155,8 @@ public class CssTranslator {
     static final String DIRECTIVE_STYLE_ABSTRACT = "styleAbstract";
 
     static final String DIRECTIVE_AUTO_RULE_NAMES = "autoRuleNames";
+
+    static final String DIRECTIVE_TILE_MATRIX_SET = "tileMatrixSet";
 
     static final int MAX_OUTPUT_RULES_DEFAULT =
             Integer.valueOf(
@@ -268,6 +273,8 @@ public class CssTranslator {
     /** Limits how many output rules we are going to generate */
     int maxCombinations = MAX_OUTPUT_RULES_DEFAULT;
 
+    List<ZoomContextFinder> zoomContextFinders = Collections.emptyList();
+
     public int getMaxCombinations() {
         return maxCombinations;
     }
@@ -275,6 +282,14 @@ public class CssTranslator {
     /** Maximum number of rule combinations before bailing out of the power set generation */
     public void setMaxCombinations(int maxCombinations) {
         this.maxCombinations = maxCombinations;
+    }
+
+    public List<ZoomContextFinder> getZoomContextFinders() {
+        return zoomContextFinders;
+    }
+
+    public void setZoomContextFinders(List<ZoomContextFinder> zoomContextFinders) {
+        this.zoomContextFinders = zoomContextFinders;
     }
 
     /**
@@ -345,6 +360,7 @@ public class CssTranslator {
         int maxCombinations = getMaxCombinations(stylesheet);
         final TranslationMode mode = getTranslationMode(stylesheet);
         int autoThreshold = getAutoThreshold(stylesheet);
+        ZoomContext zoomContext = getZoomContext(stylesheet);
 
         List<CssRule> topRules = stylesheet.getRules();
 
@@ -371,7 +387,7 @@ public class CssTranslator {
                                 + allRules.size()
                                 + "  rules in the stylesheet");
             }
-            translatedRuleCount = translateFlat(allRules, styleBuilder);
+            translatedRuleCount = translateFlat(allRules, styleBuilder, zoomContext);
         } else {
             List<CssRule> allRules = expandNested(topRules);
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -381,7 +397,13 @@ public class CssTranslator {
                                 + "  rules in the stylesheet");
             }
             translatedRuleCount =
-                    translateCss(mode, allRules, styleBuilder, maxCombinations, autoThreshold);
+                    translateCss(
+                            mode,
+                            allRules,
+                            styleBuilder,
+                            maxCombinations,
+                            autoThreshold,
+                            zoomContext);
         }
 
         // check that we have generated at least one rule in output
@@ -418,7 +440,8 @@ public class CssTranslator {
             List<CssRule> allRules,
             StyleBuilder styleBuilder,
             int maxCombinations,
-            int autoThreshold) {
+            int autoThreshold,
+            ZoomContext zoomContext) {
         // split rules by index and typename, then build the power set for each group and
         // generate the rules and symbolizers
         Map<Integer, List<CssRule>> zIndexRules =
@@ -448,7 +471,7 @@ public class CssTranslator {
                 // solution out of this so far, past the power set we might end up with
                 // and and of two selectors, that internally have ORs of scales, which could
                 // be quite complicated to un-tangle)
-                List<CssRule> flattenedRules = flattenScaleRanges(localRules);
+                List<CssRule> flattenedRules = flattenScaleRanges(localRules, zoomContext);
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
                             "Preparing power set expansion with "
@@ -488,7 +511,8 @@ public class CssTranslator {
                                     + " combined rules after filtered power set expansion");
                 }
                 // setup the tool that will eliminate redundant rules (if necessary)
-                DomainCoverage coverage = new DomainCoverage(targetFeatureType, cachedSimplifier);
+                DomainCoverage coverage =
+                        new DomainCoverage(targetFeatureType, cachedSimplifier, zoomContext);
                 mode = configureDomainCoverage(mode, autoThreshold, rulesCount, coverage);
                 // generate the SLD rules
                 translatedRuleCount =
@@ -499,7 +523,8 @@ public class CssTranslator {
                                 targetFeatureType,
                                 combinedRules,
                                 ftsBuilder,
-                                coverage);
+                                coverage,
+                                zoomContext);
             }
         }
         return translatedRuleCount;
@@ -512,7 +537,8 @@ public class CssTranslator {
             FeatureType targetFeatureType,
             List<CssRule> combinedRules,
             FeatureTypeStyleBuilder ftsBuilder,
-            DomainCoverage coverage) {
+            DomainCoverage coverage,
+            ZoomContext zoomContext) {
         String composite = null;
         Boolean compositeBase = null;
         String sortBy = null;
@@ -543,7 +569,7 @@ public class CssTranslator {
                 if (!derived.hasNonNullSymbolizerProperty()) {
                     continue;
                 }
-                buildSldRule(derived, ftsBuilder, targetFeatureType, null);
+                buildSldRule(derived, ftsBuilder, targetFeatureType, null, zoomContext);
 
                 translatedRuleCount++;
 
@@ -674,7 +700,8 @@ public class CssTranslator {
         }
     }
 
-    private int translateFlat(List<CssRule> allRules, StyleBuilder styleBuilder) {
+    private int translateFlat(
+            List<CssRule> allRules, StyleBuilder styleBuilder, ZoomContext zoomContext) {
         List<CssRule> finalRules = new ArrayList<>();
         CssRule actualRule = null;
         Map<PseudoClass, List<Property>> properties = null;
@@ -731,7 +758,7 @@ public class CssTranslator {
                 List<CssRule> localRules = entry.getValue();
                 final FeatureType targetFeatureType =
                         getTargetFeatureType(featureTypeName, localRules);
-                List<CssRule> flattenedRules = flattenScaleRanges(localRules);
+                List<CssRule> flattenedRules = flattenScaleRanges(localRules, zoomContext);
 
                 FeatureTypeStyleBuilder ftsBuilder = null;
 
@@ -749,12 +776,17 @@ public class CssTranslator {
                     }
 
                     List<CssRule> derivedRules =
-                            removeNested(cssRule, targetFeatureType, cachedSimplifier);
+                            removeNested(cssRule, targetFeatureType, cachedSimplifier, zoomContext);
                     for (CssRule derived : derivedRules) {
                         if (ftsBuilder == null) {
                             ftsBuilder = getFeatureTypeStyleBuilder(styleBuilder, featureTypeName);
                         }
-                        buildSldRule(derived, ftsBuilder, targetFeatureType, cachedSimplifier);
+                        buildSldRule(
+                                derived,
+                                ftsBuilder,
+                                targetFeatureType,
+                                cachedSimplifier,
+                                zoomContext);
                         translatedRuleCount++;
 
                         // check if we have global composition going, and use the value of
@@ -842,14 +874,20 @@ public class CssTranslator {
 
     /** Flat modes assumes the master rules applies to whatever was not caught by the child rules */
     private List<CssRule> removeNested(
-            CssRule cssRule, FeatureType featureType, UnboundSimplifyingFilterVisitor simplifier) {
+            CssRule cssRule,
+            FeatureType featureType,
+            UnboundSimplifyingFilterVisitor simplifier,
+            ZoomContext zoomContext) {
+        if (cssRule.getNestedRules() == null || cssRule.getNestedRules().isEmpty()) {
+            return Collections.singletonList(cssRule);
+        }
         List<CssRule> nested = cssRule.getNestedRules();
         if (nested == null || nested.isEmpty()) {
             return Collections.singletonList(cssRule);
         }
 
         // add covered by all directly nested rules
-        final DomainCoverage coverage = new DomainCoverage(featureType, simplifier);
+        final DomainCoverage coverage = new DomainCoverage(featureType, simplifier, zoomContext);
         coverage.setExclusiveRulesEnabled(true);
         for (CssRule r : cssRule.getNestedRules()) {
             coverage.addRule(r);
@@ -910,12 +948,31 @@ public class CssTranslator {
         return result;
     }
 
+    private ZoomContext getZoomContext(Stylesheet stylesheet) {
+        String tileMatrixSet = stylesheet.getDirectiveValue(DIRECTIVE_TILE_MATRIX_SET);
+        if (tileMatrixSet == null) tileMatrixSet = "WebMercatorQuad";
+
+        ZoomContext result;
+        for (ZoomContextFinder finder : zoomContextFinders) {
+            result = finder.get(tileMatrixSet);
+            if (result != null) {
+                return result;
+            }
+        }
+        result = WellKnownZoomContextFinder.getInstance().get(tileMatrixSet);
+        if (result == null)
+            throw new IllegalArgumentException(
+                    "Invalid value for " + DIRECTIVE_TILE_MATRIX_SET + ": " + tileMatrixSet);
+
+        return result;
+    }
+
     /**
      * SLD rules can have two or more selectors in OR using different scale ranges, however the SLD
      * model does not allow for that. Flatten them into N different rules, with the same properties,
      * but different selectors
      */
-    private List<CssRule> flattenScaleRanges(List<CssRule> rules) {
+    private List<CssRule> flattenScaleRanges(List<CssRule> rules, ZoomContext zoomContext) {
         List<CssRule> result = new ArrayList<>();
         for (CssRule rule : rules) {
             if (rule.getSelector() instanceof Or) {
@@ -923,7 +980,7 @@ public class CssTranslator {
                 List<Selector> others = new ArrayList<>();
                 for (Selector child : or.getChildren()) {
                     ScaleRangeExtractor extractor = new ScaleRangeExtractor();
-                    Range<Double> range = extractor.getScaleRange(child);
+                    Range<Double> range = extractor.getScaleRange(child, zoomContext);
                     if (range == null) {
                         others.add(child);
                     } else {
@@ -1073,9 +1130,10 @@ public class CssTranslator {
             CssRule cssRule,
             FeatureTypeStyleBuilder fts,
             FeatureType targetFeatureType,
-            SimplifyingFilterVisitor visitor) {
+            SimplifyingFilterVisitor visitor,
+            ZoomContext zoomContext) {
         // check we have a valid scale range
-        Range<Double> scaleRange = ScaleRangeExtractor.getScaleRange(cssRule);
+        Range<Double> scaleRange = ScaleRangeExtractor.getScaleRange(cssRule, zoomContext);
         if (scaleRange != null && scaleRange.isEmpty()) {
             return;
         }

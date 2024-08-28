@@ -38,6 +38,7 @@ import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.SelectorVisitor;
 import org.geotools.styling.css.selector.TypeName;
+import org.geotools.styling.css.selector.ZoomRange;
 
 /**
  * Turns a Selector into an OGC filter
@@ -124,6 +125,12 @@ public class OgcFilterBuilder implements SelectorVisitor {
 
     @Override
     public Object visit(ScaleRange scaleRange) {
+        // ignore, it has been handled elsewhere
+        return Filter.INCLUDE;
+    }
+
+    @Override
+    public Object visit(ZoomRange zoomRange) {
         // ignore, it has been handled elsewhere
         return Filter.INCLUDE;
     }

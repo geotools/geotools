@@ -30,6 +30,7 @@ import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.SelectorVisitor;
 import org.geotools.styling.css.selector.TypeName;
+import org.geotools.styling.css.selector.ZoomRange;
 
 /**
  * Extracts a subset of a Selector that is compatible with the given TypeName. In case the default
@@ -121,6 +122,11 @@ public class TypeNameSimplifier implements SelectorVisitor {
     @Override
     public Object visit(ScaleRange scaleRange) {
         return scaleRange;
+    }
+
+    @Override
+    public Object visit(ZoomRange zoomRange) {
+        return zoomRange;
     }
 
     @Override

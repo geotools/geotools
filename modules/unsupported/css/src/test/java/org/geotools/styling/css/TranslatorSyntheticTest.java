@@ -1538,6 +1538,29 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void testZoomLevelNotIncluded() throws Exception {
+        assertScaleMinMax("[@z < 10] {stroke: black}", 772130, null);
+        assertScaleMinMax("[@z > 10] {stroke: black}", null, 386065);
+    }
+
+    @Test
+    public void testZoomLevelIncluded() throws Exception {
+        assertScaleMinMax("[@z <= 10] {stroke: black}", 386065, null);
+        assertScaleMinMax("[@z >= 10] {stroke: black}", null, 772130);
+    }
+
+    @Test
+    public void testZoomLevelEquals() throws Exception {
+        assertScaleMinMax("[@z = 10] {stroke: black}", 386065, 772130);
+    }
+
+    @Test
+    public void testZoomLevelEqualsWorldCRS84Quad() throws Exception {
+        assertScaleMinMax(
+                "@tileMatrixSet 'WorldCRS84Quad'; [@z = 10] {stroke: black}", 193032, 386065);
+    }
+
+    @Test
     public void testCQLErrorSelector() throws Exception {
         String css = "[thisFunctionDoesNotExists() > 10] {\nstroke: blue\n}";
         try {
@@ -1735,18 +1758,27 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertExpression("Concatenate(a * 10, 'm')", stroke.getWidth());
     }
 
+    private void assertScaleMinMax(String css, Integer min, Integer max) {
+        assertScaleMinMax(css, toDouble(min), toDouble(max));
+    }
+
+    private Double toDouble(Integer value) {
+        if (value == null) return null;
+        return value.doubleValue();
+    }
+
     private void assertScaleMinMax(String css, Double min, Double max) {
         Style style = translate(css);
         Rule rule = assertSingleRule(style);
         if (min == null) {
-            assertEquals(0, rule.getMinScaleDenominator(), 0d);
+            assertEquals(0, rule.getMinScaleDenominator(), 1d);
         } else {
-            assertEquals(min, rule.getMinScaleDenominator(), 0d);
+            assertEquals(min, rule.getMinScaleDenominator(), 1d);
         }
         if (max == null) {
-            assertEquals(Double.POSITIVE_INFINITY, rule.getMaxScaleDenominator(), 0d);
+            assertEquals(Double.POSITIVE_INFINITY, rule.getMaxScaleDenominator(), 1d);
         } else {
-            assertEquals(max, rule.getMaxScaleDenominator(), 0d);
+            assertEquals(max, rule.getMaxScaleDenominator(), 1d);
         }
     }
 

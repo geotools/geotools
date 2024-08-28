@@ -39,6 +39,7 @@ import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.OgcFilterBuilder;
 import org.geotools.styling.css.util.ScaleRangeExtractor;
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
+import org.geotools.styling.zoom.ZoomContext;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
@@ -219,12 +220,17 @@ class DomainCoverage {
      */
     int complexityThreshold = 0;
 
+    private final ZoomContext zoomContext;
+
     /** Create a new domain coverage for the given feature type */
     public DomainCoverage(
-            FeatureType targetFeatureType, UnboundSimplifyingFilterVisitor simplifier) {
+            FeatureType targetFeatureType,
+            UnboundSimplifyingFilterVisitor simplifier,
+            ZoomContext zoomContext) {
         this.elements = new ArrayList<>();
         this.targetFeatureType = targetFeatureType;
         this.simplifier = simplifier;
+        this.zoomContext = zoomContext;
     }
 
     /**
@@ -384,7 +390,7 @@ class DomainCoverage {
             Selector selector,
             FeatureType targetFeatureType,
             List<SLDSelector> scaleDependentFilters) {
-        Range<Double> range = ScaleRangeExtractor.getScaleRange(selector);
+        Range<Double> range = ScaleRangeExtractor.getScaleRange(selector, zoomContext);
         if (range == null) {
             range = FULL_SCALE_RANGE;
         }

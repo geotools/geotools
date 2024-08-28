@@ -39,6 +39,7 @@ import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
+import org.geotools.styling.css.selector.ZoomRange;
 import org.geotools.util.SuppressFBWarnings;
 import org.parboiled.Action;
 import org.parboiled.BaseParser;
@@ -217,6 +218,11 @@ public class CssParser extends BaseParser<Object> {
                 CatchAllSelector(),
                 MinScaleSelector(),
                 MaxScaleSelector(),
+                ZoomGreaterEqualSelector(),
+                ZoomGreaterSelector(),
+                ZoomEqualSelector(),
+                ZoomLessEqualSelector(),
+                ZoomLessSelector(),
                 IdSelector(),
                 PseudoClassSelector(),
                 NumberedPseudoClassSelector(),
@@ -321,6 +327,81 @@ public class CssParser extends BaseParser<Object> {
                                 true,
                                 Double.POSITIVE_INFINITY,
                                 true)), //
+                OptionalWhiteSpace(),
+                "]");
+    }
+
+    Rule ZoomLessSelector() {
+        return Sequence(
+                "[",
+                OptionalWhiteSpace(),
+                "@z",
+                OptionalWhiteSpace(),
+                "<",
+                OptionalWhiteSpace(),
+                IntegralNumber(),
+                push(new ZoomRange(0, true, Integer.valueOf(match()), false)), //
+                OptionalWhiteSpace(),
+                "]");
+    }
+
+    Rule ZoomLessEqualSelector() {
+        return Sequence(
+                "[",
+                OptionalWhiteSpace(),
+                "@z",
+                OptionalWhiteSpace(),
+                "<=",
+                OptionalWhiteSpace(),
+                IntegralNumber(),
+                push(new ZoomRange(0, true, Integer.valueOf(match()), true)), //
+                OptionalWhiteSpace(),
+                "]");
+    }
+
+    Rule ZoomEqualSelector() {
+        return Sequence(
+                "[",
+                OptionalWhiteSpace(),
+                "@z",
+                OptionalWhiteSpace(),
+                "=",
+                OptionalWhiteSpace(),
+                IntegralNumber(),
+                push(
+                        new ZoomRange(
+                                Integer.valueOf(match()),
+                                true,
+                                Integer.valueOf(match()),
+                                true)), //
+                OptionalWhiteSpace(),
+                "]");
+    }
+
+    Rule ZoomGreaterSelector() {
+        return Sequence(
+                "[",
+                OptionalWhiteSpace(),
+                "@z",
+                OptionalWhiteSpace(),
+                ">",
+                OptionalWhiteSpace(),
+                IntegralNumber(),
+                push(new ZoomRange(Integer.valueOf(match()), false, Integer.MAX_VALUE, true)),
+                OptionalWhiteSpace(),
+                "]");
+    }
+
+    Rule ZoomGreaterEqualSelector() {
+        return Sequence(
+                "[",
+                OptionalWhiteSpace(),
+                "@z",
+                OptionalWhiteSpace(),
+                ">=",
+                OptionalWhiteSpace(),
+                IntegralNumber(),
+                push(new ZoomRange(Integer.valueOf(match()), true, Integer.MAX_VALUE, true)),
                 OptionalWhiteSpace(),
                 "]");
     }

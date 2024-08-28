@@ -28,6 +28,7 @@ import org.geotools.styling.css.selector.Reject;
 import org.geotools.styling.css.selector.ScaleRange;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.selector.TypeName;
+import org.geotools.styling.css.selector.ZoomRange;
 
 /**
  * Grabs the type names mentioned in the selectors given to it
@@ -70,6 +71,12 @@ public class TypeNameExtractor extends AbstractSelectorVisitor {
 
     @Override
     public Object visit(ScaleRange scaleRange) {
+        getTypeNames().add(TypeName.DEFAULT);
+        return null;
+    }
+
+    @Override
+    public Object visit(ZoomRange scaleRange) {
         getTypeNames().add(TypeName.DEFAULT);
         return null;
     }

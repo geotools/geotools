@@ -26,13 +26,12 @@ for groupId in cgiutilities-1.0 geosciml-2.0; do
 done
 ```
 
-## Clear local repository
+## Troubleshooting: clear local repository
 
 If you have trouble building a single child module with Maven
-failing to honour local dependencies that were downloaded from
-the OSGeo repo, Google for "_maven.repositories", curse Maven
-behaviour, and delete every _maven.repositories file in
-`~/.m2/repository/org/geotools/schemas` with, for example:
+not failing to honour local dependencies that were downloaded from
+the OSGeo repo, clear local repository
+`~/.m2/repository/org/geotools/schemas` folder:
 
 ```
     find ~/.m2/repository/org/geotools/schemas \

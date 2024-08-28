@@ -7,7 +7,7 @@ part of the standard build. Modules below have no parent, by design.
 Once artifacts are built with ``mvn clean install``, selected
 artifacts can be deployed to the osgeo GeoTools maven repository.
 See the [How to add a 3rd party jar
-](http://docs.geotools.org/latest/developer/procedures/add.html) in
+](https://docs.geotools.org/latest/developer/procedures/add.html) in
 the developer manual.
 
 Please be sure to deploy with the provided ``pom.xml``, so that
@@ -19,18 +19,19 @@ under Linux, use something like:
 ```
 for groupId in cgiutilities-1.0 geosciml-2.0; do
     mvn deploy:deploy-file \
-        -DrepositoryId=osgeo \
-        -Durl=dav:http://download.osgeo.org/webdav/geotools/ \
+        -DrepositoryId=nexus \
+        -Durl=https://repo.osgeo.org/repository/geotools-releases/ \
         -DpomFile=$groupId/pom.xml \
         -Dfile=`find $groupId -name "*.jar"`
 done
 ```
 
-If you have trouble building a single child module with Maven 3
-failing to honour local dependencies that were downloaded from
-the osgeo repo, Google for "_maven.repositories", curse the new
-Maven 3 behaviour, and delete every _maven.repositories file in
-`~/.m2/repository/org/geotools/schemas` with, for example:
+## Troubleshooting: clear local repository
+
+If you have trouble building a single child module with Maven
+not failing to honour local dependencies that were downloaded from
+the OSGeo repo, clear local repository
+`~/.m2/repository/org/geotools/schemas` folder:
 
 ```
     find ~/.m2/repository/org/geotools/schemas \

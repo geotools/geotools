@@ -5,7 +5,8 @@ This short document answers the question "So, how do I let everyone have a copy 
 
 Reference:
 
-* http://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
+* https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
+* https://wiki.osgeo.org/wiki/SAC:Repo
 
 Before You Start
 ^^^^^^^^^^^^^^^^
@@ -14,12 +15,13 @@ Please check the jar you are looking for may already be in a repository out ther
 
 Review a couple of the repository search websites:
 
-* http://mvnrepository.com/ and search 
-* http://maven.ozacc.com/
+* https://mvnrepository.com
+* https://search.maven.org
+* https://central.sonatype.com
 
 1. If you get a hit - confirm it is the jar you want: 
     
-    Example: http://mvnrepository.com/artifact/net.java.dev.swing-layout/swing-layout
+    Example: https://mvnrepository.com/artifact/net.java.dev.swing-layout/swing-layout
   
 2. Navigate to the correct version and cut and paste the dependency information from the
    website into your modules pom.xml::
@@ -56,8 +58,8 @@ If you are not familiar with the way to declare a dependency in a Maven ``pom.xm
 
 References:
 
-* http://maven.apache.org/guides/getting-started/index.html
-* http://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
+* https://maven.apache.org/guides/getting-started/index.html
+* https://maven.apache.org/guides/mini/guide-3rd-party-jars-local.html
 
 Our build process does not include jar files inside the source code repository, instead Maven downloads jar files it needs from remote repositories (web sites). The location of these web sites is specified in the parent ``pom.xml`` file, which is inherited by all modules.
 
@@ -138,7 +140,7 @@ Deploying to Open Source Geospatial Foundation Nexus Repository:
        <servers>
          <server>
            <id>osgeo</id>
-           <username>your osgeo id</username>
+           <username>your osgeo user id</username>
            <password>your osgeo password</password>
          </server>
        </servers>
@@ -152,14 +154,14 @@ Deploying to Open Source Geospatial Foundation Nexus Repository:
                             -Dfile=<path-to-file>        \
                             -Dpackaging=jar              \
                             -DrepositoryId=osgeo         \
-                            -Durl=dav:http://download.osgeo.org/upload/geotools/
+                            -Durl=https://repo.osgeo.org/repository/geotools-releases/
 
 4. Or if you have a pom file::
      
      mvn deploy:deploy-file -DpomFile=<path-to-pom>      \
                             -Dfile=<path-to-file>        \
                             -DrepositoryId=osgeo         \
-                            -Durl=dav:http://download.osgeo.org/upload/geotools/
+                            -Durl=https://repo.osgeo.org/repository/geotools-releases/
 
 5. Elements in bracket (<foo>) need to be replaced by their actual values.
 
@@ -169,15 +171,15 @@ Examples of deploy-file to upload JTS JAR
 1. Change into one of the GeoTools directories (the geotools ``pom.xml`` has all the
    repository definitions so changing directories is easier than editing your settings.xml)::
      
-     C:\> cd java\geotools\trunk
+     C:\> cd java\geotools
 
 2. Here is an example of how to deploy the JTS binary jar::
      
-      C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts-core -Dversion=1.13 -Dfile=C:\java\jts\lib\jts-1.13.jar -Dpackaging=jar -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/upload/geotools/
+      C:\java\geotools>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts-core -Dversion=1.13 -Dfile=C:\java\jts\lib\jts-1.13.jar -Dpackaging=jar -DrepositoryId=osgeo -Durl=https://repo.osgeo.org/repository/geotools-releases/
 
 3. And the source code (you will need to zip this up first since JTS does not provide a source download)::
     
-    C:\java\geotools\trunk>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts -Dversion=1.13 -Dfile=C:\java\jts\jts-1.13-src.zip -Dpackaging=java-source -DrepositoryId=osgeo -Durl=dav:http://download.osgeo.org/webdav/geotools/ -DgeneratePom=false
+    C:\java\geotools>mvn deploy:deploy-file -DgroupId=org.locationtech -DartifactId=jts -Dversion=1.13 -Dfile=C:\java\jts\jts-1.13-src.zip -Dpackaging=java-source -DrepositoryId=osgeo -Durl=https://repo.osgeo.org/repository/geotools-releases/ -DgeneratePom=false
 
 Alternative uploading to Nexus Repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

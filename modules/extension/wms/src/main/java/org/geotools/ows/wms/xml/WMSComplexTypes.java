@@ -4822,7 +4822,8 @@ public class WMSComplexTypes {
                     continue;
                 }
                 if (sameName(elems[1], value[i])) {
-                    String legendURL = value[i].getValue() == null ? null : value[i].getValue().toString();
+                    String legendURL =
+                            value[i].getValue() == null ? null : value[i].getValue().toString();
                     return legendURL;
                 }
             }

@@ -134,7 +134,9 @@ public class WMSComplexTypesTest {
         Attribution attribution = topLayer.getAttribution();
         Assert.assertNotNull(attribution);
         LogoURL logoURL = attribution.getLogoURL();
-        Assert.assertEquals(logoURL.getOnlineResource().toString(), "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
+        Assert.assertEquals(
+                logoURL.getOnlineResource().toString(),
+                "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         Assert.assertNull(logoURL.getFormat());
         Assert.assertEquals(logoURL.getHeight(), 100);
         Assert.assertEquals(logoURL.getHeight(), 100);

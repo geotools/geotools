@@ -35,7 +35,7 @@ public class PolygonLabelFunction implements Function {
                     "labelPoint",
                     Point.class,
                     FunctionNameImpl.parameter("polygon", Geometry.class),
-                    FunctionNameImpl.parameter("tolerance", double.class));
+                    FunctionNameImpl.parameter("tolerance", Double.class));
 
     private final List<Expression> parameters;
 
@@ -45,9 +45,9 @@ public class PolygonLabelFunction implements Function {
         if (parameters == null) {
             throw new NullPointerException("parameters required");
         }
-        if (parameters.size() != 2) {
+        if (parameters.isEmpty() || parameters.size() > 2) {
             throw new IllegalArgumentException(
-                    "labelPoint((multi)polygon, tolerance) requires two parameters only");
+                    "labelPoint((multi)polygon, tolerance) requires one or two parameters (tolerance is optional)");
         }
         this.parameters = parameters;
         this.fallback = fallback;
@@ -63,8 +63,10 @@ public class PolygonLabelFunction implements Function {
         Expression geometryExpression = parameters.get(0);
         Geometry polygon = geometryExpression.evaluate(object, Geometry.class);
 
-        Expression toleranceExpression = parameters.get(1);
-        double tolerance = toleranceExpression.evaluate(object, double.class);
+        Double tolerance = null;
+        if (parameters.size() == 2) {
+            tolerance = parameters.get(1).evaluate(object, Double.class);
+        }
 
         Geometry point = PolyLabeller.getPolylabel(polygon, tolerance);
 

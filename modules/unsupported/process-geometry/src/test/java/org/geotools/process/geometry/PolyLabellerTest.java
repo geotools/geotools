@@ -36,9 +36,26 @@ public class PolyLabellerTest {
         GeometryBuilder gb = new GeometryBuilder();
 
         Polygon p = (Polygon) reader.read("Polygon(( 0 0, 10 0, 10 10, 0 10, 0 0))");
-        Point point = (Point) PolyLabeller.getPolylabel(p, 1);
+        Point point = (Point) PolyLabeller.getPolylabel(p, 1d);
 
         Point expected = gb.point(5, 5);
+        Assert.assertEquals(expected, point);
+    }
+
+    /**
+     * This one has infinite potential maximum inscribed circles
+     *
+     * @throws ParseException
+     */
+    @Test
+    public void testRectangle() throws ParseException {
+        WKTReader reader = new WKTReader();
+        GeometryBuilder gb = new GeometryBuilder();
+
+        Polygon p = (Polygon) reader.read("Polygon(( 0 0, 20 0, 20 10, 0 10, 0 0))");
+        Point point = (Point) PolyLabeller.getPolylabel(p, 1d);
+
+        Point expected = gb.point(10, 5);
         Assert.assertEquals(expected, point);
     }
 
@@ -52,7 +69,7 @@ public class PolyLabellerTest {
                 (Polygon)
                         reader.read(
                                 "POLYGON((0 5, 5 10, 10 6, 15 10, 20 5, 15 0, 10 4, 5 0, 0 5))");
-        Point point = (Point) PolyLabeller.getPolylabel(p, 1);
+        Point point = (Point) PolyLabeller.getPolylabel(p, 1d);
 
         Point expected1 = gb.point(5, 5);
 
@@ -73,7 +90,7 @@ public class PolyLabellerTest {
                 (Polygon)
                         reader.read(
                                 "Polygon ((0 5, 5 10, 10 6, 15 10, 20 5, 15 0, 10 4, 5 0, 0 5),(5.4267578125 6.68164062499999822, 3.7451171875 5.30761718749999822, 5.365234375 3.21582031249999822, 8.3388671875 5.08203124999999822, 5.4267578125 6.68164062499999822))");
-        Point point = (Point) PolyLabeller.getPolylabel(p, 1);
+        Point point = (Point) PolyLabeller.getPolylabel(p, 1d);
 
         Point expected = gb.point(15, 5);
         Assert.assertEquals(expected, point);
@@ -89,7 +106,7 @@ public class PolyLabellerTest {
                 (MultiPolygon)
                         reader.read(
                                 "MultiPolygon (((0 5, 5 10, 10 5, 5 0, 0 5)),((11.74609375 1.6357421875, 11.7255859375 3.24609375, 13.9306640625 3.3076171875, 13.951171875 1.73828125, 11.74609375 1.6357421875)))");
-        Point point = (Point) PolyLabeller.getPolylabel(p, 1);
+        Point point = (Point) PolyLabeller.getPolylabel(p, 1d);
 
         Point expected = gb.point(5, 5);
         Assert.assertEquals(expected, point);
@@ -97,18 +114,17 @@ public class PolyLabellerTest {
 
     @Test
     public void testBadInput() {
-
         GeometryBuilder gb = new GeometryBuilder();
         Polygon p = gb.polygon();
 
-        Geometry res = PolyLabeller.getPolylabel(p, 1);
+        Geometry res = PolyLabeller.getPolylabel(p, 1d);
         Assert.assertNull("failed to process empty polygon", res);
 
         p = gb.polygon(0, 0, 0, 0, 0, 0, 0, 0);
-        res = PolyLabeller.getPolylabel(p, 1);
+        res = PolyLabeller.getPolylabel(p, 1d);
         Assert.assertNull("processed invalid polygon", res);
 
-        res = PolyLabeller.getPolylabel(null, 1);
+        res = PolyLabeller.getPolylabel(null, 1d);
         Assert.assertNull("failed to handle null input", res);
     }
 }

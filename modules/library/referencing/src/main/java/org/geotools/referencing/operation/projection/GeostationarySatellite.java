@@ -88,8 +88,9 @@ public abstract class GeostationarySatellite extends MapProjection {
     }
 
     /**
-     * Transform a satellite view angle to coordinates in the Geostationary projection.
-     * Based on https://github.com/OSGeo/proj.4/blob/5.2/src/PJ_geos.c
+     * Transform a satellite view angle to coordinates in the Geostationary projection. Based on
+     * https://github.com/OSGeo/proj.4/blob/5.2/src/PJ_geos.c
+     *
      * @param Vx X component of the satellite view vector.
      * @param Vy Y component of the satellite view vector.
      * @param Vz Z component of the satellite view vector.
@@ -100,12 +101,20 @@ public abstract class GeostationarySatellite extends MapProjection {
         double tmp = radius_g - Vx;
         if (flip_axis) {
             xy.setLocation(
+<<<<<<< HEAD
                 radius_g_1 * Math.atan(Vy / Math.hypot(Vz, tmp)),
                 radius_g_1 * Math.atan(Vz / tmp));
         } else {
             xy.setLocation(
                 radius_g_1 * Math.atan(Vy / tmp),
                 radius_g_1 * Math.atan(Vz / Math.hypot(Vy, tmp)));
+=======
+                    radius_g_1 * Math.atan(Vy / Math.hypot(Vz, tmp)),
+                    radius_g_1 * Math.atan(Vz / tmp));
+        } else {
+            xy.setLocation(
+                    radius_g_1 * Math.atan(Vy / tmp),
+                    radius_g_1 * Math.atan(Vz / Math.hypot(Vy, tmp)));
         }
         return xy;
     }
@@ -147,12 +156,12 @@ public abstract class GeostationarySatellite extends MapProjection {
         return values;
     }
 
-
     @Override
     public boolean equals(final Object object) {
         if (super.equals(object)) {
             GeostationarySatellite that = (GeostationarySatellite) object;
-            // Other parameters are derived from these two, plus others already checked in super.equals().
+            // Other parameters are derived from these two, plus others already checked in
+            // super.equals().
             return h == that.h && flip_axis == that.flip_axis;
         }
         return false;
@@ -272,7 +281,6 @@ public abstract class GeostationarySatellite extends MapProjection {
             if (((radius_g - Vx) * Vx - Vy * Vy - Vz * Vz * radius_p_inv2) < 0.) {
                 throw new ProjectionException();
             }
-            
             return transformViewVectorToCoordinates(Vx, Vy, Vz, p2d);
         }
 
@@ -399,14 +407,14 @@ public abstract class GeostationarySatellite extends MapProjection {
                         SI.METRE);
 
         static final ParameterDescriptor<Double> SWEEP =
-            createDescriptor(
-                new NamedIdentifier[] {
-                    new NamedIdentifier(Citations.OGC, "sweep"),
-                },
-                1, // default
-                0, // minimum
-                1, // maximum
-                null);
+                createDescriptor(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.OGC, "sweep"),
+                        },
+                        1, // default
+                        0, // minimum
+                        1, // maximum
+                        null);
 
         static final ParameterDescriptorGroup PARAMETERS =
                 createDescriptorGroup(

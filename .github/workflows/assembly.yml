@@ -27,7 +27,7 @@ jobs:
         restore-keys: |
           gt-maven-
     - name: Setup python for docs
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
         cache: 'pip' # caching pip dependencies from requirements.txt below

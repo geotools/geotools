@@ -13,14 +13,14 @@ jobs:
   build:
     runs-on: [ubuntu-20.04]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set up JDK 21
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
         java-version: 21
     - name: Setup python for docs
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
         cache: 'pip' # caching pip dependencies from requirements.txt below
@@ -29,7 +29,7 @@ jobs:
       run: |
         pip install -r requirements.txt
     - name: Maven repository caching
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: gt-maven-${{ hashFiles('**/pom.xml') }}

@@ -95,6 +95,17 @@ When creating the first release candidate of a series, there are some extra step
     git checkout main
     ant -f build/build.xml latest -Drelease=28-SNAPSHOT
 
+* Add a new section to the Dependabot configuration file, `.github/dependabot.yml`, of the main branch to ensure that the new stable branch (eg. ``27-SNAPSHOT``) is monitored for updates::
+
+      - package-ecosystem: 'github-actions'
+        directory: '/'
+        schedule:
+          interval: 'monthly'
+        target-branch: '27.x'
+        open-pull-requests-limit: 10
+
+  There is no need to edit the file in other branches, as the configuration is inherited from the main branch.
+
 * Commit the changes and push to the main branch on GitHub::
 
     git commit -am "Update version to 28-SNAPSHOT"

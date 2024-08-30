@@ -33,7 +33,7 @@ jobs:
       run: |
         pip install -r requirements.txt
     - name: Maven repository caching
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository
         key: gt-maven-${{ hashFiles('**/pom.xml') }}

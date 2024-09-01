@@ -53,6 +53,7 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -313,13 +314,23 @@ public class ShapefileTest extends TestCaseSupport {
                 cnt++;
             }
         }
-        assertEquals("Did not read all Geometries from sparse file.", 1, cnt);
+        assertEquals("Did not read all Geometries from shapefile with missing datafile.", 1, cnt);
 
         FileDataStore ds = FileDataStoreFinder.getDataStore(file);
-        assert ds.getFeatureSource().getSchema() != null;
+        assertNotNull("Null schema", ds.getFeatureSource().getSchema());
         File missingFile = TestData.file(TestCaseSupport.class, "missing/aaa2.shp");
         FileDataStore ds2 = FileDataStoreFinder.getDataStore(missingFile);
-        assert ds2.getFeatureSource().getSchema() != null;
+        assertNotNull("null datastore", ds2);
+        assertNotNull("null schema", ds2.getFeatureSource().getSchema());
+        String name = ds2.getTypeNames()[0];
+        assertEquals("bad name", "aaa2", name);
+
+        try (SimpleFeatureIterator itr = ds2.getFeatureSource().getFeatures().features()) {
+            while (itr.hasNext()) {
+                SimpleFeature f = itr.next();
+                assertNotNull(f);
+            }
+        }
     }
 
     @Test

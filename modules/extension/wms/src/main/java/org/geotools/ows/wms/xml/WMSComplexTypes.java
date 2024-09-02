@@ -4817,13 +4817,15 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
-            for (int i = 0; i < value.length; i++) {
-                if (value[i].getValue() == null || value[i].getElement() == null) {
+            for (ElementValue elementValue : value) {
+                if (elementValue.getValue() == null || elementValue.getElement() == null) {
                     continue;
                 }
-                if (sameName(elems[1], value[i])) {
+                if (sameName(elems[1], elementValue)) {
                     String legendURL =
-                            value[i].getValue() == null ? null : value[i].getValue().toString();
+                            elementValue.getValue() == null
+                                    ? null
+                                    : elementValue.getValue().toString();
                     return legendURL;
                 }
             }

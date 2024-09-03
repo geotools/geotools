@@ -93,17 +93,21 @@
       <artifactId>gt-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!--
-      The following is required only for compilation.  It should not be included
-      in distribution, unless the user really want to use Apache commons logging
-      (in which case he should put this dependency explicitly on the classpath).
-    -->
+    <dependency>
+      <groupId>javax.measure</groupId>
+      <artifactId>unit-api</artifactId>
+    </dependency>
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
+      <!--
+        The following is required only for compilation.  It should not be included
+        in distribution, unless the user really want to use Apache commons logging
+        (in which case he should put this dependency explicitly on the classpath).
+      -->
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <!-- The version number is specified in the parent POM. -->

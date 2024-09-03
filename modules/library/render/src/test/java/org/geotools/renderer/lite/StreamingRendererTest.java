@@ -58,6 +58,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
+import org.geotools.api.data.DataStore;
+import org.geotools.api.data.DataStoreFinder;
 import org.geotools.api.data.Query;
 import org.geotools.api.data.SimpleFeatureSource;
 import org.geotools.api.feature.simple.SimpleFeature;
@@ -94,6 +96,7 @@ import org.geotools.geometry.GeneralBounds;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
@@ -1101,5 +1104,63 @@ public class StreamingRendererTest {
         renderLayer(gRender, mapContent);
         // checking that no features were rendered, the max/min scale denominator set on FeatureTypeStyle
         assertEquals(4, features);
+    }
+
+    @Test
+    public void testGetMapRenderingPlateCarreeWrapping() throws IOException, URISyntaxException, FactoryException {
+        Style style = RendererBaseTest.loadStyle(this, "genericLines.sld");
+        File vectorDataFile =
+                new File(TestData.getResource(this, "dateline.shp").toURI());
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("url", vectorDataFile.toURI().toURL());
+        DataStore dataStore = null;
+        Graphics2D graphics = null;
+        MapContent mapContent = null;
+        try {
+            dataStore = DataStoreFinder.getDataStore(params);
+
+            SimpleFeatureSource fs = dataStore.getFeatureSource("dateline");
+            Layer layer = new FeatureLayer(fs, style);
+
+            // prepare map content and instantiate a streaming reader
+            mapContent = new MapContent();
+            mapContent.addLayer(layer);
+
+            // Renderer
+            StreamingRenderer renderer = new StreamingRenderer();
+            renderer.setMapContent(mapContent);
+            Map<Object, Object> rendererParams = new HashMap<>();
+            rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+            rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+            renderer.setRendererHints(rendererParams);
+
+            // Map extent
+            CoordinateReferenceSystem crs = CRS.decode("EPSG:32662", true);
+            ReferencedEnvelope mapExtent = new ReferencedEnvelope(
+                    -2.0435241595597245E7, 2.0435241595597245E7, -3210414.747827184, 1.0101091227930816E7, crs);
+
+            // Screen size
+            final int w = 768;
+            final int h = 256;
+            Rectangle screenSize = new Rectangle(0, 0, w, h);
+
+            // World to screen transform
+            AffineTransform worldToScreen = new AffineTransform(
+                    1.9231482934102992E-5, 0.0, 0.0, -1.9231482934102996E-5, 393.0, 194.25896356576897);
+            BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+            graphics = image.createGraphics();
+            renderer.paint(graphics, screenSize, mapExtent, worldToScreen);
+            // Check that the dateline request with map wrapping and advanced projection handling
+            // returns a raster with 2 lines at the edges and nothing in the middle
+            File reference =
+                    new File("./src/test/resources/org/geotools/renderer/lite/test-data/platecarreewrapping.png");
+            ImageAssert.assertEquals(reference, image, 20);
+
+        } finally {
+            if (graphics != null) graphics.dispose();
+            if (mapContent != null) mapContent.dispose();
+            if (dataStore != null) dataStore.dispose();
+        }
     }
 }

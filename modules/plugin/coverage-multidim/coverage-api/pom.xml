@@ -54,6 +54,10 @@
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
+      <groupId>javax.measure</groupId>
+      <artifactId>unit-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-imagemosaic</artifactId>
       <version>${project.version}</version>

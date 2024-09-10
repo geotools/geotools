@@ -16,6 +16,8 @@
  */
 package org.geotools.data.hana;
 
+import java.util.Objects;
+
 /**
  * HANA version.
  *
@@ -23,7 +25,7 @@ package org.geotools.data.hana;
  *
  * @author Stefan Uhrig, SAP SE
  */
-class HanaVersion {
+class HanaVersion implements Comparable<HanaVersion> {
 
     /**
      * Constructor.
@@ -44,6 +46,13 @@ class HanaVersion {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid HANA version string " + versionString);
         }
+    }
+
+    public HanaVersion(int version, int revision, int patchLevel, long buildId) {
+        this.version = version;
+        this.revision = revision;
+        this.patchLevel = patchLevel;
+        this.buildId = buildId;
     }
 
     private int version;
@@ -68,5 +77,33 @@ class HanaVersion {
 
     public long getBuildId() {
         return buildId;
+    }
+
+    @Override
+    public int compareTo(HanaVersion that) {
+        if (that == null) throw new NullPointerException();
+
+        if (this.version != that.version) return Integer.compare(this.version, that.version);
+        if (this.revision != that.revision) return Integer.compare(this.revision, that.revision);
+        if (this.patchLevel != that.patchLevel)
+            return Integer.compare(this.patchLevel, that.patchLevel);
+
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HanaVersion that = (HanaVersion) o;
+        return version == that.version
+                && revision == that.revision
+                && patchLevel == that.patchLevel
+                && buildId == that.buildId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(version, revision, patchLevel, buildId);
     }
 }

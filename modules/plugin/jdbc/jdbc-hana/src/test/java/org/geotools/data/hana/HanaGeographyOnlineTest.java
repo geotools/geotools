@@ -79,8 +79,19 @@ public class HanaGeographyOnlineTest extends JDBCGeographyOnlineTest {
     public void testBounds() throws Exception {
         assumeTrue(isGeographySupportAvailable());
 
-        ReferencedEnvelope env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
+        HanaDialect hanaDialect = (HanaDialect) dataStore.getSQLDialect();
         ReferencedEnvelope expected = new ReferencedEnvelope(-110, 0, 29, 49, decodeEPSG(4326));
-        assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
+        try {
+            // Test with estimation disabled
+            ReferencedEnvelope env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
+            assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
+
+            // Test with estimation enabled
+            hanaDialect.setEstimatedExtentsEnabled(true);
+            env = dataStore.getFeatureSource(tname("geopoint")).getBounds();
+            assertTrue(env.boundsEquals2D(expected, Math.ulp(1.0)));
+        } finally {
+            hanaDialect.setEstimatedExtentsEnabled(false);
+        }
     }
 }

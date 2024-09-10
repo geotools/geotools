@@ -18,22 +18,14 @@ package org.geotools.data.hana;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+
 import org.geotools.api.data.Query;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.feature.type.AttributeDescriptor;
@@ -46,6 +38,7 @@ import org.geotools.data.hana.wkb.HanaWKBParser;
 import org.geotools.data.hana.wkb.HanaWKBParserException;
 import org.geotools.data.hana.wkb.HanaWKBWriter;
 import org.geotools.data.hana.wkb.HanaWKBWriterException;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
@@ -109,7 +102,7 @@ public class HanaDialect extends PreparedStatementSQLDialect {
         TYPE_NAME_TO_CLASS.put("ST_POINT", Point.class);
         TYPE_NAME_TO_CLASS.put("ST_GEOMETRY", Geometry.class);
         TYPE_NAME_TO_CLASS.put("BOOLEAN", Boolean.class);
-    };
+    }
 
     private static final Map<Integer, Class<?>> SQL_TYPE_TO_CLASS = new HashMap<>();
 
@@ -154,7 +147,19 @@ public class HanaDialect extends PreparedStatementSQLDialect {
 
     private HanaVersion hanaVersion;
 
+    private HanaCloudVersion cloudVersion;
+
     private SchemaCache currentSchemaCache = new SchemaCache();
+
+    private boolean estimatedExtentsEnabled = false;
+
+    public boolean isEstimatedExtentsEnabled() {
+        return estimatedExtentsEnabled;
+    }
+
+    public void setEstimatedExtentsEnabled(boolean estimatedExtentsEnabled) {
+        this.estimatedExtentsEnabled = estimatedExtentsEnabled;
+    }
 
     public void setFunctionEncodingEnabled(boolean enabled) {
         functionEncodingEnabled = enabled;
@@ -176,6 +181,8 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             if ((hanaVersion.getVersion() == 1) && (hanaVersion.getRevision() < 120)) {
                 throw new SQLException("Only HANA 2 and HANA 1 SPS 12 and later are supported");
             }
+
+            cloudVersion = queryCloudVersion(cx);
         }
     }
 
@@ -392,6 +399,74 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             dataStore.closeSafe(rs);
             dataStore.closeSafe(ps);
         }
+    }
+
+    @Override
+    public List<ReferencedEnvelope> getOptimizedBounds(
+            String schema, SimpleFeatureType featureType, Connection cx)
+            throws SQLException, IOException {
+        if (!isEstimatedExtentsEnabled()) return super.getOptimizedBounds(schema, featureType, cx);
+
+        if (!isExtentEstimationAvailable()) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "Could not use fast extent estimation. This feature is available starting with HANA Cloud QRC1/2024 and HANA 2 SPS 08.");
+            return null;
+        }
+
+        String tableName = featureType.getTypeName();
+        if (dataStore.getVirtualTables().get(tableName) != null) return null;
+
+        List<ReferencedEnvelope> result = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        schema = resolveSchema(schema, cx);
+        try {
+            for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
+                if (att instanceof GeometryDescriptor) {
+                    StringBuffer sql = new StringBuffer();
+                    sql.append(
+                            "SELECT MIN_X, MAX_X, MIN_Y, MAX_Y FROM SYS.M_ST_GEOMETRY_COLUMNS WHERE SCHEMA_NAME=? AND TABLE_NAME=? AND COLUMN_NAME=?");
+
+                    ps = cx.prepareStatement(sql.toString());
+                    ps.setString(1, schema);
+                    ps.setString(2, tableName);
+                    ps.setString(3, att.getName().getLocalPart());
+
+                    rs = ps.executeQuery();
+                    if (rs.next()) {
+                        double xMin = rs.getDouble(1);
+                        double xMax = rs.getDouble(2);
+                        double yMin = rs.getDouble(3);
+                        double yMax = rs.getDouble(4);
+
+                        // Check if row for column is available and data is present
+                        if (rs.wasNull()) return null;
+
+                        result.add(
+                                new ReferencedEnvelope(
+                                        xMin,
+                                        xMax,
+                                        yMin,
+                                        yMax,
+                                        CRS.getHorizontalCRS(
+                                                featureType.getCoordinateReferenceSystem())));
+                    }
+
+                    rs.close();
+                    ps.close();
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "Fast Extent Estimation failed!", e);
+            return null;
+        } finally {
+            dataStore.closeSafe(rs);
+            dataStore.closeSafe(ps);
+        }
+
+        if (result.isEmpty()) return null;
+        return result;
     }
 
     @Override
@@ -972,6 +1047,36 @@ public class HanaDialect extends PreparedStatementSQLDialect {
             }
             sb.append(HanaUtil.encodeIdentifier(id));
         }
+    }
+
+    private HanaCloudVersion queryCloudVersion(Connection cx) throws SQLException {
+        if (hanaVersion.getVersion() < 4) return HanaCloudVersion.INVALID_VERSION;
+
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            st = cx.createStatement();
+            rs = st.executeQuery("SELECT CLOUD_VERSION FROM SYS.M_DATABASE");
+
+            if (!rs.next()) throw new RuntimeException("Unable to determine HANA Cloud Version.");
+
+            String cloudVersion = rs.getString(1);
+            return new HanaCloudVersion(cloudVersion);
+        } finally {
+            dataStore.closeSafe(rs);
+            dataStore.closeSafe(st);
+        }
+    }
+
+    private boolean isExtentEstimationAvailable() {
+        switch (hanaVersion.getVersion()) {
+            case 2:
+                return hanaVersion.compareTo(new HanaVersion(2, 0, 80, 0)) >= 0;
+            case 4:
+                return cloudVersion.compareTo(new HanaCloudVersion(2024, 2, 0)) >= 0;
+        }
+
+        return false;
     }
 
     private class SchemaCache {

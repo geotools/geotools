@@ -100,10 +100,10 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
                     null,
                     Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
 
-    /** parameter that enables estimated extends instead of exact ones */
+    /** parameter that enables estimated extents instead of exact ones */
     public static final Param ESTIMATED_EXTENTS =
             new Param(
-                    "Estimated extends",
+                    "Estimated extents",
                     Boolean.class,
                     "Use cached data to quickly get an estimate of the data bounds",
                     false,

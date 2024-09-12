@@ -17,7 +17,6 @@
 package org.geotools.data.wfs;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -57,8 +56,6 @@ import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.gml2.SrsSyntax;
-import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -262,9 +259,8 @@ class WFSFeatureSource extends ContentFeatureSource {
         request.setPropertyNames(query.getPropertyNames());
         request.setSortBy(query.getSortBy());
 
-        String srsName = getSupportedSrsName(request, query);
+        request.findSupportedSrsName(query.getCoordinateSystem());
 
-        request.setSrsName(srsName);
         LOGGER.fine("request = " + request.toString());
         return request;
     }
@@ -337,24 +333,6 @@ class WFSFeatureSource extends ContentFeatureSource {
             }
         }
         return reader;
-    }
-
-    protected String getSupportedSrsName(GetFeatureRequest request, Query query) {
-        String identifier =
-                GML2EncodingUtils.toURI(query.getCoordinateSystem(), SrsSyntax.AUTH_CODE, false);
-        if (identifier == null) return null;
-
-        int idx = identifier.lastIndexOf(':');
-        String authority = identifier.substring(0, idx);
-        String code = identifier.substring(idx + 1);
-        Set<String> supported =
-                request.getStrategy().getSupportedCRSIdentifiers(request.getTypeName());
-        for (String supportedSrs : supported) {
-            if (supportedSrs.contains(authority) && supportedSrs.endsWith(":" + code)) {
-                return supportedSrs;
-            }
-        }
-        return null;
     }
 
     protected FeatureReader<SimpleFeatureType, SimpleFeature> applyReprojectionDecorator(

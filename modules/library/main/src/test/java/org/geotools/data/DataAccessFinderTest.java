@@ -16,6 +16,12 @@
  */
 package org.geotools.data;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.io.Serializable;
@@ -195,6 +201,30 @@ public class DataAccessFinderTest {
 
         Assert.assertTrue(classes.contains(MockDataStoreFactory.class));
         Assert.assertTrue(classes.contains(MockDataAccessFactory.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testDynamicRegistration() throws Exception {
+        // setting up the mocks
+        Map<String, ?> params = Map.of("testKey", "testValue");
+        DataAccessFactory mockFactory = createMock(DataAccessFactory.class);
+        expect(mockFactory.isAvailable()).andReturn(true).anyTimes();
+        expect(mockFactory.canProcess(params)).andReturn(true).anyTimes();
+        DataAccess mockAccess = createMock(DataAccess.class);
+        expect(mockFactory.createDataStore(params)).andReturn(mockAccess).anyTimes();
+        replay(mockFactory);
+
+        // first lookup attempt, not registered
+        assertNull(DataAccessFinder.getDataStore(params));
+
+        // register and second lookup
+        DataAccessFinder.registerFactrory(mockFactory);
+        assertEquals(mockAccess, DataAccessFinder.getDataStore(params));
+
+        // unregister, should stop working
+        DataAccessFinder.deregisterFactrory(mockFactory);
+        assertNull(DataAccessFinder.getDataStore(params));
     }
 
     /**

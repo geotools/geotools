@@ -42,8 +42,6 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSContentComplexFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.gml2.SrsSyntax;
-import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -107,11 +105,8 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         request.setSortBy(query.getSortBy());
 
         if (query.getCoordinateSystem() != null) {
-            String srsName = findSupportedSrs(request, query.getCoordinateSystem());
-
-            if (srsName != null) {
-                request.setSrsName(srsName);
-            } else {
+            request.findSupportedSrsName(query.getCoordinateSystem());
+            if (request.getSrsName() == null) {
                 LOGGER.log(
                         Level.WARNING,
                         "WFS doesn't support the coordinate system: "
@@ -120,27 +115,6 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         }
 
         return new WFSContentComplexFeatureCollection(request, schema, name, client);
-    }
-
-    private String findSupportedSrs(GetFeatureRequest request, CoordinateReferenceSystem crs) {
-        String identifier = GML2EncodingUtils.toURI(crs, SrsSyntax.AUTH_CODE, false);
-        if (identifier != null) {
-            int idx = identifier.lastIndexOf(':');
-            String authority = identifier.substring(0, idx);
-            String code = identifier.substring(idx + 1);
-            Set<String> supported =
-                    request.getStrategy().getSupportedCRSIdentifiers(request.getTypeName());
-            for (String supportedSrs : supported) {
-                if (supportedSrs.contains(authority) && supportedSrs.endsWith(":" + code)) {
-                    LOGGER.log(Level.FINE, "Found supportedSRS: " + supportedSrs);
-                    return supportedSrs;
-                }
-            }
-        } else {
-            LOGGER.log(
-                    Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
-        }
-        return null;
     }
 
     @Override

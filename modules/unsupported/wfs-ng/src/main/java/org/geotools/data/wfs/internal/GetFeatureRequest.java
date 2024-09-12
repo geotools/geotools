@@ -18,15 +18,24 @@ package org.geotools.data.wfs.internal;
 
 import static org.geotools.data.wfs.internal.WFSOperationType.GET_FEATURE;
 
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import org.geotools.api.feature.type.FeatureType;
 import org.geotools.api.filter.Filter;
 import org.geotools.api.filter.sort.SortBy;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.gml2.SrsSyntax;
+import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.http.HTTPClient;
 import org.geotools.util.factory.Hints;
+import org.geotools.util.logging.Logging;
 
 /** */
 public class GetFeatureRequest extends WFSRequest {
+
+    private static Logger LOGGER = Logging.getLogger(GetFeatureRequest.class);
 
     public enum ResultType {
         RESULTS,
@@ -107,6 +116,29 @@ public class GetFeatureRequest extends WFSRequest {
     /** @param propertyNames the propertyNames to set */
     public void setPropertyNames(String[] propertyNames) {
         this.propertyNames = propertyNames;
+    }
+
+    /**
+     * Looks for a srs specified in the configuration that matches the coordinate reference system
+     */
+    public void findSupportedSrsName(CoordinateReferenceSystem crs) {
+        String identifier = GML2EncodingUtils.toURI(crs, SrsSyntax.AUTH_CODE, false);
+        if (identifier != null) {
+            int idx = identifier.lastIndexOf(':');
+            String authority = identifier.substring(0, idx);
+            String code = identifier.substring(idx + 1);
+            Set<String> supported = getStrategy().getSupportedCRSIdentifiers(getTypeName());
+            for (String supportedSrs : supported) {
+                if (supportedSrs.contains(authority) && supportedSrs.endsWith(":" + code)) {
+                    LOGGER.log(Level.FINE, "Found supportedSRS: " + supportedSrs);
+                    srsName = supportedSrs;
+                    break;
+                }
+            }
+        } else {
+            LOGGER.log(
+                    Level.FINE, "GML2EncodingUtils couldn't handle the coordinate system: " + crs);
+        }
     }
 
     /** @param srsName the srsName to set */

@@ -100,6 +100,15 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
                     null,
                     Collections.singletonMap(Parameter.IS_LARGE_TEXT, Boolean.TRUE));
 
+    /** parameter that enables estimated extents instead of exact ones */
+    public static final Param ESTIMATED_EXTENTS =
+            new Param(
+                    "Estimated extents",
+                    Boolean.class,
+                    "Use cached data to quickly get an estimate of the data bounds",
+                    false,
+                    Boolean.FALSE);
+
     private static final String DESCRIPTION = "SAP HANA";
 
     private static final String DRIVER_CLASS_NAME = "com.sap.db.jdbc.Driver";
@@ -155,6 +164,7 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
             if (EXPOSE_PK.key.equals(param.getKey())) {
                 parameters.put(ENCODE_FUNCTIONS.key, ENCODE_FUNCTIONS);
                 parameters.put(DISABLE_SIMPLIFY.key, DISABLE_SIMPLIFY);
+                parameters.put(ESTIMATED_EXTENTS.key, ESTIMATED_EXTENTS);
                 parameters.put(SELECT_HINTS.key, SELECT_HINTS);
             }
         }
@@ -196,6 +206,8 @@ public class HanaDataStoreFactory extends JDBCDataStoreFactory {
         dialect.setSimplifyDisabled((disableSimplify != null) && disableSimplify);
         String selectHints = (String) SELECT_HINTS.lookUp(params);
         dialect.setSelectHints(selectHints);
+        Boolean estimated = (Boolean) ESTIMATED_EXTENTS.lookUp(params);
+        dialect.setEstimatedExtentsEnabled((estimated != null) && estimated);
         return dataStore;
     }
 }

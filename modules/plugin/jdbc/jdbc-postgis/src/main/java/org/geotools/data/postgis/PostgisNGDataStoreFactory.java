@@ -91,13 +91,13 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             new Param(
                     "create database params",
                     String.class,
-                    "Extra specifications appeneded to the CREATE DATABASE command",
+                    "Extra specifications appended to the CREATE DATABASE command",
                     false,
                     "",
                     Param.LEVEL,
                     "advanced");
 
-    /** Wheter a prepared statements based dialect should be used, or not */
+    /** Whether a prepared statements based dialect should be used, or not */
     public static final Param PREPARED_STATEMENTS =
             new Param(
                     "preparedStatements",
@@ -146,10 +146,21 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             new Param(
                     "SSL mode",
                     SslMode.class,
-                    "The connectin SSL mode",
+                    "The connection SSL mode",
                     false,
                     SslMode.DISABLE,
                     new KVP(Param.OPTIONS, Arrays.asList(SslMode.values())));
+
+    public static final Param REWRITE_BATCHED_INSERTS =
+            new Param(
+                    "reWriteBatchedInserts",
+                    Boolean.class,
+                    "This will change batch inserts from INSERT INTO foo (col1, col2, col3) VALUES (1, 2, 3) "
+                            + "to INSERT INTO foo (col1, col2, col3) VALUES (1, 2, 3), (4, 5, 6) . "
+                            + "When setting this parameter to true, you should also set the parameter BATCH_INSERT_SIZE = 1000. "
+                            + "Enabling this parameter and setting BATCH_INSERT_SIZE too low may result in decreased insert performance.",
+                    false,
+                    Boolean.FALSE);
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore, Map<String, ?> params) {
@@ -162,7 +173,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.log(
                         Level.FINE,
-                        "Failed to lookup prepared statement parameter, continuining with non prepared dialect",
+                        "Failed to lookup prepared statement parameter, continuing with non prepared dialect",
                         e);
         }
 
@@ -290,6 +301,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(SIMPLIFICATION_METHOD.key, SIMPLIFICATION_METHOD);
         parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
         parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
+        parameters.put(REWRITE_BATCHED_INSERTS.key, REWRITE_BATCHED_INSERTS);
     }
 
     @Override
@@ -302,10 +314,20 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
-        String url = "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+        boolean reWriteBatchedInserts = Boolean.TRUE.equals(REWRITE_BATCHED_INSERTS.lookUp(params));
+        String url =
+                "jdbc:postgresql"
+                        + "://"
+                        + host
+                        + ":"
+                        + port
+                        + "/"
+                        + db
+                        + "?reWriteBatchedInserts="
+                        + reWriteBatchedInserts;
         SslMode mode = (SslMode) SSL_MODE.lookUp(params);
         if (mode != null) {
-            url = url + "?sslmode=" + mode + "&binaryTransferEnable=bytea";
+            url = url + "&sslmode=" + mode + "&binaryTransferEnable=bytea";
         }
 
         return url;

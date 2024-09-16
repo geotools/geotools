@@ -121,19 +121,7 @@ When creating the first release candidate of a series, there are some extra step
     
     Even if you wish to continue build prior branches please disable the documentation builds.
 
-  * For the new stable branch create new jobs, duplicate from the existing ``stable`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
-    
-  * Special care is needed when setting up java11 build which uses `A`, `B`, `C`, ... groups.
-    
-    For example if the next group in the rotation is group ``A``:
-    
-    * Carefully set Multi-Project Throttle Category to the next available groups
-      
-      ``Build A``
-      
-    * Adjust custom workspace (used as a shared workspace and local maven repo location) to match the throttle category groups
-      
-      :file:`workspace/java11_27`
+  * For the new stable branch create new jobs, duplicate from the two existing ``stable`` jobs (geotools-27.x and geotools-27.x-docs), editing branch specifier to the new branch (e.g. `27.x`)
 
 * Announce on the developer mailing list that the new stable branch has been created.
 

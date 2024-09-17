@@ -139,7 +139,7 @@ When creating the first release candidate of a series, there are some extra step
 
 * This is the time to update the README.md, README.html and documentation links
   
-  For the new `stable` branch, and the remote for the official GeoTools is called ``upstream``::
+  For the new `stable` (old `main`) branch, (and assuming the remote for the official GeoTools is called ``upstream``)::
   
     git checkout 28.x
     git pull
@@ -148,16 +148,25 @@ When creating the first release candidate of a series, there are some extra step
     git commit -m "Change 28.x to stable branch"
     git push upstream 28.x
 
-  For the new `maintenance` branch, and the remote for the official GeoTools is called ``upstream``::
+  For the new `maintenance` (old `stable`) branch::
   
-    git checkout 26.x
+    git checkout 27.x
     git pull
     ant -f build/build.xml maintenance
     git add .
-    git commit -m "Change 26.x to stable branch"
+    git commit -m "Change 27.x to maintenance branch"
+    git push upstream 27.x
+  
+  For the old `maintenance` (now `archive`) branch::
+  
+    git checkout 26.x
+    git pull
+    ant -f build/build.xml archive
+    git add .
+    git commit -m "Change 26.x to archive branch"
     git push upstream 26.x
   
-  This change will update the `pom.xml` series used to determine where documentation from the branch is published.
+  This change will update the `pom.xml` series used to determine where documentation from the branch is published (or **not** published, if we ever have to create an emergency release for archived branches - so that the correct maintenance docs are not overwritten.)
 
 Build the Release
 -----------------

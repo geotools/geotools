@@ -235,6 +235,21 @@ public class ResponsiblePartyImpl extends MetadataEntity implements ResponsibleP
     }
 
     /**
+     * The <A HREF="https://proj.org">PROJ</A> responsible party.
+     *
+     * @see ContactImpl#PROJ
+     */
+    public static ResponsibleParty PROJ;
+
+    static {
+        final ResponsiblePartyImpl r = new ResponsiblePartyImpl(Role.OWNER);
+        r.setOrganisationName(new SimpleInternationalString("PROJ"));
+        r.setContactInfo(ContactImpl.PROJ);
+        r.freeze();
+        PROJ = r;
+    }
+
+    /**
      * The <A HREF="http://www.sun.com/">Sun Microsystems</A> party.
      *
      * @see ContactImpl#SUN_MICROSYSTEMS

@@ -5,7 +5,7 @@
 #
 # (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
 #
-EPSG;OGR;ESRI;Oracle;OGC
+EPSG;OGR;ESRI;Oracle;OGC;PROJ
 #-----------------------------------------------------------------------
 Ayabelle Lighthouse;;D_Ayabelle
 Abidjan 1987;Abidjan_1987;D_Abidjan_1987
@@ -43,7 +43,7 @@ Bermuda 1957;Bermuda_1957;D_Bermuda_1957;Bermuda 1957
 Bermuda 2000;;D_Bermuda_2000
 Bern 1938;Bern_1938;D_Bern_1938
 Bissau;Bissau;D_Bissau
-Bogota 1975;Bogota_1975;D_Bogota;Bogota Observatory;Bogota 1975 (Bogota);Bogota_1975_Bogota
+Bogota 1975;Bogota_1975;D_Bogota;Bogota Observatory;Bogota 1975 (Bogota);;
 Bukit Rimpah;Bukit_Rimpah;D_Bukit_Rimpah
 Cadastre 1997;;D_Cadastre_1997
 Camacupa;Camacupa;D_Camacupa
@@ -94,7 +94,7 @@ European Datum 1950(1977);European_Datum_1950_1977;D_European_1950_ED77
 European Datum 1979;European_Datum_1979;D_European_1979;European 1979
 European Datum 1987;European_Datum_1987;D_European_1987;European 1987
 European Libyan Datum 1979;European_Libyan_Datum_1979;D_European_Libyan_1979
-European Terrestrial Reference System 1989;European_Terrestrial_Reference_System_1989;D_ETRS_1989;ETRS 89
+European Terrestrial Reference System 1989;European_Terrestrial_Reference_System_1989;D_ETRS_1989;ETRS 89;;ETRS89
 Fahud;Fahud;D_Fahud
 Fatu Iva 72;;D_Fatu_Iva_1972
 Faroe Datum 1954;;D_Faroe_Datum_1954
@@ -105,7 +105,7 @@ Fort Marigot;Fort_Marigot;D_Fort_Marigot
 Gan 1970;;D_Gan_1970
 Gandajika 1970;Gandajika_1970;;Gandajika Base
 Garoua;Garoua;D_Garoua
-Geocentric Datum of Australia 1994;Geocentric_Datum_of_Australia_1994;D_GDA_1994;GDA 94
+Geocentric Datum of Australia 1994;Geocentric_Datum_of_Australia_1994;D_GDA_1994;GDA 94;;GDA94
 Geodetic Datum of 1965;Geodetic_Datum_of_1965;D_TM75
 Geocentric datum of Korea;;D_Korea_2000
 Geodetic Datum of Malaysia 2000;;D_GDM_2000
@@ -256,16 +256,16 @@ National Geodetic Network;National_Geodetic_Network;D_NGN
 NEA74 Noumea;NEA74_Noumea;D_NEA74_Noumea
 New Beijing;;D_New_Beijing
 New Zealand Geodetic Datum 1949;New_Zealand_Geodetic_Datum_1949;D_New_Zealand_1949
-New Zealand Geodetic Datum 2000;New_Zealand_Geodetic_Datum_2000;D_NZGD_2000
+New Zealand Geodetic Datum 2000;New_Zealand_Geodetic_Datum_2000;D_NZGD_2000;;;NZGD2000
 NGO 1948;NGO_1948;D_NGO_1948
 NGO 1948 (Oslo);NGO_1948_Oslo
 Nord de Guerre (Paris);Nord_de_Guerre_Paris;D_Nord_de_Guerre
 Nord Sahara 1959;Nord_Sahara_1959;D_Nord_Sahara_1959
 Nord Sahara 1959 (Paris);Nord_Sahara_1959_Paris
-North American Datum 1927;North_American_Datum_1927;D_North_American_1927;NAD 27 (Continental US)
+North American Datum 1927;North_American_Datum_1927;D_North_American_1927;NAD 27 (Continental US);NAD27;NAD27
 North American Datum 1927 (1976);North_American_Datum_1927_1976;D_NAD_1927_Definition_1976
 North American Datum 1927 (CGQ77);North_American_Datum_1927_CGQ77;D_NAD_1927_CGQ77
-North American Datum 1983;North_American_Datum_1983;D_North_American_1983;NAD 83
+North American Datum 1983;North_American_Datum_1983;D_North_American_1983;NAD 83;NAD83;NAD83
 Nouakchott 1965;Nouakchott_1965;D_Nouakchott_1965
 Nouvelle Triangulation Francaise;Nouvelle_Triangulation_Francaise;NTF
 Nouvelle Triangulation Francaise (Paris);Nouvelle_Triangulation_Francaise_Paris;D_NTF;NTF (Paris meridian)
@@ -312,7 +312,7 @@ NSWC 9Z-2;NSWC_9Z-2;D_NSWC_9Z_2
 Observatario;Observatario;D_Observatario;Observatorio 1966
 Old Hawaiian;Old_Hawaiian;D_Old_Hawaiian;Old Hawaiian
 OS (SN) 1980;OS_SN_1980;D_OS_SN_1980
-OSGB 1936;OSGB_1936;D_OSGB_1936
+OSGB 1936;OSGB_1936;D_OSGB_1936;;;OSGB36
 OSGB 1970 (SN);OSGB_1970_SN;D_OSGB_1970_SN
 OSNI 1952;OSNI_1952;D_OSNI_1952
 Padang 1884;Padang_1884;D_Padang_1884
@@ -389,7 +389,7 @@ Serindung;Serindung;D_Serindung
 Sierra Leone 1968;Sierra_Leone_1968;D_Sierra_Leone_1968
 Sierra Leone Colony 1924;Sierra_Leone_Colony_1924;D_Sierra_Leone_1924
 Sistema de Referencia Geocentrico para America del Sur 1995;Sistema_de_Referencia_Geocentrico_para_America_del_Sur_1995;D_SIRGAS
-Sistema de Referencia Geocentrico para las AmericaS 2000;;D_SIRGAS_2000
+Sistema de Referencia Geocentrico para las AmericaS 2000;;D_SIRGAS_2000;;;SIRGAS2000
 Sister Islands Geodetic Datum 1961;;D_Little_Cayman_1961
 S-JTSK (Ferro);S-JTSK_Ferro
 Slovenia Geodetic Datum 1996;;D_Slovenia_Geodetic_Datum_1996
@@ -441,8 +441,8 @@ Voirol 1879 (Paris);Voirol_1879_Paris
 WGS 72 Transit Broadcast Ephemeris;WGS_72_Transit_Broadcast_Ephemeris;D_WGS_1972_BE
 Wake Island 1952;;D_Wake_Island_1952
 World Geodetic System 1966;;D_WGS_1966
-World Geodetic System 1972;World_Geodetic_System_1972;D_WGS_1972;WGS 72
-World Geodetic System 1984;World_Geodetic_System_1984;D_WGS_1984;WGS 84;WGS84;WGS_84;WGS 1984;WGS_1984
+World Geodetic System 1972;World_Geodetic_System_1972;D_WGS_1972;WGS 72;;WGS72
+World Geodetic System 1984;World_Geodetic_System_1984;D_WGS_1984;WGS 84;WGS84;WGS84;WGS_84;WGS 1984;WGS_1984
 Xian 1980;Xian_1980;D_Xian_1980
 Yacare;Yacare;D_Yacare;Yacare
 Yemen National Geodetic Network 1996;Yemen_National_Geodetic_Network_1996;D_Yemen_NGN_1996

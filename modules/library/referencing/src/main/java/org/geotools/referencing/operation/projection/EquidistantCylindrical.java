@@ -205,7 +205,8 @@ public class EquidistantCylindrical extends MapProjection {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(
-                                            VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION))
+                                            VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION)),
+                            new NamedIdentifier(Citations.PROJ, "eqc")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,
@@ -277,7 +278,8 @@ public class EquidistantCylindrical extends MapProjection {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(
-                                            VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION))
+                                            VocabularyKeys.EQUIDISTANT_CYLINDRICAL_PROJECTION)),
+                            new NamedIdentifier(Citations.PROJ, "eqc")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

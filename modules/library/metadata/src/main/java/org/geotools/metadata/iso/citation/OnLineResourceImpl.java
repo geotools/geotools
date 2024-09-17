@@ -132,6 +132,15 @@ public class OnLineResourceImpl extends MetadataEntity implements OnLineResource
         r.freeze();
     }
 
+    /** The online resources for <A HREF="https://proj.org">PROJ</A>. */
+    public static final OnLineResource PROJ;
+
+    static {
+        final OnLineResourceImpl r;
+        PROJ = r = new OnLineResourceImpl("https://proj.org");
+        r.freeze();
+    }
+
     /**
      * The online resources for <A HREF="http://java.sun.com/">Sun Microsystems</A>. This online
      * resources point to the Java developper site.

@@ -29,6 +29,8 @@ import net.sf.geographiclib.GeodesicMask;
 import org.geotools.api.referencing.datum.Ellipsoid;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.proj.PROJFormattable;
+import org.geotools.referencing.proj.PROJFormatter;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
 import si.uom.SI;
@@ -49,7 +51,8 @@ import si.uom.SI;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellipsoid {
+public class DefaultEllipsoid extends AbstractIdentifiedObject
+        implements Ellipsoid, PROJFormattable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -1149451543954764081L;
 
@@ -495,5 +498,22 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
         formatter.append(getAxisUnit().getConverterTo(SI.METRE).convert(getSemiMajorAxis()));
         formatter.append(Double.isInfinite(ivf) ? 0 : ivf);
         return "SPHEROID";
+    }
+
+    @Override
+    public String formatPROJ(final PROJFormatter formatter) {
+        final double ivf = getInverseFlattening();
+        if (!formatter.isDatumProvided()) {
+            if (formatter.isEllipsoidProvided()) {
+                return "+ellps=";
+            } else {
+                double val = getAxisUnit().getConverterTo(SI.METRE).convert(getSemiMajorAxis());
+                formatter.append("a", val);
+                if (!Double.isInfinite(ivf)) {
+                    formatter.append("rf", ivf);
+                }
+            }
+        }
+        return PROJFormatter.NO_KEYWORD;
     }
 }

@@ -258,7 +258,8 @@ public class ObliqueStereographic extends StereographicUSGS {
                             new NamedIdentifier(Citations.EPSG, "9809"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_ObliqueStereographic"),
                             new NamedIdentifier(Citations.ESRI, "Double_Stereographic"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                            new NamedIdentifier(Citations.GEOTOOLS, NAME),
+                            new NamedIdentifier(Citations.PROJ, "stere")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

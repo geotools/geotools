@@ -246,7 +246,8 @@ public final class Gnomonic extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Latitude of natural origin"),
                             new NamedIdentifier(Citations.EPSG, "Spherical latitude of origin"),
                             new NamedIdentifier(Citations.ESRI, "Latitude_Of_Origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLat")
+                            new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLat"),
+                            new NamedIdentifier(Citations.PROJ, "lat_0")
                         },
                         0,
                         -90,
@@ -264,7 +265,8 @@ public final class Gnomonic extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Longitude of natural origin"),
                             new NamedIdentifier(Citations.EPSG, "Spherical longitude of origin"),
                             new NamedIdentifier(Citations.ESRI, "Central_Meridian"),
-                            new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLong")
+                            new NamedIdentifier(Citations.GEOTIFF, "ProjCenterLong"),
+                            new NamedIdentifier(Citations.PROJ, "lon_0")
                         },
                         0,
                         -180,
@@ -277,6 +279,7 @@ public final class Gnomonic extends MapProjection {
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "Gnomonic"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_Gnomonic"),
+                            new NamedIdentifier(Citations.PROJ, "gnom")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR,

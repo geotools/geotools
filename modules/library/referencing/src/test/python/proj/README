@@ -1,0 +1,46 @@
+PROJ supports more than 7400 EPSG CRS definitions.
+Some of them have specific fields that cannot be easily
+inferred by the GeoTools referencing entities.
+
+The PROJRefiner class refines the buffered PROJ String built
+through a PROJFormatter based on Referencing
+IdentifiedObjects inspection, by remapping keys, applying
+sorting, converting units, appending fixed constant strings
+to the output.
+
+Refinements have been identified by comparing proj codes
+produced by GT against proj codes produced by pyproj.
+
+proj_generatecodes.py (available in test folder)
+has been used to generate the proj codes. Just run it and
+it will create an epsg_proj_definitions.csv with all the
+EPSG code definitions being converted to PROJ string.
+
+e.g.:
+4326,+proj=longlat +datum=WGS84 +no_defs +type=crs
+3857,+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs
+
+The PROJParsingTest.testGeneratePROJDefinitions can be invoked
+in case code or aliases get modified, to have Geotools creating
+all the proj definitions on its own.
+
+gt_proj_compare.py has been used to check the differences between
+the GeoTools PROJ Generated definitions and the official PROJ
+definitions in order to customize the refinements.
+
+It Compares 2 CSV files containing:
+- GeoTools generated PROJ String definitions
+- PROJ library String definitions generated for EPSG code
+Produce a CSV file only containing EPSG codes that resulted in GeoTools
+generating a different PROJ CRS.
+CSV will contain EPSG Code, input GeoTools PROJ String and expected PROJ String.
+
+Produce a secondary file only showing the differences:
+CSV will contain EPSG Code, MissingKeys that are expected by PROJ and have not been
+
+written by GeoTools; ExtraKeys that are keys produced by GeoTools
+that are not present in PROJ output.
+Note that differences are only produced if the 2 CRS being built
+by the PROJ Lib on top of the 2 Proj String are not equivalent
+as result of the check_crs_match function.
+

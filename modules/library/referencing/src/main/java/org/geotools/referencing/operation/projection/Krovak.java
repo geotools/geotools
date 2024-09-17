@@ -375,7 +375,8 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(Citations.OGC, "latitude_of_center"),
                             new NamedIdentifier(Citations.EPSG, "Latitude of projection centre"),
                             new NamedIdentifier(Citations.EPSG, "Latitude of origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLat")
+                            new NamedIdentifier(Citations.GEOTIFF, "CenterLat"),
+                            new NamedIdentifier(Citations.PROJ, "lat_0")
                         },
                         49.5,
                         -90,
@@ -393,7 +394,8 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(Citations.OGC, "longitude_of_center"),
                             new NamedIdentifier(Citations.EPSG, "Longitude of projection centre"),
                             new NamedIdentifier(Citations.EPSG, "Longitude of origin"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CenterLong")
+                            new NamedIdentifier(Citations.GEOTIFF, "CenterLong"),
+                            new NamedIdentifier(Citations.PROJ, "lon_0")
                         },
                         42.5 - 17.66666666666667,
                         -180,
@@ -412,6 +414,7 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Azimuth of initial line"),
                             new NamedIdentifier(Citations.GEOTIFF, "AzimuthAngle"),
                             new NamedIdentifier(Citations.ESRI, "Azimuth"),
+                            new NamedIdentifier(Citations.PROJ, "alpha"),
                         },
                         30.28813972222222,
                         0,
@@ -447,7 +450,8 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(
                                     Citations.EPSG, "Scale factor on pseudo standard parallel"),
                             new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
-                            new NamedIdentifier(Citations.OGC, "Scale_Factor")
+                            new NamedIdentifier(Citations.OGC, "Scale_Factor"),
+                            new NamedIdentifier(Citations.PROJ, "k_0")
                         },
                         0.9999,
                         0,
@@ -508,6 +512,7 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
                             new NamedIdentifier(Citations.EPSG, "9819"),
                             new NamedIdentifier(Citations.ESRI, "Krovak"),
+                            new NamedIdentifier(Citations.PROJ, "krovak")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,
@@ -531,6 +536,7 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Krovak Oblique Conic Conformal"),
                             new NamedIdentifier(Citations.EPSG, "9819"),
                             new NamedIdentifier(Citations.ESRI, "Krovak"),
+                            new NamedIdentifier(Citations.PROJ, "krovak")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,
@@ -591,6 +597,7 @@ public class Krovak extends MapProjection {
                             new NamedIdentifier(Citations.OGC, "Krovak (North Orientated)"),
                             new NamedIdentifier(Citations.EPSG, "Krovak (North Orientated)"),
                             new NamedIdentifier(Citations.EPSG, "1041"),
+                            new NamedIdentifier(Citations.PROJ, "krovak")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

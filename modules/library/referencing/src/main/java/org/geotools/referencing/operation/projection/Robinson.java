@@ -265,7 +265,8 @@ public class Robinson extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.GEOTOOLS, "Robinson"),
-                            new NamedIdentifier(Citations.ESRI, "Robinson")
+                            new NamedIdentifier(Citations.ESRI, "Robinson"),
+                            new NamedIdentifier(Citations.PROJ, "robin")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING

@@ -196,7 +196,8 @@ public class CassiniSoldner extends MapProjection {
                         new NamedIdentifier(
                                 Citations.GEOTOOLS,
                                 Vocabulary.formatInternational(
-                                        VocabularyKeys.CASSINI_SOLDNER_PROJECTION)));
+                                        VocabularyKeys.CASSINI_SOLDNER_PROJECTION)),
+                        new NamedIdentifier(Citations.PROJ, "cass"));
 
         /** Constructs a new provider. */
         public Provider() {

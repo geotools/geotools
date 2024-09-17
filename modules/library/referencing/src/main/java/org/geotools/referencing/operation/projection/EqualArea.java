@@ -143,6 +143,7 @@ public class EqualArea extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.GEOTOOLS, "Equal Earth"),
+                            new NamedIdentifier(Citations.PROJ, "eqearth")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING

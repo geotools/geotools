@@ -504,7 +504,8 @@ public class TransverseMercator extends MapProjection {
                         new NamedIdentifier(
                                 Citations.GEOTOOLS,
                                 Vocabulary.formatInternational(
-                                        VocabularyKeys.TRANSVERSE_MERCATOR_PROJECTION)));
+                                        VocabularyKeys.TRANSVERSE_MERCATOR_PROJECTION)),
+                        new NamedIdentifier(Citations.PROJ, "tmerc"));
 
         /** Constructs a new provider. */
         public Provider() {
@@ -592,7 +593,8 @@ public class TransverseMercator extends MapProjection {
                     createDescriptorGroup(
                             new NamedIdentifier(
                                     Citations.EPSG, "Transverse Mercator (South Orientated)"),
-                            new NamedIdentifier(Citations.EPSG, "9808")));
+                            new NamedIdentifier(Citations.EPSG, "9808"),
+                            new NamedIdentifier(Citations.PROJ, "tmerc")));
         }
 
         /**

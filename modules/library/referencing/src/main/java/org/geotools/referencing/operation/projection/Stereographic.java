@@ -224,7 +224,8 @@ public abstract class Stereographic extends MapProjection {
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.ESRI, "Stereographic"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_Stereographic"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                            new NamedIdentifier(Citations.GEOTOOLS, NAME),
+                            new NamedIdentifier(Citations.PROJ, "stere")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

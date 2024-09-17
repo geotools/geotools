@@ -120,7 +120,8 @@ public class HotineObliqueMercator extends ObliqueMercator {
                                     "Hotine_Oblique_Mercator_Azimuth_Natural_Origin"),
                             new NamedIdentifier(
                                     Citations.ESRI, "Rectified_Skew_Orthomorphic_Natural_Origin"),
-                            new NamedIdentifier(Citations.GEOTOOLS, NAME)
+                            new NamedIdentifier(Citations.GEOTOOLS, NAME),
+                            new NamedIdentifier(Citations.PROJ, "omerc")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

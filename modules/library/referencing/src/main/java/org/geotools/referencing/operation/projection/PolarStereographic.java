@@ -532,7 +532,8 @@ public class PolarStereographic extends Stereographic {
                             new NamedIdentifier(Citations.EPSG, "Polar Stereographic (variant A)"),
                             new NamedIdentifier(Citations.EPSG, "9810"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_PolarStereographic"),
-                            new NamedIdentifier(Citations.GEOTOOLS, Provider.NAME)
+                            new NamedIdentifier(Citations.GEOTOOLS, Provider.NAME),
+                            new NamedIdentifier(Citations.PROJ, "stere")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,
@@ -595,7 +596,8 @@ public class PolarStereographic extends Stereographic {
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.EPSG, "Polar Stereographic (variant B)"),
                             new NamedIdentifier(Citations.EPSG, "9829"),
-                            new NamedIdentifier(Citations.GEOTOOLS, Provider.NAME)
+                            new NamedIdentifier(Citations.GEOTOOLS, Provider.NAME),
+                            new NamedIdentifier(Citations.PROJ, "stere")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR,
@@ -649,7 +651,8 @@ public class PolarStereographic extends Stereographic {
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of standard parallel")
+                            new NamedIdentifier(Citations.EPSG, "Latitude of standard parallel"),
+                            new NamedIdentifier(Citations.PROJ, "lat_1")
                         },
                         90,
                         -90,
@@ -719,7 +722,8 @@ public class PolarStereographic extends Stereographic {
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
-                            new NamedIdentifier(Citations.EPSG, "Latitude of standard parallel")
+                            new NamedIdentifier(Citations.EPSG, "Latitude of standard parallel"),
+                            new NamedIdentifier(Citations.PROJ, "lat_1")
                         },
                         -90,
                         -90,

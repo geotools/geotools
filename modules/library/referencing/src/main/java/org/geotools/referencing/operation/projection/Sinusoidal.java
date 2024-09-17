@@ -158,7 +158,8 @@ public class Sinusoidal extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.GEOTOOLS, "Sinusoidal"),
-                            new NamedIdentifier(Citations.ESRI, "Sinusoidal")
+                            new NamedIdentifier(Citations.ESRI, "Sinusoidal"),
+                            new NamedIdentifier(Citations.PROJ, "sinu")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING

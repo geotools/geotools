@@ -267,7 +267,8 @@ public class Homolosine extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.GEOTOOLS, "Goode_Homolosine"),
-                            new NamedIdentifier(Citations.ESRI, "Interrupted_Homolosine")
+                            new NamedIdentifier(Citations.ESRI, "Interrupted_Homolosine"),
+                            new NamedIdentifier(Citations.PROJ, "goode")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING

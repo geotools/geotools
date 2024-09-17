@@ -117,7 +117,8 @@ public class PlateCarree extends EquidistantCylindrical {
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.ESRI, "Plate_Carree"),
                             new NamedIdentifier(Citations.OGC, "Equirectangular"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_Equirectangular")
+                            new NamedIdentifier(Citations.GEOTIFF, "CT_Equirectangular"),
+                            new NamedIdentifier(Citations.PROJ, "eqc")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING

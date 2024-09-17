@@ -120,7 +120,8 @@ public abstract class Orthographic extends MapProjection {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(
-                                            VocabularyKeys.ORTHOGRAPHIC_PROJECTION))
+                                            VocabularyKeys.ORTHOGRAPHIC_PROJECTION)),
+                            new NamedIdentifier(Citations.PROJ, "ortho")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

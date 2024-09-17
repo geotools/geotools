@@ -245,7 +245,8 @@ public class NewZealandMapGrid extends MapProjection {
                         new ReferenceIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "New_Zealand_Map_Grid"),
                             new NamedIdentifier(Citations.EPSG, "New Zealand Map Grid"),
-                            new NamedIdentifier(Citations.EPSG, "27200")
+                            new NamedIdentifier(Citations.EPSG, "27200"),
+                            new NamedIdentifier(Citations.PROJ, "nzmg"),
                         },
                         new ParameterDescriptor[] {
                             new ModifiedParameterDescriptor(SEMI_MAJOR, 6378388.0),

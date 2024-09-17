@@ -447,6 +447,7 @@ public class AzimuthalEquidistant {
                             new NamedIdentifier(Citations.OGC, "Azimuthal_Equidistant"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_AzimuthalEquidistant"),
                             new NamedIdentifier(Citations.GEOTOOLS, "Azimuthal Equidistant"),
+                            new NamedIdentifier(Citations.PROJ, "aeqd")
                             // there is no EPSG code for this projection
                             // @formatter:on
                         },

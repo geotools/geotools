@@ -149,6 +149,19 @@ public class ContactImpl extends MetadataEntity implements Contact {
     }
 
     /**
+     * Contact information for <A HREF="https://proj.org">PROJ</A>.
+     *
+     * @see OnLineResourceImpl#PROJ
+     */
+    public static final Contact PROJ;
+
+    static {
+        final ContactImpl c = new ContactImpl(OnLineResourceImpl.PROJ);
+        c.freeze();
+        PROJ = c;
+    }
+
+    /**
      * Contact informations for <A HREF="http://www.sun.com/">Sun Microsystems</A>.
      *
      * @see OnLineResourceImpl#SUN_MICROSYSTEMS

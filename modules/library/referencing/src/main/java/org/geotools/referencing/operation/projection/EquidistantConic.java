@@ -244,7 +244,8 @@ public class EquidistantConic extends MapProjection {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(
-                                            VocabularyKeys.EQUIDISTANT_CONIC_PROJECTION))
+                                            VocabularyKeys.EQUIDISTANT_CONIC_PROJECTION)),
+                            new NamedIdentifier(Citations.PROJ, "eqdc")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR,

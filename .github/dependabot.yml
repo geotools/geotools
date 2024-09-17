@@ -20,10 +20,3 @@ updates:
       interval: 'monthly'
     target-branch: '31.x'
     open-pull-requests-limit: 10
-
-  - package-ecosystem: 'github-actions'
-    directory: '/'
-    schedule:
-      interval: 'monthly'
-    target-branch: '30.x'
-    open-pull-requests-limit: 10

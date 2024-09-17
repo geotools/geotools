@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>32-SNAPSHOT</version>
+    <version>32.0</version>
   </parent>
 
   <artifactId>gt-gml-geometry-streaming</artifactId>

@@ -187,7 +187,8 @@ public class Mollweide extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.GEOTOOLS, "Mollweide"),
-                            new NamedIdentifier(Citations.ESRI, "Mollweide")
+                            new NamedIdentifier(Citations.ESRI, "Mollweide"),
+                            new NamedIdentifier(Citations.PROJ, "moll")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, FALSE_EASTING, FALSE_NORTHING, CENTRAL_MERIDIAN

@@ -86,7 +86,8 @@ public class MercatorPseudoProvider extends AbstractProvider {
                         new NamedIdentifier(
                                 Citations.GEOTOOLS,
                                 Vocabulary.formatInternational(
-                                        VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
+                                        VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION)),
+                        new NamedIdentifier(Citations.PROJ, "merc")
                     },
                     new ParameterDescriptor[] {
                         SEMI_MAJOR,

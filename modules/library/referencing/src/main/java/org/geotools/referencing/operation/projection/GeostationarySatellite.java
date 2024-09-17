@@ -333,6 +333,7 @@ public abstract class GeostationarySatellite extends MapProjection {
                 createDescriptor(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "satellite_height"),
+                            new NamedIdentifier(Citations.PROJ, "h")
                         },
                         35785831, // default
                         0.0, // minimum
@@ -343,7 +344,8 @@ public abstract class GeostationarySatellite extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.OGC, "GEOS"),
-                            new NamedIdentifier(Citations.OGC, "Geostationary_Satellite")
+                            new NamedIdentifier(Citations.OGC, "Geostationary_Satellite"),
+                            new NamedIdentifier(Citations.PROJ, "geos")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

@@ -207,7 +207,8 @@ public class WorldVanDerGrintenI extends MapProjection {
                             new NamedIdentifier(Citations.GEOTOOLS, "Van der Grinten"),
                             new NamedIdentifier(Citations.GEOTIFF, "Van der Grinten"),
                             new NamedIdentifier(Citations.ESRI, "Van der Grinten"),
-                            new NamedIdentifier(Citations.EPSG, "Van der Grinten")
+                            new NamedIdentifier(Citations.EPSG, "Van der Grinten"),
+                            new NamedIdentifier(Citations.PROJ, "vandg")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN, FALSE_EASTING, FALSE_NORTHING

@@ -39,6 +39,8 @@ import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.PassThroughTransform;
+import org.geotools.referencing.proj.PROJFormattable;
+import org.geotools.referencing.proj.PROJFormatter;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
 
@@ -52,7 +54,8 @@ import org.geotools.util.Utilities;
  * @author Martin Desruisseaux (IRD)
  * @see DefaultOperation
  */
-public class DefaultOperationMethod extends AbstractIdentifiedObject implements OperationMethod {
+public class DefaultOperationMethod extends AbstractIdentifiedObject
+        implements OperationMethod, PROJFormattable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -98032729598205972L;
 
@@ -403,5 +406,12 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
                     MessageFormat.format(
                             ErrorKeys.MISMATCHED_DIMENSION_$3, name, actual, expected));
         }
+    }
+
+    @Override
+    public String formatPROJ(final PROJFormatter formatter) {
+        return Projection.class.isAssignableFrom(getOperationType())
+                ? "+proj="
+                : PROJFormatter.NO_KEYWORD;
     }
 }

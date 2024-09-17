@@ -139,7 +139,8 @@ public class CylindricalEqualArea extends MapProjection {
                             new NamedIdentifier(Citations.OGC, "Cylindrical_Equal_Area"),
                             // new NamedIdentifier(Citations.EPSG,     "Cylindrical_Equal_Area"),
                             new NamedIdentifier(Citations.ESRI, "Cylindrical_Equal_Area"),
-                            new NamedIdentifier(Citations.GEOTIFF, "CT_CylindricalEqualArea")
+                            new NamedIdentifier(Citations.GEOTIFF, "CT_CylindricalEqualArea"),
+                            new NamedIdentifier(Citations.PROJ, "cea")
                         },
                         getParameterDescriptors());
 
@@ -203,6 +204,7 @@ public class CylindricalEqualArea extends MapProjection {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     "Lambert Cylindrical Equal Area (Spherical)"),
+                            new NamedIdentifier(Citations.PROJ, "cea")
                         },
                         Provider.getParameterDescriptors());
 

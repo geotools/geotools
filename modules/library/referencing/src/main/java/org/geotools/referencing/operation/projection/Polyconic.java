@@ -320,7 +320,8 @@ public class Polyconic {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(
-                                            VocabularyKeys.POLYCONIC_PROJECTION))
+                                            VocabularyKeys.POLYCONIC_PROJECTION)),
+                            new NamedIdentifier(Citations.PROJ, "poly")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR,

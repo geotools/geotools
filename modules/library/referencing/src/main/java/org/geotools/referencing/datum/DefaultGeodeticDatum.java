@@ -36,6 +36,8 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.matrix.XMatrix;
+import org.geotools.referencing.proj.PROJFormattable;
+import org.geotools.referencing.proj.PROJFormatter;
 import org.geotools.referencing.wkt.Formatter;
 
 /**
@@ -49,7 +51,7 @@ import org.geotools.referencing.wkt.Formatter;
  * @see Ellipsoid
  * @see PrimeMeridian
  */
-public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum {
+public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum, PROJFormattable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8832100095648302943L;
 
@@ -64,7 +66,8 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
             new NamedIdentifier(null, "WGS 1984"),
             new NamedIdentifier(Citations.EPSG, "WGS_1984"),
             new NamedIdentifier(Citations.ESRI, "D_WGS_1984"),
-            new NamedIdentifier(Citations.EPSG, "World Geodetic System 1984")
+            new NamedIdentifier(Citations.EPSG, "World Geodetic System 1984"),
+            new NamedIdentifier(Citations.PROJ, "WGS84")
         };
         final Map<String, Object> properties = new HashMap<>(4);
         properties.put(NAME_KEY, identifiers[0]);
@@ -414,5 +417,13 @@ public class DefaultGeodeticDatum extends AbstractDatum implements GeodeticDatum
             }
         }
         return "DATUM";
+    }
+
+    @Override
+    public String formatPROJ(final PROJFormatter formatter) {
+        if (ellipsoid instanceof PROJFormattable && !formatter.isDatumProvided()) {
+            formatter.append((PROJFormattable) ellipsoid);
+        }
+        return formatter.isDatumProvided() ? "+datum=" : PROJFormatter.NO_KEYWORD;
     }
 }

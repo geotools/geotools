@@ -40,6 +40,8 @@ import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.referencing.proj.PROJFormattable;
+import org.geotools.referencing.proj.PROJFormatter;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.UnsupportedImplementationException;
 import si.uom.NonSI;
@@ -59,7 +61,8 @@ import si.uom.NonSI;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultGeographicCRS extends AbstractSingleCRS implements GeographicCRS {
+public class DefaultGeographicCRS extends AbstractSingleCRS
+        implements GeographicCRS, PROJFormattable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 861224913438092335L;
 
@@ -256,5 +259,21 @@ public class DefaultGeographicCRS extends AbstractSingleCRS implements Geographi
         }
         formatter.setAngularUnit(oldUnit);
         return "GEOGCS";
+    }
+
+    @Override
+    public String formatPROJ(PROJFormatter formatter) {
+        if (!formatter.isProjectedCRS()) {
+            formatter.append("proj", "longlat");
+        }
+
+        if (datum instanceof PROJFormattable) {
+            formatter.append((PROJFormattable) datum);
+        }
+
+        formatter.append((PROJFormattable) ((GeodeticDatum) datum).getPrimeMeridian());
+        // Geographic CRS will already set the longlat proj string so the
+        // formatting won't return any keyword
+        return PROJFormatter.NO_KEYWORD;
     }
 }

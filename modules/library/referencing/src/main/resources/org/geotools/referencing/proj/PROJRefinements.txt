@@ -1,0 +1,129 @@
+################################################################
+# PROJ Strings Refinements
+# PROJ supports more than 7400 EPSG CRS definitions.
+# Some of them have specific fields that cannot be easily
+# inferred by the GeoTools referencing entities.
+# The PROJRefiner class refines the buffered PROJ String built
+# through a PROJFormatter based on Referencing
+# IdentifiedObjects inspection, by remapping keys, applying
+# sorting, converting units, appending fixed constant strings
+# to the output.
+
+# Refinements have been identified by comparing proj codes
+# produced by GT against proj codes produced by pyproj.
+
+# proj_generatecodes.py (available in test folder)
+# has been used to generate the proj codes
+# gt_proj_compare.py has been used to check the differences
+# and refine the content
+################################################################
+
+# Global Additions: All of these keys get always appended
+# to the final proj string
+global.additions= +no_defs +type=crs
+
+# proj.order: defines the expected order of PROJ strings.
+# Refiner will sort keys following this order
+proj.order=proj,R_A,axis,datum,lat_1,lat_0,lat_ts,lat_2,lon_0,alpha,gamma,k_0,k,x_0,y_0,ellps,pm,a,b,rf,units,to_meter,no_defs,type
+
+# UNIT regex/replacement
+# Specify units translation using a regex and a replacement.
+# When outputting a +units=value that matches the regex, it will
+# be replaced by the value specified in the replacement
+# in case a new unit refinement needs to be setup, create a new unit rule
+# by setting up a:
+# unit.regex.N=the regex that you need to match
+# unit.replacement.N=the replacement that need to be applied to that match
+
+unit.regex.1=\\+units=m\\*([0-9.]+)
+unit.replacement.1=+units=m +to_meter=$1
+
+unit.regex.2=\\+units=ft_survey_us
+unit.replacement.2=+units=us-ft
+
+unit.regex.3=\\+units=Foot_Gold_Coast
+unit.replacement.3=+to_meter=0.304799710181509
+
+# EPSG regex/replacement refinements
+# Refinements will be applied based on their order.
+# replacement with lower number will be applied before replacement with higher number
+# codes list is a comma separated set of values representing EPSG codes
+# that need this refinement to be applied.
+# Range values are allowed, e.g. 1-100 means that all codes between 1 and 100
+# (included) will be handled by the refinement
+
+regex.1=\\+lat_0=([\\d.-]+)(.*?)\\+k=([\\d.-]+)
+replacement.1=\\+lat_0=$1 +lat_1=$1$2 +k_0=$3
+codes.1=2101-2104,5456-5462,5469,6792-6799,6804-6807,6852-6855,7057-7058,7060-7061,7066,7068,7111-7114,7116-7117,7121-7124,7126-7127,7531,7534,7536,7538-7540,7545,7549-7550,7557,7559,7562,7564-7565,7567,7569,7573,7576,7578-7581,7585-7586,7590,7593,7595,7597-7599,7604,7608-7609,7616,7618,7621,7623-7624,7626,7628,7632,7635,7637-7640,7644-7645,8068,8092-8093,8095-8098,8105-8112,8115-8116,8121-8122,8129-8130,8133-8134,8137-8140,8143-8144,8149-8150,8153-8154,8167-8170,8191,8193,8196-8198,8200,8203-8204,8207-8208,8214,8216,8315-8316,8321-8330,8333-8336,8339-8342,8345-8346,8525-8528,8536,8538,24100,24200,24370-24383,27500,27561-27564,27571-27574,27581-27584,27591-27594
+
+regex.2=\\+lat_0=([\\d.-]+)
+replacement.2=\\+lat_0=$1 +lat_1=$1
+codes.2=2062,2085-2086,2155,2192,2194,3102,3200,3337,3394,3448,5559,22391-22392,22770,24100,24370-24374,24382,24600,26191-26195,27500,30491-30494,30791-30792,32061-32062
+
+regex.3=\\+lat_0=0
+replacement.3=\\+lat_ts=0 +nadgrids=@null +a=6378137 +b=6378137
+codes.3=3785,3857
+
+regex.4=\\+lat_1=([\\d.-]+)
+replacement.4=\\+lat_ts=$1 +lat_0=-90
+codes.4=3031-3032,3275-3293,3412,3975-3976
+
+regex.5=\\+lat_1=([\\d.-]+)
+replacement.5=\\+lat_ts=$1 +lat_0=90
+codes.5=3388,3410-3411,3413,3995,3996,5890
+
+regex.6=\\+lat_1=([\\d.-]+)
+replacement.6=\\+lat_ts=-$1
+codes.6=3994,5641
+
+regex.7=\\+lon_0=([\\d.-]+)
+replacement.7=\\+lonc=$1 +no_uoff
+codes.7=3078-3079,3167-3168,3375-3376,3468,3591,5247,6394,6497,6808-6811,6840-6843,24571,26731,26931
+
+regex.8=\\+lon_0=([\\d.-]+)
+replacement.8=\\+lonc=$1
+codes.8=2057,8065,29700,29702,29871-29873
+
+# Key removal replacements
+# GeoTools PROJ machinery will produce some keys that aren't produced by PROJ for that specific code.
+regex.20=\\+k=1
+replacement.20=
+codes.20=2056,2066,2099,2155,2194,2314,3068,3102,3140,3337,3366,3377-3385,3407,3448,3832,4390-4398,5472,5530,5589,5880,8044-8045,21780-21782,24500,27291-27292,28191,28193,29100,29101,30200
+
+regex.21=\\+units=m
+replacement.21=
+codes.21=2056,2062,2065-2066,2163,2314,3064-3065,3140,3167,3407,5221,5329-5331,5472,5513-5514,5589,8352-8353,23700,24100,24370-24374,24382,24571,27291-27292,29371,29373,29375,29377,29379,29381,29383,29385,29871-29872,30200
+
+regex.22=\\+lat_0=([\\d.-]+)
+replacement.22=
+codes.22=2934,3000-3002,3349,3388,3395,3410,3832,3975,3994,5329-5331,5641,21100,25700
+
+regex.23=\\+axis=swu
+replacement.23=
+codes.23=8044-8045
+
+# Projections Replacements
+# Some specific PROJ projections may have additional keys or different names.
+regex.40=\\+proj=(laea|cea)
+replacement.40=+proj=$1 +R_A
+codes.40=3973-3975
+
+regex.41=\\+proj=omerc(.*?)\\+alpha=90(.*?)\\+gamma=90
+replacement.41=+proj=somerc$1$2
+codes.41=2056,21780-21782,23700
+
+regex.42=\\+proj=stere
+replacement.42=\\+proj=sterea
+codes.42=2036,2171-2174,2200,2290-2292,2953-2954,3120,3328,3844,5588,22780,28991-28992,31600,31700
+
+# Wrong ellipsoids replacements
+# For some reason, GeoTools referencing is producing some ellipsoid names whilst PROJ is producing
+# different ones. Let's replace them
+regex.50=\\+ellps=WGS84
+replacement.50=\\+ellps=GRS80
+codes.50=3064-3065,4670,4983
+
+regex.51=\\+ellps=GRS80
+replacement.51=\\+ellps=WGS84
+codes.51=5340,5342-5349
+

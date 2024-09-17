@@ -25,6 +25,8 @@ import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import org.geotools.api.referencing.datum.PrimeMeridian;
 import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.proj.PROJFormattable;
+import org.geotools.referencing.proj.PROJFormatter;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.Utilities;
 import si.uom.NonSI;
@@ -38,7 +40,8 @@ import si.uom.NonSI;
  * @author Martin Desruisseaux (IRD)
  * @since 2.1
  */
-public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements PrimeMeridian {
+public class DefaultPrimeMeridian extends AbstractIdentifiedObject
+        implements PrimeMeridian, PROJFormattable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 541978454643213305L;;
 
@@ -209,5 +212,12 @@ public class DefaultPrimeMeridian extends AbstractIdentifiedObject implements Pr
         }
         formatter.append(getGreenwichLongitude(context));
         return "PRIMEM";
+    }
+
+    @Override
+    public String formatPROJ(final PROJFormatter formatter) {
+        return !formatter.isDatumProvided() && formatter.isPrimeMeridianProvided()
+                ? "+pm="
+                : PROJFormatter.NO_KEYWORD;
     }
 }

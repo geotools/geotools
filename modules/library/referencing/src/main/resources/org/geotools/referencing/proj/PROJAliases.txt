@@ -1,0 +1,32 @@
+[EllipsoidAliases]
+Bessel 1841;bessel
+Bessel Namibia (GLM);bess_nam
+Clarke 1966;clrk66
+Clarke 1866 Authalic Sphere;sphere
+Clarke 1866;clrk66
+Clarke 1880 (IGN);clrk80ign
+Everest 1830 (RSO 1969);evrst69
+Everest 1830 Modified;evrst48
+GRS 1980;GRS80
+GRS 1967;GRS67
+GRS 1967 Modified;aust_SA
+Krassowsky 1940;krass
+International 1924;intl
+WGS 72;WGS72
+
+[PrimeMeridianAliases]
+Athens;athens
+Bern;bern
+Bogota;bogota
+Brussels;brussels
+Ferro;ferro
+Jakarta;jakarta
+Lisbon;lisbon
+Oslo;oslo
+Paris;paris
+Rome;rome
+Stockholm;stockholm
+# These are the values produced by PROJ4 when parsing that meridian.
+# It output the meridian location value instead of a text
+Madrid;-3.687375
+Paris RGS;2.33720833333333

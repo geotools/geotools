@@ -373,7 +373,8 @@ public class AlbersEqualArea extends MapProjection {
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(
-                                            VocabularyKeys.ALBERS_EQUAL_AREA_PROJECTION))
+                                            VocabularyKeys.ALBERS_EQUAL_AREA_PROJECTION)),
+                            new NamedIdentifier(Citations.PROJ, "aea")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR,

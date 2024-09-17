@@ -50,7 +50,8 @@ public class LambertConformalEsriProvider extends MapProjection.AbstractProvider
                         new NamedIdentifier(Citations.EPSG, "Latitude of 1st standard parallel"),
                         new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
                         new NamedIdentifier(Citations.ESRI, "standard_parallel_1"),
-                        new NamedIdentifier(Citations.GEOTIFF, "StdParallel1")
+                        new NamedIdentifier(Citations.GEOTIFF, "StdParallel1"),
+                        new NamedIdentifier(Citations.PROJ, "lat_1")
                     },
                     -90,
                     90,

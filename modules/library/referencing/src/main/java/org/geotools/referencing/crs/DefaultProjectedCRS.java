@@ -31,6 +31,7 @@ import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem; // For javadoc
 import org.geotools.api.referencing.crs.GeographicCRS;
 import org.geotools.api.referencing.crs.ProjectedCRS;
+import org.geotools.api.referencing.cs.AxisDirection;
 import org.geotools.api.referencing.cs.CartesianCS;
 import org.geotools.api.referencing.cs.CoordinateSystem; // For javadoc
 import org.geotools.api.referencing.datum.Ellipsoid;
@@ -41,6 +42,8 @@ import org.geotools.api.referencing.operation.OperationMethod;
 import org.geotools.api.referencing.operation.Projection;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefiningConversion;
+import org.geotools.referencing.proj.PROJFormattable;
+import org.geotools.referencing.proj.PROJFormatter;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.util.SuppressFBWarnings;
 
@@ -60,7 +63,8 @@ import org.geotools.util.SuppressFBWarnings;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class DefaultProjectedCRS extends AbstractDerivedCRS implements ProjectedCRS {
+public class DefaultProjectedCRS extends AbstractDerivedCRS
+        implements ProjectedCRS, PROJFormattable {
     /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -4502680112031773028L;
 
@@ -298,5 +302,56 @@ public class DefaultProjectedCRS extends AbstractDerivedCRS implements Projected
         formatter.setAngularUnit(angularUnit);
         formatter.setLinearUnit(linearUnit);
         return "PROJCS";
+    }
+
+    @Override
+    public String formatPROJ(PROJFormatter formatter) {
+        final Ellipsoid ellipsoid = ((GeodeticDatum) datum).getEllipsoid();
+        @SuppressWarnings("unchecked")
+        final Unit<Length> unit = (Unit<Length>) getUnit();
+        final Unit<Length> axisUnit = ellipsoid.getAxisUnit();
+        OperationMethod method = conversionFromBase.getMethod();
+        if (!(method instanceof PROJFormattable)) {
+            throw new IllegalArgumentException(
+                    "Conversion Operation Method is not PROJFormattable:" + method);
+        }
+        formatter.append((PROJFormattable) method);
+        if (baseCRS instanceof PROJFormattable) formatter.append((PROJFormattable) baseCRS);
+        for (final GeneralParameterValue param : conversionFromBase.getParameterValues().values()) {
+            final GeneralParameterDescriptor desc = param.getDescriptor();
+            String name;
+            if (nameMatches(desc, name = SEMI_MAJOR) || nameMatches(desc, name = SEMI_MINOR)) {
+                /*
+                 * Do not format semi-major and semi-minor axis length in most cases, since this
+                 * information is provided in the ellipsoid. An exception to this rule occurs if
+                 * the lengths are different from the ones declared in the datum.
+                 */
+                if (param instanceof ParameterValue) {
+                    final double value = ((ParameterValue<?>) param).doubleValue(axisUnit);
+                    final double expected =
+                            (SEMI_MINOR.equalsIgnoreCase(name))
+                                    ? // using '==' is okay here.
+                                    ellipsoid.getSemiMinorAxis()
+                                    : ellipsoid.getSemiMajorAxis();
+                    if (value == expected) {
+                        continue;
+                    }
+                }
+            }
+            formatter.append(param);
+        }
+        formatter.append(unit);
+        final int dimension = coordinateSystem.getDimension();
+        if (dimension >= 2) {
+            AxisDirection dir0 = coordinateSystem.getAxis(0).getDirection();
+            AxisDirection dir1 = coordinateSystem.getAxis(1).getDirection();
+            if (dir0 == AxisDirection.WEST && dir1 == AxisDirection.SOUTH) {
+                formatter.append("axis", "wsu");
+
+            } else if (dir0 == AxisDirection.SOUTH && dir1 == AxisDirection.WEST) {
+                formatter.append("axis", "swu");
+            }
+        }
+        return "";
     }
 }

@@ -554,6 +554,7 @@ public class LambertAzimuthalEqualArea extends MapProjection {
                                     Citations.EPSG, "Lambert Azimuthal Equal Area (Spherical)"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_LambertAzimEqualArea"),
                             new NamedIdentifier(Citations.EPSG, "9820"),
+                            new NamedIdentifier(Citations.PROJ, "laea")
                         },
                         new ParameterDescriptor[] {
                             SEMI_MAJOR, SEMI_MINOR,

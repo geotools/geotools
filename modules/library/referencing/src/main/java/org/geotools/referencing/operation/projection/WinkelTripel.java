@@ -206,7 +206,8 @@ public class WinkelTripel extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.ESRI, "Winkel_Tripel"),
-                            new NamedIdentifier(Citations.GEOTOOLS, "Winkel Tripel")
+                            new NamedIdentifier(Citations.GEOTOOLS, "Winkel Tripel"),
+                            new NamedIdentifier(Citations.PROJ, "wintri")
                         },
                         new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, STANDARD_PARALLEL_1});
 

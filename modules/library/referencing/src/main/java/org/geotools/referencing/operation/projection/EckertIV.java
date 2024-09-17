@@ -158,7 +158,8 @@ public class EckertIV extends MapProjection {
                 createDescriptorGroup(
                         new NamedIdentifier[] {
                             new NamedIdentifier(Citations.GEOTOOLS, "Eckert_IV"),
-                            new NamedIdentifier(Citations.ESRI, "Eckert_IV")
+                            new NamedIdentifier(Citations.ESRI, "Eckert_IV"),
+                            new NamedIdentifier(Citations.PROJ, "eck4")
                         },
                         new ParameterDescriptor[] {SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN});
 

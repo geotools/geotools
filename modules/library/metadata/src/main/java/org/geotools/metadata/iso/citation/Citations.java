@@ -171,6 +171,20 @@ public final class Citations {
         IAU = c;
     }
 
+    /**
+     * The <A HREF="https://proj.org">PROJ</A> project.
+     *
+     * @see ResponsiblePartyImpl#PROJ
+     */
+    public static final Citation PROJ;
+
+    static {
+        final CitationImpl c = new CitationImpl(ResponsiblePartyImpl.PROJ);
+        c.addAuthority("PROJ", true);
+        c.freeze();
+        PROJ = c;
+    }
+
     ///////////////////////////////////////////////////////////////////////
     ////////                                                       ////////
     ////////              S P E C I F I C A T I O N S              ////////
@@ -458,7 +472,7 @@ public final class Citations {
 
     /** List of citations declared in this class. */
     private static final Citation[] AUTHORITIES = {
-        OGC, OPEN_GIS, ESRI, ORACLE, GEOTOOLS, WMS, GEOTIFF, JAI, EPSG, AUTO, AUTO2, CRS, IAU
+        OGC, OPEN_GIS, ESRI, ORACLE, GEOTOOLS, WMS, GEOTIFF, JAI, EPSG, AUTO, AUTO2, CRS, IAU, PROJ
     };
 
     /**

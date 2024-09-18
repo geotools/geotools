@@ -32,11 +32,13 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.http.MockHttpResponse;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -149,6 +151,33 @@ public class WFSContentComplexFeatureSourceTest {
         try (FeatureIterator<Feature> features = collection.features()) {
             Assert.assertTrue(features.hasNext());
             Assert.assertNotNull(features.next());
+        }
+    }
+
+    @Test
+    public void testGetFeaturesSRSName() throws Exception {
+        final TestWFSClient client = createWFSClient(true);
+        final WFSContentDataAccess dataAccess = createDataAccess(client);
+        ((TestHttpClient) client.getHTTPClient())
+                .expectGet(
+                        new URL(
+                                "https://wfs.geonorge.no/skwms1/wfs.stedsnavn?FILTER=%3Cfes%3AFilter+xmlns%3Axs%3D%22http%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%22+xmlns%3Afes%3D%22http%3A%2F%2Fwww.opengis.net%2Ffes%2F2.0%22+xmlns%3Agml%3D%22http%3A%2F%2Fwww.opengis.net%2Fgml%2F3.2%22%3E%3Cfes%3APropertyIsEqualTo+matchAction%3D%22Any%22+matchCase%3D%22true%22%3E%3Cfes%3AValueReference%3Estedsnummer%3C%2Ffes%3AValueReference%3E%3Cfes%3ALiteral%3E1%3C%2Ffes%3ALiteral%3E%3C%2Ffes%3APropertyIsEqualTo%3E%3C%2Ffes%3AFilter%3E&REQUEST=GetFeature&RESULTTYPE=RESULTS&OUTPUTFORMAT=application%2Fgml%2Bxml%3B+version%3D3.2&SRSNAME=urn%3Aogc%3Adef%3Acrs%3AEPSG%3A%3A25833&VERSION=2.0.0&TYPENAMES=app%3ASted&SERVICE=WFS"),
+                        new MockHttpResponse(
+                                TestData.file(
+                                        TestHttpClient.class,
+                                        "KartverketNo/GetFeature_sted_25833.xml"),
+                                "text/xml"));
+        Query qry = new Query();
+        qry.setCoordinateSystem(CRS.decode("EPSG:25833"));
+        qry.setFilter(CQL.toFilter("stedsnummer=1"));
+
+        try (FeatureIterator<Feature> features =
+                dataAccess.getFeatureSource(STED_NAME).getFeatures(qry).features()) {
+            Assert.assertTrue(features.hasNext());
+            Feature feature = features.next();
+            Point pnt = (Point) feature.getProperty("posisjon").getValue();
+            Assert.assertEquals(60132.795, pnt.getX(), 0.1);
+            Assert.assertEquals(6532844.03, pnt.getY(), 0.1);
         }
     }
 

@@ -23,6 +23,8 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.api.data.DataAccess;
 import org.geotools.api.data.FeatureListener;
@@ -40,6 +42,7 @@ import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.WFSContentComplexFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.logging.Logging;
 
 /**
  * Combines the WFSClient and DataAccess objects and exposes methods to access the features by using
@@ -54,6 +57,8 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
 
     /** The data access object. */
     private WFSContentDataAccess dataAccess;
+
+    private static Logger LOGGER = Logging.getLogger(WFSContentComplexFeatureSource.class);
 
     /**
      * Initialises a new instance of the class WFSContentComplexFeatureSource.
@@ -99,8 +104,15 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         request.setPropertyNames(query.getPropertyNames());
         request.setSortBy(query.getSortBy());
 
-        String srsName = null;
-        request.setSrsName(srsName);
+        if (query.getCoordinateSystem() != null) {
+            request.findSupportedSrsName(query.getCoordinateSystem());
+            if (request.getSrsName() == null) {
+                LOGGER.log(
+                        Level.WARNING,
+                        "WFS doesn't support the coordinate system: "
+                                + query.getCoordinateSystem());
+            }
+        }
 
         return new WFSContentComplexFeatureCollection(request, schema, name, client);
     }

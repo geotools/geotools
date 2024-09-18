@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wfs:FeatureCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115 https://wfs.geonorge.no/skwms1/wfs.stedsnavn?SERVICE=WFS&amp;VERSION=2.0.0&amp;REQUEST=DescribeFeatureType&amp;OUTPUTFORMAT=text%2Fxml%3B+subtype%3Dgml%2F3.2.1&amp;TYPENAME=app:Sted&amp;NAMESPACES=xmlns(app,http%3A%2F%2Fskjema.geonorge.no%2FSOSI%2Fproduktspesifikasjon%2FStedsnavnForVanligBruk%2F20181115)" xmlns:wfs="http://www.opengis.net/wfs/2.0" timeStamp="2024-08-24T10:00:13Z" xmlns:gml="http://www.opengis.net/gml/3.2" numberMatched="unknown" numberReturned="0">
+  <!--NOTE: numberReturned attribute should be 'unknown' as well, but this would not validate against the current version of the WFS 2.0 schema (change upcoming). See change request (CR 144): https://portal.opengeospatial.org/files?artifact_id=43925.-->
+  <wfs:member>
+    <app:Sted xmlns:app="http://skjema.geonorge.no/SOSI/produktspesifikasjon/StedsnavnForVanligBruk/20181115" gml:id="1">
+      <app:identifikasjon>
+        <app:Identifikasjon>
+          <app:lokalId>1</app:lokalId>
+          <app:navnerom>https://data.geonorge.no/sosi/stedsnavn</app:navnerom>
+          <app:versjonId>20221201</app:versjonId>
+        </app:Identifikasjon>
+      </app:identifikasjon>
+      <app:oppdateringsdato>2020-02-14T23:13:20</app:oppdateringsdato>
+      <app:datauttaksdato>2024-08-23T02:45:44.783</app:datauttaksdato>
+      <app:posisjon>
+        <!--Inlined geometry '1_APP_POSISJON'-->
+        <gml:Point gml:id="1_APP_POSISJON" srsName="urn:ogc:def:crs:EPSG::25833">
+          <gml:pos>60132.795 6532844.030</gml:pos>
+        </gml:Point>
+      </app:posisjon>
+      <app:stedsnavn>
+        <app:Stedsnavn>
+          <app:offentligBruk>true</app:offentligBruk>
+          <app:navnesakstatus>ubehandlet</app:navnesakstatus>
+          <app:navnestatus>hovednavn</app:navnestatus>
+          <app:navnesaksstatusdato>1991-07-01T00:00:00</app:navnesaksstatusdato>
+          <app:språk>norsk</app:språk>
+          <app:stedsnavnnummer>1</app:stedsnavnnummer>
+          <app:skrivemåte>
+            <app:Skrivemåte>
+              <app:komplettskrivemåte>Stornesodden</app:komplettskrivemåte>
+              <app:skrivemåtestatus>godkjent</app:skrivemåtestatus>
+              <app:statusdato>1991-07-01</app:statusdato>
+              <app:skrivemåtenummer>1</app:skrivemåtenummer>
+            </app:Skrivemåte>
+          </app:skrivemåte>
+        </app:Stedsnavn>
+      </app:stedsnavn>
+      <app:land>Norge</app:land>
+      <app:navneobjekthovedgruppe>ferskvann</app:navneobjekthovedgruppe>
+      <app:navneobjektgruppe>ferskvannskontur</app:navneobjektgruppe>
+      <app:navneobjekttype>nes</app:navneobjekttype>
+      <app:sortering>viktighetF</app:sortering>
+      <app:språkprioritering>norsk-sørsamisk-lulesamisk-nordsamisk-kvensk</app:språkprioritering>
+      <app:stedsnummer>1</app:stedsnummer>
+      <app:kommune>
+        <app:Kommune>
+          <app:kommunenummer>4224</app:kommunenummer>
+          <app:kommunenavn>Åseral</app:kommunenavn>
+          <app:fylkesnummer>42</app:fylkesnummer>
+          <app:fylkesnavn>Agder</app:fylkesnavn>
+        </app:Kommune>
+      </app:kommune>
+    </app:Sted>
+  </wfs:member>
+</wfs:FeatureCollection>

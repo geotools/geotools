@@ -95,7 +95,7 @@ When creating the first release candidate of a series, there are some extra step
     git checkout main
     ant -f build/build.xml latest -Drelease=28-SNAPSHOT
 
-* Add a new section to the Dependabot configuration file, `.github/dependabot.yml`, of the main branch to ensure that the new stable branch (eg. ``27-SNAPSHOT``) is monitored for updates::
+* Edit the Dependabot configuration file, `.github/dependabot.yml`, increasing the 2 numbered target branches by one (eg. `27.x -> 28.x` and `26.x -> 27.x`) (leaving `main`) ::
 
       - package-ecosystem: 'github-actions'
         directory: '/'
@@ -121,19 +121,7 @@ When creating the first release candidate of a series, there are some extra step
     
     Even if you wish to continue build prior branches please disable the documentation builds.
 
-  * For the new stable branch create new jobs, duplicate from the existing ``stable`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
-    
-  * Special care is needed when setting up java11 build which uses `A`, `B`, `C`, ... groups.
-    
-    For example if the next group in the rotation is group ``A``:
-    
-    * Carefully set Multi-Project Throttle Category to the next available groups
-      
-      ``Build A``
-      
-    * Adjust custom workspace (used as a shared workspace and local maven repo location) to match the throttle category groups
-      
-      :file:`workspace/java11_27`
+  * For the new stable branch create new jobs, duplicate from the two existing ``stable`` jobs (geotools-27.x and geotools-27.x-docs), editing branch specifier to the new branch (e.g. `27.x` -> `28.x`)
 
 * Announce on the developer mailing list that the new stable branch has been created.
 
@@ -165,6 +153,7 @@ When creating the first release candidate of a series, there are some extra step
     git add .
     git commit -m "Change 26.x to archive branch"
     git push upstream 26.x
+
   
   This change will update the `pom.xml` series used to determine where documentation from the branch is published (or **not** published, if we ever have to create an emergency release for archived branches - so that the correct maintenance docs are not overwritten.)
 

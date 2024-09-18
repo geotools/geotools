@@ -3985,13 +3985,13 @@ public class WMSComplexTypes {
                     continue;
                 }
                 if (sameName(elems[0], value[i])) {
-                    Object[] formObj = (Object[]) value[0].getValue();
+                    Object[] formObj = (Object[]) value[i].getValue();
                     format =
                             (formObj == null || formObj.length == 0) ? null : (String) (formObj[0]);
                 }
 
                 if (sameName(elems[1], value[i])) {
-                    url = (URL) value[1].getValue();
+                    url = (URL) value[i].getValue();
                 }
             }
 
@@ -4817,8 +4817,19 @@ public class WMSComplexTypes {
         public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
                 throws SAXException, OperationNotSupportedException {
 
-            String legendURL = value[1].getValue() == null ? null : value[1].getValue().toString();
-            return legendURL;
+            for (ElementValue elementValue : value) {
+                if (elementValue.getValue() == null || elementValue.getElement() == null) {
+                    continue;
+                }
+                if (sameName(elems[1], elementValue)) {
+                    String legendURL =
+                            elementValue.getValue() == null
+                                    ? null
+                                    : elementValue.getValue().toString();
+                    return legendURL;
+                }
+            }
+            return null;
             // throw new OperationNotSupportedException();
         }
 

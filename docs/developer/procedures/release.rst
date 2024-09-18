@@ -95,7 +95,7 @@ When creating the first release candidate of a series, there are some extra step
     git checkout main
     ant -f build/build.xml latest -Drelease=28-SNAPSHOT
 
-* Add a new section to the Dependabot configuration file, `.github/dependabot.yml`, of the main branch to ensure that the new stable branch (eg. ``27-SNAPSHOT``) is monitored for updates::
+* Edit the Dependabot configuration file, `.github/dependabot.yml`, increasing the 2 numbered target branches by one (eg. `27.x -> 28.x` and `26.x -> 27.x`) (leaving `main`) ::
 
       - package-ecosystem: 'github-actions'
         directory: '/'
@@ -121,25 +121,13 @@ When creating the first release candidate of a series, there are some extra step
     
     Even if you wish to continue build prior branches please disable the documentation builds.
 
-  * For the new stable branch create new jobs, duplicate from the existing ``stable`` jobs, editing branch specifier to the new branch (e.g. `27.x`)
-    
-  * Special care is needed when setting up java11 build which uses `A`, `B`, `C`, ... groups.
-    
-    For example if the next group in the rotation is group ``A``:
-    
-    * Carefully set Multi-Project Throttle Category to the next available groups
-      
-      ``Build A``
-      
-    * Adjust custom workspace (used as a shared workspace and local maven repo location) to match the throttle category groups
-      
-      :file:`workspace/java11_27`
+  * For the new stable branch create new jobs, duplicate from the two existing ``stable`` jobs (geotools-27.x and geotools-27.x-docs), editing branch specifier to the new branch (e.g. `27.x` -> `28.x`)
 
 * Announce on the developer mailing list that the new stable branch has been created.
 
 * This is the time to update the README.md, README.html and documentation links
   
-  For the new `stable` branch, and the remote for the official GeoTools is called ``upstream``::
+  For the new `stable` branch, (assuming the git remote for the official GeoTools is called ``upstream``)::
   
     git checkout 28.x
     git pull
@@ -148,14 +136,14 @@ When creating the first release candidate of a series, there are some extra step
     git commit -m "Change 28.x to stable branch"
     git push upstream 28.x
 
-  For the new `maintenance` branch, and the remote for the official GeoTools is called ``upstream``::
+  For the new `maintenance` branch (which was the previous `stable` branch)::
   
-    git checkout 26.x
+    git checkout 27.x
     git pull
     ant -f build/build.xml maintenance
     git add .
-    git commit -m "Change 26.x to stable branch"
-    git push upstream 26.x
+    git commit -m "Change 27.x to maintenance branch"
+    git push upstream 27.x
   
   This change will update the `pom.xml` series used to determine where documentation from the branch is published.
 

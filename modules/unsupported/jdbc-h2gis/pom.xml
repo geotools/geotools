@@ -6,12 +6,12 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>32-SNAPSHOT</version>
+    <version>33-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools.jdbc</groupId>
   <artifactId>gt-jdbc-h2gis</artifactId>
-  <version>32-SNAPSHOT</version>
+  <version>33-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <!-- Project Information -->

@@ -18,7 +18,7 @@ package org.geotools.data.solr;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /** Apache Solr Type data model, for load type definition from XML */
 @XmlRootElement

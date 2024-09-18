@@ -37,7 +37,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.media.jai.PlanarImage;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.api.coverage.grid.GridEnvelope;

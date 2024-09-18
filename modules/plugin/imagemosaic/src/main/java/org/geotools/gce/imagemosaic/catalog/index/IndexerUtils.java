@@ -16,12 +16,12 @@
  */
 package org.geotools.gce.imagemosaic.catalog.index;
 
+import jakarta.xml.bind.JAXBException;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.JAXBException;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.SourceSPIProviderFactory;
 import org.geotools.gce.imagemosaic.Utils;

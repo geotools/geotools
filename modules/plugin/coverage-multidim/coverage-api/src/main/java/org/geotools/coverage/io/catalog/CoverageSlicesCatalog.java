@@ -31,6 +31,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.api.data.DataStore;
 import org.geotools.api.data.DataStoreFactorySpi;
 import org.geotools.api.data.FeatureStore;
@@ -216,11 +217,16 @@ public class CoverageSlicesCatalog {
             // Handle multiple typeNames
             if (params.containsKey(Utils.Prop.TYPENAME)) {
                 typeName = (String) params.get(Utils.Prop.TYPENAME);
-                if (typeName != null && typeName.contains(",")) {
-                    typeNamesValues = typeName.split(",");
+                if (!StringUtils.isEmpty(typeName)) {
+                    if (typeName.contains(",")) {
+                        typeNamesValues = typeName.split(",");
+                    } else {
+                        typeNamesValues = new String[] {typeName};
+                    }
                 }
             }
 
+            // if no type name was provided, then grab them from the underlying store
             if (typeNamesValues == null) {
                 typeNamesValues = slicesIndexStore.getTypeNames();
             }
@@ -229,14 +235,10 @@ public class CoverageSlicesCatalog {
                 for (String tn : typeNamesValues) {
                     this.typeNames.add(tn);
                 }
+                if (!this.typeNames.isEmpty()) extractBasicProperties(typeNames.iterator().next());
             } else if (typeName != null) {
-                addTypeName(typeName, false);
-            }
-
-            if (this.typeNames.isEmpty()) {
+                this.typeNames.add(typeName);
                 extractBasicProperties(typeName);
-            } else {
-                extractBasicProperties(typeNames.iterator().next());
             }
         } catch (Throwable e) {
             try {

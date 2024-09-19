@@ -703,6 +703,10 @@ public class AncillaryFileManager implements FileSetManager {
         }
     }
 
+    /**
+     * Returns the schema definition name for a given coverage (the schema definition name is not
+     * normally used in the database, which uses the coverage name instead)
+     */
     public String getTypeName(String coverageName) {
         return coveragesMapping.get(coverageName).getSchema().getName();
     }

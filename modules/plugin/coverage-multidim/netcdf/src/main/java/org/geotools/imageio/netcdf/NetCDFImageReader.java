@@ -564,7 +564,8 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         List<Name> coverages = ancillaryFileManager.getCoveragesNames();
         StringBuilder builder = new StringBuilder();
         for (Name coverage : coverages) {
-            builder.append(ancillaryFileManager.getTypeName(coverage.getLocalPart())).append(",");
+            // NetCDFImageReader#getIndexSchema creates schemas using the coverage name local part
+            builder.append(coverage.getLocalPart()).append(",");
         }
         String typeNames = builder.toString();
         typeNames = typeNames.substring(0, typeNames.length() - 1);

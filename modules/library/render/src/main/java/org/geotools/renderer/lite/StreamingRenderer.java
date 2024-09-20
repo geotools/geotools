@@ -3518,40 +3518,7 @@ public class StreamingRenderer implements GTRenderer {
                 // some shapes may be too close to projection boundaries to
                 // get transformed, try to be lenient
                 if (symbolizer instanceof PointSymbolizer) {
-                    // if the coordinate transformation will occurr in place on the coordinate
-                    // sequence
-                    if (!clone
-                            && g.getFactory().getCoordinateSequenceFactory()
-                                    instanceof LiteCoordinateSequenceFactory) {
-                        // if the symbolizer is a point symbolizer we first get the transformed
-                        // geometry to make sure the coordinates have been modified once, and then
-                        // compute the centroid in the screen space. This is a side effect of the
-                        // fact we're modifing the geometry coordinates directly, if we don't get
-                        // the reprojected and decimated geometry we risk of transforming it twice
-                        // when computing the centroid
-                        LiteShape2 first = getTransformedShape(g, sa, clone);
-                        if (first != null) {
-                            if (projectionHandler != null) {
-                                // at the same time, we cannot keep the geometry in screen space
-                                // because
-                                // that would prevent the advanced projection handling to do its
-                                // work,
-                                // to replicate the geometries across the datelines, so we transform
-                                // it back to the original
-                                Geometry tx =
-                                        JTS.transform(first.getGeometry(), sa.xform.inverse());
-                                return getTransformedShape(
-                                        RendererUtilities.getCentroid(tx), sa, clone);
-                            } else {
-                                return getTransformedShape(
-                                        RendererUtilities.getCentroid(g), null, clone);
-                            }
-                        } else {
-                            return null;
-                        }
-                    } else {
-                        return getTransformedShape(RendererUtilities.getCentroid(g), sa, clone);
-                    }
+                    return getPointSymbolizerShape(g, sa, clone);
                 } else {
                     return getTransformedShape(g, sa, clone);
                 }
@@ -3560,6 +3527,34 @@ public class StreamingRenderer implements GTRenderer {
                 fireErrorEvent(te);
                 return null;
             }
+        }
+
+        private LiteShape2 getPointSymbolizerShape(
+                Geometry g, SymbolizerAssociation sa, boolean clone)
+                throws TransformException, FactoryException {
+            // if the coordinate transformation will occurr in place on the coordinate sequence
+            if (clone
+                    || !(g.getFactory().getCoordinateSequenceFactory()
+                            instanceof LiteCoordinateSequenceFactory)
+                    || g instanceof Point)
+                return getTransformedShape(RendererUtilities.getCentroid(g), sa, clone);
+
+            // if the symbolizer is a point symbolizer we first get the transformed geometry to
+            // make sure the coordinates have been modified once, and then compute the centroid
+            // in the screen space. This is a side effect of the fact we're modifing the geometry
+            // coordinates directly, if we don't get the reprojected and decimated geometry we risk
+            // of transforming it twice when computing the centroid
+            LiteShape2 first = getTransformedShape(g, sa, clone);
+            if (first == null) return null;
+
+            if (projectionHandler == null)
+                return getTransformedShape(RendererUtilities.getCentroid(g), null, clone);
+
+            // at the same time, we cannot keep the geometry in screen space because that would
+            // prevent the advanced projection handling to do its work, to replicate the geometries
+            // across the datelines, so we transform it back to the original
+            Geometry tx = JTS.transform(first.getGeometry(), sa.xform.inverse());
+            return getTransformedShape(RendererUtilities.getCentroid(tx), sa, clone);
         }
 
         private int getGeometryIndex(Geometry g) {

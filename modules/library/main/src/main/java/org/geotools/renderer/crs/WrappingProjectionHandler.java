@@ -114,10 +114,13 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         if (geometry == null) {
             return null;
         }
+        // no need to check about size on point layers
+        if (geometry instanceof Point) return geometry;
+
         // if the object was already a large one, clone it and set the user data to indicate it was
         // if it was preflipped, clone it and set the user data to indicate it was
         // hopefully it will happen for few objects
-        final double width = getWidth(geometry.getEnvelopeInternal(), sourceCRS);
+        final double width = getWidth(geometry.getEnvelopeInternal(), sourceAxisOrder);
         if (width > sourceHalfCircle) {
             Geometry copy = geometry.copy();
             if (preflipped(width)) {
@@ -131,8 +134,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         return geometry;
     }
 
-    private double getWidth(Envelope envelope, CoordinateReferenceSystem crs) {
-        final boolean northEast = CRS.getAxisOrder(crs) == CRS.AxisOrder.NORTH_EAST;
+    private double getWidth(Envelope envelope, CRS.AxisOrder axisOrder) {
+        final boolean northEast = axisOrder == CRS.AxisOrder.NORTH_EAST;
         if (northEast) {
             return envelope.getHeight();
         } else {
@@ -144,8 +147,8 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     public Geometry postProcess(MathTransform mt, Geometry geometry) {
         // Let's check if the geometry is undoubtedly not going to need processing
         Envelope env = geometry.getEnvelopeInternal();
-        final double width = getWidth(env, targetCRS);
-        final double reWidth = getWidth(renderingEnvelope, targetCRS);
+        final double width = getWidth(env, targetAxisOrder);
+        final double reWidth = getWidth(renderingEnvelope, targetAxisOrder);
 
         // if it was large and still larger, or small and still small, it likely did not wrap
         if (width < targetHalfCircle

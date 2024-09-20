@@ -88,6 +88,9 @@ public class ProjectionHandler {
     /** The maximum number of coordinates to densify a geometry to. */
     private static final int DENSIFICATION_LIMIT = initDensificationLimit();
 
+    protected CRS.AxisOrder sourceAxisOrder;
+    protected CRS.AxisOrder targetAxisOrder;
+
     /** Parsing and validating the densification limit. */
     private static int initDensificationLimit() {
         String property = System.getProperty(DENSIFICATION_LIMIT_KEY);
@@ -241,6 +244,9 @@ public class ProjectionHandler {
         this.queryAcrossDateline =
                 !CRS.equalsIgnoreMetadata(
                         sourceCRS, renderingEnvelope.getCoordinateReferenceSystem());
+
+        this.sourceAxisOrder = CRS.getAxisOrder(sourceCRS);
+        this.targetAxisOrder = CRS.getAxisOrder(targetCRS);
     }
 
     /** Returns the current rendering envelope */
@@ -273,7 +279,7 @@ public class ProjectionHandler {
             List<ReferencedEnvelope> envelopes = new ArrayList<>();
             addTransformedEnvelope(re, envelopes);
 
-            if (CRS.getAxisOrder(renderingCRS) == CRS.AxisOrder.NORTH_EAST) {
+            if (targetAxisOrder == CRS.AxisOrder.NORTH_EAST) {
                 if (re.getMinY() >= -180.0 && re.getMaxY() <= 180) {
                     return envelopes;
                 }
@@ -689,7 +695,6 @@ public class ProjectionHandler {
         }
 
         Geometry mask;
-        // fast path for the rectangular case, more complex one for the non-rectangular one
         ReferencedEnvelope ge = new ReferencedEnvelope(geometry.getEnvelopeInternal(), geometryCRS);
         ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
         // if the size of the envelope is less than 1 meter (1e-6 in degrees) expand it a bit
@@ -775,7 +780,10 @@ public class ProjectionHandler {
      * <p>It returns the original geometry if densification is not enabled.
      */
     protected Geometry densify(Geometry geometry, boolean validate) {
-        if (geometry != null && densify > 0.0) {
+        if (geometry != null
+                && densify > 0.0
+                && !(geometry instanceof Point)
+                && !(geometry instanceof MultiPoint)) {
             try {
                 // does it make sense to densify to start with?
                 double length = geometry.getLength();

@@ -717,6 +717,18 @@ public class ReferencedEnvelope extends Envelope implements Bounds, BoundingBox 
                         "Unable to transform referenced envelope, crs has not yet been provided.");
             }
         }
+        if (!this.isEmpty() && this.getWidth() == 0 && this.getHeight() == 0) {
+            // single point envelope, no need to perform complex operations
+            CoordinateOperationFactory coordinateOperationFactory =
+                    CRS.getCoordinateOperationFactory(lenient);
+
+            final CoordinateOperation operation =
+                    coordinateOperationFactory.createOperation(crs, targetCRS);
+            double[] position = {getMinX(), getMinY()};
+            operation.getMathTransform().transform(position, 0, position, 0, 1);
+            return new ReferencedEnvelope(
+                    position[0], position[0], position[1], position[1], targetCRS);
+        }
         if (getDimension() != targetCRS.getCoordinateSystem().getDimension()) {
             if (lenient) {
                 return JTS.transformTo3D(this, targetCRS, lenient, numPointsForTransformation);

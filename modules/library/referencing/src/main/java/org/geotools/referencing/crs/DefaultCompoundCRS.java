@@ -267,7 +267,7 @@ public class DefaultCompoundCRS extends AbstractCRS implements CompoundCRS {
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-    public int hashCode() {
+    public int calculateHashCode() {
         // Don't call superclass method since 'coordinateSystem' and 'datum' may be null.
         return crs.hashCode() ^ (int) serialVersionUID;
     }

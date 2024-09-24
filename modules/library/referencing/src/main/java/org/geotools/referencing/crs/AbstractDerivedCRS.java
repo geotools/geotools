@@ -340,7 +340,7 @@ public class AbstractDerivedCRS extends AbstractSingleCRS implements GeneralDeri
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-    public int hashCode() {
+    public int calculateHashCode() {
         /*
          * Do not invoke 'conversionFromBase.hashCode()' in order to avoid a never-ending loop.
          * This is because Conversion has a 'sourceCRS' field (in the AbstractCoordinateOperation

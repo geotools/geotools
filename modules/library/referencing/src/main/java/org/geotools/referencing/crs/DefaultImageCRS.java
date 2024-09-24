@@ -104,7 +104,7 @@ public class DefaultImageCRS extends AbstractSingleCRS implements ImageCRS {
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-    public int hashCode() {
-        return (int) serialVersionUID ^ super.hashCode();
+    public int calculateHashCode() {
+        return (int) serialVersionUID ^ super.calculateHashCode();
     }
 }

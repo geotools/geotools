@@ -51,6 +51,9 @@ public abstract class AbstractCRS extends AbstractReferenceSystem
     /** The coordinate system. */
     protected final CoordinateSystem coordinateSystem;
 
+    // Lazily initialized, cached hashCode (see "Effective Java", Item 71)
+    private volatile int hashCode;
+
     /**
      * Constructs a new coordinate reference system with the same values than the specified one.
      * This copy constructor provides a way to wrap an arbitrary implementation into a Geotools one
@@ -161,7 +164,17 @@ public abstract class AbstractCRS extends AbstractReferenceSystem
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-    public int hashCode() {
+    public final int hashCode() {
+        int result = hashCode;
+        if (result == 0) {
+            result = calculateHashCode();
+            hashCode = result;
+        }
+        return result;
+    }
+
+    /** Subclasses should override and compute hash code. See also {@link #hashCode()}. */
+    protected int calculateHashCode() {
         return (int) serialVersionUID ^ coordinateSystem.hashCode();
     }
 

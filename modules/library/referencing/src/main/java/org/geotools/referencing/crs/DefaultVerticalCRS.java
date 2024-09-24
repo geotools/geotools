@@ -150,8 +150,8 @@ public class DefaultVerticalCRS extends AbstractSingleCRS implements VerticalCRS
      */
     @Override
     @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-    public int hashCode() {
-        return (int) serialVersionUID ^ super.hashCode();
+    public int calculateHashCode() {
+        return (int) serialVersionUID ^ super.calculateHashCode();
     }
 
     /**

@@ -3,6 +3,7 @@ package org.geotools.renderer.label;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -85,18 +86,8 @@ public class LabelCacheImplTest {
         ts.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f2,
-                new LiteShape2((Geometry) f2.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, ts, f1);
+        addToCache(cache, ts, f2);
 
         // we have just one
         List<LabelCacheItem> labels = cache.getActiveLabels();
@@ -115,18 +106,8 @@ public class LabelCacheImplTest {
 
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
-        cache.put(
-                LAYER_ID,
-                ts1,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
-        cache.put(
-                LAYER_ID,
-                ts2,
-                f2,
-                new LiteShape2((Geometry) f2.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, ts1, f1);
+        addToCache(cache, ts2, f2);
 
         // two different symbolizers, we should have two
         List<LabelCacheItem> labels = cache.getActiveLabels();
@@ -142,24 +123,9 @@ public class LabelCacheImplTest {
         SimpleFeature f1 = createFeature("label1", L1);
         SimpleFeature f2 = createFeature("label1", L2);
         SimpleFeature f3 = createFeature("label1", L3);
-        cache.put(
-                LAYER_ID,
-                tsGroup,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f2,
-                new LiteShape2((Geometry) f2.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
-        cache.put(
-                LAYER_ID,
-                tsGroup,
-                f3,
-                new LiteShape2((Geometry) f3.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, tsGroup, f1);
+        addToCache(cache, ts, f2);
+        addToCache(cache, tsGroup, f3);
 
         // two different symbolizers, we should have two (the first grouped with the third)
         List<LabelCacheItem> labels = cache.getActiveLabels();
@@ -199,12 +165,7 @@ public class LabelCacheImplTest {
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
         SimpleFeature f1 = createFeature("label1", L1);
         myCache.enableLayer(LAYER_ID);
-        myCache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(myCache, ts, f1);
 
         myCache.endLayer(LAYER_ID, graphics, new Rectangle(0, 0, 256, 256));
         myCache.end(graphics, new Rectangle(0, 0, 256, 256));
@@ -232,12 +193,7 @@ public class LabelCacheImplTest {
                 };
         cache.addRenderListener(listener);
         SimpleFeature f1 = createFeature("label1", L1);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, ts, f1);
         cache.endLayer("layerId", null, null);
         TestGraphics testGraphics = new TestGraphics();
         testGraphics.setRenderingHints(Collections.emptyMap());
@@ -254,12 +210,7 @@ public class LabelCacheImplTest {
         cache.setConstructPainter((x, y) -> painter);
         TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
         SimpleFeature f1 = createFeature("label1", L1);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, ts, f1);
 
         cache.endLayer(LAYER_ID, graphics, new Rectangle(0, 0, 256, 256));
         cache.end(graphics, new Rectangle(0, 0, 256, 256));
@@ -291,12 +242,7 @@ public class LabelCacheImplTest {
                 };
         cache.addRenderListener(listener);
         SimpleFeature f1 = createFeature("label1", L4);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, ts, f1);
         cache.endLayer("layerId", null, null);
         BufferedImage bi = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = bi.createGraphics();
@@ -315,12 +261,7 @@ public class LabelCacheImplTest {
 
         // put in cache
         SimpleFeature f1 = createFeature("label1", L4);
-        cache.put(
-                LAYER_ID,
-                ts,
-                f1,
-                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
-                ALL_SCALES);
+        addToCache(cache, ts, f1);
 
         // check autowrap got disabled
         List<LabelCacheItem> items = cache.getActiveLabels();
@@ -341,5 +282,35 @@ public class LabelCacheImplTest {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    public void testSymbolizerCaching() throws Exception {
+        // these two right now are not compatible
+        Font font = sb.createFont("Bitstream Vera Sans", 12);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
+
+        // put in cache
+        SimpleFeature f1 = createFeature("label1", L4);
+        addToCache(cache, ts, f1);
+        SimpleFeature f2 = createFeature("label2", L4);
+        addToCache(cache, ts, f2);
+
+        // check TextStyle2D got cached
+        List<LabelCacheItem> items = cache.getActiveLabels();
+        assertEquals(2, items.size());
+        assertEquals("label1", items.get(0).getLabel());
+        assertEquals("label2", items.get(1).getLabel());
+        assertSame(items.get(0).getTextStyle(), items.get(1).getTextStyle());
+    }
+
+    private void addToCache(LabelCacheImpl cache, TextSymbolizer ts, SimpleFeature f1)
+            throws TransformException, FactoryException {
+        cache.put(
+                LAYER_ID,
+                ts,
+                f1,
+                new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null, false),
+                ALL_SCALES);
     }
 }

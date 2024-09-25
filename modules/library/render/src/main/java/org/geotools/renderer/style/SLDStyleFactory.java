@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -107,10 +108,6 @@ public class SLDStyleFactory {
     /** Holds a lookup bewteen SLD names and java constants. */
     private static final java.util.Map<String, Integer> CAP_LOOKUP = new java.util.HashMap<>();
 
-    /** Holds a lookup bewteen SLD names and java constants. */
-    private static final java.util.Map<String, Integer> FONT_STYLE_LOOKUP =
-            new java.util.HashMap<>();
-
     /** Holds a lookup bewteen alpha composite names and AlphaComposite constants. */
     private static final java.util.Map<String, Integer> ALPHA_COMPOSITE_LOOKUP =
             new java.util.LinkedHashMap<>();
@@ -126,6 +123,14 @@ public class SLDStyleFactory {
      */
     public static final int DEFAULT_MARK_SIZE = 16;
 
+    public static final String FONT_NORMAL = "normal";
+
+    public static final String FONT_ITALIC = "italic";
+
+    public static final String FONT_OBLIQUE = "oblique";
+
+    public static final String FONT_BOLD = "bold";
+
     static { // static block to populate the lookups
         JOIN_LOOKUP.put("miter", Integer.valueOf(BasicStroke.JOIN_MITER));
         JOIN_LOOKUP.put("bevel", Integer.valueOf(BasicStroke.JOIN_BEVEL));
@@ -134,11 +139,6 @@ public class SLDStyleFactory {
         CAP_LOOKUP.put("butt", Integer.valueOf(BasicStroke.CAP_BUTT));
         CAP_LOOKUP.put("round", Integer.valueOf(BasicStroke.CAP_ROUND));
         CAP_LOOKUP.put("square", Integer.valueOf(BasicStroke.CAP_SQUARE));
-
-        FONT_STYLE_LOOKUP.put("normal", Integer.valueOf(java.awt.Font.PLAIN));
-        FONT_STYLE_LOOKUP.put("italic", Integer.valueOf(java.awt.Font.ITALIC));
-        FONT_STYLE_LOOKUP.put("oblique", Integer.valueOf(java.awt.Font.ITALIC));
-        FONT_STYLE_LOOKUP.put("bold", Integer.valueOf(java.awt.Font.BOLD));
 
         ALPHA_COMPOSITE_LOOKUP.put("copy", AlphaComposite.SRC);
         ALPHA_COMPOSITE_LOOKUP.put("destination", AlphaComposite.DST);
@@ -805,20 +805,21 @@ public class SLDStyleFactory {
      * @return The first of the specified fonts found on this machine (Serif 10 if none found)
      */
     private java.awt.Font[] getFonts(Object feature, List<Font> fonts, TextSymbolizer symbolizer) {
-
         List<java.awt.Font> result = new ArrayList<>();
         // try to build a font using the full spec
         if (fonts != null) {
             for (Font curr : fonts) {
+                Map<TextAttribute, Object> fontAttributes =
+                        getFontAttributes(feature, curr, symbolizer);
                 for (Expression family : curr.getFamily()) {
                     List<String> fontNames = evalToList(family, feature, null);
                     if (fontNames != null) {
                         for (String fontName : fontNames) {
-                            collectFont(feature, symbolizer, result, curr, fontName);
+                            collectFont(result, fontName, fontAttributes);
                         }
                     } else {
                         String requestedFont = evalToString(family, feature, null);
-                        collectFont(feature, symbolizer, result, curr, requestedFont);
+                        collectFont(result, requestedFont, fontAttributes);
                     }
                 }
             }
@@ -827,9 +828,11 @@ public class SLDStyleFactory {
         if (result.isEmpty()) {
             java.awt.Font font = new java.awt.Font("Serif", java.awt.Font.PLAIN, 12);
             if (fonts != null && !fonts.isEmpty()) {
-                font = styleFont(feature, fonts.get(0), font, symbolizer);
+                Map<TextAttribute, Object> attributes =
+                        getFontAttributes(feature, fonts.get(0), symbolizer);
+                font = font.deriveFont(attributes);
             } else {
-                font = applyKerning(font);
+                font = font.deriveFont(Map.of(TextAttribute.KERNING, TextAttribute.KERNING_ON));
             }
             result.add(font);
         }
@@ -838,72 +841,49 @@ public class SLDStyleFactory {
     }
 
     private void collectFont(
-            Object feature,
-            TextSymbolizer symbolizer,
             List<java.awt.Font> result,
-            Font curr,
-            String requestedFont) {
+            String requestedFont,
+            Map<TextAttribute, Object> fontAttributes) {
         java.awt.Font javaFont = FontCache.getDefaultInstance().getFont(requestedFont);
-
         if (javaFont != null) {
-            java.awt.Font font = styleFont(feature, curr, javaFont, symbolizer);
-            result.add(font);
+            result.add(javaFont.deriveFont(fontAttributes));
         }
     }
 
-    private java.awt.Font applyKerning(java.awt.Font font) {
-        return font.deriveFont(
-                Collections.singletonMap(TextAttribute.KERNING, TextAttribute.KERNING_ON));
-    }
-
-    private java.awt.Font applySpacing(java.awt.Font font, double spacing) {
-        // tracking is a percentage of the font size
-        double tracking = spacing / font.getSize();
-        return font.deriveFont(Collections.singletonMap(TextAttribute.TRACKING, tracking));
-    }
-
-    private java.awt.Font styleFont(
-            Object feature, Font curr, java.awt.Font javaFont, TextSymbolizer symbolizer) {
-        String reqStyle = evalToString(curr.getStyle(), feature, null);
-
-        int styleCode;
-
-        if (FONT_STYLE_LOOKUP.containsKey(reqStyle)) {
-            styleCode = FONT_STYLE_LOOKUP.get(reqStyle).intValue();
-        } else {
-            styleCode = java.awt.Font.PLAIN;
+    private Map<TextAttribute, Object> getFontAttributes(
+            Object feature, Font sldFont, TextSymbolizer symbolizer) {
+        Map<TextAttribute, Object> attributes = new HashMap<>();
+        String reqStyle = evalToString(sldFont.getStyle(), feature, null);
+        if (FONT_ITALIC.equals(reqStyle) || FONT_OBLIQUE.equals(reqStyle)) {
+            attributes.put(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
         }
 
-        String reqWeight = evalToString(curr.getWeight(), feature, null);
-
-        if ("Bold".equalsIgnoreCase(reqWeight)) {
-            styleCode = styleCode | java.awt.Font.BOLD;
+        String reqWeight = evalToString(sldFont.getWeight(), feature, null);
+        if (FONT_BOLD.equalsIgnoreCase(reqWeight)) {
+            attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
         }
 
-        float size = evalToFloat(curr.getSize(), feature, 10);
-
-        // apply basic styling
-        javaFont = javaFont.deriveFont(styleCode, size);
+        float size = evalToFloat(sldFont.getSize(), feature, 10);
+        attributes.put(TextAttribute.SIZE, size);
 
         // check vendor options
         boolean kerning =
                 voParser.getBooleanOption(
-                        symbolizer,
-                        org.geotools.api.style.TextSymbolizer.KERNING_KEY,
-                        org.geotools.api.style.TextSymbolizer.DEFAULT_KERNING);
+                        symbolizer, TextSymbolizer.KERNING_KEY, TextSymbolizer.DEFAULT_KERNING);
         if (kerning) {
-            javaFont = applyKerning(javaFont);
+            attributes.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
         }
         double spacing =
                 voParser.getDoubleOption(
                         symbolizer,
-                        org.geotools.api.style.TextSymbolizer.CHAR_SPACING_KEY,
-                        org.geotools.api.style.TextSymbolizer.DEFAULT_CHAR_SPACING);
+                        TextSymbolizer.CHAR_SPACING_KEY,
+                        TextSymbolizer.DEFAULT_CHAR_SPACING);
         if (spacing != 0) {
-            javaFont = applySpacing(javaFont, spacing);
+            // tracking is a percentage of the font size
+            double tracking = spacing / size;
+            attributes.put(TextAttribute.TRACKING, tracking);
         }
-
-        return javaFont;
+        return attributes;
     }
 
     void setScaleRange(Style style, Range scaleRange) {

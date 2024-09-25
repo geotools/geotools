@@ -19,8 +19,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.opengis.ows11.AllowedValuesType;
@@ -221,8 +223,10 @@ public class WMTSCapabilities extends Capabilities {
         ReferencedEnvelope wgs84Env = new ReferencedEnvelope(wmtsLayer.getLatLonBoundingBox());
 
         Map<String, TileMatrixSetLink> tileMatrixLinks = wmtsLayer.getTileMatrixLinks();
+        Iterator<Entry<String, TileMatrixSetLink>> iterator = tileMatrixLinks.entrySet().iterator();
         // add a bbox for every CRS
-        for (TileMatrixSetLink tmsLink : tileMatrixLinks.values()) {
+        while (iterator.hasNext()) {
+            TileMatrixSetLink tmsLink = iterator.next().getValue();
             String tmsIdentifier = tmsLink.getIdentifier();
             TileMatrixSet tms = matrixSetMap.get(tmsIdentifier);
             if (tms == null) {
@@ -230,7 +234,7 @@ public class WMTSCapabilities extends Capabilities {
                         String.format(
                                 "WMTS capabilities for layer %s specified a TileMatrixSet link %s that doesn't exist.",
                                 wmtsLayer.getName(), tmsIdentifier));
-                tileMatrixLinks.remove(tmsIdentifier);
+                iterator.remove();
                 continue;
             }
             CoordinateReferenceSystem tmsCRS = tms.getCoordinateReferenceSystem();

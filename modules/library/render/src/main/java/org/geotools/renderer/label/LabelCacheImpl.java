@@ -16,6 +16,9 @@
  */
 package org.geotools.renderer.label;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -40,11 +43,14 @@ import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.api.feature.Feature;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.TextSymbolizer;
 import org.geotools.api.style.TextSymbolizer.GraphicPlacement;
 import org.geotools.api.style.TextSymbolizer.PolygonAlignOptions;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
@@ -98,6 +104,10 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
  * @author Andrea Aime - OpenGeo
  */
 public class LabelCacheImpl implements LabelCache {
+
+    static FilterFactory FF = CommonFactoryFinder.getFilterFactory();
+
+    static StyleFactory SF = CommonFactoryFinder.getStyleFactory();
 
     static final boolean DEBUG_CACHE_BOUNDS =
             Boolean.getBoolean("org.geotools.labelcache.showbounds");
@@ -161,6 +171,44 @@ public class LabelCacheImpl implements LabelCache {
     static final double[] LEFT_DOWN_ANCHOR_CANDIDATES = {1, 1, 1, 0.5};
 
     protected LabelRenderingMode labelRenderingMode = LabelRenderingMode.STRING;
+
+    // SLDStyleFactory caches by identity, we have to re-use the same labellels equivalent
+    LoadingCache<TextSymbolizer, TextSymbolizer> labellessCache =
+            CacheBuilder.newBuilder()
+                    .softValues()
+                    .build(
+                            new CacheLoader<TextSymbolizer, TextSymbolizer>() {
+
+                                @Override
+                                public TextSymbolizer load(TextSymbolizer orig) throws Exception {
+                                    return labelless(orig);
+                                }
+                            });
+
+    /**
+     * Makes a shallow copy of the TextSymbolizer with the parts that are managed by the LabelItem
+     * anyways, making the result easier to cache as "static" in SLDStyleFactory
+     */
+    private static TextSymbolizer labelless(TextSymbolizer orig) {
+        TextSymbolizer copy = SF.createTextSymbolizer();
+        copy.setDescription(orig.getDescription());
+        copy.setFill(orig.getFill());
+        if (orig.fonts() != null) copy.fonts().addAll(orig.fonts());
+        copy.setGeometryPropertyName(orig.getGeometryPropertyName());
+        copy.setHalo(orig.getHalo());
+        // label skipped intentionally
+        copy.setLabelPlacement(orig.getLabelPlacement());
+        copy.setName(orig.getName());
+        copy.setUnitOfMeasure(orig.getUnitOfMeasure());
+        // priority skipped intentionally
+        copy.setGraphic(orig.getGraphic());
+        copy.setOtherText(orig.getOtherText());
+        copy.setFeatureDescription(orig.getFeatureDescription());
+        copy.setSnippet(orig.getSnippet());
+        if (orig.getOptions() != null) copy.getOptions().putAll(orig.getOptions());
+
+        return copy;
+    }
 
     protected SLDStyleFactory styleFactory = new SLDStyleFactory();
 
@@ -356,7 +404,9 @@ public class LabelCacheImpl implements LabelCache {
             String label,
             double priorityValue) {
         TextStyle2D textStyle =
-                (TextStyle2D) styleFactory.createStyle(feature, symbolizer, scaleRange);
+                (TextStyle2D)
+                        styleFactory.createStyle(
+                                feature, labellessCache.getUnchecked(symbolizer), scaleRange);
 
         LabelCacheItem item = new LabelCacheItem(layerId, textStyle, shape, label, symbolizer);
         item.setPriority(priorityValue);

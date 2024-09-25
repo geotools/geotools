@@ -311,13 +311,20 @@ public class TextSymbolizerImpl extends AbstractSymbolizer implements TextSymbol
             TextSymbolizerImpl copy = new TextSymbolizerImpl();
             copy.setDescription(textSymbolizer.getDescription());
             copy.setFill(textSymbolizer.getFill());
-            copy.setFont(textSymbolizer.getFont());
+            if (textSymbolizer.fonts() != null) copy.fonts().addAll(textSymbolizer.fonts());
             copy.setGeometryPropertyName(textSymbolizer.getGeometryPropertyName());
             copy.setHalo(textSymbolizer.getHalo());
             copy.setLabel(textSymbolizer.getLabel());
             copy.setLabelPlacement(textSymbolizer.getLabelPlacement());
             copy.setName(textSymbolizer.getName());
             copy.setUnitOfMeasure(textSymbolizer.getUnitOfMeasure());
+            copy.setPriority(textSymbolizer.getPriority());
+            copy.setGraphic(textSymbolizer.getGraphic());
+            copy.setOtherText(textSymbolizer.getOtherText());
+            copy.setFeatureDescription(textSymbolizer.getFeatureDescription());
+            copy.setSnippet(textSymbolizer.getSnippet());
+            if (textSymbolizer.getOptions() != null)
+                copy.getOptions().putAll(textSymbolizer.getOptions());
 
             return copy;
         }

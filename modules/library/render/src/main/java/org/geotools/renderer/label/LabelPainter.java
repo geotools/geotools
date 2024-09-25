@@ -850,11 +850,12 @@ public class LabelPainter {
      * descent. This method tries to computes the y anchor taking into account those.
      */
     public double getLinePlacementYAnchor() {
-        TextStyle2D textStyle = getLabel().getTextStyle();
+        LabelCacheItem item = getLabel();
+        TextStyle2D textStyle = item.getTextStyle();
         LineMetrics lm =
                 textStyle
                         .getFont()
-                        .getLineMetrics(textStyle.getLabel(), graphics.getFontRenderContext());
+                        .getLineMetrics(item.getLabel(), graphics.getFontRenderContext());
 
         // gracefully handle font size = 0
         if (lm.getHeight() > 0) {

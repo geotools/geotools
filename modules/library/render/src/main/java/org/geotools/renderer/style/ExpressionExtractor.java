@@ -23,6 +23,7 @@ import org.geotools.api.filter.expression.Expression;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.util.SoftValueHashMap;
 
 /**
  * Helper class that allows the extraction of CQL expressions out of a plain text string using
@@ -54,6 +55,10 @@ import org.geotools.filter.text.ecql.ECQL;
  */
 public class ExpressionExtractor {
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+    static final int EXPRESSION_CACHE_HARD_REFERENCES = 1000;
+    // cache for the CQL expressions (thread safe)
+    static final SoftValueHashMap<String, Expression> EXPRESSION_CACHE =
+            new SoftValueHashMap<>(EXPRESSION_CACHE_HARD_REFERENCES);
 
     /**
      * Parses the original string and returns an array or parsed expressions, in particular, the
@@ -143,6 +148,16 @@ public class ExpressionExtractor {
      * how to build the expression in string form
      */
     public static Expression extractCqlExpressions(String expression) {
-        return catenateExpressions(splitCqlExpressions(expression));
+        Expression result = EXPRESSION_CACHE.get(expression);
+        if (result == null) {
+            result = catenateExpressions(splitCqlExpressions(expression));
+            EXPRESSION_CACHE.put(expression, result);
+        }
+        return result;
+    }
+
+    /** Clears the CQL expression cache */
+    public static void cleanExpressionCache() {
+        EXPRESSION_CACHE.clear();
     }
 }

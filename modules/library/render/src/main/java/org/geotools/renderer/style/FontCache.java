@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Lookup and caches font definitions for faster retrieval
@@ -254,19 +255,43 @@ public class FontCache {
     public List<String> getAlternatives(String name) {
         List<String> result = alternatives.get(name);
         if (result == null) {
-            result =
-                    FontCache.getDefaultInstance().getAvailableFonts().stream()
-                            .filter(f -> f.startsWith(name))
-                            .filter(
-                                    f -> { // leave out alterations, use base fonts
-                                        String lc = f.toLowerCase();
-                                        return !lc.contains(" bold") && !lc.contains(" italic");
-                                    })
-                            .sorted() // leave further altered fonts down the line, base ones first
-                            .collect(Collectors.toList());
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            result = new ArrayList<>();
+            // load first local fonts
+            for (Font font : loadedFonts.values()) {
+                collectAlternative(name, font.getName(), result);
+            }
+            // then system fonts
+            Font[] fonts = ge.getAllFonts();
+            for (Font font : fonts) {
+                collectAlternative(name, font.getName(), result);
+            }
+            // leave further altered fonts down the line, base ones first
+            Collections.sort(result);
             alternatives.put(name, result);
         }
 
         return result;
+    }
+
+    /**
+     * Collects alternatives to font names, skipping the ones that are related to rendering
+     *
+     * @param name
+     * @param fontName
+     * @param result
+     */
+    static void collectAlternative(String name, String fontName, List<String> result) {
+        if (fontName.startsWith(name)) {
+            String lowExtension = fontName.substring(name.length()).toLowerCase();
+            // skip all alterations
+            if (!lowExtension.contains("black")
+                    && !lowExtension.contains("medium")
+                    && !lowExtension.contains("bold")
+                    && !lowExtension.contains("italic")
+                    && !lowExtension.contains("thin")
+                    && !lowExtension.contains("condensed")
+                    && !lowExtension.contains("light")) result.add(fontName);
+        }
     }
 }

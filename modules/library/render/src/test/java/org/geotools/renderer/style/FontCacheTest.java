@@ -22,8 +22,10 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.List;
 import org.geotools.renderer.lite.StreamingRendererTest;
 import org.junit.After;
@@ -63,5 +65,21 @@ public class FontCacheTest {
     private Font loadFont(String fontName) {
         return FontCache.loadFromUrl(
                 StreamingRendererTest.class.getResource("test-data/" + fontName).toExternalForm());
+    }
+
+    @Test
+    public void testFontAlternatives() {
+        String baseName = "Noto Sans";
+        List<String> alternatives = new ArrayList<>();
+        FontCache.collectAlternative(baseName, "Noto Sans Regular", alternatives);
+        FontCache.collectAlternative(baseName, "Noto Sans Arabic Regular", alternatives);
+        FontCache.collectAlternative(baseName, "Noto Sans Arabic Black", alternatives);
+        FontCache.collectAlternative(baseName, "Noto Sans Arabic SemiBold", alternatives);
+        FontCache.collectAlternative(baseName, "Noto Sans SemiBold", alternatives);
+        FontCache.collectAlternative(baseName, "Noto Sans Armenian", alternatives);
+        FontCache.collectAlternative(baseName, "Noto Sans Armenian Thin", alternatives);
+        List<String> expected =
+                List.of("Noto Sans Regular", "Noto Sans Arabic Regular", "Noto Sans Armenian");
+        assertEquals(expected, alternatives);
     }
 }

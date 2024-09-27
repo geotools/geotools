@@ -262,7 +262,7 @@ public class CRSLab {
                 Geometry geom = (Geometry) feature.getDefaultGeometry();
                 if (geom != null && !geom.isValid()) {
                     numInvalidGeometries++;
-                    System.out.println("Invalid Geoemtry: " + feature.getID());
+                    System.out.println("Invalid geometry: " + feature.getID());
                 }
             }
         }

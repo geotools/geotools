@@ -534,7 +534,7 @@ public class BandMerge extends OperationJAI {
     /** This method is used for setting the final image layout. */
     private void updateLayout(
             final BandMergeParams parameters, ImageLayout layout, ReferencedEnvelope bbox) {
-        // Creation of a GridGeoemtry with the selected BBOX and the defined World2Grid
+        // Creation of a GridGeometry with the selected BBOX and the defined World2Grid
         // transformation
         GridGeometry2D gg2D =
                 new GridGeometry2D(PixelInCell.CELL_CORNER, parameters.gridToCRS, bbox, null);

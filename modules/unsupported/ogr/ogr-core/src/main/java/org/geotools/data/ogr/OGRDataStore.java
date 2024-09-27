@@ -306,7 +306,7 @@ public class OGRDataStore extends ContentDataStore {
                     for (int i = 0; i < schema.getAttributeCount(); i++) {
                         Object value = feature.getAttribute(i);
                         if (value instanceof Geometry) {
-                            // using setGeoemtryDirectly the feature becomes the owner of the
+                            // using setGeometryDirectly the feature becomes the owner of the
                             // generated
                             // OGR geometry and we don't have to .delete() it (it's faster, too)
                             Object geometry = geomMapper.parseGTGeometry((Geometry) value);

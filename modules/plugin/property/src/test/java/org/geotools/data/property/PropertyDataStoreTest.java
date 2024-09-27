@@ -602,7 +602,7 @@ public class PropertyDataStoreTest {
      * In response to <a href="http://jira.codehaus.org/browse/GEOT-3540">GEOT-3540
      * PropertyDataStore doesn't support empty trailing spaces</a>.
      *
-     * <p>Table with no geoemtry, containing null and empty strings at end of line
+     * <p>Table with no geometry, containing null and empty strings at end of line.
      */
     @Test
     public void testTable() throws Exception {

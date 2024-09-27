@@ -13,7 +13,7 @@ Query Hints
 
 The GeoTools Hints system can be used to configure a DataStore for use by an application. This is often done to speed things up by providing the Factories that the DataStore will use during the course of its operation.
 
-As an example a ``CurvedGeoemtryFactory`` with a specific tolerance can be passed in to aid in parsing WKT containing arcs:
+As an example a ``CurvedGeometryFactory`` with a specific tolerance can be passed in to aid in parsing WKT containing arcs:
 
 .. code-block:: java
    

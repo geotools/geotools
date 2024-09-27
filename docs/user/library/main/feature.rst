@@ -206,7 +206,7 @@ Using a ``TypeFactory``::
   Name name = new NameImpl( new URI("http://localhost/"), "Flag" );
   InternationalString description = new SimpleInternationalString("A Flag used to place a marker on the world");
   
-  AttributeDescriptor defaultGeoemtry = typeFactory.createAttributeDescriptor(GEOM, geomName, 1, 1, true, null );
+  AttributeDescriptor defaultGeometry = typeFactory.createAttributeDescriptor(GEOM, geomName, 1, 1, true, null );
   
   List<AttributeDescriptor> types = new ArrayList<AttributeDescriptor>();
   types.add( defaultGeometry );

@@ -836,7 +836,7 @@ public class SimpleFeatureTypeBuilder {
                         LOGGER.warning(
                                 "Default Geometry "
                                         + this.defaultGeometry
-                                        + " was added as a geoemtry");
+                                        + " was added as a geometry");
                         attributeBuilder.init(att);
                         attributeBuilder.setCRS(defaultCrs);
                         GeometryType type = attributeBuilder.buildGeometryType();

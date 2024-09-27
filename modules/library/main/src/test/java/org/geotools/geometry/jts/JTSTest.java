@@ -215,7 +215,7 @@ public class JTSTest extends JTSTestBase {
     }
 
     @Test
-    public void testToGeoemtry() {
+    public void testToGeometry() {
         DefaultGeographicCRS crs = DefaultGeographicCRS.WGS84;
 
         // straight up

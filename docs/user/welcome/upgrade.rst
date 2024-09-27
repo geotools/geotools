@@ -2346,7 +2346,7 @@ Here are the steps to follow to update your own code:
    BEFORE::
 
      filter = filterFactory.createCompareFilter(FilterType.COMPARE_EQUALS)
-     filter.setLeftGeoemtry( expr1 );
+     filter.setLeftGeometry( expr1 );
      filter.setRightGeometry( expr3 );
 
    AFTER::

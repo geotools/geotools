@@ -276,7 +276,7 @@ There are some book keeping methods to help discovery how the geometry was const
 * ``getGeometryFactory()`` 
 * ``getPreceisionModel()`` 
 * ``toText()`` - the WKT representation of the Geometry
-* ``getGeoemtryType()`` - factory method called (i.e. ``point``, ``linestring``, etc..)
+* ``getGeometryType()`` - factory method called (i.e. ``point``, ``linestring``, etc..)
 
 A couple of methods are there to store your developer information:
 

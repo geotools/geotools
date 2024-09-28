@@ -375,7 +375,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         q.setFilter(f);
         q.setPropertyNames("weight");
         try (VectorMosaicFeatureReader featureReader =
-                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+                (VectorMosaicFeatureReader) featureSource.getReader(q)) {
             if (featureReader.hasNext()) {
                 String granuleAttributes =
                         featureReader.rawGranule.getType().getDescriptors().stream()
@@ -396,7 +396,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         q.setFilter(f);
         q.setPropertyNames("rank");
         try (VectorMosaicFeatureReader featureReader =
-                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+                (VectorMosaicFeatureReader) featureSource.getReader(q)) {
             if (featureReader.hasNext()) {
                 String delegateAttributes =
                         featureReader.delegateFeature.getType().getDescriptors().stream()
@@ -418,7 +418,7 @@ public class VectorMosaicFeatureSourceTest extends VectorMosaicTest {
         q.setFilter(f);
         q.setPropertyNames("rank", "weight");
         try (VectorMosaicFeatureReader featureReader =
-                (VectorMosaicFeatureReader) featureSource.getReader(q); ) {
+                (VectorMosaicFeatureReader) featureSource.getReader(q)) {
             if (featureReader.hasNext()) {
                 String delegateAttributes =
                         featureReader.delegateFeature.getType().getDescriptors().stream()

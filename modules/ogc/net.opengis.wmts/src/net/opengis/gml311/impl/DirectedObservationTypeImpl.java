@@ -154,7 +154,7 @@ public class DirectedObservationTypeImpl extends ObservationTypeImpl implements 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.DIRECTED_OBSERVATION_TYPE__DIRECTION:
-                setDirection((DirectionPropertyType)null);
+                setDirection(null);
                 return;
         }
         super.eUnset(featureID);

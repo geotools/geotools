@@ -359,7 +359,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_CALENDAR_ERA_TYPE__REFERENCE_EVENT:
-                setReferenceEvent((StringOrRefType)null);
+                setReferenceEvent(null);
                 return;
             case Gml311Package.TIME_CALENDAR_ERA_TYPE__REFERENCE_DATE:
                 unsetReferenceDate();
@@ -368,7 +368,7 @@ public class TimeCalendarEraTypeImpl extends DefinitionTypeImpl implements TimeC
                 setJulianReference(JULIAN_REFERENCE_EDEFAULT);
                 return;
             case Gml311Package.TIME_CALENDAR_ERA_TYPE__EPOCH_OF_USE:
-                setEpochOfUse((TimePeriodPropertyType)null);
+                setEpochOfUse(null);
                 return;
         }
         super.eUnset(featureID);

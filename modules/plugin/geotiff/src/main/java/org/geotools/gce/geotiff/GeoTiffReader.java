@@ -88,7 +88,6 @@ import org.geotools.api.coverage.grid.GridEnvelope;
 import org.geotools.api.data.DataSourceException;
 import org.geotools.api.data.FileGroupProvider.FileGroup;
 import org.geotools.api.data.ResourceInfo;
-import org.geotools.api.geometry.Bounds;
 import org.geotools.api.parameter.GeneralParameterValue;
 import org.geotools.api.parameter.ParameterValue;
 import org.geotools.api.referencing.FactoryException;
@@ -380,7 +379,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 // nodata though float to get a representation that would succesfully compare
                 // against the pixels
                 if (sampleModel.getDataType() == DataBuffer.TYPE_FLOAT) {
-                    noData = Double.valueOf(((Double) noData).floatValue());
+                    noData = Double.valueOf(noData.floatValue());
                 }
             }
 
@@ -650,7 +649,7 @@ public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridC
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
-                    requestedEnvelope = new GeneralBounds((Bounds) gg.getEnvelope2D());
+                    requestedEnvelope = new GeneralBounds(gg.getEnvelope2D());
                     dim = gg.getGridRange2D().getBounds();
                     continue;
                 }

@@ -248,7 +248,7 @@ public class QueryConstraintTypeImpl extends EObjectImpl implements QueryConstra
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.QUERY_CONSTRAINT_TYPE__FILTER:
-                setFilter((Filter)null);
+                setFilter(null);
                 return;
             case Csw20Package.QUERY_CONSTRAINT_TYPE__CQL_TEXT:
                 setCqlText(CQL_TEXT_EDEFAULT);

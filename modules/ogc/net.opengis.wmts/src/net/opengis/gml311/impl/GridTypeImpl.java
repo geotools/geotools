@@ -242,7 +242,7 @@ public class GridTypeImpl extends AbstractGeometryTypeImpl implements GridType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GRID_TYPE__LIMITS:
-                setLimits((GridLimitsType)null);
+                setLimits(null);
                 return;
             case Gml311Package.GRID_TYPE__AXIS_NAME:
                 getAxisName().clear();

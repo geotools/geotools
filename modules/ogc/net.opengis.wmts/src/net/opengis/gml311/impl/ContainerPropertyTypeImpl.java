@@ -723,10 +723,10 @@ public class ContainerPropertyTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CONTAINER_PROPERTY_TYPE__FACE:
-                setFace((FaceType)null);
+                setFace(null);
                 return;
             case Gml311Package.CONTAINER_PROPERTY_TYPE__TOPO_SOLID:
-                setTopoSolid((TopoSolidType)null);
+                setTopoSolid(null);
                 return;
             case Gml311Package.CONTAINER_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

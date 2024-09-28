@@ -132,7 +132,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
      */
     @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
-        ((FeatureMap.Internal)getExteriorGroup()).set(Gml311Package.eINSTANCE.getRectangleType_Exterior(), newExterior);
+        getExteriorGroup().set(Gml311Package.eINSTANCE.getRectangleType_Exterior(), newExterior);
     }
 
     /**
@@ -253,7 +253,7 @@ public class RectangleTypeImpl extends AbstractSurfacePatchTypeImpl implements R
                 getExteriorGroup().clear();
                 return;
             case Gml311Package.RECTANGLE_TYPE__EXTERIOR:
-                setExterior((AbstractRingPropertyType)null);
+                setExterior(null);
                 return;
             case Gml311Package.RECTANGLE_TYPE__INTERPOLATION:
                 unsetInterpolation();

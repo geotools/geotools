@@ -337,13 +337,13 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
     public void eUnset(int featureID) {
     switch (featureID) {
       case WfsPackage.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
-        setFeatureTypeList((FeatureTypeListType)null);
+        setFeatureTypeList(null);
         return;
       case WfsPackage.WFS_CAPABILITIES_TYPE__SERVES_GML_OBJECT_TYPE_LIST:
-        setServesGMLObjectTypeList((GMLObjectTypeListType)null);
+        setServesGMLObjectTypeList(null);
         return;
       case WfsPackage.WFS_CAPABILITIES_TYPE__SUPPORTS_GML_OBJECT_TYPE_LIST:
-        setSupportsGMLObjectTypeList((GMLObjectTypeListType)null);
+        setSupportsGMLObjectTypeList(null);
         return;
       case WfsPackage.WFS_CAPABILITIES_TYPE__FILTER_CAPABILITIES:
         setFilterCapabilities(FILTER_CAPABILITIES_EDEFAULT);

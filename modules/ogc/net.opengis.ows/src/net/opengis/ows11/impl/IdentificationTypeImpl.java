@@ -184,7 +184,7 @@ public String getAvailableCRS() {
    */
   @Override
 public void setAvailableCRS(String newAvailableCRS) {
-    ((FeatureMap.Internal)getAvailableCRSGroup()).set(Ows11Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, newAvailableCRS);
+    getAvailableCRSGroup().set(Ows11Package.Literals.IDENTIFICATION_TYPE__AVAILABLE_CRS, newAvailableCRS);
   }
 
   /**

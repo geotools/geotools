@@ -659,7 +659,7 @@ public class PolarCSRefTypeImpl extends MinimalEObjectImpl.Container implements 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.POLAR_CS_REF_TYPE__POLAR_CS:
-                setPolarCS((PolarCSType)null);
+                setPolarCS(null);
                 return;
             case Gml311Package.POLAR_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

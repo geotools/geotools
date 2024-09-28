@@ -743,8 +743,7 @@ public class SLDStyleFactory {
             }
 
             // rotation
-            if ((symbolizer instanceof TextSymbolizer)
-                    && (((TextSymbolizer) symbolizer).getGraphic() != null)) {
+            if ((symbolizer instanceof TextSymbolizer) && (symbolizer.getGraphic() != null)) {
                 // don't rotate labels that are being placed on shields.
                 rotation = 0.0;
             } else {

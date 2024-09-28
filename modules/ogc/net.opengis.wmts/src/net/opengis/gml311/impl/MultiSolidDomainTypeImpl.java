@@ -154,7 +154,7 @@ public class MultiSolidDomainTypeImpl extends DomainSetTypeImpl implements Multi
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_SOLID_DOMAIN_TYPE__MULTI_SOLID:
-                setMultiSolid((MultiSolidType)null);
+                setMultiSolid(null);
                 return;
         }
         super.eUnset(featureID);

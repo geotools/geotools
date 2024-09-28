@@ -159,7 +159,7 @@ public class ExtendedCapabilitiesTypeImpl extends EObjectImpl implements Extende
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.EXTENDED_CAPABILITIES_TYPE__ADDITIONAL_OPERATORS:
-                setAdditionalOperators((AdditionalOperatorsType)null);
+                setAdditionalOperators(null);
                 return;
         }
         super.eUnset(featureID);

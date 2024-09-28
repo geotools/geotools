@@ -223,10 +223,10 @@ public class HarvestResponseTypeImpl extends EObjectImpl implements HarvestRespo
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.HARVEST_RESPONSE_TYPE__ACKNOWLEDGEMENT:
-                setAcknowledgement((AcknowledgementType)null);
+                setAcknowledgement(null);
                 return;
             case Csw20Package.HARVEST_RESPONSE_TYPE__TRANSACTION_RESPONSE:
-                setTransactionResponse((TransactionResponseType)null);
+                setTransactionResponse(null);
                 return;
         }
         super.eUnset(featureID);

@@ -11,7 +11,7 @@ env:
 
 jobs:
   build:
-    runs-on: [ubuntu-20.04]
+    runs-on: [ubuntu-22.04]
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 11
@@ -35,3 +35,7 @@ jobs:
     - name: Remove SNAPSHOT jars from repository
       run: |
         find ~/.m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {} 
+    - uses: lcollins/pmd-github-action@v2
+      if: always()
+      with:
+        path: '**/pmd.xml'

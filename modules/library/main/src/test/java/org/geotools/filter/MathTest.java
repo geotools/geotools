@@ -109,7 +109,7 @@ public class MathTest {
         Assert.assertEquals(12d, ((Integer) e1.evaluate(f[0])).doubleValue(), 0);
         Assert.assertEquals(3d, ((Integer) e1.evaluate(f[1])).doubleValue(), 0);
         Assert.assertEquals(15d, ((Integer) e1.evaluate(f[2])).doubleValue(), 0);
-        Assert.assertEquals("first", (String) e2.evaluate(f[0]));
-        Assert.assertEquals("second", (String) e2.evaluate(f[1]));
+        Assert.assertEquals("first", e2.evaluate(f[0]));
+        Assert.assertEquals("second", e2.evaluate(f[1]));
     }
 }

@@ -154,7 +154,7 @@ public class MultiSolidCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_SOLID_COVERAGE_TYPE__MULTI_SOLID_DOMAIN:
-                setMultiSolidDomain((MultiSolidDomainType)null);
+                setMultiSolidDomain(null);
                 return;
         }
         super.eUnset(featureID);

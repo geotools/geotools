@@ -234,7 +234,7 @@ public class EdgeTypeImpl extends AbstractTopoPrimitiveTypeImpl implements EdgeT
                 getDirectedFace().clear();
                 return;
             case Gml311Package.EDGE_TYPE__CURVE_PROPERTY:
-                setCurveProperty((CurvePropertyType)null);
+                setCurveProperty(null);
                 return;
         }
         super.eUnset(featureID);

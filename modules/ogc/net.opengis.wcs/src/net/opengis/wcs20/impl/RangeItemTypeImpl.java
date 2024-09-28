@@ -188,7 +188,7 @@ public class RangeItemTypeImpl extends EObjectImpl implements RangeItemType {
 				setRangeComponent(RANGE_COMPONENT_EDEFAULT);
 				return;
 			case Wcs20Package.RANGE_ITEM_TYPE__RANGE_INTERVAL:
-				setRangeInterval((RangeIntervalType)null);
+				setRangeInterval(null);
 				return;
 		}
 		super.eUnset(featureID);

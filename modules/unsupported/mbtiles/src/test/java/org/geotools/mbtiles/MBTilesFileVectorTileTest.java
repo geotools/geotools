@@ -26,7 +26,7 @@ public class MBTilesFileVectorTileTest {
 
     @Test
     public void testMBTilesMetaData() throws Exception {
-        try (MBTilesFile file = new MBTilesFile(dbfile); ) {
+        try (MBTilesFile file = new MBTilesFile(dbfile)) {
 
             MBTilesMetadata metadata2 = file.loadMetaData();
             assertEquals("osm2vectortiles", metadata2.getName());
@@ -55,7 +55,7 @@ public class MBTilesFileVectorTileTest {
                 MBTilesFileVectorTileTest.class.getResourceAsStream("tile_data.pbf.gz")) {
             expected = IOUtils.toByteArray(is);
         }
-        try (MBTilesFile file = new MBTilesFile(dbfile); ) {
+        try (MBTilesFile file = new MBTilesFile(dbfile)) {
 
             MBTilesTile tile = file.loadTile(0, 0, 0);
             assertThat(tile.getData(), notNullValue());

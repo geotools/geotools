@@ -226,8 +226,7 @@ public class ShapefileQuadTreeReadWriteTest extends TestCaseSupport {
         params.put(ShapefileDataStoreFactory.CREATE_SPATIAL_INDEX.key, Boolean.TRUE);
         ShapefileDataStore ds = (ShapefileDataStore) fac.createDataStore(params);
 
-        FilterFactory ff =
-                (FilterFactory) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
 
         FeatureId featureId = ff.featureId("streams.84");
         Id filter = ff.id(Collections.singleton(featureId));

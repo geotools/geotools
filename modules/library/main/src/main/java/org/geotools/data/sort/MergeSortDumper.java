@@ -92,6 +92,7 @@ class MergeSortDumper {
         return maxFeatures;
     }
 
+    @SuppressWarnings("PMD.UseTryWithResources")
     static SimpleFeatureReader getDelegateReader(
             SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures) throws IOException {
         if (maxFeatures < 0) {

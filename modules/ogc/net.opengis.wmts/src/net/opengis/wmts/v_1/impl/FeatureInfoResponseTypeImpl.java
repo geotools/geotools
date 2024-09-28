@@ -348,13 +348,13 @@ public class FeatureInfoResponseTypeImpl extends MinimalEObjectImpl.Container im
                 getFeatureCollectionGroup().clear();
                 return;
             case wmtsv_1Package.FEATURE_INFO_RESPONSE_TYPE__TEXT_PAYLOAD:
-                setTextPayload((TextPayloadType)null);
+                setTextPayload(null);
                 return;
             case wmtsv_1Package.FEATURE_INFO_RESPONSE_TYPE__BINARY_PAYLOAD:
-                setBinaryPayload((BinaryPayloadType)null);
+                setBinaryPayload(null);
                 return;
             case wmtsv_1Package.FEATURE_INFO_RESPONSE_TYPE__ANY_CONTENT:
-                setAnyContent((EObject)null);
+                setAnyContent(null);
                 return;
         }
         super.eUnset(featureID);

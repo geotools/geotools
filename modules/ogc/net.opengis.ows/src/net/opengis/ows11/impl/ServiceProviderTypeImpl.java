@@ -271,10 +271,10 @@ public void eUnset(int featureID) {
         setProviderName(PROVIDER_NAME_EDEFAULT);
         return;
       case Ows11Package.SERVICE_PROVIDER_TYPE__PROVIDER_SITE:
-        setProviderSite((OnlineResourceType)null);
+        setProviderSite(null);
         return;
       case Ows11Package.SERVICE_PROVIDER_TYPE__SERVICE_CONTACT:
-        setServiceContact((ResponsiblePartySubsetType)null);
+        setServiceContact(null);
         return;
     }
     super.eUnset(featureID);

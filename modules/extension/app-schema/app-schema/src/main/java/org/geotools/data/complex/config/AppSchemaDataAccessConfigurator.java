@@ -209,7 +209,7 @@ public class AppSchemaDataAccessConfigurator {
             else evaluatedURLs.add(url.toExternalForm());
             AppSchemaDataAccessDTO config = configReader.parse(url);
             for (Entry<String, String> stringStringEntry : config.getNamespaces().entrySet()) {
-                Entry entry = (Entry) stringStringEntry;
+                Entry entry = stringStringEntry;
                 String prefix = (String) entry.getKey();
                 String namespace = (String) entry.getValue();
                 if (namespaces.getURI(prefix) == null) namespaces.declarePrefix(prefix, namespace);
@@ -762,7 +762,7 @@ public class AppSchemaDataAccessConfigurator {
 
         if (dto.getClientProperties().size() > 0) {
             for (Entry<String, String> stringStringEntry : dto.getClientProperties().entrySet()) {
-                Entry entry = (Entry) stringStringEntry;
+                Entry entry = stringStringEntry;
                 String name = (String) entry.getKey();
                 Name qName = Types.degloseName(name, namespaces);
                 String cqlExpression = (String) entry.getValue();

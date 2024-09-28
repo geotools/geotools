@@ -370,7 +370,7 @@ public final class ParametersTest {
                         null,
                         false);
         final ParameterDescriptor<Integer> p4 =
-                new DefaultParameterDescriptor<Integer>(
+                new DefaultParameterDescriptor<>(
                         Collections.singletonMap("name", "4"),
                         Integer.class,
                         null,

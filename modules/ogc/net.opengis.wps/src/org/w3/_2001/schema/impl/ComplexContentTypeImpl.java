@@ -295,10 +295,10 @@ public class ComplexContentTypeImpl extends AnnotatedImpl implements ComplexCont
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.COMPLEX_CONTENT_TYPE__RESTRICTION:
-				setRestriction((ComplexRestrictionType)null);
+				setRestriction(null);
 				return;
 			case SchemaPackage.COMPLEX_CONTENT_TYPE__EXTENSION:
-				setExtension((ExtensionType)null);
+				setExtension(null);
 				return;
 			case SchemaPackage.COMPLEX_CONTENT_TYPE__MIXED:
 				unsetMixed();

@@ -217,7 +217,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setBoundingBoxData(BoundingBoxDataType newBoundingBoxData) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__BOUNDING_BOX_DATA, newBoundingBoxData);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__BOUNDING_BOX_DATA, newBoundingBoxData);
 	}
 
 	/**
@@ -262,7 +262,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setCapabilities(WPSCapabilitiesType newCapabilities) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__CAPABILITIES, newCapabilities);
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setComplexData(ComplexDataType newComplexData) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__COMPLEX_DATA, newComplexData);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__COMPLEX_DATA, newComplexData);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setContents(ContentsType newContents) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__CONTENTS, newContents);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__CONTENTS, newContents);
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setData(DataType newData) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__DATA, newData);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__DATA, newData);
 	}
 
 	/**
@@ -370,7 +370,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setDescribeProcess(DescribeProcessType newDescribeProcess) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__DESCRIBE_PROCESS, newDescribeProcess);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__DESCRIBE_PROCESS, newDescribeProcess);
 	}
 
 	/**
@@ -397,7 +397,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setDismiss(DismissType newDismiss) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__DISMISS, newDismiss);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__DISMISS, newDismiss);
 	}
 
 	/**
@@ -424,7 +424,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setExecute(ExecuteRequestType newExecute) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__EXECUTE, newExecute);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__EXECUTE, newExecute);
 	}
 
 	/**
@@ -442,7 +442,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setExpirationDate(XMLGregorianCalendar newExpirationDate) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__EXPIRATION_DATE, newExpirationDate);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__EXPIRATION_DATE, newExpirationDate);
 	}
 
 	/**
@@ -469,7 +469,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setFormat(FormatType newFormat) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__FORMAT, newFormat);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__FORMAT, newFormat);
 	}
 
 	/**
@@ -496,7 +496,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setGenericProcess(GenericProcessType newGenericProcess) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__GENERIC_PROCESS, newGenericProcess);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__GENERIC_PROCESS, newGenericProcess);
 	}
 
 	/**
@@ -523,7 +523,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setGetCapabilities(GetCapabilitiesType newGetCapabilities) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__GET_CAPABILITIES, newGetCapabilities);
 	}
 
 	/**
@@ -550,7 +550,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setGetResult(GetResultType newGetResult) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__GET_RESULT, newGetResult);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__GET_RESULT, newGetResult);
 	}
 
 	/**
@@ -577,7 +577,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setGetStatus(GetStatusType newGetStatus) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__GET_STATUS, newGetStatus);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__GET_STATUS, newGetStatus);
 	}
 
 	/**
@@ -595,7 +595,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setJobID(String newJobID) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__JOB_ID, newJobID);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__JOB_ID, newJobID);
 	}
 
 	/**
@@ -622,7 +622,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setLiteralData(LiteralDataType newLiteralData) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__LITERAL_DATA, newLiteralData);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__LITERAL_DATA, newLiteralData);
 	}
 
 	/**
@@ -649,7 +649,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setLiteralValue(LiteralValueType newLiteralValue) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__LITERAL_VALUE, newLiteralValue);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__LITERAL_VALUE, newLiteralValue);
 	}
 
 	/**
@@ -676,7 +676,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setProcess(ProcessDescriptionType newProcess) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__PROCESS, newProcess);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__PROCESS, newProcess);
 	}
 
 	/**
@@ -703,7 +703,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setProcessOffering(ProcessOfferingType newProcessOffering) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERING, newProcessOffering);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERING, newProcessOffering);
 	}
 
 	/**
@@ -730,7 +730,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setProcessOfferings(ProcessOfferingsType newProcessOfferings) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERINGS, newProcessOfferings);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__PROCESS_OFFERINGS, newProcessOfferings);
 	}
 
 	/**
@@ -757,7 +757,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setReference(ReferenceType newReference) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__REFERENCE, newReference);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__REFERENCE, newReference);
 	}
 
 	/**
@@ -784,7 +784,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setResult(ResultType newResult) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__RESULT, newResult);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__RESULT, newResult);
 	}
 
 	/**
@@ -811,7 +811,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setStatusInfo(StatusInfoType newStatusInfo) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__STATUS_INFO, newStatusInfo);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__STATUS_INFO, newStatusInfo);
 	}
 
 	/**
@@ -838,7 +838,7 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 	 * @generated
 	 */
 	public void setSupportedCRS(SupportedCRSType newSupportedCRS) {
-		((FeatureMap.Internal)getMixed()).set(Wps20Package.Literals.DOCUMENT_ROOT__SUPPORTED_CRS, newSupportedCRS);
+		getMixed().set(Wps20Package.Literals.DOCUMENT_ROOT__SUPPORTED_CRS, newSupportedCRS);
 	}
 
 	/**
@@ -1087,76 +1087,76 @@ public class DocumentRootImpl extends MinimalEObjectImpl.Container implements Do
 				getXSISchemaLocation().clear();
 				return;
 			case Wps20Package.DOCUMENT_ROOT__BOUNDING_BOX_DATA:
-				setBoundingBoxData((BoundingBoxDataType)null);
+				setBoundingBoxData(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__CAPABILITIES:
-				setCapabilities((WPSCapabilitiesType)null);
+				setCapabilities(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__COMPLEX_DATA:
-				setComplexData((ComplexDataType)null);
+				setComplexData(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__CONTENTS:
-				setContents((ContentsType)null);
+				setContents(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__DATA:
-				setData((DataType)null);
+				setData(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__DESCRIBE_PROCESS:
-				setDescribeProcess((DescribeProcessType)null);
+				setDescribeProcess(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__DISMISS:
-				setDismiss((DismissType)null);
+				setDismiss(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__EXECUTE:
-				setExecute((ExecuteRequestType)null);
+				setExecute(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__EXPIRATION_DATE:
 				setExpirationDate(EXPIRATION_DATE_EDEFAULT);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__FORMAT:
-				setFormat((FormatType)null);
+				setFormat(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__GENERIC_PROCESS:
-				setGenericProcess((GenericProcessType)null);
+				setGenericProcess(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__GET_CAPABILITIES:
-				setGetCapabilities((GetCapabilitiesType)null);
+				setGetCapabilities(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__GET_RESULT:
-				setGetResult((GetResultType)null);
+				setGetResult(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__GET_STATUS:
-				setGetStatus((GetStatusType)null);
+				setGetStatus(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__JOB_ID:
 				setJobID(JOB_ID_EDEFAULT);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__LITERAL_DATA:
-				setLiteralData((LiteralDataType)null);
+				setLiteralData(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__LITERAL_VALUE:
-				setLiteralValue((LiteralValueType)null);
+				setLiteralValue(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__PROCESS:
-				setProcess((ProcessDescriptionType)null);
+				setProcess(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__PROCESS_OFFERING:
-				setProcessOffering((ProcessOfferingType)null);
+				setProcessOffering(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__PROCESS_OFFERINGS:
-				setProcessOfferings((ProcessOfferingsType)null);
+				setProcessOfferings(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__REFERENCE:
-				setReference((ReferenceType)null);
+				setReference(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__RESULT:
-				setResult((ResultType)null);
+				setResult(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__STATUS_INFO:
-				setStatusInfo((StatusInfoType)null);
+				setStatusInfo(null);
 				return;
 			case Wps20Package.DOCUMENT_ROOT__SUPPORTED_CRS:
-				setSupportedCRS((SupportedCRSType)null);
+				setSupportedCRS(null);
 				return;
 		}
 		super.eUnset(featureID);

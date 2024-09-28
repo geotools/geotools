@@ -315,7 +315,7 @@ public void eUnset(int featureID) {
         getWGS84BoundingBox().clear();
         return;
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows11Package.DATASET_DESCRIPTION_SUMMARY_BASE_TYPE__BOUNDING_BOX_GROUP:
         getBoundingBoxGroup().clear();

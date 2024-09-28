@@ -122,7 +122,7 @@ public final class ObjectCaches {
         }
         if (level1 == null) return level2;
         if (level2 == null) return level1;
-        return new ObjectCache<K, V>() {
+        return new ObjectCache<>() {
             @Override
             public void clear() {
                 level1.clear();

@@ -199,7 +199,7 @@ public class KeywordsTypeImpl extends EObjectImpl implements KeywordsType {
         getKeyword().clear();
         return;
       case Ows20Package.KEYWORDS_TYPE__TYPE:
-        setType((CodeType)null);
+        setType(null);
         return;
     }
     super.eUnset(featureID);

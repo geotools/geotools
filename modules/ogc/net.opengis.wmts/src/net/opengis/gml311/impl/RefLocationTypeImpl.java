@@ -155,7 +155,7 @@ public class RefLocationTypeImpl extends MinimalEObjectImpl.Container implements
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.REF_LOCATION_TYPE__AFFINE_PLACEMENT:
-                setAffinePlacement((AffinePlacementType)null);
+                setAffinePlacement(null);
                 return;
         }
         super.eUnset(featureID);

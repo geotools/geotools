@@ -336,13 +336,13 @@ public class LiteralInputTypeImpl extends LiteralOutputTypeImpl implements Liter
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.LITERAL_INPUT_TYPE__ALLOWED_VALUES:
-        setAllowedValues((AllowedValuesType)null);
+        setAllowedValues(null);
         return;
       case Wps10Package.LITERAL_INPUT_TYPE__ANY_VALUE:
-        setAnyValue((AnyValueType)null);
+        setAnyValue(null);
         return;
       case Wps10Package.LITERAL_INPUT_TYPE__VALUES_REFERENCE:
-        setValuesReference((ValuesReferenceType)null);
+        setValuesReference(null);
         return;
       case Wps10Package.LITERAL_INPUT_TYPE__DEFAULT_VALUE:
         setDefaultValue(DEFAULT_VALUE_EDEFAULT);

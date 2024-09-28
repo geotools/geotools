@@ -16,7 +16,7 @@ public class VersionTest {
     @Test
     public void bitwise() {
         for (Action action : Action.values()) {
-            long encoded = Version.UNION_ACTION | ((long) action.ordinal());
+            long encoded = Version.UNION_ACTION | action.ordinal();
 
             assertTrue((encoded & Version.UNION_ACTION) > 0);
             long decoded = Version.UNION_MASK & encoded;

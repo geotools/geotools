@@ -470,7 +470,7 @@ public class FeatureStyleTypeImpl extends AbstractGMLTypeImpl implements Feature
                 getTopologyStyle().clear();
                 return;
             case Gml311Package.FEATURE_STYLE_TYPE__LABEL_STYLE:
-                setLabelStyle((LabelStylePropertyType)null);
+                setLabelStyle(null);
                 return;
             case Gml311Package.FEATURE_STYLE_TYPE__BASE_TYPE:
                 setBaseType(BASE_TYPE_EDEFAULT);

@@ -659,7 +659,7 @@ public class PolygonPropertyTypeImpl extends MinimalEObjectImpl.Container implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.POLYGON_PROPERTY_TYPE__POLYGON:
-                setPolygon((PolygonType)null);
+                setPolygon(null);
                 return;
             case Gml311Package.POLYGON_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

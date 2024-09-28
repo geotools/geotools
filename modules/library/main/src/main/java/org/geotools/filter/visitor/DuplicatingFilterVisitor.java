@@ -408,7 +408,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
                         visit(anyInteracts.getExpression1(), extraData),
                         visit(anyInteracts.getExpression2(), extraData),
                         anyInteracts.getMatchAction());
-    };
+    }
 
     @Override
     public Object visit(Before before, Object extraData) {
@@ -426,7 +426,7 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
                         visit(begins.getExpression1(), extraData),
                         visit(begins.getExpression2(), extraData),
                         begins.getMatchAction());
-    };
+    }
 
     @Override
     public Object visit(BegunBy begunBy, Object extraData) {

@@ -327,7 +327,7 @@ public class DescribeEOCoverageSetTypeImpl extends RequestBaseTypeImpl implement
 				setContainmentType(CONTAINMENT_TYPE_EDEFAULT);
 				return;
 			case Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__SECTIONS:
-				setSections((Sections)null);
+				setSections(null);
 				return;
 			case Wcs20Package.DESCRIBE_EO_COVERAGE_SET_TYPE__DIMENSION_TRIM:
 				getDimensionTrim().clear();

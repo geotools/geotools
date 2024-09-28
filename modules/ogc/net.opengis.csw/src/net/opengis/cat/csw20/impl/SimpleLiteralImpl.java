@@ -238,7 +238,7 @@ public class SimpleLiteralImpl extends EObjectImpl implements SimpleLiteral {
                 setScheme(SCHEME_EDEFAULT);
                 return;
             case Csw20Package.SIMPLE_LITERAL__NAME:
-                setName((String)null);
+                setName(null);
                 return;
         }
         super.eUnset(featureID);

@@ -259,7 +259,7 @@ public class ProcessBriefTypeImpl extends DescriptionTypeImpl implements Process
         setProfile(PROFILE_EDEFAULT);
         return;
       case Wps10Package.PROCESS_BRIEF_TYPE__WSDL:
-        setWSDL((WSDLType)null);
+        setWSDL(null);
         return;
       case Wps10Package.PROCESS_BRIEF_TYPE__PROCESS_VERSION:
         setProcessVersion(PROCESS_VERSION_EDEFAULT);

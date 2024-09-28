@@ -324,13 +324,13 @@ public class AvailableFunctionTypeImpl extends EObjectImpl implements AvailableF
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.AVAILABLE_FUNCTION_TYPE__METADATA:
-                setMetadata((MetadataType)null);
+                setMetadata(null);
                 return;
             case Fes20Package.AVAILABLE_FUNCTION_TYPE__RETURNS:
                 setReturns(RETURNS_EDEFAULT);
                 return;
             case Fes20Package.AVAILABLE_FUNCTION_TYPE__ARGUMENTS:
-                setArguments((ArgumentsType)null);
+                setArguments(null);
                 return;
             case Fes20Package.AVAILABLE_FUNCTION_TYPE__NAME:
                 setName(NAME_EDEFAULT);

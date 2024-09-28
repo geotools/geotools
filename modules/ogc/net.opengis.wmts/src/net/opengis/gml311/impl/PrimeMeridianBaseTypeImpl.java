@@ -154,7 +154,7 @@ public abstract class PrimeMeridianBaseTypeImpl extends DefinitionTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.PRIME_MERIDIAN_BASE_TYPE__MERIDIAN_NAME:
-                setMeridianName((CodeType)null);
+                setMeridianName(null);
                 return;
         }
         super.eUnset(featureID);

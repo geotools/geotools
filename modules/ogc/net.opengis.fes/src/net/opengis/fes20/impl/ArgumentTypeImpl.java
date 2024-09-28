@@ -260,7 +260,7 @@ public class ArgumentTypeImpl extends EObjectImpl implements ArgumentType {
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.ARGUMENT_TYPE__METADATA:
-                setMetadata((MetadataType)null);
+                setMetadata(null);
                 return;
             case Fes20Package.ARGUMENT_TYPE__TYPE:
                 setType(TYPE_EDEFAULT);

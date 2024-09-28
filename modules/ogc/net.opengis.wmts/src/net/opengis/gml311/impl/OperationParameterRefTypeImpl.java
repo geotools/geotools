@@ -659,7 +659,7 @@ public class OperationParameterRefTypeImpl extends MinimalEObjectImpl.Container 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OPERATION_PARAMETER_REF_TYPE__OPERATION_PARAMETER:
-                setOperationParameter((OperationParameterType)null);
+                setOperationParameter(null);
                 return;
             case Gml311Package.OPERATION_PARAMETER_REF_TYPE__ACTUATE:
                 unsetActuate();

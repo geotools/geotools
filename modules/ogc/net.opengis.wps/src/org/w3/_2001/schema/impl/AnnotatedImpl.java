@@ -199,7 +199,7 @@ public class AnnotatedImpl extends OpenAttrsImpl implements Annotated {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.ANNOTATED__ANNOTATION:
-				setAnnotation((AnnotationType)null);
+				setAnnotation(null);
 				return;
 			case SchemaPackage.ANNOTATED__ID:
 				setId(ID_EDEFAULT);

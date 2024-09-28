@@ -80,7 +80,7 @@ public class MapPaneKeyHandler extends KeyAdapter {
         SCROLL_DOWN,
         ZOOM_IN,
         ZOOM_OUT,
-        ZOOM_FULL_EXTENT;
+        ZOOM_FULL_EXTENT
     }
 
     /*

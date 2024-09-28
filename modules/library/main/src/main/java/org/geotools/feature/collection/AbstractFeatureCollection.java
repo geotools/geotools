@@ -102,6 +102,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @return <tt>true</tt> if this collection contains the specified element.
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean contains(Object o) {
         Iterator<SimpleFeature> e = iterator();
         try {
@@ -162,6 +163,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
 
     /** @return <tt>true</tt> if this collection contains no elements. */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public boolean isEmpty() {
         Iterator<SimpleFeature> iterator = iterator();
         try {
@@ -179,6 +181,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
      * @return an array containing all of the elements in this collection.
      */
     @Override
+    @SuppressWarnings("PMD.UseTryWithResources")
     public Object[] toArray() {
         Object[] result = new Object[size()];
         Iterator<SimpleFeature> e = null;
@@ -194,7 +197,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "PMD.UseTryWithResources"})
     public <O> O[] toArray(O[] a) {
         int size = size();
         if (a.length < size) {

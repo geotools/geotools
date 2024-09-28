@@ -860,8 +860,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                  */
                 stmt.setString(1, epsg);
                 try (final ResultSet result = stmt.executeQuery()) {
-                    final boolean present = result.next();
-                    if (present) {
+                    if (result.next()) {
                         if (index >= 0) {
                             throw new FactoryException(
                                     MessageFormat.format(ErrorKeys.DUPLICATED_VALUES_$1, code));
@@ -2015,7 +2014,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     final Map<String, Object> properties = generateProperties(name, epsg, remarks);
                     @SuppressWarnings("unchecked")
                     final ParameterDescriptor<?> descriptor =
-                            new DefaultParameterDescriptor(
+                            new DefaultParameterDescriptor<>(
                                     properties, type, null, null, null, null, unit, true);
                     returnValue = ensureSingleton(descriptor, returnValue, code);
                 }

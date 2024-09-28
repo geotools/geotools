@@ -326,10 +326,10 @@ public class GetRecordsResponseTypeImpl extends EObjectImpl implements GetRecord
                 setRequestId(REQUEST_ID_EDEFAULT);
                 return;
             case Csw20Package.GET_RECORDS_RESPONSE_TYPE__SEARCH_STATUS:
-                setSearchStatus((RequestStatusType)null);
+                setSearchStatus(null);
                 return;
             case Csw20Package.GET_RECORDS_RESPONSE_TYPE__SEARCH_RESULTS:
-                setSearchResults((SearchResultsType)null);
+                setSearchResults(null);
                 return;
             case Csw20Package.GET_RECORDS_RESPONSE_TYPE__VERSION:
                 setVersion(VERSION_EDEFAULT);

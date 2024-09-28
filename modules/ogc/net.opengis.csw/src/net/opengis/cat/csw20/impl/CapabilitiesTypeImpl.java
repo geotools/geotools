@@ -150,7 +150,7 @@ public class CapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements Ca
     public void eUnset(int featureID) {
         switch (featureID) {
             case Csw20Package.CAPABILITIES_TYPE__FILTER_CAPABILITIES:
-                setFilterCapabilities((FilterCapabilities)null);
+                setFilterCapabilities(null);
                 return;
         }
         super.eUnset(featureID);

@@ -195,7 +195,7 @@ public class ConversionTypeImpl extends AbstractGeneralConversionTypeImpl implem
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CONVERSION_TYPE__USES_METHOD:
-                setUsesMethod((OperationMethodRefType)null);
+                setUsesMethod(null);
                 return;
             case Gml311Package.CONVERSION_TYPE__USES_VALUE:
                 getUsesValue().clear();

@@ -275,13 +275,13 @@ public class RealGroupImpl extends GroupImpl implements RealGroup {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.REAL_GROUP__ALL1:
-				setAll1((All)null);
+				setAll1(null);
 				return;
 			case SchemaPackage.REAL_GROUP__CHOICE1:
-				setChoice1((ExplicitGroup)null);
+				setChoice1(null);
 				return;
 			case SchemaPackage.REAL_GROUP__SEQUENCE1:
-				setSequence1((ExplicitGroup)null);
+				setSequence1(null);
 				return;
 		}
 		super.eUnset(featureID);

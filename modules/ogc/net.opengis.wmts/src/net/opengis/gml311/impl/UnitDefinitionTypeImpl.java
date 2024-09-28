@@ -218,10 +218,10 @@ public class UnitDefinitionTypeImpl extends DefinitionTypeImpl implements UnitDe
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.UNIT_DEFINITION_TYPE__QUANTITY_TYPE:
-                setQuantityType((StringOrRefType)null);
+                setQuantityType(null);
                 return;
             case Gml311Package.UNIT_DEFINITION_TYPE__CATALOG_SYMBOL:
-                setCatalogSymbol((CodeType)null);
+                setCatalogSymbol(null);
                 return;
         }
         super.eUnset(featureID);

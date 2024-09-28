@@ -659,7 +659,7 @@ public class VerticalDatumRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.VERTICAL_DATUM_REF_TYPE__VERTICAL_DATUM:
-                setVerticalDatum((VerticalDatumType)null);
+                setVerticalDatum(null);
                 return;
             case Gml311Package.VERTICAL_DATUM_REF_TYPE__ACTUATE:
                 unsetActuate();

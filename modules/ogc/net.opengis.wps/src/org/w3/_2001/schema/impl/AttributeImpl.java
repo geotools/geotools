@@ -553,7 +553,7 @@ public class AttributeImpl extends AnnotatedImpl implements Attribute {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SchemaPackage.ATTRIBUTE__SIMPLE_TYPE:
-				setSimpleType((LocalSimpleType)null);
+				setSimpleType(null);
 				return;
 			case SchemaPackage.ATTRIBUTE__DEFAULT:
 				setDefault(DEFAULT_EDEFAULT);

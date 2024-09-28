@@ -300,7 +300,7 @@ public final class GeodeticCalculatorTest {
         // taken from Wikipedia Talk page.
         // https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
         try (InputStream in = TestData.openStream(this, "vincenty.csv");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in)); ) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
             CsvReader creader = new CsvReader(reader);
             creader.setComment('#');
             creader.setUseComments(true);

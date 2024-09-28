@@ -289,13 +289,13 @@ public class WFSCapabilitiesTypeImpl extends CapabilitiesBaseTypeImpl implements
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.WFS_CAPABILITIES_TYPE__WSDL:
-        setWSDL((WSDLType)null);
+        setWSDL(null);
         return;
       case Wfs20Package.WFS_CAPABILITIES_TYPE__FEATURE_TYPE_LIST:
-        setFeatureTypeList((FeatureTypeListType)null);
+        setFeatureTypeList(null);
         return;
       case Wfs20Package.WFS_CAPABILITIES_TYPE__FILTER_CAPABILITIES:
-        setFilterCapabilities((FilterCapabilitiesType)null);
+        setFilterCapabilities(null);
         return;
     }
     super.eUnset(featureID);

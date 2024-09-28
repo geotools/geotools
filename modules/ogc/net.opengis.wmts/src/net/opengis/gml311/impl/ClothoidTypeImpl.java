@@ -375,7 +375,7 @@ public class ClothoidTypeImpl extends AbstractCurveSegmentTypeImpl implements Cl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CLOTHOID_TYPE__REF_LOCATION:
-                setRefLocation((RefLocationType)null);
+                setRefLocation(null);
                 return;
             case Gml311Package.CLOTHOID_TYPE__SCALE_FACTOR:
                 setScaleFactor(SCALE_FACTOR_EDEFAULT);

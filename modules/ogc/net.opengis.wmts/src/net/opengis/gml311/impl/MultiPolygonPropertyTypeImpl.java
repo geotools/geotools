@@ -659,7 +659,7 @@ public class MultiPolygonPropertyTypeImpl extends MinimalEObjectImpl.Container i
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_POLYGON_PROPERTY_TYPE__MULTI_POLYGON:
-                setMultiPolygon((MultiPolygonType)null);
+                setMultiPolygon(null);
                 return;
             case Gml311Package.MULTI_POLYGON_PROPERTY_TYPE__ACTUATE:
                 unsetActuate();

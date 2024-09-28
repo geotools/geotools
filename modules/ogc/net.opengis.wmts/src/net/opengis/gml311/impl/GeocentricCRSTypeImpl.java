@@ -282,13 +282,13 @@ public class GeocentricCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEOCENTRIC_CRS_TYPE__USES_CARTESIAN_CS:
-                setUsesCartesianCS((CartesianCSRefType)null);
+                setUsesCartesianCS(null);
                 return;
             case Gml311Package.GEOCENTRIC_CRS_TYPE__USES_SPHERICAL_CS:
-                setUsesSphericalCS((SphericalCSRefType)null);
+                setUsesSphericalCS(null);
                 return;
             case Gml311Package.GEOCENTRIC_CRS_TYPE__USES_GEODETIC_DATUM:
-                setUsesGeodeticDatum((GeodeticDatumRefType)null);
+                setUsesGeodeticDatum(null);
                 return;
         }
         super.eUnset(featureID);

@@ -659,7 +659,7 @@ public class TransformationRefTypeImpl extends MinimalEObjectImpl.Container impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TRANSFORMATION_REF_TYPE__TRANSFORMATION:
-                setTransformation((TransformationType)null);
+                setTransformation(null);
                 return;
             case Gml311Package.TRANSFORMATION_REF_TYPE__ACTUATE:
                 unsetActuate();

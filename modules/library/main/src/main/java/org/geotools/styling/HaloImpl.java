@@ -146,7 +146,7 @@ public class HaloImpl implements Halo, Cloneable {
     public Object clone() {
         try {
             HaloImpl clone = (HaloImpl) super.clone();
-            clone.fill = (FillImpl) ((Cloneable) fill).clone();
+            clone.fill = (FillImpl) fill.clone();
 
             return clone;
         } catch (CloneNotSupportedException e) {

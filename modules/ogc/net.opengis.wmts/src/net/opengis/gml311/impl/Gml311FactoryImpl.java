@@ -5271,7 +5271,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
         Enumerator result = null;
         RuntimeException exception = null;
         try {
-            result = (Enumerator)createDirectionTypeMember0FromString(Gml311Package.eINSTANCE.getDirectionTypeMember0(), initialValue);
+            result = createDirectionTypeMember0FromString(Gml311Package.eINSTANCE.getDirectionTypeMember0(), initialValue);
             if (result != null && Diagnostician.INSTANCE.validate(eDataType, result, null, null)) {
                 return result;
             }
@@ -5280,7 +5280,7 @@ public class Gml311FactoryImpl extends EFactoryImpl implements Gml311Factory {
             exception = e;
         }
         try {
-            result = (Enumerator)createDirectionTypeMember1FromString(Gml311Package.eINSTANCE.getDirectionTypeMember1(), initialValue);
+            result = createDirectionTypeMember1FromString(Gml311Package.eINSTANCE.getDirectionTypeMember1(), initialValue);
             if (result != null && Diagnostician.INSTANCE.validate(eDataType, result, null, null)) {
                 return result;
             }

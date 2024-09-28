@@ -531,7 +531,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         // read the geometry
         Geometry geom = readGeometry(rs, column, factory, cx);
         return convertGeometry(geom, descriptor, factory);
-    };
+    }
 
     Geometry convertGeometry(
             Geometry geom, GeometryDescriptor descriptor, GeometryFactory factory) {

@@ -432,10 +432,10 @@ public class ServiceTypeImpl extends AbstractDescriptionTypeImpl implements Serv
 				getKeywords().clear();
 				return;
 			case Wcs10Package.SERVICE_TYPE__RESPONSIBLE_PARTY:
-				setResponsibleParty((ResponsiblePartyType)null);
+				setResponsibleParty(null);
 				return;
 			case Wcs10Package.SERVICE_TYPE__FEES:
-				setFees((CodeListType)null);
+				setFees(null);
 				return;
 			case Wcs10Package.SERVICE_TYPE__ACCESS_CONSTRAINTS:
 				getAccessConstraints().clear();

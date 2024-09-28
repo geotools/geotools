@@ -487,8 +487,7 @@ public class LocalizationGrid implements Serializable {
      */
     private static void replaceSingularity(
             final double[] grid, int offset, int num, final int step) {
-        final double increment =
-                (grid[offset + (num - 1) * step] - grid[offset]) / ((double) (num - 1));
+        final double increment = (grid[offset + (num - 1) * step] - grid[offset]) / (num - 1);
         final double value = grid[offset];
         offset += step;
         for (int i = 0; i < (num - 2); i++, offset += step) {

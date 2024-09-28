@@ -725,31 +725,31 @@ public class UnNamedDomainTypeImpl extends EObjectImpl implements UnNamedDomainT
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__ALLOWED_VALUES:
-        setAllowedValues((AllowedValuesType)null);
+        setAllowedValues(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__ANY_VALUE:
-        setAnyValue((AnyValueType)null);
+        setAnyValue(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__NO_VALUES:
-        setNoValues((NoValuesType)null);
+        setNoValues(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__VALUES_REFERENCE:
-        setValuesReference((ValuesReferenceType)null);
+        setValuesReference(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__DEFAULT_VALUE:
-        setDefaultValue((ValueType)null);
+        setDefaultValue(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__MEANING:
-        setMeaning((DomainMetadataType)null);
+        setMeaning(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__DATA_TYPE:
-        setDataType((DomainMetadataType)null);
+        setDataType(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__UOM:
-        setUOM((DomainMetadataType)null);
+        setUOM(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__REFERENCE_SYSTEM:
-        setReferenceSystem((DomainMetadataType)null);
+        setReferenceSystem(null);
         return;
       case Ows20Package.UN_NAMED_DOMAIN_TYPE__METADATA_GROUP:
         getMetadataGroup().clear();

@@ -1117,7 +1117,7 @@ public final class GeoTools {
 
             Enumeration<URL> urls =
                     AccessController.doPrivileged(
-                            new PrivilegedAction<Enumeration<URL>>() {
+                            new PrivilegedAction<>() {
                                 @Override
                                 public Enumeration<URL> run() {
                                     try {
@@ -1137,7 +1137,7 @@ public final class GeoTools {
 
             String javaHome =
                     AccessController.doPrivileged(
-                            new PrivilegedAction<String>() {
+                            new PrivilegedAction<>() {
                                 @Override
                                 public String run() {
                                     try {

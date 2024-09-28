@@ -196,7 +196,7 @@ public class AdditionalParameterTypeImpl extends EObjectImpl implements Addition
     public void eUnset(int featureID) {
     switch (featureID) {
       case Ows20Package.ADDITIONAL_PARAMETER_TYPE__NAME:
-        setName((CodeType)null);
+        setName(null);
         return;
       case Ows20Package.ADDITIONAL_PARAMETER_TYPE__VALUE:
         getValue().clear();

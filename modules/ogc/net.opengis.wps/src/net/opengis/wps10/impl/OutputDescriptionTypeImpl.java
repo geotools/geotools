@@ -286,13 +286,13 @@ public class OutputDescriptionTypeImpl extends DescriptionTypeImpl implements Ou
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__COMPLEX_OUTPUT:
-        setComplexOutput((SupportedComplexDataType)null);
+        setComplexOutput(null);
         return;
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__LITERAL_OUTPUT:
-        setLiteralOutput((LiteralOutputType)null);
+        setLiteralOutput(null);
         return;
       case Wps10Package.OUTPUT_DESCRIPTION_TYPE__BOUNDING_BOX_OUTPUT:
-        setBoundingBoxOutput((SupportedCRSsType)null);
+        setBoundingBoxOutput(null);
         return;
     }
     super.eUnset(featureID);

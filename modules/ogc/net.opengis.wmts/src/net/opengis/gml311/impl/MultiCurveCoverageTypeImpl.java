@@ -154,7 +154,7 @@ public class MultiCurveCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_CURVE_COVERAGE_TYPE__MULTI_CURVE_DOMAIN:
-                setMultiCurveDomain((MultiCurveDomainType)null);
+                setMultiCurveDomain(null);
                 return;
         }
         super.eUnset(featureID);

@@ -286,13 +286,13 @@ public class DomainSubsetTypeImpl extends EObjectImpl implements DomainSubsetTyp
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__SPATIAL_SUBSET:
-				setSpatialSubset((SpatialSubsetType)null);
+				setSpatialSubset(null);
 				return;
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__TEMPORAL_SUBSET:
-				setTemporalSubset((TimeSequenceType)null);
+				setTemporalSubset(null);
 				return;
 			case Wcs10Package.DOMAIN_SUBSET_TYPE__TEMPORAL_SUBSET1:
-				setTemporalSubset1((TimeSequenceType)null);
+				setTemporalSubset1(null);
 				return;
 		}
 		super.eUnset(featureID);

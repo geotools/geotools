@@ -413,7 +413,7 @@ public class CoverageSummaryTypeImpl extends DescriptionTypeImpl implements Cove
 				setCoverageSubtype(COVERAGE_SUBTYPE_EDEFAULT);
 				return;
 			case Wcs20Package.COVERAGE_SUMMARY_TYPE__COVERAGE_SUBTYPE_PARENT:
-				setCoverageSubtypeParent((CoverageSubtypeParentType)null);
+				setCoverageSubtypeParent(null);
 				return;
 			case Wcs20Package.COVERAGE_SUMMARY_TYPE__BOUNDING_BOX_GROUP:
 				getBoundingBoxGroup().clear();

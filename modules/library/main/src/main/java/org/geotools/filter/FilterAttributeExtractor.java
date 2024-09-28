@@ -134,7 +134,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
         if (expression instanceof FilterFunction_property) {
             boolean foundLiteral = false;
             // dynamic property usage
-            if (expression.getParameters() != null && expression.getParameters().size() > 0) {
+            if (expression.getParameters() != null && !expression.getParameters().isEmpty()) {
                 org.geotools.api.filter.expression.Expression firstParam =
                         expression.getParameters().get(0);
 
@@ -155,7 +155,7 @@ public class FilterAttributeExtractor extends DefaultFilterVisitor {
             }
         }
         return super.visit(expression, data);
-    };
+    }
 
     /**
      * Returns true if the last visited expression is a constant, that is, does not depend on any

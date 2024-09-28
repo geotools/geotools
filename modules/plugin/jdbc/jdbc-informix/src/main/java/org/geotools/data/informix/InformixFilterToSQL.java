@@ -80,8 +80,7 @@ public class InformixFilterToSQL extends FilterToSQL {
             boolean swapped,
             Object extraData) {
 
-        return visitBinarySpatialOperatorEnhanced(
-                filter, (Expression) property, (Expression) geometry, swapped, extraData);
+        return visitBinarySpatialOperatorEnhanced(filter, property, geometry, swapped, extraData);
     }
 
     @Override

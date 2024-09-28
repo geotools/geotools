@@ -240,7 +240,7 @@ public class OrientableSurfaceTypeImpl extends AbstractSurfaceTypeImpl implement
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ORIENTABLE_SURFACE_TYPE__BASE_SURFACE:
-                setBaseSurface((SurfacePropertyType)null);
+                setBaseSurface(null);
                 return;
             case Gml311Package.ORIENTABLE_SURFACE_TYPE__ORIENTATION:
                 unsetOrientation();

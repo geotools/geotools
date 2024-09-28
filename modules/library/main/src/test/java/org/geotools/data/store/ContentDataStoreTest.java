@@ -40,7 +40,7 @@ public class ContentDataStoreTest extends AbstractContentTest {
                             throws java.io.IOException {
                         creationCounter.incrementAndGet();
                         return super.createTypeNames();
-                    };
+                    }
                 };
 
         store.getFeatureSource(TYPENAME.getLocalPart());
@@ -62,7 +62,7 @@ public class ContentDataStoreTest extends AbstractContentTest {
                             throws java.io.IOException {
                         creationCounter.incrementAndGet();
                         return Arrays.asList(TYPENAME, TYPENAME2);
-                    };
+                    }
                 };
 
         store.getFeatureSource(TYPENAME.getLocalPart());

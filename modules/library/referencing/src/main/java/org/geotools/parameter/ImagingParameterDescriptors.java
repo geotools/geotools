@@ -434,7 +434,7 @@ public class ImagingParameterDescriptors extends DefaultParameterDescriptorGroup
                 }
                 properties.put(NAME_KEY, name);
                 desc[i] =
-                        new DefaultParameterDescriptor(
+                        new DefaultParameterDescriptor<>(
                                 properties,
                                 type,
                                 null, // validValues

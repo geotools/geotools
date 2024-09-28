@@ -198,7 +198,7 @@ public class MultiCurveTypeImpl extends AbstractGeometricAggregateTypeImpl imple
                 getCurveMember().clear();
                 return;
             case Gml311Package.MULTI_CURVE_TYPE__CURVE_MEMBERS:
-                setCurveMembers((CurveArrayPropertyType)null);
+                setCurveMembers(null);
                 return;
         }
         super.eUnset(featureID);

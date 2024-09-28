@@ -84,7 +84,7 @@ public class StyledShapePainterTest {
         // Get graphic legend from style
         final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        final GraphicLegend legend = (GraphicLegend) rule.getLegend();
+        final GraphicLegend legend = rule.getLegend();
 
         // Paint legend using StyledShapePainter
         final Point point =
@@ -118,7 +118,7 @@ public class StyledShapePainterTest {
         // Get graphic legend from style
         Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        GraphicLegend legend = (GraphicLegend) rule.getLegend();
+        GraphicLegend legend = rule.getLegend();
 
         // The painter has nothing to paint if the URL check fails so passing in a null graphics and
         // shape won't throw an exception here
@@ -137,7 +137,7 @@ public class StyledShapePainterTest {
         // Get graphic legend from style
         final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        final GraphicLegend legend = (GraphicLegend) rule.getLegend();
+        final GraphicLegend legend = rule.getLegend();
 
         // Paint legend using StyledShapePainter
         final Point point =
@@ -172,7 +172,7 @@ public class StyledShapePainterTest {
         // Get graphic legend from style
         final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
-        final GraphicLegend legend = (GraphicLegend) rule.getLegend();
+        final GraphicLegend legend = rule.getLegend();
 
         // Set rotation to 45 degrees
         legend.setRotation(ff.literal(45.0));

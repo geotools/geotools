@@ -39,7 +39,7 @@ public interface MultiValuedFilter extends Filter {
         ANY,
         ALL,
         ONE
-    };
+    }
 
     /**
      * * Flag Controlling MatchAction property When one or more of the operands evaluates to

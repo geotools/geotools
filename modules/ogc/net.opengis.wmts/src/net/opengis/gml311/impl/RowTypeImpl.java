@@ -236,7 +236,7 @@ public class RowTypeImpl extends MinimalEObjectImpl.Container implements RowType
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ROW_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.ROW_TYPE__GEOMETRIC_POSITION_GROUP:
                 getGeometricPositionGroup().clear();

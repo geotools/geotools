@@ -532,10 +532,10 @@ public class ArcStringByBulgeTypeImpl extends AbstractCurveSegmentTypeImpl imple
                 getPointRep().clear();
                 return;
             case Gml311Package.ARC_STRING_BY_BULGE_TYPE__POS_LIST:
-                setPosList((DirectPositionListType)null);
+                setPosList(null);
                 return;
             case Gml311Package.ARC_STRING_BY_BULGE_TYPE__COORDINATES:
-                setCoordinates((CoordinatesType)null);
+                setCoordinates(null);
                 return;
             case Gml311Package.ARC_STRING_BY_BULGE_TYPE__BULGE:
                 getBulge().clear();

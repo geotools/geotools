@@ -227,7 +227,7 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
      */
     @Override
     public void setTarget(TargetPropertyType newTarget) {
-        ((FeatureMap.Internal)getTargetGroup()).set(Gml311Package.eINSTANCE.getObservationType_Target(), newTarget);
+        getTargetGroup().set(Gml311Package.eINSTANCE.getObservationType_Target(), newTarget);
     }
 
     /**
@@ -356,19 +356,19 @@ public class ObservationTypeImpl extends AbstractFeatureTypeImpl implements Obse
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.OBSERVATION_TYPE__VALID_TIME:
-                setValidTime((TimePrimitivePropertyType)null);
+                setValidTime(null);
                 return;
             case Gml311Package.OBSERVATION_TYPE__USING:
-                setUsing((FeaturePropertyType)null);
+                setUsing(null);
                 return;
             case Gml311Package.OBSERVATION_TYPE__TARGET_GROUP:
                 getTargetGroup().clear();
                 return;
             case Gml311Package.OBSERVATION_TYPE__TARGET:
-                setTarget((TargetPropertyType)null);
+                setTarget(null);
                 return;
             case Gml311Package.OBSERVATION_TYPE__RESULT_OF:
-                setResultOf((AssociationType)null);
+                setResultOf(null);
                 return;
         }
         super.eUnset(featureID);

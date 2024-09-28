@@ -154,7 +154,7 @@ public class TimeInstantTypeImpl extends AbstractTimeGeometricPrimitiveTypeImpl 
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.TIME_INSTANT_TYPE__TIME_POSITION:
-                setTimePosition((TimePositionType)null);
+                setTimePosition(null);
                 return;
         }
         super.eUnset(featureID);

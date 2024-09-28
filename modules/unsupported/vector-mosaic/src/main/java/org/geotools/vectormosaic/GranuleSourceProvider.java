@@ -72,7 +72,7 @@ class GranuleSourceProvider implements Closeable {
 
     public SimpleFeatureSource getNextGranuleSource() throws IOException {
         while (delegateIterator.hasNext()) {
-            delegateFeature = (SimpleFeature) delegateIterator.next();
+            delegateFeature = delegateIterator.next();
             VectorMosaicGranule granule = VectorMosaicGranule.fromDelegateFeature(delegateFeature);
             // if tracking granule statistics, this is how many times granules are accessed
             if (source.finder.granuleTracker != null) {

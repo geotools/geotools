@@ -42,13 +42,13 @@ public interface CalcResult {
                 @Override
                 public boolean isCompatible(CalcResult targetResults) {
                     return true;
-                };
+                }
 
                 /** Just returns the other result */
                 @Override
                 public CalcResult merge(CalcResult resultsToAdd) {
                     return resultsToAdd;
-                };
+                }
             };
 
     /**

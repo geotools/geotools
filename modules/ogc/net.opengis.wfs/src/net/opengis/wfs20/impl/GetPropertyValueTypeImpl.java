@@ -761,7 +761,7 @@ public class GetPropertyValueTypeImpl extends BaseRequestTypeImpl implements Get
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wfs20Package.GET_PROPERTY_VALUE_TYPE__ABSTRACT_QUERY_EXPRESSION:
-        setAbstractQueryExpression((AbstractQueryExpressionType)null);
+        setAbstractQueryExpression(null);
         return;
       case Wfs20Package.GET_PROPERTY_VALUE_TYPE__COUNT:
         setCount(COUNT_EDEFAULT);

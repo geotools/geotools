@@ -395,10 +395,10 @@ public class OperationMethodTypeImpl extends OperationMethodBaseTypeImpl impleme
                 getMethodID().clear();
                 return;
             case Gml311Package.OPERATION_METHOD_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.OPERATION_METHOD_TYPE__METHOD_FORMULA:
-                setMethodFormula((CodeType)null);
+                setMethodFormula(null);
                 return;
             case Gml311Package.OPERATION_METHOD_TYPE__SOURCE_DIMENSIONS:
                 setSourceDimensions(SOURCE_DIMENSIONS_EDEFAULT);

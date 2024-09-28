@@ -154,7 +154,7 @@ public class MultiPointCoverageTypeImpl extends AbstractDiscreteCoverageTypeImpl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.MULTI_POINT_COVERAGE_TYPE__MULTI_POINT_DOMAIN:
-                setMultiPointDomain((MultiPointDomainType)null);
+                setMultiPointDomain(null);
                 return;
         }
         super.eUnset(featureID);

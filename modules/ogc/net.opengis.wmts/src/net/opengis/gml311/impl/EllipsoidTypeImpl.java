@@ -326,13 +326,13 @@ public class EllipsoidTypeImpl extends EllipsoidBaseTypeImpl implements Ellipsoi
                 getEllipsoidID().clear();
                 return;
             case Gml311Package.ELLIPSOID_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.ELLIPSOID_TYPE__SEMI_MAJOR_AXIS:
-                setSemiMajorAxis((MeasureType)null);
+                setSemiMajorAxis(null);
                 return;
             case Gml311Package.ELLIPSOID_TYPE__SECOND_DEFINING_PARAMETER:
-                setSecondDefiningParameter((SecondDefiningParameterType)null);
+                setSecondDefiningParameter(null);
                 return;
         }
         super.eUnset(featureID);

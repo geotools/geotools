@@ -188,7 +188,7 @@ public class OfferedCoverageTypeImpl extends EObjectImpl implements OfferedCover
     public void eUnset(int featureID) {
 		switch (featureID) {
 			case Wcs20Package.OFFERED_COVERAGE_TYPE__SERVICE_PARAMETERS:
-				setServiceParameters((ServiceParametersType)null);
+				setServiceParameters(null);
 				return;
 		}
 		super.eUnset(featureID);

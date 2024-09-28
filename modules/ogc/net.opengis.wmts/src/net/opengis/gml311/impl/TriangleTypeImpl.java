@@ -132,7 +132,7 @@ public class TriangleTypeImpl extends AbstractSurfacePatchTypeImpl implements Tr
      */
     @Override
     public void setExterior(AbstractRingPropertyType newExterior) {
-        ((FeatureMap.Internal)getExteriorGroup()).set(Gml311Package.eINSTANCE.getTriangleType_Exterior(), newExterior);
+        getExteriorGroup().set(Gml311Package.eINSTANCE.getTriangleType_Exterior(), newExterior);
     }
 
     /**
@@ -253,7 +253,7 @@ public class TriangleTypeImpl extends AbstractSurfacePatchTypeImpl implements Tr
                 getExteriorGroup().clear();
                 return;
             case Gml311Package.TRIANGLE_TYPE__EXTERIOR:
-                setExterior((AbstractRingPropertyType)null);
+                setExterior(null);
                 return;
             case Gml311Package.TRIANGLE_TYPE__INTERPOLATION:
                 unsetInterpolation();

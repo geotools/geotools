@@ -154,7 +154,7 @@ public class ProjectedCRSTypeImpl extends AbstractGeneralDerivedCRSTypeImpl impl
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.PROJECTED_CRS_TYPE__USES_CARTESIAN_CS:
-                setUsesCartesianCS((CartesianCSRefType)null);
+                setUsesCartesianCS(null);
                 return;
         }
         super.eUnset(featureID);

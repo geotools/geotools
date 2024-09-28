@@ -327,13 +327,13 @@ public class DescriptionTypeImpl extends EObjectImpl implements DescriptionType 
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.DESCRIPTION_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Wps10Package.DESCRIPTION_TYPE__TITLE:
-        setTitle((LanguageStringType)null);
+        setTitle(null);
         return;
       case Wps10Package.DESCRIPTION_TYPE__ABSTRACT:
-        setAbstract((LanguageStringType)null);
+        setAbstract(null);
         return;
       case Wps10Package.DESCRIPTION_TYPE__METADATA:
         getMetadata().clear();

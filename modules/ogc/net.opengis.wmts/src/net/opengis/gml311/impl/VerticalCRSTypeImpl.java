@@ -218,10 +218,10 @@ public class VerticalCRSTypeImpl extends AbstractReferenceSystemTypeImpl impleme
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.VERTICAL_CRS_TYPE__USES_VERTICAL_CS:
-                setUsesVerticalCS((VerticalCSRefType)null);
+                setUsesVerticalCS(null);
                 return;
             case Gml311Package.VERTICAL_CRS_TYPE__USES_VERTICAL_DATUM:
-                setUsesVerticalDatum((VerticalDatumRefType)null);
+                setUsesVerticalDatum(null);
                 return;
         }
         super.eUnset(featureID);

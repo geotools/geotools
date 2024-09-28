@@ -218,10 +218,10 @@ public class GeographicCRSTypeImpl extends AbstractReferenceSystemTypeImpl imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEOGRAPHIC_CRS_TYPE__USES_ELLIPSOIDAL_CS:
-                setUsesEllipsoidalCS((EllipsoidalCSRefType)null);
+                setUsesEllipsoidalCS(null);
                 return;
             case Gml311Package.GEOGRAPHIC_CRS_TYPE__USES_GEODETIC_DATUM:
-                setUsesGeodeticDatum((GeodeticDatumRefType)null);
+                setUsesGeodeticDatum(null);
                 return;
         }
         super.eUnset(featureID);

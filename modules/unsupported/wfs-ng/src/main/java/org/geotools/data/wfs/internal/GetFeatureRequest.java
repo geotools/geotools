@@ -39,7 +39,7 @@ public class GetFeatureRequest extends WFSRequest {
 
     public enum ResultType {
         RESULTS,
-        HITS;
+        HITS
     }
 
     private String[] propertyNames;

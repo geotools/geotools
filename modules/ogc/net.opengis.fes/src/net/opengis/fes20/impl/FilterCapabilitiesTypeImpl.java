@@ -543,25 +543,25 @@ public class FilterCapabilitiesTypeImpl extends EObjectImpl implements FilterCap
     public void eUnset(int featureID) {
         switch (featureID) {
             case Fes20Package.FILTER_CAPABILITIES_TYPE__CONFORMANCE:
-                setConformance((ConformanceType)null);
+                setConformance(null);
                 return;
             case Fes20Package.FILTER_CAPABILITIES_TYPE__ID_CAPABILITIES:
-                setIdCapabilities((IdCapabilitiesType)null);
+                setIdCapabilities(null);
                 return;
             case Fes20Package.FILTER_CAPABILITIES_TYPE__SCALAR_CAPABILITIES:
-                setScalarCapabilities((ScalarCapabilitiesType)null);
+                setScalarCapabilities(null);
                 return;
             case Fes20Package.FILTER_CAPABILITIES_TYPE__SPATIAL_CAPABILITIES:
-                setSpatialCapabilities((SpatialCapabilitiesType)null);
+                setSpatialCapabilities(null);
                 return;
             case Fes20Package.FILTER_CAPABILITIES_TYPE__TEMPORAL_CAPABILITIES:
-                setTemporalCapabilities((TemporalCapabilitiesType)null);
+                setTemporalCapabilities(null);
                 return;
             case Fes20Package.FILTER_CAPABILITIES_TYPE__FUNCTIONS:
-                setFunctions((AvailableFunctionsType)null);
+                setFunctions(null);
                 return;
             case Fes20Package.FILTER_CAPABILITIES_TYPE__EXTENDED_CAPABILITIES:
-                setExtendedCapabilities((ExtendedCapabilitiesType)null);
+                setExtendedCapabilities(null);
                 return;
         }
         super.eUnset(featureID);

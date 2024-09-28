@@ -154,7 +154,7 @@ public class GridDomainTypeImpl extends DomainSetTypeImpl implements GridDomainT
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GRID_DOMAIN_TYPE__GRID:
-                setGrid((GridType)null);
+                setGrid(null);
                 return;
         }
         super.eUnset(featureID);

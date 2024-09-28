@@ -659,7 +659,7 @@ public class ConversionRefTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.CONVERSION_REF_TYPE__CONVERSION:
-                setConversion((ConversionType)null);
+                setConversion(null);
                 return;
             case Gml311Package.CONVERSION_REF_TYPE__ACTUATE:
                 unsetActuate();

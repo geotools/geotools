@@ -2087,7 +2087,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         public static DefaultFieldEncoder DEFAULT_FIELD_ENCODER = new DefaultFieldEncoder();
 
-        private DefaultFieldEncoder() {};
+        private DefaultFieldEncoder() {}
 
         @Override
         public String encode(String s) {

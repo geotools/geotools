@@ -659,7 +659,7 @@ public class EllipsoidalCSRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.ELLIPSOIDAL_CS_REF_TYPE__ELLIPSOIDAL_CS:
-                setEllipsoidalCS((EllipsoidalCSType)null);
+                setEllipsoidalCS(null);
                 return;
             case Gml311Package.ELLIPSOIDAL_CS_REF_TYPE__ACTUATE:
                 unsetActuate();

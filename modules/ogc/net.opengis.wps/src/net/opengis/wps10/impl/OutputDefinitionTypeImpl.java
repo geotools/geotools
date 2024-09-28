@@ -356,7 +356,7 @@ public class OutputDefinitionTypeImpl extends EObjectImpl implements OutputDefin
     public void eUnset(int featureID) {
     switch (featureID) {
       case Wps10Package.OUTPUT_DEFINITION_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Wps10Package.OUTPUT_DEFINITION_TYPE__ENCODING:
         setEncoding(ENCODING_EDEFAULT);

@@ -65,7 +65,7 @@ import org.w3c.dom.Node;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class FilterMockData {
-    static FilterFactory f = (FilterFactory) CommonFactoryFinder.getFilterFactory(null);
+    static FilterFactory f = CommonFactoryFinder.getFilterFactory(null);
 
     static Element propertyName(Document document, Node parent) {
         return propertyName("foo", document, parent);

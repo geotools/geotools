@@ -659,7 +659,7 @@ public class GeographicCRSRefTypeImpl extends MinimalEObjectImpl.Container imple
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.GEOGRAPHIC_CRS_REF_TYPE__GEOGRAPHIC_CRS:
-                setGeographicCRS((GeographicCRSType)null);
+                setGeographicCRS(null);
                 return;
             case Gml311Package.GEOGRAPHIC_CRS_REF_TYPE__ACTUATE:
                 unsetActuate();

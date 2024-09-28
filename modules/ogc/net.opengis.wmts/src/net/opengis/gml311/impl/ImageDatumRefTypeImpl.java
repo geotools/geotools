@@ -659,7 +659,7 @@ public class ImageDatumRefTypeImpl extends MinimalEObjectImpl.Container implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case Gml311Package.IMAGE_DATUM_REF_TYPE__IMAGE_DATUM:
-                setImageDatum((ImageDatumType)null);
+                setImageDatum(null);
                 return;
             case Gml311Package.IMAGE_DATUM_REF_TYPE__ACTUATE:
                 unsetActuate();

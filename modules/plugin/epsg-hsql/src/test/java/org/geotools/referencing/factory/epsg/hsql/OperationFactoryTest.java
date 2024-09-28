@@ -147,7 +147,7 @@ public class OperationFactoryTest {
         int count = 0;
         for (org.geotools.api.referencing.operation.SingleOperation singleOperation :
                 ((ConcatenatedOperation) operation).getOperations()) {
-            final CoordinateOperation op = (CoordinateOperation) singleOperation;
+            final CoordinateOperation op = singleOperation;
             if (op instanceof Transformation) {
                 count++;
             } else {

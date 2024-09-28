@@ -426,16 +426,16 @@ public abstract class AbstractDatumTypeImpl extends AbstractDatumBaseTypeImpl im
                 getDatumID().clear();
                 return;
             case Gml311Package.ABSTRACT_DATUM_TYPE__REMARKS:
-                setRemarks((StringOrRefType)null);
+                setRemarks(null);
                 return;
             case Gml311Package.ABSTRACT_DATUM_TYPE__ANCHOR_POINT:
-                setAnchorPoint((CodeType)null);
+                setAnchorPoint(null);
                 return;
             case Gml311Package.ABSTRACT_DATUM_TYPE__REALIZATION_EPOCH:
                 setRealizationEpoch(REALIZATION_EPOCH_EDEFAULT);
                 return;
             case Gml311Package.ABSTRACT_DATUM_TYPE__VALID_AREA:
-                setValidArea((ExtentType)null);
+                setValidArea(null);
                 return;
             case Gml311Package.ABSTRACT_DATUM_TYPE__SCOPE:
                 setScope(SCOPE_EDEFAULT);

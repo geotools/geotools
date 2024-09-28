@@ -276,7 +276,7 @@ public void eSet(int featureID, Object newValue) {
 public void eUnset(int featureID) {
     switch (featureID) {
       case Ows11Package.REFERENCE_TYPE__IDENTIFIER:
-        setIdentifier((CodeType)null);
+        setIdentifier(null);
         return;
       case Ows11Package.REFERENCE_TYPE__ABSTRACT:
         getAbstract().clear();

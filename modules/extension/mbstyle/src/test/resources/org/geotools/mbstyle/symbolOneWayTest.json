@@ -1,0 +1,35 @@
+{
+  "version": 8,
+  "name": "simplePriorityTest",
+  "center": [0, 0],
+  "zoom": 1,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "url": "https://api.maptiler.com/tiles/v3/tiles.json?key={key}"
+    }
+  },
+  "sprite": "https://openmaptiles.github.io/osm-bright-gl-style/sprite",
+  "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key={key}",
+  "layers": [
+    {
+      "id": "road_oneway",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "transportation",
+      "layout": {
+        "icon-image": "oneway",
+        "icon-padding": 2,
+        "icon-rotate": 90,
+        "icon-rotation-alignment": "map",
+        "icon-size": 12,
+        "symbol-placement": "line",
+        "symbol-spacing": 75
+      },
+      "paint": {"icon-opacity": 0.5}
+    }
+  ],
+  "id": "simbolPriorityTest"
+}

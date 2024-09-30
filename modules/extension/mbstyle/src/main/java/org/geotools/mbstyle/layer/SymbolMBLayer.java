@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import org.geotools.api.filter.FilterFactory;
 import org.geotools.api.filter.expression.Expression;
 import org.geotools.api.filter.expression.Literal;
 import org.geotools.api.style.AnchorPoint;
@@ -48,8 +50,10 @@ import org.geotools.api.style.PointSymbolizer;
 import org.geotools.api.style.Rule;
 import org.geotools.api.style.SemanticType;
 import org.geotools.api.style.Stroke;
+import org.geotools.api.style.StyleFactory;
 import org.geotools.api.style.Symbolizer;
 import org.geotools.api.style.TextSymbolizer;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.function.FontAlternativesFunction;
 import org.geotools.mbstyle.function.FontAttributesExtractor;
@@ -80,6 +84,19 @@ import org.json.simple.JSONObject;
  * </ul>
  */
 public class SymbolMBLayer extends MBLayer {
+
+    static final Font TINY_FONT;
+
+    static {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+        TINY_FONT =
+                sf.createFont(
+                        ff.literal("Sans"),
+                        ff.literal("normal"),
+                        ff.literal("normal"),
+                        ff.literal(1));
+    }
 
     private static final Color DEFAULT_HALO_COLOR = new Color(0, 0, 0, 0);
     private final JSONObject layout;
@@ -1822,10 +1839,12 @@ public class SymbolMBLayer extends MBLayer {
         // If the textField is a literal string (not a function), then
         // we need to support Mapbox token replacement.
         Expression textExpression = textField();
+        boolean pureSymbol = false;
         if (textExpression instanceof Literal) {
             String text = textExpression.evaluate(null, String.class);
             if (text.trim().isEmpty()) {
                 textExpression = ff.literal(" ");
+                pureSymbol = true;
             } else {
                 textExpression = transformer.cqlExpressionFromTokens(text);
             }
@@ -1846,38 +1865,36 @@ public class SymbolMBLayer extends MBLayer {
                         halo,
                         fill);
         symbolizer.fonts().clear();
-        symbolizer.fonts().addAll(fonts);
+        // no need to add fonts and alternatives if we are displaying a simple symbol, use a tiny
+        // font to help centering the symbol along the line instead
+        if (pureSymbol) {
+            symbolizer.setFont(TINY_FONT);
+        } else {
+            symbolizer.fonts().addAll(fonts);
+        }
 
         Number symbolSpacing =
                 MBStyleTransformer.requireLiteral(
                         symbolSpacing(), Number.class, 250, "symbol-spacing", getId());
-        symbolizer
-                .getOptions()
-                .put(
-                        org.geotools.api.style.TextSymbolizer.LABEL_REPEAT_KEY,
-                        String.valueOf(symbolSpacing));
+        Map<String, String> options = symbolizer.getOptions();
+        options.put(TextSymbolizer.LABEL_REPEAT_KEY, String.valueOf(symbolSpacing));
 
         // text max angle - only for line placement
         // throw MBFormatException if point placement
         if (labelPlacement instanceof LinePlacement) {
-            // followLine will be true if line placement, it is an implied default of MBstyles.
-            symbolizer
-                    .getOptions()
-                    .put(
-                            org.geotools.api.style.TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY,
-                            String.valueOf(textKeepUpright()));
-            symbolizer
-                    .getOptions()
-                    .put(org.geotools.api.style.TextSymbolizer.FOLLOW_LINE_KEY, "true");
-            symbolizer
-                    .getOptions()
-                    .put(
-                            org.geotools.api.style.TextSymbolizer.MAX_ANGLE_DELTA_KEY,
-                            String.valueOf(getTextMaxAngle()));
-            symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.GROUP_KEY, "true");
-            symbolizer
-                    .getOptions()
-                    .put(org.geotools.api.style.TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
+            // Ensure the symbol follows the line, if there is no text (e.g. one ways)
+            if (pureSymbol) {
+                options.put(TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, "false");
+            } else {
+                // otherwise align with the text being drawn (e.g. label shields)
+                options.put(
+                        TextSymbolizer.FORCE_LEFT_TO_RIGHT_KEY, String.valueOf(textKeepUpright()));
+            }
+            // "followLine" will be true if line placement, it is an implied default of MBstyles.
+            options.put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
+            options.put(TextSymbolizer.MAX_ANGLE_DELTA_KEY, String.valueOf(getTextMaxAngle()));
+            options.put(TextSymbolizer.GROUP_KEY, "true");
+            options.put(TextSymbolizer.LABEL_ALL_GROUP_KEY, "true");
         } else if (hasTextMaxAngle()) {
             throw new MBFormatException(
                     "Property text-max-angle requires symbol-placement = line but symbol-placement = "
@@ -1893,31 +1910,21 @@ public class SymbolMBLayer extends MBLayer {
                 MBStyleTransformer.requireLiteral(
                         iconAllowOverlap(), Boolean.class, false, "icon-allow-overlap", getId());
 
-        symbolizer
-                .getOptions()
-                .put(
-                        org.geotools.api.style.TextSymbolizer.CONFLICT_RESOLUTION_KEY,
-                        String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
+        options.put(
+                TextSymbolizer.CONFLICT_RESOLUTION_KEY,
+                String.valueOf(!(textAllowOverlap || iconAllowOverlap)));
 
         String textFitVal =
                 MBStyleTransformer.requireLiteral(
                                 iconTextFit(), String.class, "none", "icon-text-fit", getId())
                         .trim();
         if ("height".equalsIgnoreCase(textFitVal) || "width".equalsIgnoreCase(textFitVal)) {
-            symbolizer
-                    .getOptions()
-                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, STRETCH.name());
+            options.put(TextSymbolizer.GRAPHIC_RESIZE_KEY, STRETCH.name());
         } else if ("both".equalsIgnoreCase(textFitVal)) {
-            symbolizer
-                    .getOptions()
-                    .put(
-                            org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY,
-                            PROPORTIONAL.name());
+            options.put(TextSymbolizer.GRAPHIC_RESIZE_KEY, PROPORTIONAL.name());
         } else {
             // Default
-            symbolizer
-                    .getOptions()
-                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_RESIZE_KEY, NONE.name());
+            options.put(TextSymbolizer.GRAPHIC_RESIZE_KEY, NONE.name());
         }
 
         // Kept commented out as a reminder not to bring this back. It breaks rendering
@@ -1926,26 +1933,22 @@ public class SymbolMBLayer extends MBLayer {
         //        if (!getSymbolAvoidEdges()) {
         //            symbolizer.getOptions().put(PARTIALS_KEY, "true");
         //        }
-        symbolizer.getOptions().put(org.geotools.api.style.TextSymbolizer.PARTIALS_KEY, "false");
+        options.put(TextSymbolizer.PARTIALS_KEY, "false");
 
         // Mapbox allows you to sapecify an array of values, one for each side
         if (getIconTextFitPadding() != null && !getIconTextFitPadding().isEmpty()) {
-            symbolizer
-                    .getOptions()
-                    .put(
-                            org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY,
-                            String.valueOf(getIconTextFitPadding().get(0)));
+            options.put(
+                    TextSymbolizer.GRAPHIC_MARGIN_KEY,
+                    String.valueOf(getIconTextFitPadding().get(0)));
         } else {
-            symbolizer
-                    .getOptions()
-                    .put(org.geotools.api.style.TextSymbolizer.GRAPHIC_MARGIN_KEY, "0");
+            options.put(TextSymbolizer.GRAPHIC_MARGIN_KEY, "0");
         }
 
         // text-padding default value is 2 in mapbox, will override Geoserver defaults
         if (!hasIconImage()
                 || "point".equalsIgnoreCase(symbolPlacementVal.trim())
                 || (getTextPadding().doubleValue()) >= (getIconPadding().doubleValue())) {
-            symbolizer.getOptions().put("spaceAround", String.valueOf(getTextPadding()));
+            options.put("spaceAround", String.valueOf(getTextPadding()));
         }
         // halo blur
         // layer.textHaloBlur();
@@ -1966,11 +1969,7 @@ public class SymbolMBLayer extends MBLayer {
                             16.0,
                             "text-size (when text-max-width is specified)",
                             getId());
-            symbolizer
-                    .getOptions()
-                    .put(
-                            org.geotools.api.style.TextSymbolizer.AUTO_WRAP_KEY,
-                            String.valueOf(textMaxWidth * textSize));
+            options.put(TextSymbolizer.AUTO_WRAP_KEY, String.valueOf(textMaxWidth * textSize));
         }
 
         // If the layer has an icon image, add it to our symbolizer
@@ -1980,24 +1979,16 @@ public class SymbolMBLayer extends MBLayer {
             if (!hasTextField()
                     || ((getIconPadding().doubleValue()) > (getTextPadding().doubleValue()))
                             && !"point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                symbolizer
-                        .getOptions()
-                        .put(
-                                org.geotools.api.style.TextSymbolizer.SPACE_AROUND_KEY,
-                                String.valueOf(getIconPadding()));
+                options.put(TextSymbolizer.SPACE_AROUND_KEY, String.valueOf(getIconPadding()));
             }
             // If we have an icon with a Point placement force graphic placement independ
             // of the label final position (each one gets its own anchor and displacement)
             Graphic graphic = getGraphic(transformer, styleContext);
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
-                symbolizer
-                        .getOptions()
-                        .put(
-                                org.geotools.api.style.TextSymbolizer.GRAPHIC_PLACEMENT_KEY,
-                                INDEPENDENT.name());
+                options.put(TextSymbolizer.GRAPHIC_PLACEMENT_KEY, INDEPENDENT.name());
             }
             // the mapbox-gl library does not paint the graphic if the icon cannot be found
-            symbolizer.getOptions().put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
+            options.put(PointSymbolizer.FALLBACK_ON_DEFAULT_MARK, "false");
             symbolizer.setGraphic(graphic);
         }
 

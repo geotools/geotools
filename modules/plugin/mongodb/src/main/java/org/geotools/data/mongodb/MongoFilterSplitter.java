@@ -87,15 +87,17 @@ public class MongoFilterSplitter extends PostPreProcessFilterSplittingVisitor {
                 if (geometry instanceof Point) {
                     processPoint(filter);
                 } else {
-                    super.visitBinarySpatialOperator(filter);
+                    preStack.push(filter);
                 }
+                return;
             }
         }
+        super.visitBinarySpatialOperator(filter);
     }
 
     /**
      * Checking for presence of spatial index, because DWithin with point will be delegated to $near
-     * operator, which requires geospatial index.
+     * operator, which requires geospatial index. Otherwise, will delegate to memory.
      *
      * @param filter
      */

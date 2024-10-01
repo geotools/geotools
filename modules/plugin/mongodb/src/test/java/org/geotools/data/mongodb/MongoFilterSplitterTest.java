@@ -22,6 +22,7 @@ import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.LiteralExpressionImpl;
 import org.geotools.filter.spatial.DWithinImpl;
+import org.geotools.filter.spatial.IntersectsImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -37,6 +38,12 @@ public class MongoFilterSplitterTest {
                     new AttributeExpressionImpl("geometry"),
                     new LiteralExpressionImpl(
                             "LINESTRING (1.669922 42.617791, 9.667969 47.100045, 8.085938 52.160455)"));
+
+    private static final IntersectsImpl INTERSECTS =
+            new IntersectsImpl(
+                    new AttributeExpressionImpl("geometry"),
+                    new LiteralExpressionImpl(
+                            "POLYGON ((10.567627244276403 60.81420914025842, 10.787353806776403 60.81420914025842, 10.787353806776403 61.03393570275842, 10.567627244276403 61.03393570275842, 10.567627244276403 60.81420914025842))"));
 
     private static final FilterCapabilities FCS = new FilterCapabilities(DWithin.class);
 
@@ -76,5 +83,12 @@ public class MongoFilterSplitterTest {
         MongoFilterSplitter splitter = new MongoFilterSplitter(FCS, null, null, null);
         splitter.visit(D_WITHIN_LINE, null);
         Assert.assertEquals(D_WITHIN_LINE, splitter.getFilterPre());
+    }
+
+    @Test
+    public void testIntersects() {
+        MongoFilterSplitter splitter = new MongoFilterSplitter(FCS, null, null, null);
+        splitter.visit(INTERSECTS, null);
+        Assert.assertEquals(INTERSECTS, splitter.getFilterPost());
     }
 }

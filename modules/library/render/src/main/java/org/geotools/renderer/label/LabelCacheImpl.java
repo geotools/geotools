@@ -677,7 +677,10 @@ public class LabelCacheImpl implements LabelCache {
                 paintPointLabel(painter, tempTransform, displayArea, glyphs);
             else if (((geom instanceof LineString) && !(geom instanceof LinearRing))
                     || (geom instanceof MultiLineString)) {
-                if (!DISABLE_LETTER_LEVEL_CONFLICT)
+                // letter conflict should be used if not disabled, and if there is any letter to
+                // paint (not laying out a symbol with conflict resolution, with an empty label)
+                if (!DISABLE_LETTER_LEVEL_CONFLICT
+                        && !painter.getLabel().getLabel().trim().isEmpty())
                     painted =
                             paintLineLabelsWithLetterConflict(
                                     painter, tempTransform, displayArea, glyphs);

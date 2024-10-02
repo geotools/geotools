@@ -7,7 +7,7 @@
     <version>32-SNAPSHOT</version>
   </parent>
 
-  <artifactId>gt-cql-json</artifactId>
+  <artifactId>gt-cql2-json</artifactId>
   <dependencies>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

@@ -41,9 +41,9 @@
     <module>ogr</module>
     <module>postgis-raster</module>
     <module>tpk</module>
-    <module>cql-json</module>
+    <module>cql2-json</module>
     <module>vsi</module>
-    <module>cql2</module>
+    <module>cql2-text</module>
     <module>jdbc-teradata</module>
     <module>stac-store</module>
     <module>vector-mosaic</module>

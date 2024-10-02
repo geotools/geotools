@@ -543,15 +543,21 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                     long startTime = System.currentTimeMillis();
                     thread.start();
                     try {
+                        boolean withinTimeout = false;
                         while (thread.isAlive()
-                                && (System.currentTimeMillis() - startTime) / 1000
-                                        < resolveTimeOut) {
+                                && (withinTimeout =
+                                        (System.currentTimeMillis() - startTime) / 1000
+                                                < resolveTimeOut)) {
                             Thread.sleep(RESOLVE_TIMEOUT_POLL_INTERVAL);
                         }
-                        thread.interrupt();
-                        // joining ensures synchronisation
-                        thread.join();
-                        foundFeature = finder.getFeature();
+                        // in case of time out, don't even try to get the feature (this
+                        // ensures we can write tests where the timeout is guaranteed)
+                        if (withinTimeout) {
+                            thread.interrupt();
+                            // joining ensures synchronisation
+                            thread.join();
+                            foundFeature = finder.getFeature();
+                        }
                     } catch (InterruptedException e) {
                         // clean up as best we can
                         thread.interrupt();

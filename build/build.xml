@@ -18,6 +18,9 @@
        
     Change branch from stable to maintenance:
        ant maintenance
+
+    Change branch from maintenance to archive:
+       ant archive
   </description>
   
   <macrodef name="pom-version">
@@ -173,6 +176,26 @@
     </replace>
   </target>
   
+  <target name="archive"
+          description="Update url references from maintenance to archive">
+    <replace dir="..">
+      <include name="docs/common.py"/>
+      <include name="release/src/markdown/README.md"/>
+      <replacefilter token="docs.geotools.org/maintenance" value="docs.geotools.org/archive"/>
+    </replace>
+    <replace dir="..">
+      <include name="build/rename.xml"/>
+      <include name="build/release.xml"/>
+      <replacefilter
+         token="&lt;property name=&quot;series&quot; value=&quot;maintenance&quot;/&quot;"
+         value="&lt;property name=&quot;series&quot; value=&quot;archive&quot;/&gt;"/>
+    </replace>
+    <replace dir="..">
+      <include name="pom.xml"/>
+      <replacefilter token="&lt;series&gt;maintenance&lt;/series&gt;"
+                     value="&lt;series&gt;archive&lt;/series&gt;"/>
+    </replace>
+  </target>
   
   <!-- update release version -->
   <target name="release"

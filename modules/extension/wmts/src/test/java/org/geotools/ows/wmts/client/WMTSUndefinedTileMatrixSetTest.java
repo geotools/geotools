@@ -46,5 +46,4 @@ public class WMTSUndefinedTileMatrixSetTest {
         // Should be null without throwing a runtime exception like it was before GEOT-7541 fix.
         assertNull(undefinedMatrixSet);
     }
-
 }

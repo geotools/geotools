@@ -109,7 +109,7 @@ To fix you need to build the javadoc jar by hand.
 
 1. Change to the module directory::
 
-      cd build/maven/javadoc
+      cd docs
 
 2. Build the javadoc module::
 

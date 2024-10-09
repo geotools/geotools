@@ -516,7 +516,7 @@ public class PointStackerProcess implements VectorProcess {
                 pickNearestLocation(pt);
             }
             if (boundingBox == null) {
-                boundingBox = new Envelope();
+                boundingBox = new Envelope(pt);
             } else {
                 boundingBox.expandToInclude(pt);
             }

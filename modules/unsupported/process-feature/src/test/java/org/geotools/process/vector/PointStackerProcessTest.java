@@ -412,6 +412,39 @@ public class PointStackerProcessTest {
         checkResultPoint(result, new Coordinate(-121.813201, 48.777343), 2, 2, null, null);
     }
 
+    @Test
+    public void testEnvBBOX() throws ProcessException, TransformException {
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
+
+        // 2 points to be stacked within envelope 4.0 : 4.0, 4.2 : 4.2
+        Coordinate[] data = {new Coordinate(4, 4), new Coordinate(4.2, 4.2)};
+
+        SimpleFeatureCollection fc = createPoints(data, bounds);
+
+        PointStackerProcess psp = new PointStackerProcess();
+        SimpleFeatureCollection result =
+                psp.execute(
+                        fc, 100, // cellSize
+                        null, // weightClusterPosition
+                        null, // normalize
+                        null, // preserve location
+                        bounds, // outputBBOX
+                        1000, // outputWidth
+                        1000, // outputHeight
+                        null, null);
+
+        checkSchemaCorrect(result.getSchema(), false);
+        assertEquals(1, result.size());
+        checkResultPoint(result, new Coordinate(4, 4), 2, 2, null, null);
+
+        try (SimpleFeatureIterator it = result.features()) {
+            SimpleFeature feature = it.next();
+            String envBBOX = (String) feature.getAttribute(PointStackerProcess.ATTR_BOUNDING_BOX);
+            assertEquals("Env[4.0 : 4.0, 4.2 : 4.2]", envBBOX);
+        }
+    }
+
     /** Get the stacked point closest to the provided coordinate */
     private SimpleFeature getResultPoint(SimpleFeatureCollection result, Coordinate testPt) {
         /** Find closest point to loc pt, then check that the attributes match */

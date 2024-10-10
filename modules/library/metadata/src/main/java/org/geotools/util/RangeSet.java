@@ -784,7 +784,8 @@ public class RangeSet<T extends Comparable<? super T>> extends AbstractSet<Range
         final Range<T> range = (Range<T>) object;
         if (elementClass.equals(range.elementClass)) {
             if (range.isMinIncluded() && range.isMaxIncluded()) {
-                final int index = binarySearch(toArrayElement((Comparable<T>) range.getMinValue()));
+                final int index =
+                        binarySearch(toArrayElement((Comparable<? super T>) range.getMinValue()));
                 if (index >= 0 && (index & 1) == 0) {
                     final int c = get(index + 1).compareTo(range.getMaxValue());
                     return c == 0;
